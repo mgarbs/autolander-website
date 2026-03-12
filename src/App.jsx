@@ -59,7 +59,7 @@ export default function App() {
              <a href="#testimonials" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">Case Studies</a>
           </div>
           <button
-            onClick={() => window.Cal && window.Cal("modal", {calLink: "YOUR-USERNAME/autolander-demo"})}
+            onClick={() => window.open("https://calendar.app.google/RU6wbUCbgEGjvxEF8", "_blank")}
             className="px-6 py-2.5 rounded-xl bg-white text-black font-bold text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg">
             Book a Demo
           </button>
@@ -97,7 +97,7 @@ export default function App() {
                 <motion.button
                   whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => window.Cal && window.Cal("modal", {calLink: "YOUR-USERNAME/autolander-demo"})}
+                  onClick={() => window.open("https://calendar.app.google/RU6wbUCbgEGjvxEF8", "_blank")}
                   className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3"
                 >
                   <span>SEE IT ON YOUR LEADS</span>
@@ -345,7 +345,7 @@ export default function App() {
               AutoLander dealers close <span className="text-blue-500 font-black">3–5 extra units/month</span> from the same traffic. That's up to <span className="text-blue-500 font-black">$75,000+ in added gross</span>—without hiring anyone.
             </p>
             <button
-              onClick={() => window.Cal && window.Cal("modal", {calLink: "YOUR-USERNAME/autolander-demo"})}
+              onClick={() => window.open("https://calendar.app.google/RU6wbUCbgEGjvxEF8", "_blank")}
               className="px-12 py-6 rounded-[24px] bg-white text-black font-black text-2xl hover:bg-blue-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-3xl shadow-white/5 uppercase italic tracking-tighter">
               Book a 15-Min Demo →
             </button>
