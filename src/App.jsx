@@ -1,9 +1,9 @@
-import React from 'react';
+ï»¿import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain, BadgeDollarSign, 
-  MessageSquareText, Car, ShieldCheck, Sparkles, TrendingUp,
+  MessageSquareText, CarFront, ShieldCheck, Sparkles, TrendingUp,
   MapPin, Gauge, Fuel
 } from 'lucide-react';
 
@@ -47,7 +47,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
           <div className="flex items-center space-x-3 group cursor-pointer">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
-              <Car className="w-6 h-6 text-white" />
+              <CarFront className="w-6 h-6 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight text-white uppercase italic">
               Auto<span className="text-blue-500">Lander</span>
@@ -101,7 +101,7 @@ export default function App() {
               </motion.button>
               <div className="flex flex-col items-center sm:items-start text-left">
                 <div className="flex -space-x-2 mb-1">
-                  {[1,2,3,4,5].map(i => <div key={i} className="w-6 h-6 rounded-full bg-slate-800 border-2 border-black flex items-center justify-center text-[8px] font-bold\">{i}</div>)}
+                  {[1,2,3,4,5].map(i => <div key={i} className="w-6 h-6 rounded-full bg-slate-800 border-2 border-black flex items-center justify-center text-[8px] font-bold">{i}</div>)}
                 </div>
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Trusted by 500+ Top Rooftops</span>
               </div>
@@ -115,9 +115,9 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <FadeIn direction="right">
-              <h2 className="text-4xl lg:text-6xl font-black mb-10 tracking-tight leading-none">
+              <h2 className="text-4xl lg:text-6xl font-black mb-10 tracking-tight leading-none text-white">
                 AI THAT THINKS <br/>
-                <span className="text-blue-500">LIKE A CLOSER.</span>
+                <span className="text-blue-500 uppercase italic">LIKE A CLOSER.</span>
               </h2>
               <div className="grid gap-6">
                 {[
@@ -194,7 +194,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-24">
             <FadeIn>
-               <h2 className="text-5xl lg:text-7xl font-black mb-8 tracking-tighter uppercase italic leading-none">
+               <h2 className="text-5xl lg:text-7xl font-black mb-8 tracking-tighter uppercase italic leading-none text-white">
                  One Sync. <br/><span className="text-blue-500">Total Dominance.</span>
                </h2>
                <p className="text-slate-400 max-w-2xl mx-auto font-medium text-lg italic">Connect your CarGurus, Cars.com, or AutoTrader feed once. We handle the rest.</p>
@@ -205,12 +205,12 @@ export default function App() {
             <FadeIn direction="right">
               <div className="space-y-12">
                 {[
-                  { icon: Facebook, title: "Automated Marketplace Posting", desc: "AI-written listings that actually convert. Posted from real salesperson accounts—zero bot energy." },
+                  { icon: Facebook, title: "Automated Marketplace Posting", desc: "AI-written listings that actually convert. Posted from real salesperson accountsâ€”zero bot energy." },
                   { icon: RefreshCw, title: "Real-Time Feed Sync", desc: "Sold units disappear. Price changes update instantly. Your online inventory is never stale." },
                   { icon: TrendingUp, title: "Smart Price Protection", desc: "Track price history and protect margins with automated listing adjustments based on lot age." }
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-8">
-                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-blue-600 transition-colors">
+                  <div key={i} className="flex gap-8 group cursor-default">
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
                       <item.icon className="w-6 h-6 text-slate-400 group-hover:text-white" />
                     </div>
                     <div>
@@ -255,16 +255,16 @@ export default function App() {
       <section className="py-48 relative overflow-hidden text-center border-t border-white/5">
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <FadeIn>
-            <h2 className="text-6xl lg:text-8xl font-black mb-12 tracking-tighter leading-[0.8] uppercase italic">
+            <h2 className="text-6xl lg:text-8xl font-black mb-12 tracking-tighter leading-[0.8] uppercase italic text-white">
               STOP GAMBLING <br/>WITH YOUR <br/><span className="text-blue-500">INVENTORY.</span>
             </h2>
             <p className="text-xl text-slate-400 mb-16 max-w-2xl mx-auto font-medium leading-relaxed italic">
-              The average rooftop loses ,000/month to slow response times. Stop the bleed.
+              The average rooftop loses <span className="text-white font-black strike-through opacity-50">,000</span> <span className="text-blue-500 font-black">,000+/month</span> to slow response times. Stop the bleed.
             </p>
             <button className="px-12 py-6 rounded-[24px] bg-white text-black font-black text-2xl hover:bg-blue-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-3xl shadow-white/5 uppercase italic tracking-tighter">
-              Start Free Trial ?
+              Start Free Trial â†’
             </button>
-            <p className="mt-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">No Contracts • No Credit Card • Live in 10 Mins</p>
+            <p className="mt-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">No Contracts â€¢ No Credit Card â€¢ Live in 10 Mins</p>
           </FadeIn>
         </div>
       </section>
@@ -272,11 +272,11 @@ export default function App() {
       {/* Footer */}
       <footer className="py-20 border-t border-white/5 text-center bg-black">
         <div className="max-w-7xl mx-auto px-6">
-           <div className="flex items-center justify-center space-x-3 mb-10 opacity-50 grayscale">
-              <Car className="w-5 h-5" />
-              <span className="text-lg font-bold tracking-tight uppercase italic">AutoLander</span>
+           <div className="flex items-center justify-center space-x-3 mb-10 opacity-50 grayscale group cursor-pointer hover:opacity-100 hover:grayscale-0 transition-all">
+              <CarFront className="w-5 h-5 text-white" />
+              <span className="text-lg font-bold tracking-tight uppercase italic text-white">AutoLander</span>
            </div>
-           <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">© 2026 AutoLander Intelligence. Built for closers.</p>
+           <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">Â© 2026 AutoLander Intelligence. Built for closers.</p>
         </div>
       </footer>
     </div>
