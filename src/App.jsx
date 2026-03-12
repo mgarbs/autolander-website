@@ -58,8 +58,10 @@ export default function App() {
              <a href="#features" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">Features</a>
              <a href="#testimonials" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">Case Studies</a>
           </div>
-          <button className="px-4 sm:px-6 py-2 rounded-lg sm:rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
-            Get Access
+          <button
+            onClick={() => window.open("https://calendar.app.google/RU6wbUCbgEGjvxEF8", "_blank")}
+            className="px-4 sm:px-6 py-2 rounded-lg sm:rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
+            Book a Demo
           </button>
         </div>
       </nav>
@@ -92,12 +94,13 @@ export default function App() {
             
             <FadeIn delay={0.3} direction="right">
               <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-left">
-                <motion.button 
+                <motion.button
                   whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={() => window.open("https://calendar.app.google/RU6wbUCbgEGjvxEF8", "_blank")}
                   className="w-full sm:w-auto px-6 sm:px-10 py-3.5 sm:py-5 rounded-xl sm:rounded-2xl bg-blue-600 text-white font-black text-base sm:text-lg transition-all flex items-center justify-center space-x-3"
                 >
-                  <span>CLAIM YOUR MARKET</span>
+                  <span>SEE IT ON YOUR LEADS</span>
                   <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
                 </motion.button>
               </div>
@@ -275,9 +278,9 @@ export default function App() {
           <div className="text-center mb-16 sm:mb-24 text-left">
             <FadeIn>
                <h2 className="text-4xl sm:text-5xl lg:text-7xl font-black mb-6 sm:mb-8 tracking-tighter uppercase italic leading-none text-white text-left">
-                 One Sync. <br/><span className="text-blue-500">Total Dominance.</span>
+                 Your Lot. Every Marketplace. <br/><span className="text-blue-500">Zero Effort.</span>
                </h2>
-               <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto font-medium italic">Connect your CarGurus, Cars.com, or AutoTrader feed once. We handle the rest.</p>
+               <p className="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto font-medium italic">Plug in your DMS or inventory feed once. Every listing stays live, priced right, and up to date—automatically.</p>
             </FadeIn>
           </div>
 
@@ -285,9 +288,9 @@ export default function App() {
             <FadeIn direction="right">
               <div className="space-y-8 sm:space-y-12 text-left">
                 {[
-                  { icon: Facebook, title: "Automated Marketplace Posting", desc: "AI-written listings that actually convert. Posted from real salesperson accounts—zero bot energy." },
-                  { icon: RefreshCw, title: "Real-Time Feed Sync", desc: "Sold units disappear. Price changes update instantly. Your online inventory is never stale." },
-                  { icon: TrendingUp, title: "Smart Price Protection", desc: "Track price history and protect margins with automated listing adjustments based on lot age." }
+                  { icon: Facebook, title: "Facebook Marketplace on Autopilot", desc: "Your full inventory posted from real salesperson profiles—not a business page. AI-written listings that sound human and sell hard, running 24/7." },
+                  { icon: RefreshCw, title: "Always-Accurate Listings", desc: "Your inventory feed syncs to every marketplace. Prices, photos, and availability are always ready—your team just reviews and hits publish." },
+                  { icon: TrendingUp, title: "Built-In Quality Control", desc: "Every listing is prepped by AI and queued for your team to approve. Human eyes on every post—so nothing goes live that shouldn't." }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4 sm:gap-8 group cursor-default text-left">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
@@ -336,17 +339,18 @@ export default function App() {
         <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
           <FadeIn>
             <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black mb-8 sm:mb-12 tracking-tighter leading-[0.8] uppercase italic text-white text-center">
-              STOP GAMBLING <br/>WITH YOUR <br/><span className="text-blue-500 uppercase italic">INVENTORY.</span>
+              LEADS DON'T WAIT. <br/><span className="text-blue-500 uppercase italic">NEITHER SHOULD YOU.</span>
             </h2>
             <p className="text-lg sm:text-xl text-slate-400 mb-10 sm:mb-16 max-w-2xl mx-auto font-medium leading-relaxed italic text-center">
-              The average rooftop loses <span className="text-white font-black strike-through opacity-50">,000</span> <span className="text-blue-500 font-black text-center">,000+/month</span> to slow response times. Stop the bleed.
+              AutoLander dealers close <span className="text-blue-500 font-black">3–5 extra units/month</span> from the same traffic. That's up to <span className="text-blue-500 font-black">$75,000+ in added gross</span>—without hiring anyone.
             </p>
-            <motion.button 
+            <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => window.open("https://calendar.app.google/RU6wbUCbgEGjvxEF8", "_blank")}
               className="w-full sm:w-auto px-8 sm:px-12 py-4.5 sm:py-6 rounded-xl sm:rounded-[24px] bg-white text-black font-black text-lg sm:text-2xl transition-all transform shadow-3xl shadow-white/5 uppercase italic tracking-tighter"
             >
-              Start Free Trial →
+              Book a 15-Min Demo →
             </motion.button>
             <p className="mt-6 sm:mt-8 text-[8px] sm:text-[10px] font-black text-slate-600 uppercase tracking-widest text-center">No Contracts • No Credit Card • Live in 10 Mins</p>
           </FadeIn>
