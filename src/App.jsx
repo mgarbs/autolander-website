@@ -4,7 +4,7 @@ import {
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain, BadgeDollarSign, 
   MessageSquareText, CarFront, ShieldCheck, Sparkles, TrendingUp,
-  MapPin, Gauge, Fuel
+  MapPin, Gauge, Fuel, Zap
 } from 'lucide-react';
 
 const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
@@ -65,45 +65,70 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-48 pb-32 lg:pt-60 lg:pb-48 z-10">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <FadeIn>
-            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-500/5 text-blue-400 border border-blue-500/20 mb-10 backdrop-blur-sm">
-              <Sparkles className="w-4 h-4" />
-              <span className="text-xs font-black uppercase tracking-widest">Next-Gen Dealer Intelligence</span>
-            </div>
-          </FadeIn>
-          
-          <FadeIn delay={0.1}>
-            <h1 className="text-6xl lg:text-8xl font-black tracking-tighter mb-10 leading-[0.9] text-white">
-              STOP LOSING DEALS.<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-indigo-600 drop-shadow-sm">
-                SELL ON AUTOPILOT.
-              </span>
-            </h1>
-          </FadeIn>
-          
-          <FadeIn delay={0.2}>
-            <p className="text-lg lg:text-xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed font-medium">
-              The world's first high-reasoning AI platform built exclusively for car dealerships. Hunt leads, score intent, and book closings while you sleep.
-            </p>
-          </FadeIn>
-          
-          <FadeIn delay={0.3}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <motion.button 
-                whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3"
-              >
-                <span>CLAIM YOUR MARKET</span>
-                <ArrowRight className="w-6 h-6" />
-              </motion.button>
-              <div className="flex flex-col items-center sm:items-start text-left">
-                <div className="flex -space-x-2 mb-1">
-                  {[1,2,3,4,5].map(i => <div key={i} className="w-6 h-6 rounded-full bg-slate-800 border-2 border-black flex items-center justify-center text-[8px] font-bold">{i}</div>)}
-                </div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Trusted by 500+ Top Rooftops</span>
+      <section className="relative pt-48 pb-20 lg:pt-60 lg:pb-32 z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-left">
+            <FadeIn direction="right">
+              <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-500/5 text-blue-400 border border-blue-500/20 mb-8 backdrop-blur-sm">
+                <Sparkles className="w-4 h-4" />
+                <span className="text-xs font-black uppercase tracking-widest">Next-Gen Dealer Intelligence</span>
+              </div>
+            </FadeIn>
+            
+            <FadeIn delay={0.1} direction="right">
+              <h1 className="text-6xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.9] text-white">
+                STOP LOSING DEALS.<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-indigo-600 drop-shadow-sm">
+                  SELL ON AUTOPILOT.
+                </span>
+              </h1>
+            </FadeIn>
+            
+            <FadeIn delay={0.2} direction="right">
+              <p className="text-lg lg:text-xl text-slate-400 mb-10 max-w-xl leading-relaxed font-medium">
+                The world's first high-reasoning AI platform built exclusively for car dealerships. Hunt leads, score intent, and book closers while you sleep.
+              </p>
+            </FadeIn>
+            
+            <FadeIn delay={0.3} direction="right">
+              <div className="flex flex-col sm:flex-row items-center gap-6">
+                <motion.button 
+                  whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3"
+                >
+                  <span>CLAIM YOUR MARKET</span>
+                  <ArrowRight className="w-6 h-6" />
+                </motion.button>
+              </div>
+            </FadeIn>
+          </div>
+
+          <FadeIn delay={0.4} direction="left">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-blue-600/30 blur-[120px] rounded-full opacity-50 group-hover:opacity-80 transition-opacity duration-1000" />
+              <div className="relative rounded-[40px] overflow-hidden border border-white/10 shadow-3xl bg-black transform group-hover:scale-[1.02] transition-transform duration-700">
+                <img 
+                  src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&q=80&w=1200" 
+                  alt="Luxury Performance Car" 
+                  className="w-full h-[500px] object-cover opacity-80 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
+                
+                {/* Floating Metric */}
+                <motion.div 
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                  className="absolute bottom-8 left-8 p-6 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 flex items-center gap-4"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                    <Zap className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Response Velocity</p>
+                    <p className="text-xl font-black text-white italic tracking-tighter leading-none">0.8 SECONDS</p>
+                  </div>
+                </motion.div>
               </div>
             </div>
           </FadeIn>
