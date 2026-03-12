@@ -1,4 +1,4 @@
-ï»¿import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 import { 
   ArrowRight, Bot, Inbox, RefreshCw, Facebook, CheckCircle2, 
@@ -113,7 +113,7 @@ export default function App() {
                   </div>
                   <div>
                     <h4 className="text-xl font-bold mb-2">Sentiment & Intent Analysis</h4>
-                    <p className="text-slate-400">Our models don't just "reply"â€”they reason. AutoLander gauges buyer urgency, detects skepticism, and handles objections with the nuance of a 20-year sales veteran.</p>
+                    <p className="text-slate-400">Our models don't just "reply"—they reason. AutoLander gauges buyer urgency, detects skepticism, and handles objections with the nuance of a 20-year sales veteran.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -170,7 +170,7 @@ export default function App() {
                 <div className="pt-6 border-t border-slate-800">
                    <div className="flex items-center gap-4">
                       <div className="flex -space-x-2">
-                         {[1,2,3].map(i => <div key={i} className=\"w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-900\" />)}
+                         {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-900" />)}
                       </div>
                       <p className="text-xs text-slate-500">3 Salespeople notified via SMS</p>
                    </div>
@@ -342,7 +342,7 @@ export default function App() {
           <FadeIn>
             <h2 className="text-4xl md:text-6xl font-bold mb-8">How Much Is One Lost Deal Costing You?</h2>
             <p className="text-xl text-slate-300 mb-12 leading-relaxed">
-              The average dealership loses 5â€“10 deals per month to slow response times alone. At ,000 average front-end gross, that's ,000â€“,000 walking out the door every single month.
+              The average dealership loses 5–10 deals per month to slow response times alone. At ,000 average front-end gross, that's ,000–,000 walking out the door every single month.
             </p>
             <p className="text-2xl font-bold text-white mb-10">
               AutoLander costs a fraction of one lost deal.
@@ -362,7 +362,7 @@ export default function App() {
 
       {/* Footer */}
       <footer className="py-12 bg-slate-900 border-t border-slate-800 text-center text-slate-500">
-        <p>Â© 2026 AutoLander. All rights reserved.</p>
+        <p>© 2026 AutoLander. All rights reserved.</p>
       </footer>
     </div>
   );
