@@ -1,25 +1,26 @@
-import React, { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 import { 
-  ArrowRight, Bot, Inbox, RefreshCw, Facebook, CheckCircle2, 
-  ChevronRight, Activity, Calendar, Zap, Brain, BadgeDollarSign, 
-  Clock, BarChart3, MessageSquareText 
+  ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
+  Activity, Calendar, Brain, BadgeDollarSign, 
+  MessageSquareText, Car, ShieldCheck, Sparkles, TrendingUp,
+  MapPin, Gauge, Fuel
 } from 'lucide-react';
 
 const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
   const directions = {
-    up: { y: 40, opacity: 0 },
-    down: { y: -40, opacity: 0 },
-    left: { x: 40, opacity: 0 },
-    right: { x: -40, opacity: 0 },
+    up: { y: 30, opacity: 0 },
+    down: { y: -30, opacity: 0 },
+    left: { x: 30, opacity: 0 },
+    right: { x: -30, opacity: 0 },
   };
 
   return (
     <motion.div
       initial={directions[direction]}
       whileInView={{ y: 0, x: 0, opacity: 1 }}
-      viewport={{ once: true, margin: '-100px' }}
-      transition={{ duration: 0.7, delay, ease: 'easeOut' }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{ duration: 0.8, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
     >
       {children}
     </motion.div>
@@ -27,342 +28,256 @@ const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
 };
 
 export default function App() {
+  const vehicles = [
+    { name: '2022 Ford F-150 Lariat', vin: '1FTFW1E8X...', img: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=400', price: ',900' },
+    { name: '2021 Toyota Camry SE', vin: '4T1B11HK5...', img: 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?auto=format&fit=crop&q=80&w=400', price: ',500' },
+    { name: '2023 Tesla Model 3', vin: '5YJ3E1EB8...', img: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?auto=format&fit=crop&q=80&w=400', price: ',900' }
+  ];
+
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50 font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-[#050505] text-slate-50 font-sans selection:bg-blue-500/30 selection:text-blue-200">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
+
       {/* Navbar */}
-      <nav className="fixed w-full z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center">
-              <Activity className="w-5 h-5 text-white" />
+      <nav className="fixed w-full z-50 top-0 px-6 py-4">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
+          <div className="flex items-center space-x-3 group cursor-pointer">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+              <Car className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-              AutoLander
+            <span className="text-xl font-bold tracking-tight text-white uppercase italic">
+              Auto<span className="text-blue-500">Lander</span>
             </span>
           </div>
-          <div className="hidden md:flex items-center space-x-8 mr-8">
-             <a href="#features" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Features</a>
-             <a href="#automation" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">AI Automation</a>
-             <a href="#testimonials" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">Success Stories</a>
+          <div className="hidden md:flex items-center space-x-10">
+             <a href="#automation" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">AI Intelligence</a>
+             <a href="#features" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">Features</a>
+             <a href="#testimonials" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">Case Studies</a>
           </div>
-          <div>
-            <button className="px-6 py-2.5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-medium transition-colors shadow-[0_0_15px_rgba(37,99,235,0.5)]">
-              Start Free Trial
-            </button>
-          </div>
+          <button className="px-6 py-2.5 rounded-xl bg-white text-black font-bold text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg">
+            Get Access
+          </button>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <section className="relative pt-48 pb-32 lg:pt-60 lg:pb-48 z-10">
+        <div className="max-w-5xl mx-auto px-6 text-center">
           <FadeIn>
-            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-8">
-              <span className="flex w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-              <span className="text-sm font-medium">New: Advanced Reasoning Lead Scoring is Live</span>
+            <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-500/5 text-blue-400 border border-blue-500/20 mb-10 backdrop-blur-sm">
+              <Sparkles className="w-4 h-4" />
+              <span className="text-xs font-black uppercase tracking-widest">Next-Gen Dealer Intelligence</span>
             </div>
           </FadeIn>
           
           <FadeIn delay={0.1}>
-            <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight mb-8 leading-tight">
-              Stop Losing Deals. <br className="hidden lg:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400">
-                Start Selling Cars on Autopilot.
+            <h1 className="text-6xl lg:text-8xl font-black tracking-tighter mb-10 leading-[0.9] text-white">
+              STOP LOSING DEALS.<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-indigo-600 drop-shadow-sm">
+                SELL ON AUTOPILOT.
               </span>
             </h1>
           </FadeIn>
           
           <FadeIn delay={0.2}>
-            <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-              AutoLander uses high-reasoning AI to hunt down buyers, score their intent, and book appointments directly to your calendar. 24/7.
+            <p className="text-lg lg:text-xl text-slate-400 mb-14 max-w-2xl mx-auto leading-relaxed font-medium">
+              The world's first high-reasoning AI platform built exclusively for car dealerships. Hunt leads, score intent, and book closings while you sleep.
             </p>
           </FadeIn>
           
           <FadeIn delay={0.3}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-full sm:w-auto px-8 py-4 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-lg transition-all shadow-[0_0_30px_rgba(37,99,235,0.5)] flex items-center justify-center space-x-2"
+                whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3"
               >
-                <span>Start Your Free Trial</span>
-                <ArrowRight className="w-5 h-5" />
+                <span>CLAIM YOUR MARKET</span>
+                <ArrowRight className="w-6 h-6" />
               </motion.button>
-              <span className="text-sm text-slate-500 mt-4 sm:mt-0">No credit card required. Setup in 10 mins.</span>
+              <div className="flex flex-col items-center sm:items-start text-left">
+                <div className="flex -space-x-2 mb-1">
+                  {[1,2,3,4,5].map(i => <div key={i} className="w-6 h-6 rounded-full bg-slate-800 border-2 border-black flex items-center justify-center text-[8px] font-bold\">{i}</div>)}
+                </div>
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Trusted by 500+ Top Rooftops</span>
+              </div>
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* NEW: AI Intelligence Section (Deep Reasoning) */}
-      <section id="automation" className="py-24 bg-slate-950 relative overflow-hidden border-y border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+      {/* AI Reasoning Section */}
+      <section id="automation" className="py-32 relative border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
             <FadeIn direction="right">
-              <h2 className="text-4xl md:text-5xl font-bold mb-8 leading-tight">
-                High-Reasoning AI That <br/>
-                <span className="text-blue-400">Thinks Like a Closer.</span>
+              <h2 className="text-4xl lg:text-6xl font-black mb-10 tracking-tight leading-none">
+                AI THAT THINKS <br/>
+                <span className="text-blue-500">LIKE A CLOSER.</span>
               </h2>
-              <div className="space-y-8">
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-500/20">
-                    <Brain className="w-6 h-6 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">Sentiment & Intent Analysis</h4>
-                    <p className="text-slate-400">Our models don't just "reply"—they reason. AutoLander gauges buyer urgency, detects skepticism, and handles objections with the nuance of a 20-year sales veteran.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center shrink-0 border border-indigo-500/20">
-                    <BadgeDollarSign className="w-6 h-6 text-indigo-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">Full Data Capture</h4>
-                    <p className="text-slate-400">The AI automatically extracts trade-in details, financing preferences (Cash, Finance, Lease), and down payment ability before you even pick up the phone.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center shrink-0 border border-purple-500/20">
-                    <Calendar className="w-6 h-6 text-purple-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2">Autonomous Booking</h4>
-                    <p className="text-slate-400">Once a lead is qualified, AutoLander presents open slots and books the appointment directly into Google Calendar, sending instant SMS/Email reminders to the buyer.</p>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-
-            <FadeIn direction="left">
-              <div className="bg-slate-900 rounded-3xl border border-slate-700 p-8 shadow-2xl relative">
-                <div className="absolute top-4 right-4 flex gap-2">
-                  <div className="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-bold border border-green-500/20">HOT LEAD</div>
-                  <div className="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-bold border border-blue-500/20">SENTIMENT: 94%</div>
-                </div>
-                
-                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                  <MessageSquareText className="w-5 h-5 text-blue-400" />
-                  AI Reasoning Log
-                </h3>
-                
-                <div className="space-y-4 mb-8">
-                  <div className="p-3 rounded-lg bg-slate-800/50 text-sm italic text-slate-400 border-l-2 border-blue-500">
-                    AI Thought: Buyer mentions 'needing something by Friday'. Urgency is high. Extracting trade info...
-                  </div>
-                  <div className="flex justify-between items-center p-4 rounded-xl bg-slate-800 border border-slate-700">
-                    <span className="text-slate-300">Trade-In:</span>
-                    <span className="font-bold text-white">2018 Ford F-150</span>
-                  </div>
-                  <div className="flex justify-between items-center p-4 rounded-xl bg-slate-800 border border-slate-700">
-                    <span className="text-slate-300">Payment Type:</span>
-                    <span className="font-bold text-white">Finance (Excellent Credit)</span>
-                  </div>
-                  <div className="flex justify-between items-center p-4 rounded-xl bg-green-900/20 border border-green-500/30">
-                    <span className="text-green-400 flex items-center gap-2"><Calendar className="w-4 h-4"/> Appt Booked:</span>
-                    <span className="font-bold text-green-400 text-right">Tomorrow @ 2:30 PM</span>
-                  </div>
-                </div>
-                
-                <div className="pt-6 border-t border-slate-800">
-                   <div className="flex items-center gap-4">
-                      <div className="flex -space-x-2">
-                         {[1,2,3].map(i => <div key={i} className="w-8 h-8 rounded-full bg-slate-700 border-2 border-slate-900" />)}
+              <div className="grid gap-6">
+                {[
+                  { icon: Brain, title: "Sentiment Analysis", desc: "Our models reason through buyer skepticism and urgency with 20-year sales veteran nuance." },
+                  { icon: BadgeDollarSign, title: "Full Deal Capture", desc: "Automatically extracts trade-in, financing, and down payment details before you call." },
+                  { icon: Calendar, title: "Autonomous Booking", desc: "Syncs directly to Google Calendar and fires SMS reminders to ensure buyer show-ups." }
+                ].map((item, i) => (
+                  <div key={i} className="group p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-blue-500/30 transition-all duration-500">
+                    <div className="flex gap-6">
+                      <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-500/20 group-hover:scale-110 transition-transform">
+                        <item.icon className="w-7 h-7 text-blue-500" />
                       </div>
-                      <p className="text-xs text-slate-500">3 Salespeople notified via SMS</p>
-                   </div>
-                </div>
+                      <div>
+                        <h4 className="text-xl font-bold mb-2 text-white">{item.title}</h4>
+                        <p className="text-slate-400 text-sm leading-relaxed font-medium">{item.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </FadeIn>
-          </div>
-        </div>
-      </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-24 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn>
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">One Platform. Every Advantage.</h2>
-              <p className="text-xl text-slate-400">Everything you need to automate your dealership's sales pipeline.</p>
-            </div>
-          </FadeIn>
-
-          <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
-            <FadeIn direction="right">
-              <div>
-                <div className="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center mb-6">
-                  <Facebook className="w-8 h-8 text-blue-400" />
-                </div>
-                <h3 className="text-3xl font-bold mb-4">Automated Facebook Marketplace Posting</h3>
-                <p className="text-lg text-slate-400 mb-6">
-                  Stop babysitting listings. AutoLander takes your inventory feed, generates scroll-stopping descriptions with AI, and posts directly to Facebook Marketplace.
-                </p>
-                <ul className="space-y-3">
-                  {['AI-written listings that actually convert', 'Posts from real FB accounts', 'Real-time progress tracking', 'One click. Every vehicle. Done.'].map((t, i) => (
-                    <li key={i} className="flex items-start space-x-3">
-                      <CheckCircle2 className="w-6 h-6 text-blue-400 shrink-0" />
-                      <span className="text-slate-300">{t}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-8 p-4 rounded-xl bg-blue-900/30 border border-blue-500/20">
-                  <p className="text-blue-300 font-medium">Result: What took your team 4 hours now takes 4 seconds.</p>
-                </div>
-              </div>
-            </FadeIn>
             <FadeIn direction="left">
-              <div className="relative group perspective-1000">
-                <motion.div 
-                  whileHover={{ rotateY: -5, rotateX: 5 }}
-                  className="rounded-2xl border border-slate-700 bg-slate-800 p-2 shadow-2xl overflow-hidden transform-gpu transition-all duration-500"
-                >
-                  <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800" alt="Cars" className="rounded-xl opacity-80 group-hover:opacity-100 transition-opacity" />
-                </motion.div>
-                <motion.div 
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                  className="absolute -bottom-6 -left-6 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-xl flex items-center space-x-4"
-                >
-                  <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-                    <CheckCircle2 className="w-6 h-6 text-green-400" />
+              <div className="relative group">
+                <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="relative bg-[#0A0A0A] rounded-[40px] border border-white/10 p-10 shadow-3xl overflow-hidden">
+                  <div className="flex justify-between items-center mb-10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
+                      <span className="text-xs font-black tracking-widest uppercase text-slate-500">Live Agent Intelligence</span>
+                    </div>
+                    <div className="px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-[10px] font-black tracking-widest border border-green-500/20">SENTIMENT: 98%</div>
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-white">Post Successful</p>
-                    <p className="text-xs text-slate-400">2021 Toyota Camry posted to FB</p>
+                  
+                  <div className="space-y-6">
+                    <div className="p-5 rounded-2xl bg-blue-500/5 border border-blue-500/20">
+                      <p className="text-blue-400 text-xs font-black uppercase mb-2 flex items-center gap-2">
+                        <MessageSquareText className="w-3 h-3" /> AI Reasoning
+                      </p>
+                      <p className="text-sm font-medium text-slate-300 italic">"Detected buyer urgency due to lease expiring Friday. Initiating trade-in appraisal workflow."</p>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col gap-1">
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Trade-In</span>
+                        <span className="font-bold text-white uppercase italic">2018 Ford F-150</span>
+                      </div>
+                      <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col gap-1">
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Payment</span>
+                        <span className="font-bold text-white uppercase italic">Finance (Tier 1)</span>
+                      </div>
+                    </div>
+                    
+                    <div className="p-6 rounded-2xl bg-green-500/10 border border-green-500/20 flex justify-between items-center">
+                      <div className="flex items-center gap-4">
+                        <Calendar className="w-6 h-6 text-green-400" />
+                        <div className="flex flex-col">
+                           <span className="text-[10px] font-black text-green-400 uppercase tracking-widest underline decoration-2 underline-offset-4">Appt Booked</span>
+                           <span className="font-black text-white text-lg">Tomorrow @ 2:30 PM</span>
+                        </div>
+                      </div>
+                      <ShieldCheck className="w-8 h-8 text-green-500 opacity-50" />
+                    </div>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </FadeIn>
           </div>
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+      {/* Inventory Sync Section */}
+      <section id="features" className="py-32 bg-[#080808] border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-24">
+            <FadeIn>
+               <h2 className="text-5xl lg:text-7xl font-black mb-8 tracking-tighter uppercase italic leading-none">
+                 One Sync. <br/><span className="text-blue-500">Total Dominance.</span>
+               </h2>
+               <p className="text-slate-400 max-w-2xl mx-auto font-medium text-lg italic">Connect your CarGurus, Cars.com, or AutoTrader feed once. We handle the rest.</p>
+            </FadeIn>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
             <FadeIn direction="right">
-              <div>
-                <div className="w-14 h-14 rounded-2xl bg-teal-500/20 flex items-center justify-center mb-6">
-                  <RefreshCw className="w-8 h-8 text-teal-400" />
-                </div>
-                <h3 className="text-3xl font-bold mb-4">Inventory Feed Sync</h3>
-                <p className="text-lg text-slate-400 mb-6">
-                  Connect your CarGurus, Cars.com, AutoTrader, or any dealer feed URL. AutoLander syncs your inventory automatically every 6 hours.
-                </p>
-                <ul className="space-y-3">
-                  {['Supports major feed formats', 'Auto-syncs on schedule or manually', 'Price history tracking', 'VIN-level deduplication'].map((t, i) => (
-                    <li key={i} className="flex items-start space-x-3">
-                      <CheckCircle2 className="w-6 h-6 text-teal-400 shrink-0" />
-                      <span className="text-slate-300">{t}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-8 p-4 rounded-xl bg-teal-900/30 border border-teal-500/20">
-                  <p className="text-teal-300 font-medium">Result: Your online inventory is always accurate, everywhere.</p>
-                </div>
+              <div className="space-y-12">
+                {[
+                  { icon: Facebook, title: "Automated Marketplace Posting", desc: "AI-written listings that actually convert. Posted from real salesperson accounts—zero bot energy." },
+                  { icon: RefreshCw, title: "Real-Time Feed Sync", desc: "Sold units disappear. Price changes update instantly. Your online inventory is never stale." },
+                  { icon: TrendingUp, title: "Smart Price Protection", desc: "Track price history and protect margins with automated listing adjustments based on lot age." }
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-8">
+                    <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-blue-600 transition-colors">
+                      <item.icon className="w-6 h-6 text-slate-400 group-hover:text-white" />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-bold mb-3 text-white uppercase italic tracking-tight">{item.title}</h4>
+                      <p className="text-slate-400 leading-relaxed font-medium">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </FadeIn>
+
             <FadeIn direction="left">
-              <div className="relative group perspective-1000">
-                <motion.div 
-                  whileHover={{ scale: 1.02 }}
-                  className="rounded-2xl border border-slate-700 bg-slate-800 p-6 shadow-2xl overflow-hidden transform-gpu transition-all duration-500"
-                >
-                  <div className="space-y-4 text-left">
-                     {[1,2,3].map(i => (
-                       <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-slate-700/50 border border-slate-600">
-                         <div className="flex items-center space-x-3">
-                           <div className="w-12 h-8 bg-slate-600 rounded"></div>
-                           <div>
-                             <p className="text-sm font-bold">2019 F-150 Lariat</p>
-                             <p className="text-xs text-slate-400">VIN: 1FTFW1E8X...</p>
-                           </div>
-                         </div>
-                         <div className="text-right">
-                           <p className="text-sm font-bold text-teal-400">Synced</p>
-                           <p className="text-xs text-slate-400">Just now</p>
-                         </div>
-                       </div>
-                     ))}
-                  </div>
-                </motion.div>
-              </div>
+               <div className="grid gap-6">
+                  {vehicles.map((v, i) => (
+                    <motion.div 
+                      key={i} 
+                      whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.05)" }}
+                      className="group flex items-center justify-between p-5 rounded-[24px] bg-white/[0.02] border border-white/5 transition-all duration-300"
+                    >
+                      <div className="flex items-center gap-6">
+                        <img src={v.img} className="w-24 h-16 object-cover rounded-xl grayscale group-hover:grayscale-0 transition-all duration-500 shadow-2xl" alt={v.name} />
+                        <div className="flex flex-col">
+                           <p className="text-lg font-black text-white italic tracking-tighter leading-none mb-1">{v.name}</p>
+                           <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">{v.vin}</p>
+                        </div>
+                      </div>
+                      <div className="text-right flex flex-col items-end">
+                        <span className="text-xs font-black text-blue-500 uppercase tracking-widest flex items-center gap-2">
+                           <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" /> SYNCED
+                        </span>
+                        <p className="text-white font-black text-lg">{v.price}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+               </div>
             </FadeIn>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section id="testimonials" className="py-24 bg-slate-800 border-y border-slate-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* CTA Section */}
+      <section className="py-48 relative overflow-hidden text-center border-t border-white/5">
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
           <FadeIn>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">Dealers Who Switched Don't Look Back</h2>
-            </div>
-          </FadeIn>
-          <div className="grid md:grid-cols-2 gap-8 text-left">
-            <FadeIn delay={0.1} direction="up">
-              <div className="p-8 rounded-2xl bg-slate-900 border border-slate-700 relative">
-                <div className="text-blue-500 text-6xl absolute top-4 left-4 opacity-20">"</div>
-                <p className="text-lg text-slate-300 mb-6 relative z-10 italic leading-relaxed">
-                  The AI reasoning is shockingly good. It picked up on a buyer wanting to trade in a specific truck and booked the appointment for 4 PM. My team just walked out and closed the deal. It's a game changer.
-                </p>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-slate-700 shrink-0" />
-                  <div>
-                    <p className="font-bold text-white">James T.</p>
-                    <p className="text-sm text-slate-400">Internet Director, Honda Dealership, FL</p>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.2} direction="up">
-              <div className="p-8 rounded-2xl bg-slate-900 border border-slate-700 relative">
-                <div className="text-blue-500 text-6xl absolute top-4 left-4 opacity-20">"</div>
-                <p className="text-lg text-slate-300 mb-6 relative z-10 italic leading-relaxed">
-                  We went from responding to leads in 2 hours to under 2 minutes. Last month we closed 14 extra units we would have lost. AutoLander paid for itself on day one.
-                </p>
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-slate-700 shrink-0" />
-                  <div>
-                    <p className="font-bold text-white">Mike R.</p>
-                    <p className="text-sm text-slate-400">Sales Manager, 3-rooftop group, TX</p>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing CTA */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-blue-600/10" />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <FadeIn>
-            <h2 className="text-4xl md:text-6xl font-bold mb-8">How Much Is One Lost Deal Costing You?</h2>
-            <p className="text-xl text-slate-300 mb-12 leading-relaxed">
-              The average dealership loses 5–10 deals per month to slow response times alone. At ,000 average front-end gross, that's ,000–,000 walking out the door every single month.
+            <h2 className="text-6xl lg:text-8xl font-black mb-12 tracking-tighter leading-[0.8] uppercase italic">
+              STOP GAMBLING <br/>WITH YOUR <br/><span className="text-blue-500">INVENTORY.</span>
+            </h2>
+            <p className="text-xl text-slate-400 mb-16 max-w-2xl mx-auto font-medium leading-relaxed italic">
+              The average rooftop loses ,000/month to slow response times. Stop the bleed.
             </p>
-            <p className="text-2xl font-bold text-white mb-10">
-              AutoLander costs a fraction of one lost deal.
-            </p>
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-10 py-5 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl transition-all shadow-[0_0_40px_rgba(37,99,235,0.6)] flex items-center mx-auto space-x-3"
-            >
-              <span>See Pricing & Start Free Trial</span>
-              <ArrowRight className="w-6 h-6" />
-            </motion.button>
-            <p className="text-sm text-slate-400 mt-6">No credit card. No contracts. No risk. Just more cars sold.</p>
+            <button className="px-12 py-6 rounded-[24px] bg-white text-black font-black text-2xl hover:bg-blue-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-3xl shadow-white/5 uppercase italic tracking-tighter">
+              Start Free Trial ?
+            </button>
+            <p className="mt-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">No Contracts • No Credit Card • Live in 10 Mins</p>
           </FadeIn>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-slate-900 border-t border-slate-800 text-center text-slate-500">
-        <p>© 2026 AutoLander. All rights reserved.</p>
+      <footer className="py-20 border-t border-white/5 text-center bg-black">
+        <div className="max-w-7xl mx-auto px-6">
+           <div className="flex items-center justify-center space-x-3 mb-10 opacity-50 grayscale">
+              <Car className="w-5 h-5" />
+              <span className="text-lg font-bold tracking-tight uppercase italic">AutoLander</span>
+           </div>
+           <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">© 2026 AutoLander Intelligence. Built for closers.</p>
+        </div>
       </footer>
     </div>
   );
