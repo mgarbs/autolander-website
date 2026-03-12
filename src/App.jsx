@@ -4,7 +4,7 @@ import {
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain, BadgeDollarSign, 
   MessageSquareText, CarFront, ShieldCheck, Sparkles, TrendingUp,
-  MapPin, Gauge, Fuel, Zap
+  MapPin, Gauge, Fuel, Zap, Clock
 } from 'lucide-react';
 
 const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
@@ -122,11 +122,11 @@ export default function App() {
                   className="absolute bottom-8 left-8 p-6 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 flex items-center gap-4"
                 >
                   <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                    <Zap className="w-6 h-6 text-white" />
+                    <Clock className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Response Velocity</p>
-                    <p className="text-xl font-black text-white italic tracking-tighter leading-none">0.8 SECONDS</p>
+                    <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Response Guarantee</p>
+                    <p className="text-xl font-black text-white italic tracking-tighter leading-none">UNDER 5 MINUTES</p>
                   </div>
                 </motion.div>
               </div>
@@ -140,7 +140,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <FadeIn direction="right">
-              <h2 className="text-4xl lg:text-6xl font-black mb-10 tracking-tight leading-none text-white">
+              <h2 className="text-4xl lg:text-6xl font-black mb-10 tracking-tight leading-none text-white text-left">
                 AI THAT THINKS <br/>
                 <span className="text-blue-500 uppercase italic">LIKE A CLOSER.</span>
               </h2>
@@ -150,12 +150,12 @@ export default function App() {
                   { icon: BadgeDollarSign, title: "Full Deal Capture", desc: "Automatically extracts trade-in, financing, and down payment details before you call." },
                   { icon: Calendar, title: "Autonomous Booking", desc: "Syncs directly to Google Calendar and fires SMS reminders to ensure buyer show-ups." }
                 ].map((item, i) => (
-                  <div key={i} className="group p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-blue-500/30 transition-all duration-500">
-                    <div className="flex gap-6">
+                  <div key={i} className="group p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-blue-500/30 transition-all duration-500 text-left">
+                    <div className="flex gap-6 text-left">
                       <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-500/20 group-hover:scale-110 transition-transform">
                         <item.icon className="w-7 h-7 text-blue-500" />
                       </div>
-                      <div>
+                      <div className="text-left">
                         <h4 className="text-xl font-bold mb-2 text-white">{item.title}</h4>
                         <p className="text-slate-400 text-sm leading-relaxed font-medium">{item.desc}</p>
                       </div>
@@ -166,42 +166,42 @@ export default function App() {
             </FadeIn>
 
             <FadeIn direction="left">
-              <div className="relative group">
+              <div className="relative group text-left">
                 <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="relative bg-[#0A0A0A] rounded-[40px] border border-white/10 p-10 shadow-3xl overflow-hidden">
+                <div className="relative bg-[#0A0A0A] rounded-[40px] border border-white/10 p-10 shadow-3xl overflow-hidden text-left">
                   <div className="flex justify-between items-center mb-10">
                     <div className="flex items-center gap-3">
                       <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
-                      <span className="text-xs font-black tracking-widest uppercase text-slate-500">Live Agent Intelligence</span>
+                      <span className="text-xs font-black tracking-widest uppercase text-slate-500 text-left">Live Agent Intelligence</span>
                     </div>
                     <div className="px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-[10px] font-black tracking-widest border border-green-500/20">SENTIMENT: 98%</div>
                   </div>
                   
-                  <div className="space-y-6">
-                    <div className="p-5 rounded-2xl bg-blue-500/5 border border-blue-500/20">
+                  <div className="space-y-6 text-left">
+                    <div className="p-5 rounded-2xl bg-blue-500/5 border border-blue-500/20 text-left">
                       <p className="text-blue-400 text-xs font-black uppercase mb-2 flex items-center gap-2">
                         <MessageSquareText className="w-3 h-3" /> AI Reasoning
                       </p>
                       <p className="text-sm font-medium text-slate-300 italic">"Detected buyer urgency due to lease expiring Friday. Initiating trade-in appraisal workflow."</p>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col gap-1">
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Trade-In</span>
-                        <span className="font-bold text-white uppercase italic">2018 Ford F-150</span>
+                    <div className="grid grid-cols-2 gap-4 text-left">
+                      <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col gap-1 text-left">
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest text-left">Trade-In</span>
+                        <span className="font-bold text-white uppercase italic text-left">2018 Ford F-150</span>
                       </div>
-                      <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col gap-1">
-                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Payment</span>
-                        <span className="font-bold text-white uppercase italic">Finance (Tier 1)</span>
+                      <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/5 flex flex-col gap-1 text-left">
+                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest text-left">Payment</span>
+                        <span className="font-bold text-white uppercase italic text-left">Finance (Tier 1)</span>
                       </div>
                     </div>
                     
-                    <div className="p-6 rounded-2xl bg-green-500/10 border border-green-500/20 flex justify-between items-center">
-                      <div className="flex items-center gap-4">
+                    <div className="p-6 rounded-2xl bg-green-500/10 border border-green-500/20 flex justify-between items-center text-left">
+                      <div className="flex items-center gap-4 text-left">
                         <Calendar className="w-6 h-6 text-green-400" />
-                        <div className="flex flex-col">
-                           <span className="text-[10px] font-black text-green-400 uppercase tracking-widest underline decoration-2 underline-offset-4">Appt Booked</span>
-                           <span className="font-black text-white text-lg">Tomorrow @ 2:30 PM</span>
+                        <div className="flex flex-col text-left">
+                           <span className="text-[10px] font-black text-green-400 uppercase tracking-widest underline decoration-2 underline-offset-4 text-left">Appt Booked</span>
+                           <span className="font-black text-white text-lg text-left">Tomorrow @ 2:30 PM</span>
                         </div>
                       </div>
                       <ShieldCheck className="w-8 h-8 text-green-500 opacity-50" />
@@ -228,17 +228,17 @@ export default function App() {
 
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <FadeIn direction="right">
-              <div className="space-y-12">
+              <div className="space-y-12 text-left">
                 {[
                   { icon: Facebook, title: "Automated Marketplace Posting", desc: "AI-written listings that actually convert. Posted from real salesperson accounts—zero bot energy." },
                   { icon: RefreshCw, title: "Real-Time Feed Sync", desc: "Sold units disappear. Price changes update instantly. Your online inventory is never stale." },
                   { icon: TrendingUp, title: "Smart Price Protection", desc: "Track price history and protect margins with automated listing adjustments based on lot age." }
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-8 group cursor-default">
+                  <div key={i} className="flex gap-8 group cursor-default text-left">
                     <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
                       <item.icon className="w-6 h-6 text-slate-400 group-hover:text-white" />
                     </div>
-                    <div>
+                    <div className="text-left">
                       <h4 className="text-2xl font-bold mb-3 text-white uppercase italic tracking-tight">{item.title}</h4>
                       <p className="text-slate-400 leading-relaxed font-medium">{item.desc}</p>
                     </div>
@@ -248,25 +248,24 @@ export default function App() {
             </FadeIn>
 
             <FadeIn direction="left">
-               <div className="grid gap-6">
+               <div className="grid gap-6 text-left">
                   {vehicles.map((v, i) => (
                     <motion.div 
                       key={i} 
                       whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.05)" }}
-                      className="group flex items-center justify-between p-5 rounded-[24px] bg-white/[0.02] border border-white/5 transition-all duration-300"
+                      className="group flex items-center justify-between p-5 rounded-[24px] bg-white/[0.02] border border-white/5 transition-all duration-300 text-left"
                     >
-                      <div className="flex items-center gap-6">
+                      <div className="flex items-center gap-6 text-left">
                         <img src={v.img} className="w-24 h-16 object-cover rounded-xl grayscale group-hover:grayscale-0 transition-all duration-500 shadow-2xl" alt={v.name} />
-                        <div className="flex flex-col">
-                           <p className="text-lg font-black text-white italic tracking-tighter leading-none mb-1">{v.name}</p>
-                           <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">{v.vin}</p>
+                        <div className="flex flex-col text-left">
+                           <p className="text-lg font-black text-white italic tracking-tighter leading-none mb-1 text-left">{v.name}</p>
+                           <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest text-left">{v.vin}</p>
                         </div>
                       </div>
                       <div className="text-right flex flex-col items-end">
                         <span className="text-xs font-black text-blue-500 uppercase tracking-widest flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" /> SYNCED
+                           <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" /> AUTOMATED
                         </span>
-                        <p className="text-white font-black text-lg">{v.price}</p>
                       </div>
                     </motion.div>
                   ))}
