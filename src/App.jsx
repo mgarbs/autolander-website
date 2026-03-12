@@ -231,8 +231,8 @@ export default function App() {
               <div className="space-y-12 text-left">
                 {[
                   { icon: Facebook, title: "Facebook Marketplace on Autopilot", desc: "Your full inventory posted from real salesperson profiles—not a business page. AI-written listings that sound human and sell hard, running 24/7." },
-                  { icon: RefreshCw, title: "Always-Accurate Listings", desc: "Your inventory feed syncs to every marketplace automatically. Prices, photos, and availability stay current without anyone touching a thing." },
-                  { icon: TrendingUp, title: "Smart Pricing by Lot Age", desc: "Set your rules. AutoLander watches days on lot and adjusts listing prices automatically—so aging units move before they cost you." }
+                  { icon: RefreshCw, title: "Always-Accurate Listings", desc: "Your inventory feed syncs to every marketplace. Prices, photos, and availability are always ready—your team just reviews and hits publish." },
+                  { icon: TrendingUp, title: "Built-In Quality Control", desc: "Every listing is prepped by AI and queued for your team to approve. Human eyes on every post—so nothing goes live that shouldn't." }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-8 group cursor-default text-left">
                     <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
