@@ -54,12 +54,12 @@ export default function App() {
             </span>
           </div>
           <div className="hidden md:flex items-center space-x-10">
-             <a href="#automation" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">AI Intelligence</a>
+             <a href="#automation" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">How It Works</a>
              <a href="#features" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">Features</a>
-             <a href="#testimonials" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">Case Studies</a>
+             <a href="#testimonials" className="text-sm font-semibold text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">Results</a>
           </div>
           <button className="px-6 py-2.5 rounded-xl bg-white text-black font-bold text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg">
-            Get Access
+            Book a Demo
           </button>
         </div>
       </nav>
@@ -71,22 +71,22 @@ export default function App() {
             <FadeIn direction="right">
               <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-500/5 text-blue-400 border border-blue-500/20 mb-8 backdrop-blur-sm">
                 <Sparkles className="w-4 h-4" />
-                <span className="text-xs font-black uppercase tracking-widest">Next-Gen Dealer Intelligence</span>
+                <span className="text-xs font-black uppercase tracking-widest">AI Built for Dealerships</span>
               </div>
             </FadeIn>
             
             <FadeIn delay={0.1} direction="right">
               <h1 className="text-6xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.9] text-white">
-                STOP LOSING DEALS.<br />
+                EVERY MISSED LEAD IS A LOST SALE.<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-indigo-600 drop-shadow-sm">
-                  SELL ON AUTOPILOT.
+                  STOP MISSING THEM.
                 </span>
               </h1>
             </FadeIn>
             
             <FadeIn delay={0.2} direction="right">
               <p className="text-lg lg:text-xl text-slate-400 mb-10 max-w-xl leading-relaxed font-medium">
-                The world's first high-reasoning AI platform built exclusively for car dealerships. Hunt leads, score intent, and book closers while you sleep.
+                AutoLander responds to every lead in under 5 minutes, qualifies buyers, and books showroom appointments—24/7, no extra staff needed.
               </p>
             </FadeIn>
             
@@ -97,7 +97,7 @@ export default function App() {
                   whileTap={{ scale: 0.98 }}
                   className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3"
                 >
-                  <span>CLAIM YOUR MARKET</span>
+                  <span>SEE IT IN ACTION</span>
                   <ArrowRight className="w-6 h-6" />
                 </motion.button>
               </div>
@@ -146,9 +146,9 @@ export default function App() {
               </h2>
               <div className="grid gap-6">
                 {[
-                  { icon: Brain, title: "Sentiment Analysis", desc: "Our models reason through buyer skepticism and urgency with 20-year sales veteran nuance." },
-                  { icon: BadgeDollarSign, title: "Full Deal Capture", desc: "Automatically extracts trade-in, financing, and down payment details before you call." },
-                  { icon: Calendar, title: "Autonomous Booking", desc: "Syncs directly to Google Calendar and fires SMS reminders to ensure buyer show-ups." }
+                  { icon: Brain, title: "Reads Buyers Like a Veteran", desc: "Detects urgency, hesitation, and buying signals in every conversation—then responds with the right message at the right time." },
+                  { icon: BadgeDollarSign, title: "Qualifies Before You Call", desc: "Collects trade-in details, financing preferences, and budget from every lead—then pushes it straight into your CRM. Your team picks up the phone with the full picture, ready to close." },
+                  { icon: Calendar, title: "Books Appointments That Show", desc: "Schedules directly to your calendar and sends automated reminders—so buyers walk in, not ghost." }
                 ].map((item, i) => (
                   <div key={i} className="group p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-blue-500/30 transition-all duration-500 text-left">
                     <div className="flex gap-6 text-left">
@@ -174,7 +174,7 @@ export default function App() {
                       <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse" />
                       <span className="text-xs font-black tracking-widest uppercase text-slate-500 text-left">Live Agent Intelligence</span>
                     </div>
-                    <div className="px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-[10px] font-black tracking-widest border border-green-500/20">SENTIMENT: 98%</div>
+                    <div className="px-4 py-1.5 rounded-full bg-green-500/10 text-green-400 text-[10px] font-black tracking-widest border border-green-500/20">BUYER INTENT: HIGH</div>
                   </div>
                   
                   <div className="space-y-6 text-left">
@@ -220,9 +220,9 @@ export default function App() {
           <div className="text-center mb-24">
             <FadeIn>
                <h2 className="text-5xl lg:text-7xl font-black mb-8 tracking-tighter uppercase italic leading-none text-white">
-                 One Sync. <br/><span className="text-blue-500">Total Dominance.</span>
+                 Your Lot. Every Marketplace. <br/><span className="text-blue-500">Zero Effort.</span>
                </h2>
-               <p className="text-slate-400 max-w-2xl mx-auto font-medium text-lg italic">Connect your CarGurus, Cars.com, or AutoTrader feed once. We handle the rest.</p>
+               <p className="text-slate-400 max-w-2xl mx-auto font-medium text-lg italic">Plug in your DMS or inventory feed once. Every listing stays live, priced right, and up to date—automatically.</p>
             </FadeIn>
           </div>
 
@@ -230,9 +230,9 @@ export default function App() {
             <FadeIn direction="right">
               <div className="space-y-12 text-left">
                 {[
-                  { icon: Facebook, title: "Automated Marketplace Posting", desc: "AI-written listings that actually convert. Posted from real salesperson accounts—zero bot energy." },
-                  { icon: RefreshCw, title: "Real-Time Feed Sync", desc: "Sold units disappear. Price changes update instantly. Your online inventory is never stale." },
-                  { icon: TrendingUp, title: "Smart Price Protection", desc: "Track price history and protect margins with automated listing adjustments based on lot age." }
+                  { icon: Facebook, title: "Facebook Marketplace on Autopilot", desc: "Your entire inventory posted to Marketplace from real salesperson profiles—not a business page. Listings written by AI that sound human, sell hard, and run 24/7 without your team lifting a finger." },
+                  { icon: RefreshCw, title: "Inventory That Updates Itself", desc: "Sold a car? Gone from every listing instantly. Cut a price? Updated everywhere in minutes. No more phone calls about units you already moved." },
+                  { icon: TrendingUp, title: "Auto-Reprice Aging Stock Before It Eats Your Margin", desc: "The longer a car sits, the more it costs you. AutoLander tracks days on lot and automatically adjusts your listing prices to move metal faster—without giving away profit on fresh units." }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-8 group cursor-default text-left">
                     <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
@@ -280,13 +280,13 @@ export default function App() {
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <FadeIn>
             <h2 className="text-6xl lg:text-8xl font-black mb-12 tracking-tighter leading-[0.8] uppercase italic text-white">
-              STOP GAMBLING <br/>WITH YOUR <br/><span className="text-blue-500">INVENTORY.</span>
+              LEADS DON'T WAIT. <br/><span className="text-blue-500">NEITHER SHOULD YOU.</span>
             </h2>
             <p className="text-xl text-slate-400 mb-16 max-w-2xl mx-auto font-medium leading-relaxed italic">
-              The average rooftop loses <span className="text-white font-black strike-through opacity-50">,000</span> <span className="text-blue-500 font-black">,000+/month</span> to slow response times. Stop the bleed.
+              The average dealership loses <span className="text-white font-black">$120,000+/month</span> in missed leads and slow follow-up. AutoLander dealers close <span className="text-blue-500 font-black">3–5 extra units/month</span> from the same traffic—that's up to <span className="text-blue-500 font-black">$75,000+ in added gross</span> without hiring a single person.
             </p>
             <button className="px-12 py-6 rounded-[24px] bg-white text-black font-black text-2xl hover:bg-blue-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-3xl shadow-white/5 uppercase italic tracking-tighter">
-              Start Free Trial →
+              Start Your Free Trial →
             </button>
             <p className="mt-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">No Contracts • No Credit Card • Live in 10 Mins</p>
           </FadeIn>
