@@ -230,9 +230,9 @@ export default function App() {
             <FadeIn direction="right">
               <div className="space-y-12 text-left">
                 {[
-                  { icon: Facebook, title: "Facebook Marketplace on Autopilot", desc: "Your entire inventory posted to Marketplace from real salesperson profiles—not a business page. Listings written by AI that sound human, sell hard, and run 24/7 without your team lifting a finger." },
-                  { icon: RefreshCw, title: "Inventory That Updates Itself", desc: "Sold a car? Gone from every listing instantly. Cut a price? Updated everywhere in minutes. No more phone calls about units you already moved." },
-                  { icon: TrendingUp, title: "Auto-Reprice Aging Stock Before It Eats Your Margin", desc: "The longer a car sits, the more it costs you. AutoLander tracks days on lot and automatically adjusts your listing prices to move metal faster—without giving away profit on fresh units." }
+                  { icon: Facebook, title: "Facebook Marketplace on Autopilot", desc: "Your full inventory posted from real salesperson profiles—not a business page. AI-written listings that sound human and sell hard, running 24/7." },
+                  { icon: RefreshCw, title: "Always-Accurate Listings", desc: "Your inventory feed syncs to every marketplace automatically. Prices, photos, and availability stay current without anyone touching a thing." },
+                  { icon: TrendingUp, title: "Smart Pricing by Lot Age", desc: "Set your rules. AutoLander watches days on lot and adjusts listing prices automatically—so aging units move before they cost you." }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-8 group cursor-default text-left">
                     <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center shrink-0 border border-white/10 group-hover:bg-blue-600 group-hover:border-blue-500 transition-all duration-300">
@@ -283,7 +283,7 @@ export default function App() {
               LEADS DON'T WAIT. <br/><span className="text-blue-500">NEITHER SHOULD YOU.</span>
             </h2>
             <p className="text-xl text-slate-400 mb-16 max-w-2xl mx-auto font-medium leading-relaxed italic">
-              The average dealership loses <span className="text-white font-black">$120,000+/month</span> in missed leads and slow follow-up. AutoLander dealers close <span className="text-blue-500 font-black">3–5 extra units/month</span> from the same traffic—that's up to <span className="text-blue-500 font-black">$75,000+ in added gross</span> without hiring a single person.
+              AutoLander dealers close <span className="text-blue-500 font-black">3–5 extra units/month</span> from the same traffic. That's up to <span className="text-blue-500 font-black">$75,000+ in added gross</span>—without hiring anyone.
             </p>
             <button className="px-12 py-6 rounded-[24px] bg-white text-black font-black text-2xl hover:bg-blue-500 hover:text-white transition-all transform hover:scale-105 active:scale-95 shadow-3xl shadow-white/5 uppercase italic tracking-tighter">
               Start Your Free Trial →
