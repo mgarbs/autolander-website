@@ -2,7 +2,16 @@
   "permissions": {
     "allow": [
       "Bash(git add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git stash:*)",
+      "Bash(gh api:*)",
+      "Bash(gh run:*)",
+      "Bash(nslookup autolander.ai 2>/dev/null || echo \"DNS not propagated yet\")",
+      "Bash(nslookup autolander.ai)",
+      "Bash(nslookup www.autolander.ai)",
+      "Bash(curl -sI https://autolander.ai 2>/dev/null | head -20)",
+      "Bash(curl -sI http://autolander.ai 2>&1 | head -15)",
+      "Bash(curl -sI https://autolander.ai 2>&1 | head -15)"
     ]
   }
 }
