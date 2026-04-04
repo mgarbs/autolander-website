@@ -62,8 +62,8 @@ export default function App() {
       return navigator.userAgentData?.architecture === 'arm' ||
              (/Mac/i.test(ua) && /ARM/i.test(ua)) ||
              (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-        ? { url: `${baseUrl}/AutoLander-Mac-ARM.dmg`, label: 'Download for Mac (Apple Silicon)' }
-        : { url: `${baseUrl}/AutoLander-Mac-Intel.dmg`, label: 'Download for Mac (Intel)' };
+        ? { url: `${baseUrl}/AutoLander-Mac-arm64.dmg`, label: 'Download for Mac (Apple Silicon)' }
+        : { url: `${baseUrl}/AutoLander-Mac-x64.dmg`, label: 'Download for Mac (Intel)' };
     }
     if (/Linux/i.test(ua)) return { url: `${baseUrl}/AutoLander-Linux.AppImage`, label: 'Download for Linux' };
     return { url: `${baseUrl}/AutoLander-Setup.exe`, label: 'Download for Windows' };
