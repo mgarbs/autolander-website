@@ -250,7 +250,8 @@ export default function App() {
           </div>
 
           <FadeIn direction="up" delay={0.2}>
-            <div className="overflow-x-auto">
+            {/* Desktop table */}
+            <div className="hidden md:block">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b border-white/10">
@@ -284,6 +285,28 @@ export default function App() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Mobile cards */}
+            <div className="md:hidden space-y-4">
+              {[
+                { label: 'Listing Quality', manual: 'Amateur/Messy', auto: 'Professional Studio' },
+                { label: 'Lead Generation', manual: 'Low/Inconsistent', auto: 'High-Convert AI' },
+                { label: 'Inventory Sync', manual: 'Manual Data Entry', auto: 'Automatic (Real-Time)' },
+                { label: 'Form Filling', manual: 'Click-by-Click', auto: '100% Automated' },
+                { label: 'Description', manual: 'Copy-Paste (Boring)', auto: 'AI Optimized (High-Convert)' },
+                { label: 'Monthly Results', manual: 'Varies', auto: 'Average +12 Units' }
+              ].map((row, i) => (
+                <div key={i} className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+                  <p className="text-white font-bold italic uppercase tracking-tight text-sm mb-3">{row.label}</p>
+                  <div className="flex items-center gap-2 text-slate-500 text-sm mb-2">
+                    <X className="w-4 h-4 text-red-500/50 shrink-0" /> {row.manual}
+                  </div>
+                  <div className="flex items-center gap-2 text-white font-bold italic text-sm bg-blue-500/10 rounded-xl px-3 py-2">
+                    <Check className="w-4 h-4 text-blue-500 shrink-0" /> {row.auto}
+                  </div>
+                </div>
+              ))}
             </div>
           </FadeIn>
         </div>
