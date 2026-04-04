@@ -415,33 +415,32 @@ export default function App() {
             <FadeIn direction="left">
               <div className="relative group">
                 <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
-                <div className="relative rounded-[40px] overflow-hidden border border-white/10 shadow-3xl aspect-[4/3] bg-[#050505] flex flex-col sm:flex-row">
+                <div className="relative rounded-[40px] overflow-hidden border border-white/10 shadow-3xl bg-[#050505]">
                    {/* Before/After Side-by-Side */}
-                   <div className="relative flex-1 group/item overflow-hidden">
-                      <img 
-                        src="https://static.cargurus.com/images/forsale/2026/03/25/05/54/2023_chevrolet_colorado-pic-6793934965431865909-1024x768.jpeg" 
-                        alt="Original Lot Photo" 
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute top-4 left-4 px-3 py-1 bg-black/80 backdrop-blur-md rounded-lg text-[10px] font-black text-white uppercase tracking-widest border border-white/10">
-                        Before
-                      </div>
+                   <div className="grid grid-cols-2">
+                     <div className="relative overflow-hidden">
+                        <img
+                          src="/studio-before.jpg"
+                          alt="Original Dealer Lot Photo"
+                          className="w-full h-full object-cover aspect-[4/3]"
+                        />
+                        <div className="absolute top-4 left-4 px-4 py-1.5 bg-red-600/90 backdrop-blur-md rounded-lg text-[10px] font-black text-white uppercase tracking-widest">
+                          Before
+                        </div>
+                     </div>
+                     <div className="relative overflow-hidden">
+                        <img
+                          src="/studio-after.png"
+                          alt="AI Studio — Background Replaced"
+                          className="w-full h-full object-cover aspect-[4/3]"
+                        />
+                        <div className="absolute top-4 right-4 px-4 py-1.5 bg-blue-600 rounded-lg text-[10px] font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/20">
+                          After
+                        </div>
+                     </div>
                    </div>
-                   <div className="relative flex-1 group/item overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white via-slate-100 to-slate-200" />
-                      <img 
-                        src="https://static.cargurus.com/images/forsale/2026/03/25/05/54/2023_chevrolet_colorado-pic-6793934965431865909-1024x768.jpeg" 
-                        alt="AI Studio Finish" 
-                        className="w-full h-full object-cover relative z-10 mix-blend-multiply opacity-90"
-                      />
-                      <div className="absolute top-4 right-4 px-3 py-1 bg-blue-600 rounded-lg text-[10px] font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/20 z-20">
-                        After
-                      </div>
-                      <div className="absolute inset-0 bg-blue-500/5 z-0" />
-                   </div>
-                   
-                   <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 text-[10px] font-black text-white uppercase tracking-widest z-30">
-                      AI Background Removal Demonstration
+                   <div className="absolute bottom-0 left-0 right-0 py-4 text-center bg-gradient-to-t from-black/80 to-transparent">
+                     <p className="text-[10px] font-black text-white/80 uppercase tracking-widest">Real AI Background Removal — Mountain View Preset</p>
                    </div>
                 </div>
               </div>
