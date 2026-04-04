@@ -250,64 +250,39 @@ export default function App() {
           </div>
 
           <FadeIn direction="up" delay={0.2}>
-            {/* Desktop table */}
-            <div className="hidden md:block">
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b border-white/10">
-                    <th className="py-6 px-4 text-left text-slate-500 text-xs font-black uppercase tracking-widest">Feature</th>
-                    <th className="py-6 px-4 text-center text-slate-500 text-xs font-black uppercase tracking-widest">Manual Posting</th>
-                    <th className="py-6 px-4 text-center text-blue-500 text-xs font-black uppercase tracking-widest bg-blue-500/5 rounded-t-3xl">AutoLander AI</th>
+                    <th className="py-4 md:py-6 px-2 md:px-4 text-left text-slate-500 text-[10px] md:text-xs font-black uppercase tracking-widest"></th>
+                    <th className="py-4 md:py-6 px-2 md:px-4 text-center text-slate-500 text-[10px] md:text-xs font-black uppercase tracking-widest">Manual</th>
+                    <th className="py-4 md:py-6 px-2 md:px-4 text-center text-blue-500 text-[10px] md:text-xs font-black uppercase tracking-widest bg-blue-500/5 rounded-t-3xl">AutoLander</th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
-                    { label: 'Listing Quality', manual: 'Amateur/Messy', auto: 'Professional Studio' },
-                    { label: 'Lead Generation', manual: 'Low/Inconsistent', auto: 'High-Convert AI' },
-                    { label: 'Inventory Sync', manual: 'Manual Data Entry', auto: 'Automatic (Real-Time)' },
-                    { label: 'Form Filling', manual: 'Click-by-Click', auto: '100% Automated' },
-                    { label: 'Description', manual: 'Copy-Paste (Boring)', auto: 'AI Optimized (High-Convert)' },
-                    { label: 'Monthly Results', manual: 'Varies', auto: 'Average +12 Units' }
+                    { label: 'Listing Quality', manual: 'Amateur', auto: 'Pro Studio' },
+                    { label: 'Lead Gen', manual: 'Inconsistent', auto: 'High-Convert AI' },
+                    { label: 'Inventory Sync', manual: 'Manual Entry', auto: 'Automatic' },
+                    { label: 'Form Filling', manual: 'Click-by-Click', auto: '100% Auto' },
+                    { label: 'Descriptions', manual: 'Copy-Paste', auto: 'AI Optimized' },
+                    { label: 'Monthly Results', manual: 'Varies', auto: '+12 Units Avg' }
                   ].map((row, i) => (
                     <tr key={i} className="border-b border-white/5 group">
-                      <td className="py-6 px-4 text-white font-bold italic uppercase tracking-tight">{row.label}</td>
-                      <td className="py-6 px-4 text-center text-slate-500 font-medium">
-                        <div className="flex items-center justify-center gap-2">
-                          <X className="w-4 h-4 text-red-500/50" /> {row.manual}
+                      <td className="py-4 md:py-6 px-2 md:px-4 text-white font-bold italic uppercase tracking-tight text-xs md:text-base">{row.label}</td>
+                      <td className="py-4 md:py-6 px-2 md:px-4 text-center text-slate-500 font-medium text-xs md:text-base">
+                        <div className="flex items-center justify-center gap-1 md:gap-2">
+                          <X className="w-3 h-3 md:w-4 md:h-4 text-red-500/50 shrink-0" /> {row.manual}
                         </div>
                       </td>
-                      <td className="py-6 px-4 text-center text-white font-black italic bg-blue-500/5 group-last:rounded-b-3xl">
-                        <div className="flex items-center justify-center gap-2">
-                          <Check className="w-5 h-5 text-blue-500" /> {row.auto}
+                      <td className="py-4 md:py-6 px-2 md:px-4 text-center text-white font-black italic bg-blue-500/5 group-last:rounded-b-3xl text-xs md:text-base">
+                        <div className="flex items-center justify-center gap-1 md:gap-2">
+                          <Check className="w-3 h-3 md:w-5 md:h-5 text-blue-500 shrink-0" /> {row.auto}
                         </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-
-            {/* Mobile cards */}
-            <div className="md:hidden space-y-4">
-              {[
-                { label: 'Listing Quality', manual: 'Amateur/Messy', auto: 'Professional Studio' },
-                { label: 'Lead Generation', manual: 'Low/Inconsistent', auto: 'High-Convert AI' },
-                { label: 'Inventory Sync', manual: 'Manual Data Entry', auto: 'Automatic (Real-Time)' },
-                { label: 'Form Filling', manual: 'Click-by-Click', auto: '100% Automated' },
-                { label: 'Description', manual: 'Copy-Paste (Boring)', auto: 'AI Optimized (High-Convert)' },
-                { label: 'Monthly Results', manual: 'Varies', auto: 'Average +12 Units' }
-              ].map((row, i) => (
-                <div key={i} className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
-                  <p className="text-white font-bold italic uppercase tracking-tight text-sm mb-3">{row.label}</p>
-                  <div className="flex items-center gap-2 text-slate-500 text-sm mb-2">
-                    <X className="w-4 h-4 text-red-500/50 shrink-0" /> {row.manual}
-                  </div>
-                  <div className="flex items-center gap-2 text-white font-bold italic text-sm bg-blue-500/10 rounded-xl px-3 py-2">
-                    <Check className="w-4 h-4 text-blue-500 shrink-0" /> {row.auto}
-                  </div>
-                </div>
-              ))}
-            </div>
           </FadeIn>
         </div>
       </section>
