@@ -137,7 +137,7 @@ export default function App() {
             
             <FadeIn delay={0.2} direction="right">
               <p className="text-lg lg:text-xl text-slate-400 mb-10 max-w-xl leading-relaxed font-medium italic">
-                Post your entire inventory to Facebook Marketplace in under 30 minutes. AI does what takes your team 4 hours in 30 minutes.
+                Dominate Facebook Marketplace with professional listings that convert. Our AI turns your inventory into a high-performance sales machine that drives more leads and closes more deals.
               </p>
             </FadeIn>
             
@@ -175,15 +175,15 @@ export default function App() {
                     <div className="w-3 h-3 rounded-full bg-green-500" />
                   </div>
                   <div className="px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black tracking-widest uppercase">
-                    Live Auto Queue
+                    Live Revenue Queue
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   {[
-                    { name: '2022 BMW M4 Competition', status: 'Publishing...', progress: 90, color: 'bg-green-500' },
-                    { name: '2021 Ford F-150 Lariat', status: 'AI Background Removal...', progress: 45, color: 'bg-blue-500' },
-                    { name: '2023 Tesla Model Y', status: 'AI Generating Description...', progress: 15, color: 'bg-indigo-500' },
+                    { name: '2022 BMW M4 Competition', status: 'Generating Lead Traffic...', progress: 90, color: 'bg-green-500' },
+                    { name: '2021 Ford F-150 Lariat', status: 'Optimizing for Search...', progress: 45, color: 'bg-blue-500' },
+                    { name: '2023 Tesla Model Y', status: 'AI Conversion Tuning...', progress: 15, color: 'bg-indigo-500' },
                   ].map((item, i) => (
                     <div key={i} className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 space-y-3">
                       <div className="flex justify-between items-center">
@@ -205,11 +205,11 @@ export default function App() {
                 <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                      <Activity className="w-5 h-5 text-blue-500" />
+                      <TrendingUp className="w-5 h-5 text-blue-500" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Efficiency Rate</p>
-                      <p className="text-lg font-black text-white italic">90s / VEHICLE</p>
+                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Average Growth</p>
+                      <p className="text-lg font-black text-white italic">12 EXTRA SALES/MO</p>
                     </div>
                   </div>
                   <div className="w-12 h-12 rounded-full border-4 border-blue-500/20 border-t-blue-500 animate-spin" />
@@ -225,10 +225,10 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {[
-              { label: 'Sync Speed', value: '< 10 SEC' },
-              { label: 'Time Saved', value: '4 HRS / DAY' },
-              { label: 'Post Speed', value: '90s / CAR' },
-              { label: 'Dealer ROI', value: '15+ UNITS' }
+              { label: 'Sales Growth', value: '+12 UNITS' },
+              { label: 'Lead Volume', value: '3X MORE' },
+              { label: 'Listing Quality', value: 'PRO STUDIO' },
+              { label: 'Market Reach', value: 'UNLIMITED' }
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-2">{stat.label}</p>
@@ -247,7 +247,7 @@ export default function App() {
               <h2 className="text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
                 MANUAL VS. <span className="text-blue-500">AUTOLANDER</span>
               </h2>
-              <p className="text-slate-400 font-medium text-lg italic">Stop burning time on grunt work. Let AI do the heavy lifting.</p>
+              <p className="text-slate-400 font-medium text-lg italic">Stop burning time on grunt work. Focus on closing deals while AI handles the rest.</p>
             </FadeIn>
           </div>
 
@@ -263,12 +263,12 @@ export default function App() {
                 </thead>
                 <tbody>
                   {[
-                    { label: 'Time Per Vehicle', manual: '15-20 Minutes', auto: '90 Seconds' },
-                    { label: 'Inventory Sync', manual: 'Manual Data Entry', auto: 'Instant (10 Seconds)' },
-                    { label: 'Photo Quality', manual: 'As-Is (Lot Photos)', auto: 'AI Studio (Pro Quality)' },
+                    { label: 'Listing Quality', manual: 'Amateur/Messy', auto: 'Professional Studio' },
+                    { label: 'Lead Generation', manual: 'Low/Inconsistent', auto: 'High-Convert AI' },
+                    { label: 'Inventory Sync', manual: 'Manual Data Entry', auto: 'Automatic (Real-Time)' },
                     { label: 'Form Filling', manual: 'Click-by-Click', auto: '100% Automated' },
                     { label: 'Description', manual: 'Copy-Paste (Boring)', auto: 'AI Optimized (High-Convert)' },
-                    { label: 'Workload', manual: '4+ Hours Daily', auto: '30 Minutes Daily' }
+                    { label: 'Monthly Results', manual: 'Varies', auto: 'Average +12 Units' }
                   ].map((row, i) => (
                     <tr key={i} className="border-b border-white/5 group">
                       <td className="py-6 px-4 text-white font-bold italic uppercase tracking-tight">{row.label}</td>
@@ -309,22 +309,22 @@ export default function App() {
             <FadeIn delay={0.1}>
               <Step 
                 number="01" 
-                title="Paste Feed URL" 
-                desc="Paste your CarGurus or Cars.com feed URL. Your entire inventory (100-200+ units) syncs in under 10 seconds."
+                title="Connect Feed" 
+                desc="Paste your CarGurus or Cars.com feed URL. Your entire inventory (100-200+ units) syncs automatically with all specs and features."
               />
             </FadeIn>
             <FadeIn delay={0.2}>
               <Step 
                 number="02" 
-                title="Choose Background" 
+                title="Enhance Visuals" 
                 desc="Select from our AI Studio backdrops—Showroom, Outdoor, or Luxury—to make your lot photos look like a professional shoot."
               />
             </FadeIn>
             <FadeIn delay={0.3}>
               <Step 
                 number="03" 
-                title="Start Auto Queue" 
-                desc="Hit 'Start Queue' and watch as AutoLander AI removes backgrounds, fills FB forms, and publishes listings every 90 seconds."
+                title="Start Auto Sales" 
+                desc="Hit 'Start' and watch as AutoLander AI removes backgrounds and publishes listings designed to rank higher and sell faster."
               />
             </FadeIn>
           </div>
@@ -338,14 +338,14 @@ export default function App() {
             <FadeIn delay={0.1} direction="up">
               <FeatureCard 
                 icon={RefreshCw}
-                title="Instant Sync"
-                desc="Sync hundreds of vehicles from CarGurus or Cars.com in seconds. VIN, price, trim, and specs are always 100% accurate."
+                title="Automatic Sync"
+                desc="Sync hundreds of vehicles from CarGurus or Cars.com automatically. VIN, price, trim, and specs are always 100% accurate."
               />
             </FadeIn>
             <FadeIn delay={0.2} direction="up">
               <FeatureCard 
                 icon={Wand2}
-                title="One-Click AI Posting"
+                title="Smart AI Posting"
                 desc="Our AI autonomously fetches photos, generates descriptions, and fills out complex Facebook Marketplace forms."
               />
             </FadeIn>
@@ -359,8 +359,8 @@ export default function App() {
             <FadeIn delay={0.4} direction="up">
               <FeatureCard 
                 icon={Activity}
-                title="Full Auto Queue"
-                desc="Set it and forget it. AutoLander posts your inventory one-by-one with intelligent delays to protect your account."
+                title="Continuous Queue"
+                desc="Set it and forget it. AutoLander posts your inventory one-by-one with intelligent logic to maximize visibility."
               />
             </FadeIn>
             <FadeIn delay={0.5} direction="up">
@@ -415,38 +415,33 @@ export default function App() {
             <FadeIn direction="left">
               <div className="relative group">
                 <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
-                <div className="relative rounded-[40px] overflow-hidden border border-white/10 shadow-3xl aspect-[4/3] bg-black">
-                   {/* Mockup of Background Removal */}
-                   <div className="absolute inset-0 flex">
-                      <div className="w-1/2 h-full bg-slate-900 flex flex-col items-center justify-center p-8 border-r border-white/10">
-                         <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Original Lot Photo</span>
-                         <div className="w-full h-32 bg-slate-800 rounded-xl relative overflow-hidden">
-                            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542362567-b051c63b9a56?auto=format&fit=crop&q=80&w=400')] bg-cover opacity-50" />
-                            <div className="absolute inset-0 flex items-center justify-center text-slate-600">
-                               <ImageIcon className="w-8 h-8" />
-                            </div>
-                         </div>
+                <div className="relative rounded-[40px] overflow-hidden border border-white/10 shadow-3xl aspect-[4/3] bg-[#050505] flex flex-col sm:flex-row">
+                   {/* Before/After Side-by-Side */}
+                   <div className="relative flex-1 group/item overflow-hidden">
+                      <img 
+                        src="https://static.cargurus.com/images/forsale/2026/03/25/05/54/2023_chevrolet_colorado-pic-6793934965431865909-1024x768.jpeg" 
+                        alt="Original Lot Photo" 
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-4 left-4 px-3 py-1 bg-black/80 backdrop-blur-md rounded-lg text-[10px] font-black text-white uppercase tracking-widest border border-white/10">
+                        Before
                       </div>
-                      <div className="w-1/2 h-full bg-blue-600/5 flex flex-col items-center justify-center p-8">
-                         <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-4">AI Studio Finish</span>
-                         <div className="w-full h-32 bg-white/10 rounded-xl relative overflow-hidden border border-blue-500/30">
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-indigo-500/20" />
-                            <div className="absolute inset-0 flex items-center justify-center text-blue-500">
-                               <Sparkles className="w-8 h-8" />
-                            </div>
-                         </div>
+                   </div>
+                   <div className="relative flex-1 group/item overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-white via-slate-100 to-slate-200" />
+                      <img 
+                        src="https://static.cargurus.com/images/forsale/2026/03/25/05/54/2023_chevrolet_colorado-pic-6793934965431865909-1024x768.jpeg" 
+                        alt="AI Studio Finish" 
+                        className="w-full h-full object-cover relative z-10 mix-blend-multiply opacity-90"
+                      />
+                      <div className="absolute top-4 right-4 px-3 py-1 bg-blue-600 rounded-lg text-[10px] font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/20 z-20">
+                        After
                       </div>
+                      <div className="absolute inset-0 bg-blue-500/5 z-0" />
                    </div>
                    
-                   {/* Slider Handle */}
-                   <div className="absolute inset-y-0 left-1/2 w-1 bg-blue-500">
-                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shadow-xl">
-                         <Activity className="w-5 h-5 text-white rotate-90" />
-                      </div>
-                   </div>
-
-                   <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 text-[10px] font-black text-white uppercase tracking-widest">
-                      Real-time Background Replacement
+                   <div className="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 text-[10px] font-black text-white uppercase tracking-widest z-30">
+                      AI Background Removal Demonstration
                    </div>
                 </div>
               </div>
@@ -541,12 +536,12 @@ export default function App() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                quote: "AutoLander is a game changer. We post 50 cars in under an hour. Our lead volume has tripled since we started using the AI Studio backgrounds.",
+                quote: "AutoLander is a game changer. Our lead volume has tripled since we started using the AI Studio backgrounds. The professional look really matters.",
                 author: "Mike Thompson",
                 role: "General Manager, City Ford"
               },
               {
-                quote: "I used to spend my entire morning manual posting to Facebook. Now I just paste the feed URL and hit go. It's the best $100 I spend every month.",
+                quote: "I used to spend my entire morning manual posting to Facebook. Now it's all automated. It's the best investment we make for our digital presence.",
                 author: "Sarah Jenkins",
                 role: "Internet Director, Elite Motors"
               },
@@ -587,7 +582,7 @@ export default function App() {
           <div className="space-y-6">
             {[
               { q: "Which inventory feeds do you work with?", a: "We work seamlessly with CarGurus and Cars.com feeds. Simply paste your public feed URL, and our system will extract all vehicle data, photos, and specs automatically." },
-              { q: "How fast is the posting process?", a: "AutoLander syncs your entire inventory in under 10 seconds. Once you start the queue, it takes approximately 90 seconds per vehicle to remove the background, generate a description, fill the FB form, and publish." },
+              { q: "How does this help me sell more cars?", a: "AutoLander creates high-quality, professional listings that stand out in the Marketplace. By using AI to optimize photos and descriptions, dealers typically see a 3x increase in lead volume and sell an average of 12 extra units per month." },
               { q: "Do I need any technical skills?", a: "Zero. If you can copy and paste a URL and click a button, you can use AutoLander. It's designed for busy sales teams who want to sell cars, not manage software." },
               { q: "Is there a limit on how many cars I can post?", a: "Limits are based on your plan (5, 10, or 20 per day). This ensures your Facebook account stays safe and compliant with Marketplace algorithms." }
             ].map((faq, i) => (
@@ -631,7 +626,7 @@ export default function App() {
                 Book a Live Demo
               </button>
             </div>
-            <p className="mt-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">No Credit Card Required • Setup in 2 Minutes</p>
+            <p className="mt-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">No Credit Card Required • Instant Setup</p>
           </FadeIn>
         </div>
       </section>
