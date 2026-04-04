@@ -53,7 +53,7 @@ export default function App() {
   const [isAnnual, setIsAnnual] = useState(true);
 
   const demoUrl = "https://calendar.app.google/RU6wbUCbgEGjvxEF8";
-  const downloadUrl = "https://github.com/mgarbs/autolander-releases/releases/latest";
+  const downloadUrl = "https://github.com/mgarbs/autolander-releases/releases/latest/download/AutoLander-Setup.exe";
 
   const pricing = [
     {
@@ -637,7 +637,7 @@ export default function App() {
               <a href="#" className="hover:text-blue-500 transition-colors">Privacy</a>
               <a href="#" className="hover:text-blue-500 transition-colors">Terms</a>
               <a href="#" className="hover:text-blue-500 transition-colors">Contact</a>
-              <a href="https://github.com/mgarbs/autolander-releases" className="hover:text-blue-500 transition-colors">GitHub</a>
+              <a href="mailto:support@autolander.app" className="hover:text-blue-500 transition-colors">Support</a>
             </div>
 
             <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">© 2026 AutoLander. All rights reserved.</p>
