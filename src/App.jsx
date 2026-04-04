@@ -131,16 +131,15 @@ export default function App() {
 
       {/* Hero Section */}
       <section className="relative pt-32 lg:pt-52 pb-20 lg:pb-40 z-10 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-          <div className="text-left">
-            <FadeIn direction="right">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+            <FadeIn>
               <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-8 backdrop-blur-sm">
                 <Sparkles className="w-4 h-4" />
                 <span className="text-xs font-black uppercase tracking-widest">AI-Powered Inventory Dominance</span>
               </div>
             </FadeIn>
-            
-            <FadeIn delay={0.1} direction="right">
+
+            <FadeIn delay={0.1}>
               <h1 className="text-5xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.85] text-white">
                 SELL 10-15 MORE<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-indigo-600">
@@ -148,25 +147,25 @@ export default function App() {
                 </span>
               </h1>
             </FadeIn>
-            
-            <FadeIn delay={0.2} direction="right">
-              <p className="text-lg lg:text-xl text-slate-400 mb-10 max-w-xl leading-relaxed font-medium italic">
+
+            <FadeIn delay={0.2}>
+              <p className="text-lg lg:text-xl text-slate-400 mb-10 max-w-xl mx-auto leading-relaxed font-medium italic">
                 Dominate Facebook Marketplace with professional listings that convert. Our AI turns your inventory into a high-performance sales machine that drives more leads and closes more deals.
               </p>
             </FadeIn>
-            
-            <FadeIn delay={0.3} direction="right">
-              <div className="flex flex-col sm:flex-row items-center gap-6">
+
+            <FadeIn delay={0.3}>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 <motion.button
                   whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => window.open(download.url, "_blank")}
+                  onClick={() => window.open(downloadUrl, "_blank")}
                   className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                 >
                   <span>Start Free Trial</span>
                   <ArrowRight className="w-6 h-6" />
                 </motion.button>
-                <button 
+                <button
                   onClick={() => window.open(demoUrl, "_blank")}
                   className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
                 >
@@ -174,82 +173,6 @@ export default function App() {
                 </button>
               </div>
             </FadeIn>
-          </div>
-
-          <FadeIn delay={0.4} direction="left">
-            <div className="relative group mt-12 lg:mt-0">
-              <div className="absolute inset-0 bg-blue-600/30 blur-[120px] rounded-full opacity-40 group-hover:opacity-60 transition-opacity duration-1000" />
-              
-              {/* Fake Posting Queue UI */}
-              <div className="relative rounded-[40px] border border-white/10 shadow-3xl bg-black/80 backdrop-blur-2xl p-6 sm:p-8 overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-700">
-                <div className="flex items-center justify-between mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full bg-red-500" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                    <div className="w-3 h-3 rounded-full bg-green-500" />
-                  </div>
-                  <div className="px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-black tracking-widest uppercase">
-                    Live Revenue Queue
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  {[
-                    { name: '2022 BMW M4 Competition', status: 'Generating Lead Traffic...', progress: 90, color: 'bg-green-500' },
-                    { name: '2021 Ford F-150 Lariat', status: 'Optimizing for Search...', progress: 45, color: 'bg-blue-500' },
-                    { name: '2023 Tesla Model Y', status: 'AI Conversion Tuning...', progress: 15, color: 'bg-indigo-500' },
-                  ].map((item, i) => (
-                    <div key={i} className="p-4 rounded-2xl bg-white/[0.03] border border-white/5 space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="font-bold text-sm text-white italic">{item.name}</span>
-                        <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest">{item.status}</span>
-                      </div>
-                      <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                        <motion.div 
-                          initial={{ width: 0 }}
-                          animate={{ width: `${item.progress}%` }}
-                          transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
-                          className={`h-full ${item.color}`}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                      <TrendingUp className="w-5 h-5 text-blue-500" />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Average Growth</p>
-                      <p className="text-lg font-black text-white italic">12 EXTRA SALES/MO</p>
-                    </div>
-                  </div>
-                  <div className="w-12 h-12 rounded-full border-4 border-blue-500/20 border-t-blue-500 animate-spin" />
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Social Proof Bar */}
-      <section className="py-12 border-y border-white/5 bg-white/[0.01]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            {[
-              { label: 'Sales Growth', value: '+12 UNITS' },
-              { label: 'Lead Volume', value: '3X MORE' },
-              { label: 'Listing Quality', value: 'PRO STUDIO' },
-              { label: 'Market Reach', value: 'UNLIMITED' }
-            ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-2">{stat.label}</p>
-                <p className="text-2xl md:text-4xl font-black text-white italic tracking-tighter">{stat.value}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -355,17 +278,17 @@ export default function App() {
               />
             </FadeIn>
             <FadeIn delay={0.2} direction="up">
-              <FeatureCard 
+              <FeatureCard
                 icon={Wand2}
-                title="Smart AI Posting"
-                desc="Our AI autonomously fetches photos, generates descriptions, and fills out complex Facebook Marketplace forms."
+                title="AI Posting & Photo Studio"
+                desc="Our AI fetches photos, removes messy backgrounds, replaces them with pro studio backdrops, generates descriptions, and posts to Marketplace — all automatically."
               />
             </FadeIn>
             <FadeIn delay={0.3} direction="up">
-              <FeatureCard 
-                icon={Layers}
-                title="AI Photo Studio"
-                desc="Instantly remove messy lot backgrounds and replace them with high-end showroom or scenic backdrops."
+              <FeatureCard
+                icon={RefreshCw}
+                title="Auto Updates"
+                desc="Listings stay accurate 24/7. Price drops, sold vehicles, and inventory changes sync automatically — no manual edits, no stale posts."
               />
             </FadeIn>
             <FadeIn delay={0.4} direction="up">
