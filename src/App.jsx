@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain, BadgeDollarSign, 
-  MessageSquareText, CarFront, ShieldCheck, Sparkles, TrendingUp,
+  MessageSquareText, ShieldCheck, Sparkles, TrendingUp,
   MapPin, Gauge, Fuel, Zap, Clock, Trophy, Users, BarChart,
   Layers, Wand2, Image as ImageIcon, Layout, Zap as Fast,
   ArrowDownCircle, HelpCircle, Check, X
@@ -91,13 +91,8 @@ export default function App() {
       {/* Navbar */}
       <nav className="fixed w-full z-50 top-0 px-4 sm:px-6 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
-          <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
-              <CarFront className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-white uppercase italic">
-              Auto<span className="text-blue-500">Lander</span>
-            </span>
+          <div className="flex items-center group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <img src="/autolander-logo.png" alt="AutoLander" className="h-10 w-auto group-hover:scale-105 transition-transform duration-300" />
           </div>
           <div className="hidden md:flex items-center space-x-8">
              <a href="#how-it-works" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">How It Works</a>
@@ -630,13 +625,8 @@ export default function App() {
       <footer className="py-20 border-t border-white/5 bg-black">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-            <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                <CarFront className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-white uppercase italic">
-                Auto<span className="text-blue-500">Lander</span>
-              </span>
+            <div className="flex items-center group cursor-pointer">
+              <img src="/autolander-logo.png" alt="AutoLander" className="h-10 w-auto" />
             </div>
             
             <div className="flex gap-8 text-[10px] font-black text-slate-500 uppercase tracking-widest">
