@@ -59,14 +59,14 @@ export default function App() {
     {
       name: "Starter",
       monthly: 75,
-      annual: 60,
+      annual: 59,
       posts: "5 Posts / Day",
       features: ["Instant Inventory Sync", "AI Photo Studio", "Auto Queue", "Standard AI Descriptions", "Feed Sync (CarGurus/Cars.com)"]
     },
     {
       name: "Growth",
       monthly: 100,
-      annual: 80,
+      annual: 79,
       posts: "10 Posts / Day",
       popular: true,
       features: ["Everything in Starter", "Premium AI Backgrounds", "Custom Studio Backgrounds", "Advanced SEO Descriptions", "Priority Syncing"]
@@ -74,7 +74,7 @@ export default function App() {
     {
       name: "Pro",
       monthly: 125,
-      annual: 100,
+      annual: 99,
       posts: "20 Posts / Day",
       features: ["Everything in Growth", "Unlimited Marketplace Support", "Multi-Agent Queueing", "Concierge Setup", "Dedicated Support Agent"]
     }
