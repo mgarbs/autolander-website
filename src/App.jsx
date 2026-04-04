@@ -90,12 +90,12 @@ export default function App() {
 
       {/* Navbar */}
       <nav className="fixed w-full z-50 top-0 px-4 sm:px-6 py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
-          <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
-              <CarFront className="w-6 h-6 text-white" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
+          <div className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+              <CarFront className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <img src="/autolander-logo.png" alt="AutoLander" className="h-14 w-auto group-hover:scale-105 transition-transform duration-300" />
+            <img src="/autolander-logo.png" alt="AutoLander" className="h-8 sm:h-14 w-auto group-hover:scale-105 transition-transform duration-300" />
           </div>
           <div className="hidden md:flex items-center space-x-8">
              <a href="#how-it-works" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">How It Works</a>
@@ -103,10 +103,10 @@ export default function App() {
              <a href="#studio" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">AI Studio</a>
              <a href="#pricing" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Pricing</a>
           </div>
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center shrink-0">
             <button
               onClick={() => window.open(demoUrl, "_blank")}
-              className="px-6 py-2.5 rounded-xl bg-white text-black font-bold text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
+              className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
               Book a Demo
             </button>
           </div>
