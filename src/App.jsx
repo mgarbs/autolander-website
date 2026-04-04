@@ -159,7 +159,7 @@ export default function App() {
                 <motion.button
                   whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => window.open(downloadUrl, "_blank")}
+                  onClick={() => window.open(download.url, "_blank")}
                   className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                 >
                   <span>Start Free Trial</span>
