@@ -415,32 +415,28 @@ export default function App() {
             <FadeIn direction="left">
               <div className="relative group">
                 <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
-                <div className="relative rounded-[40px] overflow-hidden border border-white/10 shadow-3xl bg-[#050505]">
-                   {/* Before/After Side-by-Side */}
-                   <div className="grid grid-cols-2">
-                     <div className="relative overflow-hidden">
-                        <img
-                          src="/studio-before.jpg"
-                          alt="Original Dealer Lot Photo"
-                          className="w-full h-full object-cover aspect-[4/3]"
-                        />
-                        <div className="absolute top-4 left-4 px-4 py-1.5 bg-red-600/90 backdrop-blur-md rounded-lg text-[10px] font-black text-white uppercase tracking-widest">
-                          Before
-                        </div>
-                     </div>
-                     <div className="relative overflow-hidden">
-                        <img
-                          src="/studio-after.png"
-                          alt="AI Studio — Background Replaced"
-                          className="w-full h-full object-cover aspect-[4/3]"
-                        />
-                        <div className="absolute top-4 right-4 px-4 py-1.5 bg-blue-600 rounded-lg text-[10px] font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/20">
-                          After
-                        </div>
-                     </div>
+                <div className="relative space-y-6">
+                   {/* Before */}
+                   <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+                      <img
+                        src="/studio-before.jpg"
+                        alt="Original Dealer Lot Photo"
+                        className="w-full object-cover"
+                      />
+                      <div className="absolute top-5 left-5 px-5 py-2 bg-red-600/90 backdrop-blur-md rounded-xl text-xs font-black text-white uppercase tracking-widest">
+                        Before — Original Lot Photo
+                      </div>
                    </div>
-                   <div className="absolute bottom-0 left-0 right-0 py-4 text-center bg-gradient-to-t from-black/80 to-transparent">
-                     <p className="text-[10px] font-black text-white/80 uppercase tracking-widest">Real AI Background Removal — Mountain View Preset</p>
+                   {/* After */}
+                   <div className="relative rounded-3xl overflow-hidden border border-blue-500/30 shadow-2xl shadow-blue-500/10">
+                      <img
+                        src="/studio-after.jpg"
+                        alt="AI Studio — Outdoor Clean Background"
+                        className="w-full object-cover"
+                      />
+                      <div className="absolute top-5 right-5 px-5 py-2 bg-blue-600 rounded-xl text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/30">
+                        After — AI Studio
+                      </div>
                    </div>
                 </div>
               </div>
