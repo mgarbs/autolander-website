@@ -53,7 +53,23 @@ export default function App() {
   const [isAnnual, setIsAnnual] = useState(true);
 
   const demoUrl = "https://calendar.app.google/RU6wbUCbgEGjvxEF8";
-  const downloadUrl = "https://github.com/mgarbs/autolander-releases/releases/latest/download/AutoLander-Setup.exe";
+  const baseUrl = "https://github.com/mgarbs/autolander-releases/releases/latest/download";
+
+  const getDownload = () => {
+    const ua = navigator.userAgent;
+    if (/Mac/i.test(ua)) {
+      // Apple Silicon (M1+) vs Intel
+      return navigator.userAgentData?.architecture === 'arm' ||
+             (/Mac/i.test(ua) && /ARM/i.test(ua)) ||
+             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+        ? { url: `${baseUrl}/AutoLander-Mac-ARM.dmg`, label: 'Download for Mac (Apple Silicon)' }
+        : { url: `${baseUrl}/AutoLander-Mac-Intel.dmg`, label: 'Download for Mac (Intel)' };
+    }
+    if (/Linux/i.test(ua)) return { url: `${baseUrl}/AutoLander-Linux.AppImage`, label: 'Download for Linux' };
+    return { url: `${baseUrl}/AutoLander-Setup.exe`, label: 'Download for Windows' };
+  };
+
+  const download = getDownload();
 
   const pricing = [
     {
@@ -144,7 +160,7 @@ export default function App() {
                 <motion.button
                   whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => window.open(downloadUrl, "_blank")}
+                  onClick={() => window.open(download.url, "_blank")}
                   className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                 >
                   <span>Start Free Trial</span>
@@ -500,7 +516,7 @@ export default function App() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => window.open(downloadUrl, "_blank")}
+                    onClick={() => window.open(download.url, "_blank")}
                     className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${plan.popular ? 'bg-white text-blue-600 hover:bg-slate-100' : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'}`}
                   >
                     Start Free Trial
@@ -605,7 +621,7 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.open(downloadUrl, "_blank")}
+                onClick={() => window.open(download.url, "_blank")}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-white text-black font-black text-xl transition-all shadow-3xl shadow-white/5 uppercase italic tracking-tighter"
               >
                 Start Your Free Trial
