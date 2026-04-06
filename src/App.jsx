@@ -57,14 +57,7 @@ export default function App() {
 
   const getDownload = () => {
     const ua = navigator.userAgent;
-    if (/Mac/i.test(ua)) {
-      // Apple Silicon (M1+) vs Intel
-      return navigator.userAgentData?.architecture === 'arm' ||
-             (/Mac/i.test(ua) && /ARM/i.test(ua)) ||
-             (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-        ? { url: `${baseUrl}/AutoLander-Mac-arm64.dmg`, label: 'Download for Mac (Apple Silicon)' }
-        : { url: `${baseUrl}/AutoLander-Mac-x64.dmg`, label: 'Download for Mac (Intel)' };
-    }
+    if (/Mac/i.test(ua)) return { url: `${baseUrl}/AutoLander-Mac.dmg`, label: 'Download for Mac' };
     if (/Linux/i.test(ua)) return { url: `${baseUrl}/AutoLander-Linux.AppImage`, label: 'Download for Linux' };
     return { url: `${baseUrl}/AutoLander-Setup.exe`, label: 'Download for Windows' };
   };
