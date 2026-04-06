@@ -50,7 +50,7 @@ const Step = ({ number, title, desc }) => (
 );
 
 export default function App() {
-  const [isAnnual, setIsAnnual] = useState(true);
+  const [isAnnual, setIsAnnual] = useState(false);
 
   const demoUrl = "https://calendar.app.google/RU6wbUCbgEGjvxEF8";
   const baseUrl = "https://github.com/mgarbs/autolander-releases/releases/latest/download";
