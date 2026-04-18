@@ -86,6 +86,14 @@ export default function App() {
       annual: 99,
       posts: "20 Posts / Day",
       features: ["Everything in Growth", "Unlimited Marketplace Support", "Multi-Agent Queueing", "Concierge Setup", "Dedicated Support Agent"]
+    },
+    {
+      name: "Team",
+      monthly: 375,
+      annual: 299,
+      posts: "3 Seats + Manager Dashboard",
+      team: true,
+      features: ["Everything in Pro", "3 Agent Seats Included", "Live Manager Dashboard", "Real-Time Team Presence", "Post Attribution + Analytics", "Extra Seats $125/mo"]
     }
   ];
 
@@ -322,7 +330,7 @@ export default function App() {
               </p>
               
               <div className="grid grid-cols-2 gap-4 mb-10">
-                {['Showroom White', 'Outdoor Sunset', 'Luxury Showroom', 'Industrial Grey', 'Mountain View', 'Custom Upload'].map((opt, i) => (
+                {['Showroom White', 'Dark Showroom', 'Outdoor Sunset', 'Mountain Clearing', 'Coastal Overlook', 'Custom Upload'].map((opt, i) => (
                   <div key={i} className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/[0.03] border border-white/5 text-slate-300 font-bold text-sm italic">
                     <CheckCircle2 className="w-4 h-4 text-blue-500" />
                     {opt}
@@ -401,29 +409,49 @@ export default function App() {
             </FadeIn>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {pricing.map((plan, i) => (
               <FadeIn key={i} delay={i * 0.1} direction="up">
-                <div className={`relative p-10 rounded-[40px] h-full flex flex-col transition-all duration-500 ${plan.popular ? 'bg-blue-600 text-white scale-105 shadow-2xl shadow-blue-500/20 z-10' : 'bg-white/[0.03] border border-white/5 text-slate-50 hover:bg-white/[0.05]'}`}>
+                <div className={`relative p-10 rounded-[40px] h-full flex flex-col transition-all duration-500 ${
+                  plan.popular
+                    ? 'bg-blue-600 text-white scale-105 shadow-2xl shadow-blue-500/20 z-10'
+                    : plan.team
+                      ? 'bg-gradient-to-b from-emerald-950/40 to-white/[0.02] border border-emerald-500/40 text-slate-50 hover:border-emerald-500/70 shadow-xl shadow-emerald-500/5'
+                      : 'bg-white/[0.03] border border-white/5 text-slate-50 hover:bg-white/[0.05]'
+                }`}>
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-white text-blue-600 text-[10px] font-black uppercase tracking-widest shadow-xl">
                       Most Popular
                     </div>
                   )}
-                  
+                  {plan.team && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-xl">
+                      For Teams
+                    </div>
+                  )}
+
                   <div className="mb-8">
                     <h3 className="text-2xl font-black uppercase italic tracking-tighter mb-4">{plan.name}</h3>
                     <div className="flex items-baseline gap-1">
                       <span className="text-4xl lg:text-5xl font-black italic tracking-tighter">${isAnnual ? plan.annual : plan.monthly}</span>
                       <span className="text-xs font-bold uppercase tracking-widest opacity-60">/ Month</span>
                     </div>
-                    <p className={`mt-4 text-sm font-bold italic tracking-tight ${plan.popular ? 'text-blue-100' : 'text-blue-500'}`}>{plan.posts}</p>
+                    <p className={`mt-4 text-sm font-bold italic tracking-tight ${
+                      plan.popular ? 'text-blue-100' : plan.team ? 'text-emerald-400' : 'text-blue-500'
+                    }`}>{plan.posts}</p>
+                    {plan.team && (
+                      <p className="mt-3 text-[11px] font-bold text-slate-400 italic leading-relaxed">
+                        "Catch a slacking rep and the dashboard pays for itself."
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-4 mb-10 flex-grow">
                     {plan.features.map((feat, j) => (
                       <div key={j} className="flex items-center gap-3">
-                        <CheckCircle2 className={`w-4 h-4 shrink-0 ${plan.popular ? 'text-white' : 'text-blue-500'}`} />
+                        <CheckCircle2 className={`w-4 h-4 shrink-0 ${
+                          plan.popular ? 'text-white' : plan.team ? 'text-emerald-500' : 'text-blue-500'
+                        }`} />
                         <span className="text-sm font-medium opacity-90">{feat}</span>
                       </div>
                     ))}
@@ -433,11 +461,19 @@ export default function App() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => window.open(download.url, "_blank")}
-                    className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${plan.popular ? 'bg-white text-blue-600 hover:bg-slate-100' : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'}`}
+                    className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
+                      plan.popular
+                        ? 'bg-white text-blue-600 hover:bg-slate-100'
+                        : plan.team
+                          ? 'bg-emerald-500 text-white hover:bg-emerald-400 shadow-lg shadow-emerald-500/20'
+                          : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'
+                    }`}
                   >
-                    Start Free Trial
+                    {plan.team ? 'Get Team' : 'Start Free Trial'}
                   </motion.button>
-                  <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">First 5 posts are free</p>
+                  <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">
+                    {plan.team ? 'Download + upgrade in-app' : 'First 5 posts are free'}
+                  </p>
                 </div>
               </FadeIn>
             ))}
