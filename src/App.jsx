@@ -602,10 +602,10 @@ export default function App() {
             </div>
             
             <div className="flex gap-8 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-              <a href="#" className="hover:text-blue-500 transition-colors">Privacy</a>
-              <a href="#" className="hover:text-blue-500 transition-colors">Terms</a>
-              <a href="#" className="hover:text-blue-500 transition-colors">Contact</a>
-              <a href="mailto:support@autolander.app" className="hover:text-blue-500 transition-colors">Support</a>
+              <a href="/privacy.html" className="hover:text-blue-500 transition-colors">Privacy</a>
+              <a href="/terms.html" className="hover:text-blue-500 transition-colors">Terms</a>
+              <a href="mailto:support@autolander.ai" className="hover:text-blue-500 transition-colors">Contact</a>
+              <a href="mailto:support@autolander.ai" className="hover:text-blue-500 transition-colors">Support</a>
             </div>
 
             <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">© 2026 AutoLander. All rights reserved.</p>
