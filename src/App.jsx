@@ -8,6 +8,7 @@ import {
   Layers, Wand2, Image as ImageIcon, Layout, Zap as Fast,
   ArrowDownCircle, HelpCircle, Check, X
 } from 'lucide-react';
+import ChatAssistant from './components/ChatAssistant.jsx';
 
 const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
   const directions = {
@@ -612,6 +613,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <ChatAssistant demoUrl={demoUrl} supportEmail="support@autolander.ai" />
     </div>
   );
 }

@@ -1,0 +1,22 @@
+name = "autolander-chatbot"
+main = "src/index.js"
+compatibility_date = "2026-04-23"
+
+[vars]
+ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://mgarbs.github.io,http://localhost:5173,http://localhost:4173"
+OPENAI_MODEL = "gpt-5.4-mini"
+MAX_OUTPUT_TOKENS = "360"
+DAILY_CHAT_LIMIT = "160"
+IP_DAILY_LIMIT = "12"
+IP_HOURLY_LIMIT = "5"
+DAILY_SUPPORT_LIMIT = "40"
+SUPPORT_IP_DAILY_LIMIT = "3"
+SUPPORT_IP_HOURLY_LIMIT = "2"
+SUPPORT_EMAIL = "support@autolander.ai"
+DEMO_URL = "https://calendar.app.google/RU6wbUCbgEGjvxEF8"
+REQUIRE_TURNSTILE = "false"
+
+[[kv_namespaces]]
+binding = "CHAT_RATE_LIMITS"
+id = "replace_with_production_kv_namespace_id"
+preview_id = "replace_with_preview_kv_namespace_id"
