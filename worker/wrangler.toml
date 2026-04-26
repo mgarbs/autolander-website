@@ -1,6 +1,7 @@
 name = "autolander-chatbot"
 main = "src/index.js"
 compatibility_date = "2026-04-23"
+account_id = "6d0317be0a7586e7f90e454db7c6989a"
 workers_dev = true
 preview_urls = false
 
