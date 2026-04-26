@@ -6,9 +6,34 @@ import {
   MessageSquareText, CarFront, ShieldCheck, Sparkles, TrendingUp,
   MapPin, Gauge, Fuel, Zap, Clock, Trophy, Users, BarChart,
   Layers, Wand2, Image as ImageIcon, Layout, Zap as Fast,
-  ArrowDownCircle, HelpCircle, Check, X
+  ArrowDownCircle, HelpCircle, Check, X, Gift, Download, Copy
 } from 'lucide-react';
 import ChatAssistant from './components/ChatAssistant.jsx';
+
+const RELEASE_BASE_URL = "https://github.com/mgarbs/autolander-releases/releases/latest/download";
+const DOWNLOADS = {
+  windows: `${RELEASE_BASE_URL}/AutoLander-Setup.exe`,
+  mac: `${RELEASE_BASE_URL}/AutoLander-Mac.dmg`,
+  linux: `${RELEASE_BASE_URL}/AutoLander-Linux.AppImage`,
+};
+const REFERRAL_CODE_PATTERN = /^[a-z0-9]{4,64}$/;
+
+function normalizeReferralCode(value) {
+  const code = typeof value === 'string' ? value.trim().toLowerCase() : '';
+  return REFERRAL_CODE_PATTERN.test(code) ? code : '';
+}
+
+function getReferralCodeFromPath() {
+  const match = window.location.pathname.match(/^\/ref\/([^/?#]+)/i);
+  return normalizeReferralCode(match?.[1]);
+}
+
+function getDownload() {
+  const ua = navigator.userAgent;
+  if (/Mac/i.test(ua)) return { url: DOWNLOADS.mac, label: 'Download for Mac' };
+  if (/Linux/i.test(ua)) return { url: DOWNLOADS.linux, label: 'Download for Linux' };
+  return { url: DOWNLOADS.windows, label: 'Download for Windows' };
+}
 
 const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
   const directions = {
@@ -54,16 +79,25 @@ export default function App() {
   const [isAnnual, setIsAnnual] = useState(false);
 
   const demoUrl = "https://calendar.app.google/RU6wbUCbgEGjvxEF8";
-  const baseUrl = "https://github.com/mgarbs/autolander-releases/releases/latest/download";
+  const referralCode = getReferralCodeFromPath();
+  const hasReferral = Boolean(referralCode);
+  const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';
+  const download = getDownload();
 
-  const getDownload = () => {
-    const ua = navigator.userAgent;
-    if (/Mac/i.test(ua)) return { url: `${baseUrl}/AutoLander-Mac.dmg`, label: 'Download for Mac' };
-    if (/Linux/i.test(ua)) return { url: `${baseUrl}/AutoLander-Linux.AppImage`, label: 'Download for Linux' };
-    return { url: `${baseUrl}/AutoLander-Setup.exe`, label: 'Download for Windows' };
+  const copyReferralCode = async () => {
+    if (!hasReferral) return;
+    await navigator.clipboard?.writeText(referralCode).catch(() => {});
   };
 
-  const download = getDownload();
+  const openDownload = async () => {
+    await copyReferralCode();
+    window.open(download.url, "_blank");
+  };
+
+  const openInstalledApp = async () => {
+    await copyReferralCode();
+    window.location.href = referralDeepLink;
+  };
 
   const pricing = [
     {
@@ -78,7 +112,6 @@ export default function App() {
       monthly: 100,
       annual: 79,
       posts: "10 Posts / Day",
-      popular: true,
       features: ["Everything in Starter", "Premium AI Backgrounds", "Custom Studio Backgrounds", "Advanced SEO Descriptions", "Priority Syncing"]
     },
     {
@@ -86,7 +119,9 @@ export default function App() {
       monthly: 125,
       annual: 99,
       posts: "20 Posts / Day",
-      features: ["Everything in Growth", "Unlimited Marketplace Support", "Multi-Agent Queueing", "Concierge Setup", "Dedicated Support Agent"]
+      popular: true,
+      proPromo: true,
+      features: ["Everything in Growth", "May referral promo eligible", "Unlimited Marketplace Support", "Multi-Agent Queueing", "Concierge Setup", "Dedicated Support Agent"]
     },
     {
       name: "Team",
@@ -136,43 +171,86 @@ export default function App() {
         <div className="max-w-4xl mx-auto px-6 text-center">
             <FadeIn>
               <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-8 backdrop-blur-sm">
-                <Sparkles className="w-4 h-4" />
-                <span className="text-xs font-black uppercase tracking-widest">AI-Powered Inventory Dominance</span>
+                {hasReferral ? <Gift className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
+                <span className="text-xs font-black uppercase tracking-widest">
+                  {hasReferral ? 'Referral Applied - May Pro Promo' : 'AI-Powered Inventory Dominance'}
+                </span>
               </div>
             </FadeIn>
 
             <FadeIn delay={0.1}>
               <h1 className="text-5xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.85] text-white">
-                SELL 10-15 MORE<br />
+                {hasReferral ? 'GET 25% OFF' : 'SELL 10-15 MORE'}<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-indigo-600">
-                  CARS PER MONTH.
+                  {hasReferral ? 'AUTOLANDER PRO.' : 'CARS PER MONTH.'}
                 </span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.2}>
               <p className="text-lg lg:text-xl text-slate-400 mb-10 max-w-xl mx-auto leading-relaxed font-medium italic">
-                Dominate Facebook Marketplace with professional listings that convert. Our AI turns your inventory into a high-performance sales machine that drives more leads and closes more deals.
+                {hasReferral
+                  ? 'Your referral link is ready. Subscribe to the $125/mo Pro plan and get 25% off your first Pro month. Your referrer gets a free Pro month after your payment succeeds.'
+                  : 'Dominate Facebook Marketplace with professional listings that convert. Our AI turns your inventory into a high-performance sales machine that drives more leads and closes more deals.'}
               </p>
             </FadeIn>
+
+            {hasReferral && (
+              <FadeIn delay={0.25}>
+                <div className="max-w-2xl mx-auto mb-10 rounded-[2rem] border border-amber-400/25 bg-gradient-to-br from-amber-400/15 via-white/[0.04] to-blue-500/10 p-5 text-left shadow-2xl shadow-amber-500/10">
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-300">Referral Code</p>
+                      <p className="mt-1 font-mono text-lg font-black text-white">{referralCode}</p>
+                    </div>
+                    <button
+                      onClick={copyReferralCode}
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/10 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-white transition-all hover:bg-white/15"
+                    >
+                      <Copy className="h-4 w-4" />
+                      Copy Code
+                    </button>
+                  </div>
+                  <div className="mt-5 grid gap-3 text-sm font-bold text-slate-300 sm:grid-cols-3">
+                    <div className="rounded-2xl bg-black/25 p-4">1. Download AutoLander</div>
+                    <div className="rounded-2xl bg-black/25 p-4">2. Create your account</div>
+                    <div className="rounded-2xl bg-black/25 p-4">3. Choose $125/mo Pro</div>
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <a href={DOWNLOADS.windows} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Windows</a>
+                    <a href={DOWNLOADS.mac} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Mac</a>
+                    <a href={DOWNLOADS.linux} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Linux</a>
+                  </div>
+                </div>
+              </FadeIn>
+            )}
 
             <FadeIn delay={0.3}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 <motion.button
                   whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => window.open(download.url, "_blank")}
+                  onClick={openDownload}
                   className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                 >
-                  <span>Start Free Trial</span>
-                  <ArrowRight className="w-6 h-6" />
+                  <span>{hasReferral ? 'Download + Claim Promo' : 'Start Free Trial'}</span>
+                  {hasReferral ? <Download className="w-6 h-6" /> : <ArrowRight className="w-6 h-6" />}
                 </motion.button>
-                <button
-                  onClick={() => window.open(demoUrl, "_blank")}
-                  className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
-                >
-                  Book a Demo
-                </button>
+                {hasReferral ? (
+                  <button
+                    onClick={openInstalledApp}
+                    className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
+                  >
+                    Already Installed? Apply Code
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => window.open(demoUrl, "_blank")}
+                    className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
+                  >
+                    Book a Demo
+                  </button>
+                )}
               </div>
             </FadeIn>
         </div>
@@ -390,6 +468,22 @@ export default function App() {
               <h2 className="text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
                 PLANS FOR <span className="text-blue-500">GROWTH.</span>
               </h2>
+
+              <div className="mx-auto mt-8 max-w-4xl rounded-[2rem] border border-amber-400/20 bg-amber-400/10 p-5 text-left">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-[0.24em] text-amber-300">May Pro Referral Sprint</p>
+                    <p className="mt-2 text-sm font-bold text-white lg:text-base">
+                      Referral promo applies only to the <span className="text-amber-200">$125/mo Pro plan</span>. Referred dealers get 25% off their first Pro month; referrers get a free Pro month after payment succeeds.
+                    </p>
+                  </div>
+                  {hasReferral && (
+                    <div className="rounded-2xl bg-black/30 px-4 py-3 font-mono text-sm font-black text-amber-200">
+                      Code: {referralCode}
+                    </div>
+                  )}
+                </div>
+              </div>
               
               <div className="flex items-center justify-center gap-4 mt-8">
                 <span className={`text-sm font-bold uppercase italic ${!isAnnual ? 'text-white' : 'text-slate-500'}`}>Monthly</span>
@@ -422,7 +516,7 @@ export default function App() {
                 }`}>
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-white text-blue-600 text-[10px] font-black uppercase tracking-widest shadow-xl">
-                      Most Popular
+                      {plan.proPromo ? (isAnnual ? 'Monthly Only' : 'May Pro Promo') : 'Most Popular'}
                     </div>
                   )}
                   {plan.team && (
@@ -461,7 +555,7 @@ export default function App() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => window.open(download.url, "_blank")}
+                    onClick={openDownload}
                     className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
                       plan.popular
                         ? 'bg-white text-blue-600 hover:bg-slate-100'
@@ -470,10 +564,10 @@ export default function App() {
                           : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'
                     }`}
                   >
-                    {plan.team ? 'Get Team' : 'Start Free Trial'}
+                    {plan.proPromo && hasReferral && !isAnnual ? 'Claim Pro Promo' : plan.team ? 'Get Team' : 'Start Free Trial'}
                   </motion.button>
                   <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">
-                    {plan.team ? 'Download + upgrade in-app' : 'First 5 posts are free'}
+                    {plan.proPromo ? 'Referral promo requires monthly $125/mo Pro' : plan.team ? 'Download + upgrade in-app' : 'First 5 posts are free'}
                   </p>
                 </div>
               </FadeIn>
@@ -574,7 +668,7 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.open(download.url, "_blank")}
+                onClick={openDownload}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-white text-black font-black text-xl transition-all shadow-3xl shadow-white/5 uppercase italic tracking-tighter"
               >
                 Start Your Free Trial
