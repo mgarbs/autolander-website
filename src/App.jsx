@@ -77,6 +77,7 @@ const Step = ({ number, title, desc }) => (
 
 export default function App() {
   const [isAnnual, setIsAnnual] = useState(false);
+  const isMonthlyBilling = !isAnnual;
 
   const demoUrl = "https://calendar.app.google/RU6wbUCbgEGjvxEF8";
   const referralCode = getReferralCodeFromPath();
@@ -121,7 +122,14 @@ export default function App() {
       posts: "20 Posts / Day",
       popular: true,
       proPromo: true,
-      features: ["Everything in Growth", "May referral promo eligible", "Unlimited Marketplace Support", "Multi-Agent Queueing", "Concierge Setup", "Dedicated Support Agent"]
+      features: [
+        "Everything in Growth",
+        ...(isMonthlyBilling ? ["May promo: referrer earns 1 free Pro month"] : []),
+        "Unlimited Marketplace Support",
+        "Multi-Agent Queueing",
+        "Concierge Setup",
+        "Dedicated Support Agent"
+      ]
     },
     {
       name: "Team",
@@ -173,7 +181,7 @@ export default function App() {
               <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-8 backdrop-blur-sm">
                 {hasReferral ? <Gift className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
                 <span className="text-xs font-black uppercase tracking-widest">
-                  {hasReferral ? 'Referral Applied - May Pro Promo' : 'AI-Powered Inventory Dominance'}
+                  {hasReferral ? 'Referral Applied - Monthly Pro Promo' : 'AI-Powered Inventory Dominance'}
                 </span>
               </div>
             </FadeIn>
@@ -469,19 +477,47 @@ export default function App() {
                 PLANS FOR <span className="text-blue-500">GROWTH.</span>
               </h2>
 
-              <div className="mx-auto mt-8 max-w-4xl rounded-[2rem] border border-amber-400/20 bg-amber-400/10 p-5 text-left">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.24em] text-amber-300">May Pro Referral Sprint</p>
-                    <p className="mt-2 text-sm font-bold text-white lg:text-base">
-                      Referral promo applies only to the <span className="text-amber-200">$125/mo Pro plan</span>. Referred dealers get 25% off their first Pro month; referrers get a free Pro month after payment succeeds.
-                    </p>
-                  </div>
-                  {hasReferral && (
-                    <div className="rounded-2xl bg-black/30 px-4 py-3 font-mono text-sm font-black text-amber-200">
-                      Code: {referralCode}
+              <div className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-[2.5rem] border border-amber-300/40 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.35),transparent_34%),linear-gradient(135deg,rgba(30,64,175,0.9),rgba(2,6,23,0.96)_52%,rgba(120,53,15,0.7))] p-1 text-left shadow-2xl shadow-amber-500/20">
+                <div className="rounded-[2.25rem] border border-white/10 bg-black/25 p-5 sm:p-7">
+                  <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                    <div className="flex gap-4">
+                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-amber-300 text-black shadow-xl shadow-amber-300/30">
+                        <Gift className="h-7 w-7" />
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.26em] text-amber-200">May Pro Referral Sprint</p>
+                        <h3 className="mt-2 text-3xl font-black uppercase italic leading-none text-white sm:text-4xl">
+                          Give 25%. Get 1 Free Month.
+                        </h3>
+                        <p className="mt-3 max-w-2xl text-sm font-bold leading-relaxed text-slate-200 lg:text-base">
+                          Refer a dealer to monthly <span className="text-amber-200">$125/mo Pro</span>. They get 25% off their first Pro month, and you get a <span className="text-amber-200">$125 account credit</span> after their payment succeeds.
+                        </p>
+                      </div>
                     </div>
-                  )}
+                    {hasReferral && (
+                      <div className="rounded-2xl border border-amber-300/30 bg-amber-300/15 px-4 py-3 font-mono text-sm font-black text-amber-100">
+                        Code: {referralCode}
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-6 grid gap-3 md:grid-cols-3">
+                    <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-amber-200">Referrer Reward</p>
+                      <p className="mt-1 text-xl font-black italic text-white">1 Free Pro Month</p>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-blue-200">New Dealer Offer</p>
+                      <p className="mt-1 text-xl font-black italic text-white">25% Off First Month</p>
+                    </div>
+                    <div className={`rounded-2xl border p-4 ${isMonthlyBilling ? 'border-emerald-300/30 bg-emerald-400/15' : 'border-amber-300/30 bg-amber-300/10'}`}>
+                      <p className={`text-[10px] font-black uppercase tracking-widest ${isMonthlyBilling ? 'text-emerald-200' : 'text-amber-200'}`}>
+                        {isMonthlyBilling ? 'Active Below' : 'Annual Selected'}
+                      </p>
+                      <p className="mt-1 text-xl font-black italic text-white">
+                        {isMonthlyBilling ? '$125/mo Pro Only' : 'Switch to Monthly'}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
               
@@ -505,18 +541,25 @@ export default function App() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {pricing.map((plan, i) => (
+            {pricing.map((plan, i) => {
+              const isMonthlyProPromo = plan.proPromo && isMonthlyBilling;
+              const isAnnualPro = plan.proPromo && isAnnual;
+              const isHighlighted = (plan.popular && !plan.proPromo) || isMonthlyProPromo;
+
+              return (
               <FadeIn key={i} delay={i * 0.1} direction="up">
                 <div className={`relative p-10 rounded-[40px] h-full flex flex-col transition-all duration-500 ${
-                  plan.popular
-                    ? 'bg-blue-600 text-white scale-105 shadow-2xl shadow-blue-500/20 z-10'
+                  isMonthlyProPromo
+                    ? 'bg-gradient-to-br from-blue-600 via-blue-600 to-amber-500 text-white scale-105 shadow-2xl shadow-amber-500/20 z-10'
                     : plan.team
                       ? 'bg-gradient-to-b from-emerald-950/40 to-white/[0.02] border border-emerald-500/40 text-slate-50 hover:border-emerald-500/70 shadow-xl shadow-emerald-500/5'
                       : 'bg-white/[0.03] border border-white/5 text-slate-50 hover:bg-white/[0.05]'
                 }`}>
-                  {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-white text-blue-600 text-[10px] font-black uppercase tracking-widest shadow-xl">
-                      {plan.proPromo ? (isAnnual ? 'Monthly Only' : 'May Pro Promo') : 'Most Popular'}
+                  {(isHighlighted || isAnnualPro) && (
+                    <div className={`absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow-xl ${
+                      isMonthlyProPromo ? 'bg-amber-300 text-black' : 'bg-white text-blue-600'
+                    }`}>
+                      {isMonthlyProPromo ? 'Free Month Promo' : isAnnualPro ? 'Annual Rate' : 'Most Popular'}
                     </div>
                   )}
                   {plan.team && (
@@ -531,8 +574,13 @@ export default function App() {
                       <span className="text-4xl lg:text-5xl font-black italic tracking-tighter">${isAnnual ? plan.annual : plan.monthly}</span>
                       <span className="text-xs font-bold uppercase tracking-widest opacity-60">/ Month</span>
                     </div>
+                    {isAnnual && (
+                      <p className="mt-2 text-[10px] font-black uppercase tracking-widest opacity-50">
+                        Annual billing selected
+                      </p>
+                    )}
                     <p className={`mt-4 text-sm font-bold italic tracking-tight ${
-                      plan.popular ? 'text-blue-100' : plan.team ? 'text-emerald-400' : 'text-blue-500'
+                      isMonthlyProPromo ? 'text-blue-100' : plan.team ? 'text-emerald-400' : 'text-blue-500'
                     }`}>{plan.posts}</p>
                     {plan.team && (
                       <p className="mt-3 text-[11px] font-bold text-slate-400 italic leading-relaxed">
@@ -545,7 +593,7 @@ export default function App() {
                     {plan.features.map((feat, j) => (
                       <div key={j} className="flex items-center gap-3">
                         <CheckCircle2 className={`w-4 h-4 shrink-0 ${
-                          plan.popular ? 'text-white' : plan.team ? 'text-emerald-500' : 'text-blue-500'
+                          isMonthlyProPromo ? 'text-white' : plan.team ? 'text-emerald-500' : 'text-blue-500'
                         }`} />
                         <span className="text-sm font-medium opacity-90">{feat}</span>
                       </div>
@@ -557,21 +605,24 @@ export default function App() {
                     whileTap={{ scale: 0.98 }}
                     onClick={openDownload}
                     className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
-                      plan.popular
+                      isMonthlyProPromo
                         ? 'bg-white text-blue-600 hover:bg-slate-100'
                         : plan.team
                           ? 'bg-emerald-500 text-white hover:bg-emerald-400 shadow-lg shadow-emerald-500/20'
                           : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'
                     }`}
                   >
-                    {plan.proPromo && hasReferral && !isAnnual ? 'Claim Pro Promo' : plan.team ? 'Get Team' : 'Start Free Trial'}
+                    {isMonthlyProPromo && hasReferral ? 'Claim Monthly Pro Promo' : plan.team ? 'Get Team' : 'Start Free Trial'}
                   </motion.button>
                   <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">
-                    {plan.proPromo ? 'Referral promo requires monthly $125/mo Pro' : plan.team ? 'Download + upgrade in-app' : 'First 5 posts are free'}
+                    {plan.proPromo
+                      ? (isMonthlyBilling ? 'Only monthly $125 Pro triggers the free-month reward' : 'Annual Pro is not part of the May referral promo')
+                      : plan.team ? 'Download + upgrade in-app' : 'First 5 posts are free'}
                   </p>
                 </div>
               </FadeIn>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
