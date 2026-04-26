@@ -27,7 +27,8 @@ const starterMessages = [
 const quickPrompts = [
   'How does AutoLander work?',
   'Which inventory feeds are supported?',
-  'What does the free trial include?',
+  'Help me set up my feed',
+  'My posts are failing',
 ];
 
 const supportDefaults = {

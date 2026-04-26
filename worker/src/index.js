@@ -15,7 +15,8 @@ const RESPONSE_SCHEMA = {
   properties: {
     answer: {
       type: 'string',
-      description: 'A concise, user-facing answer. Keep it under 120 words.',
+      description:
+        'A concise, user-facing answer. Keep it under 180 words; short numbered steps are OK for setup or troubleshooting.',
     },
     handoff: {
       type: 'boolean',
@@ -238,7 +239,8 @@ function buildInstructions(env) {
 You are AutoLander's website support assistant.
 Use only the knowledge below. Do not invent features, pricing, integrations, policies, or guarantees.
 Keep answers concise, practical, and sales/support oriented.
-If the user asks about account-specific issues, billing, refunds, Facebook restrictions, legal policy, bugs, outages, security, unsupported feed sources, or anything you are not confident about, set handoff=true and route them to support or demo booking.
+Answer known setup and troubleshooting topics from the knowledge first, including Facebook login, Cars.com/CarGurus feed setup, English (US) language issues, "node not clickable", macOS quarantine/xattr, posting failures, and new Facebook account posting limits.
+If the known steps do not resolve the issue, or the user asks about account-specific issues, billing, refunds, legal policy, outages, security, unsupported feed sources, or anything you are not confident about, set handoff=true and route them to support or demo booking.
 If the user is ready to buy, compare plans, or wants implementation details for their dealership, suggest booking a demo.
 If the user asks how to start, mention the free trial and app download.
 

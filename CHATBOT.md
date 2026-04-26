@@ -78,7 +78,9 @@ Do not deploy without the `CHAT_RATE_LIMITS` KV binding unless `DISABLE_RATE_LIM
 
 ## Support Handoff
 
-The model is instructed to hand off account-specific, billing, refund, Facebook restriction, bug, outage, legal, security, unsupported feed, or uncertain questions.
+The model is instructed to answer known setup and troubleshooting topics first, including Facebook login, supported inventory-feed setup, English (US) language issues, macOS quarantine/xattr launch help, posting failures, and new Facebook account posting limits.
+
+It hands off account-specific, billing, refund, unresolved Facebook restriction, outage, legal, security, unsupported feed, or uncertain questions.
 
 If `SUPPORT_WEBHOOK_URL` is configured:
 
