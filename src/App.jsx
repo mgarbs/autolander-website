@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
@@ -78,6 +78,8 @@ const Step = ({ number, title, desc }) => (
 
 export default function App() {
   const [isAnnual, setIsAnnual] = useState(false);
+  const [showVideoIntro, setShowVideoIntro] = useState(true);
+  const videoDemoRef = useRef(null);
   const isMonthlyBilling = !isAnnual;
 
   const demoUrl = "https://calendar.app.google/RU6wbUCbgEGjvxEF8";
@@ -100,6 +102,41 @@ export default function App() {
     await copyReferralCode();
     window.location.href = referralDeepLink;
   };
+
+  useEffect(() => {
+    if (!showVideoIntro) return undefined;
+
+    const node = videoDemoRef.current;
+    if (!node) return undefined;
+
+    let timer = null;
+    const startIntroTransition = () => {
+      if (timer) return;
+      timer = window.setTimeout(() => setShowVideoIntro(false), 2400);
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      startIntroTransition();
+      return () => window.clearTimeout(timer);
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startIntroTransition();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.45 }
+    );
+
+    observer.observe(node);
+
+    return () => {
+      window.clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [showVideoIntro]);
 
   const pricing = [
     {
@@ -517,20 +554,45 @@ export default function App() {
             <FadeIn direction="left">
               <div className="relative">
                 <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
-                <div className="relative overflow-hidden rounded-3xl border border-blue-500/30 bg-black shadow-2xl shadow-blue-500/10">
+                <div ref={videoDemoRef} className="relative overflow-hidden rounded-3xl border border-blue-500/30 bg-black shadow-2xl shadow-blue-500/10">
                   <video
                     className="aspect-video w-full bg-black object-cover"
                     controls
                     playsInline
                     preload="metadata"
                     poster="/marketplace-video-poster.webp"
-                    aria-label="AutoLander AI walkaround video example"
+                    aria-label="Original truck photo transitioning into AutoLander AI walkaround video example"
                   >
                     <source src="/marketplace-video-example.mp4" type="video/mp4" />
                   </video>
-                  <div className="absolute top-4 left-4 flex items-center gap-2 rounded-2xl bg-black/65 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md">
+                  <div className={`absolute top-4 left-4 flex items-center gap-2 rounded-2xl bg-black/65 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md transition-opacity duration-500 ${showVideoIntro ? 'opacity-0' : 'opacity-100'}`}>
                     <PlayCircle className="h-4 w-4 text-blue-400" />
                     Example Result
+                  </div>
+                  <div
+                    aria-hidden={!showVideoIntro}
+                    className={`absolute inset-0 z-10 bg-black transition-opacity duration-700 ease-out ${showVideoIntro ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+                  >
+                    <img
+                      src="/marketplace-video-poster.webp"
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/20" />
+                    <div className="absolute inset-3 rounded-2xl border border-white/25 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.35)]" />
+                    <div className="absolute top-4 left-4 flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-[10px] font-black uppercase tracking-widest text-black shadow-xl shadow-black/30">
+                      <ImageIcon className="h-4 w-4 text-blue-600" />
+                      Original Photo
+                    </div>
+                    <div className="absolute bottom-4 left-4 right-4 rounded-2xl bg-black/70 p-3 backdrop-blur-md sm:left-auto sm:max-w-[330px]">
+                      <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-blue-300">
+                        <ArrowRight className="h-4 w-4" />
+                        Transitioning to Video Render
+                      </p>
+                      <p className="mt-1 text-sm font-black italic leading-tight text-white">
+                        Same frame. Original image first, then the 10s walkaround.
+                      </p>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-5 grid sm:grid-cols-2 gap-4">
