@@ -6,7 +6,8 @@ import {
   MessageSquareText, CarFront, ShieldCheck, Sparkles, TrendingUp,
   MapPin, Gauge, Fuel, Zap, Clock, Trophy, Users, BarChart,
   Layers, Wand2, Image as ImageIcon, Layout, Zap as Fast,
-  ArrowDownCircle, HelpCircle, Check, X, Gift, Download, Copy
+  ArrowDownCircle, HelpCircle, Check, X, Gift, Download, Copy,
+  Video, Volume2, CreditCard, PlayCircle
 } from 'lucide-react';
 import ChatAssistant from './components/ChatAssistant.jsx';
 
@@ -124,6 +125,7 @@ export default function App() {
       proPromo: true,
       features: [
         "Everything in Growth",
+        "300 welcome video credits (10 videos)",
         ...(hasReferral && isMonthlyBilling ? ["Limited-time invite: referrer earns 1 free Pro month"] : []),
         "Unlimited Marketplace Support",
         "Multi-Agent Queueing",
@@ -137,8 +139,20 @@ export default function App() {
       annual: 299,
       posts: "3 Seats + Manager Dashboard",
       team: true,
-      features: ["Everything in Pro", "3 Agent Seats Included", "Live Manager Dashboard", "Real-Time Team Presence", "Post Attribution + Analytics", "Extra Seats $125/mo"]
+      features: ["Everything in Pro", "300 team welcome video credits (10 videos)", "3 Agent Seats Included", "Live Manager Dashboard", "Real-Time Team Presence", "Post Attribution + Analytics", "Extra Seats $125/mo"]
     }
+  ];
+
+  const videoCreditPacks = [
+    { name: "Starter", credits: "150 credits", videos: "5 videos", price: "$14.99" },
+    { name: "Popular", credits: "750 credits", videos: "25 videos", price: "$59.99", savings: "$15 savings" },
+    { name: "Best Value", credits: "2,250 credits", videos: "75 videos", price: "$149.99", savings: "$75 savings" }
+  ];
+
+  const videoHighlights = [
+    { icon: CreditCard, label: "Video Cost", value: "30 Credits", detail: "Per generated walkaround" },
+    { icon: Gift, label: "Pro Welcome", value: "300 Credits", detail: "10 videos on Pro or Team setup" },
+    { icon: Volume2, label: "Sound Included", value: "MP4 + Audio", detail: "Built for Marketplace playback" }
   ];
 
   return (
@@ -158,10 +172,11 @@ export default function App() {
             </div>
             <img src="/autolander-logo.png" alt="AutoLander" className="h-8 sm:h-14 w-auto group-hover:scale-105 transition-transform duration-300" />
           </div>
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
              <a href="#how-it-works" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">How It Works</a>
              <a href="#features" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Features</a>
              <a href="#studio" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">AI Studio</a>
+             <a href="#videos" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Videos</a>
              <a href="#pricing" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Pricing</a>
           </div>
           <div className="flex items-center shrink-0">
@@ -468,6 +483,72 @@ export default function App() {
         </div>
       </section>
 
+      {/* Marketplace Videos Section */}
+      <section id="videos" className="py-24 lg:py-40 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-20 items-center">
+            <FadeIn direction="right">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-8 backdrop-blur-sm">
+                <Video className="w-4 h-4" />
+                <span className="text-xs font-black uppercase tracking-widest">Marketplace Videos</span>
+              </div>
+
+              <h2 className="text-4xl lg:text-7xl font-black mb-8 tracking-tighter leading-none uppercase italic">
+                AI WALKAROUND <br/><span className="text-blue-500">VIDEOS.</span>
+              </h2>
+              <p className="text-slate-400 text-lg font-medium italic mb-10 leading-relaxed">
+                Turn a polished vehicle photo into a short Marketplace-ready walkaround with realistic camera motion, audio, and fast-start MP4 delivery. Give shoppers a reason to stop scrolling before they ever message another dealer.
+              </p>
+
+              <div className="grid sm:grid-cols-3 gap-4">
+                {videoHighlights.map(({ icon: Icon, label, value, detail }) => (
+                  <div key={label} className="rounded-3xl bg-white/[0.03] border border-white/5 p-5">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-500/10 mb-4">
+                      <Icon className="h-5 w-5 text-blue-500" />
+                    </div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{label}</p>
+                    <p className="mt-1 text-xl font-black italic text-white">{value}</p>
+                    <p className="mt-2 text-xs font-bold leading-relaxed text-slate-400">{detail}</p>
+                  </div>
+                ))}
+              </div>
+            </FadeIn>
+
+            <FadeIn direction="left">
+              <div className="relative">
+                <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
+                <div className="relative overflow-hidden rounded-3xl border border-blue-500/30 bg-black shadow-2xl shadow-blue-500/10">
+                  <video
+                    className="aspect-video w-full bg-black object-cover"
+                    controls
+                    playsInline
+                    preload="metadata"
+                    poster="/marketplace-video-poster.webp"
+                    aria-label="AutoLander AI walkaround video example"
+                  >
+                    <source src="/marketplace-video-example.mp4" type="video/mp4" />
+                  </video>
+                  <div className="absolute top-4 left-4 flex items-center gap-2 rounded-2xl bg-black/65 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md">
+                    <PlayCircle className="h-4 w-4 text-blue-400" />
+                    Example Result
+                  </div>
+                </div>
+                <div className="mt-5 grid sm:grid-cols-2 gap-4">
+                  <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Input</p>
+                    <p className="mt-1 text-lg font-black italic text-white">One cleaned vehicle image</p>
+                  </div>
+                  <div className="rounded-3xl border border-blue-500/30 bg-blue-500/10 p-5">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-blue-300">Output</p>
+                    <p className="mt-1 text-lg font-black italic text-white">Short video with sound</p>
+                  </div>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section id="pricing" className="py-24 lg:py-40 relative">
         <div className="max-w-7xl mx-auto px-6">
@@ -628,6 +709,38 @@ export default function App() {
               );
             })}
           </div>
+
+          <FadeIn delay={0.2} direction="up">
+            <div className="mt-10 rounded-3xl border border-white/10 bg-white/[0.025] p-5 sm:p-6">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-500/10">
+                    <BadgeDollarSign className="h-6 w-6 text-blue-500" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Optional Add-On</p>
+                    <h3 className="mt-1 text-2xl font-black uppercase italic tracking-tighter text-white">Video Credit Packs</h3>
+                    <p className="mt-2 max-w-2xl text-sm font-bold italic leading-relaxed text-slate-400">
+                      Videos are usage-based at 30 credits each. Pro and Team accounts include 300 welcome credits; buy more only when you need more walkarounds.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-3 lg:min-w-[560px]">
+                  {videoCreditPacks.map((pack) => (
+                    <div key={pack.name} className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-blue-400">{pack.name}</p>
+                        {pack.savings && <p className="text-[9px] font-black uppercase tracking-widest text-emerald-400">{pack.savings}</p>}
+                      </div>
+                      <p className="mt-2 text-xl font-black italic text-white">{pack.price}</p>
+                      <p className="text-xs font-bold text-slate-400">{pack.credits} / {pack.videos}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
@@ -692,6 +805,7 @@ export default function App() {
             {[
               { q: "Which inventory feeds do you work with?", a: "We work seamlessly with CarGurus and Cars.com feeds. Simply paste your public feed URL, and our system will extract all vehicle data, photos, and specs automatically." },
               { q: "How does this help me sell more cars?", a: "AutoLander creates high-quality, professional listings that stand out in the Marketplace. By using AI to optimize photos and descriptions, dealers typically see a 3x increase in lead volume and sell an average of 12 extra units per month." },
+              { q: "Do you support AI videos?", a: "Yes. Marketplace videos turn a polished vehicle photo into a short walkaround clip with audio. Videos cost 30 credits each; Pro and Team accounts receive 300 welcome credits when they upgrade or create a team, and additional packs start at $14.99 for 150 credits." },
               { q: "Do I need any technical skills?", a: "Zero. If you can copy and paste a URL and click a button, you can use AutoLander. It's designed for busy sales teams who want to sell cars, not manage software." },
               { q: "Is there a limit on how many cars I can post?", a: "Limits are based on your plan (5, 10, or 20 per day). This ensures your Facebook account stays safe and compliant with Marketplace algorithms." }
             ].map((faq, i) => (
