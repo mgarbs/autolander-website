@@ -125,7 +125,7 @@ export default function App() {
       proPromo: true,
       features: [
         "Everything in Growth",
-        "300 welcome video credits (10 videos)",
+        "150 welcome video credits (5 videos)",
         ...(hasReferral && isMonthlyBilling ? ["Limited-time invite: referrer earns 1 free Pro month"] : []),
         "Unlimited Marketplace Support",
         "Multi-Agent Queueing",
@@ -139,7 +139,7 @@ export default function App() {
       annual: 299,
       posts: "3 Seats + Manager Dashboard",
       team: true,
-      features: ["Everything in Pro", "300 team welcome video credits (10 videos)", "3 Agent Seats Included", "Live Manager Dashboard", "Real-Time Team Presence", "Post Attribution + Analytics", "Extra Seats $125/mo"]
+      features: ["Everything in Pro", "150 team welcome video credits (5 videos)", "3 Agent Seats Included", "Live Manager Dashboard", "Real-Time Team Presence", "Post Attribution + Analytics", "Extra Seats $125/mo"]
     }
   ];
 
@@ -151,7 +151,7 @@ export default function App() {
 
   const videoHighlights = [
     { icon: CreditCard, label: "Video Cost", value: "30 Credits", detail: "Per generated walkaround" },
-    { icon: Gift, label: "Pro Welcome", value: "300 Credits", detail: "10 videos on Pro or Team setup" },
+    { icon: Gift, label: "Pro Welcome", value: "150 Credits", detail: "5 videos on Pro or Team setup" },
     { icon: Volume2, label: "Sound Included", value: "MP4 + Audio", detail: "Built for Marketplace playback" }
   ];
 
@@ -721,7 +721,7 @@ export default function App() {
                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Optional Add-On</p>
                     <h3 className="mt-1 text-2xl font-black uppercase italic tracking-tighter text-white">Video Credit Packs</h3>
                     <p className="mt-2 max-w-2xl text-sm font-bold italic leading-relaxed text-slate-400">
-                      Videos are usage-based at 30 credits each. Pro and Team accounts include 300 welcome credits; buy more only when you need more walkarounds.
+                      Videos are usage-based at 30 credits each. Pro and Team accounts include 150 welcome credits; buy more only when you need more walkarounds.
                     </p>
                   </div>
                 </div>
@@ -805,7 +805,7 @@ export default function App() {
             {[
               { q: "Which inventory feeds do you work with?", a: "We work seamlessly with CarGurus and Cars.com feeds. Simply paste your public feed URL, and our system will extract all vehicle data, photos, and specs automatically." },
               { q: "How does this help me sell more cars?", a: "AutoLander creates high-quality, professional listings that stand out in the Marketplace. By using AI to optimize photos and descriptions, dealers typically see a 3x increase in lead volume and sell an average of 12 extra units per month." },
-              { q: "Do you support AI videos?", a: "Yes. Marketplace videos turn a polished vehicle photo into a short walkaround clip with audio. Videos cost 30 credits each; Pro and Team accounts receive 300 welcome credits when they upgrade or create a team, and additional packs start at $14.99 for 150 credits." },
+              { q: "Do you support AI videos?", a: "Yes. Marketplace videos turn a polished vehicle photo into a short walkaround clip with audio. Videos cost 30 credits each; Pro and Team accounts receive 150 welcome credits when they upgrade or create a team, and additional packs start at $14.99 for 150 credits." },
               { q: "Do I need any technical skills?", a: "Zero. If you can copy and paste a URL and click a button, you can use AutoLander. It's designed for busy sales teams who want to sell cars, not manage software." },
               { q: "Is there a limit on how many cars I can post?", a: "Limits are based on your plan (5, 10, or 20 per day). This ensures your Facebook account stays safe and compliant with Marketplace algorithms." }
             ].map((faq, i) => (
