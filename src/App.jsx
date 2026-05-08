@@ -429,161 +429,6 @@ export default function App() {
       </section>
 
       {/* AI Photo Studio Section */}
-      {/* AI Studio — combined Photo Studio + Credits + Walkaround demo */}
-      {/* AI Studio — single linear flow: header, description, tabbed visual demo, backdrops, CTA */}
-      <section id="studio" className="py-24 lg:py-40 bg-[#080808] border-y border-white/5 overflow-hidden">
-        <div className="max-w-5xl mx-auto px-6">
-
-          {/* Header + description */}
-          <FadeIn>
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-4xl lg:text-7xl font-black mb-8 tracking-tighter leading-none uppercase italic">
-                AI PHOTO <span className="text-blue-500">STUDIO.</span>
-              </h2>
-              <p className="text-slate-400 text-lg font-medium italic max-w-3xl mx-auto leading-relaxed">
-                Replace messy lot backgrounds with showroom-quality backdrops <strong>and</strong> generate AI walkaround videos with sound — all from one studio. Every plan includes free credits to get started.
-              </p>
-            </div>
-          </FadeIn>
-
-          {/* Tabbed visual demo — one frame at a time, video lazy-loaded on click */}
-          <FadeIn direction="up">
-            <div className="relative">
-              <div className="hidden md:block absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
-
-              {/* Tab buttons */}
-              <div className="relative inline-flex p-1.5 mb-6 rounded-2xl bg-white/[0.04] border border-white/5 backdrop-blur-sm">
-                {[
-                  { id: 'before', label: 'Before' },
-                  { id: 'after', label: 'After' },
-                  { id: 'walkaround', label: 'Walkaround' },
-                ].map((tab) => {
-                  const active = studioView === tab.id;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setStudioView(tab.id)}
-                      className={`px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${
-                        active
-                          ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
-                          : 'text-slate-400 hover:text-white'
-                      }`}
-                    >
-                      {tab.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Visual frame — single aspect-ratio container, content swaps */}
-              <div className="relative aspect-[4/3] sm:aspect-video rounded-3xl overflow-hidden border border-blue-500/30 bg-black shadow-2xl shadow-blue-500/10">
-
-                {/* Before image */}
-                <img
-                  src="/studio-before.webp"
-                  alt="Original Dealer Lot Photo"
-                  loading="lazy"
-                  decoding="async"
-                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'before' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-                />
-                {studioView === 'before' && (
-                  <div className="absolute top-5 left-5 px-5 py-2 bg-red-600/90 backdrop-blur-md rounded-xl text-xs font-black text-white uppercase tracking-widest">
-                    Before — Original Lot Photo
-                  </div>
-                )}
-
-                {/* After image */}
-                <img
-                  src="/studio-after.webp"
-                  alt="AI Studio — Outdoor Clean Background"
-                  loading="lazy"
-                  decoding="async"
-                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'after' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-                />
-                {studioView === 'after' && (
-                  <div className="absolute top-5 right-5 px-5 py-2 bg-blue-600 rounded-xl text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/30">
-                    After — AI Studio
-                  </div>
-                )}
-
-                {/* Walkaround — click-to-play. <video> only mounts after user clicks. */}
-                <div className={`absolute inset-0 transition-opacity duration-500 ${studioView === 'walkaround' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-                  {videoLoaded ? (
-                    <video
-                      className="absolute inset-0 h-full w-full bg-black object-cover"
-                      controls
-                      autoPlay
-                      playsInline
-                      preload="metadata"
-                      poster="/marketplace-video-poster.webp"
-                      aria-label="AutoLander AI walkaround video example"
-                    >
-                      <source src="/marketplace-video-example.mp4" type="video/mp4" />
-                    </video>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => setVideoLoaded(true)}
-                      className="group absolute inset-0 h-full w-full"
-                      aria-label="Play walkaround video"
-                    >
-                      <img
-                        src="/marketplace-video-poster.webp"
-                        alt="Walkaround video preview"
-                        loading="lazy"
-                        className="absolute inset-0 h-full w-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/20" />
-                      <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
-                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/95 shadow-2xl shadow-blue-500/40 transition-transform group-hover:scale-110">
-                          <PlayCircle className="h-12 w-12 text-blue-600" />
-                        </div>
-                      </div>
-                      <div className="absolute top-5 right-5 px-5 py-2 bg-blue-600 rounded-xl text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/30">
-                        Walkaround — AI Video + Sound
-                      </div>
-                    </button>
-                  )}
-                </div>
-
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Backdrop options below the visual */}
-          <FadeIn>
-            <div className="mt-12">
-              <p className="text-center text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-5">
-                Backdrop options
-              </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-2xl mx-auto">
-                {['Showroom White', 'Dark Showroom', 'Outdoor Sunset', 'Mountain Clearing', 'Coastal Overlook', 'Custom Upload'].map((opt, i) => (
-                  <div key={i} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.03] border border-white/5 text-slate-300 font-bold text-xs sm:text-sm italic justify-center">
-                    <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
-                    <span className="truncate">{opt}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* CTA last */}
-          <FadeIn>
-            <div className="mt-12 flex justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => window.open(demoUrl, "_blank")}
-                className="px-10 py-5 rounded-2xl bg-white text-black font-black text-lg transition-all uppercase italic"
-              >
-                See the Studio in Action
-              </motion.button>
-            </div>
-          </FadeIn>
-
-        </div>
-      </section>
-
       {/* Pricing Section */}
       <section id="pricing" className="py-24 lg:py-40 relative">
         <div className="max-w-7xl mx-auto px-6">
@@ -744,6 +589,161 @@ export default function App() {
               );
             })}
           </div>
+
+        </div>
+      </section>
+
+      {/* AI Studio — combined Photo Studio + Credits + Walkaround demo */}
+      {/* AI Studio — single linear flow: header, description, tabbed visual demo, backdrops, CTA */}
+      <section id="studio" className="py-24 lg:py-40 bg-[#080808] border-y border-white/5 overflow-hidden">
+        <div className="max-w-5xl mx-auto px-6">
+
+          {/* Header + description */}
+          <FadeIn>
+            <div className="text-center mb-12 lg:mb-16">
+              <h2 className="text-4xl lg:text-7xl font-black mb-8 tracking-tighter leading-none uppercase italic">
+                AI PHOTO <span className="text-blue-500">STUDIO.</span>
+              </h2>
+              <p className="text-slate-400 text-lg font-medium italic max-w-3xl mx-auto leading-relaxed">
+                Replace messy lot backgrounds with showroom-quality backdrops <strong>and</strong> generate AI walkaround videos with sound — all from one studio. Every plan includes free credits to get started.
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Tabbed visual demo — one frame at a time, video lazy-loaded on click */}
+          <FadeIn direction="up">
+            <div className="relative">
+              <div className="hidden md:block absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
+
+              {/* Tab buttons */}
+              <div className="relative inline-flex p-1.5 mb-6 rounded-2xl bg-white/[0.04] border border-white/5 backdrop-blur-sm">
+                {[
+                  { id: 'before', label: 'Before' },
+                  { id: 'after', label: 'After' },
+                  { id: 'walkaround', label: 'Walkaround' },
+                ].map((tab) => {
+                  const active = studioView === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setStudioView(tab.id)}
+                      className={`px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${
+                        active
+                          ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
+                          : 'text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Visual frame — single aspect-ratio container, content swaps */}
+              <div className="relative aspect-[4/3] sm:aspect-video rounded-3xl overflow-hidden border border-blue-500/30 bg-black shadow-2xl shadow-blue-500/10">
+
+                {/* Before image */}
+                <img
+                  src="/studio-before.webp"
+                  alt="Original Dealer Lot Photo"
+                  loading="lazy"
+                  decoding="async"
+                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'before' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                />
+                {studioView === 'before' && (
+                  <div className="absolute top-5 left-5 px-5 py-2 bg-red-600/90 backdrop-blur-md rounded-xl text-xs font-black text-white uppercase tracking-widest">
+                    Before — Original Lot Photo
+                  </div>
+                )}
+
+                {/* After image */}
+                <img
+                  src="/studio-after.webp"
+                  alt="AI Studio — Outdoor Clean Background"
+                  loading="lazy"
+                  decoding="async"
+                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'after' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                />
+                {studioView === 'after' && (
+                  <div className="absolute top-5 right-5 px-5 py-2 bg-blue-600 rounded-xl text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/30">
+                    After — AI Studio
+                  </div>
+                )}
+
+                {/* Walkaround — click-to-play. <video> only mounts after user clicks. */}
+                <div className={`absolute inset-0 transition-opacity duration-500 ${studioView === 'walkaround' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                  {videoLoaded ? (
+                    <video
+                      className="absolute inset-0 h-full w-full bg-black object-cover"
+                      controls
+                      autoPlay
+                      playsInline
+                      preload="metadata"
+                      poster="/marketplace-video-poster.webp"
+                      aria-label="AutoLander AI walkaround video example"
+                    >
+                      <source src="/marketplace-video-example.mp4" type="video/mp4" />
+                    </video>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setVideoLoaded(true)}
+                      className="group absolute inset-0 h-full w-full"
+                      aria-label="Play walkaround video"
+                    >
+                      <img
+                        src="/marketplace-video-poster.webp"
+                        alt="Walkaround video preview"
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/20" />
+                      <div className="absolute inset-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/95 shadow-2xl shadow-blue-500/40 transition-transform group-hover:scale-110">
+                          <PlayCircle className="h-12 w-12 text-blue-600" />
+                        </div>
+                      </div>
+                      <div className="absolute top-5 right-5 px-5 py-2 bg-blue-600 rounded-xl text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/30">
+                        Walkaround — AI Video + Sound
+                      </div>
+                    </button>
+                  )}
+                </div>
+
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* Backdrop options below the visual */}
+          <FadeIn>
+            <div className="mt-12">
+              <p className="text-center text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-5">
+                Backdrop options
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-2xl mx-auto">
+                {['Showroom White', 'Dark Showroom', 'Outdoor Sunset', 'Mountain Clearing', 'Coastal Overlook', 'Custom Upload'].map((opt, i) => (
+                  <div key={i} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.03] border border-white/5 text-slate-300 font-bold text-xs sm:text-sm italic justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
+                    <span className="truncate">{opt}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* CTA last */}
+          <FadeIn>
+            <div className="mt-12 flex justify-center">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => window.open(demoUrl, "_blank")}
+                className="px-10 py-5 rounded-2xl bg-white text-black font-black text-lg transition-all uppercase italic"
+              >
+                See the Studio in Action
+              </motion.button>
+            </div>
+          </FadeIn>
 
         </div>
       </section>
