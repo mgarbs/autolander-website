@@ -141,55 +141,73 @@ export default function App() {
   const pricing = [
     {
       name: "Starter",
-      monthly: 75,
-      annual: 59,
+      monthly: 39,
+      annual: 29,
       posts: "5 Posts / Day",
-      features: ["Instant Inventory Sync", "AI Photo Studio", "Auto Queue", "Standard AI Descriptions", "Feed Sync (CarGurus/Cars.com)"]
+      features: [
+        "Instant Inventory Sync",
+        "Auto Queue",
+        "Standard AI Descriptions",
+        "Feed Sync (CarGurus / Cars.com)",
+        "1 Agent Seat",
+        "25 welcome AI Studio credits",
+      ]
     },
     {
       name: "Growth",
-      monthly: 100,
-      annual: 79,
+      monthly: 59,
+      annual: 44,
       posts: "10 Posts / Day",
-      features: ["Everything in Starter", "Premium AI Backgrounds", "Custom Studio Backgrounds", "Advanced SEO Descriptions", "Priority Syncing"]
+      features: [
+        "Everything in Starter",
+        "Pro AI Descriptions",
+        "Priority Syncing",
+        "1 Agent Seat",
+        "50 welcome AI Studio credits",
+      ]
     },
     {
       name: "Pro",
-      monthly: 125,
-      annual: 99,
+      monthly: 79,
+      annual: 59,
       posts: "20 Posts / Day",
       popular: true,
-      proPromo: true,
       features: [
         "Everything in Growth",
-        "150 welcome video credits (5 videos)",
-        ...(hasReferral && isMonthlyBilling ? ["Limited-time invite: referrer earns 1 free Pro month"] : []),
         "Unlimited Marketplace Support",
         "Multi-Agent Queueing",
         "Concierge Setup",
-        "Dedicated Support Agent"
+        "Dedicated Support Agent",
+        "150 welcome AI Studio credits",
       ]
     },
     {
       name: "Team",
-      monthly: 375,
-      annual: 299,
+      monthly: 237,
+      annual: 178,
       posts: "3 Seats + Manager Dashboard",
       team: true,
-      features: ["Everything in Pro", "150 team welcome video credits (5 videos)", "3 Agent Seats Included", "Live Manager Dashboard", "Real-Time Team Presence", "Post Attribution + Analytics", "Extra Seats $125/mo"]
+      features: [
+        "Everything in Pro",
+        "3 Agent Seats Included",
+        "Live Manager Dashboard",
+        "Real-Time Team Presence",
+        "Post Attribution + Analytics",
+        "Extra Seats $79/mo",
+        "300 welcome AI Studio credits",
+      ]
     }
   ];
 
-  const videoCreditPacks = [
-    { name: "Starter", credits: "150 credits", videos: "5 videos", price: "$14.99" },
-    { name: "Popular", credits: "750 credits", videos: "25 videos", price: "$59.99", savings: "$15 savings" },
-    { name: "Best Value", credits: "2,250 credits", videos: "75 videos", price: "$149.99", savings: "$75 savings" }
+  const creditPacks = [
+    { name: "Starter Pack", credits: "150 credits", detail: "≈ 75 vehicles or 5 videos", price: "$14.99" },
+    { name: "Popular Pack", credits: "750 credits", detail: "≈ 375 vehicles or 25 videos", price: "$59.99", savings: "Save $15" },
+    { name: "Best Value", credits: "2,250 credits", detail: "≈ 1,125 vehicles or 75 videos", price: "$149.99", savings: "Save $75" }
   ];
 
   const videoHighlights = [
-    { icon: CreditCard, label: "Video Cost", value: "30 Credits", detail: "Per generated walkaround" },
-    { icon: Gift, label: "Pro Welcome", value: "150 Credits", detail: "5 videos on Pro or Team setup" },
-    { icon: Volume2, label: "Sound Included", value: "MP4 + Audio", detail: "Built for Marketplace playback" }
+    { icon: ImageIcon, label: "Background Removal", value: "2 Credits / vehicle", detail: "Showroom-quality backdrops in one click" },
+    { icon: Video, label: "Walkaround Video", value: "30 Credits / video", detail: "MP4 + Audio built for Marketplace playback" }
   ];
 
   return (
@@ -399,7 +417,7 @@ export default function App() {
               <Step 
                 number="03" 
                 title="Start Auto Sales" 
-                desc="Hit 'Start' and watch as AutoLander AI removes backgrounds and publishes listings designed to rank higher and sell faster."
+                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Add AI background removal (2 credits / vehicle) for showroom-quality photos."
               />
             </FadeIn>
           </div>
@@ -421,7 +439,7 @@ export default function App() {
               <FeatureCard
                 icon={Wand2}
                 title="AI Posting & Photo Studio"
-                desc="Our AI fetches photos, removes messy backgrounds, replaces them with pro studio backdrops, generates descriptions, and posts to Marketplace — all automatically."
+                desc="Our AI fetches photos, generates descriptions, and posts to Marketplace — all automatically. Optionally enable AI background removal (2 credits / vehicle) for studio-quality results."
               />
             </FadeIn>
             <FadeIn delay={0.3} direction="up">
@@ -465,7 +483,7 @@ export default function App() {
                 AI PHOTO <br/><span className="text-blue-500">STUDIO.</span>
               </h2>
               <p className="text-slate-400 text-lg font-medium italic mb-10 leading-relaxed">
-                Turn messy lot photos into professional studio shots in one click. Our AI removes backgrounds and composites your vehicle onto premium backdrops.
+                Turn messy lot photos into professional studio shots in one click. <strong>2 credits per vehicle</strong> — first ones are free with every plan.
               </p>
               
               <div className="grid grid-cols-2 gap-4 mb-10">
@@ -526,18 +544,18 @@ export default function App() {
           <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-20 items-center">
             <FadeIn direction="right">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-8 backdrop-blur-sm">
-                <Video className="w-4 h-4" />
-                <span className="text-xs font-black uppercase tracking-widest">Marketplace Videos</span>
+                <Zap className="w-4 h-4" />
+                <span className="text-xs font-black uppercase tracking-widest">AI Studio Credits</span>
               </div>
 
               <h2 className="text-4xl lg:text-7xl font-black mb-8 tracking-tighter leading-none uppercase italic">
-                AI WALKAROUND <br/><span className="text-blue-500">VIDEOS.</span>
+                ONE POOL. <br/><span className="text-blue-500">TWO UPGRADES.</span>
               </h2>
               <p className="text-slate-400 text-lg font-medium italic mb-10 leading-relaxed">
-                Turn a polished vehicle photo into a short Marketplace-ready walkaround with realistic camera motion, audio, and fast-start MP4 delivery. Give shoppers a reason to stop scrolling before they ever message another dealer.
+                Use your AI Studio credits for showroom-quality background removal or high-impact walkaround videos. One simple credit pool powers your entire visual strategy.
               </p>
 
-              <div className="grid sm:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 {videoHighlights.map(({ icon: Icon, label, value, detail }) => (
                   <div key={label} className="rounded-3xl bg-white/[0.03] border border-white/5 p-5">
                     <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-500/10 mb-4">
@@ -677,7 +695,7 @@ export default function App() {
                 </button>
                 <div className="flex items-center gap-2">
                   <span className={`text-sm font-bold uppercase italic ${isAnnual ? 'text-white' : 'text-slate-500'}`}>Annual</span>
-                  <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-500 text-[8px] font-black uppercase tracking-widest">Save 20%</span>
+                  <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-500 text-[8px] font-black uppercase tracking-widest">Save 25%</span>
                 </div>
               </div>
             </FadeIn>
@@ -781,22 +799,22 @@ export default function App() {
                   </div>
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Optional Add-On</p>
-                    <h3 className="mt-1 text-2xl font-black uppercase italic tracking-tighter text-white">Video Credit Packs</h3>
+                    <h3 className="mt-1 text-2xl font-black uppercase italic tracking-tighter text-white">AI Studio Credit Packs</h3>
                     <p className="mt-2 max-w-2xl text-sm font-bold italic leading-relaxed text-slate-400">
-                      Videos are usage-based at 30 credits each. Pro and Team accounts include 150 welcome credits; buy more only when you need more walkarounds.
+                      Credits power both walkaround videos (30 credits) and background removal (2 credits). Every plan includes welcome credits; buy more only when you need them.
                     </p>
                   </div>
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-3 lg:min-w-[560px]">
-                  {videoCreditPacks.map((pack) => (
+                  {creditPacks.map((pack) => (
                     <div key={pack.name} className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3">
                       <div className="flex items-center justify-between gap-3">
                         <p className="text-[10px] font-black uppercase tracking-widest text-blue-400">{pack.name}</p>
                         {pack.savings && <p className="text-[9px] font-black uppercase tracking-widest text-emerald-400">{pack.savings}</p>}
                       </div>
                       <p className="mt-2 text-xl font-black italic text-white">{pack.price}</p>
-                      <p className="text-xs font-bold text-slate-400">{pack.credits} / {pack.videos}</p>
+                      <p className="text-xs font-bold text-slate-400">{pack.credits} • {pack.detail}</p>
                     </div>
                   ))}
                 </div>
@@ -866,8 +884,9 @@ export default function App() {
           <div className="space-y-6">
             {[
               { q: "Which inventory feeds do you work with?", a: "We work seamlessly with CarGurus and Cars.com feeds. Simply paste your public feed URL, and our system will extract all vehicle data, photos, and specs automatically." },
+              { q: "How much does background removal cost?", a: "Background removal uses AI Studio credits — 2 credits per vehicle (up to 4 photos auto-processed). Every plan includes welcome credits to get you started. Need more? Buy a credit pack starting at $14.99 for 150 credits." },
+              { q: "How do walkaround videos work?", a: "Marketplace videos turn a polished vehicle photo into a short walkaround clip with audio. Videos cost 30 credits each. Every plan includes welcome credits, and additional packs can be purchased in-app." },
               { q: "How does this help me sell more cars?", a: "AutoLander creates high-quality, professional listings that stand out in the Marketplace. By using AI to optimize photos and descriptions, dealers typically see a 3x increase in lead volume and sell an average of 12 extra units per month." },
-              { q: "Do you support AI videos?", a: "Yes. Marketplace videos turn a polished vehicle photo into a short walkaround clip with audio. Videos cost 30 credits each; Pro and Team accounts receive 150 welcome credits when they upgrade or create a team, and additional packs start at $14.99 for 150 credits." },
               { q: "Do I need any technical skills?", a: "Zero. If you can copy and paste a URL and click a button, you can use AutoLander. It's designed for busy sales teams who want to sell cars, not manage software." },
               { q: "Is there a limit on how many cars I can post?", a: "Limits are based on your plan (5, 10, or 20 per day). This ensures your Facebook account stays safe and compliant with Marketplace algorithms." }
             ].map((faq, i) => (
