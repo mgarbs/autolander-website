@@ -185,8 +185,8 @@ export default function App() {
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
              <a href="#how-it-works" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">How It Works</a>
              <a href="#features" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Features</a>
-             <a href="#studio" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">AI Studio</a>
              <a href="#pricing" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Pricing</a>
+             <a href="#studio" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">AI Studio</a>
           </div>
           <div className="flex items-center shrink-0">
             <button
