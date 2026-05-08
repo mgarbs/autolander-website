@@ -167,20 +167,20 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-slate-50 font-sans selection:bg-blue-500/30 selection:text-blue-200">
-      {/* Background Orbs */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-600/10 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '2s' }} />
+      {/* Background Orbs — hidden on mobile (large blur filters tank GPU on mobile) */}
+      <div className="hidden md:block fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-600/10 rounded-full blur-[120px]" />
       </div>
 
       {/* Navbar */}
       <nav className="fixed w-full z-50 top-0 px-4 sm:px-6 py-4">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between bg-black/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between bg-black/80 md:bg-black/40 md:backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
           <div className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
               <CarFront className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <img src="/autolander-logo.png" alt="AutoLander" className="h-8 sm:h-14 w-auto group-hover:scale-105 transition-transform duration-300" />
+            <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" decoding="async" className="h-8 sm:h-14 w-auto group-hover:scale-105 transition-transform duration-300" />
           </div>
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
              <a href="#how-it-works" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">How It Works</a>
@@ -449,7 +449,7 @@ export default function App() {
           {/* Tabbed visual demo — one frame at a time, video lazy-loaded on click */}
           <FadeIn direction="up">
             <div className="relative">
-              <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
+              <div className="hidden md:block absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
 
               {/* Tab buttons */}
               <div className="relative inline-flex p-1.5 mb-6 rounded-2xl bg-white/[0.04] border border-white/5 backdrop-blur-sm">
