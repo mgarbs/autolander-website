@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
@@ -9,7 +9,7 @@ import {
   ArrowDownCircle, HelpCircle, Check, X, Gift, Download, Copy,
   PlayCircle
 } from 'lucide-react';
-import ChatAssistant from './components/ChatAssistant.jsx';
+const ChatAssistant = lazy(() => import('./components/ChatAssistant.jsx'));
 
 const RELEASE_BASE_URL = "https://github.com/mgarbs/autolander-releases/releases/latest/download";
 const DOWNLOADS = {
@@ -480,9 +480,10 @@ export default function App() {
 
                 {/* Before image */}
                 <img
-                  src="/studio-before.jpg"
+                  src="/studio-before.webp"
                   alt="Original Dealer Lot Photo"
                   loading="lazy"
+                  decoding="async"
                   className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'before' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                 />
                 {studioView === 'before' && (
@@ -493,9 +494,10 @@ export default function App() {
 
                 {/* After image */}
                 <img
-                  src="/studio-after.jpg"
+                  src="/studio-after.webp"
                   alt="AI Studio — Outdoor Clean Background"
                   loading="lazy"
+                  decoding="async"
                   className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'after' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                 />
                 {studioView === 'after' && (
@@ -554,11 +556,11 @@ export default function App() {
               <p className="text-center text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-5">
                 Backdrop options
               </p>
-              <div className="flex flex-wrap justify-center gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-2xl mx-auto">
                 {['Showroom White', 'Dark Showroom', 'Outdoor Sunset', 'Mountain Clearing', 'Coastal Overlook', 'Custom Upload'].map((opt, i) => (
-                  <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/5 text-slate-300 font-bold text-sm italic">
-                    <CheckCircle2 className="w-4 h-4 text-blue-500" />
-                    {opt}
+                  <div key={i} className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/[0.03] border border-white/5 text-slate-300 font-bold text-xs sm:text-sm italic justify-center">
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0" />
+                    <span className="truncate">{opt}</span>
                   </div>
                 ))}
               </div>
@@ -879,7 +881,9 @@ export default function App() {
           </div>
         </div>
       </footer>
-      <ChatAssistant demoUrl={demoUrl} supportEmail="support@autolander.ai" />
+      <Suspense fallback={null}>
+        <ChatAssistant demoUrl={demoUrl} supportEmail="support@autolander.ai" />
+      </Suspense>
     </div>
   );
 }
