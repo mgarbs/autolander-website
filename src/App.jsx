@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
-  Activity, Calendar, Brain, BadgeDollarSign, 
+  Activity, Calendar, Brain,
   MessageSquareText, CarFront, ShieldCheck, Sparkles, TrendingUp,
   MapPin, Gauge, Fuel, Zap, Clock, Trophy, Users, BarChart,
   Layers, Wand2, Image as ImageIcon, Layout, Zap as Fast,
@@ -199,12 +199,6 @@ export default function App() {
     }
   ];
 
-  const creditPacks = [
-    { name: "Starter Pack", credits: "150 credits", detail: "≈ 75 vehicles or 5 videos", price: "$14.99" },
-    { name: "Popular Pack", credits: "750 credits", detail: "≈ 375 vehicles or 25 videos", price: "$59.99", savings: "Save $15" },
-    { name: "Best Value", credits: "2,250 credits", detail: "≈ 1,125 vehicles or 75 videos", price: "$149.99", savings: "Save $75" }
-  ];
-
   const videoHighlights = [
     { icon: ImageIcon, label: "Background Removal", value: "2 Credits / vehicle", detail: "Showroom-quality backdrops in one click" },
     { icon: Video, label: "Walkaround Video", value: "30 Credits / video", detail: "MP4 + Audio built for Marketplace playback" }
@@ -231,7 +225,6 @@ export default function App() {
              <a href="#how-it-works" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">How It Works</a>
              <a href="#features" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Features</a>
              <a href="#studio" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">AI Studio</a>
-             <a href="#videos" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Videos</a>
              <a href="#pricing" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Pricing</a>
           </div>
           <div className="flex items-center shrink-0">
@@ -475,8 +468,11 @@ export default function App() {
       </section>
 
       {/* AI Photo Studio Section */}
+      {/* AI Studio — combined Photo Studio + Credits + Walkaround demo */}
       <section id="studio" className="py-24 lg:py-40 bg-[#080808] border-y border-white/5 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6 space-y-24 lg:space-y-32">
+
+          {/* Block 1: AI Photo Studio (header + backdrops + before/after) */}
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-center">
             <FadeIn direction="right">
               <h2 className="text-4xl lg:text-7xl font-black mb-8 tracking-tighter leading-none uppercase italic">
@@ -485,7 +481,7 @@ export default function App() {
               <p className="text-slate-400 text-lg font-medium italic mb-10 leading-relaxed">
                 Turn messy lot photos into professional studio shots in one click. <strong>2 credits per vehicle</strong> — first ones are free with every plan.
               </p>
-              
+
               <div className="grid grid-cols-2 gap-4 mb-10">
                 {['Showroom White', 'Dark Showroom', 'Outdoor Sunset', 'Mountain Clearing', 'Coastal Overlook', 'Custom Upload'].map((opt, i) => (
                   <div key={i} className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/[0.03] border border-white/5 text-slate-300 font-bold text-sm italic">
@@ -535,97 +531,94 @@ export default function App() {
               </div>
             </FadeIn>
           </div>
-        </div>
-      </section>
 
-      {/* Marketplace Videos Section */}
-      <section id="videos" className="py-24 lg:py-40 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-20 items-center">
-            <FadeIn direction="right">
+          {/* Block 2: One Pool. Two Upgrades. */}
+          <div className="max-w-4xl mx-auto text-center">
+            <FadeIn>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-8 backdrop-blur-sm">
                 <Zap className="w-4 h-4" />
                 <span className="text-xs font-black uppercase tracking-widest">AI Studio Credits</span>
               </div>
-
               <h2 className="text-4xl lg:text-7xl font-black mb-8 tracking-tighter leading-none uppercase italic">
                 ONE POOL. <br/><span className="text-blue-500">TWO UPGRADES.</span>
               </h2>
-              <p className="text-slate-400 text-lg font-medium italic mb-10 leading-relaxed">
+              <p className="text-slate-400 text-lg font-medium italic mb-12 leading-relaxed">
                 Use your AI Studio credits for showroom-quality background removal or high-impact walkaround videos. One simple credit pool powers your entire visual strategy.
               </p>
-
-              <div className="grid sm:grid-cols-2 gap-4">
-                {videoHighlights.map(({ icon: Icon, label, value, detail }) => (
-                  <div key={label} className="rounded-3xl bg-white/[0.03] border border-white/5 p-5">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-500/10 mb-4">
-                      <Icon className="h-5 w-5 text-blue-500" />
-                    </div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{label}</p>
-                    <p className="mt-1 text-xl font-black italic text-white">{value}</p>
-                    <p className="mt-2 text-xs font-bold leading-relaxed text-slate-400">{detail}</p>
-                  </div>
-                ))}
-              </div>
             </FadeIn>
 
-            <FadeIn direction="left">
-              <div className="relative">
-                <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
-                <div ref={videoDemoRef} className="relative overflow-hidden rounded-3xl border border-blue-500/30 bg-black shadow-2xl shadow-blue-500/10">
-                  <video
-                    className="aspect-video w-full bg-black object-cover"
-                    controls
-                    playsInline
-                    preload="metadata"
-                    poster="/marketplace-video-poster.webp"
-                    aria-label="Original truck photo transitioning into AutoLander AI walkaround video example"
-                  >
-                    <source src="/marketplace-video-example.mp4" type="video/mp4" />
-                  </video>
-                  <div className={`absolute top-4 left-4 flex items-center gap-2 rounded-2xl bg-black/65 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md transition-opacity duration-500 ${showVideoIntro ? 'opacity-0' : 'opacity-100'}`}>
-                    <PlayCircle className="h-4 w-4 text-blue-400" />
-                    Example Result
+            <div className="grid sm:grid-cols-2 gap-4 text-left">
+              {videoHighlights.map(({ icon: Icon, label, value, detail }) => (
+                <div key={label} className="rounded-3xl bg-white/[0.03] border border-white/5 p-6">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-500/10 mb-4">
+                    <Icon className="h-5 w-5 text-blue-500" />
                   </div>
-                  <div
-                    aria-hidden={!showVideoIntro}
-                    className={`absolute inset-0 z-10 bg-black transition-opacity duration-700 ease-out ${showVideoIntro ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
-                  >
-                    <img
-                      src="/marketplace-video-poster.webp"
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/20" />
-                    <div className="absolute inset-3 rounded-2xl border border-white/25 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.35)]" />
-                    <div className="absolute top-4 left-4 flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-[10px] font-black uppercase tracking-widest text-black shadow-xl shadow-black/30">
-                      <ImageIcon className="h-4 w-4 text-blue-600" />
-                      Original Photo
-                    </div>
-                    <div className="absolute bottom-4 left-4 right-4 rounded-2xl bg-black/70 p-3 backdrop-blur-md sm:left-auto sm:max-w-[330px]">
-                      <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-blue-300">
-                        <ArrowRight className="h-4 w-4" />
-                        Transitioning to Video Render
-                      </p>
-                      <p className="mt-1 text-sm font-black italic leading-tight text-white">
-                        Same frame. Original image first, then the 10s walkaround.
-                      </p>
-                    </div>
-                  </div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">{label}</p>
+                  <p className="mt-1 text-xl font-black italic text-white">{value}</p>
+                  <p className="mt-2 text-xs font-bold leading-relaxed text-slate-400">{detail}</p>
                 </div>
-                <div className="mt-5 grid sm:grid-cols-2 gap-4">
-                  <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Input</p>
-                    <p className="mt-1 text-lg font-black italic text-white">One cleaned vehicle image</p>
-                  </div>
-                  <div className="rounded-3xl border border-blue-500/30 bg-blue-500/10 p-5">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-blue-300">Output</p>
-                    <p className="mt-1 text-lg font-black italic text-white">Short video with sound</p>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
+              ))}
+            </div>
           </div>
+
+          {/* Block 3: Walkaround Demo */}
+          <FadeIn direction="up">
+            <div className="relative max-w-4xl mx-auto">
+              <div className="absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
+              <div ref={videoDemoRef} className="relative overflow-hidden rounded-3xl border border-blue-500/30 bg-black shadow-2xl shadow-blue-500/10">
+                <video
+                  className="aspect-video w-full bg-black object-cover"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster="/marketplace-video-poster.webp"
+                  aria-label="Original truck photo transitioning into AutoLander AI walkaround video example"
+                >
+                  <source src="/marketplace-video-example.mp4" type="video/mp4" />
+                </video>
+                <div className={`absolute top-4 left-4 flex items-center gap-2 rounded-2xl bg-black/65 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-white backdrop-blur-md transition-opacity duration-500 ${showVideoIntro ? 'opacity-0' : 'opacity-100'}`}>
+                  <PlayCircle className="h-4 w-4 text-blue-400" />
+                  Example Result
+                </div>
+                <div
+                  aria-hidden={!showVideoIntro}
+                  className={`absolute inset-0 z-10 bg-black transition-opacity duration-700 ease-out ${showVideoIntro ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+                >
+                  <img
+                    src="/marketplace-video-poster.webp"
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/5 to-black/20" />
+                  <div className="absolute inset-3 rounded-2xl border border-white/25 shadow-[inset_0_0_0_1px_rgba(59,130,246,0.35)]" />
+                  <div className="absolute top-4 left-4 flex items-center gap-2 rounded-2xl bg-white px-4 py-2 text-[10px] font-black uppercase tracking-widest text-black shadow-xl shadow-black/30">
+                    <ImageIcon className="h-4 w-4 text-blue-600" />
+                    Original Photo
+                  </div>
+                  <div className="absolute bottom-4 left-4 right-4 rounded-2xl bg-black/70 p-3 backdrop-blur-md sm:left-auto sm:max-w-[330px]">
+                    <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-blue-300">
+                      <ArrowRight className="h-4 w-4" />
+                      Transitioning to Video Render
+                    </p>
+                    <p className="mt-1 text-sm font-black italic leading-tight text-white">
+                      Same frame. Original image first, then the 10s walkaround.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-5 grid sm:grid-cols-2 gap-4">
+                <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-5">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Input</p>
+                  <p className="mt-1 text-lg font-black italic text-white">One cleaned vehicle image</p>
+                </div>
+                <div className="rounded-3xl border border-blue-500/30 bg-blue-500/10 p-5">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-blue-300">Output</p>
+                  <p className="mt-1 text-lg font-black italic text-white">Short video with sound</p>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+
         </div>
       </section>
 
@@ -790,37 +783,6 @@ export default function App() {
             })}
           </div>
 
-          <FadeIn delay={0.2} direction="up">
-            <div className="mt-10 rounded-3xl border border-white/10 bg-white/[0.025] p-5 sm:p-6">
-              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex gap-4">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-blue-500/10">
-                    <BadgeDollarSign className="h-6 w-6 text-blue-500" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Optional Add-On</p>
-                    <h3 className="mt-1 text-2xl font-black uppercase italic tracking-tighter text-white">AI Studio Credit Packs</h3>
-                    <p className="mt-2 max-w-2xl text-sm font-bold italic leading-relaxed text-slate-400">
-                      Credits power both walkaround videos (30 credits) and background removal (2 credits). Every plan includes welcome credits; buy more only when you need them.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-3 lg:min-w-[560px]">
-                  {creditPacks.map((pack) => (
-                    <div key={pack.name} className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-blue-400">{pack.name}</p>
-                        {pack.savings && <p className="text-[9px] font-black uppercase tracking-widest text-emerald-400">{pack.savings}</p>}
-                      </div>
-                      <p className="mt-2 text-xl font-black italic text-white">{pack.price}</p>
-                      <p className="text-xs font-bold text-slate-400">{pack.credits} • {pack.detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
@@ -884,8 +846,8 @@ export default function App() {
           <div className="space-y-6">
             {[
               { q: "Which inventory feeds do you work with?", a: "We work seamlessly with CarGurus and Cars.com feeds. Simply paste your public feed URL, and our system will extract all vehicle data, photos, and specs automatically." },
-              { q: "How much does background removal cost?", a: "Background removal uses AI Studio credits — 2 credits per vehicle (up to 4 photos auto-processed). Every plan includes welcome credits to get you started. Need more? Buy a credit pack starting at $14.99 for 150 credits." },
-              { q: "How do walkaround videos work?", a: "Marketplace videos turn a polished vehicle photo into a short walkaround clip with audio. Videos cost 30 credits each. Every plan includes welcome credits, and additional packs can be purchased in-app." },
+              { q: "How much does background removal cost?", a: "Background removal uses AI Studio credits — 2 credits per vehicle (up to 4 photos auto-processed). Every plan includes welcome credits to get you started, and you can purchase more credits in-app whenever you need them." },
+              { q: "How do walkaround videos work?", a: "Marketplace videos turn a polished vehicle photo into a short walkaround clip with audio. Videos cost 30 credits each. Every plan includes welcome credits, and you can purchase more credits in-app." },
               { q: "How does this help me sell more cars?", a: "AutoLander creates high-quality, professional listings that stand out in the Marketplace. By using AI to optimize photos and descriptions, dealers typically see a 3x increase in lead volume and sell an average of 12 extra units per month." },
               { q: "Do I need any technical skills?", a: "Zero. If you can copy and paste a URL and click a button, you can use AutoLander. It's designed for busy sales teams who want to sell cars, not manage software." },
               { q: "Is there a limit on how many cars I can post?", a: "Limits are based on your plan (5, 10, or 20 per day). This ensures your Facebook account stays safe and compliant with Marketplace algorithms." }
