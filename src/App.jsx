@@ -115,7 +115,6 @@ export default function App() {
         "Auto Queue",
         "Standard AI Descriptions",
         "Feed Sync (CarGurus / Cars.com)",
-        "1 Agent Seat",
         "25 welcome AI Studio credits",
       ]
     },
@@ -128,7 +127,6 @@ export default function App() {
         "Everything in Starter",
         "Pro AI Descriptions",
         "Priority Syncing",
-        "1 Agent Seat",
         "50 welcome AI Studio credits",
       ]
     },
@@ -141,7 +139,6 @@ export default function App() {
       features: [
         "Everything in Growth",
         "Unlimited Marketplace Support",
-        "Multi-Agent Queueing",
         "Concierge Setup",
         "Dedicated Support Agent",
         "150 welcome AI Studio credits",
