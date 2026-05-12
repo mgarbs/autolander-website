@@ -368,7 +368,7 @@ export default function App() {
               <Step 
                 number="03" 
                 title="Start Auto Sales" 
-                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Add AI background replacement (30 credits / vehicle) for showroom-quality photos."
+                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Add AI background replacement (15 credits / vehicle) for showroom-quality photos."
               />
             </FadeIn>
           </div>
@@ -390,7 +390,7 @@ export default function App() {
               <FeatureCard
                 icon={Wand2}
                 title="AI Posting & Photo Studio"
-                desc="Our AI fetches photos, generates descriptions, and posts to Marketplace — all automatically. Optionally enable AI background replacement (30 credits / vehicle) for studio-quality results."
+                desc="Our AI fetches photos, generates descriptions, and posts to Marketplace — all automatically. Optionally enable AI background replacement (15 credits / vehicle) for studio-quality results."
               />
             </FadeIn>
             <FadeIn delay={0.3} direction="up">
