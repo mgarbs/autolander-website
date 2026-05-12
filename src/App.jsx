@@ -368,7 +368,7 @@ export default function App() {
               <Step 
                 number="03" 
                 title="Start Auto Sales" 
-                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Add AI background removal (2 credits / vehicle) for showroom-quality photos."
+                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Add AI background replacement (30 credits / vehicle) for showroom-quality photos."
               />
             </FadeIn>
           </div>
@@ -390,7 +390,7 @@ export default function App() {
               <FeatureCard
                 icon={Wand2}
                 title="AI Posting & Photo Studio"
-                desc="Our AI fetches photos, generates descriptions, and posts to Marketplace — all automatically. Optionally enable AI background removal (2 credits / vehicle) for studio-quality results."
+                desc="Our AI fetches photos, generates descriptions, and posts to Marketplace — all automatically. Optionally enable AI background replacement (30 credits / vehicle) for studio-quality results."
               />
             </FadeIn>
             <FadeIn delay={0.3} direction="up">
@@ -805,7 +805,7 @@ export default function App() {
           <div className="space-y-6">
             {[
               { q: "Which inventory feeds do you work with?", a: "We work seamlessly with CarGurus and Cars.com feeds. Simply paste your public feed URL, and our system will extract all vehicle data, photos, and specs automatically." },
-              { q: "How much does background removal cost?", a: "Background removal uses AI Studio credits — 2 credits per vehicle (up to 4 photos auto-processed). Every plan includes welcome credits to get you started, and you can purchase more credits in-app whenever you need them." },
+              { q: "How much does background replacement cost?", a: "Background replacement uses AI Studio credits — 30 credits per vehicle. Our AI classifies every photo in the gallery, drops dealer-ad junk automatically, leaves interior and closeup shots alone, and replaces the background on every full-exterior shot. Every plan includes welcome credits to get you started, and you can purchase more credits in-app whenever you need them." },
               { q: "How do walkaround videos work?", a: "Marketplace videos turn a polished vehicle photo into a short walkaround clip with audio. Videos cost 30 credits each. Every plan includes welcome credits, and you can purchase more credits in-app." },
               { q: "How does this help me sell more cars?", a: "AutoLander creates high-quality, professional listings that stand out in the Marketplace. By using AI to optimize photos and descriptions, dealers typically see a 3x increase in lead volume and sell an average of 12 extra units per month." },
               { q: "Do I need any technical skills?", a: "Zero. If you can copy and paste a URL and click a button, you can use AutoLander. It's designed for busy sales teams who want to sell cars, not manage software." },
