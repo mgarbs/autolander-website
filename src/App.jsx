@@ -146,18 +146,19 @@ export default function App() {
     },
     {
       name: "Team",
-      monthly: 237,
-      annual: 178,
-      posts: "3 Seats + Manager Dashboard",
+      monthly: 117,
+      annual: 87,
+      fromPrefix: true,
+      posts: "Build Your Team — Any Mix of Seats",
       team: true,
       features: [
         "Everything in Pro",
-        "3 Agent Seats Included",
+        "Minimum 3 Seats — Any Tier Mix",
+        "Starter $39 • Growth $59 • Pro $79 per seat",
         "Live Manager Dashboard",
         "Real-Time Team Presence",
         "Post Attribution + Analytics",
-        "Extra Seats $79/mo",
-        "300 welcome AI Studio credits",
+        "Welcome credits scale with team size",
       ]
     }
   ];
@@ -532,6 +533,9 @@ export default function App() {
                   <div className="mb-8">
                     <h3 className="text-2xl font-black uppercase italic tracking-tighter mb-4">{plan.name}</h3>
                     <div className="flex items-baseline gap-1">
+                      {plan.fromPrefix && (
+                        <span className="text-xs font-black uppercase tracking-widest opacity-60 mr-1">from</span>
+                      )}
                       <span className="text-4xl lg:text-5xl font-black italic tracking-tighter">${isAnnual ? plan.annual : plan.monthly}</span>
                       <span className="text-xs font-bold uppercase tracking-widest opacity-60">/ Month</span>
                     </div>
@@ -545,7 +549,7 @@ export default function App() {
                     }`}>{plan.posts}</p>
                     {plan.team && (
                       <p className="mt-3 text-[11px] font-bold text-slate-400 italic leading-relaxed">
-                        "Catch a slacking rep and the dashboard pays for itself."
+                        "Build a team that scales with you. Mix tiers, add seats anytime."
                       </p>
                     )}
                   </div>
