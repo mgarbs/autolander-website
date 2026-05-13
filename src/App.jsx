@@ -115,7 +115,7 @@ export default function App() {
         "Auto Queue",
         "Standard AI Descriptions",
         "Feed Sync (CarGurus / Cars.com)",
-        "25 welcome AI Studio credits",
+        "30 welcome AI Studio credits",
       ]
     },
     {
@@ -127,7 +127,7 @@ export default function App() {
         "Everything in Starter",
         "Pro AI Descriptions",
         "Priority Syncing",
-        "50 welcome AI Studio credits",
+        "60 welcome AI Studio credits",
       ]
     },
     {
@@ -141,7 +141,7 @@ export default function App() {
         "Unlimited Marketplace Support",
         "Concierge Setup",
         "Dedicated Support Agent",
-        "150 welcome AI Studio credits",
+        "120 welcome AI Studio credits",
       ]
     },
     {
@@ -606,7 +606,7 @@ export default function App() {
                 AI PHOTO <span className="text-blue-500">STUDIO.</span>
               </h2>
               <p className="text-slate-400 text-lg font-medium italic max-w-3xl mx-auto leading-relaxed">
-                Replace messy lot backgrounds with showroom-quality backdrops <strong>and</strong> generate AI walkaround videos with sound — all from one studio. Every plan includes free credits to get started.
+                Replace messy lot backgrounds with showroom-quality backdrops <strong>and</strong> generate cinematic AI walkaround videos — all from one studio. Every plan includes free credits to get started.
               </p>
             </div>
           </FadeIn>
@@ -809,8 +809,8 @@ export default function App() {
           <div className="space-y-6">
             {[
               { q: "Which inventory feeds do you work with?", a: "We work seamlessly with CarGurus and Cars.com feeds. Simply paste your public feed URL, and our system will extract all vehicle data, photos, and specs automatically." },
-              { q: "How much does background replacement cost?", a: "Background replacement uses AI Studio credits — 30 credits per vehicle. Our AI classifies every photo in the gallery, drops dealer-ad junk automatically, leaves interior and closeup shots alone, and replaces the background on every full-exterior shot. Every plan includes welcome credits to get you started, and you can purchase more credits in-app whenever you need them." },
-              { q: "How do walkaround videos work?", a: "Marketplace videos turn a polished vehicle photo into a short walkaround clip with audio. Videos cost 30 credits each. Every plan includes welcome credits, and you can purchase more credits in-app." },
+              { q: "How much does background replacement cost?", a: "Background replacement uses AI Studio credits — 15 credits per vehicle. Our AI classifies every photo in the gallery, drops dealer-ad junk automatically, leaves interior and closeup shots alone, and replaces the background on every full-exterior shot. Every plan includes welcome credits to get you started, and you can purchase more credits in-app whenever you need them." },
+              { q: "How do walkaround videos work?", a: "Marketplace videos turn polished vehicle photos into a cinematic 10-second walkaround clip at 1080p. Videos cost 30 credits each. Every plan includes welcome credits, and you can purchase more credits in-app." },
               { q: "How does this help me sell more cars?", a: "AutoLander creates high-quality, professional listings that stand out in the Marketplace. By using AI to optimize photos and descriptions, dealers typically see a 3x increase in lead volume and sell an average of 12 extra units per month." },
               { q: "Do I need any technical skills?", a: "Zero. If you can copy and paste a URL and click a button, you can use AutoLander. It's designed for busy sales teams who want to sell cars, not manage software." },
               { q: "Is there a limit on how many cars I can post?", a: "Limits are based on your plan (5, 10, or 20 per day). This ensures your Facebook account stays safe and compliant with Marketplace algorithms." }
