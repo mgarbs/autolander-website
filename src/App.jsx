@@ -1,5 +1,7 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import broncoBeforeImage from '../bronco-before.jpg';
+import broncoAfterImage from '../bronco-after.jpg';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain,
@@ -12,12 +14,21 @@ import {
 const ChatAssistant = lazy(() => import('./components/ChatAssistant.jsx'));
 
 const RELEASE_BASE_URL = "https://github.com/mgarbs/autolander-releases/releases/latest/download";
+const HERO_CARS_DESKTOP_SRC = '/hero-cars-layer-full.webp';
+const HERO_CARS_MOBILE_SRC = '/hero-cars-layer-900.webp';
 const DOWNLOADS = {
   windows: `${RELEASE_BASE_URL}/AutoLander-Setup.exe`,
   mac: `${RELEASE_BASE_URL}/AutoLander-Mac.dmg`,
   linux: `${RELEASE_BASE_URL}/AutoLander-Linux.AppImage`,
 };
 const REFERRAL_CODE_PATTERN = /^[a-z0-9]{4,64}$/;
+const STALE_APP_HASH_ROUTES = new Set([
+  '#/login',
+  '#/sign-in',
+  '#/signin',
+  '#/auth',
+  '#/signup',
+]);
 
 function normalizeReferralCode(value) {
   const code = typeof value === 'string' ? value.trim().toLowerCase() : '';
@@ -67,12 +78,12 @@ const FeatureCard = ({ icon: Icon, title, desc }) => (
 );
 
 const Step = ({ number, title, desc }) => (
-  <div className="relative flex flex-col items-center text-center px-4">
-    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-2xl font-black text-white mb-6 shadow-xl shadow-blue-500/20">
+  <div className="relative flex flex-col items-center text-center px-2 sm:px-4">
+    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-base font-black text-white shadow-lg shadow-blue-500/15 sm:mb-6 sm:h-16 sm:w-16 sm:rounded-2xl sm:text-2xl sm:shadow-xl sm:shadow-blue-500/20">
       {number}
     </div>
-    <h3 className="text-xl font-bold text-white mb-3 uppercase tracking-tight">{title}</h3>
-    <p className="text-slate-400 text-sm font-medium">{desc}</p>
+    <h3 className="mb-2 text-lg font-bold uppercase tracking-tight text-white sm:mb-3 sm:text-xl">{title}</h3>
+    <p className="max-w-sm text-sm font-medium leading-relaxed text-slate-400">{desc}</p>
   </div>
 );
 
@@ -80,7 +91,23 @@ export default function App() {
   const [isAnnual, setIsAnnual] = useState(false);
   const [studioView, setStudioView] = useState('after');
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [isDesktopHero, setIsDesktopHero] = useState(() => window.matchMedia('(min-width: 768px)').matches);
   const isMonthlyBilling = !isAnnual;
+
+  useEffect(() => {
+    const hash = window.location.hash.toLowerCase();
+    if (STALE_APP_HASH_ROUTES.has(hash)) {
+      window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const updateHeroViewport = () => setIsDesktopHero(mediaQuery.matches);
+    updateHeroViewport();
+    mediaQuery.addEventListener('change', updateHeroViewport);
+    return () => mediaQuery.removeEventListener('change', updateHeroViewport);
+  }, []);
 
   const demoUrl = "https://calendar.app.google/RU6wbUCbgEGjvxEF8";
   const referralCode = getReferralCodeFromPath();
@@ -197,35 +224,53 @@ export default function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 lg:pt-52 pb-20 lg:pb-40 z-10 overflow-hidden">
-        <div className="max-w-4xl mx-auto px-6 text-center">
+      <section className={`relative z-10 overflow-hidden ${hasReferral ? 'pt-32 lg:pt-52 pb-20 lg:pb-40' : 'pt-28 lg:pt-36 pb-16 lg:pb-24'}`}>
+        {!hasReferral && isDesktopHero && (
+          <div className="pointer-events-none absolute inset-0 z-0 hidden overflow-hidden md:block" aria-hidden="true">
+            <motion.img
+              initial={{ opacity: 0, x: 24, scale: 0.99 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              transition={{ duration: 0.85, ease: [0.21, 0.47, 0.32, 0.98] }}
+              src={HERO_CARS_DESKTOP_SRC}
+              alt=""
+              width="1146"
+              height="1024"
+              fetchPriority="high"
+              decoding="async"
+              className="absolute bottom-[-9%] right-[-18%] w-[86vw] max-w-[1120px] opacity-100 drop-shadow-[0_34px_70px_rgba(37,99,235,0.24)] lg:right-[-12%] lg:w-[72vw] xl:right-[-8%] xl:w-[68vw]"
+            />
+            <div className="absolute right-0 top-1/3 h-[55%] w-[46%] rounded-full bg-blue-500/10 blur-[90px]" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,#050505_0%,rgba(5,5,5,0.98)_30%,rgba(5,5,5,0.8)_45%,rgba(5,5,5,0.24)_66%,rgba(5,5,5,0.2)_100%)]" />
+            <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#050505] to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#050505] to-transparent" />
+          </div>
+        )}
+        {hasReferral ? (
+          <div className="max-w-4xl mx-auto px-6 text-center">
             <FadeIn>
               <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-8 backdrop-blur-sm">
-                {hasReferral ? <Gift className="w-4 h-4" /> : <Sparkles className="w-4 h-4" />}
+                <Gift className="w-4 h-4" />
                 <span className="text-xs font-black uppercase tracking-widest">
-                  {hasReferral ? 'Private Invite - Limited Time' : 'AI-Powered Inventory Dominance'}
+                  Private Invite - Limited Time
                 </span>
               </div>
             </FadeIn>
 
             <FadeIn delay={0.1}>
               <h1 className="text-5xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.85] text-white">
-                {hasReferral ? 'GET 25% OFF' : 'SELL 10-15 MORE'}<br />
+                GET 25% OFF<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-indigo-600">
-                  {hasReferral ? 'AUTOLANDER PRO.' : 'CARS PER MONTH.'}
+                  AUTOLANDER PRO.
                 </span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.2}>
               <p className="text-lg lg:text-xl text-slate-400 mb-10 max-w-xl mx-auto leading-relaxed font-medium italic">
-                {hasReferral
-                  ? 'Your private referral invite is ready. Subscribe to the $125/mo Pro plan and get 25% off your first Pro month. Your referrer gets a free Pro month after your payment succeeds.'
-                  : 'Dominate Facebook Marketplace with professional listings that convert. Our AI turns your inventory into a high-performance sales machine that drives more leads and closes more deals.'}
+                Your private referral invite is ready. Subscribe to the $125/mo Pro plan and get 25% off your first Pro month. Your referrer gets a free Pro month after your payment succeeds.
               </p>
             </FadeIn>
 
-            {hasReferral && (
               <FadeIn delay={0.25}>
                 <div className="max-w-2xl mx-auto mb-10 rounded-[2rem] border border-amber-400/25 bg-gradient-to-br from-amber-400/15 via-white/[0.04] to-blue-500/10 p-5 text-left shadow-2xl shadow-amber-500/10">
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -253,7 +298,6 @@ export default function App() {
                   </div>
                 </div>
               </FadeIn>
-            )}
 
             <FadeIn delay={0.3}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -263,27 +307,100 @@ export default function App() {
                   onClick={openDownload}
                   className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                 >
-                  <span>{hasReferral ? 'Download + Claim Offer' : 'Start Free Trial'}</span>
-                  {hasReferral ? <Download className="w-6 h-6" /> : <ArrowRight className="w-6 h-6" />}
+                  <span>Download + Claim Offer</span>
+                  <Download className="w-6 h-6" />
                 </motion.button>
-                {hasReferral ? (
-                  <button
-                    onClick={openInstalledApp}
-                    className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
+                <button
+                  onClick={openInstalledApp}
+                  className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
+                >
+                  Already Installed? Apply Code
+                </button>
+              </div>
+            </FadeIn>
+          </div>
+        ) : (
+          <div className="relative z-10 mx-auto flex min-h-[540px] max-w-7xl items-center px-6 lg:min-h-[590px]">
+            <div className="max-w-2xl text-left">
+              <FadeIn>
+                <div className="mb-6 inline-flex items-center gap-2 rounded-lg border border-blue-400/25 bg-blue-500/10 px-4 py-2 text-blue-300">
+                  <Facebook className="h-4 w-4" />
+                  <span className="text-xs font-black uppercase">
+                    Automatically Post Inventory to Facebook Marketplace
+                  </span>
+                </div>
+              </FadeIn>
+
+              <FadeIn delay={0.1}>
+                <h1 className="max-w-3xl text-5xl font-black uppercase leading-[0.9] text-white sm:text-6xl lg:text-7xl">
+                  SELL 10-15 MORE
+                  <span className="mt-2 block text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-600">
+                    CARS EVERY MONTH.
+                  </span>
+                </h1>
+              </FadeIn>
+
+              <FadeIn delay={0.16}>
+                <p className="mt-6 text-sm font-black uppercase text-blue-200">
+                  Automatic Facebook Marketplace posting for dealers.
+                </p>
+              </FadeIn>
+
+              <FadeIn delay={0.2}>
+                <p className="mt-5 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
+                  AutoLander automatically posts, updates, and tracks your dealership inventory on Facebook Marketplace, generating more leads with zero manual work.
+                </p>
+              </FadeIn>
+
+              <FadeIn delay={0.3}>
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                  <motion.button
+                    whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={openDownload}
+                    className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                   >
-                    Already Installed? Apply Code
-                  </button>
-                ) : (
+                    <span>Start Free Trial</span>
+                    <ArrowRight className="w-6 h-6" />
+                  </motion.button>
                   <button
                     onClick={() => window.open(demoUrl, "_blank")}
                     className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
                   >
                     Book a Demo
                   </button>
-                )}
-              </div>
-            </FadeIn>
-        </div>
+                </div>
+              </FadeIn>
+
+              <FadeIn delay={0.4}>
+                <div className="mt-6 flex flex-col gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-slate-300 sm:inline-flex sm:flex-row sm:items-center sm:gap-4">
+                  <span>Starting at $40/mo for individuals</span>
+                  <span className="hidden h-1 w-1 rounded-full bg-slate-500 sm:block" />
+                  <span>$117/mo for teams</span>
+                </div>
+              </FadeIn>
+
+              {!isDesktopHero && (
+              <FadeIn delay={0.45}>
+                <div className="relative -mx-6 mt-7 h-[340px] overflow-hidden md:hidden" aria-hidden="true">
+                  <div className="absolute bottom-8 right-0 h-40 w-2/3 rounded-full bg-blue-500/15 blur-[56px]" />
+                  <img
+                    src={HERO_CARS_MOBILE_SRC}
+                    alt=""
+                    width="900"
+                    height="804"
+                    loading="eager"
+                    decoding="async"
+                    className="absolute bottom-[-34px] right-[-27vw] w-[116vw] max-w-none drop-shadow-[0_24px_46px_rgba(37,99,235,0.24)]"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#050505] to-transparent" />
+                  <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#050505] to-transparent" />
+                </div>
+              </FadeIn>
+              )}
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Comparison Section */}
@@ -645,8 +762,8 @@ export default function App() {
 
                 {/* Before image */}
                 <img
-                  src="/studio-before.webp"
-                  alt="Original Dealer Lot Photo"
+                  src={broncoBeforeImage}
+                  alt="Original Bronco dealer lot photo"
                   loading="lazy"
                   decoding="async"
                   className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'before' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
@@ -659,8 +776,8 @@ export default function App() {
 
                 {/* After image */}
                 <img
-                  src="/studio-after.webp"
-                  alt="AI Studio — Outdoor Clean Background"
+                  src={broncoAfterImage}
+                  alt="AI Studio Bronco background replacement"
                   loading="lazy"
                   decoding="async"
                   className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'after' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}

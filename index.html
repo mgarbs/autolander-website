@@ -6,26 +6,32 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
-    <meta name="description" content="AutoLander automates Facebook Marketplace listings for car dealers — AI photo studio, walkaround videos, and auto-posting that helps you sell 10-15 more cars per month." />
+    <meta name="description" content="AutoLander automatically posts, updates, and tracks dealership inventory on Facebook Marketplace so dealers can generate more leads with less manual work." />
+    <link rel="canonical" href="https://autolander.ai/" />
 
     <!-- Open Graph (Facebook, iMessage, Slack, LinkedIn, etc.) -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://autolander.ai/" />
     <meta property="og:site_name" content="AutoLander" />
-    <meta property="og:title" content="Sell 10-15 More Cars Per Month — AutoLander" />
-    <meta property="og:description" content="AI Facebook Marketplace automation for car dealers. Photo studio, walkaround videos, auto-posting." />
-    <meta property="og:image" content="https://autolander.ai/og-image.png" />
+    <meta property="og:title" content="AutoLander | Facebook Marketplace Auto-Posting for Dealers" />
+    <meta property="og:description" content="Automatically post, update, and track dealership inventory on Facebook Marketplace." />
+    <meta property="og:image" content="https://autolander.ai/og-image.jpg" />
+    <meta property="og:image:secure_url" content="https://autolander.ai/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="AutoLander — Sell 10-15 more cars per month with AI Facebook Marketplace automation" />
+    <meta property="og:image:alt" content="AutoLander helps car dealers automatically post inventory to Facebook Marketplace." />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Sell 10-15 More Cars Per Month — AutoLander" />
-    <meta name="twitter:description" content="AI Facebook Marketplace automation for car dealers. Photo studio, walkaround videos, auto-posting." />
-    <meta name="twitter:image" content="https://autolander.ai/og-image.png" />
+    <meta name="twitter:title" content="AutoLander | Facebook Marketplace Auto-Posting for Dealers" />
+    <meta name="twitter:description" content="Automatically post, update, and track dealership inventory on Facebook Marketplace." />
+    <meta name="twitter:image" content="https://autolander.ai/og-image.jpg" />
+    <meta name="twitter:image:alt" content="AutoLander helps car dealers automatically post inventory to Facebook Marketplace." />
 
     <link rel="preload" as="image" href="/autolander-logo.png" fetchpriority="high" />
+    <link rel="preload" as="image" href="/hero-cars-layer-full.webp" type="image/webp" media="(min-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="/hero-cars-layer-900.webp" type="image/webp" media="(max-width: 767px)" fetchpriority="high" />
     <title>AutoLander | Sell 10-15 More Cars Per Month</title>
     <style>
       /* Critical fallback so first paint isn't a white flash before JS loads */
@@ -34,6 +40,14 @@
     </style>
   </head>
   <body>
+    <script>
+      (() => {
+        const staleAppHashRoutes = new Set(['#/login', '#/sign-in', '#/signin', '#/auth', '#/signup']);
+        if (staleAppHashRoutes.has(window.location.hash.toLowerCase())) {
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
