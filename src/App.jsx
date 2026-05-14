@@ -109,7 +109,7 @@ export default function App() {
     return () => mediaQuery.removeEventListener('change', updateHeroViewport);
   }, []);
 
-  const demoUrl = "https://calendar.app.google/RU6wbUCbgEGjvxEF8";
+  const demoUrl = "https://calendar.app.google/gSVcgcRacD9ttgVaA";
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';

@@ -459,7 +459,7 @@ function supportEmail(env) {
 }
 
 function demoUrl(env) {
-  return env.DEMO_URL || 'https://calendar.app.google/RU6wbUCbgEGjvxEF8';
+  return env.DEMO_URL || 'https://calendar.app.google/gSVcgcRacD9ttgVaA';
 }
 
 function supportMailto(env, payload) {
