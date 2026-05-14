@@ -14,8 +14,8 @@ import {
 const ChatAssistant = lazy(() => import('./components/ChatAssistant.jsx'));
 
 const RELEASE_BASE_URL = "https://github.com/mgarbs/autolander-releases/releases/latest/download";
-const HERO_CARS_DESKTOP_SRC = '/hero-cars-layer-full.webp';
-const HERO_CARS_MOBILE_SRC = '/hero-cars-layer-900.webp';
+const HERO_CARS_DESKTOP_SRC = '/hero-cars-layer-full-v2.webp';
+const HERO_CARS_MOBILE_SRC = '/hero-cars-layer-900-v2.webp';
 const DOWNLOADS = {
   windows: `${RELEASE_BASE_URL}/AutoLander-Setup.exe`,
   mac: `${RELEASE_BASE_URL}/AutoLander-Mac.dmg`,
@@ -374,7 +374,7 @@ export default function App() {
 
               <FadeIn delay={0.4}>
                 <div className="mt-6 flex flex-col gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-slate-300 sm:inline-flex sm:flex-row sm:items-center sm:gap-4">
-                  <span>Starting at $40/mo for individuals</span>
+                  <span>Starting at $39/mo for individuals</span>
                   <span className="hidden h-1 w-1 rounded-full bg-slate-500 sm:block" />
                   <span>$117/mo for teams</span>
                 </div>

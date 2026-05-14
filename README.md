@@ -26,3 +26,9 @@ cp .env.example .env.local
 ```bash
 npm run build
 ```
+
+## Cloudflare Pages
+
+Use `npm run build` as the build command and `dist` as the output directory.
+The `public/_headers` and `public/_redirects` files are copied into `dist` for
+Cloudflare edge caching and referral-route fallback support.

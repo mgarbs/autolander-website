@@ -1,0 +1,48 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/404.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/hero-cars-layer-full-v2.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/hero-cars-layer-900-v2.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/autolander-logo.png
+  Cache-Control: public, max-age=604800
+
+/favicon.svg
+  Cache-Control: public, max-age=604800
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=604800
+
+/marketplace-video-poster.webp
+  Cache-Control: public, max-age=604800
+
+/marketplace-video-example.mp4
+  Cache-Control: public, max-age=604800
+  Accept-Ranges: bytes
+
+/og-image.jpg
+  Cache-Control: public, max-age=86400
+
+/privacy.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/terms.html
+  Cache-Control: public, max-age=0, must-revalidate
