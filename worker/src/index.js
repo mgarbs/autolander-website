@@ -459,7 +459,7 @@ function supportEmail(env) {
 }
 
 function demoUrl(env) {
-  return env.DEMO_URL || 'https://calendar.app.google/gSVcgcRacD9ttgVaA';
+  return env.DEMO_URL || 'https://calendly.com/autolander-sales/30min';
 }
 
 function supportMailto(env, payload) {

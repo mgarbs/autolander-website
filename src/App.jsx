@@ -109,7 +109,7 @@ export default function App() {
     return () => mediaQuery.removeEventListener('change', updateHeroViewport);
   }, []);
 
-  const demoUrl = "https://calendar.app.google/gSVcgcRacD9ttgVaA";
+  const demoUrl = "https://calendly.com/autolander-sales/30min";
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';

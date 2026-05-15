@@ -114,7 +114,7 @@ Marketplace videos and FB requirements:
 
 Support and demo:
 - Support email: support@autolander.ai
-- Demo booking URL: https://calendar.app.google/gSVcgcRacD9ttgVaA
+- Demo booking URL: https://calendly.com/autolander-sales/30min
 
 Important boundaries:
 - Do not guarantee exact sales outcomes.

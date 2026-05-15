@@ -13,7 +13,7 @@ DAILY_SUPPORT_LIMIT = "40"
 SUPPORT_IP_DAILY_LIMIT = "3"
 SUPPORT_IP_HOURLY_LIMIT = "2"
 SUPPORT_EMAIL = "support@autolander.ai"
-DEMO_URL = "https://calendar.app.google/gSVcgcRacD9ttgVaA"
+DEMO_URL = "https://calendly.com/autolander-sales/30min"
 REQUIRE_TURNSTILE = "false"
 
 [[kv_namespaces]]
