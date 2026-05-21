@@ -46,3 +46,9 @@
 
 /terms.html
   Cache-Control: public, max-age=0, must-revalidate
+
+/thank-you.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/thank-you
+  Cache-Control: public, max-age=0, must-revalidate

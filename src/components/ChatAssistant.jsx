@@ -46,7 +46,7 @@ function mailtoUrl(email, subject, body) {
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-export default function ChatAssistant({ demoUrl, supportEmail = 'support@autolander.ai' }) {
+export default function ChatAssistant({ demoUrl, supportEmail = 'support@autolander.ai', onOpen }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState(starterMessages);
   const [draft, setDraft] = useState('');
@@ -229,6 +229,11 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'support@autolan
         `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\n\nRecent chat:\n${transcript}`
       );
     }
+  };
+
+  const toggleAssistant = () => {
+    if (!isOpen) onOpen?.();
+    setIsOpen((current) => !current);
   };
 
   return (
@@ -420,7 +425,7 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'support@autolan
 
       <button
         type="button"
-        onClick={() => setIsOpen((current) => !current)}
+        onClick={toggleAssistant}
         className="group flex items-center gap-3 rounded-2xl border border-blue-400/30 bg-blue-600 px-5 py-4 text-white shadow-2xl shadow-blue-600/30 transition hover:-translate-y-1 hover:bg-blue-500"
         aria-label="Open AutoLander chat assistant"
       >

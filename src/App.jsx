@@ -1,7 +1,8 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import broncoBeforeImage from '../bronco-before.jpg';
 import broncoAfterImage from '../bronco-after.jpg';
+import { newEventId, track, trackCustom } from './lib/meta-pixel.js';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain,
@@ -22,6 +23,7 @@ const DOWNLOADS = {
   linux: `${RELEASE_BASE_URL}/AutoLander-Linux.AppImage`,
 };
 const REFERRAL_CODE_PATTERN = /^[a-z0-9]{4,64}$/;
+const FEATURES_VIEW_STORAGE_KEY = 'autolander_meta_view_content_features';
 const STALE_APP_HASH_ROUTES = new Set([
   '#/login',
   '#/sign-in',
@@ -42,9 +44,50 @@ function getReferralCodeFromPath() {
 
 function getDownload() {
   const ua = navigator.userAgent;
-  if (/Mac/i.test(ua)) return { url: DOWNLOADS.mac, label: 'Download for Mac' };
-  if (/Linux/i.test(ua)) return { url: DOWNLOADS.linux, label: 'Download for Linux' };
-  return { url: DOWNLOADS.windows, label: 'Download for Windows' };
+  if (/Mac/i.test(ua)) return { url: DOWNLOADS.mac, label: 'Download for Mac', os: 'mac' };
+  if (/Linux/i.test(ua)) return { url: DOWNLOADS.linux, label: 'Download for Linux', os: 'linux' };
+  return { url: DOWNLOADS.windows, label: 'Download for Windows', os: 'windows' };
+}
+
+function withFbEventId(url, eventId) {
+  if (!eventId) return url;
+
+  try {
+    const nextUrl = new URL(url);
+    nextUrl.searchParams.set('fb_event_id', eventId);
+    return nextUrl.toString();
+  } catch {
+    return `${url}${url.includes('?') ? '&' : '?'}fb_event_id=${encodeURIComponent(eventId)}`;
+  }
+}
+
+function hasSessionFlag(key) {
+  try {
+    return window.sessionStorage.getItem(key) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function setSessionFlag(key) {
+  try {
+    window.sessionStorage.setItem(key, '1');
+  } catch {
+    /* Session storage can be unavailable in restricted browser contexts. */
+  }
+}
+
+function checkoutEventParams(contentName, value) {
+  const params = {
+    content_name: contentName,
+    currency: 'USD',
+  };
+
+  if (typeof value === 'number') {
+    params.value = value;
+  }
+
+  return params;
 }
 
 const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
@@ -92,6 +135,7 @@ export default function App() {
   const [studioView, setStudioView] = useState('after');
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isDesktopHero, setIsDesktopHero] = useState(() => window.matchMedia('(min-width: 768px)').matches);
+  const featuresSectionRef = useRef(null);
   const isMonthlyBilling = !isAnnual;
 
   useEffect(() => {
@@ -109,7 +153,31 @@ export default function App() {
     return () => mediaQuery.removeEventListener('change', updateHeroViewport);
   }, []);
 
-  const demoUrl = "https://calendly.com/autolander-sales/30min";
+  useEffect(() => {
+    const section = featuresSectionRef.current;
+    if (!section || typeof IntersectionObserver === 'undefined' || hasSessionFlag(FEATURES_VIEW_STORAGE_KEY)) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+
+        setSessionFlag(FEATURES_VIEW_STORAGE_KEY);
+        track('ViewContent', {
+          content_name: 'features',
+          content_category: 'landing',
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  const demoUrl = "https://calendly.com/autolander/demo";
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';
@@ -120,14 +188,34 @@ export default function App() {
     await navigator.clipboard?.writeText(referralCode).catch(() => {});
   };
 
-  const openDownload = async () => {
+  const openDownload = async ({ contentName = download.label, value } = {}) => {
+    const eventId = newEventId();
     await copyReferralCode();
-    window.open(download.url, "_blank");
+    track('InitiateCheckout', checkoutEventParams(contentName, value), { eventId });
+    trackCustom('AppDownload', { os: download.os }, { eventId });
+    window.open(withFbEventId(download.url, eventId), "_blank");
+  };
+
+  const openSpecificDownload = async (os, contentName = 'referral_download') => {
+    const eventId = newEventId();
+    await copyReferralCode();
+    track('InitiateCheckout', checkoutEventParams(contentName), { eventId });
+    trackCustom('AppDownload', { os }, { eventId });
+    window.open(withFbEventId(DOWNLOADS[os], eventId), "_blank");
   };
 
   const openInstalledApp = async () => {
+    const eventId = newEventId();
     await copyReferralCode();
-    window.location.href = referralDeepLink;
+    track('InitiateCheckout', checkoutEventParams('installed_app_signup'), { eventId });
+    window.location.href = withFbEventId(referralDeepLink, eventId);
+  };
+
+  const trackChatOpen = () => {
+    track('Lead', {
+      content_name: 'chat_assistant',
+      content_category: 'landing',
+    });
   };
 
 
@@ -292,9 +380,9 @@ export default function App() {
                     <div className="rounded-2xl bg-black/25 p-4">3. Choose $125/mo Pro</div>
                   </div>
                   <div className="mt-4 flex flex-wrap gap-2">
-                    <a href={DOWNLOADS.windows} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Windows</a>
-                    <a href={DOWNLOADS.mac} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Mac</a>
-                    <a href={DOWNLOADS.linux} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Linux</a>
+                    <button type="button" onClick={() => openSpecificDownload('windows')} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Windows</button>
+                    <button type="button" onClick={() => openSpecificDownload('mac')} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Mac</button>
+                    <button type="button" onClick={() => openSpecificDownload('linux')} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Linux</button>
                   </div>
                 </div>
               </FadeIn>
@@ -304,7 +392,7 @@ export default function App() {
                 <motion.button
                   whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={openDownload}
+                  onClick={() => openDownload({ contentName: 'referral_offer', value: 125 })}
                   className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                 >
                   <span>Download + Claim Offer</span>
@@ -357,7 +445,7 @@ export default function App() {
                   <motion.button
                     whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={openDownload}
+                    onClick={() => openDownload({ contentName: 'free_trial', value: 39 })}
                     className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                   >
                     <span>Start Free Trial</span>
@@ -486,7 +574,7 @@ export default function App() {
               <Step 
                 number="03" 
                 title="Start Auto Sales" 
-                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Add AI background replacement (15 credits / vehicle) for showroom-quality photos."
+                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Add AI background replacement (8-15 credits / vehicle) for showroom-quality photos."
               />
             </FadeIn>
           </div>
@@ -494,7 +582,7 @@ export default function App() {
       </section>
 
       {/* Features Grid */}
-      <section id="features" className="py-24 lg:py-40 relative">
+      <section id="features" ref={featuresSectionRef} className="py-24 lg:py-40 relative">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
             <FadeIn delay={0.1} direction="up">
@@ -508,7 +596,7 @@ export default function App() {
               <FeatureCard
                 icon={Wand2}
                 title="AI Posting & Photo Studio"
-                desc="Our AI fetches photos, generates descriptions, and posts to Marketplace — all automatically. Optionally enable AI background replacement (15 credits / vehicle) for studio-quality results."
+                desc="Our AI fetches photos, generates descriptions, and posts to Marketplace — all automatically. Optionally enable AI background replacement (8-15 credits / vehicle) for studio-quality results."
               />
             </FadeIn>
             <FadeIn delay={0.3} direction="up">
@@ -685,7 +773,7 @@ export default function App() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={openDownload}
+                    onClick={() => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })}
                     className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
                       isPrivateMonthlyProOffer || isPopularPlan
                         ? 'bg-white text-blue-600 hover:bg-slate-100'
@@ -926,7 +1014,7 @@ export default function App() {
           <div className="space-y-6">
             {[
               { q: "Which inventory feeds do you work with?", a: "We work seamlessly with CarGurus and Cars.com feeds. Simply paste your public feed URL, and our system will extract all vehicle data, photos, and specs automatically." },
-              { q: "How much does background replacement cost?", a: "Background replacement uses AI Studio credits — 15 credits per vehicle. Our AI classifies every photo in the gallery, drops dealer-ad junk automatically, leaves interior and closeup shots alone, and replaces the background on every full-exterior shot. Every plan includes welcome credits to get you started, and you can purchase more credits in-app whenever you need them." },
+              { q: "How much does background replacement cost?", a: "Background replacement uses AI Studio credits — 8 credits per vehicle for Studio Lite, or 15 credits for full AI Studio. Our AI classifies every photo in the gallery, drops dealer-ad junk automatically, leaves interior and closeup shots alone, and replaces the background on every full-exterior shot. Every plan includes welcome credits to get you started, and you can purchase more credits in-app whenever you need them." },
               { q: "How do walkaround videos work?", a: "Marketplace videos turn polished vehicle photos into a cinematic 10-second walkaround clip at 1080p. Videos cost 30 credits each. Every plan includes welcome credits, and you can purchase more credits in-app." },
               { q: "How does this help me sell more cars?", a: "AutoLander creates high-quality, professional listings that stand out in the Marketplace. By using AI to optimize photos and descriptions, dealers typically see a 3x increase in lead volume and sell an average of 12 extra units per month." },
               { q: "Do I need any technical skills?", a: "Zero. If you can copy and paste a URL and click a button, you can use AutoLander. It's designed for busy sales teams who want to sell cars, not manage software." },
@@ -960,7 +1048,7 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={openDownload}
+                onClick={() => openDownload({ contentName: 'free_trial', value: 39 })}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-white text-black font-black text-xl transition-all shadow-3xl shadow-white/5 uppercase italic tracking-tighter"
               >
                 Start Your Free Trial
@@ -1000,7 +1088,7 @@ export default function App() {
         </div>
       </footer>
       <Suspense fallback={null}>
-        <ChatAssistant demoUrl={demoUrl} supportEmail="support@autolander.ai" />
+        <ChatAssistant demoUrl={demoUrl} supportEmail="support@autolander.ai" onOpen={trackChatOpen} />
       </Suspense>
     </div>
   );

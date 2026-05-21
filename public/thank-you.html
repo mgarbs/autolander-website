@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Your AutoLander demo is confirmed. We will reach out shortly." />
+    <link rel="canonical" href="https://autolander.ai/thank-you" />
+    <title>Demo Confirmed | AutoLander</title>
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '2087440198847151');
+      fbq('track', 'PageView');
+      fbq('track', 'Schedule', { content_name: 'demo_booked', content_category: 'demo' });
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2087440198847151&ev=PageView&noscript=1" /></noscript>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2087440198847151&ev=Schedule&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
+
+    <style>
+      *,
+      *::before,
+      *::after { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #050505;
+        color: #f8fafc;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        min-height: 100vh;
+      }
+
+      body {
+        position: relative;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .orbs {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+      .orb-a {
+        position: absolute;
+        top: -10%;
+        left: -10%;
+        width: 50%;
+        height: 50%;
+        background: rgba(37, 99, 235, 0.10);
+        border-radius: 9999px;
+        filter: blur(120px);
+      }
+      .orb-b {
+        position: absolute;
+        bottom: -10%;
+        right: -10%;
+        width: 50%;
+        height: 50%;
+        background: rgba(79, 70, 229, 0.10);
+        border-radius: 9999px;
+        filter: blur(120px);
+      }
+      @media (max-width: 767px) {
+        .orbs { display: none; }
+      }
+
+      nav {
+        position: relative;
+        z-index: 10;
+        padding: 1rem;
+      }
+      .nav-inner {
+        max-width: 80rem;
+        margin: 0 auto;
+        height: 4rem;
+        padding: 0 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: inherit;
+      }
+      .brand-mark {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 0.75rem;
+        background: linear-gradient(135deg, #3b82f6, #4f46e5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+      }
+      .brand-mark svg { width: 1.5rem; height: 1.5rem; color: #fff; }
+      .brand img {
+        height: 3.5rem;
+        width: auto;
+      }
+      @media (max-width: 640px) {
+        .brand-mark { width: 2rem; height: 2rem; }
+        .brand-mark svg { width: 1.25rem; height: 1.25rem; }
+        .brand img { height: 2rem; }
+      }
+
+      main {
+        position: relative;
+        z-index: 10;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 1.5rem 6rem;
+      }
+      .card {
+        max-width: 44rem;
+        width: 100%;
+        text-align: center;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.375rem 1rem;
+        border-radius: 9999px;
+        background: rgba(34, 197, 94, 0.10);
+        border: 1px solid rgba(34, 197, 94, 0.25);
+        color: #4ade80;
+        font-size: 0.75rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(4px);
+      }
+      .badge svg { width: 1rem; height: 1rem; }
+
+      h1 {
+        font-size: clamp(2.75rem, 8vw, 5.5rem);
+        line-height: 0.9;
+        font-weight: 900;
+        font-style: italic;
+        text-transform: uppercase;
+        letter-spacing: -0.03em;
+        color: #fff;
+        margin: 0 0 1.75rem;
+      }
+      h1 .accent {
+        display: block;
+        background: linear-gradient(to bottom, #93c5fd, #2563eb);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      p.lead {
+        font-size: 1.125rem;
+        line-height: 1.7;
+        color: #94a3b8;
+        font-weight: 500;
+        font-style: italic;
+        max-width: 36rem;
+        margin: 0 auto 2.5rem;
+      }
+      @media (min-width: 1024px) {
+        p.lead { font-size: 1.25rem; }
+      }
+
+      .panel {
+        margin: 0 auto 2.5rem;
+        max-width: 32rem;
+        padding: 1.5rem;
+        border-radius: 1.5rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        text-align: left;
+      }
+      .panel h2 {
+        margin: 0 0 1rem;
+        font-size: 0.6875rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        color: #60a5fa;
+      }
+      .panel ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.75rem;
+      }
+      .panel li {
+        display: flex;
+        gap: 0.875rem;
+        align-items: flex-start;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: #cbd5e1;
+        line-height: 1.5;
+      }
+      .step-num {
+        flex-shrink: 0;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 0.625rem;
+        background: linear-gradient(135deg, #3b82f6, #4f46e5);
+        color: #fff;
+        font-weight: 900;
+        font-size: 0.8125rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+      }
+
+      .cta-row {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+      }
+      @media (min-width: 640px) {
+        .cta-row { flex-direction: row; }
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 1rem 2rem;
+        border-radius: 1rem;
+        background: #fff;
+        color: #000;
+        font-size: 0.9375rem;
+        font-weight: 900;
+        font-style: italic;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        transition: transform 0.15s ease, background-color 0.2s ease, color 0.2s ease;
+      }
+      .cta:hover {
+        background: #2563eb;
+        color: #fff;
+      }
+      .cta:active { transform: scale(0.97); }
+      .cta.secondary {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      .cta.secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+
+      footer {
+        position: relative;
+        z-index: 10;
+        padding: 2.5rem 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        background: #000;
+        text-align: center;
+      }
+      footer p {
+        font-size: 0.625rem;
+        font-weight: 900;
+        color: #334155;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="orbs">
+      <div class="orb-a"></div>
+      <div class="orb-b"></div>
+    </div>
+
+    <nav>
+      <div class="nav-inner">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/>
+              <circle cx="7" cy="17" r="2"/>
+              <path d="M9 17h6"/>
+              <circle cx="17" cy="17" r="2"/>
+            </svg>
+          </span>
+          <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" />
+        </a>
+      </div>
+    </nav>
+
+    <main>
+      <div class="card">
+        <div class="badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+          Appointment Confirmed
+        </div>
+
+        <h1>
+          YOU&rsquo;RE BOOKED.
+          <span class="accent">WE&rsquo;LL REACH OUT.</span>
+        </h1>
+
+        <p class="lead">
+          Your AutoLander demo is locked in. Check your inbox for the calendar invite &mdash; we&rsquo;ll be in touch shortly with everything you need to make the most of our 30 minutes.
+        </p>
+
+        <div class="panel">
+          <h2>What happens next</h2>
+          <ol>
+            <li><span class="step-num">1</span><span>Calendar invite lands in your inbox with the meeting link.</span></li>
+            <li><span class="step-num">2</span><span>We&rsquo;ll send a short prep note so we can hit the ground running.</span></li>
+            <li><span class="step-num">3</span><span>On the call, we&rsquo;ll get you set up to sell 5&ndash;15+ extra cars a month.</span></li>
+          </ol>
+        </div>
+
+        <div class="cta-row">
+          <a class="cta" href="/">Back to AutoLander</a>
+          <a class="cta secondary" href="mailto:support@autolander.ai">Email Support</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2026 AutoLander. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
