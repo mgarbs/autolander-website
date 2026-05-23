@@ -118,6 +118,12 @@ Support and demo:
 - Mailing address: AutoLander LLC, 5830 Memorial Highway, Apt 1322, Tampa, FL 33615
 - Demo booking URL: https://calendly.com/autolander/demo
 
+Advertising and tracking:
+- The autolander.ai website uses the Meta (Facebook) Pixel and the Facebook Conversions API to measure ad performance, attribute conversions, build advertising audiences, and optimize ad delivery on Facebook and Instagram.
+- Event signals collected may include page views, content views, free trial starts, app downloads, and demo bookings, along with associated identifiers like IP address and browser type.
+- Users can opt out of personalized Meta advertising via their Facebook ad preferences (facebook.com/adpreferences), or by emailing privacy@autolander.ai with the subject "Do Not Sell or Share My Personal Information."
+- Full disclosures are in https://autolander.ai/privacy.html (Section 1.5 Cookies, pixels, and advertising tracking technologies, and Section 6 Your Choices and Rights).
+
 SMS / text messaging:
 - AutoLander may send SMS text messages to phone numbers a user provides (e.g., when booking a demo) for appointment confirmations, reminders, and rescheduling, account and service notifications, customer support communications, and onboarding/account setup.
 - SMS Opt-In Details: Contacts opt in to receive SMS messages from AutoLander LLC when they book a product demo through our Calendly booking page (calendly.com/autolander/demo). During the booking process, contacts must check a separate, unchecked consent checkbox confirming they agree to receive SMS messages. Opt-in is voluntary and is not a condition of booking or purchase.
