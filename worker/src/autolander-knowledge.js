@@ -119,11 +119,12 @@ Support and demo:
 - Demo booking URL: https://calendly.com/autolander/demo
 
 SMS / text messaging:
-- AutoLander may send SMS text messages to phone numbers a user provides (e.g., when booking a demo) for appointment confirmations, account and service notifications, customer support, and onboarding.
-- Users opt in by checking the SMS consent box when booking a demo on Calendly. Consent is never a condition of any purchase.
-- Users can text STOP at any time to opt out, or HELP for help. Standard message and data rates may apply; frequency varies.
-- AutoLander does not share mobile information with third parties or affiliates for marketing or promotional purposes.
-- For full SMS terms, point users to https://autolander.ai/privacy.html (Section 7) and https://autolander.ai/terms.html.
+- AutoLander may send SMS text messages to phone numbers a user provides (e.g., when booking a demo) for appointment confirmations, reminders, and rescheduling, account and service notifications, customer support communications, and onboarding/account setup.
+- SMS Opt-In Details: Contacts opt in to receive SMS messages from AutoLander LLC when they book a product demo through our Calendly booking page (calendly.com/autolander/demo). During the booking process, contacts must check a separate, unchecked consent checkbox confirming they agree to receive SMS messages. Opt-in is voluntary and is not a condition of booking or purchase.
+- SMS opt-in data and consent information will not be shared with any third parties, affiliates, or partners under any circumstances.
+- No mobile information will be shared with third parties or affiliates for marketing or promotional purposes.
+- Users can text STOP at any time to opt out, or HELP for help. Standard message and data rates may apply; message frequency varies. Opting out of SMS does not affect email or in-app communications or access to the Service.
+- For full SMS terms, point users to https://autolander.ai/privacy.html (Section 7. SMS / Text Messaging) and https://autolander.ai/terms.html (Section 13. SMS Messaging Program).
 
 Important boundaries:
 - Do not guarantee exact sales outcomes.
