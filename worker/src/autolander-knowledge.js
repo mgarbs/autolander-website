@@ -114,7 +114,16 @@ Marketplace videos and FB requirements:
 
 Support and demo:
 - Support email: support@autolander.ai
+- Support phone: (919) 737-0025
+- Mailing address: AutoLander LLC, 5830 Memorial Highway, Apt 1322, Tampa, FL 33615
 - Demo booking URL: https://calendly.com/autolander/demo
+
+SMS / text messaging:
+- AutoLander may send SMS text messages to phone numbers a user provides (e.g., when booking a demo) for appointment confirmations, account and service notifications, customer support, and onboarding.
+- Users opt in by checking the SMS consent box when booking a demo on Calendly. Consent is never a condition of any purchase.
+- Users can text STOP at any time to opt out, or HELP for help. Standard message and data rates may apply; frequency varies.
+- AutoLander does not share mobile information with third parties or affiliates for marketing or promotional purposes.
+- For full SMS terms, point users to https://autolander.ai/privacy.html (Section 7) and https://autolander.ai/terms.html.
 
 Important boundaries:
 - Do not guarantee exact sales outcomes.
