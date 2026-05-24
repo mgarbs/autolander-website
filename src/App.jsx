@@ -442,7 +442,7 @@ export default function App() {
 
               <FadeIn delay={0.1}>
                 <h1 className="max-w-3xl text-5xl font-black uppercase leading-[0.9] text-white sm:text-6xl lg:text-7xl">
-                  SELL 10-15 MORE
+                  SELL 5-10 MORE
                   <span className="mt-2 block text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-600">
                     CARS EVERY MONTH.
                   </span>
@@ -469,14 +469,14 @@ export default function App() {
                     onClick={() => window.open(bookingUrl, "_blank")}
                     className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                   >
-                    <span>Start Free Trial</span>
+                    <span>Book a Demo</span>
                     <ArrowRight className="w-6 h-6" />
                   </motion.button>
                   <button
                     onClick={() => window.open(bookingUrl, "_blank")}
                     className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
                   >
-                    Book a Demo
+                    Start Free Trial
                   </button>
                 </div>
               </FadeIn>
@@ -1072,13 +1072,13 @@ export default function App() {
                 onClick={() => window.open(bookingUrl, "_blank")}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500"
               >
-                Start Your Free Trial
+                Book a Live Demo
               </motion.button>
               <button
                 onClick={() => window.open(bookingUrl, "_blank")}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
               >
-                Book a Live Demo
+                Start Your Free Trial
               </button>
             </div>
             <p className="mt-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">No Credit Card Required • Instant Setup</p>
