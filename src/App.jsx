@@ -61,6 +61,20 @@ function withFbEventId(url, eventId) {
   }
 }
 
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+
+function withUtms(url) {
+  if (typeof window === 'undefined') return url;
+  const params = new URLSearchParams(window.location.search);
+  const utms = UTM_KEYS
+    .filter((key) => params.has(key))
+    .map((key) => `${key}=${encodeURIComponent(params.get(key))}`)
+    .join('&');
+  if (!utms) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}${utms}`;
+}
+
 function hasSessionFlag(key) {
   try {
     return window.sessionStorage.getItem(key) === '1';
@@ -178,6 +192,7 @@ export default function App() {
   }, []);
 
   const demoUrl = "https://calendly.com/autolander/demo";
+  const bookingUrl = withUtms(demoUrl);
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';
@@ -309,7 +324,7 @@ export default function App() {
               Download
             </button>
             <button
-              onClick={() => window.open(demoUrl, "_blank")}
+              onClick={() => window.open(bookingUrl, "_blank")}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
               Book a Demo
             </button>
@@ -451,14 +466,14 @@ export default function App() {
                   <motion.button
                     whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => window.open(demoUrl, "_blank")}
+                    onClick={() => window.open(bookingUrl, "_blank")}
                     className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                   >
                     <span>Start Free Trial</span>
                     <ArrowRight className="w-6 h-6" />
                   </motion.button>
                   <button
-                    onClick={() => window.open(demoUrl, "_blank")}
+                    onClick={() => window.open(bookingUrl, "_blank")}
                     className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
                   >
                     Book a Demo
@@ -949,7 +964,7 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.open(demoUrl, "_blank")}
+                onClick={() => window.open(bookingUrl, "_blank")}
                 className="px-10 py-5 rounded-2xl bg-white text-black font-black text-lg transition-all uppercase italic"
               >
                 See the Studio in Action
@@ -1054,13 +1069,13 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.open(demoUrl, "_blank")}
+                onClick={() => window.open(bookingUrl, "_blank")}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500"
               >
                 Start Your Free Trial
               </motion.button>
               <button
-                onClick={() => window.open(demoUrl, "_blank")}
+                onClick={() => window.open(bookingUrl, "_blank")}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
               >
                 Book a Live Demo
@@ -1094,7 +1109,7 @@ export default function App() {
         </div>
       </footer>
       <Suspense fallback={null}>
-        <ChatAssistant demoUrl={demoUrl} supportEmail="support@autolander.ai" onOpen={trackChatOpen} />
+        <ChatAssistant demoUrl={bookingUrl} supportEmail="support@autolander.ai" onOpen={trackChatOpen} />
       </Suspense>
     </div>
   );
