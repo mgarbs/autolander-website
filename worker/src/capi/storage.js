@@ -2,8 +2,9 @@ const VISITOR_TTL_SECONDS = 90 * 24 * 60 * 60;
 const EVENT_DEDUPE_TTL_SECONDS = 24 * 60 * 60;
 const COUNTER_TTL_SECONDS = 100 * 24 * 60 * 60;
 const RECENT_EVENTS_TTL_SECONDS = 14 * 24 * 60 * 60;
-const RECENT_EVENTS_KEY = 'recent:events';
-const RECENT_EVENTS_LIMIT = 100;
+const RECENT_EVENT_PREFIX = 'recent:evt:';
+const RECENT_EVENTS_LIST_CAP = 100;
+const TS_PAD = 16;
 
 function tracking(env) {
   if (!env.TRACKING) throw new Error('TRACKING KV binding is missing');
@@ -76,12 +77,17 @@ export async function readDimensionForDay(env, day, dimension) {
 
 export async function pushRecentEvent(env, payload) {
   const tk = tracking(env);
-  const existing = (await tk.get(RECENT_EVENTS_KEY, 'json')) || [];
-  const next = [payload, ...existing].slice(0, RECENT_EVENTS_LIMIT);
-  await tk.put(RECENT_EVENTS_KEY, JSON.stringify(next), { expirationTtl: RECENT_EVENTS_TTL_SECONDS });
+  const ts = Date.now();
+  const invertedTs = String(Number.MAX_SAFE_INTEGER - ts).padStart(TS_PAD, '0');
+  const rand = Math.random().toString(36).slice(2, 8);
+  const key = `${RECENT_EVENT_PREFIX}${invertedTs}:${rand}`;
+  await tk.put(key, JSON.stringify(payload), { expirationTtl: RECENT_EVENTS_TTL_SECONDS });
 }
 
 export async function readRecentEvents(env, limit = 50) {
-  const events = (await tracking(env).get(RECENT_EVENTS_KEY, 'json')) || [];
-  return events.slice(0, Math.min(limit, RECENT_EVENTS_LIMIT));
+  const tk = tracking(env);
+  const cap = Math.min(limit, RECENT_EVENTS_LIST_CAP);
+  const result = await tk.list({ prefix: RECENT_EVENT_PREFIX, limit: cap });
+  const values = await Promise.all(result.keys.map((entry) => tk.get(entry.name, 'json')));
+  return values.filter(Boolean);
 }

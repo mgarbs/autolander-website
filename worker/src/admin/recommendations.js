@@ -3,6 +3,7 @@ const CONVERSION_THRESHOLDS = {
   scaleMinConversions: 5,
   scaleCplPercentileMax: 0.75,
   fatigueCtrDropPercent: 30,
+  fatigueMinImpressions: 500,
   highFrequency: 3.5,
   pixelHealthMinDedupe: 0.7,
   pixelHealthMinServerShare: 0.4,
@@ -97,6 +98,18 @@ function buildScaleRecommendations({ campaigns }) {
   );
   if (eligible.length === 0) return [];
 
+  if (eligible.length === 1) {
+    const c = eligible[0];
+    return [
+      {
+        severity: 'info',
+        title: `Scale "${c.name}" — $${c.cps.toFixed(2)} cost per demo`,
+        body: `Your only campaign hitting the demo threshold. Consider scaling budget 20% to test demand.`,
+        action: { type: 'scale_campaign', campaign: c.name },
+      },
+    ];
+  }
+
   const sorted = [...eligible].sort((a, b) => a.cps - b.cps);
   const median = sorted[Math.floor(sorted.length / 2)].cps;
   return sorted
@@ -118,6 +131,7 @@ function buildFatigueRecommendations({ ads, adsPrior }) {
     .filter((ad) => {
       const prior = priorById.get(ad.ad_id || ad.ad_name);
       if (!prior || !prior.ctr || prior.ctr <= 0) return false;
+      if (!ad.impressions || ad.impressions < CONVERSION_THRESHOLDS.fatigueMinImpressions) return false;
       const drop = ((prior.ctr - ad.ctr) / prior.ctr) * 100;
       return drop >= CONVERSION_THRESHOLDS.fatigueCtrDropPercent;
     })

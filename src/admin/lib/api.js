@@ -1,6 +1,5 @@
 const RAW_API_URL = import.meta.env.VITE_CAPI_URL || import.meta.env.VITE_CHAT_API_URL || '';
 const API_URL = RAW_API_URL.replace(/\/+$/, '');
-const TOKEN_STORAGE_KEY = 'al_admin_token';
 
 class ApiError extends Error {
   constructor(message, { status, reason } = {}) {
@@ -10,21 +9,14 @@ class ApiError extends Error {
   }
 }
 
+let sessionToken = '';
+
 export function getStoredToken() {
-  try {
-    return window.localStorage.getItem(TOKEN_STORAGE_KEY) || '';
-  } catch {
-    return '';
-  }
+  return sessionToken;
 }
 
 export function setStoredToken(token) {
-  try {
-    if (token) window.localStorage.setItem(TOKEN_STORAGE_KEY, token);
-    else window.localStorage.removeItem(TOKEN_STORAGE_KEY);
-  } catch {
-    /* localStorage unavailable */
-  }
+  sessionToken = token || '';
 }
 
 async function request(path, { method = 'GET', body } = {}) {

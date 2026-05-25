@@ -91,7 +91,10 @@ export function getFbCookies() {
   let fbc = readCookie('_fbc');
   if (!fbc) {
     const fbclid = readFbclidFromUrl();
-    if (fbclid) fbc = `fb.1.${Date.now()}.${fbclid}`;
+    if (fbclid) {
+      fbc = `fb.1.${Date.now()}.${fbclid}`;
+      writeCookie('_fbc', fbc, ATTR_TTL_SECONDS);
+    }
   }
   return { fbp, fbc };
 }

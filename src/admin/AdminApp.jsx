@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { apiGet, getStoredToken, setStoredToken } from './lib/api.js';
+import { apiGet, setStoredToken } from './lib/api.js';
 import Dashboard from './Dashboard.jsx';
 import Login from './Login.jsx';
 
@@ -10,7 +10,7 @@ const STATE = {
 };
 
 export default function AdminApp() {
-  const [state, setState] = useState(() => (getStoredToken() ? STATE.loading : STATE.loggedOut));
+  const [state, setState] = useState(STATE.loading);
 
   useEffect(() => {
     if (state !== STATE.loading) return undefined;

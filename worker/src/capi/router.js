@@ -157,6 +157,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     country,
     region,
     city,
+    pixelId: env.META_PIXEL_ID,
   });
 
   const capiEvent = buildEvent({
@@ -255,6 +256,7 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
     country,
     region,
     city,
+    pixelId: env.META_PIXEL_ID,
   });
 
   const customData = {
@@ -318,6 +320,7 @@ async function buildUserData({
   country,
   region,
   city,
+  pixelId,
 }) {
   const userData = {};
 
@@ -344,7 +347,10 @@ async function buildUserData({
     userData.fbc = `fb.1.${Date.now()}.${fbclid}`;
   }
 
-  if (vid) userData.external_id = await hashLowercase(vid);
+  if (vid) {
+    const salted = pixelId ? `${pixelId}:${vid}` : vid;
+    userData.external_id = await hashLowercase(salted);
+  }
   if (ip) userData.client_ip_address = ip;
   if (ua) userData.client_user_agent = ua;
 

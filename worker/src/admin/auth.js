@@ -63,7 +63,7 @@ function parseCookie(header, name) {
 }
 
 function buildCookie(name, value, ttlSeconds) {
-  const flags = ['Path=/', 'HttpOnly', 'Secure', 'SameSite=None'];
+  const flags = ['Path=/', 'HttpOnly', 'Secure', 'SameSite=Lax'];
   if (ttlSeconds > 0) {
     flags.push(`Max-Age=${ttlSeconds}`);
     flags.push(`Expires=${new Date(Date.now() + ttlSeconds * 1000).toUTCString()}`);
