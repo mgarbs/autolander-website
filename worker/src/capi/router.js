@@ -25,6 +25,14 @@ const TRACK_DAILY_GLOBAL_LIMIT = 50000;
 
 const AL_VID_PREFIX = 'al_vid:';
 
+const KNOWN_PAID_SOURCES = new Set(['meta', 'facebook', 'fb', 'instagram', 'ig']);
+
+function isAttributableTraffic(utms, fbclid) {
+  if (fbclid) return true;
+  const source = (utms?.utm_source || '').toLowerCase();
+  return KNOWN_PAID_SOURCES.has(source);
+}
+
 export async function handleCapi(request, env, corsHeaders, ctx) {
   const url = new URL(request.url);
 
@@ -98,22 +106,23 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   const alreadySeen = await wasEventSeen(env, eventId);
   if (!alreadySeen) {
     await markEventSeen(env, eventId);
+    const attributable = isAttributableTraffic(utms, fbclid);
     await Promise.all([
       bumpCounter(env, today, 'event', eventName),
       bumpCounter(env, today, 'event', `${eventName}:browser`),
-      utms.utm_source ? bumpCounter(env, today, 'source', utms.utm_source) : null,
-      utms.utm_campaign ? bumpCounter(env, today, 'campaign', utms.utm_campaign) : null,
-      utms.utm_content ? bumpCounter(env, today, 'ad', utms.utm_content) : null,
-      utms.utm_campaign && eventName === 'Lead'
+      attributable && utms.utm_source ? bumpCounter(env, today, 'source', utms.utm_source) : null,
+      attributable && utms.utm_campaign ? bumpCounter(env, today, 'campaign', utms.utm_campaign) : null,
+      attributable && utms.utm_content ? bumpCounter(env, today, 'ad', utms.utm_content) : null,
+      attributable && utms.utm_campaign && eventName === 'Lead'
         ? bumpCounter(env, today, 'campaign_lead', utms.utm_campaign)
         : null,
-      utms.utm_campaign && eventName === 'Schedule'
+      attributable && utms.utm_campaign && eventName === 'Schedule'
         ? bumpCounter(env, today, 'campaign_schedule', utms.utm_campaign)
         : null,
-      utms.utm_content && eventName === 'Lead'
+      attributable && utms.utm_content && eventName === 'Lead'
         ? bumpCounter(env, today, 'ad_lead', utms.utm_content)
         : null,
-      utms.utm_content && eventName === 'Schedule'
+      attributable && utms.utm_content && eventName === 'Schedule'
         ? bumpCounter(env, today, 'ad_schedule', utms.utm_content)
         : null,
       fbclid ? bumpCounter(env, today, 'meta', 'with_fbclid') : null,
@@ -168,11 +177,16 @@ async function handleTrack(request, env, corsHeaders, ctx) {
 }
 
 async function handleCalendly(request, env, corsHeaders, ctx) {
+  if (!env.CALENDLY_SIGNING_KEY) {
+    console.warn('[capi/calendly] CALENDLY_SIGNING_KEY is not configured — refusing webhook');
+    return jsonResponse({ ok: false, reason: 'calendly_not_configured' }, 503, corsHeaders);
+  }
+
   const rawBody = await request.text();
 
   const signatureHeader = request.headers.get('Calendly-Webhook-Signature');
   const ok = await verifyCalendlySignature(signatureHeader, rawBody, env.CALENDLY_SIGNING_KEY);
-  if (!ok && env.CALENDLY_SIGNING_KEY) {
+  if (!ok) {
     console.warn('[capi/calendly] Invalid signature');
     return jsonResponse({ ok: false, reason: 'invalid_signature' }, 401, corsHeaders);
   }
@@ -222,6 +236,11 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
   const eventIdHash = await sha256Hex(eventUri);
   const eventId = `cal_${eventIdHash.slice(0, 32)}`;
   const eventTime = Math.floor(new Date(data.created_at || Date.now()).getTime() / 1000);
+
+  if (await wasEventSeen(env, eventId)) {
+    return jsonResponse({ ok: true, deduped: true }, 200, corsHeaders);
+  }
+  await markEventSeen(env, eventId);
 
   const userData = await buildUserData({
     email,
@@ -276,7 +295,6 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
 
   const sendPromise = (async () => {
     await counterPromise;
-    await markEventSeen(env, eventId);
     await sendEvents(env, [capiEvent]);
   })();
 
@@ -393,7 +411,9 @@ function timingSafeEqual(a, b) {
 
 async function enforceTrackRateLimit(request, env) {
   if (env.DISABLE_RATE_LIMITS === 'true') return { ok: true };
-  if (!env.CHAT_RATE_LIMITS) return { ok: true };
+  if (!env.CHAT_RATE_LIMITS) {
+    return { ok: false, status: 503, reason: 'rate_limit_kv_unavailable' };
+  }
 
   const now = new Date();
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';

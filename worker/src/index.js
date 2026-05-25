@@ -489,13 +489,16 @@ function getCorsHeaders(request, env) {
   const origin = request.headers.get('Origin');
   const allowed = isAllowedOrigin(request, env);
 
-  return {
-    'Access-Control-Allow-Origin': allowed.ok && origin ? origin : 'null',
+  const headers = {
     'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Credentials': 'true',
     'Vary': 'Origin',
   };
+  if (allowed.ok && origin) {
+    headers['Access-Control-Allow-Origin'] = origin;
+    headers['Access-Control-Allow-Credentials'] = 'true';
+  }
+  return headers;
 }
 
 function isAllowedOrigin(request, env) {
