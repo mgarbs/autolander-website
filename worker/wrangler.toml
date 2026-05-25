@@ -23,3 +23,20 @@ REQUIRE_TURNSTILE = "false"
 binding = "CHAT_RATE_LIMITS"
 id = "773a6f731ade45619079fc5acca6787e"
 preview_id = "4a6687d31adc4bb19fd01b2d47e01804"
+
+# Conversion tracking + admin dashboard storage.
+# Create with: wrangler kv:namespace create TRACKING (and --preview).
+[[kv_namespaces]]
+binding = "TRACKING"
+id = "replace_with_production_kv_namespace_id"
+preview_id = "replace_with_preview_kv_namespace_id"
+
+# Secrets to set via `wrangler secret put <NAME>`:
+#   META_PIXEL_ID                 numeric Pixel ID (e.g. 2087440198847151)
+#   META_CAPI_ACCESS_TOKEN        Conversions API access token
+#   META_AD_ACCOUNT_ID            ad account, format act_XXXXXXXXX
+#   META_MARKETING_ACCESS_TOKEN   token with ads_read (can equal META_CAPI_ACCESS_TOKEN)
+#   META_TEST_EVENT_CODE          optional, e.g. TEST12345 (unset for production)
+#   CALENDLY_SIGNING_KEY          from Calendly webhook subscription
+#   ADMIN_PASSWORD                you choose
+#   ADMIN_SESSION_SECRET          random 32+ bytes for cookie HMAC

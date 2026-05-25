@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import broncoBeforeImage from '../bronco-before.jpg';
 import broncoAfterImage from '../bronco-after.jpg';
 import { newEventId, track, trackCustom } from './lib/meta-pixel.js';
+import { getVisitorId } from './lib/identity.js';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain,
@@ -62,6 +63,7 @@ function withFbEventId(url, eventId) {
 }
 
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+const AL_VID_MARKER = 'al_vid:';
 
 function withUtms(url) {
   if (typeof window === 'undefined') return url;
@@ -73,6 +75,28 @@ function withUtms(url) {
   if (!utms) return url;
   const separator = url.includes('?') ? '&' : '?';
   return `${url}${separator}${utms}`;
+}
+
+function withAttribution(url) {
+  if (typeof window === 'undefined') return url;
+  const vid = getVisitorId();
+  if (!vid) return withUtms(url);
+
+  const stamped = withUtms(url);
+  const marker = `${AL_VID_MARKER}${vid}`;
+
+  try {
+    const next = new URL(stamped, window.location.href);
+    const existing = next.searchParams.get('utm_content');
+    if (!existing) {
+      next.searchParams.set('utm_content', marker);
+    } else if (!existing.includes(AL_VID_MARKER)) {
+      next.searchParams.set('utm_content', `${existing}|${marker}`);
+    }
+    return next.toString();
+  } catch {
+    return stamped;
+  }
 }
 
 function hasSessionFlag(key) {
@@ -192,7 +216,7 @@ export default function App() {
   }, []);
 
   const demoUrl = "https://calendly.com/autolander/demo";
-  const bookingUrl = withUtms(demoUrl);
+  const bookingUrl = withAttribution(demoUrl);
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';

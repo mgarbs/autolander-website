@@ -1,4 +1,5 @@
 import { AUTOLANDER_KNOWLEDGE } from './autolander-knowledge.js';
+import { sha256Hex } from './capi/hash.js';
 
 const DEFAULT_ALLOWED_ORIGINS = [
   'https://autolander.ai',
@@ -37,7 +38,7 @@ const RESPONSE_SCHEMA = {
 const SUPPORT_SUBJECT = 'AutoLander support request';
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const corsHeaders = getCorsHeaders(request, env);
 
     if (request.method === 'OPTIONS') {
@@ -47,18 +48,28 @@ export default {
       });
     }
 
+    const url = new URL(request.url);
+
     const originCheck = isAllowedOrigin(request, env);
     if (!originCheck.ok) {
       return jsonResponse(
         {
-          message: 'This chat endpoint is only available from approved AutoLander sites.',
+          message: 'This endpoint is only available from approved AutoLander sites.',
         },
         403,
         corsHeaders
       );
     }
 
-    const url = new URL(request.url);
+    if (url.pathname.startsWith('/capi/')) {
+      const { handleCapi } = await import('./capi/router.js');
+      return handleCapi(request, env, corsHeaders, ctx);
+    }
+
+    if (url.pathname.startsWith('/admin/')) {
+      const { handleAdmin } = await import('./admin/router.js');
+      return handleAdmin(request, env, corsHeaders, ctx);
+    }
 
     if (url.pathname === '/chat' && request.method === 'POST') {
       return handleChat(request, env, corsHeaders);
@@ -481,7 +492,8 @@ function getCorsHeaders(request, env) {
   return {
     'Access-Control-Allow-Origin': allowed.ok && origin ? origin : 'null',
     'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
     'Vary': 'Origin',
   };
 }
@@ -520,6 +532,5 @@ function secondsUntilTomorrow(date) {
 }
 
 async function sha256(value) {
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
-  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+  return sha256Hex(value);
 }
