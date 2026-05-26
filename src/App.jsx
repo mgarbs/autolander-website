@@ -475,7 +475,7 @@ export default function App() {
 
               <FadeIn delay={0.16}>
                 <p className="mt-6 text-sm font-black uppercase text-blue-200">
-                  Automatic Facebook Marketplace posting for dealers.
+                  Automatic Facebook Marketplace posting for dealers and sales reps.
                 </p>
               </FadeIn>
 
@@ -564,7 +564,7 @@ export default function App() {
                     { label: 'Inventory Sync', manual: 'Manual Entry', auto: 'Automatic' },
                     { label: 'Form Filling', manual: 'Click-by-Click', auto: '100% Auto' },
                     { label: 'Descriptions', manual: 'Copy-Paste', auto: 'AI Optimized' },
-                    { label: 'Monthly Results', manual: 'Varies', auto: '+12 Units Avg' }
+                    { label: 'Monthly Results', manual: 'Varies', auto: '+7 Units Avg' }
                   ].map((row, i) => (
                     <tr key={i} className="border-b border-white/5 group">
                       <td className="py-4 md:py-6 px-2 md:px-4 text-white font-bold italic uppercase tracking-tight text-xs md:text-base">{row.label}</td>
@@ -1086,7 +1086,7 @@ export default function App() {
               STOP POSTING.<br/><span className="text-blue-500">START SELLING.</span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-400 mb-12 max-w-2xl mx-auto font-medium italic">
-              Join 500+ dealerships using AutoLander to automate their Marketplace dominance.
+              Join 500+ dealerships and sales reps using AutoLander to automate their Marketplace dominance.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
