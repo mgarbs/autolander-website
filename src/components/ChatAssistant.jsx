@@ -46,7 +46,7 @@ function mailtoUrl(email, subject, body) {
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-export default function ChatAssistant({ demoUrl, supportEmail = 'support@autolander.ai', onOpen }) {
+export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolander.ai', onOpen }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState(starterMessages);
   const [draft, setDraft] = useState('');

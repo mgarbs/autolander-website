@@ -113,7 +113,7 @@ Marketplace videos and FB requirements:
 - If a customer's Facebook account does not have Marketplace access yet, videos cannot be posted there — Meta controls Marketplace access.
 
 Support and demo:
-- Support email: support@autolander.ai
+- Support email: sales@autolander.ai
 - Support phone: (919) 737-0025
 - Mailing address: AutoLander LLC, 5830 Memorial Highway, Apt 1322, Tampa, FL 33615
 - Demo booking URL: https://calendly.com/autolander/demo

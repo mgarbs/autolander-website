@@ -90,7 +90,7 @@ export default {
 async function handleChat(request, env, headers) {
   if (!env.OPENAI_API_KEY) {
     return handoffResponse(
-      'Chat is not configured yet. Email support@autolander.ai or book a demo and we will help directly.',
+      'Chat is not configured yet. Email sales@autolander.ai or book a demo and we will help directly.',
       'Missing OPENAI_API_KEY',
       503,
       headers
@@ -466,7 +466,7 @@ function isEmail(value) {
 }
 
 function supportEmail(env) {
-  return env.SUPPORT_EMAIL || 'support@autolander.ai';
+  return env.SUPPORT_EMAIL || 'sales@autolander.ai';
 }
 
 function demoUrl(env) {
