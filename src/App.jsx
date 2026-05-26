@@ -475,7 +475,7 @@ export default function App() {
 
               <FadeIn delay={0.16}>
                 <p className="mt-6 text-sm font-black uppercase text-blue-200">
-                  Automatic Facebook Marketplace posting for dealers.
+                  Automatic Facebook Marketplace posting for dealers and sales reps.
                 </p>
               </FadeIn>
 
@@ -497,7 +497,7 @@ export default function App() {
                     <ArrowRight className="w-6 h-6" />
                   </motion.button>
                   <button
-                    onClick={() => window.open(bookingUrl, "_blank")}
+                    onClick={() => openDownload({ contentName: 'hero_free_trial', value: 29 })}
                     className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
                   >
                     Start Free Trial
@@ -505,11 +505,18 @@ export default function App() {
                 </div>
               </FadeIn>
 
+              <FadeIn delay={0.35}>
+                <p className="mt-5 flex items-center gap-2 text-sm font-medium text-slate-400">
+                  <Check className="w-4 h-4 text-blue-400 shrink-0" />
+                  First 5 posts free · No credit card · Setup in 30 seconds
+                </p>
+              </FadeIn>
+
               <FadeIn delay={0.4}>
                 <div className="mt-6 flex flex-col gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-bold text-slate-300 sm:inline-flex sm:flex-row sm:items-center sm:gap-4">
-                  <span>Starting at $39/mo for individuals</span>
+                  <span>Sales reps from <span className="text-white">$29/mo</span> annual</span>
                   <span className="hidden h-1 w-1 rounded-full bg-slate-500 sm:block" />
-                  <span>$117/mo for teams</span>
+                  <span>Teams from <span className="text-white">$87/mo</span> annual (3-seat min)</span>
                 </div>
               </FadeIn>
 
@@ -616,10 +623,10 @@ export default function App() {
               />
             </FadeIn>
             <FadeIn delay={0.3}>
-              <Step 
-                number="03" 
-                title="Start Auto Sales" 
-                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Add AI background replacement (8-15 credits / vehicle) for showroom-quality photos."
+              <Step
+                number="03"
+                title="Start Auto Sales"
+                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Sit back and let the leads come in."
               />
             </FadeIn>
           </div>
@@ -1086,7 +1093,7 @@ export default function App() {
               STOP POSTING.<br/><span className="text-blue-500">START SELLING.</span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-400 mb-12 max-w-2xl mx-auto font-medium italic">
-              Join 500+ dealerships using AutoLander to automate their Marketplace dominance.
+              Join 500+ dealerships and sales reps using AutoLander to automate their Marketplace dominance.
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -1099,7 +1106,7 @@ export default function App() {
                 Book a Live Demo
               </motion.button>
               <button
-                onClick={() => window.open(bookingUrl, "_blank")}
+                onClick={() => openDownload({ contentName: 'final_cta_free_trial', value: 29 })}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
               >
                 Start Your Free Trial
