@@ -20,3 +20,20 @@ REQUIRE_TURNSTILE = "false"
 binding = "CHAT_RATE_LIMITS"
 id = "replace_with_production_kv_namespace_id"
 preview_id = "replace_with_preview_kv_namespace_id"
+
+# Conversion tracking + admin dashboard storage.
+# Create with: wrangler kv:namespace create TRACKING (and --preview).
+[[kv_namespaces]]
+binding = "TRACKING"
+id = "replace_with_production_kv_namespace_id"
+preview_id = "replace_with_preview_kv_namespace_id"
+
+# Secrets to set via `wrangler secret put <NAME>`:
+#   META_PIXEL_ID
+#   META_CAPI_ACCESS_TOKEN
+#   META_AD_ACCOUNT_ID            (format act_XXXXXXXXX)
+#   META_MARKETING_ACCESS_TOKEN   (can equal META_CAPI_ACCESS_TOKEN)
+#   META_TEST_EVENT_CODE          (optional, unset for production)
+#   CALENDLY_SIGNING_KEY
+#   ADMIN_PASSWORD
+#   ADMIN_SESSION_SECRET
