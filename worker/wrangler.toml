@@ -25,11 +25,10 @@ id = "773a6f731ade45619079fc5acca6787e"
 preview_id = "4a6687d31adc4bb19fd01b2d47e01804"
 
 # Conversion tracking + admin dashboard storage.
-# Create with: wrangler kv:namespace create TRACKING (and --preview).
 [[kv_namespaces]]
 binding = "TRACKING"
-id = "replace_with_production_kv_namespace_id"
-preview_id = "replace_with_preview_kv_namespace_id"
+id = "27aed049b50043b19164a2bb9c51c143"
+preview_id = "273697d477e84296a0152a690e95884c"
 
 # Secrets to set via `wrangler secret put <NAME>`:
 #   META_PIXEL_ID                 numeric Pixel ID (e.g. 2087440198847151)
