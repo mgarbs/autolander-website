@@ -88,4 +88,4 @@ If `SUPPORT_WEBHOOK_URL` is configured:
 - `SUPPORT_WEBHOOK_TYPE=discord` posts `{ content }`
 - otherwise the Worker posts a generic JSON payload
 
-If no webhook is configured, the website opens a prefilled email to `support@autolander.ai`.
+If no webhook is configured, the website opens a prefilled email to `sales@autolander.ai`.

@@ -1124,8 +1124,8 @@ export default function App() {
             <div className="flex gap-8 text-[10px] font-black text-slate-500 uppercase tracking-widest">
               <a href="/privacy.html" className="hover:text-blue-500 transition-colors">Privacy</a>
               <a href="/terms.html" className="hover:text-blue-500 transition-colors">Terms</a>
-              <a href="mailto:support@autolander.ai" className="hover:text-blue-500 transition-colors">Contact</a>
-              <a href="mailto:support@autolander.ai" className="hover:text-blue-500 transition-colors">Support</a>
+              <a href="mailto:sales@autolander.ai" className="hover:text-blue-500 transition-colors">Contact</a>
+              <a href="mailto:sales@autolander.ai" className="hover:text-blue-500 transition-colors">Support</a>
             </div>
 
             <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">© 2026 AutoLander. All rights reserved.</p>
@@ -1133,7 +1133,7 @@ export default function App() {
         </div>
       </footer>
       <Suspense fallback={null}>
-        <ChatAssistant demoUrl={bookingUrl} supportEmail="support@autolander.ai" onOpen={trackChatOpen} />
+        <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} />
       </Suspense>
     </div>
   );
