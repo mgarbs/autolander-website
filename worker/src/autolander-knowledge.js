@@ -114,7 +114,7 @@ Marketplace videos and FB requirements:
 
 Support and demo:
 - Support email: sales@autolander.ai
-- Support phone: (919) 737-0025
+- Support phone: (919) 280-0967
 - Mailing address: AutoLander LLC, 5830 Memorial Highway, Apt 1322, Tampa, FL 33615
 - Demo booking URL: https://calendly.com/autolander/demo
 
