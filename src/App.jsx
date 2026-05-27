@@ -277,18 +277,17 @@ export default function App() {
 
       container.innerHTML = '';
 
-      // NOTE: intentionally NOT setting a1 here.
-      // Calendly's positional prefill (a1/a2/...) currently maps to the phone
-      // country picker, not the lot-size question — caused Botswana to be
-      // pre-selected when we tried a1=76-150. The lot-size buttons act as a UX
-      // commitment device; the user re-enters lot size inside Calendly.
+      // a2 = "How many cars on your lot?" (verified via Calendly event-types API).
+      // a1 is the phone field — passing a1=76-150 was making the phone country
+      // picker resolve to Botswana, hence the earlier bug.
       let widgetUrl = bookingUrl;
       try {
         const u = new URL(bookingUrl, window.location.href);
+        u.searchParams.set('a2', size);
         u.searchParams.set('hide_gdpr_banner', '1');
         widgetUrl = u.toString();
       } catch {
-        widgetUrl = bookingUrl;
+        widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}a2=${encodeURIComponent(size)}&hide_gdpr_banner=1`;
       }
 
       Calendly.initInlineWidget({ url: widgetUrl, parentElement: container });
@@ -719,7 +718,8 @@ export default function App() {
                   <div
                     ref={calendlyContainerRef}
                     id="calendly-embed-container"
-                    style={{ minWidth: '320px', minHeight: '780px' }}
+                    className="min-h-[1500px] md:min-h-[1100px]"
+                    style={{ minWidth: '320px' }}
                   />
                 </div>
               </FadeIn>
