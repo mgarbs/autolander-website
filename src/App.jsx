@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
+import React, { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import broncoBeforeImage from '../bronco-before.jpg';
 import broncoAfterImage from '../bronco-after.jpg';
@@ -25,6 +25,43 @@ const DOWNLOADS = {
 };
 const REFERRAL_CODE_PATTERN = /^[a-z0-9]{4,64}$/;
 const FEATURES_VIEW_STORAGE_KEY = 'autolander_meta_view_content_features';
+const LOT_SIZES = ['1-25', '26-75', '76-150', '150+'];
+const CALENDLY_WIDGET_JS = 'https://assets.calendly.com/assets/external/widget.js';
+const CALENDLY_WIDGET_CSS = 'https://assets.calendly.com/assets/external/widget.css';
+
+let calendlyAssetsPromise = null;
+function loadCalendlyAssets() {
+  if (typeof window === 'undefined') return Promise.reject(new Error('no-window'));
+  if (window.Calendly) return Promise.resolve(window.Calendly);
+  if (calendlyAssetsPromise) return calendlyAssetsPromise;
+
+  calendlyAssetsPromise = new Promise((resolve, reject) => {
+    if (!document.querySelector(`link[href="${CALENDLY_WIDGET_CSS}"]`)) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = CALENDLY_WIDGET_CSS;
+      document.head.appendChild(link);
+    }
+    const existing = document.querySelector(`script[src="${CALENDLY_WIDGET_JS}"]`);
+    if (existing && window.Calendly) {
+      resolve(window.Calendly);
+      return;
+    }
+    const script = existing || document.createElement('script');
+    if (!existing) {
+      script.src = CALENDLY_WIDGET_JS;
+      script.async = true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener('load', () => resolve(window.Calendly));
+    script.addEventListener('error', () => {
+      calendlyAssetsPromise = null;
+      reject(new Error('calendly-load-failed'));
+    });
+  });
+
+  return calendlyAssetsPromise;
+}
 const STALE_APP_HASH_ROUTES = new Set([
   '#/login',
   '#/sign-in',
@@ -217,6 +254,41 @@ export default function App() {
 
   const demoUrl = "https://calendly.com/autolander/demo";
   const bookingUrl = withAttribution(demoUrl);
+  const [selectedLotSize, setSelectedLotSize] = useState(null);
+  const calendlyContainerRef = useRef(null);
+
+  const handleLotSizeClick = useCallback(async (size) => {
+    setSelectedLotSize(size);
+    try {
+      const Calendly = await loadCalendlyAssets();
+      const container = calendlyContainerRef.current;
+      if (!container || !Calendly) return;
+
+      container.innerHTML = '';
+
+      let widgetUrl = bookingUrl;
+      try {
+        const u = new URL(bookingUrl, window.location.href);
+        u.searchParams.set('a1', size);
+        widgetUrl = u.toString();
+      } catch {
+        widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}a1=${encodeURIComponent(size)}`;
+      }
+
+      Calendly.initInlineWidget({ url: widgetUrl, parentElement: container });
+      setTimeout(() => {
+        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    } catch (err) {
+      console.error('[demo-booker] failed to load Calendly widget', err);
+      window.open(bookingUrl, '_blank');
+    }
+  }, [bookingUrl]);
+
+  const scrollToDemoBooker = useCallback(() => {
+    const el = document.getElementById('demo-booker');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';
@@ -348,7 +420,7 @@ export default function App() {
               Download
             </button>
             <button
-              onClick={() => window.open(bookingUrl, "_blank")}
+              onClick={scrollToDemoBooker}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
               Book a Demo
             </button>
@@ -490,7 +562,7 @@ export default function App() {
                   <motion.button
                     whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => window.open(bookingUrl, "_blank")}
+                    onClick={scrollToDemoBooker}
                     className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                   >
                     <span>Book a Demo</span>
@@ -534,6 +606,54 @@ export default function App() {
             </div>
           </div>
         )}
+      </section>
+
+      {/* Inline Demo Booker — lot-size qualifier then embedded Calendly */}
+      <section id="demo-booker" className="relative z-10 py-20 lg:py-28 border-y border-white/5">
+        <div className="max-w-5xl mx-auto px-6">
+          <FadeIn>
+            <h2 className="text-3xl lg:text-5xl font-black uppercase italic tracking-tight text-white text-center mb-3 leading-none">
+              How many cars on your lot?
+            </h2>
+            <p className="text-base lg:text-lg text-slate-400 text-center mb-10 font-medium italic">
+              Pick a number — we&apos;ll show you available demo times.
+            </p>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto">
+              {LOT_SIZES.map((size) => {
+                const isActive = selectedLotSize === size;
+                return (
+                  <button
+                    key={size}
+                    type="button"
+                    onClick={() => handleLotSizeClick(size)}
+                    aria-pressed={isActive}
+                    className={`px-6 py-5 rounded-2xl font-black text-base sm:text-lg uppercase italic tracking-tighter transition-all border-2 active:scale-95 ${
+                      isActive
+                        ? 'bg-blue-600 text-white border-blue-500 shadow-xl shadow-blue-500/30'
+                        : 'bg-white/[0.04] text-white border-white/10 hover:border-blue-500/50 hover:bg-white/[0.08]'
+                    }`}
+                  >
+                    {size}
+                  </button>
+                );
+              })}
+            </div>
+          </FadeIn>
+
+          <div
+            ref={calendlyContainerRef}
+            id="calendly-embed-container"
+            className="mt-10 rounded-3xl overflow-hidden bg-white"
+            style={{
+              minWidth: '320px',
+              height: selectedLotSize ? '780px' : '0',
+              display: selectedLotSize ? 'block' : 'none',
+            }}
+          />
+        </div>
       </section>
 
       {/* Comparison Section */}
@@ -988,7 +1108,7 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.open(bookingUrl, "_blank")}
+                onClick={scrollToDemoBooker}
                 className="px-10 py-5 rounded-2xl bg-white text-black font-black text-lg transition-all uppercase italic"
               >
                 See the Studio in Action
@@ -1093,7 +1213,7 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => window.open(bookingUrl, "_blank")}
+                onClick={scrollToDemoBooker}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500"
               >
                 Book a Live Demo
