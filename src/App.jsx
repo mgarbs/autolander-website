@@ -257,8 +257,9 @@ export default function App() {
   const annualUpside = extraRevenueMo * 12;
   // 30 min saved per posting × inventory; reposting some weekly is the realistic floor
   const hoursSavedMo = Math.max(8, Math.round(calcInventory * 0.5));
-  // Pro plan annual cost ($79/mo billed monthly = $948/yr); used as ROI denominator
-  const roiMultiple = Math.max(1, Math.round(annualUpside / 948));
+  // Pro plan: $59/mo billed annually = $708/yr — what users actually pay
+  const proPlanAnnualCost = 59 * 12;
+  const roiMultiple = Math.max(1, Math.round(annualUpside / proPlanAnnualCost));
 
   useEffect(() => {
     const hash = window.location.hash.toLowerCase();
@@ -879,7 +880,7 @@ export default function App() {
                         ${annualUpside.toLocaleString('en-US')}
                       </div>
                       <div className="mt-4 text-sm font-bold text-slate-300">
-                        <span className="text-white tabular-nums">{roiMultiple}×</span> return on a <span className="text-white">$948/yr</span> Pro plan
+                        <span className="text-white tabular-nums">{roiMultiple}×</span> return on a <span className="text-white">$59/mo</span> Pro plan
                       </div>
                     </div>
                   </div>
