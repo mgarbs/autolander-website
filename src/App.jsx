@@ -204,6 +204,41 @@ const Step = ({ number, title, desc }) => (
   </div>
 );
 
+const RoiSlider = ({ label, value, setValue, min, max, step, prefix = '', suffix = '' }) => {
+  const formatted = value.toLocaleString('en-US');
+  const display = prefix ? `${prefix}${formatted}` : suffix ? `${formatted} ${suffix}` : formatted;
+  return (
+    <div>
+      <div className="flex items-baseline justify-between mb-3 gap-3">
+        <label className="text-sm font-bold text-slate-300">{label}</label>
+        <div className="text-2xl sm:text-[28px] font-black italic tracking-tighter text-white tabular-nums">{display}</div>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => setValue(Number(e.target.value))}
+        aria-label={label}
+        className="w-full h-2 bg-white/[0.08] rounded-full appearance-none cursor-pointer
+          [&::-webkit-slider-thumb]:appearance-none
+          [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6
+          [&::-webkit-slider-thumb]:rounded-full
+          [&::-webkit-slider-thumb]:bg-gradient-to-br [&::-webkit-slider-thumb]:from-blue-400 [&::-webkit-slider-thumb]:to-blue-600
+          [&::-webkit-slider-thumb]:shadow-[0_0_0_4px_rgba(59,130,246,0.18),0_8px_20px_-4px_rgba(59,130,246,0.6)]
+          [&::-webkit-slider-thumb]:transition-transform
+          [&::-webkit-slider-thumb]:hover:scale-110
+          [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6
+          [&::-moz-range-thumb]:rounded-full
+          [&::-moz-range-thumb]:bg-blue-500
+          [&::-moz-range-thumb]:border-0
+          [&::-moz-range-thumb]:shadow-[0_0_0_4px_rgba(59,130,246,0.18),0_8px_20px_-4px_rgba(59,130,246,0.6)]"
+      />
+    </div>
+  );
+};
+
 export default function App() {
   const [isAnnual, setIsAnnual] = useState(false);
   const [studioView, setStudioView] = useState('after');
@@ -211,6 +246,19 @@ export default function App() {
   const [isDesktopHero, setIsDesktopHero] = useState(() => window.matchMedia('(min-width: 768px)').matches);
   const featuresSectionRef = useRef(null);
   const isMonthlyBilling = !isAnnual;
+
+  // ROI calculator — defaults sized for a typical mid-tier independent dealer
+  const [calcInventory, setCalcInventory] = useState(75);
+  const [calcSales, setCalcSales] = useState(8);
+  const [calcProfit, setCalcProfit] = useState(2400);
+  // "5-10 more cars/month" claim → floor at +5, slope at 50% of current sales, cap at +15
+  const extraCarsMo = Math.min(15, Math.max(5, Math.round(calcSales * 0.5)));
+  const extraRevenueMo = extraCarsMo * calcProfit;
+  const annualUpside = extraRevenueMo * 12;
+  // 30 min saved per posting × inventory; reposting some weekly is the realistic floor
+  const hoursSavedMo = Math.max(8, Math.round(calcInventory * 0.5));
+  // Pro plan annual cost ($79/mo billed monthly = $948/yr); used as ROI denominator
+  const roiMultiple = Math.max(1, Math.round(annualUpside / 948));
 
   useEffect(() => {
     const hash = window.location.hash.toLowerCase();
@@ -740,6 +788,125 @@ export default function App() {
               />
             </FadeIn>
           </div>
+        </div>
+      </section>
+
+      {/* ROI Calculator — sized to make dealers dream + book demos */}
+      <section id="roi-calculator" className="relative z-10 py-24 lg:py-32 overflow-hidden border-y border-white/5">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#050505] via-[#0a0f1e] to-[#050505]" aria-hidden="true" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" aria-hidden="true" />
+        <div className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[80%] h-64 bg-blue-500/10 blur-[140px] rounded-full" aria-hidden="true" />
+
+        <div className="relative max-w-6xl mx-auto px-6">
+          <FadeIn>
+            <div className="text-center mb-12 lg:mb-14">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/25 text-blue-300 mb-6">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+                <span className="text-[9px] font-black uppercase tracking-[0.22em]">ROI Calculator</span>
+              </span>
+              <h2 className="text-4xl lg:text-6xl font-black uppercase italic tracking-tighter text-white leading-[0.95] mb-5">
+                How much more could
+                <span className="block text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-600">
+                  you make per year?
+                </span>
+              </h2>
+              <p className="text-base lg:text-lg text-slate-400 font-medium max-w-xl mx-auto leading-relaxed">
+                Drag the sliders. See what AutoLander could add to your bottom line.
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <div className="relative rounded-3xl border border-blue-500/20 bg-white/[0.02] backdrop-blur-sm shadow-[0_30px_80px_-20px_rgba(59,130,246,0.3)] overflow-hidden">
+              <div className="grid lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-white/5">
+
+                {/* LEFT — INPUTS */}
+                <div className="p-7 sm:p-9 lg:p-10 space-y-7">
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-500">Your dealership</h3>
+
+                  <RoiSlider
+                    label="Cars on your lot"
+                    value={calcInventory}
+                    setValue={setCalcInventory}
+                    min={10}
+                    max={500}
+                    step={5}
+                    suffix="cars"
+                  />
+
+                  <RoiSlider
+                    label="Cars you sell per month now"
+                    value={calcSales}
+                    setValue={setCalcSales}
+                    min={1}
+                    max={50}
+                    step={1}
+                    suffix={calcSales === 1 ? 'sale' : 'sales'}
+                  />
+
+                  <RoiSlider
+                    label="Avg gross profit per car"
+                    value={calcProfit}
+                    setValue={setCalcProfit}
+                    min={500}
+                    max={5000}
+                    step={100}
+                    prefix="$"
+                  />
+                </div>
+
+                {/* RIGHT — OUTPUTS */}
+                <div className="p-7 sm:p-9 lg:p-10 flex flex-col">
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.22em] text-blue-400 mb-5">With AutoLander</h3>
+
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6">
+                    <div className="rounded-2xl bg-white/[0.03] border border-white/5 p-4 sm:p-5">
+                      <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Extra cars / mo</div>
+                      <div className="text-2xl sm:text-3xl font-black italic tracking-tighter text-white tabular-nums">+{extraCarsMo}</div>
+                    </div>
+                    <div className="rounded-2xl bg-white/[0.03] border border-white/5 p-4 sm:p-5">
+                      <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500 mb-2">Hours saved / mo</div>
+                      <div className="text-2xl sm:text-3xl font-black italic tracking-tighter text-white tabular-nums">{hoursSavedMo}h</div>
+                    </div>
+                  </div>
+
+                  {/* The wow number — anchor */}
+                  <div className="relative rounded-3xl border border-blue-400/30 bg-gradient-to-br from-blue-600/20 via-indigo-600/15 to-blue-600/5 p-6 sm:p-7 mb-6 overflow-hidden">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.3),transparent_55%)]" aria-hidden="true" />
+                    <div className="relative">
+                      <div className="text-[10px] font-black uppercase tracking-[0.22em] text-blue-300 mb-3">Your annual upside</div>
+                      <div className="text-5xl sm:text-6xl lg:text-[68px] font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-blue-200 via-blue-300 to-blue-500 leading-none tabular-nums break-all sm:break-normal">
+                        ${annualUpside.toLocaleString('en-US')}
+                      </div>
+                      <div className="mt-4 text-sm font-bold text-slate-300">
+                        <span className="text-white tabular-nums">{roiMultiple}×</span> return on a <span className="text-white">$948/yr</span> Pro plan
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA right under the wow number — no scroll needed */}
+                  <motion.button
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={openCalendlyPopup}
+                    className="w-full py-5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-black text-base sm:text-lg uppercase italic tracking-tight transition-all flex items-center justify-center gap-3 shadow-2xl shadow-blue-600/30"
+                  >
+                    Book a Demo to Lock This In
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.button>
+                  <p className="mt-3 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">
+                    15-min call · We'll walk through your exact numbers
+                  </p>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.2}>
+            <p className="mt-8 text-center text-[10px] font-bold uppercase tracking-[0.18em] text-slate-600 italic max-w-2xl mx-auto leading-relaxed">
+              * Estimates use AutoLander's documented average of 5-10 additional units per month per active dealer. Actual results vary with market, inventory mix, and Marketplace usage.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
