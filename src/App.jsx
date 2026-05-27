@@ -256,16 +256,19 @@ export default function App() {
 
   const openCalendlyPopup = useCallback(async () => {
     // Themed Calendly URL with site-matching dark palette.
+    // a2=Yes pre-checks the "Get text reminders about your demo" checkbox
+    // (verified via Calendly event-types API — multi_select at position 1).
     let widgetUrl = bookingUrl;
     try {
       const u = new URL(bookingUrl, window.location.href);
+      u.searchParams.set('a2', 'Yes');
       u.searchParams.set('hide_gdpr_banner', '1');
       u.searchParams.set('background_color', '050505');
       u.searchParams.set('text_color', 'f1f5f9');
       u.searchParams.set('primary_color', '2563eb');
       widgetUrl = u.toString();
     } catch {
-      const params = `hide_gdpr_banner=1&background_color=050505&text_color=f1f5f9&primary_color=2563eb`;
+      const params = `a2=Yes&hide_gdpr_banner=1&background_color=050505&text_color=f1f5f9&primary_color=2563eb`;
       widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}${params}`;
     }
 
