@@ -1197,7 +1197,7 @@ export default function App() {
         </div>
       </footer>
       <Suspense fallback={null}>
-        <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} />
+        <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openCalendlyPopup} />
       </Suspense>
     </div>
   );

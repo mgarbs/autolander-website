@@ -46,7 +46,7 @@ function mailtoUrl(email, subject, body) {
   return `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
-export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolander.ai', onOpen }) {
+export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolander.ai', onOpen, onBookDemo }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState(starterMessages);
   const [draft, setDraft] = useState('');
@@ -297,7 +297,10 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
                         </button>
                         <button
                           type="button"
-                          onClick={() => window.open(demoUrl, '_blank')}
+                          onClick={() => {
+                            if (onBookDemo) onBookDemo();
+                            else window.open(demoUrl, '_blank');
+                          }}
                           className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-4 py-2 text-xs font-black uppercase italic text-white transition hover:bg-white/10"
                         >
                           <Calendar className="h-4 w-4" />
