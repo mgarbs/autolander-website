@@ -253,8 +253,11 @@ export default function App() {
 
   const demoUrl = "https://calendly.com/autolander/demo";
   const bookingUrl = withAttribution(demoUrl);
+  const [popupLoading, setPopupLoading] = useState(false);
 
   const openCalendlyPopup = useCallback(async () => {
+    setPopupLoading(true);
+
     // Themed Calendly URL with site-matching dark palette.
     let widgetUrl = bookingUrl;
     try {
@@ -272,15 +275,44 @@ export default function App() {
     try {
       const Calendly = await loadCalendlyAssets();
       if (!Calendly) {
+        setPopupLoading(false);
         window.open(widgetUrl, '_blank');
         return;
       }
       Calendly.initPopupWidget({ url: widgetUrl });
+      // popupLoading stays true; it gets cleared either by the postMessage
+      // listener below when Calendly's app is ready, or by the 5s fallback.
     } catch (err) {
       console.error('[demo-booker] failed to load Calendly widget', err);
+      setPopupLoading(false);
       window.open(widgetUrl, '_blank');
     }
   }, [bookingUrl]);
+
+  // Listen for Calendly's "I'm ready" event to dismiss our overlay.
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const onMessage = (e) => {
+      if (typeof e.origin !== 'string' || !e.origin.includes('calendly.com')) return;
+      if (!e.data || typeof e.data !== 'object') return;
+      if (
+        e.data.event === 'calendly.profile_page_viewed' ||
+        e.data.event === 'calendly.event_type_viewed'
+      ) {
+        setPopupLoading(false);
+      }
+    };
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
+
+  // Hard fallback — if Calendly's events never fire (ad blocker, slow net),
+  // drop the overlay after 5s so the user isn't stuck behind a spinner.
+  useEffect(() => {
+    if (!popupLoading) return undefined;
+    const t = setTimeout(() => setPopupLoading(false), 5000);
+    return () => clearTimeout(t);
+  }, [popupLoading]);
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';
@@ -1199,6 +1231,20 @@ export default function App() {
       <Suspense fallback={null}>
         <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openCalendlyPopup} />
       </Suspense>
+
+      {/* Unified booking-load overlay — masks Calendly's two internal spinners */}
+      {popupLoading && (
+        <div
+          className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/95 backdrop-blur-sm"
+          aria-live="polite"
+          aria-busy="true"
+        >
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-11 w-11 rounded-full border-[3px] border-blue-500 border-t-transparent animate-spin" />
+            <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-300">Opening booking…</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
