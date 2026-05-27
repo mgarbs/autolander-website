@@ -260,67 +260,40 @@ export default function App() {
   const demoUrl = "https://calendly.com/autolander/demo";
   const bookingUrl = withAttribution(demoUrl);
   const [selectedLotSize, setSelectedLotSize] = useState(null);
-  const [calendlyLoading, setCalendlyLoading] = useState(false);
-  const calendlyContainerRef = useRef(null);
 
   const handleLotSizeClick = useCallback(async (size) => {
-    const isFirstSelection = !selectedLotSize;
     setSelectedLotSize(size);
-    setCalendlyLoading(true);
+
+    // a2 = "How many cars on your lot?" (verified via Calendly event-types API).
+    // Colors theme the Calendly widget to match the site palette.
+    let widgetUrl = bookingUrl;
+    try {
+      const u = new URL(bookingUrl, window.location.href);
+      u.searchParams.set('a2', size);
+      u.searchParams.set('hide_gdpr_banner', '1');
+      u.searchParams.set('background_color', '050505');
+      u.searchParams.set('text_color', 'f1f5f9');
+      u.searchParams.set('primary_color', '2563eb');
+      widgetUrl = u.toString();
+    } catch {
+      const params = `a2=${encodeURIComponent(size)}&hide_gdpr_banner=1&background_color=050505&text_color=f1f5f9&primary_color=2563eb`;
+      widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}${params}`;
+    }
+
     try {
       const Calendly = await loadCalendlyAssets();
-      const container = calendlyContainerRef.current;
-      if (!container || !Calendly) {
-        setCalendlyLoading(false);
+      if (!Calendly) {
+        window.open(widgetUrl, '_blank');
         return;
       }
-
-      container.innerHTML = '';
-
-      // a2 = "How many cars on your lot?" (verified via Calendly event-types API).
-      // a1 is the phone field — passing a1=76-150 was making the phone country
-      // picker resolve to Botswana, hence the earlier bug.
-      // Colors theme the Calendly widget to match the site's dark palette.
-      let widgetUrl = bookingUrl;
-      try {
-        const u = new URL(bookingUrl, window.location.href);
-        u.searchParams.set('a2', size);
-        u.searchParams.set('hide_gdpr_banner', '1');
-        u.searchParams.set('background_color', '050505');
-        u.searchParams.set('text_color', 'f1f5f9');
-        u.searchParams.set('primary_color', '2563eb');
-        widgetUrl = u.toString();
-      } catch {
-        const params = `a2=${encodeURIComponent(size)}&hide_gdpr_banner=1&background_color=050505&text_color=f1f5f9&primary_color=2563eb`;
-        widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}${params}`;
-      }
-
-      Calendly.initInlineWidget({ url: widgetUrl, parentElement: container });
-
-      // Calendly injects an iframe; observe it to know when to drop the spinner.
-      const observer = new MutationObserver(() => {
-        const iframe = container.querySelector('iframe');
-        if (iframe) {
-          iframe.addEventListener('load', () => setCalendlyLoading(false), { once: true });
-          // Fallback in case load already fired before listener attached
-          setTimeout(() => setCalendlyLoading(false), 1500);
-          observer.disconnect();
-        }
-      });
-      observer.observe(container, { childList: true, subtree: true });
-      setTimeout(() => setCalendlyLoading(false), 4000); // hard fallback
-
-      if (isFirstSelection) {
-        setTimeout(() => {
-          container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 120);
-      }
+      // Popup avoids iframe-scroll-trap and content-shorter-than-container
+      // black-gap problems that plagued the inline embed on mobile Safari.
+      Calendly.initPopupWidget({ url: widgetUrl });
     } catch (err) {
       console.error('[demo-booker] failed to load Calendly widget', err);
-      setCalendlyLoading(false);
-      window.open(bookingUrl, '_blank');
+      window.open(widgetUrl, '_blank');
     }
-  }, [bookingUrl, selectedLotSize]);
+  }, [bookingUrl]);
 
   const scrollToDemoBooker = useCallback(() => {
     const el = document.getElementById('demo-booker');
@@ -656,7 +629,7 @@ export default function App() {
             <div className="text-center mb-12 lg:mb-14">
               <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/25 text-blue-300 mb-6">
                 <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-                <span className="text-[9px] font-black uppercase tracking-[0.22em]">Step 1 of 2 — Tell us about your lot</span>
+                <span className="text-[9px] font-black uppercase tracking-[0.22em]">Book your demo</span>
               </span>
               <h2 className="text-4xl lg:text-6xl font-black uppercase italic tracking-tighter text-white leading-[0.95] mb-5">
                 How many cars
@@ -665,7 +638,7 @@ export default function App() {
                 </span>
               </h2>
               <p className="text-base lg:text-lg text-slate-400 font-medium max-w-md mx-auto leading-relaxed">
-                Pick one to load available demo times.
+                Pick one — we&apos;ll open the booking form.
               </p>
             </div>
           </FadeIn>
@@ -703,33 +676,6 @@ export default function App() {
             </div>
           </FadeIn>
 
-          {/* Embed area — only renders after first selection */}
-          {selectedLotSize && (
-            <div className="mt-10 lg:mt-14 relative">
-              <FadeIn>
-                <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/25 text-emerald-300">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  <span className="text-[9px] font-black uppercase tracking-[0.22em]">Step 2 — Pick a time</span>
-                </div>
-                <div className="relative rounded-3xl border border-white/10 bg-[#050505] shadow-2xl shadow-blue-500/10 overflow-hidden">
-                  {calendlyLoading && (
-                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#050505]" aria-live="polite">
-                      <div className="flex flex-col items-center gap-3">
-                        <div className="h-9 w-9 rounded-full border-[3px] border-blue-500 border-t-transparent animate-spin" />
-                        <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">Loading available times…</p>
-                      </div>
-                    </div>
-                  )}
-                  <div
-                    ref={calendlyContainerRef}
-                    id="calendly-embed-container"
-                    className="min-h-[1500px] md:min-h-[1100px]"
-                    style={{ minWidth: '320px' }}
-                  />
-                </div>
-              </FadeIn>
-            </div>
-          )}
         </div>
       </section>
 
