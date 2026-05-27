@@ -221,15 +221,16 @@ const RoiSlider = ({ label, value, setValue, min, max, step, prefix = '', suffix
         value={value}
         onChange={(e) => setValue(Number(e.target.value))}
         aria-label={label}
-        className="w-full h-2 bg-white/[0.08] rounded-full appearance-none cursor-pointer
+        style={{ touchAction: 'pan-x' }}
+        className="w-full h-3 sm:h-2 bg-white/[0.08] rounded-full appearance-none cursor-pointer
           [&::-webkit-slider-thumb]:appearance-none
-          [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6
+          [&::-webkit-slider-thumb]:h-7 [&::-webkit-slider-thumb]:w-7 sm:[&::-webkit-slider-thumb]:h-6 sm:[&::-webkit-slider-thumb]:w-6
           [&::-webkit-slider-thumb]:rounded-full
           [&::-webkit-slider-thumb]:bg-gradient-to-br [&::-webkit-slider-thumb]:from-blue-400 [&::-webkit-slider-thumb]:to-blue-600
           [&::-webkit-slider-thumb]:shadow-[0_0_0_4px_rgba(59,130,246,0.18),0_8px_20px_-4px_rgba(59,130,246,0.6)]
           [&::-webkit-slider-thumb]:transition-transform
-          [&::-webkit-slider-thumb]:hover:scale-110
-          [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6
+          [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:active:scale-110
+          [&::-moz-range-thumb]:h-7 [&::-moz-range-thumb]:w-7 sm:[&::-moz-range-thumb]:h-6 sm:[&::-moz-range-thumb]:w-6
           [&::-moz-range-thumb]:rounded-full
           [&::-moz-range-thumb]:bg-blue-500
           [&::-moz-range-thumb]:border-0
@@ -967,7 +968,7 @@ export default function App() {
       <section id="roi-calculator" className="relative z-10 py-24 lg:py-32 overflow-hidden border-y border-white/5">
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#050505] via-[#0a0f1e] to-[#050505]" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" aria-hidden="true" />
-        <div className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[80%] h-64 bg-blue-500/10 blur-[140px] rounded-full" aria-hidden="true" />
+        <div className="hidden md:block pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[80%] h-64 bg-blue-500/10 blur-[80px] rounded-full" aria-hidden="true" />
 
         <div className="relative max-w-6xl mx-auto px-6">
           <FadeIn>
@@ -989,7 +990,7 @@ export default function App() {
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <div className="relative rounded-3xl border border-blue-500/20 bg-white/[0.02] backdrop-blur-sm shadow-[0_30px_80px_-20px_rgba(59,130,246,0.3)] overflow-hidden">
+            <div className="relative rounded-3xl border border-blue-500/20 bg-white/[0.02] md:backdrop-blur-sm shadow-[0_30px_80px_-20px_rgba(59,130,246,0.3)] overflow-hidden [transform:translateZ(0)] [will-change:transform]">
               <div className="grid lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-white/5">
 
                 {/* LEFT — INPUTS */}
