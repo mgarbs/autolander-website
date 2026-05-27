@@ -883,7 +883,7 @@ export default function App() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={
-                      isPrivateMonthlyProOffer || plan.team
+                      isPrivateMonthlyProOffer
                         ? () => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })
                         : openCalendlyPopup
                     }
