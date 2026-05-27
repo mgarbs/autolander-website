@@ -18,3 +18,18 @@ body {
   background-color: #0f172a;
   color: #f8fafc;
 }
+
+/*
+ * Hide Calendly's modal-load spinner (the big "outer" one widget.js shows
+ * while the iframe loads). The "inner" spinner inside the iframe is cross-
+ * origin and unreachable — Calendly's own design.
+ * Selectors cover known class names across Calendly widget.js versions.
+ */
+.calendly-spinner,
+.calendly-overlay .calendly-spinner,
+.calendly-popup-content .calendly-spinner,
+.calendly-popup .spinner,
+.calendly-overlay [class*="spinner" i],
+.calendly-overlay [class*="loading" i] {
+  display: none !important;
+}
