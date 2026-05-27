@@ -20,16 +20,30 @@ body {
 }
 
 /*
- * Hide Calendly's modal-load spinner (the big "outer" one widget.js shows
- * while the iframe loads). The "inner" spinner inside the iframe is cross-
- * origin and unreachable — Calendly's own design.
- * Selectors cover known class names across Calendly widget.js versions.
+ * Hide Calendly's parent-frame loading indicators (everything in the modal
+ * that isn't the iframe itself, the close button, or the popup chrome).
+ * The "inner" spinner inside the iframe is cross-origin and unreachable —
+ * Calendly's own design and we keep that one.
+ *
+ * The wide net is intentional: Calendly's widget.js class names vary across
+ * versions, so we target by structure + attribute-substring + pseudo-elements
+ * to cover variants without knowing the exact class.
  */
 .calendly-spinner,
 .calendly-overlay .calendly-spinner,
 .calendly-popup-content .calendly-spinner,
 .calendly-popup .spinner,
 .calendly-overlay [class*="spinner" i],
-.calendly-overlay [class*="loading" i] {
+.calendly-overlay [class*="loading" i],
+.calendly-popup-content [class*="spinner" i],
+.calendly-popup-content [class*="loading" i],
+.calendly-popup [class*="spinner" i],
+.calendly-popup [class*="loading" i],
+.calendly-popup-content::before,
+.calendly-popup-content::after,
+.calendly-popup::before,
+.calendly-popup::after,
+.calendly-overlay [role="progressbar"],
+.calendly-overlay [aria-busy="true"]:not(iframe):not(.calendly-popup-content) {
   display: none !important;
 }
