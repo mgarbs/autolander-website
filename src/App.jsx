@@ -882,7 +882,11 @@ export default function App() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })}
+                    onClick={
+                      isPrivateMonthlyProOffer || plan.team
+                        ? () => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })
+                        : openCalendlyPopup
+                    }
                     className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
                       isPrivateMonthlyProOffer || isPopularPlan
                         ? 'bg-white text-blue-600 hover:bg-slate-100'
