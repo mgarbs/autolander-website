@@ -25,12 +25,6 @@ const DOWNLOADS = {
 };
 const REFERRAL_CODE_PATTERN = /^[a-z0-9]{4,64}$/;
 const FEATURES_VIEW_STORAGE_KEY = 'autolander_meta_view_content_features';
-const LOT_SIZE_OPTIONS = [
-  { value: '1-25', label: 'Solo dealer' },
-  { value: '26-75', label: 'Growing lot' },
-  { value: '76-150', label: 'Mid-size' },
-  { value: '150+', label: 'Large lot' },
-];
 const CALENDLY_WIDGET_JS = 'https://assets.calendly.com/assets/external/widget.js';
 const CALENDLY_WIDGET_CSS = 'https://assets.calendly.com/assets/external/widget.css';
 
@@ -259,24 +253,19 @@ export default function App() {
 
   const demoUrl = "https://calendly.com/autolander/demo";
   const bookingUrl = withAttribution(demoUrl);
-  const [selectedLotSize, setSelectedLotSize] = useState(null);
 
-  const handleLotSizeClick = useCallback(async (size) => {
-    setSelectedLotSize(size);
-
-    // a2 = "How many cars on your lot?" (verified via Calendly event-types API).
-    // Colors theme the Calendly widget to match the site palette.
+  const openCalendlyPopup = useCallback(async () => {
+    // Themed Calendly URL with site-matching dark palette.
     let widgetUrl = bookingUrl;
     try {
       const u = new URL(bookingUrl, window.location.href);
-      u.searchParams.set('a2', size);
       u.searchParams.set('hide_gdpr_banner', '1');
       u.searchParams.set('background_color', '050505');
       u.searchParams.set('text_color', 'f1f5f9');
       u.searchParams.set('primary_color', '2563eb');
       widgetUrl = u.toString();
     } catch {
-      const params = `a2=${encodeURIComponent(size)}&hide_gdpr_banner=1&background_color=050505&text_color=f1f5f9&primary_color=2563eb`;
+      const params = `hide_gdpr_banner=1&background_color=050505&text_color=f1f5f9&primary_color=2563eb`;
       widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}${params}`;
     }
 
@@ -286,19 +275,12 @@ export default function App() {
         window.open(widgetUrl, '_blank');
         return;
       }
-      // Popup avoids iframe-scroll-trap and content-shorter-than-container
-      // black-gap problems that plagued the inline embed on mobile Safari.
       Calendly.initPopupWidget({ url: widgetUrl });
     } catch (err) {
       console.error('[demo-booker] failed to load Calendly widget', err);
       window.open(widgetUrl, '_blank');
     }
   }, [bookingUrl]);
-
-  const scrollToDemoBooker = useCallback(() => {
-    const el = document.getElementById('demo-booker');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, []);
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';
@@ -430,7 +412,7 @@ export default function App() {
               Download
             </button>
             <button
-              onClick={scrollToDemoBooker}
+              onClick={openCalendlyPopup}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
               Book a Demo
             </button>
@@ -572,14 +554,14 @@ export default function App() {
                   <motion.button
                     whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={scrollToDemoBooker}
+                    onClick={openCalendlyPopup}
                     className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                   >
                     <span>Book a Demo</span>
                     <ArrowRight className="w-6 h-6" />
                   </motion.button>
                   <button
-                    onClick={() => window.open(bookingUrl, "_blank")}
+                    onClick={openCalendlyPopup}
                     className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
                   >
                     Start Free Trial
@@ -616,67 +598,6 @@ export default function App() {
             </div>
           </div>
         )}
-      </section>
-
-      {/* Inline Demo Booker — lot-size qualifier then embedded Calendly */}
-      <section id="demo-booker" className="relative z-10 py-20 lg:py-32 border-y border-white/5 overflow-hidden">
-        {/* Top accent line + glow */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
-        <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[60%] h-48 bg-blue-500/10 blur-[110px] rounded-full" aria-hidden="true" />
-
-        <div className="relative max-w-5xl mx-auto px-6">
-          <FadeIn>
-            <div className="text-center mb-12 lg:mb-14">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/25 text-blue-300 mb-6">
-                <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-                <span className="text-[9px] font-black uppercase tracking-[0.22em]">Book your demo</span>
-              </span>
-              <h2 className="text-4xl lg:text-6xl font-black uppercase italic tracking-tighter text-white leading-[0.95] mb-5">
-                How many cars
-                <span className="block text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-600">
-                  on your lot?
-                </span>
-              </h2>
-              <p className="text-base lg:text-lg text-slate-400 font-medium max-w-md mx-auto leading-relaxed">
-                Pick one — we&apos;ll open the booking form.
-              </p>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={0.1}>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto">
-              {LOT_SIZE_OPTIONS.map((opt) => {
-                const isActive = selectedLotSize === opt.value;
-                return (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => handleLotSizeClick(opt.value)}
-                    aria-pressed={isActive}
-                    className={`group relative overflow-hidden rounded-2xl px-4 py-6 sm:py-7 text-left transition-all duration-300 border-2 active:scale-[0.97] ${
-                      isActive
-                        ? 'bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 text-white border-blue-300/40 shadow-[0_24px_60px_-15px_rgba(59,130,246,0.55)] scale-[1.02]'
-                        : 'bg-white/[0.03] text-white border-white/10 hover:border-blue-400/40 hover:bg-white/[0.06] hover:-translate-y-1 hover:shadow-[0_20px_50px_-25px_rgba(59,130,246,0.45)]'
-                    }`}
-                  >
-                    {isActive && (
-                      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_55%)]" aria-hidden="true" />
-                    )}
-                    <div className="relative">
-                      <div className="text-2xl sm:text-3xl font-black italic tracking-tighter mb-1.5">
-                        {opt.value}
-                      </div>
-                      <div className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.18em] ${isActive ? 'text-blue-100/90' : 'text-slate-500 group-hover:text-slate-300'}`}>
-                        {opt.label}
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </FadeIn>
-
-        </div>
       </section>
 
       {/* Comparison Section */}
@@ -1131,7 +1052,7 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={scrollToDemoBooker}
+                onClick={openCalendlyPopup}
                 className="px-10 py-5 rounded-2xl bg-white text-black font-black text-lg transition-all uppercase italic"
               >
                 See the Studio in Action
@@ -1236,13 +1157,13 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={scrollToDemoBooker}
+                onClick={openCalendlyPopup}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500"
               >
                 Book a Live Demo
               </motion.button>
               <button
-                onClick={() => window.open(bookingUrl, "_blank")}
+                onClick={openCalendlyPopup}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
               >
                 Start Your Free Trial
