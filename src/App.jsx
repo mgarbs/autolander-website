@@ -280,14 +280,19 @@ export default function App() {
       // a2 = "How many cars on your lot?" (verified via Calendly event-types API).
       // a1 is the phone field — passing a1=76-150 was making the phone country
       // picker resolve to Botswana, hence the earlier bug.
+      // Colors theme the Calendly widget to match the site's dark palette.
       let widgetUrl = bookingUrl;
       try {
         const u = new URL(bookingUrl, window.location.href);
         u.searchParams.set('a2', size);
         u.searchParams.set('hide_gdpr_banner', '1');
+        u.searchParams.set('background_color', '050505');
+        u.searchParams.set('text_color', 'f1f5f9');
+        u.searchParams.set('primary_color', '2563eb');
         widgetUrl = u.toString();
       } catch {
-        widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}a2=${encodeURIComponent(size)}&hide_gdpr_banner=1`;
+        const params = `a2=${encodeURIComponent(size)}&hide_gdpr_banner=1&background_color=050505&text_color=f1f5f9&primary_color=2563eb`;
+        widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}${params}`;
       }
 
       Calendly.initInlineWidget({ url: widgetUrl, parentElement: container });
@@ -706,12 +711,12 @@ export default function App() {
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
                   <span className="text-[9px] font-black uppercase tracking-[0.22em]">Step 2 — Pick a time</span>
                 </div>
-                <div className="relative rounded-3xl border border-white/10 bg-white shadow-2xl shadow-blue-500/10 overflow-hidden">
+                <div className="relative rounded-3xl border border-white/10 bg-[#050505] shadow-2xl shadow-blue-500/10 overflow-hidden">
                   {calendlyLoading && (
-                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-white" aria-live="polite">
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-[#050505]" aria-live="polite">
                       <div className="flex flex-col items-center gap-3">
                         <div className="h-9 w-9 rounded-full border-[3px] border-blue-500 border-t-transparent animate-spin" />
-                        <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-500">Loading available times…</p>
+                        <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-400">Loading available times…</p>
                       </div>
                     </div>
                   )}
