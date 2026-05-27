@@ -25,7 +25,12 @@ const DOWNLOADS = {
 };
 const REFERRAL_CODE_PATTERN = /^[a-z0-9]{4,64}$/;
 const FEATURES_VIEW_STORAGE_KEY = 'autolander_meta_view_content_features';
-const LOT_SIZES = ['1-25', '26-75', '76-150', '150+'];
+const LOT_SIZE_OPTIONS = [
+  { value: '1-25', label: 'Solo dealer' },
+  { value: '26-75', label: 'Growing lot' },
+  { value: '76-150', label: 'Mid-size' },
+  { value: '150+', label: 'Large lot' },
+];
 const CALENDLY_WIDGET_JS = 'https://assets.calendly.com/assets/external/widget.js';
 const CALENDLY_WIDGET_CSS = 'https://assets.calendly.com/assets/external/widget.css';
 
@@ -255,35 +260,63 @@ export default function App() {
   const demoUrl = "https://calendly.com/autolander/demo";
   const bookingUrl = withAttribution(demoUrl);
   const [selectedLotSize, setSelectedLotSize] = useState(null);
+  const [calendlyLoading, setCalendlyLoading] = useState(false);
   const calendlyContainerRef = useRef(null);
 
   const handleLotSizeClick = useCallback(async (size) => {
+    const isFirstSelection = !selectedLotSize;
     setSelectedLotSize(size);
+    setCalendlyLoading(true);
     try {
       const Calendly = await loadCalendlyAssets();
       const container = calendlyContainerRef.current;
-      if (!container || !Calendly) return;
+      if (!container || !Calendly) {
+        setCalendlyLoading(false);
+        return;
+      }
 
       container.innerHTML = '';
 
+      // NOTE: intentionally NOT setting a1 here.
+      // Calendly's positional prefill (a1/a2/...) currently maps to the phone
+      // country picker, not the lot-size question — caused Botswana to be
+      // pre-selected when we tried a1=76-150. The lot-size buttons act as a UX
+      // commitment device; the user re-enters lot size inside Calendly.
       let widgetUrl = bookingUrl;
       try {
         const u = new URL(bookingUrl, window.location.href);
-        u.searchParams.set('a1', size);
+        u.searchParams.set('hide_gdpr_banner', '1');
         widgetUrl = u.toString();
       } catch {
-        widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}a1=${encodeURIComponent(size)}`;
+        widgetUrl = bookingUrl;
       }
 
       Calendly.initInlineWidget({ url: widgetUrl, parentElement: container });
-      setTimeout(() => {
-        container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 80);
+
+      // Calendly injects an iframe; observe it to know when to drop the spinner.
+      const observer = new MutationObserver(() => {
+        const iframe = container.querySelector('iframe');
+        if (iframe) {
+          iframe.addEventListener('load', () => setCalendlyLoading(false), { once: true });
+          // Fallback in case load already fired before listener attached
+          setTimeout(() => setCalendlyLoading(false), 1500);
+          observer.disconnect();
+        }
+      });
+      observer.observe(container, { childList: true, subtree: true });
+      setTimeout(() => setCalendlyLoading(false), 4000); // hard fallback
+
+      if (isFirstSelection) {
+        setTimeout(() => {
+          container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 120);
+      }
     } catch (err) {
       console.error('[demo-booker] failed to load Calendly widget', err);
+      setCalendlyLoading(false);
       window.open(bookingUrl, '_blank');
     }
-  }, [bookingUrl]);
+  }, [bookingUrl, selectedLotSize]);
 
   const scrollToDemoBooker = useCallback(() => {
     const el = document.getElementById('demo-booker');
@@ -609,50 +642,89 @@ export default function App() {
       </section>
 
       {/* Inline Demo Booker — lot-size qualifier then embedded Calendly */}
-      <section id="demo-booker" className="relative z-10 py-20 lg:py-28 border-y border-white/5">
-        <div className="max-w-5xl mx-auto px-6">
+      <section id="demo-booker" className="relative z-10 py-20 lg:py-32 border-y border-white/5 overflow-hidden">
+        {/* Top accent line + glow */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
+        <div className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-[60%] h-48 bg-blue-500/10 blur-[110px] rounded-full" aria-hidden="true" />
+
+        <div className="relative max-w-5xl mx-auto px-6">
           <FadeIn>
-            <h2 className="text-3xl lg:text-5xl font-black uppercase italic tracking-tight text-white text-center mb-3 leading-none">
-              How many cars on your lot?
-            </h2>
-            <p className="text-base lg:text-lg text-slate-400 text-center mb-10 font-medium italic">
-              Pick a number — we&apos;ll show you available demo times.
-            </p>
+            <div className="text-center mb-12 lg:mb-14">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-400/25 text-blue-300 mb-6">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+                <span className="text-[9px] font-black uppercase tracking-[0.22em]">Step 1 of 2 — Tell us about your lot</span>
+              </span>
+              <h2 className="text-4xl lg:text-6xl font-black uppercase italic tracking-tighter text-white leading-[0.95] mb-5">
+                How many cars
+                <span className="block text-transparent bg-clip-text bg-gradient-to-b from-blue-300 to-blue-600">
+                  on your lot?
+                </span>
+              </h2>
+              <p className="text-base lg:text-lg text-slate-400 font-medium max-w-md mx-auto leading-relaxed">
+                Pick one to load available demo times.
+              </p>
+            </div>
           </FadeIn>
 
           <FadeIn delay={0.1}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto">
-              {LOT_SIZES.map((size) => {
-                const isActive = selectedLotSize === size;
+              {LOT_SIZE_OPTIONS.map((opt) => {
+                const isActive = selectedLotSize === opt.value;
                 return (
                   <button
-                    key={size}
+                    key={opt.value}
                     type="button"
-                    onClick={() => handleLotSizeClick(size)}
+                    onClick={() => handleLotSizeClick(opt.value)}
                     aria-pressed={isActive}
-                    className={`px-6 py-5 rounded-2xl font-black text-base sm:text-lg uppercase italic tracking-tighter transition-all border-2 active:scale-95 ${
+                    className={`group relative overflow-hidden rounded-2xl px-4 py-6 sm:py-7 text-left transition-all duration-300 border-2 active:scale-[0.97] ${
                       isActive
-                        ? 'bg-blue-600 text-white border-blue-500 shadow-xl shadow-blue-500/30'
-                        : 'bg-white/[0.04] text-white border-white/10 hover:border-blue-500/50 hover:bg-white/[0.08]'
+                        ? 'bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 text-white border-blue-300/40 shadow-[0_24px_60px_-15px_rgba(59,130,246,0.55)] scale-[1.02]'
+                        : 'bg-white/[0.03] text-white border-white/10 hover:border-blue-400/40 hover:bg-white/[0.06] hover:-translate-y-1 hover:shadow-[0_20px_50px_-25px_rgba(59,130,246,0.45)]'
                     }`}
                   >
-                    {size}
+                    {isActive && (
+                      <span className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_55%)]" aria-hidden="true" />
+                    )}
+                    <div className="relative">
+                      <div className="text-2xl sm:text-3xl font-black italic tracking-tighter mb-1.5">
+                        {opt.value}
+                      </div>
+                      <div className={`text-[10px] sm:text-[11px] font-black uppercase tracking-[0.18em] ${isActive ? 'text-blue-100/90' : 'text-slate-500 group-hover:text-slate-300'}`}>
+                        {opt.label}
+                      </div>
+                    </div>
                   </button>
                 );
               })}
             </div>
           </FadeIn>
 
-          <div
-            ref={calendlyContainerRef}
-            id="calendly-embed-container"
-            className="mt-10 rounded-3xl overflow-hidden bg-white"
-            style={{
-              minWidth: '320px',
-              height: selectedLotSize ? '780px' : '0',
-              display: selectedLotSize ? 'block' : 'none',
-            }}
-          />
+          {/* Embed area — only renders after first selection */}
+          {selectedLotSize && (
+            <div className="mt-10 lg:mt-14 relative">
+              <FadeIn>
+                <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-400/25 text-emerald-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  <span className="text-[9px] font-black uppercase tracking-[0.22em]">Step 2 — Pick a time</span>
+                </div>
+                <div className="relative rounded-3xl border border-white/10 bg-white shadow-2xl shadow-blue-500/10 overflow-hidden">
+                  {calendlyLoading && (
+                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-white" aria-live="polite">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="h-9 w-9 rounded-full border-[3px] border-blue-500 border-t-transparent animate-spin" />
+                        <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-500">Loading available times…</p>
+                      </div>
+                    </div>
+                  )}
+                  <div
+                    ref={calendlyContainerRef}
+                    id="calendly-embed-container"
+                    style={{ minWidth: '320px', minHeight: '780px' }}
+                  />
+                </div>
+              </FadeIn>
+            </div>
+          )}
         </div>
       </section>
 
