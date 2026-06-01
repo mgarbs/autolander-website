@@ -314,11 +314,11 @@ export default function App() {
       u.searchParams.set('a2', 'Yes');
       u.searchParams.set('hide_gdpr_banner', '1');
       u.searchParams.set('background_color', '050505');
-      u.searchParams.set('text_color', '94a3b8');
+      u.searchParams.set('text_color', 'cbd5e1');
       u.searchParams.set('primary_color', '2563eb');
       widgetUrl = u.toString();
     } catch {
-      const params = `a2=Yes&hide_gdpr_banner=1&background_color=050505&text_color=94a3b8&primary_color=2563eb`;
+      const params = `a2=Yes&hide_gdpr_banner=1&background_color=050505&text_color=cbd5e1&primary_color=2563eb`;
       widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}${params}`;
     }
 
