@@ -86,6 +86,19 @@ function getDownload() {
   return { url: DOWNLOADS.windows, label: 'Download for Windows', os: 'windows' };
 }
 
+function isMobileUserAgent() {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  const mobileUa = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+  const iPadDesktopMode = /Macintosh/i.test(ua) && navigator.maxTouchPoints > 1;
+  return mobileUa || iPadDesktopMode;
+}
+
+function canShowDownloadButtons() {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(min-width: 768px)').matches && !isMobileUserAgent();
+}
+
 function withFbEventId(url, eventId) {
   if (!eventId) return url;
 
@@ -260,6 +273,7 @@ export default function App() {
   const [studioView, setStudioView] = useState('after');
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [isDesktopHero, setIsDesktopHero] = useState(() => window.matchMedia('(min-width: 768px)').matches);
+  const [showDownloadButtons, setShowDownloadButtons] = useState(() => canShowDownloadButtons());
   const featuresSectionRef = useRef(null);
   const isMonthlyBilling = !isAnnual;
 
@@ -290,6 +304,14 @@ export default function App() {
     updateHeroViewport();
     mediaQuery.addEventListener('change', updateHeroViewport);
     return () => mediaQuery.removeEventListener('change', updateHeroViewport);
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const updateDownloadVisibility = () => setShowDownloadButtons(canShowDownloadButtons());
+    updateDownloadVisibility();
+    mediaQuery.addEventListener('change', updateDownloadVisibility);
+    return () => mediaQuery.removeEventListener('change', updateDownloadVisibility);
   }, []);
 
   useEffect(() => {
@@ -360,6 +382,7 @@ export default function App() {
   };
 
   const openDownload = async ({ contentName = download.label, value } = {}) => {
+    if (!showDownloadButtons) return;
     const eventId = newEventId();
     await copyReferralCode();
     track('InitiateCheckout', checkoutEventParams(contentName, value), { eventId });
@@ -368,6 +391,7 @@ export default function App() {
   };
 
   const openSpecificDownload = async (os, contentName = 'referral_download') => {
+    if (!showDownloadButtons) return;
     const eventId = newEventId();
     await copyReferralCode();
     track('InitiateCheckout', checkoutEventParams(contentName), { eventId });
@@ -473,12 +497,14 @@ export default function App() {
              <a href="#studio" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">AI Studio</a>
           </div>
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            <button
-              onClick={() => openDownload({ contentName: 'nav_download', value: 39 })}
-              className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap"
-            >
-              Download
-            </button>
+            {showDownloadButtons && (
+              <button
+                onClick={() => openDownload({ contentName: 'nav_download', value: 39 })}
+                className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap"
+              >
+                Download
+              </button>
+            )}
             <button
               onClick={openCalendlyPopup}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
@@ -556,25 +582,29 @@ export default function App() {
                     <div className="rounded-2xl bg-black/25 p-4">2. Create your account</div>
                     <div className="rounded-2xl bg-black/25 p-4">3. Choose $125/mo Pro</div>
                   </div>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    <button type="button" onClick={() => openSpecificDownload('windows')} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Windows</button>
-                    <button type="button" onClick={() => openSpecificDownload('mac')} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Mac</button>
-                    <button type="button" onClick={() => openSpecificDownload('linux')} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Linux</button>
-                  </div>
+                  {showDownloadButtons && (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      <button type="button" onClick={() => openSpecificDownload('windows')} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Windows</button>
+                      <button type="button" onClick={() => openSpecificDownload('mac')} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Mac</button>
+                      <button type="button" onClick={() => openSpecificDownload('linux')} className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white">Linux</button>
+                    </div>
+                  )}
                 </div>
               </FadeIn>
 
             <FadeIn delay={0.3}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <motion.button
-                  whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => openDownload({ contentName: 'referral_offer', value: 125 })}
-                  className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
-                >
-                  <span>Download + Claim Offer</span>
-                  <Download className="w-6 h-6" />
-                </motion.button>
+                {showDownloadButtons && (
+                  <motion.button
+                    whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => openDownload({ contentName: 'referral_offer', value: 125 })}
+                    className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
+                  >
+                    <span>Download + Claim Offer</span>
+                    <Download className="w-6 h-6" />
+                  </motion.button>
+                )}
                 <button
                   onClick={openInstalledApp}
                   className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
@@ -946,24 +976,26 @@ export default function App() {
                     ))}
                   </div>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={
-                      isPrivateMonthlyProOffer
-                        ? () => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })
-                        : openCalendlyPopup
-                    }
-                    className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
-                      isPrivateMonthlyProOffer || isPopularPlan
-                        ? 'bg-white text-blue-600 hover:bg-slate-100'
-                        : plan.team
-                          ? 'bg-emerald-500 text-white hover:bg-emerald-400 shadow-lg shadow-emerald-500/20'
-                          : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'
-                    }`}
-                  >
-                    {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : plan.team ? 'Get Team' : 'Start Free Trial'}
-                  </motion.button>
+                  {(!isPrivateMonthlyProOffer || showDownloadButtons) && (
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={
+                        isPrivateMonthlyProOffer
+                          ? () => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })
+                          : openCalendlyPopup
+                      }
+                      className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
+                        isPrivateMonthlyProOffer || isPopularPlan
+                          ? 'bg-white text-blue-600 hover:bg-slate-100'
+                          : plan.team
+                            ? 'bg-emerald-500 text-white hover:bg-emerald-400 shadow-lg shadow-emerald-500/20'
+                            : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'
+                      }`}
+                    >
+                      {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : plan.team ? 'Get Team' : 'Start Free Trial'}
+                    </motion.button>
+                  )}
                   <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">
                     {plan.proPromo && hasReferral
                       ? (isMonthlyBilling ? 'Limited-time offer requires monthly $125 Pro' : 'Annual Pro is not part of this limited-time referral offer')
