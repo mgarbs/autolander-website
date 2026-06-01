@@ -1,3 +1,12 @@
+import HelpTip from './HelpTip.jsx';
+
+const STATUS = {
+  id_match: { label: 'ID match', color: 'border-emerald-400/30 bg-emerald-400/10 text-emerald-200' },
+  name_fallback: { label: 'Name fallback', color: 'border-amber-400/30 bg-amber-400/10 text-amber-200' },
+  id_ready: { label: 'ID ready', color: 'border-blue-400/30 bg-blue-400/10 text-blue-200' },
+  missing_ids: { label: 'Missing IDs', color: 'border-red-400/30 bg-red-400/10 text-red-200' },
+};
+
 export default function CampaignTable({ rows, title = 'Campaigns', emptyMessage = 'No campaign data yet.' }) {
   if (!rows || rows.length === 0) {
     return (
@@ -18,28 +27,34 @@ export default function CampaignTable({ rows, title = 'Campaigns', emptyMessage 
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-              <th className="px-2 py-2">Name</th>
-              <th className="px-2 py-2 text-right">Spend</th>
-              <th className="px-2 py-2 text-right">Impr</th>
-              <th className="px-2 py-2 text-right">Clicks</th>
-              <th className="px-2 py-2 text-right">Leads</th>
-              <th className="px-2 py-2 text-right">Demos</th>
-              <th className="px-2 py-2 text-right">CPL</th>
-              <th className="px-2 py-2 text-right">Cost / Demo</th>
+              <HeaderCell label="Name" help="The campaign or ad name from Meta, plus useful IDs underneath when available." />
+              <HeaderCell label="Join" help="How confidently the dashboard matched Meta spend to website conversions. ID match is best." />
+              <HeaderCell label="Spend" align="right" help="How much Meta says this row spent." />
+              <HeaderCell label="Impr" align="right" help="Impressions: how many times the ad was shown." />
+              <HeaderCell label="Clicks" align="right" help="How many ad clicks Meta reported." />
+              <HeaderCell label="CTR" align="right" help="Click-through rate. Higher means the creative is getting attention." />
+              <HeaderCell label="Freq" align="right" help="Frequency: how many times the average person saw the ad. Too high can mean fatigue." />
+              <HeaderCell label="Leads" align="right" help="Lead actions attributed to this row." />
+              <HeaderCell label="Demos" align="right" help="Booked demos attributed to this row." />
+              <HeaderCell label="CPL" align="right" help="Cost per lead. Spend divided by leads." />
+              <HeaderCell label="Cost / Demo" align="right" help="Spend divided by booked demos." />
             </tr>
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.name || row.ad_name || row.ad_id} className="border-t border-white/5">
+              <tr key={row.name || row.ad_name || row.ad_id || row.campaign_id} className="border-t border-white/5">
+                <td className="min-w-64 px-2 py-3">
+                  <p className="font-bold text-white">{row.name || row.ad_name || row.ad_id || '-'}</p>
+                  <RowMeta row={row} />
+                </td>
                 <td className="px-2 py-3">
-                  <p className="font-bold text-white">{row.name || row.ad_name || row.ad_id || '—'}</p>
-                  {row.campaign_name && row.ad_name && (
-                    <p className="text-[10px] text-slate-500">{row.campaign_name}</p>
-                  )}
+                  <StatusBadge status={row.attribution_status} />
                 </td>
                 <td className="px-2 py-3 text-right font-mono text-slate-300">{currency(row.spend)}</td>
                 <td className="px-2 py-3 text-right font-mono text-slate-400">{number(row.impressions)}</td>
                 <td className="px-2 py-3 text-right font-mono text-slate-400">{number(row.clicks)}</td>
+                <td className="px-2 py-3 text-right font-mono text-slate-400">{percent(row.ctr, true)}</td>
+                <td className="px-2 py-3 text-right font-mono text-slate-400">{decimal(row.frequency)}</td>
                 <td className="px-2 py-3 text-right font-mono text-emerald-300">{number(row.leads)}</td>
                 <td className="px-2 py-3 text-right font-mono text-amber-300">{number(row.schedules)}</td>
                 <td className="px-2 py-3 text-right font-mono text-slate-300">{maybeCurrency(row.cpl)}</td>
@@ -53,17 +68,60 @@ export default function CampaignTable({ rows, title = 'Campaigns', emptyMessage 
   );
 }
 
+function HeaderCell({ label, help, align = 'left' }) {
+  return (
+    <th className={`px-2 py-2 ${align === 'right' ? 'text-right' : ''}`}>
+      <span className={`inline-flex items-center gap-1.5 ${align === 'right' ? 'justify-end' : ''}`}>
+        {label}
+        <HelpTip text={help} />
+      </span>
+    </th>
+  );
+}
+
+function RowMeta({ row }) {
+  const parts = [
+    row.campaign_name && row.ad_name ? row.campaign_name : '',
+    row.adset_name ? `adset: ${row.adset_name}` : '',
+    row.campaign_id ? `cid:${row.campaign_id}` : '',
+    row.adset_id ? `asid:${row.adset_id}` : '',
+    row.ad_id ? `aid:${row.ad_id}` : '',
+  ].filter(Boolean);
+  if (parts.length === 0) return null;
+  return <p className="mt-1 max-w-xl text-[10px] leading-snug text-slate-500">{parts.join(' | ')}</p>;
+}
+
+function StatusBadge({ status }) {
+  const item = STATUS[status] || STATUS.missing_ids;
+  return (
+    <span className={`inline-flex whitespace-nowrap rounded-full border px-2 py-1 text-[9px] font-black uppercase tracking-widest ${item.color}`}>
+      {item.label}
+    </span>
+  );
+}
+
 function number(value) {
-  if (value === null || value === undefined || !Number.isFinite(value)) return '—';
+  if (value === null || value === undefined || !Number.isFinite(value)) return '-';
   return Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 });
 }
 
+function decimal(value) {
+  if (value === null || value === undefined || !Number.isFinite(value)) return '-';
+  return Number(value).toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+}
+
+function percent(value, alreadyPercent = false) {
+  if (value === null || value === undefined || !Number.isFinite(value)) return '-';
+  const next = alreadyPercent ? Number(value) : Number(value) * 100;
+  return `${next.toFixed(2)}%`;
+}
+
 function currency(value) {
-  if (value === null || value === undefined || !Number.isFinite(value)) return '—';
+  if (value === null || value === undefined || !Number.isFinite(value)) return '-';
   return `$${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 function maybeCurrency(value) {
-  if (value === null || value === undefined || !Number.isFinite(value)) return '—';
+  if (value === null || value === undefined || !Number.isFinite(value)) return '-';
   return currency(value);
 }

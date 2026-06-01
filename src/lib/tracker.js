@@ -67,4 +67,53 @@ export function pageView() {
   if (!isBrowser) return;
   getVisitorId();
   track('PageView', {});
+  installEngagementTracking();
+}
+
+function sessionFlag(key) {
+  try {
+    return window.sessionStorage.getItem(key) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function setSessionFlag(key) {
+  try {
+    window.sessionStorage.setItem(key, '1');
+  } catch {
+    /* ignore */
+  }
+}
+
+function installEngagementTracking() {
+  if (!isBrowser) return;
+  const path = window.location.pathname || '/';
+  const engagedKey = `al_engaged:${path}`;
+  if (!sessionFlag(engagedKey)) {
+    window.setTimeout(() => {
+      if (sessionFlag(engagedKey)) return;
+      setSessionFlag(engagedKey);
+      trackCustom('EngagedVisit', { engagement_seconds: 15, page_path: path });
+    }, 15000);
+  }
+
+  const scrollMarks = [50, 90];
+  const onScroll = () => {
+    const doc = document.documentElement;
+    const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
+    const percent = Math.min(100, Math.round((window.scrollY / maxScroll) * 100));
+    for (const mark of scrollMarks) {
+      const key = `al_scroll:${path}:${mark}`;
+      if (percent >= mark && !sessionFlag(key)) {
+        setSessionFlag(key);
+        trackCustom('ScrollDepth', { percent: mark, page_path: path });
+      }
+    }
+    if (scrollMarks.every((mark) => sessionFlag(`al_scroll:${path}:${mark}`))) {
+      window.removeEventListener('scroll', onScroll);
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 }

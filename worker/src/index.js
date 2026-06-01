@@ -6,7 +6,11 @@ const DEFAULT_ALLOWED_ORIGINS = [
   'https://www.autolander.ai',
   'https://mgarbs.github.io',
   'http://localhost:5173',
+  'http://localhost:5176',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:5176',
   'http://localhost:4173',
+  'http://127.0.0.1:4173',
 ];
 
 const RESPONSE_SCHEMA = {
@@ -507,7 +511,7 @@ function isAllowedOrigin(request, env) {
 
   const allowedOrigins = listFromEnv(env.ALLOWED_ORIGINS, DEFAULT_ALLOWED_ORIGINS);
   if (allowedOrigins.includes(origin)) return { ok: true };
-  if (env.ALLOW_LOCALHOST === 'true' && /^https?:\/\/localhost:\d+$/.test(origin)) {
+  if (env.ALLOW_LOCALHOST === 'true' && /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
     return { ok: true };
   }
 

@@ -6,9 +6,11 @@ workers_dev = true
 preview_urls = false
 
 [vars]
-ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://mgarbs.github.io,http://localhost:5173,http://localhost:4173"
+ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://mgarbs.github.io,http://localhost:5173,http://localhost:5176,http://127.0.0.1:5173,http://127.0.0.1:5176,http://localhost:4173,http://127.0.0.1:4173"
 OPENAI_MODEL = "gpt-5.4-mini"
 MAX_OUTPUT_TOKENS = "360"
+ADMIN_AI_MODEL = "gpt-5.4-mini"
+ADMIN_AI_MAX_OUTPUT_TOKENS = "1600"
 DAILY_CHAT_LIMIT = "160"
 IP_DAILY_LIMIT = "12"
 IP_HOURLY_LIMIT = "5"
@@ -31,6 +33,7 @@ id = "27aed049b50043b19164a2bb9c51c143"
 preview_id = "273697d477e84296a0152a690e95884c"
 
 # Secrets to set via `wrangler secret put <NAME>`:
+#   OPENAI_API_KEY                used by chat and admin AI summary
 #   META_PIXEL_ID                 numeric Pixel ID (e.g. 2087440198847151)
 #   META_CAPI_ACCESS_TOKEN        Conversions API access token
 #   META_AD_ACCOUNT_ID            ad account, format act_XXXXXXXXX

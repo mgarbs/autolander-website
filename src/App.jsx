@@ -98,13 +98,28 @@ function withFbEventId(url, eventId) {
   }
 }
 
-const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+const ATTR_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'utm_id',
+  'campaign_id',
+  'adset_id',
+  'ad_id',
+  'campaign_name',
+  'adset_name',
+  'ad_name',
+  'placement',
+  'site_source_name',
+];
 const AL_VID_MARKER = 'al_vid:';
 
 function withUtms(url) {
   if (typeof window === 'undefined') return url;
   const params = new URLSearchParams(window.location.search);
-  const utms = UTM_KEYS
+  const utms = ATTR_KEYS
     .filter((key) => params.has(key))
     .map((key) => `${key}=${encodeURIComponent(params.get(key))}`)
     .join('&');

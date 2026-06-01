@@ -12,7 +12,7 @@ function tracking(env) {
 }
 
 export async function rememberVisitor(env, vid, attr) {
-  if (!vid) return;
+  if (!vid) return { isNew: false, existing: null };
   const key = `vid:${vid}`;
   const existing = await tracking(env).get(key, 'json');
   const now = new Date().toISOString();
@@ -23,6 +23,7 @@ export async function rememberVisitor(env, vid, attr) {
   };
   if (!next.first_seen) next.first_seen = now;
   await tracking(env).put(key, JSON.stringify(next), { expirationTtl: VISITOR_TTL_SECONDS });
+  return { isNew: !existing, existing: existing || null, visitor: next };
 }
 
 export async function lookupVisitor(env, vid) {
@@ -39,6 +40,17 @@ export async function wasEventSeen(env, eventId) {
 export async function markEventSeen(env, eventId) {
   if (!eventId) return;
   await tracking(env).put(`evt:${eventId}`, '1', { expirationTtl: EVENT_DEDUPE_TTL_SECONDS });
+}
+
+export async function rememberDailySeen(env, day, scope, key, ttlSeconds = COUNTER_TTL_SECONDS) {
+  if (!day || !scope || !key) return false;
+  const safeScope = String(scope).slice(0, 40).replace(/[^a-zA-Z0-9._:\-+]/g, '_');
+  const safeKey = String(key).slice(0, 96).replace(/[^a-zA-Z0-9._:\-+]/g, '_');
+  const seenKey = `seen:${day}:${safeScope}:${safeKey}`;
+  const current = await tracking(env).get(seenKey);
+  if (current === '1') return false;
+  await tracking(env).put(seenKey, '1', { expirationTtl: ttlSeconds });
+  return true;
 }
 
 export async function bumpCounter(env, day, dimension, key, n = 1) {

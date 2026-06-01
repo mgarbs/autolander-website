@@ -1,4 +1,5 @@
 import { Bar, BarChart, Cell, LabelList, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import HelpTip from './HelpTip.jsx';
 
 const STEPS = [
   { key: 'pageView', label: 'Page Views', color: '#60a5fa' },
@@ -24,8 +25,11 @@ export default function FunnelChart({ funnel }) {
 
   return (
     <div className="rounded-3xl border border-white/5 bg-white/[0.03] p-6">
-      <header className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-black uppercase italic tracking-tight text-white">Conversion funnel</h3>
+      <header className="mb-4 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <h3 className="text-sm font-black uppercase italic tracking-tight text-white">Conversion funnel</h3>
+          <HelpTip text="This shows how many people make it from viewing the site to booking a demo. Big drops show where the page or offer may be losing people." />
+        </div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
           {max > 0 ? `${((data[data.length - 1].value / max) * 100).toFixed(2)}% page-to-demo` : 'No traffic yet'}
         </p>

@@ -11,7 +11,7 @@ const CONVERSION_THRESHOLDS = {
 };
 
 const URL_PARAM_TEMPLATE =
-  'utm_source=meta&utm_medium=cpc&utm_campaign={{campaign.name}}&utm_content={{ad.name}}&utm_term={{adset.name}}';
+  'utm_source=meta&utm_medium=cpc&utm_campaign={{campaign.name}}&utm_content={{ad.name}}&utm_term={{adset.name}}&utm_id={{campaign.id}}&campaign_id={{campaign.id}}&adset_id={{adset.id}}&ad_id={{ad.id}}&adset_name={{adset.name}}&ad_name={{ad.name}}&placement={{placement}}&site_source_name={{site_source_name}}';
 
 export function buildRecommendations({ insights, health, setup }) {
   const recs = [];
@@ -202,8 +202,8 @@ function buildPixelHealthRecommendations(health) {
   if (health.campaignsMissingUtm > 0) {
     recs.push({
       severity: 'warn',
-      title: `${health.campaignsMissingUtm} campaign(s) missing UTM parameters`,
-      body: 'Without utm_campaign/utm_content the dashboard cannot join your Meta spend to your conversions. Set the ad URL parameters below on each affected campaign.',
+      title: `${health.campaignsMissingUtm} Meta visit(s) missing campaign or ad IDs`,
+      body: 'The dashboard can still fall back to names, but IDs are the reliable join key. Set the ad URL parameters below on every active Meta ad.',
       action: { type: 'copy', payload: URL_PARAM_TEMPLATE },
     });
   }

@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import HelpTip from './HelpTip.jsx';
 
 export default function TimeSeriesChart({ data }) {
   if (!Array.isArray(data) || data.length === 0) {
@@ -16,10 +17,13 @@ export default function TimeSeriesChart({ data }) {
 
   return (
     <div className="rounded-3xl border border-white/5 bg-white/[0.03] p-6">
-      <header className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-black uppercase italic tracking-tight text-white">Daily activity</h3>
+      <header className="mb-4 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <h3 className="text-sm font-black uppercase italic tracking-tight text-white">Daily activity</h3>
+          <HelpTip text="Page views show traffic volume. Leads and booked demos show whether that traffic is turning into action." />
+        </div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-          Page Views, Leads, Booked Demos
+          Traffic, leads, demos
         </p>
       </header>
       <div className="h-72">
@@ -44,6 +48,7 @@ export default function TimeSeriesChart({ data }) {
             />
             <Legend wrapperStyle={{ fontSize: 10, color: '#94a3b8' }} />
             <Line type="monotone" dataKey="pageView" name="Page Views" stroke="#60a5fa" strokeWidth={2} dot={false} />
+            <Line type="monotone" dataKey="uniqueVisitors" name="Unique Visitors" stroke="#a78bfa" strokeWidth={2} dot={false} />
             <Line type="monotone" dataKey="lead" name="Leads" stroke="#34d399" strokeWidth={2} dot={false} />
             <Line
               type="monotone"

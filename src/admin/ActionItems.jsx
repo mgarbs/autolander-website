@@ -64,12 +64,12 @@ function CopyBlock({ value }) {
   }
 
   return (
-    <div className="mt-3 flex items-center gap-2 rounded-xl border border-white/10 bg-black/40 px-3 py-2">
-      <code className="flex-1 overflow-x-auto whitespace-pre text-[11px] text-slate-200">{value}</code>
+    <div className="mt-3 flex min-w-0 items-center gap-2 overflow-hidden rounded-xl border border-white/10 bg-black/40 px-3 py-2">
+      <code className="min-w-0 flex-1 overflow-x-auto whitespace-pre text-[11px] text-slate-200">{value}</code>
       <button
         type="button"
         onClick={copy}
-        className="rounded-lg border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white hover:bg-white/20"
+        className="shrink-0 rounded-lg border border-white/10 bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white hover:bg-white/20"
       >
         {copied ? 'Copied' : 'Copy'}
       </button>

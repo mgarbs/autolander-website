@@ -5,7 +5,10 @@ import TimeSeriesChart from './charts/TimeSeriesChart.jsx';
 import FunnelChart from './charts/FunnelChart.jsx';
 import CampaignTable from './charts/CampaignTable.jsx';
 import HealthCard from './charts/HealthCard.jsx';
+import TrafficExplorer from './charts/TrafficExplorer.jsx';
+import AiSummaryPanel from './charts/AiSummaryPanel.jsx';
 import ActionItems from './ActionItems.jsx';
+import SetupGuide from './SetupGuide.jsx';
 
 const RANGES = [
   { days: 7, label: '7d' },
@@ -21,6 +24,9 @@ export default function Dashboard({ onLogout }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [recsLoading, setRecsLoading] = useState(true);
+  const [aiSummary, setAiSummary] = useState(null);
+  const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
+  const [aiSummaryError, setAiSummaryError] = useState('');
 
   const refresh = useCallback(
     async (nextDays = days, opts = {}) => {
@@ -34,6 +40,8 @@ export default function Dashboard({ onLogout }) {
         ]);
         setInsights(insightsResp);
         setRecommendations(recsResp?.recommendations || []);
+        setAiSummary(null);
+        setAiSummaryError('');
       } catch (err) {
         if (err instanceof ApiError && err.status === 401) {
           onLogout();
@@ -48,6 +56,28 @@ export default function Dashboard({ onLogout }) {
     },
     [days, onLogout],
   );
+
+  const runAiSummary = useCallback(async () => {
+    setAiSummaryLoading(true);
+    setAiSummaryError('');
+    try {
+      const result = await apiPost('/admin/ai-summary', { days });
+      if (!result?.ok) {
+        setAiSummary(null);
+        setAiSummaryError(result?.message || 'AI Summary could not run right now.');
+        return;
+      }
+      setAiSummary(result);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        onLogout();
+        return;
+      }
+      setAiSummaryError(err?.message || 'AI Summary could not run right now.');
+    } finally {
+      setAiSummaryLoading(false);
+    }
+  }, [days, onLogout]);
 
   useEffect(() => {
     refresh(days);
@@ -68,6 +98,12 @@ export default function Dashboard({ onLogout }) {
   const health = insights?.health || null;
   const setup = insights?.setup || null;
   const metaInsightsError = insights?.metaInsightsError;
+  const breakdowns = insights?.breakdowns || {};
+  const idCaptureRate = useMemo(() => {
+    const rates = [health?.campaignIdRate, health?.adIdRate].filter((value) => typeof value === 'number');
+    if (rates.length === 0) return null;
+    return Math.min(...rates);
+  }, [health]);
 
   const sources = useMemo(() => {
     if (!insights?.byCampaign) return [];
@@ -120,12 +156,23 @@ export default function Dashboard({ onLogout }) {
 
         <ActionItems recommendations={recommendations} loading={recsLoading} />
 
+        <AiSummaryPanel
+          summary={aiSummary?.summary}
+          generatedAt={aiSummary?.generatedAt}
+          model={aiSummary?.model}
+          loading={aiSummaryLoading}
+          error={aiSummaryError}
+          onRun={runAiSummary}
+        />
+
         <section>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
             <KpiTile label="Spend" value={totals.spend ?? 0} format="currency" sublabel={`${days}d`} />
             <KpiTile label="Booked Demos" value={totals.schedules ?? 0} sublabel={`${days}d`} />
             <KpiTile label="Leads" value={totals.leads ?? 0} sublabel={`${days}d`} />
             <KpiTile label="Cost per Demo" value={totals.cps} format="currency" sublabel={`${days}d`} />
+            <KpiTile label="Meta ID Capture" value={idCaptureRate} format="percent" sublabel="campaign + ad" />
+            <KpiTile label="fbclid Capture" value={health?.fbclidCaptureRate} format="percent" sublabel="Meta visits" />
           </div>
         </section>
 
@@ -137,6 +184,8 @@ export default function Dashboard({ onLogout }) {
         <section>
           <HealthCard health={health} />
         </section>
+
+        <TrafficExplorer breakdowns={breakdowns} totals={totals} recentEvents={insights?.recentEvents} />
 
         <section>
           <CampaignTable
@@ -154,7 +203,7 @@ export default function Dashboard({ onLogout }) {
           />
         </section>
 
-        {setup && <SetupStrip setup={setup} />}
+        {setup && <SetupGuide setup={setup} />}
 
         {loading && (
           <p className="text-center text-xs font-bold uppercase tracking-widest text-slate-500">Loading data…</p>
@@ -186,6 +235,7 @@ function RangePicker({ value, onChange }) {
   );
 }
 
+/*
 function SetupStrip({ setup }) {
   const items = [
     { label: 'Pixel ID configured', ok: setup.hasPixelId },
@@ -243,3 +293,4 @@ function SetupStrip({ setup }) {
     </section>
   );
 }
+*/

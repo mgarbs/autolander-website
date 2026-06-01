@@ -14,6 +14,8 @@ const ALLOWED_EVENTS = new Set([
 const ALLOWED_CUSTOM_EVENTS = new Set([
   'AppDownload',
   'ChatOpened',
+  'EngagedVisit',
+  'ScrollDepth',
   'ReferralCodeCopied',
   'OutboundClick',
 ]);
@@ -54,10 +56,25 @@ export function clean(value, max = 200) {
 
 export function cleanUtms(raw) {
   if (!raw || typeof raw !== 'object') return {};
-  const keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+  const keys = [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_content',
+    'utm_term',
+    'utm_id',
+    'campaign_id',
+    'adset_id',
+    'ad_id',
+    'campaign_name',
+    'adset_name',
+    'ad_name',
+    'placement',
+    'site_source_name',
+  ];
   const out = {};
   for (const key of keys) {
-    const value = clean(raw[key], 120);
+    const value = clean(raw[key], 180);
     if (value) out[key] = value;
   }
   return out;
