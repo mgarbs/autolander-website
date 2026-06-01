@@ -25,6 +25,42 @@ const DOWNLOADS = {
 };
 const REFERRAL_CODE_PATTERN = /^[a-z0-9]{4,64}$/;
 const FEATURES_VIEW_STORAGE_KEY = 'autolander_meta_view_content_features';
+const CALENDLY_WIDGET_JS = 'https://assets.calendly.com/assets/external/widget.js';
+const CALENDLY_WIDGET_CSS = 'https://assets.calendly.com/assets/external/widget.css';
+
+let calendlyAssetsPromise = null;
+function loadCalendlyAssets() {
+  if (typeof window === 'undefined') return Promise.reject(new Error('no-window'));
+  if (window.Calendly) return Promise.resolve(window.Calendly);
+  if (calendlyAssetsPromise) return calendlyAssetsPromise;
+
+  calendlyAssetsPromise = new Promise((resolve, reject) => {
+    if (!document.querySelector(`link[href="${CALENDLY_WIDGET_CSS}"]`)) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = CALENDLY_WIDGET_CSS;
+      document.head.appendChild(link);
+    }
+    const existing = document.querySelector(`script[src="${CALENDLY_WIDGET_JS}"]`);
+    if (existing && window.Calendly) {
+      resolve(window.Calendly);
+      return;
+    }
+    const script = existing || document.createElement('script');
+    if (!existing) {
+      script.src = CALENDLY_WIDGET_JS;
+      script.async = true;
+      document.head.appendChild(script);
+    }
+    script.addEventListener('load', () => resolve(window.Calendly));
+    script.addEventListener('error', () => {
+      calendlyAssetsPromise = null;
+      reject(new Error('calendly-load-failed'));
+    });
+  });
+
+  return calendlyAssetsPromise;
+}
 const STALE_APP_HASH_ROUTES = new Set([
   '#/login',
   '#/sign-in',
@@ -168,12 +204,6 @@ const Step = ({ number, title, desc }) => (
   </div>
 );
 
-const INITIAL_BOOKING_FORM = {
-  fullName: '',
-  email: '',
-  phone: '',
-};
-
 const RoiSlider = ({ label, value, setValue, min, max, step, prefix = '', suffix = '' }) => {
   const formatted = value.toLocaleString('en-US');
   const display = prefix ? `${prefix}${formatted}` : suffix ? `${formatted} ${suffix}` : formatted;
@@ -217,9 +247,6 @@ export default function App() {
   const [isDesktopHero, setIsDesktopHero] = useState(() => window.matchMedia('(min-width: 768px)').matches);
   const featuresSectionRef = useRef(null);
   const isMonthlyBilling = !isAnnual;
-
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
-  const [bookingForm, setBookingForm] = useState(INITIAL_BOOKING_FORM);
 
   // ROI calculator — defaults sized for a typical mid-tier independent dealer
   const [calcInventory, setCalcInventory] = useState(75);
@@ -277,72 +304,36 @@ export default function App() {
   const demoUrl = "https://calendly.com/autolander/demo";
   const bookingUrl = withAttribution(demoUrl);
 
-  const bookingCalendarUrl = useCallback((details = {}) => {
-    let calendarUrl = bookingUrl;
+  const openCalendlyPopup = useCallback(async () => {
+    // Themed Calendly URL with site-matching dark palette.
+    // a2=Yes pre-checks the "Get text reminders about your demo" checkbox
+    // (verified via Calendly event-types API — multi_select at position 1).
+    let widgetUrl = bookingUrl;
     try {
       const u = new URL(bookingUrl, window.location.href);
-      if (details.fullName) u.searchParams.set('name', details.fullName.trim());
-      if (details.email) u.searchParams.set('email', details.email.trim());
-      if (details.phone) u.searchParams.set('a1', details.phone.trim());
       u.searchParams.set('a2', 'Yes');
       u.searchParams.set('hide_gdpr_banner', '1');
-      u.searchParams.set('background_color', 'ffffff');
-      u.searchParams.set('text_color', '000000');
+      u.searchParams.set('background_color', '050505');
+      u.searchParams.set('text_color', 'f1f5f9');
       u.searchParams.set('primary_color', '2563eb');
-      calendarUrl = u.toString();
+      widgetUrl = u.toString();
     } catch {
-      const params = new URLSearchParams();
-      if (details.fullName) params.set('name', details.fullName.trim());
-      if (details.email) params.set('email', details.email.trim());
-      if (details.phone) params.set('a1', details.phone.trim());
-      params.set('a2', 'Yes');
-      params.set('hide_gdpr_banner', '1');
-      params.set('background_color', 'ffffff');
-      params.set('text_color', '000000');
-      params.set('primary_color', '2563eb');
-      calendarUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}${params.toString()}`;
+      const params = `a2=Yes&hide_gdpr_banner=1&background_color=050505&text_color=f1f5f9&primary_color=2563eb`;
+      widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}${params}`;
     }
 
-    return calendarUrl;
+    try {
+      const Calendly = await loadCalendlyAssets();
+      if (!Calendly) {
+        window.open(widgetUrl, '_blank');
+        return;
+      }
+      Calendly.initPopupWidget({ url: widgetUrl });
+    } catch (err) {
+      console.error('[demo-booker] failed to load Calendly widget', err);
+      window.open(widgetUrl, '_blank');
+    }
   }, [bookingUrl]);
-
-  const openBookingModal = useCallback(() => {
-    setIsBookingOpen(true);
-  }, []);
-
-  const closeBookingModal = useCallback(() => {
-    setIsBookingOpen(false);
-  }, []);
-
-  const updateBookingField = useCallback((event) => {
-    const { name, value } = event.target;
-    setBookingForm((current) => ({ ...current, [name]: value }));
-  }, []);
-
-  const submitBookingForm = useCallback((event) => {
-    event.preventDefault();
-    track('Lead', {
-      content_name: 'demo_intake',
-      content_category: 'demo',
-    });
-    window.location.assign(bookingCalendarUrl(bookingForm));
-  }, [bookingCalendarUrl, bookingForm]);
-
-  useEffect(() => {
-    if (!isBookingOpen) return undefined;
-
-    const previousOverflow = document.body.style.overflow;
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') closeBookingModal();
-    };
-
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [closeBookingModal, isBookingOpen]);
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';
@@ -474,7 +465,7 @@ export default function App() {
               Download
             </button>
             <button
-              onClick={openBookingModal}
+              onClick={openCalendlyPopup}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
               Book a Demo
             </button>
@@ -616,14 +607,14 @@ export default function App() {
                   <motion.button
                     whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={openBookingModal}
+                    onClick={openCalendlyPopup}
                     className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                   >
                     <span>Book a Demo</span>
                     <ArrowRight className="w-6 h-6" />
                   </motion.button>
                   <button
-                    onClick={openBookingModal}
+                    onClick={openCalendlyPopup}
                     className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
                   >
                     Start Free Trial
@@ -946,7 +937,7 @@ export default function App() {
                     onClick={
                       isPrivateMonthlyProOffer
                         ? () => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })
-                        : openBookingModal
+                        : openCalendlyPopup
                     }
                     className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
                       isPrivateMonthlyProOffer || isPopularPlan
@@ -1070,7 +1061,7 @@ export default function App() {
                   <motion.button
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={openBookingModal}
+                    onClick={openCalendlyPopup}
                     className="w-full py-5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-black text-base sm:text-lg uppercase italic tracking-tight transition-all flex items-center justify-center gap-3 shadow-2xl shadow-blue-600/30"
                   >
                     Book a Demo to Lock This In
@@ -1236,7 +1227,7 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={openBookingModal}
+                onClick={openCalendlyPopup}
                 className="px-10 py-5 rounded-2xl bg-white text-black font-black text-lg transition-all uppercase italic"
               >
                 See the Studio in Action
@@ -1341,13 +1332,13 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={openBookingModal}
+                onClick={openCalendlyPopup}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500"
               >
                 Book a Live Demo
               </motion.button>
               <button
-                onClick={openBookingModal}
+                onClick={openCalendlyPopup}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
               >
                 Start Your Free Trial
@@ -1380,104 +1371,8 @@ export default function App() {
           </div>
         </div>
       </footer>
-      <AnimatePresence>
-        {isBookingOpen && (
-          <motion.div
-            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/75 px-4 py-6 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onMouseDown={(event) => {
-              if (event.target === event.currentTarget) closeBookingModal();
-            }}
-          >
-            <motion.form
-              onSubmit={submitBookingForm}
-              className="w-full max-w-lg rounded-2xl border border-white/10 bg-white p-5 text-black shadow-2xl sm:p-6"
-              initial={{ opacity: 0, scale: 0.97, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.98, y: 8 }}
-              transition={{ duration: 0.18 }}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">
-                    <Calendar className="h-5 w-5" />
-                  </div>
-                  <h2 className="text-2xl font-black uppercase italic tracking-tight text-black">Book a Demo</h2>
-                  <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-600">
-                    Drop in your details and we will walk through the exact setup for your dealership.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={closeBookingModal}
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition hover:border-slate-300 hover:bg-slate-50 hover:text-black"
-                  aria-label="Close demo booking"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-
-              <div className="mt-6 grid gap-4">
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-700">
-                  Name
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={bookingForm.fullName}
-                    onChange={updateBookingField}
-                    autoComplete="name"
-                    required
-                    className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base font-semibold text-black caret-blue-600 outline-none transition placeholder:text-slate-500 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                    placeholder="Jane Dealer"
-                  />
-                </label>
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-700">
-                  Email
-                  <input
-                    type="email"
-                    name="email"
-                    value={bookingForm.email}
-                    onChange={updateBookingField}
-                    autoComplete="email"
-                    required
-                    className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base font-semibold text-black caret-blue-600 outline-none transition placeholder:text-slate-500 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                    placeholder="jane@dealership.com"
-                  />
-                </label>
-                <label className="block text-xs font-black uppercase tracking-widest text-slate-700">
-                  Phone
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={bookingForm.phone}
-                    onChange={updateBookingField}
-                    autoComplete="tel"
-                    required
-                    className="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-base font-semibold text-black caret-blue-600 outline-none transition placeholder:text-slate-500 focus:border-blue-600 focus:ring-4 focus:ring-blue-100"
-                    placeholder="(555) 123-4567"
-                  />
-                </label>
-              </div>
-
-              <button
-                type="submit"
-                className="mt-6 flex w-full items-center justify-center gap-3 rounded-xl bg-blue-600 px-5 py-4 text-base font-black uppercase italic tracking-tight text-white shadow-xl shadow-blue-600/25 transition hover:bg-blue-500 active:scale-[0.99]"
-              >
-                See Available Times
-                <ArrowRight className="h-5 w-5" />
-              </button>
-              <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs font-bold text-slate-500">
-                <Clock className="h-4 w-4 text-blue-600" />
-                15-min walkthrough
-              </p>
-            </motion.form>
-          </motion.div>
-        )}
-      </AnimatePresence>
       <Suspense fallback={null}>
-        <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openBookingModal} />
+        <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openCalendlyPopup} />
       </Suspense>
     </div>
   );
