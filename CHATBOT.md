@@ -12,7 +12,7 @@ This repo uses a first-party chatbot instead of a hosted AI widget:
 
 The cheap hosted-chat options usually become expensive once AI automation, knowledge bases, or team inbox features are enabled. This setup keeps the fixed platform cost near zero on Cloudflare's free Worker tier and lets us cap OpenAI spend directly.
 
-The main tradeoff is that human support is simple by default: a support form can forward to a webhook, or it falls back to a prefilled email. If you later want a full inbox, point the support form at Slack, Discord, Zapier, Make, Help Scout, Crisp, or another webhook-compatible tool.
+The main tradeoff is that human support is simple by default: a support form can forward to a webhook, and if no webhook is configured it saves the request in the admin Support Inbox using KV. If you later want team notifications, point the support form at Slack, Discord, Zapier, Make, Help Scout, Crisp, or another webhook-compatible tool.
 
 ## Deploy The Worker
 
@@ -27,6 +27,8 @@ cp worker/wrangler.toml.example worker/wrangler.toml
 ```bash
 npx wrangler kv namespace create CHAT_RATE_LIMITS --config worker/wrangler.toml
 npx wrangler kv namespace create CHAT_RATE_LIMITS --preview --config worker/wrangler.toml
+npx wrangler kv namespace create TRACKING --config worker/wrangler.toml
+npx wrangler kv namespace create TRACKING --preview --config worker/wrangler.toml
 ```
 
 3. Paste the returned IDs into `worker/wrangler.toml`.
@@ -88,4 +90,4 @@ If `SUPPORT_WEBHOOK_URL` is configured:
 - `SUPPORT_WEBHOOK_TYPE=discord` posts `{ content }`
 - otherwise the Worker posts a generic JSON payload
 
-If no webhook is configured, the website opens a prefilled email to `sales@autolander.ai`.
+If no webhook is configured, support requests are saved to KV and shown in the admin Support Inbox.

@@ -3,6 +3,7 @@ import { buildAiSummaryPayload } from './ai-summary.js';
 import { getAdInsights, getCampaignInsights, hasMetaInsightsConfig } from './meta-insights.js';
 import { buildRecommendations, META_URL_PARAM_TEMPLATE } from './recommendations.js';
 import { readDimensionForDay, readRecentEvents } from '../capi/storage.js';
+import { readSupportRequests } from '../support/storage.js';
 
 const DEFAULT_DAYS = 30;
 const MAX_DAYS = 90;
@@ -52,6 +53,11 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
   if (path === '/admin/events/recent') {
     const limit = Math.min(Number(url.searchParams.get('limit') || 50), 100);
     return jsonResponse({ ok: true, events: await readRecentEvents(env, limit) }, 200, corsHeaders);
+  }
+
+  if (path === '/admin/support/recent') {
+    const limit = Math.min(Number(url.searchParams.get('limit') || 25), 100);
+    return jsonResponse({ ok: true, requests: await readSupportRequests(env, limit) }, 200, corsHeaders);
   }
 
   return jsonResponse({ ok: false, reason: 'not_found' }, 404, corsHeaders);

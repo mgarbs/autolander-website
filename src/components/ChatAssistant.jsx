@@ -56,6 +56,8 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
   const [showSupportForm, setShowSupportForm] = useState(false);
   const [supportForm, setSupportForm] = useState(supportDefaults);
   const [supportStatus, setSupportStatus] = useState('');
+  const [supportFallbackUrl, setSupportFallbackUrl] = useState('');
+  const [isSendingSupport, setIsSendingSupport] = useState(false);
   const messagesEndRef = useRef(null);
   const turnstileRef = useRef(null);
   const turnstileWidgetRef = useRef(null);
@@ -175,6 +177,7 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
   const submitSupportRequest = async (event) => {
     event.preventDefault();
     setSupportStatus('');
+    setSupportFallbackUrl('');
 
     const details = supportForm.details.trim();
     if (!supportForm.email.trim() || !details) {
@@ -187,15 +190,19 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
       .map((item) => `${item.role}: ${item.content}`)
       .join('\n');
 
+    const fallbackMailto = mailtoUrl(
+      supportEmail,
+      'AutoLander support request',
+      `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\n\nRecent chat:\n${transcript}`
+    );
+
     if (!CHAT_API_BASE) {
-      window.location.href = mailtoUrl(
-        supportEmail,
-        'AutoLander support request',
-        `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\n\nRecent chat:\n${transcript}`
-      );
+      setSupportFallbackUrl(fallbackMailto);
+      setSupportStatus('Support backend is not connected. Use the email link below so we can help.');
       return;
     }
 
+    setIsSendingSupport(true);
     try {
       const response = await fetch(endpoint('/support'), {
         method: 'POST',
@@ -209,25 +216,25 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok || data.mailFallback) {
-        window.location.href =
-          data.mailto ||
-          mailtoUrl(
-            supportEmail,
-            'AutoLander support request',
-            `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\n\nRecent chat:\n${transcript}`
-          );
+        setSupportFallbackUrl(data.mailto || fallbackMailto);
+        setSupportStatus(
+          data?.message || 'Support request could not be sent automatically. Use the email link below so we can help.',
+        );
         return;
       }
 
-      setSupportStatus('Support request sent. We will follow up by email.');
+      setSupportStatus(
+        data.delivery === 'stored'
+          ? 'Support request saved. We will follow up by email.'
+          : 'Support request sent. We will follow up by email.',
+      );
       setSupportForm(supportDefaults);
       resetTurnstile();
     } catch {
-      window.location.href = mailtoUrl(
-        supportEmail,
-        'AutoLander support request',
-        `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\n\nRecent chat:\n${transcript}`
-      );
+      setSupportFallbackUrl(fallbackMailto);
+      setSupportStatus('Support request could not be sent automatically. Use the email link below so we can help.');
+    } finally {
+      setIsSendingSupport(false);
     }
   };
 
@@ -363,12 +370,23 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
                   </div>
                   <button
                     type="submit"
-                    className="mt-3 w-full rounded-2xl bg-emerald-500 px-4 py-3 text-xs font-black uppercase italic text-white transition hover:bg-emerald-400"
+                    disabled={isSendingSupport}
+                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-4 py-3 text-xs font-black uppercase italic text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-slate-700"
                   >
-                    Send Support Request
+                    {isSendingSupport && <Loader2 className="h-4 w-4 animate-spin" />}
+                    {isSendingSupport ? 'Sending Request' : 'Send Support Request'}
                   </button>
                   {supportStatus && (
                     <p className="mt-3 text-xs font-medium text-slate-400">{supportStatus}</p>
+                  )}
+                  {supportFallbackUrl && (
+                    <a
+                      href={supportFallbackUrl}
+                      className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 px-4 py-2 text-xs font-black uppercase italic text-white transition hover:bg-white/10"
+                    >
+                      <Mail className="h-4 w-4" />
+                      Email Support
+                    </a>
                   )}
                 </form>
               )}

@@ -24,7 +24,8 @@ id = "replace_with_production_kv_namespace_id"
 preview_id = "replace_with_preview_kv_namespace_id"
 
 # Conversion tracking + admin dashboard storage.
-# Create with: wrangler kv:namespace create TRACKING (and --preview).
+# Also stores chatbot support requests when SUPPORT_WEBHOOK_URL is not set.
+# Create with: wrangler kv namespace create TRACKING (and --preview).
 [[kv_namespaces]]
 binding = "TRACKING"
 id = "replace_with_production_kv_namespace_id"

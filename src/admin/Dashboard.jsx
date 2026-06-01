@@ -9,6 +9,7 @@ import TrafficExplorer from './charts/TrafficExplorer.jsx';
 import AiSummaryPanel from './charts/AiSummaryPanel.jsx';
 import ActionItems from './ActionItems.jsx';
 import SetupGuide from './SetupGuide.jsx';
+import SupportInbox from './SupportInbox.jsx';
 
 const RANGES = [
   { days: 7, label: '7d' },
@@ -27,19 +28,31 @@ export default function Dashboard({ onLogout }) {
   const [aiSummary, setAiSummary] = useState(null);
   const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
   const [aiSummaryError, setAiSummaryError] = useState('');
+  const [supportRequests, setSupportRequests] = useState([]);
+  const [supportLoading, setSupportLoading] = useState(true);
+  const [supportError, setSupportError] = useState('');
 
   const refresh = useCallback(
     async (nextDays = days, opts = {}) => {
       if (opts.silent) setRefreshing(true);
       else setLoading(true);
       setError('');
+      setSupportLoading(true);
+      setSupportError('');
       try {
         const [insightsResp, recsResp] = await Promise.all([
           apiGet(`/admin/insights?days=${nextDays}`),
           apiGet(`/admin/recommendations?days=${nextDays}`),
         ]);
+        const supportResp = await apiGet('/admin/support/recent?limit=8').catch(() => ({
+          ok: false,
+          requests: [],
+          message: 'Support inbox is unavailable until the Worker is deployed.',
+        }));
         setInsights(insightsResp);
         setRecommendations(recsResp?.recommendations || []);
+        setSupportRequests(supportResp?.requests || []);
+        setSupportError(supportResp?.ok === false ? supportResp.message || 'Support inbox is unavailable.' : '');
         setAiSummary(null);
         setAiSummaryError('');
       } catch (err) {
@@ -52,6 +65,7 @@ export default function Dashboard({ onLogout }) {
         setLoading(false);
         setRefreshing(false);
         setRecsLoading(false);
+        setSupportLoading(false);
       }
     },
     [days, onLogout],
@@ -155,6 +169,8 @@ export default function Dashboard({ onLogout }) {
         )}
 
         <ActionItems recommendations={recommendations} loading={recsLoading} />
+
+        <SupportInbox requests={supportRequests} loading={supportLoading} error={supportError} />
 
         <AiSummaryPanel
           summary={aiSummary?.summary}

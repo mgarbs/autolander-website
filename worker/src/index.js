@@ -1,5 +1,6 @@
 import { AUTOLANDER_KNOWLEDGE } from './autolander-knowledge.js';
 import { sha256Hex } from './capi/hash.js';
+import { saveSupportRequest } from './support/storage.js';
 
 const DEFAULT_ALLOWED_ORIGINS = [
   'https://autolander.ai',
@@ -222,19 +223,37 @@ async function handleSupport(request, env, headers) {
     );
   }
 
+  const stored = await saveSupportRequest(env, request, { name, email, details, transcript });
+
   if (!env.SUPPORT_WEBHOOK_URL) {
+    if (stored.ok) {
+      return jsonResponse({ ok: true, delivery: 'stored', supportRequestId: stored.id }, 200, headers);
+    }
     return jsonResponse(
       {
+        message: 'Support storage is not configured. Please email support directly.',
         mailFallback: true,
         mailto: supportMailto(env, { name, email, details, transcript }),
       },
-      200,
+      503,
       headers
     );
   }
 
   const sent = await sendSupportWebhook(env, { name, email, details, transcript });
   if (!sent.ok) {
+    if (stored.ok) {
+      return jsonResponse(
+        {
+          ok: true,
+          delivery: 'stored',
+          supportRequestId: stored.id,
+          warning: 'Support webhook failed, but the request was saved in the admin inbox.',
+        },
+        200,
+        headers
+      );
+    }
     return jsonResponse(
       {
         message: 'Support webhook failed. Please email support directly.',
@@ -246,7 +265,11 @@ async function handleSupport(request, env, headers) {
     );
   }
 
-  return jsonResponse({ ok: true }, 200, headers);
+  return jsonResponse(
+    { ok: true, delivery: stored.ok ? 'webhook_and_stored' : 'webhook', supportRequestId: stored.id || null },
+    200,
+    headers
+  );
 }
 
 function buildInstructions(env) {
@@ -256,6 +279,7 @@ Use only the knowledge below. Do not invent features, pricing, integrations, pol
 Keep answers concise, practical, and sales/support oriented.
 Answer known setup and troubleshooting topics from the knowledge first, including Facebook login, Cars.com/CarGurus feed setup, English (US) language issues, "node not clickable", macOS quarantine/xattr, posting failures, and new Facebook account posting limits.
 If the known steps do not resolve the issue, or the user asks about account-specific issues, billing, refunds, legal policy, outages, security, unsupported feed sources, or anything you are not confident about, set handoff=true and route them to support or demo booking.
+For website chat handoffs, prefer the built-in Contact Support button over telling visitors to email support directly.
 If the user is ready to buy, compare plans, or wants implementation details for their dealership, suggest booking a demo.
 If the user asks how to start, mention the free trial and app download.
 
