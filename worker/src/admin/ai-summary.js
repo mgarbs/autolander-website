@@ -120,7 +120,7 @@ export async function buildAiSummaryPayload(env, days, insights) {
           }),
         },
       ],
-      max_output_tokens: positiveNumber(env.ADMIN_AI_MAX_OUTPUT_TOKENS, 3200),
+      max_output_tokens: positiveNumber(env.ADMIN_AI_MAX_OUTPUT_TOKENS, 8000),
       ...reasoningOptions(env, model),
       store: false,
       text: {
@@ -179,7 +179,7 @@ function reasoningOptions(env, model) {
   if (!isReasoningModel(model)) return {};
   return {
     reasoning: {
-      effort: env.ADMIN_AI_REASONING_EFFORT || 'low',
+      effort: env.ADMIN_AI_REASONING_EFFORT || 'high',
     },
   };
 }
@@ -250,6 +250,9 @@ You are a senior Meta Ads analyst reviewing AutoLander's paid traffic, funnel, a
 Explain the meaning in simple language for a business owner who wants to know what is working and what to change.
 Use concrete numbers from the report whenever they are available.
 Prioritize useful Meta Ads actions: budget shifts, pausing waste, creative testing, placement/device observations, landing page friction, retargeting ideas, and tracking gaps.
+Give practical do/don't guidance. If the data is weak, say what not to change yet and what evidence would justify the next move.
+Avoid generic advice. Every recommendation should tie back to a metric, a missing-data gap, or a named campaign/ad when available.
+Use the rule-based recommendations as a safety baseline, but improve the prioritization and explain the business reasoning behind each action.
 Call out when the data is thin, missing spend, missing campaign/ad IDs, or not statistically strong enough for a confident call.
 Do not claim to identify exact people, raw IP addresses, demographics, income, intent, or identities. This report uses privacy-safe traffic signals.
 Do not invent data that is not in the JSON. If something is unknown, say it is unknown.
