@@ -120,7 +120,8 @@ export async function buildAiSummaryPayload(env, days, insights) {
           }),
         },
       ],
-      max_output_tokens: Number(env.ADMIN_AI_MAX_OUTPUT_TOKENS || 1600),
+      max_output_tokens: positiveNumber(env.ADMIN_AI_MAX_OUTPUT_TOKENS, 3200),
+      ...reasoningOptions(env, model),
       store: false,
       text: {
         format: {
@@ -144,8 +145,19 @@ export async function buildAiSummaryPayload(env, days, insights) {
   }
 
   const data = await response.json();
+  const responseError = modelResponseError(data);
+  if (responseError) {
+    console.error('Admin AI summary response did not complete', JSON.stringify(responseError).slice(0, 500));
+    return {
+      ok: false,
+      reason: responseError.reason,
+      message: responseError.message,
+    };
+  }
+
   const summary = parseStructuredResponse(data);
   if (!summary) {
+    console.error('Admin AI summary response could not be parsed', JSON.stringify(responsePreview(data)).slice(0, 500));
     return {
       ok: false,
       reason: 'ai_summary_parse_failed',
@@ -159,6 +171,76 @@ export async function buildAiSummaryPayload(env, days, insights) {
     model,
     range: insights.range,
     summary,
+  };
+}
+
+function reasoningOptions(env, model) {
+  if (env.ADMIN_AI_REASONING_EFFORT === 'off') return {};
+  if (!isReasoningModel(model)) return {};
+  return {
+    reasoning: {
+      effort: env.ADMIN_AI_REASONING_EFFORT || 'low',
+    },
+  };
+}
+
+function isReasoningModel(model) {
+  return /^(gpt-5|o[1-9]|o\d-|o\d\b)/i.test(String(model || ''));
+}
+
+function modelResponseError(data) {
+  if (data?.status === 'incomplete') {
+    const detail = data?.incomplete_details?.reason || 'incomplete';
+    return {
+      reason: detail === 'max_output_tokens' ? 'ai_summary_token_limit' : 'ai_summary_incomplete',
+      message:
+        detail === 'max_output_tokens'
+          ? 'AI Summary ran out of response space. Try again in a moment.'
+          : 'AI Summary could not finish. Try again in a moment.',
+    };
+  }
+
+  if (data?.status === 'failed' || data?.error) {
+    return {
+      reason: 'ai_summary_failed',
+      message: 'AI Summary could not run right now. Check the OpenAI key, model, and worker logs.',
+    };
+  }
+
+  const refusal = extractRefusal(data);
+  if (refusal) {
+    return {
+      reason: 'ai_summary_refused',
+      message: 'AI Summary could not analyze this report safely. Try again with a different date range.',
+    };
+  }
+
+  return null;
+}
+
+function extractRefusal(data) {
+  for (const item of data?.output || []) {
+    for (const content of item?.content || []) {
+      if (content?.type === 'refusal' && typeof content.refusal === 'string') {
+        return content.refusal;
+      }
+    }
+  }
+  return '';
+}
+
+function responsePreview(data) {
+  return {
+    id: data?.id,
+    status: data?.status,
+    incomplete_details: data?.incomplete_details,
+    error: data?.error,
+    output_types: (data?.output || []).map((item) => ({
+      type: item?.type,
+      status: item?.status,
+      content: (item?.content || []).map((content) => content?.type),
+    })),
+    output_text_preview: typeof data?.output_text === 'string' ? data.output_text.slice(0, 180) : '',
   };
 }
 
@@ -346,35 +428,55 @@ function compactRecentEvents(events) {
 }
 
 function parseStructuredResponse(data) {
+  const parsedContent = extractParsedContent(data);
+  if (parsedContent) return sanitizeSummary(parsedContent);
+
   const text = extractOutputText(data);
   if (!text) return null;
 
   try {
     const parsed = JSON.parse(text);
-    return {
-      headline: cleanText(parsed.headline, 220),
-      executiveSummary: cleanText(parsed.executiveSummary, 1200),
-      whatIsWorking: sanitizeInsightItems(parsed.whatIsWorking),
-      interestingSignals: sanitizeInsightItems(parsed.interestingSignals),
-      risks: sanitizeInsightItems(parsed.risks),
-      recommendedActions: sanitizeActions(parsed.recommendedActions),
-      trackingNotes: sanitizeInsightItems(parsed.trackingNotes),
-    };
+    return sanitizeSummary(parsed);
   } catch {
     return null;
   }
 }
 
-function extractOutputText(data) {
-  if (typeof data?.output_text === 'string') return data.output_text;
+function sanitizeSummary(parsed) {
+  if (!parsed || typeof parsed !== 'object') return null;
+  return {
+    headline: cleanText(parsed.headline, 220),
+    executiveSummary: cleanText(parsed.executiveSummary, 1200),
+    whatIsWorking: sanitizeInsightItems(parsed.whatIsWorking),
+    interestingSignals: sanitizeInsightItems(parsed.interestingSignals),
+    risks: sanitizeInsightItems(parsed.risks),
+    recommendedActions: sanitizeActions(parsed.recommendedActions),
+    trackingNotes: sanitizeInsightItems(parsed.trackingNotes),
+  };
+}
+
+function extractParsedContent(data) {
   for (const item of data?.output || []) {
     for (const content of item?.content || []) {
-      if (content?.type === 'output_text' && typeof content.text === 'string') {
-        return content.text;
+      if (content?.parsed && typeof content.parsed === 'object') {
+        return content.parsed;
       }
     }
   }
-  return '';
+  return null;
+}
+
+function extractOutputText(data) {
+  if (typeof data?.output_text === 'string') return data.output_text;
+  const parts = [];
+  for (const item of data?.output || []) {
+    for (const content of item?.content || []) {
+      if (content?.type === 'output_text' && typeof content.text === 'string') {
+        parts.push(content.text);
+      }
+    }
+  }
+  return parts.join('');
 }
 
 function sanitizeInsightItems(items) {
@@ -418,6 +520,11 @@ function moneyNumber(value) {
 function percentNumber(value) {
   const parsed = Number(value);
   return Number.isFinite(parsed) ? Number(parsed.toFixed(4)) : null;
+}
+
+function positiveNumber(value, fallback) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 }
 
 function rate(numerator, denominator) {
