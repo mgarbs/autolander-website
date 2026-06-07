@@ -101,6 +101,48 @@ export async function buildAiSummaryPayload(env, days, insights) {
     setup: insights.setup,
   }).slice(0, 8);
 
+  const tokenBudgets = aiSummaryTokenBudgets(env);
+  let fallbackReason = 'ai_summary_retry_exhausted';
+
+  for (const maxOutputTokens of tokenBudgets) {
+    const result = await requestAiSummary({
+      env,
+      model,
+      days,
+      snapshot,
+      deterministicRecommendations,
+      maxOutputTokens,
+    });
+
+    if (result.ok) {
+      return {
+        ok: true,
+        generatedAt: new Date().toISOString(),
+        model,
+        range: insights.range,
+        summary: result.summary,
+      };
+    }
+
+    fallbackReason = result.reason;
+    if (!retryableAiSummaryReason(result.reason)) return result;
+
+    console.warn('Admin AI summary retryable failure', result.reason, `max_output_tokens=${maxOutputTokens}`);
+  }
+
+  console.error('Admin AI summary using rule-based fallback', fallbackReason);
+  return {
+    ok: true,
+    generatedAt: new Date().toISOString(),
+    model: `${model} + rule fallback`,
+    range: insights.range,
+    fallback: true,
+    fallbackReason,
+    summary: buildRuleBasedSummary(insights, deterministicRecommendations),
+  };
+}
+
+async function requestAiSummary({ env, model, days, snapshot, deterministicRecommendations, maxOutputTokens }) {
   const response = await fetch('https://api.openai.com/v1/responses', {
     method: 'POST',
     headers: {
@@ -120,7 +162,7 @@ export async function buildAiSummaryPayload(env, days, insights) {
           }),
         },
       ],
-      max_output_tokens: positiveNumber(env.ADMIN_AI_MAX_OUTPUT_TOKENS, 8000),
+      max_output_tokens: maxOutputTokens,
       ...reasoningOptions(env, model),
       store: false,
       text: {
@@ -167,11 +209,18 @@ export async function buildAiSummaryPayload(env, days, insights) {
 
   return {
     ok: true,
-    generatedAt: new Date().toISOString(),
-    model,
-    range: insights.range,
     summary,
   };
+}
+
+function aiSummaryTokenBudgets(env) {
+  const primary = positiveInteger(env.ADMIN_AI_MAX_OUTPUT_TOKENS, 20000);
+  const retry = positiveInteger(env.ADMIN_AI_RETRY_MAX_OUTPUT_TOKENS, Math.max(primary * 2, 50000));
+  return [...new Set([primary, retry])].filter((value) => value > 0);
+}
+
+function retryableAiSummaryReason(reason) {
+  return reason === 'ai_summary_token_limit' || reason === 'ai_summary_parse_failed';
 }
 
 function reasoningOptions(env, model) {
@@ -195,7 +244,7 @@ function modelResponseError(data) {
       reason: detail === 'max_output_tokens' ? 'ai_summary_token_limit' : 'ai_summary_incomplete',
       message:
         detail === 'max_output_tokens'
-          ? 'AI Summary ran out of response space. Try again in a moment.'
+          ? 'AI Summary needed more response space.'
           : 'AI Summary could not finish. Try again in a moment.',
     };
   }
@@ -242,6 +291,199 @@ function responsePreview(data) {
     })),
     output_text_preview: typeof data?.output_text === 'string' ? data.output_text.slice(0, 180) : '',
   };
+}
+
+function buildRuleBasedSummary(insights, recommendations) {
+  const totals = insights?.totals || {};
+  const health = insights?.health || {};
+  const setup = insights?.setup || {};
+  const days = insights?.range?.days || 'selected';
+  const spend = moneyNumber(totals.spend);
+  const pageViews = number(totals.pageViews);
+  const leads = number(totals.leads);
+  const demos = number(totals.schedules);
+  const topCampaign = topPerformanceRow(insights?.byCampaign, 'name');
+  const topAd = topPerformanceRow(insights?.byAd, 'ad_name');
+
+  const headline =
+    demos > 0
+      ? `${demos} booked demo${demos === 1 ? '' : 's'} came through; protect tracking before scaling.`
+      : leads > 0
+        ? `${leads} lead${leads === 1 ? '' : 's'} came through, but demo signal is not proven yet.`
+        : pageViews > 0
+          ? 'Traffic is reaching the site, but conversion signal is still thin.'
+          : 'The selected range does not have enough activity for a confident read.';
+
+  const spendText = spend === null ? 'unknown Meta spend' : `${moneyText(spend)} in Meta spend`;
+  const executiveSummary = `Over the last ${days} days, the dashboard shows ${spendText}, ${countText(
+    pageViews,
+    'page view',
+  )}, ${countText(leads, 'lead')}, and ${countText(demos, 'booked demo')}. Use this as a conservative operating read: make tracking fixes first, avoid major budget moves on thin conversion data, and only scale or pause once the campaign/ad joins and demo volume are reliable.`;
+
+  const whatIsWorking = compactItems([
+    demos > 0 && {
+      title: 'Booked demos are being captured',
+      meaning: `${countText(demos, 'booked demo')} reached the dashboard in this window, so there is conversion signal to inspect.`,
+    },
+    leads > 0 && {
+      title: 'Lead capture is producing signal',
+      meaning: `${countText(leads, 'lead')} came through. The next question is whether those leads are turning into booked demos at an acceptable rate.`,
+    },
+    spend > 0 && {
+      title: 'Spend data is connected',
+      meaning: `${moneyText(spend)} of Meta spend is available for the selected range, which makes cost-per-result checks possible.`,
+    },
+    pageViews > 0 && {
+      title: 'Traffic is reaching the site',
+      meaning: `${countText(pageViews, 'page view')} gives the landing page and funnel enough activity for a basic read.`,
+    },
+  ]);
+
+  const interestingSignals = compactItems([
+    topCampaign && {
+      title: `Top campaign: ${topCampaign.name || topCampaign.campaign_name || 'unnamed campaign'}`,
+      meaning: `${moneyText(topCampaign.spend)} spend, ${countText(topCampaign.leads, 'lead')}, and ${countText(
+        topCampaign.schedules,
+        'booked demo',
+      )}. Treat this as directional unless the conversion count is strong.`,
+    },
+    topAd && {
+      title: `Top ad: ${topAd.ad_name || topAd.ad_id || 'unnamed ad'}`,
+      meaning: `${moneyText(topAd.spend)} spend, ${countText(topAd.leads, 'lead')}, and ${countText(
+        topAd.schedules,
+        'booked demo',
+      )}. Compare this against other ads before shifting budget.`,
+    },
+    health.fbclidCaptureRate !== null &&
+      health.fbclidCaptureRate !== undefined && {
+        title: 'fbclid capture is measurable',
+        meaning: `The Meta click capture rate is ${percentText(health.fbclidCaptureRate)}. Below 80% usually means attribution needs attention before reading campaign winners too aggressively.`,
+      },
+  ]);
+
+  const risks = compactItems([
+    demos === 0 && {
+      title: 'No booked-demo proof yet',
+      meaning: 'Do not scale based only on traffic or leads. Wait for booked-demo volume or inspect the lead-to-demo handoff before making major budget changes.',
+    },
+    leads === 0 && pageViews > 0 && {
+      title: 'Traffic is not converting into leads',
+      meaning: 'Before spending more, inspect the landing page offer, form friction, demo CTA visibility, and traffic quality.',
+    },
+    spend === null && {
+      title: 'Spend data is missing',
+      meaning: 'Cost per lead and cost per demo cannot be trusted until Meta Marketing API spend data is connected.',
+    },
+    (health.missingCampaignId > 0 || health.missingAdId > 0) && {
+      title: 'Campaign or ad IDs are missing',
+      meaning: `${countText(
+        Math.max(number(health.missingCampaignId), number(health.missingAdId)),
+        'Meta visit',
+      )} are missing campaign or ad IDs. Fix URL parameters before treating name-based attribution as final.`,
+    },
+  ]);
+
+  const recommendedActions = recommendations.length
+    ? recommendations.map(recommendationToAction).slice(0, 6)
+    : [
+        {
+          priority: demos > 0 ? 'medium' : 'high',
+          title: 'Keep budget changes conservative until conversion signal improves',
+          why: 'The selected range does not have enough reliable booked-demo evidence for aggressive scaling or pausing.',
+          nextStep: 'Collect more clean campaign/ad ID data and wait for at least a few booked demos before making major budget moves.',
+        },
+      ];
+
+  const trackingNotes = compactItems([
+    !setup.metaInsightsReady && {
+      title: 'Meta spend connection needs attention',
+      meaning: 'Set or verify the ad account and marketing token so spend can be tied to leads and demos.',
+    },
+    (health.missingCampaignId > 0 || health.missingAdId > 0) && {
+      title: 'Use IDs as the join key',
+      meaning: 'Campaign and ad names are only a fallback. IDs are the reliable way to connect Meta spend to tracked events.',
+    },
+    {
+      title: 'Conservative backup read',
+      meaning: 'This read uses deterministic dashboard rules when the model cannot return a complete structured response in time.',
+    },
+  ]);
+
+  return sanitizeSummary({
+    headline,
+    executiveSummary,
+    whatIsWorking,
+    interestingSignals,
+    risks,
+    recommendedActions,
+    trackingNotes,
+  });
+}
+
+function compactItems(items) {
+  return items.filter(Boolean).slice(0, 5);
+}
+
+function topPerformanceRow(rows, nameKey) {
+  if (!Array.isArray(rows)) return null;
+  return (
+    rows
+      .filter((row) => row && (row.spend > 0 || row.leads > 0 || row.schedules > 0))
+      .sort((a, b) => {
+        const aScore = number(a.schedules) * 1000 + number(a.leads) * 100 + Number(a.spend || 0);
+        const bScore = number(b.schedules) * 1000 + number(b.leads) * 100 + Number(b.spend || 0);
+        return bScore - aScore;
+      })
+      .find((row) => row[nameKey] || row.spend > 0 || row.leads > 0 || row.schedules > 0) || null
+  );
+}
+
+function recommendationToAction(recommendation) {
+  return {
+    priority: priorityFromSeverity(recommendation?.severity),
+    title: cleanText(recommendation?.title, 160),
+    why: cleanText(recommendation?.body, 500),
+    nextStep: nextStepFromRecommendation(recommendation),
+  };
+}
+
+function priorityFromSeverity(severity) {
+  if (severity === 'urgent') return 'high';
+  if (severity === 'info') return 'low';
+  return 'medium';
+}
+
+function nextStepFromRecommendation(recommendation) {
+  const action = recommendation?.action || {};
+  if (action.type === 'env' && action.name) return `Set or verify ${action.name}, then refresh the dashboard.`;
+  if (action.type === 'copy') return 'Apply the Meta URL parameter template to every active ad.';
+  if (action.type === 'pause_ad') return 'Review the ad in Meta Ads Manager and pause or replace it if the spend/conversion pattern still holds.';
+  if (action.type === 'scale_campaign') return 'Increase budget gradually, then watch cost per booked demo and lead quality.';
+  if (action.type === 'refresh_creative') return 'Launch a fresh creative angle before adding more budget.';
+  if (action.type === 'check_dedupe') return 'Confirm browser and server events share the same event_id for deduplication.';
+  if (action.type === 'check_capi') return 'Verify the Worker endpoint, Pixel ID, and Conversions API token.';
+  if (action.type === 'check_fbclid') return 'Confirm Meta is passing URL parameters and fbclid through to the landing page.';
+  return 'Review this item before making budget changes.';
+}
+
+function countText(value, noun) {
+  const count = number(value);
+  return `${count} ${noun}${count === 1 ? '' : 's'}`;
+}
+
+function moneyText(value) {
+  const parsed = moneyNumber(value);
+  if (parsed === null) return 'unknown spend';
+  return `$${parsed.toLocaleString('en-US', {
+    minimumFractionDigits: parsed > 0 && parsed < 100 ? 2 : 0,
+    maximumFractionDigits: parsed > 0 && parsed < 100 ? 2 : 0,
+  })}`;
+}
+
+function percentText(value) {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return 'unknown';
+  return `${(parsed * 100).toFixed(0)}%`;
 }
 
 function buildInstructions(days) {
@@ -525,9 +767,9 @@ function percentNumber(value) {
   return Number.isFinite(parsed) ? Number(parsed.toFixed(4)) : null;
 }
 
-function positiveNumber(value, fallback) {
+function positiveInteger(value, fallback) {
   const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+  return Number.isFinite(parsed) && parsed > 0 ? Math.round(parsed) : fallback;
 }
 
 function rate(numerator, denominator) {
