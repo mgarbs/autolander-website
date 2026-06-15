@@ -36,12 +36,15 @@ function dayLabel(iso) {
   return new Date(iso).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: TZ });
 }
 
+function monthDay(iso) {
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: TZ });
+}
+
 export default function InstantCalendar({ onClose, onFallback }) {
   const [phase, setPhase] = useState('loading'); // loading | browse | capture | submitting | success | empty | error
   const [slots, setSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [showAll, setShowAll] = useState(false);
   const [form, setForm] = useState({ name: '', email: '', phone: '', textReminders: true });
   const [formError, setFormError] = useState('');
   const abbr = useMemo(() => tzAbbr(), []);
@@ -77,10 +80,20 @@ export default function InstantCalendar({ onClose, onFallback }) {
       if (!map.has(k)) map.set(k, []);
       map.get(k).push(iso);
     }
-    return [...map.entries()].map(([key, isos]) => ({ key, label: dayLabel(isos[0]), slots: isos }));
+    // dayLabel() does the Today/Tomorrow math in a module fn (keeps impure
+    // new Date()/Date.now() out of this hook). It returns "Today" | "Tomorrow"
+    // | "Mon, Jun 16" — split that into a strip label + date.
+    return [...map.entries()].map(([key, isos]) => {
+      const lbl = dayLabel(isos[0]);
+      return {
+        key,
+        slots: isos,
+        top: lbl.includes(',') ? lbl.split(',')[0] : lbl,
+        md: monthDay(isos[0]),
+      };
+    });
   }, [slots]);
 
-  const soonest = slots[0];
   const soonestDay = days[0];
   const activeDay = days.find((d) => d.key === selectedDay) || soonestDay;
 
@@ -157,8 +170,8 @@ export default function InstantCalendar({ onClose, onFallback }) {
               {soonestDay?.slots?.length > 0 ? (
                 <span className="text-xs font-bold uppercase italic tracking-widest text-orange-400">
                   {soonestDay.slots.length <= 4
-                    ? `🔥 ${soonestDay.slots.length} slot${soonestDay.slots.length === 1 ? '' : 's'} left ${soonestDay.label.toLowerCase()}`
-                    : `Open ${soonestDay.label.toLowerCase()}`}
+                    ? `🔥 ${soonestDay.slots.length} slot${soonestDay.slots.length === 1 ? '' : 's'} left ${soonestDay.top.toLowerCase()}`
+                    : `Open ${soonestDay.top.toLowerCase()}`}
                 </span>
               ) : <span />}
               {abbr && <span className="text-[10px] uppercase tracking-tight text-slate-500">Times in {abbr}</span>}
@@ -173,78 +186,50 @@ export default function InstantCalendar({ onClose, onFallback }) {
             </div>
           )}
 
-          {/* Browse */}
+          {/* Browse — day strip + time grid, everything visible at once */}
           {phase === 'browse' && (
-            <div className="space-y-3">
-              {!showAll && soonest && (
-                <>
-                  <button
-                    onClick={() => chooseSlot(soonest)}
-                    className="w-full rounded-2xl border-b-4 border-blue-800 bg-blue-600 p-5 text-left transition-all hover:bg-blue-500 active:translate-y-1 active:border-b-0"
-                  >
-                    <div className="mb-1 text-[10px] font-black uppercase tracking-[0.2em] text-blue-200">Soonest opening</div>
-                    <div className="text-xl font-black italic uppercase tracking-tight text-white">
-                      {dayLabel(soonest)} {fmtTime(soonest)}
-                    </div>
-                  </button>
+            <div className="space-y-4">
+              {/* Day strip */}
+              <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+                {days.map((d) => {
+                  const isActive = activeDay?.key === d.key;
+                  return (
+                    <button
+                      key={d.key}
+                      onClick={() => setSelectedDay(d.key)}
+                      className={`flex h-[4.5rem] w-16 shrink-0 flex-col items-center justify-center gap-0.5 rounded-2xl border transition-all ${
+                        isActive
+                          ? 'border-blue-400 bg-blue-600 text-white shadow-lg shadow-blue-600/30'
+                          : 'border-white/[0.06] bg-white/[0.03] text-slate-300 hover:border-white/20'
+                      }`}
+                    >
+                      <span className={`text-[10px] font-black uppercase tracking-tight ${isActive ? 'text-blue-100' : 'text-slate-500'}`}>
+                        {d.top}
+                      </span>
+                      <span className="text-sm font-black italic uppercase tracking-tight">{d.md}</span>
+                    </button>
+                  );
+                })}
+              </div>
 
-                  {soonestDay?.slots?.length > 1 && (
-                    <div className="grid grid-cols-3 gap-2">
-                      {soonestDay.slots.slice(1, 4).map((iso) => (
-                        <button
-                          key={iso}
-                          onClick={() => chooseSlot(iso)}
-                          className="rounded-xl border border-white/10 bg-white/[0.03] py-3 text-sm font-bold text-slate-100 backdrop-blur-xl transition-colors hover:bg-white/10"
-                        >
-                          {fmtTime(iso)}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
+              {/* Times for the selected day */}
+              <motion.div
+                key={activeDay?.key}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.18 }}
+                className="grid max-h-[18rem] grid-cols-3 gap-2 overflow-y-auto pr-1"
+              >
+                {(activeDay?.slots || []).map((iso) => (
                   <button
-                    onClick={() => setShowAll(true)}
-                    className="w-full py-2 text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors hover:text-slate-300"
+                    key={iso}
+                    onClick={() => chooseSlot(iso)}
+                    className="rounded-xl border border-white/[0.06] bg-white/[0.03] py-3 text-sm font-bold text-slate-100 transition-all hover:border-blue-400 hover:bg-blue-600 hover:text-white active:scale-95"
                   >
-                    See all availability →
+                    {fmtTime(iso)}
                   </button>
-                </>
-              )}
-
-              {showAll && (
-                <div className="space-y-3">
-                  <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
-                    {days.map((d) => (
-                      <button
-                        key={d.key}
-                        onClick={() => setSelectedDay(d.key)}
-                        className={`shrink-0 rounded-xl px-3 py-2 text-xs font-bold uppercase tracking-tight transition-colors ${
-                          activeDay?.key === d.key ? 'bg-white text-black' : 'border border-white/10 bg-white/[0.03] text-slate-300 hover:bg-white/10'
-                        }`}
-                      >
-                        {d.label}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="grid max-h-56 grid-cols-3 gap-2 overflow-y-auto pr-1">
-                    {(activeDay?.slots || []).map((iso) => (
-                      <button
-                        key={iso}
-                        onClick={() => chooseSlot(iso)}
-                        className="rounded-xl border border-white/10 bg-white/[0.03] py-3 text-sm font-bold text-slate-100 transition-colors hover:bg-white/10"
-                      >
-                        {fmtTime(iso)}
-                      </button>
-                    ))}
-                  </div>
-                  <button
-                    onClick={() => setShowAll(false)}
-                    className="w-full py-2 text-xs font-bold uppercase tracking-widest text-slate-500 transition-colors hover:text-slate-300"
-                  >
-                    ← Back to soonest
-                  </button>
-                </div>
-              )}
+                ))}
+              </motion.div>
             </div>
           )}
 
