@@ -8,6 +8,7 @@ import { track } from '../lib/meta-pixel.js';
 // timezone math, and the booking flow are wired here.
 
 const TZ = visitorTimezone();
+const ROLES = ['Dealer Owner', 'Sales Manager', 'Sales Rep'];
 
 function tzAbbr() {
   try {
@@ -45,7 +46,7 @@ export default function InstantCalendar({ onClose, onFallback }) {
   const [slots, setSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', textReminders: true });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', role: '', textReminders: true });
   const [formError, setFormError] = useState('');
   const abbr = useMemo(() => tzAbbr(), []);
 
@@ -108,6 +109,10 @@ export default function InstantCalendar({ onClose, onFallback }) {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
       setFormError('Please fill in your name, email, and phone.');
+      return;
+    }
+    if (!form.role) {
+      setFormError('Please tell us your role.');
       return;
     }
     setPhase('submitting');
@@ -248,7 +253,7 @@ export default function InstantCalendar({ onClose, onFallback }) {
                 className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
               />
               <input
-                required type="email" placeholder="Dealership email" autoComplete="email"
+                required type="email" placeholder="Email" autoComplete="email"
                 value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
               />
@@ -257,6 +262,29 @@ export default function InstantCalendar({ onClose, onFallback }) {
                 value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
               />
+
+              {/* Role — segmented selector */}
+              <div>
+                <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-slate-400">Are you a</span>
+                <div className="grid grid-cols-3 gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] p-1">
+                  {ROLES.map((r) => {
+                    const active = form.role === r;
+                    return (
+                      <button
+                        type="button"
+                        key={r}
+                        onClick={() => setForm({ ...form, role: r })}
+                        className={`flex min-h-[2.75rem] items-center justify-center rounded-lg px-1 text-center text-[11px] font-black uppercase leading-tight tracking-tight transition-all ${
+                          active ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        {r}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               <label className="flex cursor-pointer items-center gap-3 text-xs text-slate-400">
                 <input
                   type="checkbox" checked={form.textReminders}
