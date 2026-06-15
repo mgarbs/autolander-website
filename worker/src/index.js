@@ -71,6 +71,11 @@ export default {
       return handleCapi(request, env, corsHeaders, ctx);
     }
 
+    if (url.pathname.startsWith('/api/')) {
+      const { handleBooking } = await import('./booking/router.js');
+      return handleBooking(request, env, corsHeaders, ctx);
+    }
+
     if (url.pathname.startsWith('/admin/')) {
       const { handleAdmin } = await import('./admin/router.js');
       return handleAdmin(request, env, corsHeaders, ctx);
@@ -89,6 +94,16 @@ export default {
     }
 
     return jsonResponse({ message: 'Not found' }, 404, corsHeaders);
+  },
+
+  // Cron: keep the availability cache warm so /api/availability is instant.
+  async scheduled(event, env, ctx) {
+    const { syncAvailability } = await import('./booking/router.js');
+    ctx.waitUntil(
+      syncAvailability(env).catch((err) =>
+        console.error('[cron] availability sync failed', String(err).slice(0, 200)),
+      ),
+    );
   },
 };
 
@@ -538,6 +553,8 @@ function isAllowedOrigin(request, env) {
   if (env.ALLOW_LOCALHOST === 'true' && /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
     return { ok: true };
   }
+  // Cloudflare Pages branch previews for this project (e.g. instant-calendar.autolander-website.pages.dev).
+  if (/^https:\/\/([a-z0-9-]+\.)?autolander-website\.pages\.dev$/.test(origin)) return { ok: true };
 
   return { ok: false };
 }

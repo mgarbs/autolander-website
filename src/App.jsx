@@ -14,6 +14,7 @@ import {
   PlayCircle
 } from 'lucide-react';
 const ChatAssistant = lazy(() => import('./components/ChatAssistant.jsx'));
+const InstantCalendar = lazy(() => import('./components/InstantCalendar.jsx'));
 
 const RELEASE_BASE_URL = "https://github.com/mgarbs/autolander-releases/releases/latest/download";
 const HERO_CARS_DESKTOP_SRC = '/hero-cars-layer-full-v2.webp';
@@ -371,6 +372,14 @@ export default function App() {
       window.open(widgetUrl, '_blank');
     }
   }, [bookingUrl]);
+
+  // Native instant calendar (replaces the slow Calendly iframe on the hot path).
+  // openCalendlyPopup is kept as the fallback if availability can't load.
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const openDemoBooking = useCallback(() => {
+    setIsCalendarOpen(true);
+  }, []);
+
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
   const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';
@@ -506,7 +515,7 @@ export default function App() {
               </button>
             )}
             <button
-              onClick={openCalendlyPopup}
+              onClick={openDemoBooking}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
               Book a Demo
             </button>
@@ -652,14 +661,14 @@ export default function App() {
                   <motion.button
                     whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={openCalendlyPopup}
+                    onClick={openDemoBooking}
                     className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
                   >
                     <span>Book a Demo</span>
                     <ArrowRight className="w-6 h-6" />
                   </motion.button>
                   <button
-                    onClick={openCalendlyPopup}
+                    onClick={openDemoBooking}
                     className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-white/5 text-white font-bold text-lg hover:bg-white/10 border border-white/10 transition-all uppercase italic"
                   >
                     Start Free Trial
@@ -983,7 +992,7 @@ export default function App() {
                       onClick={
                         isPrivateMonthlyProOffer
                           ? () => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })
-                          : openCalendlyPopup
+                          : openDemoBooking
                       }
                       className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
                         isPrivateMonthlyProOffer || isPopularPlan
@@ -1108,7 +1117,7 @@ export default function App() {
                   <motion.button
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={openCalendlyPopup}
+                    onClick={openDemoBooking}
                     className="w-full py-5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-black text-base sm:text-lg uppercase italic tracking-tight transition-all flex items-center justify-center gap-3 shadow-2xl shadow-blue-600/30"
                   >
                     Book a Demo to Lock This In
@@ -1274,7 +1283,7 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={openCalendlyPopup}
+                onClick={openDemoBooking}
                 className="px-10 py-5 rounded-2xl bg-white text-black font-black text-lg transition-all uppercase italic"
               >
                 See the Studio in Action
@@ -1379,13 +1388,13 @@ export default function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={openCalendlyPopup}
+                onClick={openDemoBooking}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500"
               >
                 Book a Live Demo
               </motion.button>
               <button
-                onClick={openCalendlyPopup}
+                onClick={openDemoBooking}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
               >
                 Start Your Free Trial
@@ -1419,8 +1428,13 @@ export default function App() {
         </div>
       </footer>
       <Suspense fallback={null}>
-        <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openCalendlyPopup} />
+        <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openDemoBooking} />
       </Suspense>
+      {isCalendarOpen && (
+        <Suspense fallback={null}>
+          <InstantCalendar onClose={() => setIsCalendarOpen(false)} onFallback={openCalendlyPopup} />
+        </Suspense>
+      )}
     </div>
   );
 }
