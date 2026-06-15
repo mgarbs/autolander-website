@@ -20,8 +20,8 @@ const PHONE_QUESTION = 'What is the best phone number to reach you at?';
 const TEXT_REMINDER_QUESTION = 'Get text reminders about your demo';
 const AL_VID_MARKER = 'al_vid:';
 
-const BOOK_IP_HOURLY = 6;
-const BOOK_IP_DAILY = 20;
+const BOOK_IP_HOURLY = 20;
+const BOOK_IP_DAILY = 60;
 
 export async function handleBooking(request, env, corsHeaders, ctx) {
   const url = new URL(request.url);
@@ -188,21 +188,23 @@ async function handleBook(request, env, corsHeaders, ctx) {
 }
 
 function buildTracking(vid, utms) {
-  const tracking = {};
-  const passthrough = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term'];
-  for (const key of passthrough) {
-    const value = clean(utms[key], 180);
-    if (value) tracking[key] = value;
-  }
+  // Calendly's /invitees requires ALL tracking fields present (null is fine) —
+  // it's all-or-nothing, so we always send the full shape.
+  const field = (key) => clean(utms[key], 180) || null;
   // Carry the visitor id inside utm_content so the existing webhook can recover
   // it (regex: al_vid:(v_...)) and attribute the CAPI Schedule event.
   const baseContent = clean(utms.utm_content, 160);
-  if (vid) {
-    tracking.utm_content = baseContent ? `${baseContent}|${AL_VID_MARKER}${vid}` : `${AL_VID_MARKER}${vid}`;
-  } else if (baseContent) {
-    tracking.utm_content = baseContent;
-  }
-  return tracking;
+  const utmContent = vid
+    ? baseContent ? `${baseContent}|${AL_VID_MARKER}${vid}` : `${AL_VID_MARKER}${vid}`
+    : baseContent || null;
+  return {
+    utm_source: field('utm_source'),
+    utm_medium: field('utm_medium'),
+    utm_campaign: field('utm_campaign'),
+    utm_term: field('utm_term'),
+    utm_content: utmContent,
+    salesforce_uuid: null,
+  };
 }
 
 async function removeSlotFromCache(env, slotIso) {
@@ -239,7 +241,10 @@ function normalizeIso(value) {
   if (typeof value !== 'string') return '';
   const t = Date.parse(value);
   if (!Number.isFinite(t)) return '';
-  return new Date(t).toISOString();
+  // Calendly slots are second-precision UTC (e.g. 2026-06-29T22:30:00Z) with no
+  // milliseconds. toISOString() adds ".000" which then fails the slot-equality
+  // check and the booking start_time match — strip it.
+  return new Date(t).toISOString().replace(/\.\d{3}Z$/, 'Z');
 }
 
 function isValidVid(value) {

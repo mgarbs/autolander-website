@@ -112,7 +112,7 @@ export async function createBooking(env, {
   }
   if (tracking && Object.keys(tracking).length) body.tracking = tracking;
 
-  const res = await fetch(`${CALENDLY_API}/scheduled_events/invitees`, {
+  const res = await fetch(`${CALENDLY_API}/invitees`, {
     method: 'POST',
     headers: authHeaders(env),
     body: JSON.stringify(body),
