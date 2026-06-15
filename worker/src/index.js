@@ -553,8 +553,8 @@ function isAllowedOrigin(request, env) {
   if (env.ALLOW_LOCALHOST === 'true' && /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
     return { ok: true };
   }
-  // Cloudflare Pages branch previews for this project (e.g. instant-calendar.autolander-website.pages.dev).
-  if (/^https:\/\/([a-z0-9-]+\.)?autolander-website\.pages\.dev$/.test(origin)) return { ok: true };
+  // Cloudflare Pages previews for this project (e.g. autolander-book.pages.dev, branch previews).
+  if (/^https:\/\/([a-z0-9-]+\.)?autolander-[a-z0-9-]+\.pages\.dev$/.test(origin)) return { ok: true };
 
   return { ok: false };
 }

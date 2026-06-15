@@ -13,6 +13,9 @@
 
     <!-- Meta Pixel Code -->
     <script>
+      (function () {
+        // Never fire the production pixel on preview/staging hosts (*.pages.dev).
+        if (/\.pages\.dev$/i.test(location.hostname)) return;
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -37,6 +40,7 @@
         } catch (err) {
           fbq('track', 'Schedule', { content_name: 'demo_booked', content_category: 'demo' });
         }
+      })();
       })();
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2087440198847151&ev=PageView&noscript=1" /></noscript>
