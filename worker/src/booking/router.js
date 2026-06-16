@@ -18,7 +18,7 @@ const HOST_TZ = 'America/New_York';
 // Exact custom-question strings from the Calendly event type (must match verbatim).
 const PHONE_QUESTION = 'What is the best phone number to reach you at?';
 const TEXT_REMINDER_QUESTION = 'Get text reminders about your demo';
-const ROLE_QUESTION = 'Are you a:';
+const ROLE_QUESTION = 'Are you a dealership owner, manager or sales rep?';
 const AL_VID_MARKER = 'al_vid:';
 
 const BOOK_IP_HOURLY = 20;
@@ -143,11 +143,12 @@ async function handleBook(request, env, corsHeaders, ctx) {
   const questionsAndAnswers = [
     { question: PHONE_QUESTION, answer: phone, position: 0 },
   ];
-  if (textReminders) {
-    questionsAndAnswers.push({ question: TEXT_REMINDER_QUESTION, answer: 'Yes', position: 1 });
-  }
+  // Positions must match the event type exactly: phone=0, role=1, reminders=2.
   if (role) {
-    questionsAndAnswers.push({ question: ROLE_QUESTION, answer: role, position: 2 });
+    questionsAndAnswers.push({ question: ROLE_QUESTION, answer: role, position: 1 });
+  }
+  if (textReminders) {
+    questionsAndAnswers.push({ question: TEXT_REMINDER_QUESTION, answer: 'Yes', position: 2 });
   }
 
   let result;

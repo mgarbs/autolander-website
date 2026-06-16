@@ -8,7 +8,7 @@ import { track } from '../lib/meta-pixel.js';
 // timezone math, and the booking flow are wired here.
 
 const TZ = visitorTimezone();
-const ROLES = ['Dealer Owner', 'Sales Manager', 'Sales Rep'];
+const ROLES = ['Owner', 'Manager', 'Sales Rep'];
 
 function tzAbbr() {
   try {
