@@ -9,6 +9,9 @@ import { track } from '../lib/meta-pixel.js';
 
 const TZ = visitorTimezone();
 const ROLES = ['Owner', 'Manager', 'Sales Rep'];
+// Only show the "🔥 N slots left" urgency line once availability is genuinely
+// low — never at the start of the day when there are 20+ open.
+const LOW_SLOT_THRESHOLD = 4;
 
 function tzAbbr() {
   try {
@@ -172,11 +175,9 @@ export default function InstantCalendar({ onClose, onFallback }) {
 
           {(phase === 'browse' || phase === 'capture') && (
             <div className="mb-4 flex items-end justify-between px-0.5">
-              {soonestDay?.slots?.length > 0 ? (
+              {soonestDay && soonestDay.slots.length > 0 && soonestDay.slots.length <= LOW_SLOT_THRESHOLD ? (
                 <span className="text-xs font-bold uppercase italic tracking-widest text-orange-400">
-                  {soonestDay.slots.length <= 4
-                    ? `🔥 ${soonestDay.slots.length} slot${soonestDay.slots.length === 1 ? '' : 's'} left ${soonestDay.top.toLowerCase()}`
-                    : `Open ${soonestDay.top.toLowerCase()}`}
+                  🔥 {soonestDay.slots.length} slot{soonestDay.slots.length === 1 ? '' : 's'} left {soonestDay.top.toLowerCase()}
                 </span>
               ) : <span />}
               {abbr && <span className="text-[10px] uppercase tracking-tight text-slate-500">Times in {abbr}</span>}
