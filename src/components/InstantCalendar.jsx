@@ -266,7 +266,7 @@ export default function InstantCalendar({ onClose, onFallback }) {
 
               {/* Role — segmented selector */}
               <div>
-                <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-slate-400">Are you a</span>
+                <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-slate-400">Dealership Role</span>
                 <div className="grid grid-cols-3 gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] p-1">
                   {ROLES.map((r) => {
                     const active = form.role === r;
