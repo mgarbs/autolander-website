@@ -3,10 +3,20 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import process from 'node:process'
 
-function metaPixelPlugin(pixelId) {
+function htmlTransformPlugin(pixelId, isPreview) {
   return {
-    name: 'meta-pixel',
+    name: 'al-html-transform',
     transformIndexHtml(html) {
+      // Preview build: strip the hardcoded Meta Pixel (+ noscript) so internal
+      // review traffic never reaches Meta, and mark the page noindex so it
+      // never competes with the production site in search.
+      if (isPreview) {
+        return html
+          .replace(/\n?[ \t]*<!-- Meta Pixel Code -->[\s\S]*?<!-- End Meta Pixel Code -->/, '')
+          .replace(/\n?[ \t]*<noscript>[\s\S]*?facebook\.com\/tr[\s\S]*?<\/noscript>/, '')
+          .replace('  </head>', '    <meta name="robots" content="noindex, nofollow" />\n  </head>')
+      }
+
       if (!pixelId) return html
 
       const pixelIdJs = String(pixelId)
@@ -41,12 +51,13 @@ function metaPixelPlugin(pixelId) {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   const metaPixelId = env.VITE_META_PIXEL_ID || ''
+  const isPreview = mode === 'preview' || env.VITE_DEPLOY_TARGET === 'preview'
 
   return {
     plugins: [
       react(),
       tailwindcss(),
-      metaPixelPlugin(metaPixelId),
+      htmlTransformPlugin(metaPixelId, isPreview),
     ],
   }
 })

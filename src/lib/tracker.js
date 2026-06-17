@@ -3,6 +3,10 @@ import { getAttributionPayload, getVisitorId } from './identity.js';
 export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID || '';
 const CAPI_URL = (import.meta.env.VITE_CAPI_URL || import.meta.env.VITE_CHAT_API_URL || '').replace(/\/+$/, '');
 
+// Preview builds (preview.autolander.ai) must never emit pixel or CAPI events,
+// so internal review traffic doesn't pollute live Meta attribution.
+const TRACKING_DISABLED = import.meta.env.VITE_DEPLOY_TARGET === 'preview';
+
 const isBrowser = typeof window !== 'undefined';
 
 export const isPixelEnabled = () =>
@@ -14,7 +18,7 @@ export function newEventId() {
 }
 
 function firePixel(method, event, params, eventId) {
-  if (!isPixelEnabled()) return;
+  if (TRACKING_DISABLED || !isPixelEnabled()) return;
   try {
     window.fbq(method, event, params, eventId ? { eventID: eventId } : undefined);
   } catch {
@@ -23,7 +27,7 @@ function firePixel(method, event, params, eventId) {
 }
 
 async function sendToCapi(event, params, { eventId, userData } = {}) {
-  if (!CAPI_URL || !isBrowser) return;
+  if (TRACKING_DISABLED || !CAPI_URL || !isBrowser) return;
   try {
     const attribution = getAttributionPayload();
     const payload = {
