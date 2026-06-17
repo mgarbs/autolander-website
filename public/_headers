@@ -16,11 +16,8 @@
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-/hero-cars-layer-full-v2.webp
-  Cache-Control: public, max-age=31536000, immutable
-
-/hero-cars-layer-900-v2.webp
-  Cache-Control: public, max-age=31536000, immutable
+/preview/*
+  Cache-Control: public, max-age=2592000
 
 /autolander-logo.png
   Cache-Control: public, max-age=604800
