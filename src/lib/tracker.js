@@ -4,8 +4,10 @@ export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID || '';
 const CAPI_URL = (import.meta.env.VITE_CAPI_URL || import.meta.env.VITE_CHAT_API_URL || '').replace(/\/+$/, '');
 
 // Preview builds (preview.autolander.ai) must never emit pixel or CAPI events,
-// so internal review traffic doesn't pollute live Meta attribution.
-const TRACKING_DISABLED = import.meta.env.VITE_DEPLOY_TARGET === 'preview';
+// so internal review traffic doesn't pollute live Meta attribution. MODE is set
+// by `vite build --mode preview` and is always inlined, unlike a custom env var.
+const TRACKING_DISABLED =
+  import.meta.env.MODE === 'preview' || import.meta.env.VITE_DEPLOY_TARGET === 'preview';
 
 const isBrowser = typeof window !== 'undefined';
 
