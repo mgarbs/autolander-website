@@ -7,6 +7,9 @@ import { getVisitorId } from './lib/identity.js';
 import Hero from './sections/Hero.jsx';
 import TrustStrip from './sections/TrustStrip.jsx';
 import ExecutionGap from './sections/ExecutionGap.jsx';
+import Audience from './sections/Audience.jsx';
+import MobileCtaBar from './sections/MobileCtaBar.jsx';
+import { Eyebrow, SectionHeading } from './sections/_ui.jsx';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain,
@@ -479,7 +482,7 @@ export default function App() {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <h1 className="text-5xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.85] text-white">
+              <h1 className="font-display text-5xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.85] text-white">
                 GET 25% OFF<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-indigo-600">
                   AUTOLANDER PRO.
@@ -558,7 +561,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 lg:mb-24">
             <FadeIn>
-              <h2 className="text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
+              <h2 className="font-display text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
                 MANUAL VS. <span className="text-blue-500">AUTOLANDER</span>
               </h2>
               <p className="text-slate-400 font-medium text-lg italic">Stop burning time on grunt work. Focus on closing deals while AI handles the rest.</p>
@@ -576,12 +579,12 @@ export default function App() {
                 </thead>
                 <tbody>
                   {[
-                    { label: 'Listing Quality', manual: 'Amateur', auto: 'Pro Studio' },
-                    { label: 'Lead Gen', manual: 'Inconsistent', auto: 'High-Convert AI' },
-                    { label: 'Inventory Sync', manual: 'Manual Entry', auto: 'Automatic' },
-                    { label: 'Form Filling', manual: 'Click-by-Click', auto: '100% Auto' },
-                    { label: 'Descriptions', manual: 'Copy-Paste', auto: 'AI Optimized' },
-                    { label: 'Monthly Results', manual: 'Varies', auto: '+7 Units Avg' }
+                    { label: 'Time per vehicle', manual: '13 minutes', auto: '2 minutes' },
+                    { label: 'Vehicles per hour', manual: '~4', auto: '30 — 6.5× faster' },
+                    { label: 'Descriptions', manual: 'Copy-paste', auto: 'AI-optimized' },
+                    { label: 'Photos', manual: 'Random order', auto: 'Front-view first' },
+                    { label: 'Sold units', manual: 'Stay listed', auto: 'Auto-removed' },
+                    { label: 'Attribution', manual: 'None', auto: 'Post-to-sale tracking' }
                   ].map((row, i) => (
                     <tr key={i} className="border-b border-white/5 group">
                       <td className="py-4 md:py-6 px-2 md:px-4 text-white font-bold italic uppercase tracking-tight text-xs md:text-base">{row.label}</td>
@@ -608,7 +611,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20 lg:mb-32">
             <FadeIn>
-              <h2 className="text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
+              <h2 className="font-display text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
                 3 STEPS TO <span className="text-blue-500">DOMINANCE.</span>
               </h2>
             </FadeIn>
@@ -646,6 +649,14 @@ export default function App() {
       {/* Features Grid */}
       <section id="features" ref={featuresSectionRef} className="py-24 lg:py-40 relative">
         <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16 lg:mb-24">
+            <FadeIn>
+              <Eyebrow>Built for dealerships</Eyebrow>
+              <SectionHeading className="mt-6">
+                Everything your team needs to <span className="text-blue-500">own Marketplace.</span>
+              </SectionHeading>
+            </FadeIn>
+          </div>
           <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
             <FadeIn delay={0.1} direction="up">
               <FeatureCard 
@@ -698,7 +709,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 lg:mb-24">
             <FadeIn>
-              <h2 className="text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
+              <h2 className="font-display text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
                 PLANS FOR <span className="text-blue-500">GROWTH.</span>
               </h2>
 
@@ -874,7 +885,7 @@ export default function App() {
           {/* Header + description */}
           <FadeIn>
             <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-4xl lg:text-7xl font-black mb-8 tracking-tighter leading-none uppercase italic">
+              <h2 className="font-display text-4xl lg:text-7xl font-black mb-8 tracking-tighter leading-none uppercase italic">
                 AI PHOTO <span className="text-blue-500">STUDIO.</span>
               </h2>
               <p className="text-slate-400 text-lg font-medium italic max-w-3xl mx-auto leading-relaxed">
@@ -1026,7 +1037,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 lg:mb-24">
             <FadeIn>
-              <h2 className="text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none text-white">
+              <h2 className="font-display text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none text-white">
                  DEALER <span className="text-blue-500">VOICES.</span>
                </h2>
             </FadeIn>
@@ -1067,12 +1078,14 @@ export default function App() {
         </div>
       </section>
 
+      <Audience />
+
       {/* FAQ */}
       <section className="py-24 lg:py-40 relative">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16 lg:mb-24">
             <FadeIn>
-              <h2 className="text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
+              <h2 className="font-display text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
                  ANY <span className="text-blue-500">QUESTIONS?</span>
                </h2>
             </FadeIn>
@@ -1080,12 +1093,12 @@ export default function App() {
 
           <div className="space-y-6">
             {[
-              { q: "Which inventory feeds do you work with?", a: "We work seamlessly with CarGurus and Cars.com feeds. Simply paste your public feed URL, and our system will extract all vehicle data, photos, and specs automatically." },
-              { q: "How much does background replacement cost?", a: "Background replacement uses AI Studio credits — 5 credits per vehicle for Studio Lite, or 10 credits for full AI Studio. Our AI classifies every photo in the gallery, drops dealer-ad junk automatically, leaves interior and closeup shots alone, and replaces the background on every full-exterior shot. Every plan includes welcome credits to get you started, and you can purchase more credits in-app whenever you need them." },
-              { q: "How do walkaround videos work?", a: "Marketplace videos turn polished vehicle photos into a cinematic 10-second walkaround clip at 1080p. Videos cost 20 credits each. Every plan includes welcome credits, and you can purchase more credits in-app." },
-              { q: "How does this help me sell more cars?", a: "AutoLander creates high-quality, professional listings that stand out in the Marketplace. By using AI to optimize photos and descriptions, dealers typically see a 3x increase in lead volume and sell an average of 12 extra units per month." },
-              { q: "Do I need any technical skills?", a: "Zero. If you can copy and paste a URL and click a button, you can use AutoLander. It's designed for busy sales teams who want to sell cars, not manage software." },
-              { q: "Is there a limit on how many cars I can post?", a: "Limits are based on your plan (5, 10, or 20 per day). This ensures your Facebook account stays safe and compliant with Marketplace algorithms." }
+              { q: "Will this get my Facebook account banned?", a: "No. AutoLander posts natural, dealer-style listings with human-like behavior — built-in delays and thoughtful pacing that mimic real activity — and never uses ToS-violating browser extensions. That's how it keeps account health high while posting consistently." },
+              { q: "Which inventory feeds do you work with?", a: "Paste your inventory feed or DMS and we extract every vehicle's data, photos, and specs automatically. We work with CarGurus and Cars.com out of the box, plus custom feeds from most dealership websites and DMS providers." },
+              { q: "How fast can I get live?", a: "Most dealers have their first 20–30 vehicles live on Marketplace in under 15 minutes. Connect your inventory, pick the vehicles, hit post — the AI handles descriptions and photo ordering." },
+              { q: "How does the AI Photo Studio work?", a: "Optional background replacement uses AI Studio credits (5–10 per vehicle). The AI classifies every photo, leaves interiors and closeups alone, and replaces the background on full-exterior shots. Walkaround videos are 20 credits each. Every plan includes welcome credits, and you can buy more in-app." },
+              { q: "Do I need any technical skills?", a: "Zero. If you can copy a URL and click a button, you can run AutoLander. It's built for busy sales teams who want to sell cars, not manage software." },
+              { q: "Can I cancel anytime?", a: "Yes — month-to-month, no contracts, zero penalties. Try it on a live demo with up to 5 free posts, no credit card required. If it's not selling cars for you, walk away." }
             ].map((faq, i) => (
               <FadeIn key={i} delay={i * 0.1} direction="up">
                 <div className="p-8 rounded-3xl bg-white/[0.03] border border-white/5">
@@ -1104,8 +1117,8 @@ export default function App() {
       <section className="py-32 lg:py-48 relative overflow-hidden text-center">
         <div className="max-w-5xl mx-auto px-6 relative z-10">
           <FadeIn>
-            <h2 className="text-5xl lg:text-9xl font-black mb-8 tracking-tighter leading-[0.8] uppercase italic text-white">
-              STOP POSTING.<br/><span className="text-blue-500">START SELLING.</span>
+            <h2 className="font-display text-5xl lg:text-9xl font-black mb-8 tracking-tighter leading-[0.8] uppercase italic text-white">
+              STOP POSTING.<br/><span className="text-blue-500">START SELLING CARS.</span>
             </h2>
             <p className="text-xl lg:text-2xl text-slate-400 mb-12 max-w-2xl mx-auto font-medium italic">
               Join 500+ dealerships and sales reps using AutoLander to automate their Marketplace dominance.
@@ -1154,6 +1167,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      <MobileCtaBar onBookDemo={openDemoBooking} />
       <Suspense fallback={null}>
         <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openDemoBooking} />
       </Suspense>
