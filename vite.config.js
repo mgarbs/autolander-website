@@ -12,6 +12,7 @@ function htmlTransformPlugin(pixelId, isPreview) {
       // never competes with the production site in search.
       if (isPreview) {
         return html
+          .replaceAll('https://autolander.ai', 'https://autolander-preview.pages.dev')
           .replace(/\n?[ \t]*<!-- Meta Pixel Code -->[\s\S]*?<!-- End Meta Pixel Code -->/, '')
           .replace(/\n?[ \t]*<noscript>[\s\S]*?facebook\.com\/tr[\s\S]*?<\/noscript>/, '')
           .replace('  </head>', '    <meta name="robots" content="noindex, nofollow" />\n  </head>')
