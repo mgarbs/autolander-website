@@ -78,7 +78,7 @@ function PostingEngine() {
 
         {/* live counter */}
         <div className="flex items-end justify-between py-4">
-          <Stat value={312} label="Cars posted today" />
+          <Stat value={312} label="Total cars posted" />
           <div className="text-right font-mono text-[10px] uppercase leading-relaxed tracking-widest text-emerald-400">
             ▲ 30 / hr
             <br />

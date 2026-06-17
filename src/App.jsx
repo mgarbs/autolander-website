@@ -1046,7 +1046,7 @@ export default function App() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                quote: "AutoLander is a game changer. Our lead volume has tripled since we started using the AI Studio backgrounds. The professional look really matters.",
+                quote: "We sold 10 more cars last month straight from Marketplace leads. AutoLander has already paid for itself many times over.",
                 author: "Mike Thompson",
                 role: "General Manager, City Ford"
               },
@@ -1056,7 +1056,7 @@ export default function App() {
                 role: "Internet Director, Elite Motors"
               },
               {
-                quote: "The background removal is magic. Our lot is crowded, but our listings look like they were shot in a $10M showroom. Highly recommend.",
+                quote: "Our Marketplace leads turned into real sales — we're moving units that used to sit for weeks. Easily the best ROI in our marketing stack.",
                 author: "David Chen",
                 role: "Owner, DC Auto Group"
               }
@@ -1093,7 +1093,7 @@ export default function App() {
 
           <div className="space-y-6">
             {[
-              { q: "Will this get my Facebook account banned?", a: "No. AutoLander posts natural, dealer-style listings with human-like behavior — built-in delays and thoughtful pacing that mimic real activity — and never uses ToS-violating browser extensions. That's how it keeps account health high while posting consistently." },
+              { q: "Will this get my Facebook account banned?", a: "Very unlikely. AutoLander stays within Meta's guidelines and posts natural, dealer-style listings with human-like behavior — built-in delays and thoughtful pacing that mimic real activity — and never uses ToS-violating browser extensions. That combination keeps account health high and significantly reduces the risk of flags or restrictions." },
               { q: "Which inventory feeds do you work with?", a: "Paste your inventory feed or DMS and we extract every vehicle's data, photos, and specs automatically. We work with CarGurus and Cars.com out of the box, plus custom feeds from most dealership websites and DMS providers." },
               { q: "How fast can I get live?", a: "Most dealers have their first 20–30 vehicles live on Marketplace in under 15 minutes. Connect your inventory, pick the vehicles, hit post — the AI handles descriptions and photo ordering." },
               { q: "How does the AI Photo Studio work?", a: "Optional background replacement uses AI Studio credits (5–10 per vehicle). The AI classifies every photo, leaves interiors and closeups alone, and replaces the background on full-exterior shots. Walkaround videos are 20 credits each. Every plan includes welcome credits, and you can buy more in-app." },

@@ -12,7 +12,7 @@ const MADE_FOR = [
 const NOT_FOR = [
   'Anyone trying to buy a car — this is dealer software',
   'Teams unwilling to post to Marketplace at all',
-  "Shops looking to break Facebook's rules",
+  'Lots with fewer than ~10 vehicles in inventory',
 ];
 
 export default function Audience() {

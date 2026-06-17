@@ -5,7 +5,7 @@ import { FadeIn, Eyebrow, SectionHeading, Stat } from './_ui.jsx';
 const STATS = [
   { value: 1, suffix: 'B+', label: 'People on Marketplace monthly' },
   { value: 3.5, suffix: 'M+', label: 'New listings posted daily' },
-  { value: 14, suffix: '%', label: 'of buyers start on a dealer site' },
+  { value: 93, suffix: '%+', label: 'of engaged car buyers use online marketplaces' },
 ];
 
 export default function ExecutionGap() {
