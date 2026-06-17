@@ -5,6 +5,8 @@ import broncoAfterImage from '../bronco-after.jpg';
 import { newEventId, track, trackCustom } from './lib/meta-pixel.js';
 import { getVisitorId } from './lib/identity.js';
 import Hero from './sections/Hero.jsx';
+import TrustStrip from './sections/TrustStrip.jsx';
+import ExecutionGap from './sections/ExecutionGap.jsx';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain,
@@ -547,6 +549,9 @@ export default function App() {
           <Hero openDemoBooking={openDemoBooking} />
         )}
       </section>
+
+      <TrustStrip />
+      <ExecutionGap />
 
       {/* Comparison Section */}
       <section className="py-24 lg:py-40 relative">

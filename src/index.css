@@ -49,6 +49,17 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* Trust-strip marquee (track is duplicated 2x, so -50% loops seamlessly). */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 34s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: #050505; }
