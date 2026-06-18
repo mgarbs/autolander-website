@@ -207,13 +207,14 @@ async function handleSupport(request, env, headers) {
   const body = await safeJson(request);
   const name = sanitizeText(body.name, 120);
   const email = sanitizeText(body.email, 160);
+  const phone = sanitizeText(body.phone, 40);
   const details = sanitizeText(body.details, 1500);
   const transcript = sanitizeText(body.transcript, 3000);
 
-  if (!isEmail(email) || !details) {
+  if (!isEmail(email) || !phone || !details) {
     return jsonResponse(
       {
-        message: 'A valid email and support details are required.',
+        message: 'A valid email, phone number, and support details are required.',
       },
       400,
       headers
@@ -231,14 +232,14 @@ async function handleSupport(request, env, headers) {
       {
         message: 'Support request limit reached. Please email support directly.',
         mailFallback: true,
-        mailto: supportMailto(env, { name, email, details, transcript }),
+        mailto: supportMailto(env, { name, email, phone, details, transcript }),
       },
       rateLimit.status,
       headers
     );
   }
 
-  const stored = await saveSupportRequest(env, request, { name, email, details, transcript });
+  const stored = await saveSupportRequest(env, request, { name, email, phone, details, transcript });
 
   if (!env.SUPPORT_WEBHOOK_URL) {
     if (stored.ok) {
@@ -248,14 +249,14 @@ async function handleSupport(request, env, headers) {
       {
         message: 'Support storage is not configured. Please email support directly.',
         mailFallback: true,
-        mailto: supportMailto(env, { name, email, details, transcript }),
+        mailto: supportMailto(env, { name, email, phone, details, transcript }),
       },
       503,
       headers
     );
   }
 
-  const sent = await sendSupportWebhook(env, { name, email, details, transcript });
+  const sent = await sendSupportWebhook(env, { name, email, phone, details, transcript });
   if (!sent.ok) {
     if (stored.ok) {
       return jsonResponse(
@@ -273,7 +274,7 @@ async function handleSupport(request, env, headers) {
       {
         message: 'Support webhook failed. Please email support directly.',
         mailFallback: true,
-        mailto: supportMailto(env, { name, email, details, transcript }),
+        mailto: supportMailto(env, { name, email, phone, details, transcript }),
       },
       502,
       headers
@@ -445,6 +446,7 @@ async function sendSupportWebhook(env, payload) {
     'New AutoLander support request',
     `Name: ${payload.name || 'Not provided'}`,
     `Email: ${payload.email}`,
+    `Phone: ${payload.phone || 'Not provided'}`,
     '',
     payload.details,
     payload.transcript ? `\nRecent chat:\n${payload.transcript}` : '',
@@ -522,6 +524,7 @@ function supportMailto(env, payload) {
     '',
     `Name: ${payload.name || 'Not provided'}`,
     `Email: ${payload.email}`,
+    `Phone: ${payload.phone || 'Not provided'}`,
     payload.transcript ? `\nRecent chat:\n${payload.transcript}` : '',
   ].join('\n');
 

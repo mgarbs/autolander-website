@@ -14,6 +14,7 @@ export async function saveSupportRequest(env, request, payload) {
     at: now,
     name: payload.name || '',
     email: payload.email,
+    phone: payload.phone || '',
     details: payload.details,
     transcript: payload.transcript || '',
     userAgent: clean(request.headers.get('User-Agent'), 300),

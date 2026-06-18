@@ -34,6 +34,7 @@ const quickPrompts = [
 const supportDefaults = {
   name: '',
   email: '',
+  phone: '',
   details: '',
 };
 
@@ -180,8 +181,8 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
     setSupportFallbackUrl('');
 
     const details = supportForm.details.trim();
-    if (!supportForm.email.trim() || !details) {
-      setSupportStatus('Add your email and a short description first.');
+    if (!supportForm.email.trim() || !supportForm.phone.trim() || !details) {
+      setSupportStatus('Add your email, phone, and a short description first.');
       return;
     }
 
@@ -193,7 +194,7 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
     const fallbackMailto = mailtoUrl(
       supportEmail,
       'AutoLander support request',
-      `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\n\nRecent chat:\n${transcript}`
+      `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\nPhone: ${supportForm.phone}\n\nRecent chat:\n${transcript}`
     );
 
     if (!CHAT_API_BASE) {
@@ -354,8 +355,17 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
                       onChange={(event) =>
                         setSupportForm((current) => ({ ...current, email: event.target.value }))
                       }
-                      placeholder="Email"
+                      placeholder="Email *"
                       type="email"
+                      className="rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-400/50"
+                    />
+                    <input
+                      value={supportForm.phone}
+                      onChange={(event) =>
+                        setSupportForm((current) => ({ ...current, phone: event.target.value }))
+                      }
+                      placeholder="Phone *"
+                      type="tel"
                       className="rounded-2xl border border-white/10 bg-black/30 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-emerald-400/50"
                     />
                     <textarea
