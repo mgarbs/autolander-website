@@ -93,3 +93,32 @@ export const Stat = ({ value, prefix = '', suffix = '', label, className = '', v
     </div>
   );
 };
+
+// Email/support link that works on every device. The mailto still fires for
+// users who have a mail client (phones, Outlook, etc.); on desktops with no
+// mail handler — where mailto silently does nothing — it copies the address and
+// shows a confirmation so the link is never a dead end.
+export const MailLink = ({ email = 'sales@autolander.ai', children, className = '' }) => {
+  const [copied, setCopied] = useState(false);
+  const handleClick = () => {
+    try {
+      navigator.clipboard?.writeText(email);
+    } catch {
+      /* clipboard may be unavailable; the mailto still attempts to open */
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2200);
+  };
+  return (
+    <span className="relative inline-block">
+      <a href={`mailto:${email}`} onClick={handleClick} className={className}>
+        {children}
+      </a>
+      {copied && (
+        <span className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-blue-600 px-3 py-1.5 text-[10px] font-bold normal-case tracking-normal text-white shadow-lg shadow-blue-600/30">
+          Copied {email}
+        </span>
+      )}
+    </span>
+  );
+};

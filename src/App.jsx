@@ -9,7 +9,7 @@ import TrustStrip from './sections/TrustStrip.jsx';
 import ExecutionGap from './sections/ExecutionGap.jsx';
 import Audience from './sections/Audience.jsx';
 import MobileCtaBar from './sections/MobileCtaBar.jsx';
-import { Eyebrow, SectionHeading } from './sections/_ui.jsx';
+import { Eyebrow, SectionHeading, MailLink } from './sections/_ui.jsx';
 import { 
   ArrowRight, Bot, RefreshCw, Facebook, CheckCircle2, 
   Activity, Calendar, Brain,
@@ -1159,8 +1159,8 @@ export default function App() {
             <div className="flex gap-8 text-[10px] font-black text-slate-500 uppercase tracking-widest">
               <a href="/privacy.html" className="hover:text-blue-500 transition-colors">Privacy</a>
               <a href="/terms.html" className="hover:text-blue-500 transition-colors">Terms</a>
-              <a href="mailto:sales@autolander.ai" className="hover:text-blue-500 transition-colors">Contact</a>
-              <a href="mailto:sales@autolander.ai" className="hover:text-blue-500 transition-colors">Support</a>
+              <MailLink className="hover:text-blue-500 transition-colors">Contact</MailLink>
+              <MailLink className="hover:text-blue-500 transition-colors">Support</MailLink>
             </div>
 
             <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">© 2026 AutoLander. All rights reserved.</p>
