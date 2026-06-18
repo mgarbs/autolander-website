@@ -1024,7 +1024,7 @@ export default function App() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={openDemoBooking}
-                className="px-10 py-5 rounded-2xl bg-white text-black font-black text-lg transition-all uppercase italic"
+                className="px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all uppercase italic hover:bg-blue-500 shadow-lg shadow-blue-600/30"
               >
                 See the Studio in Action
               </motion.button>
