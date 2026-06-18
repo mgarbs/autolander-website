@@ -101,11 +101,9 @@ export const Stat = ({ value, prefix = '', suffix = '', label, className = '', v
 export const MailLink = ({ email = 'sales@autolander.ai', children, className = '' }) => {
   const [copied, setCopied] = useState(false);
   const handleClick = () => {
-    try {
-      navigator.clipboard?.writeText(email);
-    } catch {
-      /* clipboard may be unavailable; the mailto still attempts to open */
-    }
+    // The mailto (href) still fires for users with a mail client. Copy is a
+    // best-effort fallback; ignore rejection when the clipboard API is blocked.
+    navigator.clipboard?.writeText(email)?.catch(() => {});
     setCopied(true);
     setTimeout(() => setCopied(false), 2200);
   };
