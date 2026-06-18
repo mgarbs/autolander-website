@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import broncoBeforeImage from '../bronco-before.jpg';
-import broncoAfterImage from '../bronco-after.jpg';
 import { newEventId, track, trackCustom } from './lib/meta-pixel.js';
 import { getVisitorId } from './lib/identity.js';
 import Hero from './sections/Hero.jsx';
@@ -928,29 +926,33 @@ export default function App() {
 
                 {/* Before image */}
                 <img
-                  src={broncoBeforeImage}
-                  alt="Original Bronco dealer lot photo"
+                  src="/preview/studio-before.webp"
+                  alt="Raw dealer photo with tiled watermark — 2021 Jeep Gladiator"
+                  width="1100"
+                  height="733"
                   loading="lazy"
                   decoding="async"
                   className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'before' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                 />
                 {studioView === 'before' && (
                   <div className="absolute top-5 left-5 px-5 py-2 bg-red-600/90 backdrop-blur-md rounded-xl text-xs font-black text-white uppercase tracking-widest">
-                    Before — Original Lot Photo
+                    Before — Raw Dealer Photo
                   </div>
                 )}
 
                 {/* After image */}
                 <img
-                  src={broncoAfterImage}
-                  alt="AI Studio Bronco background replacement"
+                  src="/preview/studio-after.webp"
+                  alt="AI Studio Dark relit showroom — 2021 Jeep Gladiator"
+                  width="1100"
+                  height="733"
                   loading="lazy"
                   decoding="async"
                   className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${studioView === 'after' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
                 />
                 {studioView === 'after' && (
                   <div className="absolute top-5 right-5 px-5 py-2 bg-blue-600 rounded-xl text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-500/30">
-                    After — AI Studio
+                    After — AI Studio Dark
                   </div>
                 )}
 
