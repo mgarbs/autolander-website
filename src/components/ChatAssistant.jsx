@@ -247,7 +247,7 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
   return (
     <div className="fixed bottom-24 right-5 z-[70] flex flex-col items-end gap-4 md:bottom-5">
       {isOpen && (
-        <div className="flex max-h-[calc(100dvh-11rem)] w-[calc(100vw-2.5rem)] max-w-[420px] flex-col overflow-hidden rounded-[32px] border border-blue-500/25 bg-[#05070d]/95 shadow-2xl shadow-blue-950/40 backdrop-blur-2xl">
+        <div className="flex max-h-[calc(100dvh-12.5rem)] w-[calc(100vw-2.5rem)] max-w-[420px] flex-col overflow-hidden rounded-[32px] border border-blue-500/25 bg-[#05070d]/95 shadow-2xl shadow-blue-950/40 backdrop-blur-2xl">
           <div className="flex shrink-0 items-center justify-between border-b border-white/10 bg-white/[0.03] px-5 py-4">
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-500/25">
