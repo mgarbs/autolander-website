@@ -94,28 +94,70 @@ export const Stat = ({ value, prefix = '', suffix = '', label, className = '', v
   );
 };
 
-// Email/support link that works on every device. The mailto still fires for
-// users who have a mail client (phones, Outlook, etc.); on desktops with no
-// mail handler — where mailto silently does nothing — it copies the address and
-// shows a confirmation so the link is never a dead end.
-export const MailLink = ({ email = 'sales@autolander.ai', children, className = '' }) => {
+// Email/support link that opens a real composer on EVERY device. A desktop
+// `mailto:` only works if an OS mail client is registered (often none is on
+// PC/Mac), so instead of a dead link we present a small chooser: Gmail / Outlook
+// web (work anywhere in the browser), the default mail app (mailto — phones,
+// Apple Mail, Outlook desktop), and copy-address as a last resort.
+export const MailLink = ({ email = 'sales@autolander.ai', subject = 'AutoLander support', children, className = '' }) => {
+  const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const handleClick = () => {
-    // The mailto (href) still fires for users with a mail client. Copy is a
-    // best-effort fallback; ignore rejection when the clipboard API is blocked.
+  const ref = useRef(null);
+  const su = encodeURIComponent(subject);
+  const options = [
+    { label: 'Gmail', href: `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${su}` },
+    { label: 'Outlook', href: `https://outlook.office.com/mail/deeplink/compose?to=${email}&subject=${su}` },
+    { label: 'Default mail app', href: `mailto:${email}?subject=${su}` },
+  ];
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDocClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, [open]);
+
+  const copy = () => {
     navigator.clipboard?.writeText(email)?.catch(() => {});
     setCopied(true);
-    setTimeout(() => setCopied(false), 2200);
+    setTimeout(() => setCopied(false), 1600);
   };
+
   return (
-    <span className="relative inline-block">
-      <a href={`mailto:${email}`} onClick={handleClick} className={className}>
+    <span ref={ref} className="relative inline-block">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        style={{ font: 'inherit', letterSpacing: 'inherit', textTransform: 'inherit', color: 'inherit' }}
+        className={`cursor-pointer border-0 bg-transparent p-0 ${className}`}
+      >
         {children}
-      </a>
-      {copied && (
-        <span className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-blue-600 px-3 py-1.5 text-[10px] font-bold normal-case tracking-normal text-white shadow-lg shadow-blue-600/30">
-          Copied {email}
-        </span>
+      </button>
+      {open && (
+        <div className="absolute bottom-full left-1/2 z-[60] mb-2 w-48 -translate-x-1/2 overflow-hidden rounded-2xl border border-white/10 bg-[#0b0d12] p-1.5 text-left shadow-2xl shadow-blue-950/50">
+          <p className="px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest text-slate-500">Email {email}</p>
+          {options.map((o) => (
+            <a
+              key={o.label}
+              href={o.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="block rounded-xl px-3 py-2 text-xs font-bold normal-case tracking-normal text-slate-200 transition hover:bg-white/10"
+            >
+              {o.label}
+            </a>
+          ))}
+          <button
+            type="button"
+            onClick={copy}
+            className="block w-full rounded-xl px-3 py-2 text-left text-xs font-bold normal-case tracking-normal text-slate-200 transition hover:bg-white/10"
+          >
+            {copied ? 'Copied ✓' : 'Copy address'}
+          </button>
+        </div>
       )}
     </span>
   );
