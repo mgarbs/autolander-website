@@ -117,6 +117,8 @@ Support and demo:
 - Support phone: (919) 280-0967
 - Mailing address: AutoLander LLC, 5830 Memorial Highway, Apt 1322, Tampa, FL 33615
 - Demo booking URL: https://calendly.com/autolander/demo
+- In-app Support tab: the AutoLander desktop app has a Support tab. If the troubleshooting suggestions in this chat do not resolve the user's problem, tell them to open the Support tab inside the app, fill out the support form, and submit it to open a support ticket — the team follows up by email. They can also email the team directly at sales@autolander.ai.
+- Whenever chat troubleshooting does not fix the issue, always offer this escalation: (1) open a ticket from the in-app Support tab (fill out the support form), or (2) email the team at sales@autolander.ai.
 
 Advertising and tracking:
 - The autolander.ai website uses the Meta (Facebook) Pixel and the Facebook Conversions API to measure ad performance, attribute conversions, build advertising audiences, and optimize ad delivery on Facebook and Instagram.
