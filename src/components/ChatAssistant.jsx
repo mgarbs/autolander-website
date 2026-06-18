@@ -58,6 +58,7 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
   const [supportForm, setSupportForm] = useState(supportDefaults);
   const [supportStatus, setSupportStatus] = useState('');
   const [supportFallbackUrl, setSupportFallbackUrl] = useState('');
+  const [supportFallbackBody, setSupportFallbackBody] = useState('');
   const [isSendingSupport, setIsSendingSupport] = useState(false);
   const messagesEndRef = useRef(null);
   const turnstileRef = useRef(null);
@@ -191,11 +192,9 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
       .map((item) => `${item.role}: ${item.content}`)
       .join('\n');
 
-    const fallbackMailto = mailtoUrl(
-      supportEmail,
-      'AutoLander support request',
-      `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\nPhone: ${supportForm.phone}\n\nRecent chat:\n${transcript}`
-    );
+    const supportBody = `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\nPhone: ${supportForm.phone}\n\nRecent chat:\n${transcript}`;
+    setSupportFallbackBody(supportBody);
+    const fallbackMailto = mailtoUrl(supportEmail, 'AutoLander support request', supportBody);
 
     if (!CHAT_API_BASE) {
       setSupportFallbackUrl(fallbackMailto);
@@ -390,13 +389,36 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
                     <p className="mt-3 text-xs font-medium text-slate-400">{supportStatus}</p>
                   )}
                   {supportFallbackUrl && (
-                    <a
-                      href={supportFallbackUrl}
-                      className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-white/10 px-4 py-2 text-xs font-black uppercase italic text-white transition hover:bg-white/10"
-                    >
-                      <Mail className="h-4 w-4" />
-                      Email Support
-                    </a>
+                    <div className="mt-3">
+                      <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                        Email the team directly
+                      </p>
+                      <div className="grid grid-cols-3 gap-2">
+                        <a
+                          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${supportEmail}&su=${encodeURIComponent('AutoLander support request')}&body=${encodeURIComponent(supportFallbackBody)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center rounded-xl border border-white/10 px-2 py-2 text-[11px] font-black uppercase italic text-white transition hover:bg-white/10"
+                        >
+                          Gmail
+                        </a>
+                        <a
+                          href={`https://outlook.office.com/mail/deeplink/compose?to=${supportEmail}&subject=${encodeURIComponent('AutoLander support request')}&body=${encodeURIComponent(supportFallbackBody)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center rounded-xl border border-white/10 px-2 py-2 text-[11px] font-black uppercase italic text-white transition hover:bg-white/10"
+                        >
+                          Outlook
+                        </a>
+                        <a
+                          href={supportFallbackUrl}
+                          className="inline-flex items-center justify-center gap-1 rounded-xl border border-white/10 px-2 py-2 text-[11px] font-black uppercase italic text-white transition hover:bg-white/10"
+                        >
+                          <Mail className="h-3.5 w-3.5" />
+                          App
+                        </a>
+                      </div>
+                    </div>
                   )}
                 </form>
               )}
