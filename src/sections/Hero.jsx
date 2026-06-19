@@ -155,12 +155,12 @@ export default function Hero({ openDemoBooking }) {
         </FadeIn>
 
         <FadeIn delay={0.08}>
-          <h1 className="mt-6 font-display text-5xl font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 text-balance font-display text-5xl font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
             Sell{' '}
             <span className={gradWord}>8&ndash;12</span>{' '}
             <span className={gradWord}>more</span>{' '}
             <span className={gradWord}>cars</span>{' '}
-            a month &mdash; on autopilot.
+            a month on autopilot.
           </h1>
         </FadeIn>
 
