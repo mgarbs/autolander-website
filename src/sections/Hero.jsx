@@ -160,8 +160,8 @@ export default function Hero({ openDemoBooking }) {
 
         <FadeIn delay={0.16}>
           <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
-            AutoLander auto-posts, updates, and tracks your entire inventory on Facebook
-            Marketplace — 20 cars in minutes, not hours. More buyer conversations, zero manual work.
+            AutoLander posts your whole inventory to Facebook Marketplace — 20 cars in minutes —
+            then replies to every buyer and books the appointments. Your reps just close.
           </p>
         </FadeIn>
 
