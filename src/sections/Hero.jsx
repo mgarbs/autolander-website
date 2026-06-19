@@ -143,6 +143,10 @@ function PostingEngine() {
 }
 
 export default function Hero({ openDemoBooking }) {
+  // Each gradient word is its own inline-block so the italic overhang of its
+  // final glyph (e.g. the "2" in 8–12) isn't clipped by bg-clip-text on a line wrap.
+  const gradWord =
+    'inline-block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent pr-[0.14em]';
   return (
     <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-6 lg:min-h-[600px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
       <div className="max-w-2xl">
@@ -153,7 +157,9 @@ export default function Hero({ openDemoBooking }) {
         <FadeIn delay={0.08}>
           <h1 className="mt-6 font-display text-5xl font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
             Sell{' '}
-            <span className="bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent">8&ndash;12 more cars</span>{' '}
+            <span className={gradWord}>8&ndash;12</span>{' '}
+            <span className={gradWord}>more</span>{' '}
+            <span className={gradWord}>cars</span>{' '}
             a month &mdash; on autopilot.
           </h1>
         </FadeIn>
