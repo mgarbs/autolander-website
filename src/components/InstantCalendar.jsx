@@ -436,7 +436,7 @@ export default function InstantCalendar({ onClose, onFallback }) {
                       className={`w-full rounded-xl border bg-white/5 py-3 pl-9 pr-3 text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500/30 ${invalid.website ? 'border-red-500/70 focus:border-red-500/70' : 'border-white/10 focus:border-blue-500/60'}`}
                     />
                   </div>
-                  <p className="mt-1.5 pl-1 text-xs font-semibold leading-snug text-slate-300">AutoLander is software for dealers and sales reps &mdash; we don&rsquo;t sell vehicles.</p>
+                  <p className="mt-1.5 pl-1 text-xs font-semibold leading-snug text-slate-300">AutoLander is software for dealers and sales reps &mdash; we don&rsquo;t sell vehicles or offer financing.</p>
                 </div>
 
                 <div>
