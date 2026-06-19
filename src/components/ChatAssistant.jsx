@@ -77,8 +77,7 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
       if (!window.turnstile || turnstileWidgetRef.current !== null) return;
       turnstileWidgetRef.current = window.turnstile.render(turnstileRef.current, {
         sitekey: TURNSTILE_SITE_KEY,
-        theme: 'dark',
-        size: 'flexible',
+        size: 'invisible',
         callback: setTurnstileToken,
         'expired-callback': () => setTurnstileToken(''),
         'error-callback': () => setTurnstileToken(''),
@@ -263,14 +262,26 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="rounded-xl p-2 text-slate-400 transition hover:bg-white/10 hover:text-white"
-              aria-label="Close chat"
-            >
-              <X className="h-5 w-5" />
-            </button>
+            <div className="flex items-center gap-1.5">
+              {!showSupportForm && (
+                <button
+                  type="button"
+                  onClick={() => setShowSupportForm(true)}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1.5 text-[10px] font-black uppercase tracking-widest text-emerald-300 transition hover:bg-emerald-500/20"
+                  aria-label="Talk to our team"
+                >
+                  <Mail className="h-3.5 w-3.5" /> Human
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="rounded-xl p-2 text-slate-400 transition hover:bg-white/10 hover:text-white"
+                aria-label="Close chat"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
           </div>
 
           <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
@@ -439,28 +450,25 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
 
           {!showSupportForm && (
           <div className="shrink-0 border-t border-white/10 p-4">
-            <button
-              type="button"
-              onClick={() => setShowSupportForm(true)}
-              className="mb-3 flex w-full items-center justify-center gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-[11px] font-black uppercase italic tracking-tight text-emerald-300 transition hover:bg-emerald-500/15"
-            >
-              <Mail className="h-4 w-4" /> Talk to our team
-            </button>
-            <div className="mb-3 flex flex-wrap gap-2">
-              {quickPrompts.map((prompt) => (
-                <button
-                  key={prompt}
-                  type="button"
-                  onClick={() => sendMessage(prompt)}
-                  disabled={isSending}
-                  className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition hover:border-blue-400/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {prompt}
-                </button>
-              ))}
-            </div>
+            {/* Suggested questions only guide the empty state — once the visitor has
+                asked something, they step aside so the answer gets the whole panel. */}
+            {messages.length <= 1 && (
+              <div className="mb-3 flex flex-wrap gap-2">
+                {quickPrompts.map((prompt) => (
+                  <button
+                    key={prompt}
+                    type="button"
+                    onClick={() => sendMessage(prompt)}
+                    disabled={isSending}
+                    className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-slate-400 transition hover:border-blue-400/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {prompt}
+                  </button>
+                ))}
+              </div>
+            )}
 
-            {TURNSTILE_SITE_KEY && <div ref={turnstileRef} className="mb-3 min-h-16" />}
+            {TURNSTILE_SITE_KEY && <div ref={turnstileRef} />}
 
             <form
               onSubmit={(event) => {
