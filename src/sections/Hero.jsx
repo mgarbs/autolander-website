@@ -151,7 +151,7 @@ export default function Hero({ openDemoBooking }) {
     <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-6 lg:min-h-[600px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
       <div className="max-w-2xl">
         <FadeIn>
-          <Eyebrow>Facebook Marketplace Automation — For Dealers &amp; Reps</Eyebrow>
+          <Eyebrow>Facebook Marketplace Automation — For Dealers &amp; Sales Reps</Eyebrow>
         </FadeIn>
 
         <FadeIn delay={0.08}>

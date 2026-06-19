@@ -9,6 +9,10 @@ const STATS = [
 ];
 
 export default function ExecutionGap() {
+  // Per-word inline-block keeps the italic overhang of each gradient word's last
+  // glyph (e.g. the "y" in "They") from being clipped by bg-clip-text on a wrap.
+  const gradWord =
+    'inline-block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent pr-[0.12em]';
   return (
     <section className="relative py-24 lg:py-36">
       <div className="mx-auto max-w-4xl px-6 text-center">
@@ -18,9 +22,11 @@ export default function ExecutionGap() {
         <FadeIn delay={0.08}>
           <SectionHeading className="mt-6">
             Dealers don&apos;t have a demand problem.{' '}
-            <span className="bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent">
-              They have an execution problem.
-            </span>
+            <span className={gradWord}>They</span>{' '}
+            <span className={gradWord}>have</span>{' '}
+            <span className={gradWord}>an</span>{' '}
+            <span className={gradWord}>execution</span>{' '}
+            <span className={gradWord}>problem.</span>
           </SectionHeading>
         </FadeIn>
         <FadeIn delay={0.16}>
