@@ -9,6 +9,7 @@
 import { createBooking, fetchAvailableTimes, isSlotAvailable } from '../calendly/client.js';
 import { sha256Hex } from '../capi/hash.js';
 import { rememberBookingToken } from '../capi/storage.js';
+import { looksLikeBot } from '../security/bot-filter.js';
 
 const AVAIL_KEY = 'avail:demo';
 const FRESH_MS = 3 * 60 * 1000; // serve straight from cache
@@ -106,6 +107,10 @@ async function handleAvailability(request, env, corsHeaders, ctx) {
 async function handleBook(request, env, corsHeaders, ctx) {
   if (!env.CALENDLY_API_TOKEN) {
     return json({ ok: false, reason: 'calendly_not_configured' }, 503, corsHeaders);
+  }
+
+  if (looksLikeBot(request).bot) {
+    return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
   }
 
   const limited = await enforceBookRateLimit(request, env);

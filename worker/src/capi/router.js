@@ -21,6 +21,7 @@ import {
   isValidFbp,
   isValidVid,
 } from './validators.js';
+import { looksLikeBot } from '../security/bot-filter.js';
 
 const TRACK_DAILY_IP_LIMIT = 240;
 const TRACK_HOURLY_IP_LIMIT = 30;
@@ -260,6 +261,10 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   // that simply omits the header would otherwise sail through — require it here.
   if (!request.headers.get('Origin')) {
     return jsonResponse({ ok: false, reason: 'origin_required' }, 403, corsHeaders);
+  }
+
+  if (looksLikeBot(request).bot) {
+    return jsonResponse({ ok: false, reason: 'blocked' }, 403, corsHeaders);
   }
 
   const eventId = clean(body.eventId, 128);
@@ -639,6 +644,9 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
 // token, or an expired token => ok:false => no conversion. This is what stops a
 // bot, crawler, scanner, or a shared /thank-you link from minting a fake demo.
 async function handleConfirm(request, env, corsHeaders) {
+  if (looksLikeBot(request).bot) {
+    return jsonResponse({ ok: false, reason: 'blocked' }, 403, corsHeaders);
+  }
   const body = await safeJson(request);
   const token = clean(body.bt, 64);
   if (!/^[a-f0-9]{32}$/.test(token)) {
