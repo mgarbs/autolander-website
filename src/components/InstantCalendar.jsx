@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, ArrowLeft, Loader2, CalendarClock, Video, BadgeDollarSign } from 'lucide-react';
+import { X, Check, ArrowLeft, Loader2, CalendarClock, Video, BadgeDollarSign, Globe, Warehouse } from 'lucide-react';
 import { getAvailability, submitBooking, visitorTimezone } from '../lib/booking.js';
 import { formatPhoneInput, isValidEmail, isValidPhone } from '../lib/contact.js';
 import { track } from '../lib/meta-pixel.js';
@@ -10,6 +10,7 @@ import { track } from '../lib/meta-pixel.js';
 
 const TZ = visitorTimezone();
 const ROLES = ['Owner', 'Manager', 'Sales Rep'];
+const INVENTORY = ['1-50', '51-150', '151+'];
 // Only show the "🔥 N slots left" urgency line once availability is genuinely
 // low — never at the start of the day when there are 20+ open.
 const LOW_SLOT_THRESHOLD = 4;
@@ -49,14 +50,21 @@ function monthDay(iso) {
   return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: TZ });
 }
 
+// Lenient website check, mirrored on the server (worker/src/booking/router.js).
+// Accepts with/without protocol or www and an optional path; rejects bare words.
+function isWebsite(value) {
+  const v = String(value || '').trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+  return /^[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}(?:[/?#].*)?$/i.test(v);
+}
+
 export default function InstantCalendar({ onClose, onFallback }) {
   const [phase, setPhase] = useState('loading'); // loading | browse | capture | submitting | success | empty | error
   const [slots, setSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', role: '', textReminders: true });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', role: '', website: '', inventory: '', textReminders: true, company: '' });
   const [formError, setFormError] = useState('');
-  const [invalid, setInvalid] = useState({ email: false, phone: false });
+  const [invalid, setInvalid] = useState({ email: false, phone: false, website: false });
   const [turnstileToken, setTurnstileToken] = useState('');
   const turnstileRef = useRef(null);
   const turnstileWidgetRef = useRef(null);
@@ -155,7 +163,7 @@ export default function InstantCalendar({ onClose, onFallback }) {
   const chooseSlot = (iso) => {
     setSelectedSlot(iso);
     setFormError('');
-    setInvalid({ email: false, phone: false });
+    setInvalid({ email: false, phone: false, website: false });
     setPhase('capture');
     track('Lead', { content_name: 'demo_slot_selected', content_category: 'demo' });
   };
@@ -180,6 +188,15 @@ export default function InstantCalendar({ onClose, onFallback }) {
       setFormError('Please tell us your role.');
       return;
     }
+    if (!isWebsite(form.website)) {
+      setFormError('Enter your dealership website, like yourdealership.com.');
+      setInvalid((v) => ({ ...v, website: true }));
+      return;
+    }
+    if (!form.inventory) {
+      setFormError('Roughly how many vehicles do you have?');
+      return;
+    }
     setPhase('submitting');
     setFormError('');
     try {
@@ -198,6 +215,17 @@ export default function InstantCalendar({ onClose, onFallback }) {
       resetTurnstile();
       if (res.reason === 'verification_failed') {
         setFormError('Quick security check didn’t pass — please try again.');
+        setPhase('capture');
+        return;
+      }
+      if (res.reason === 'invalid_website') {
+        setFormError('That website doesn’t look right — like yourdealership.com.');
+        setInvalid((v) => ({ ...v, website: true }));
+        setPhase('capture');
+        return;
+      }
+      if (res.reason === 'invalid_inventory' || res.reason === 'missing_role') {
+        setFormError('Please complete your dealership details below.');
         setPhase('capture');
         return;
       }
@@ -243,7 +271,7 @@ export default function InstantCalendar({ onClose, onFallback }) {
           exit={{ opacity: 0, scale: 0.94, y: 30 }}
           transition={{ type: 'spring', damping: 26, stiffness: 320 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-md rounded-3xl border border-white/10 bg-[#0a0a0f]/95 p-6 shadow-2xl shadow-black/60"
+          className="relative w-full max-w-md max-h-[85vh] overflow-y-auto rounded-3xl border border-white/10 bg-[#0a0a0f]/95 p-6 shadow-2xl shadow-black/60"
         >
           <button
             onClick={onClose}
@@ -330,20 +358,25 @@ export default function InstantCalendar({ onClose, onFallback }) {
 
           {/* Capture */}
           {phase === 'capture' && selectedSlot && (
-            <form onSubmit={submit} noValidate className="space-y-3">
-              <div className="rounded-2xl border border-blue-500/30 bg-blue-500/10 px-4 py-3">
-                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300">Reserving</div>
-                <div className="text-base font-black italic uppercase text-white">
-                  {dayLabel(selectedSlot)} · {fmtTime(selectedSlot)}
+            <form onSubmit={submit} noValidate className="space-y-4">
+              {/* Held slot — keeps the booker oriented through the form */}
+              <div className="flex items-center gap-3 rounded-2xl border border-blue-500/30 bg-blue-500/10 px-4 py-3">
+                <CalendarClock className="h-5 w-5 shrink-0 text-blue-300" />
+                <div>
+                  <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300">Holding your spot</div>
+                  <div className="text-base font-black italic uppercase leading-tight text-white">
+                    {dayLabel(selectedSlot)} · {fmtTime(selectedSlot)}
+                  </div>
                 </div>
               </div>
+
               <input
                 required type="text" placeholder="Full name" autoComplete="name"
                 value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
               />
               <input
-                required type="email" inputMode="email" placeholder="Email" autoComplete="email"
+                required type="email" inputMode="email" placeholder="Work email" autoComplete="email"
                 value={form.email}
                 onChange={(e) => {
                   setForm({ ...form, email: e.target.value });
@@ -365,25 +398,66 @@ export default function InstantCalendar({ onClose, onFallback }) {
                 className={`w-full rounded-xl border bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500/30 ${invalid.phone ? 'border-red-500/70 focus:border-red-500/70' : 'border-white/10 focus:border-blue-500/60'}`}
               />
 
-              {/* Role — segmented selector */}
-              <div>
-                <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-slate-400">Dealership Role</span>
-                <div className="grid grid-cols-3 gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] p-1">
-                  {ROLES.map((r) => {
-                    const active = form.role === r;
-                    return (
-                      <button
-                        type="button"
-                        key={r}
-                        onClick={() => setForm({ ...form, role: r })}
-                        className={`flex min-h-[2.75rem] items-center justify-center rounded-lg px-1 text-center text-[11px] font-black uppercase leading-tight tracking-tight transition-all ${
-                          active ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-400 hover:text-white'
-                        }`}
-                      >
-                        {r}
-                      </button>
-                    );
-                  })}
+              {/* Your dealership — qualification block */}
+              <div className="space-y-3 border-t border-white/5 pt-4">
+                <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Your dealership</p>
+
+                <div>
+                  <span className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-slate-400">Your role</span>
+                  <div className="grid grid-cols-3 gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] p-1">
+                    {ROLES.map((r) => {
+                      const active = form.role === r;
+                      return (
+                        <button
+                          type="button" key={r} onClick={() => setForm({ ...form, role: r })}
+                          className={`flex min-h-[2.75rem] items-center justify-center rounded-lg px-1 text-center text-[11px] font-black uppercase leading-tight tracking-tight transition-all ${
+                            active ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-400 hover:text-white'
+                          }`}
+                        >
+                          {r}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="relative">
+                    <Globe className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                    <input
+                      required type="text" inputMode="url" placeholder="yourdealership.com" autoComplete="url"
+                      value={form.website}
+                      onChange={(e) => {
+                        setForm({ ...form, website: e.target.value });
+                        if (invalid.website) setInvalid((v) => ({ ...v, website: false }));
+                      }}
+                      onBlur={() => setInvalid((v) => ({ ...v, website: form.website.trim() !== '' && !isWebsite(form.website) }))}
+                      aria-invalid={invalid.website}
+                      className={`w-full rounded-xl border bg-white/5 py-3 pl-9 pr-3 text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500/30 ${invalid.website ? 'border-red-500/70 focus:border-red-500/70' : 'border-white/10 focus:border-blue-500/60'}`}
+                    />
+                  </div>
+                  <p className="mt-1.5 pl-1 text-[11px] leading-snug text-slate-500">AutoLander is software for dealers &mdash; we don&rsquo;t sell vehicles.</p>
+                </div>
+
+                <div>
+                  <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                    <Warehouse className="h-3.5 w-3.5" /> Vehicles in inventory
+                  </span>
+                  <div className="grid grid-cols-3 gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] p-1">
+                    {INVENTORY.map((opt) => {
+                      const active = form.inventory === opt;
+                      return (
+                        <button
+                          type="button" key={opt} onClick={() => setForm({ ...form, inventory: opt })}
+                          className={`flex min-h-[2.75rem] items-center justify-center rounded-lg text-sm font-black tracking-tight transition-all ${
+                            active ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-400 hover:text-white'
+                          }`}
+                        >
+                          {opt}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
@@ -398,18 +472,20 @@ export default function InstantCalendar({ onClose, onFallback }) {
 
               {formError && <p className="text-xs font-semibold text-red-400">{formError}</p>}
 
-              <button
-                type="submit"
-                className="w-full rounded-xl bg-green-600 p-4 text-sm font-black uppercase italic tracking-wider text-white shadow-lg shadow-green-900/30 transition-all hover:bg-green-500"
-              >
-                Confirm my demo
-              </button>
-              <button
-                type="button" onClick={() => { setPhase('browse'); setSelectedSlot(null); }}
-                className="flex w-full items-center justify-center gap-1 py-1 text-[11px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-300"
-              >
-                <ArrowLeft className="h-3 w-3" /> Back to times
-              </button>
+              <div className="space-y-2 pt-1">
+                <button
+                  type="submit"
+                  className="w-full rounded-xl bg-green-600 p-4 text-sm font-black uppercase italic tracking-wider text-white shadow-lg shadow-green-900/30 transition-all hover:bg-green-500 active:scale-[0.99]"
+                >
+                  Confirm my demo
+                </button>
+                <button
+                  type="button" onClick={() => { setPhase('browse'); setSelectedSlot(null); }}
+                  className="flex w-full items-center justify-center gap-1 py-1 text-[11px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-300"
+                >
+                  <ArrowLeft className="h-3 w-3" /> Back to times
+                </button>
+              </div>
             </form>
           )}
 

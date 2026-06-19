@@ -17,10 +17,15 @@ const STALE_MS = 30 * 60 * 1000; // beyond this, refresh before serving
 const DURATION_MIN = 30;
 const HOST_TZ = 'America/New_York';
 
-// Exact custom-question strings from the Calendly event type (must match verbatim).
+// Exact custom-question strings from the Calendly event type. Positions 0-4
+// below MUST match the event type's question order verbatim.
 const PHONE_QUESTION = 'What is the best phone number to reach you at?';
-const TEXT_REMINDER_QUESTION = 'Get text reminders about your demo';
 const ROLE_QUESTION = 'Are you a dealership owner, manager or sales rep?';
+const WEBSITE_QUESTION = "What's your dealership's website? (AutoLander is software for dealers — we don't sell vehicles.)";
+const INVENTORY_QUESTION = 'How many vehicles do you currently have in inventory?';
+const TEXT_REMINDER_QUESTION = 'Get text reminders about your demo';
+const INVENTORY_CHOICES = ['1-50', '51-150', '151+'];
+const ROLE_CHOICES = ['Owner', 'Manager', 'Sales Rep'];
 const AL_VID_MARKER = 'al_vid:';
 
 const BOOK_IP_HOURLY = 20;
@@ -136,9 +141,15 @@ async function handleBook(request, env, corsHeaders, ctx) {
   const phoneNorm = normalizePhone(phone);
   const textReminders = Boolean(body.textReminders);
   const role = clean(body.role, 60);
+  const website = clean(body.website, 200);
+  const inventory = clean(body.inventory, 24);
+  const honeypot = clean(body.company, 200); // hidden field — only bots fill it
   const timezone = clean(body.timezone, 64) || HOST_TZ;
   const vid = isValidVid(body.vid) ? body.vid : '';
   const utms = body.utms && typeof body.utms === 'object' ? body.utms : {};
+
+  // Honeypot: a real person never sees or fills the hidden "company" field.
+  if (honeypot) return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
 
   if (!slotStartUTC) return json({ ok: false, reason: 'invalid_slot' }, 400, corsHeaders);
   if (new Date(slotStartUTC).getTime() < Date.now()) {
@@ -148,6 +159,9 @@ async function handleBook(request, env, corsHeaders, ctx) {
   if (!name) return json({ ok: false, reason: 'missing_name' }, 400, corsHeaders);
   if (!phone) return json({ ok: false, reason: 'missing_phone' }, 400, corsHeaders);
   if (!phoneNorm.ok) return json({ ok: false, reason: 'invalid_phone' }, 400, corsHeaders);
+  if (!ROLE_CHOICES.includes(role)) return json({ ok: false, reason: 'missing_role' }, 400, corsHeaders);
+  if (!isWebsite(website)) return json({ ok: false, reason: 'invalid_website' }, 400, corsHeaders);
+  if (!INVENTORY_CHOICES.includes(inventory)) return json({ ok: false, reason: 'invalid_inventory' }, 400, corsHeaders);
 
   // JIT re-check: Calendly is the arbiter, but this gives a clean "just taken" UX
   // instead of a generic failure.
@@ -158,15 +172,16 @@ async function handleBook(request, env, corsHeaders, ctx) {
   }
 
   const tracking = buildTracking(vid, utms);
+  // Positions MUST match the Calendly event type order exactly:
+  // 0 phone · 1 role · 2 website · 3 inventory · 4 reminders.
   const questionsAndAnswers = [
     { question: PHONE_QUESTION, answer: phoneNorm.pretty, position: 0 },
+    { question: ROLE_QUESTION, answer: role, position: 1 },
+    { question: WEBSITE_QUESTION, answer: website, position: 2 },
+    { question: INVENTORY_QUESTION, answer: inventory, position: 3 },
   ];
-  // Positions must match the event type exactly: phone=0, role=1, reminders=2.
-  if (role) {
-    questionsAndAnswers.push({ question: ROLE_QUESTION, answer: role, position: 1 });
-  }
   if (textReminders) {
-    questionsAndAnswers.push({ question: TEXT_REMINDER_QUESTION, answer: 'Yes', position: 2 });
+    questionsAndAnswers.push({ question: TEXT_REMINDER_QUESTION, answer: 'Yes', position: 4 });
   }
 
   let result;
@@ -313,6 +328,13 @@ function isValidVid(value) {
 function isEmail(value) {
   // DNS-style domain labels + 2+ char alphabetic TLD; local part permissive.
   return /^[^\s@]+@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/i.test(value);
+}
+
+// Lenient dealership-website check (mirrors src/components/InstantCalendar.jsx).
+// Accepts with/without protocol or www and an optional path; rejects bare words.
+function isWebsite(value) {
+  const v = String(value || '').trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+  return /^[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}(?:[/?#].*)?$/i.test(v);
 }
 
 // Strict phone normalize. Returns { ok, e164, pretty }; ok=false for anything
