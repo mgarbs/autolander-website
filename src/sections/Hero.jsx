@@ -160,7 +160,8 @@ export default function Hero({ openDemoBooking }) {
             <span className={gradWord}>8&ndash;12</span>{' '}
             <span className={gradWord}>more</span>{' '}
             <span className={gradWord}>cars</span>{' '}
-            a month on autopilot.
+            a month on{' '}
+            <span className={gradWord}>autopilot.</span>
           </h1>
         </FadeIn>
 
