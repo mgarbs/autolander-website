@@ -27,7 +27,7 @@ export async function getAvailability() {
 }
 
 // Create the booking. Returns { httpOk, ok, reason?, redirectPath?, startTime? }.
-export async function submitBooking({ slotStartUTC, name, email, phone, textReminders, role }) {
+export async function submitBooking({ slotStartUTC, name, email, phone, textReminders, role, turnstileToken }) {
   if (!CAPI_URL) throw new Error('booking_api_unconfigured');
   const attr = getAttributionPayload();
   const res = await fetch(`${CAPI_URL}/api/book`, {
@@ -45,6 +45,7 @@ export async function submitBooking({ slotStartUTC, name, email, phone, textRemi
       timezone: visitorTimezone(),
       vid: attr.vid,
       utms: attr.utms,
+      turnstileToken,
     }),
   });
   const data = await res.json().catch(() => ({ ok: false, reason: 'bad_response' }));
