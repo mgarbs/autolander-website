@@ -105,15 +105,63 @@ export async function listCounterKeys(env, day, dimension) {
   }));
 }
 
+// Per-day full-read cache. The admin dashboard reads ~40 dimensions across the
+// whole window; doing a separate KV `list` per (dimension, day) fans out to
+// 1,000+ KV operations per request and trips Cloudflare's per-invocation
+// subrequest limit ("Too many API requests by single Worker invocation").
+// Instead we list ALL of a day's `stats:` keys ONCE, group them by dimension,
+// and cache that for 60s — so a 30-day window is ~30 lists + a few gets, shared
+// across the stats / insights / recommendations calls.
+const dayStatsCache = new Map();
+const dayStatsInflight = new Map();
+const DAY_STATS_TTL_MS = 60 * 1000;
+
+async function readFullDay(env, day) {
+  const cached = dayStatsCache.get(day);
+  if (cached && Date.now() - cached.at < DAY_STATS_TTL_MS) return cached.data;
+  // Single-flight: buildStats fires ~1,000 reads concurrently, so without this
+  // every concurrent call for the same day would re-list/re-get the whole day —
+  // a stampede that itself blows the subrequest limit. Concurrent callers for a
+  // day share ONE in-flight read.
+  const existing = dayStatsInflight.get(day);
+  if (existing) return existing;
+
+  const load = (async () => {
+    const tk = tracking(env);
+    const prefix = `stats:${day}:`;
+    const data = {};
+    let cursor;
+    do {
+      const res = await tk.list({ prefix, limit: 1000, cursor });
+      const names = res.keys.map((entry) => entry.name);
+      const values = await Promise.all(names.map((name) => tk.get(name)));
+      names.forEach((name, index) => {
+        const rest = name.slice(prefix.length); // dimension:safeKey  (safeKey may itself contain ':')
+        const sep = rest.indexOf(':');
+        if (sep < 0) return;
+        const dimension = rest.slice(0, sep);
+        const key = rest.slice(sep + 1);
+        if (!data[dimension]) data[dimension] = {};
+        data[dimension][key] = Number(values[index] || 0);
+      });
+      cursor = res.list_complete ? undefined : res.cursor;
+    } while (cursor);
+    if (dayStatsCache.size > 200) dayStatsCache.clear();
+    dayStatsCache.set(day, { at: Date.now(), data });
+    return data;
+  })();
+
+  dayStatsInflight.set(day, load);
+  try {
+    return await load;
+  } finally {
+    dayStatsInflight.delete(day);
+  }
+}
+
 export async function readDimensionForDay(env, day, dimension) {
-  const entries = await listCounterKeys(env, day, dimension);
-  if (entries.length === 0) return {};
-  const values = await Promise.all(entries.map((entry) => tracking(env).get(entry.fullKey)));
-  const out = {};
-  entries.forEach((entry, index) => {
-    out[entry.key] = Number(values[index] || 0);
-  });
-  return out;
+  const dayData = await readFullDay(env, day);
+  return { ...(dayData[dimension] || {}) };
 }
 
 export async function pushRecentEvent(env, payload) {

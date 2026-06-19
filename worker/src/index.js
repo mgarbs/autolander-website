@@ -46,6 +46,7 @@ export default {
   async fetch(request, env, ctx) {
     const corsHeaders = getCorsHeaders(request, env);
 
+    try {
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         status: 204,
@@ -94,6 +95,18 @@ export default {
     }
 
     return jsonResponse({ message: 'Not found' }, 404, corsHeaders);
+    } catch (err) {
+      // Never let a handler throw a bare 500 (no CORS headers) — that surfaces in
+      // the browser as an opaque "Failed to fetch". Return a real, CORS-clean error.
+      try {
+        console.error('[worker] unhandled', request.method, new URL(request.url).pathname, err?.stack || err);
+      } catch { /* ignore */ }
+      return jsonResponse(
+        { ok: false, reason: 'server_error', error: String(err?.message || err).slice(0, 200) },
+        500,
+        corsHeaders,
+      );
+    }
   },
 
   // Cron: keep the availability cache warm so /api/availability is instant.

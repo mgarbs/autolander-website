@@ -63,7 +63,11 @@ function parseCookie(header, name) {
 }
 
 function buildCookie(name, value, ttlSeconds) {
-  const flags = ['Path=/', 'HttpOnly', 'Secure', 'SameSite=Lax'];
+  // SameSite=None (with Secure) so the cookie survives cross-site requests from
+  // the admin SPA on autolander.ai to the Worker on *.workers.dev — Lax would be
+  // dropped, forcing a re-login on every refresh. Origin-gated + HttpOnly keep
+  // CSRF risk low.
+  const flags = ['Path=/', 'HttpOnly', 'Secure', 'SameSite=None'];
   if (ttlSeconds > 0) {
     flags.push(`Max-Age=${ttlSeconds}`);
     flags.push(`Expires=${new Date(Date.now() + ttlSeconds * 1000).toUTCString()}`);
