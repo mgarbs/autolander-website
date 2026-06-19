@@ -160,9 +160,8 @@ export default function Hero({ openDemoBooking }) {
 
         <FadeIn delay={0.16}>
           <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
-            Anyone can post to Facebook Marketplace. Almost no one knows how to make the algorithm
-            pick their cars. AutoLander quietly works the ranking signals that decide which listings
-            get seen — so yours pull 3–4× more clicks, on average. Your reps just close.
+            More eyes on every listing. AutoLander ranks your cars to the top of Facebook
+            Marketplace — so 3–4× more buyers see them, on average.
           </p>
         </FadeIn>
 
