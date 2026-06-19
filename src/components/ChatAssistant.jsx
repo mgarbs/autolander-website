@@ -61,6 +61,7 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
   const [supportFallbackUrl, setSupportFallbackUrl] = useState('');
   const [supportFallbackBody, setSupportFallbackBody] = useState('');
   const [isSendingSupport, setIsSendingSupport] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const messagesEndRef = useRef(null);
   const turnstileRef = useRef(null);
   const turnstileWidgetRef = useRef(null);
@@ -69,6 +70,17 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
     if (!isOpen) return;
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [messages, isOpen, showSupportForm]);
+
+  // On mobile, hold the chat launcher back until the hero scrolls away — same
+  // 560px trigger as the mobile Book-a-Demo bar (src/sections/MobileCtaBar.jsx)
+  // — so it doesn't hover mid-screen and compete with the CTA when people land.
+  // Desktop always shows it (handled by the md: classes on the button).
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 560);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     if (!isOpen || !TURNSTILE_SITE_KEY || !turnstileRef.current) return;
@@ -242,6 +254,10 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
     if (!isOpen) onOpen?.();
     setIsOpen((current) => !current);
   };
+
+  // Launcher shows once the page is scrolled (mobile) or the chat is open;
+  // desktop shows it regardless via the md: classes on the button.
+  const launcherVisible = scrolled || isOpen;
 
   return (
     <div className="fixed bottom-24 right-5 z-[70] flex flex-col items-end gap-4 md:bottom-5">
@@ -507,7 +523,11 @@ export default function ChatAssistant({ demoUrl, supportEmail = 'sales@autolande
       <button
         type="button"
         onClick={toggleAssistant}
-        className="group flex items-center gap-3 rounded-2xl border border-blue-400/30 bg-blue-600 px-5 py-4 text-white shadow-2xl shadow-blue-600/30 transition hover:-translate-y-1 hover:bg-blue-500"
+        className={`group flex items-center gap-3 rounded-2xl border border-blue-400/30 bg-blue-600 px-5 py-4 text-white shadow-2xl shadow-blue-600/30 transition-all duration-300 hover:-translate-y-1 hover:bg-blue-500 ${
+          launcherVisible
+            ? 'translate-y-0 opacity-100'
+            : 'pointer-events-none translate-y-4 opacity-0 md:pointer-events-auto md:translate-y-0 md:opacity-100'
+        }`}
         aria-label="Open AutoLander chat assistant"
       >
         <MessageCircle className="h-5 w-5" />
