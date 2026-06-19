@@ -152,9 +152,9 @@ export default function Hero({ openDemoBooking }) {
 
         <FadeIn delay={0.08}>
           <h1 className="mt-6 font-display text-5xl font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
-            Sales reps should be{' '}
-            <span className="bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent">selling cars.</span>{' '}
-            Not copy-pasting VINs.
+            Sell{' '}
+            <span className="bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent">8&ndash;12 more cars</span>{' '}
+            a month &mdash; on autopilot.
           </h1>
         </FadeIn>
 
