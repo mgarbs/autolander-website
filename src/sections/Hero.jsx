@@ -160,8 +160,8 @@ export default function Hero({ openDemoBooking }) {
 
         <FadeIn delay={0.16}>
           <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
-            More eyes on every listing. AutoLander ranks your cars to the top of Facebook
-            Marketplace — so 3–4× more buyers see them, on average.
+            AutoLander auto-posts, updates, and tracks your entire inventory on Facebook
+            Marketplace — 20 cars in minutes, not hours. More buyer conversations, zero manual work.
           </p>
         </FadeIn>
 
