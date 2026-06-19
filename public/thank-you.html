@@ -52,10 +52,16 @@
           .then(function (r) { return r.ok ? r.json() : null; })
           .then(function (data) {
             if (!data || !data.ok) return; // token rejected → not a genuine booking
-            var match = document.cookie.match(/(?:^|;\s*)al_vid=([^;]+)/);
-            var vid = match ? decodeURIComponent(match[1]) : '';
-            var day = new Date().toISOString().slice(0, 10);
-            var eventId = 'sched_' + (vid || bt) + '_' + day;
+            // Use the shared eventID the server returns (cal_<hash of the Calendly
+            // event>) so this browser Schedule dedupes with the CAPI Schedule from
+            // the invitee.created webhook. Fall back to a per-visitor id if absent.
+            var eventId = data.eventId;
+            if (!eventId) {
+              var match = document.cookie.match(/(?:^|;\s*)al_vid=([^;]+)/);
+              var vid = match ? decodeURIComponent(match[1]) : '';
+              var day = new Date().toISOString().slice(0, 10);
+              eventId = 'sched_' + (vid || bt) + '_' + day;
+            }
             fbq('track', 'Schedule', { content_name: 'demo_booked', content_category: 'demo' }, { eventID: eventId });
             // Drop the token from the address bar so a refresh or copy can't replay it.
             try { window.history.replaceState({}, document.title, window.location.pathname); } catch (e) {}

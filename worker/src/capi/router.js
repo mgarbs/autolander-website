@@ -656,7 +656,9 @@ async function handleConfirm(request, env, corsHeaders) {
   if (!redeemed) {
     return jsonResponse({ ok: false, reason: 'unrecognized_token' }, 403, corsHeaders);
   }
-  return jsonResponse({ ok: true }, 200, corsHeaders);
+  // Return the shared eventID so the thank-you pixel Schedule dedupes with the
+  // CAPI Schedule fired by the invitee.created webhook.
+  return jsonResponse({ ok: true, eventId: redeemed.eventId || '' }, 200, corsHeaders);
 }
 
 async function buildUserData({

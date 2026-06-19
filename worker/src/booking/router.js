@@ -225,8 +225,15 @@ async function handleBook(request, env, corsHeaders, ctx) {
   // fire the `Schedule` pixel conversion, so a bot, crawler, or shared
   // /thank-you link can no longer mint a fake "demo booked" conversion. We await
   // the KV write so the token is readable by the time the redirect lands.
+  // Derive the SAME eventID the invitee.created webhook uses (cal_<hash of the
+  // scheduled-event URI>, mirroring its event||uri precedence) so the browser
+  // pixel Schedule and the server CAPI Schedule share an eventID and Meta
+  // deduplicates them into a single conversion.
+  const inviteeResource = result.body?.resource || {};
+  const sharedEventUri = inviteeResource.event || inviteeResource.uri || '';
+  const fbEventId = sharedEventUri ? `cal_${(await sha256Hex(sharedEventUri)).slice(0, 32)}` : '';
   const bookingToken = newBookingToken();
-  await rememberBookingToken(env, bookingToken).catch(() => {});
+  await rememberBookingToken(env, bookingToken, fbEventId).catch(() => {});
   return json(
     { ok: true, redirectPath: '/thank-you', startTime: slotStartUTC, bt: bookingToken },
     200,

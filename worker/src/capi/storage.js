@@ -49,18 +49,26 @@ export async function markEventSeen(env, eventId) {
 // thank-you URL from minting a second fake conversion.
 const BOOKING_TOKEN_TTL_SECONDS = 30 * 60;
 
-export async function rememberBookingToken(env, token) {
+export async function rememberBookingToken(env, token, eventId = '') {
   if (!token) return;
-  await tracking(env).put(`booktok:${token}`, '1', { expirationTtl: BOOKING_TOKEN_TTL_SECONDS });
+  // Store the shared Meta eventID (cal_<hash>) with the token so the thank-you
+  // page can fire its pixel Schedule with the SAME id the CAPI webhook uses,
+  // letting Meta deduplicate the browser + server events into one conversion.
+  await tracking(env).put(`booktok:${token}`, JSON.stringify({ e: eventId }), { expirationTtl: BOOKING_TOKEN_TTL_SECONDS });
 }
 
+// Single-use: returns { ok: true, eventId } the first time a valid token is
+// presented (then deletes it), or null for an unknown/used/expired token.
+// Tolerates the legacy '1' value from before tokens carried an eventID.
 export async function consumeBookingToken(env, token) {
-  if (!token) return false;
+  if (!token) return null;
   const key = `booktok:${token}`;
-  const found = await tracking(env).get(key);
-  if (found !== '1') return false;
+  const raw = await tracking(env).get(key);
+  if (!raw) return null;
   await tracking(env).delete(key);
-  return true;
+  let eventId = '';
+  try { eventId = (JSON.parse(raw) || {}).e || ''; } catch { eventId = ''; }
+  return { ok: true, eventId };
 }
 
 export async function rememberDailySeen(env, day, scope, key, ttlSeconds = COUNTER_TTL_SECONDS) {
