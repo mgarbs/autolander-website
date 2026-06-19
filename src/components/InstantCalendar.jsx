@@ -137,7 +137,11 @@ export default function InstantCalendar({ onClose, onFallback }) {
       const res = await submitBooking({ slotStartUTC: selectedSlot, ...form });
       if (res.ok) {
         setPhase('success');
-        window.setTimeout(() => window.location.assign(res.redirectPath || '/thank-you'), 1400);
+        // Carry the single-use booking token to the thank-you page so it can
+        // prove this is a genuine booking before firing the Schedule conversion.
+        const dest = res.redirectPath || '/thank-you';
+        const target = res.bt ? `${dest}?bt=${encodeURIComponent(res.bt)}` : dest;
+        window.setTimeout(() => window.location.assign(target), 1400);
         return;
       }
       if (res.reason === 'slot_taken') {

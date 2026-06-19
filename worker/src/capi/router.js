@@ -2,6 +2,7 @@ import { ACTION_SOURCE, buildEvent, sendEvents } from './meta-client.js';
 import { hashEmail, hashLowercase, hashName, hashPhone, sha256Hex } from './hash.js';
 import {
   bumpCounter,
+  consumeBookingToken,
   lookupVisitor,
   markEventSeen,
   pushRecentEvent,
@@ -14,6 +15,7 @@ import {
   cleanUtms,
   isAllowedEvent,
   isCustomEvent,
+  isInjectionProtectedEvent,
   isValidEventId,
   isValidFbc,
   isValidFbp,
@@ -225,6 +227,10 @@ export async function handleCapi(request, env, corsHeaders, ctx) {
     return handleCalendly(request, env, corsHeaders, ctx);
   }
 
+  if (url.pathname === '/capi/confirm' && request.method === 'POST') {
+    return handleConfirm(request, env, corsHeaders);
+  }
+
   return jsonResponse({ message: 'Not found' }, 404, corsHeaders);
 }
 
@@ -238,6 +244,22 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   const eventName = clean(body.event, 64);
   if (!isAllowedEvent(eventName)) {
     return jsonResponse({ ok: false, reason: 'unsupported_event' }, 400, corsHeaders);
+  }
+
+  // This endpoint is intentionally open (no auth) so the site can report soft
+  // signals (PageView, ViewContent, Lead, InitiateCheckout, engagement). The
+  // high-value conversions the ad campaign optimizes on must NOT be injectable
+  // here — `Schedule` comes only from the signed Calendly webhook and the
+  // booking-token-gated thank-you pixel. Refuse them outright.
+  if (isInjectionProtectedEvent(eventName)) {
+    return jsonResponse({ ok: false, reason: 'event_not_allowed_here' }, 403, corsHeaders);
+  }
+
+  // Real browser traffic always carries an Origin on this cross-site POST. The
+  // global gate only validates Origin when it is present, so a scripted client
+  // that simply omits the header would otherwise sail through — require it here.
+  if (!request.headers.get('Origin')) {
+    return jsonResponse({ ok: false, reason: 'origin_required' }, 403, corsHeaders);
   }
 
   const eventId = clean(body.eventId, 128);
@@ -608,6 +630,24 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
   if (ctx?.waitUntil) ctx.waitUntil(sendPromise);
   else await sendPromise;
 
+  return jsonResponse({ ok: true }, 200, corsHeaders);
+}
+
+// Redeem the single-use booking token minted by /api/book. Returns ok:true only
+// the first time a genuine, unexpired token is presented — the thank-you page
+// fires the `Schedule` pixel conversion only on that ok:true. No token, a reused
+// token, or an expired token => ok:false => no conversion. This is what stops a
+// bot, crawler, scanner, or a shared /thank-you link from minting a fake demo.
+async function handleConfirm(request, env, corsHeaders) {
+  const body = await safeJson(request);
+  const token = clean(body.bt, 64);
+  if (!/^[a-f0-9]{32}$/.test(token)) {
+    return jsonResponse({ ok: false, reason: 'invalid_token' }, 400, corsHeaders);
+  }
+  const redeemed = await consumeBookingToken(env, token);
+  if (!redeemed) {
+    return jsonResponse({ ok: false, reason: 'unrecognized_token' }, 403, corsHeaders);
+  }
   return jsonResponse({ ok: true }, 200, corsHeaders);
 }
 

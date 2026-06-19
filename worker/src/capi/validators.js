@@ -33,6 +33,25 @@ export function isCustomEvent(name) {
   return ALLOWED_CUSTOM_EVENTS.has(name);
 }
 
+// High-value conversion events that the public website NEVER sends through the
+// open /capi/track endpoint. `Schedule` (the demo-booked conversion the ad
+// campaign optimizes on) arrives only from the signature-verified Calendly
+// webhook and the booking-token-gated thank-you pixel; the others aren't fired
+// client-side at all. Refusing them here means a scripted POST to /capi/track
+// can't inject the conversions that steer ad delivery toward junk audiences.
+const INJECTION_PROTECTED_EVENTS = new Set([
+  'Schedule',
+  'Purchase',
+  'CompleteRegistration',
+  'Subscribe',
+  'AddPaymentInfo',
+  'Contact',
+]);
+
+export function isInjectionProtectedEvent(name) {
+  return INJECTION_PROTECTED_EVENTS.has(name);
+}
+
 export function isValidVid(value) {
   return typeof value === 'string' && VID_PATTERN.test(value);
 }

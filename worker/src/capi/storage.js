@@ -42,6 +42,27 @@ export async function markEventSeen(env, eventId) {
   await tracking(env).put(`evt:${eventId}`, '1', { expirationTtl: EVENT_DEDUPE_TTL_SECONDS });
 }
 
+// Single-use proof that a real booking just completed. /api/book mints one of
+// these on success; the thank-you page redeems it via /capi/confirm before it
+// is allowed to fire the `Schedule` pixel conversion. 30-minute TTL covers the
+// redirect + page load; single-use (delete on read) stops a shared or forwarded
+// thank-you URL from minting a second fake conversion.
+const BOOKING_TOKEN_TTL_SECONDS = 30 * 60;
+
+export async function rememberBookingToken(env, token) {
+  if (!token) return;
+  await tracking(env).put(`booktok:${token}`, '1', { expirationTtl: BOOKING_TOKEN_TTL_SECONDS });
+}
+
+export async function consumeBookingToken(env, token) {
+  if (!token) return false;
+  const key = `booktok:${token}`;
+  const found = await tracking(env).get(key);
+  if (found !== '1') return false;
+  await tracking(env).delete(key);
+  return true;
+}
+
 export async function rememberDailySeen(env, day, scope, key, ttlSeconds = COUNTER_TTL_SECONDS) {
   if (!day || !scope || !key) return false;
   const safeScope = String(scope).slice(0, 40).replace(/[^a-zA-Z0-9._:\-+]/g, '_');

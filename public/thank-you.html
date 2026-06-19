@@ -29,25 +29,42 @@
       'https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', '2087440198847151');
       fbq('track', 'PageView');
-      (function fireScheduleWithDedupe() {
-        try {
-          var params = new URLSearchParams(window.location.search);
-          var eventId = params.get('fb_event_id');
-          if (!eventId) {
+
+      // GENUINE-BOOKING GATE for the 'Schedule' conversion.
+      // The ad campaign optimizes on 'Schedule', so it must fire ONLY for a real
+      // booking — never on a bot, crawler, scanner, or a shared /thank-you link.
+      // /api/book hands this page a single-use token (?bt=...). We redeem it
+      // server-side and fire the conversion only if the Worker confirms the token
+      // was real and unused. No token (or a reused/expired one) => no conversion.
+      (function gateScheduleConversion() {
+        var WORKER = 'https://autolander-chatbot.michaelegarber.workers.dev';
+        var bt = '';
+        try { bt = new URLSearchParams(window.location.search).get('bt') || ''; } catch (e) {}
+        if (!/^[a-f0-9]{32}$/.test(bt)) return; // no proof of a real booking → fire nothing
+
+        fetch(WORKER + '/capi/confirm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          mode: 'cors',
+          credentials: 'omit',
+          body: JSON.stringify({ bt: bt })
+        })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (!data || !data.ok) return; // token rejected → not a genuine booking
             var match = document.cookie.match(/(?:^|;\s*)al_vid=([^;]+)/);
             var vid = match ? decodeURIComponent(match[1]) : '';
             var day = new Date().toISOString().slice(0, 10);
-            eventId = 'sched_' + (vid || 'anon') + '_' + day;
-          }
-          fbq('track', 'Schedule', { content_name: 'demo_booked', content_category: 'demo' }, { eventID: eventId });
-        } catch (err) {
-          fbq('track', 'Schedule', { content_name: 'demo_booked', content_category: 'demo' });
-        }
+            var eventId = 'sched_' + (vid || bt) + '_' + day;
+            fbq('track', 'Schedule', { content_name: 'demo_booked', content_category: 'demo' }, { eventID: eventId });
+            // Drop the token from the address bar so a refresh or copy can't replay it.
+            try { window.history.replaceState({}, document.title, window.location.pathname); } catch (e) {}
+          })
+          .catch(function () { /* tracking must never break the thank-you page */ });
       })();
       })();
     </script>
     <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2087440198847151&ev=PageView&noscript=1" /></noscript>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2087440198847151&ev=Schedule&noscript=1" /></noscript>
     <!-- End Meta Pixel Code -->
 
     <style>

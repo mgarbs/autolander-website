@@ -8,6 +8,7 @@
 
 import { createBooking, fetchAvailableTimes, isSlotAvailable } from '../calendly/client.js';
 import { sha256Hex } from '../capi/hash.js';
+import { rememberBookingToken } from '../capi/storage.js';
 
 const AVAIL_KEY = 'avail:demo';
 const FRESH_MS = 3 * 60 * 1000; // serve straight from cache
@@ -113,6 +114,16 @@ async function handleBook(request, env, corsHeaders, ctx) {
   }
 
   const body = await safeJson(request);
+
+  // Optional invisible bot challenge. Off by default (REQUIRE_BOOK_TURNSTILE
+  // unset/false) so live bookings are unaffected; once a Turnstile widget is
+  // added to the calendar and TURNSTILE_SECRET_KEY is set, flipping the flag
+  // blocks scripted /api/book abuse with no UX change for real users.
+  const challenge = await verifyBookTurnstile(request, env, body.turnstileToken);
+  if (!challenge.ok) {
+    return json({ ok: false, reason: 'verification_failed' }, 403, corsHeaders);
+  }
+
   const slotStartUTC = normalizeIso(body.slotStartUTC);
   const name = clean(body.name, 120);
   const email = clean(body.email, 160);
@@ -188,8 +199,16 @@ async function handleBook(request, env, corsHeaders, ctx) {
   // We do NOT fire a Schedule event here: the existing invitee.created webhook
   // sends the server-side CAPI Schedule, and the thank-you page fires the
   // browser Schedule — identical to the current Calendly flow.
+  //
+  // Mint a single-use token that proves THIS booking really happened. The
+  // thank-you page must redeem it (via /capi/confirm) before it is allowed to
+  // fire the `Schedule` pixel conversion, so a bot, crawler, or shared
+  // /thank-you link can no longer mint a fake "demo booked" conversion. We await
+  // the KV write so the token is readable by the time the redirect lands.
+  const bookingToken = newBookingToken();
+  await rememberBookingToken(env, bookingToken).catch(() => {});
   return json(
-    { ok: true, redirectPath: '/thank-you', startTime: slotStartUTC },
+    { ok: true, redirectPath: '/thank-you', startTime: slotStartUTC, bt: bookingToken },
     200,
     corsHeaders,
   );
@@ -243,6 +262,31 @@ async function enforceBookRateLimit(request, env) {
     limits.map((l, i) => env.CHAT_RATE_LIMITS.put(l.key, String(Number(counts[i] || 0) + 1), { expirationTtl: l.ttl })),
   );
   return { ok: true };
+}
+
+function newBookingToken() {
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function verifyBookTurnstile(request, env, token) {
+  if (env.REQUIRE_BOOK_TURNSTILE !== 'true') return { ok: true };
+  // Flag on but no secret configured yet → fail OPEN so a misconfig never blocks
+  // a real booking. The challenge only enforces once the secret is set.
+  if (!env.TURNSTILE_SECRET_KEY) return { ok: true };
+  if (!token) return { ok: false };
+  const form = new FormData();
+  form.append('secret', env.TURNSTILE_SECRET_KEY);
+  form.append('response', token);
+  form.append('remoteip', request.headers.get('CF-Connecting-IP') || '');
+  const resp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    body: form,
+  }).catch(() => null);
+  if (!resp) return { ok: true }; // network blip reaching Cloudflare → don't punish a real booking
+  const result = await resp.json().catch(() => ({}));
+  return result.success ? { ok: true } : { ok: false };
 }
 
 function normalizeIso(value) {
