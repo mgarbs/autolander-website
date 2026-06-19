@@ -117,6 +117,7 @@ async function handleBook(request, env, corsHeaders, ctx) {
   const name = clean(body.name, 120);
   const email = clean(body.email, 160);
   const phone = clean(body.phone, 40);
+  const phoneNorm = normalizePhone(phone);
   const textReminders = Boolean(body.textReminders);
   const role = clean(body.role, 60);
   const timezone = clean(body.timezone, 64) || HOST_TZ;
@@ -130,6 +131,7 @@ async function handleBook(request, env, corsHeaders, ctx) {
   if (!isEmail(email)) return json({ ok: false, reason: 'invalid_email' }, 400, corsHeaders);
   if (!name) return json({ ok: false, reason: 'missing_name' }, 400, corsHeaders);
   if (!phone) return json({ ok: false, reason: 'missing_phone' }, 400, corsHeaders);
+  if (!phoneNorm.ok) return json({ ok: false, reason: 'invalid_phone' }, 400, corsHeaders);
 
   // JIT re-check: Calendly is the arbiter, but this gives a clean "just taken" UX
   // instead of a generic failure.
@@ -141,7 +143,7 @@ async function handleBook(request, env, corsHeaders, ctx) {
 
   const tracking = buildTracking(vid, utms);
   const questionsAndAnswers = [
-    { question: PHONE_QUESTION, answer: phone, position: 0 },
+    { question: PHONE_QUESTION, answer: phoneNorm.pretty, position: 0 },
   ];
   // Positions must match the event type exactly: phone=0, role=1, reminders=2.
   if (role) {
@@ -157,7 +159,7 @@ async function handleBook(request, env, corsHeaders, ctx) {
       startTimeIso: slotStartUTC,
       name,
       email,
-      phone,
+      phone: phoneNorm.e164,
       timezone,
       textReminders,
       tracking,
@@ -257,8 +259,41 @@ function isValidVid(value) {
   return typeof value === 'string' && /^v_[a-z0-9]{12,40}$/i.test(value);
 }
 
+// Mirror of src/lib/contact.js — keep the two in lockstep so a number/email the
+// browser accepts is the same one the server accepts.
 function isEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  // DNS-style domain labels + 2+ char alphabetic TLD; local part permissive.
+  return /^[^\s@]+@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/i.test(value);
+}
+
+// Strict phone normalize. Returns { ok, e164, pretty }; ok=false for anything
+// that isn't a usable number.
+function normalizePhone(raw) {
+  const s = typeof raw === 'string' ? raw.trim() : '';
+  const hasPlus = s.startsWith('+');
+  const digits = s.replace(/\D/g, '');
+
+  // North American first — handles a bare 10-digit number AND country code 1
+  // (with or without a +), so a +1 number can't skip the NANP rule. NPA + NXX
+  // must each start 2-9.
+  let nat = digits;
+  if (nat.length === 11 && nat.startsWith('1')) nat = nat.slice(1);
+  if (/^[2-9]\d{2}[2-9]\d{6}$/.test(nat)) {
+    return {
+      ok: true,
+      e164: `+1${nat}`,
+      pretty: `(${nat.slice(0, 3)}) ${nat.slice(3, 6)}-${nat.slice(6)}`,
+    };
+  }
+
+  // International only when explicitly prefixed with + (country code 1 is NANP,
+  // handled above). 8-15 digits, E.164 shape.
+  if (hasPlus && !digits.startsWith('1') && /^[1-9]\d{7,14}$/.test(digits)) {
+    const e164 = `+${digits}`;
+    return { ok: true, e164, pretty: e164 };
+  }
+
+  return { ok: false, e164: '', pretty: '' };
 }
 
 function clean(value, max) {

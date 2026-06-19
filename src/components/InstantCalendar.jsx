@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Check, ArrowLeft, Loader2, CalendarClock, Video, BadgeDollarSign } from 'lucide-react';
 import { getAvailability, submitBooking, visitorTimezone } from '../lib/booking.js';
+import { formatPhoneInput, isValidEmail, isValidPhone } from '../lib/contact.js';
 import { track } from '../lib/meta-pixel.js';
 
 // Design + conversion copy from the Gemini "Instant Calendar" brief; data,
@@ -51,6 +52,7 @@ export default function InstantCalendar({ onClose, onFallback }) {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [form, setForm] = useState({ name: '', email: '', phone: '', role: '', textReminders: true });
   const [formError, setFormError] = useState('');
+  const [invalid, setInvalid] = useState({ email: false, phone: false });
   const abbr = useMemo(() => tzAbbr(), []);
 
   const load = useCallback(async () => {
@@ -104,14 +106,25 @@ export default function InstantCalendar({ onClose, onFallback }) {
   const chooseSlot = (iso) => {
     setSelectedSlot(iso);
     setFormError('');
+    setInvalid({ email: false, phone: false });
     setPhase('capture');
     track('Lead', { content_name: 'demo_slot_selected', content_category: 'demo' });
   };
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
-      setFormError('Please fill in your name, email, and phone.');
+    if (!form.name.trim()) {
+      setFormError('Please enter your full name.');
+      return;
+    }
+    if (!isValidEmail(form.email)) {
+      setFormError('Enter a valid email address, like you@dealership.com.');
+      setInvalid((v) => ({ ...v, email: true }));
+      return;
+    }
+    if (!isValidPhone(form.phone)) {
+      setFormError('Enter a valid mobile number, e.g. (212) 555-0123.');
+      setInvalid((v) => ({ ...v, phone: true }));
       return;
     }
     if (!form.role) {
@@ -132,6 +145,18 @@ export default function InstantCalendar({ onClose, onFallback }) {
         setSelectedSlot(null);
         setPhase('browse');
         load();
+        return;
+      }
+      if (res.reason === 'invalid_phone') {
+        setFormError('That phone number doesn’t look right — please re-enter it.');
+        setInvalid((v) => ({ ...v, phone: true }));
+        setPhase('capture');
+        return;
+      }
+      if (res.reason === 'invalid_email') {
+        setFormError('That email doesn’t look right — please re-enter it.');
+        setInvalid((v) => ({ ...v, email: true }));
+        setPhase('capture');
         return;
       }
       setFormError('Something went wrong booking that slot. Try another time.');
@@ -241,7 +266,7 @@ export default function InstantCalendar({ onClose, onFallback }) {
 
           {/* Capture */}
           {phase === 'capture' && selectedSlot && (
-            <form onSubmit={submit} className="space-y-3">
+            <form onSubmit={submit} noValidate className="space-y-3">
               <div className="rounded-2xl border border-blue-500/30 bg-blue-500/10 px-4 py-3">
                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300">Reserving</div>
                 <div className="text-base font-black italic uppercase text-white">
@@ -254,14 +279,26 @@ export default function InstantCalendar({ onClose, onFallback }) {
                 className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
               />
               <input
-                required type="email" placeholder="Email" autoComplete="email"
-                value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
+                required type="email" inputMode="email" placeholder="Email" autoComplete="email"
+                value={form.email}
+                onChange={(e) => {
+                  setForm({ ...form, email: e.target.value });
+                  if (invalid.email) setInvalid((v) => ({ ...v, email: false }));
+                }}
+                onBlur={() => setInvalid((v) => ({ ...v, email: form.email.trim() !== '' && !isValidEmail(form.email) }))}
+                aria-invalid={invalid.email}
+                className={`w-full rounded-xl border bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500/30 ${invalid.email ? 'border-red-500/70 focus:border-red-500/70' : 'border-white/10 focus:border-blue-500/60'}`}
               />
               <input
-                required type="tel" placeholder="Mobile phone" autoComplete="tel"
-                value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
+                required type="tel" inputMode="tel" placeholder="Mobile phone" autoComplete="tel"
+                value={form.phone}
+                onChange={(e) => {
+                  setForm({ ...form, phone: formatPhoneInput(e.target.value) });
+                  if (invalid.phone) setInvalid((v) => ({ ...v, phone: false }));
+                }}
+                onBlur={() => setInvalid((v) => ({ ...v, phone: form.phone.trim() !== '' && !isValidPhone(form.phone) }))}
+                aria-invalid={invalid.phone}
+                className={`w-full rounded-xl border bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500/30 ${invalid.phone ? 'border-red-500/70 focus:border-red-500/70' : 'border-white/10 focus:border-blue-500/60'}`}
               />
 
               {/* Role — segmented selector */}
