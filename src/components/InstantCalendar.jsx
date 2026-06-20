@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useMemo, useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import { X, Check, ArrowLeft, Loader2, CalendarClock, Video, BadgeDollarSign, Globe, Warehouse } from 'lucide-react';
 import { getAvailability, submitBooking, visitorTimezone } from '../lib/booking.js';
 import { formatPhoneInput, isValidEmail, isValidPhone } from '../lib/contact.js';
@@ -14,10 +14,6 @@ const INVENTORY = ['1-50', '51-150', '151+'];
 // Only show the "🔥 N slots left" urgency line once availability is genuinely
 // low — never at the start of the day when there are 20+ open.
 const LOW_SLOT_THRESHOLD = 4;
-// Invisible Cloudflare Turnstile on booking submit (bot protection). Dormant
-// until VITE_TURNSTILE_SITE_KEY is set; the worker only enforces when
-// REQUIRE_BOOK_TURNSTILE is on, so an unconfigured build books exactly as before.
-const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
 function tzAbbr() {
   try {
@@ -65,9 +61,6 @@ export default function InstantCalendar({ onClose }) {
   const [form, setForm] = useState({ name: '', email: '', phone: '', role: '', website: '', inventory: '', textReminders: true, company: '' });
   const [formError, setFormError] = useState('');
   const [invalid, setInvalid] = useState({ email: false, phone: false, website: false });
-  const [turnstileToken, setTurnstileToken] = useState('');
-  const turnstileRef = useRef(null);
-  const turnstileWidgetRef = useRef(null);
   const abbr = useMemo(() => tzAbbr(), []);
 
   const load = useCallback(async () => {
@@ -93,48 +86,6 @@ export default function InstantCalendar({ onClose }) {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = prev; };
   }, []);
-
-  // Load + render the invisible Turnstile widget once. It runs silently and keeps
-  // a fresh token in state via the callback; we attach that token to the booking
-  // submit. Entirely a no-op when no sitekey is configured.
-  useEffect(() => {
-    if (!TURNSTILE_SITE_KEY || !turnstileRef.current) return;
-    const render = () => {
-      if (!window.turnstile || turnstileWidgetRef.current !== null) return;
-      turnstileWidgetRef.current = window.turnstile.render(turnstileRef.current, {
-        sitekey: TURNSTILE_SITE_KEY,
-        size: 'invisible',
-        callback: setTurnstileToken,
-        'expired-callback': () => setTurnstileToken(''),
-        'error-callback': () => setTurnstileToken(''),
-      });
-    };
-    if (!window.turnstile) {
-      const existing = document.querySelector('script[data-turnstile]');
-      if (!existing) {
-        const s = document.createElement('script');
-        s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
-        s.async = true;
-        s.defer = true;
-        s.dataset.turnstile = 'true';
-        s.onload = render;
-        document.head.appendChild(s);
-      } else {
-        existing.addEventListener('load', render, { once: true });
-      }
-      return;
-    }
-    render();
-  }, []);
-
-  // Turnstile tokens are single-use, so fetch a fresh one after any submit
-  // attempt that didn't navigate away.
-  const resetTurnstile = () => {
-    setTurnstileToken('');
-    if (window.turnstile && turnstileWidgetRef.current !== null) {
-      try { window.turnstile.reset(turnstileWidgetRef.current); } catch { /* ignore */ }
-    }
-  };
 
   const days = useMemo(() => {
     const map = new Map();
@@ -200,7 +151,7 @@ export default function InstantCalendar({ onClose }) {
     setPhase('submitting');
     setFormError('');
     try {
-      const res = await submitBooking({ slotStartUTC: selectedSlot, ...form, turnstileToken });
+      const res = await submitBooking({ slotStartUTC: selectedSlot, ...form });
       if (res.ok) {
         setPhase('success');
         // Carry the single-use booking token to the thank-you page so it can
@@ -210,9 +161,8 @@ export default function InstantCalendar({ onClose }) {
         window.setTimeout(() => window.location.assign(target), 1400);
         return;
       }
-      // Any non-success path can be retried; Turnstile tokens are single-use, so
-      // queue a fresh one for the next attempt.
-      resetTurnstile();
+      // Any non-success path can be retried — surface the reason below and keep
+      // the user on the form so they never hit a dead end.
       if (res.reason === 'verification_failed') {
         setFormError('Quick security check didn’t pass — please try again.');
         setPhase('capture');
@@ -257,18 +207,15 @@ export default function InstantCalendar({ onClose }) {
   };
 
   return (
-    <AnimatePresence>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
         onClick={onClose}
         className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-8 bg-black/80 backdrop-blur-md"
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.94, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.94, y: 30 }}
           transition={{ type: 'spring', damping: 26, stiffness: 320 }}
           onClick={(e) => e.stopPropagation()}
           className="relative w-full max-w-md max-h-[85vh] overflow-y-auto rounded-3xl border border-white/10 bg-[#0a0a0f]/95 p-6 shadow-2xl shadow-black/60"
@@ -280,9 +227,6 @@ export default function InstantCalendar({ onClose }) {
           >
             <X className="h-4 w-4" />
           </button>
-
-          {/* Invisible Turnstile widget (bot protection) — renders nothing visible. */}
-          <div ref={turnstileRef} />
 
           {/* Header */}
           <div className="mb-5 pr-10">
@@ -552,6 +496,5 @@ export default function InstantCalendar({ onClose }) {
           )}
         </motion.div>
       </motion.div>
-    </AnimatePresence>
   );
 }

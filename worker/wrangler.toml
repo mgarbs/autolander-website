@@ -22,9 +22,13 @@ SUPPORT_IP_HOURLY_LIMIT = "2"
 SUPPORT_EMAIL = "sales@autolander.ai"
 DEMO_URL = "https://calendly.com/autolander/demo"
 REQUIRE_TURNSTILE = "false"
-# Invisible bot challenge on /api/book. Off until a Turnstile widget is added to
-# the calendar UI and TURNSTILE_SECRET_KEY is set; flip to "true" to enforce.
-REQUIRE_BOOK_TURNSTILE = "true"
+# Invisible bot challenge on /api/book. DISABLED 2026-06-20: the invisible Turnstile
+# token is frequently absent/expired in privacy browsers and the Facebook/Instagram
+# in-app webview (which carries the paid traffic), so real prospects 403 silently and
+# the booking button appears dead. Honeypot + bot-filter + rate-limit + single-use
+# booking token still protect /api/book. Do not re-enable without a visible, reliable
+# widget verified in the FB/IG in-app webview.
+REQUIRE_BOOK_TURNSTILE = "false"
 # Native booking: Calendly event type to mirror/book (AutoLander Demo).
 CALENDLY_EVENT_TYPE_URI = "https://api.calendly.com/event_types/8969cc69-05d5-4c3d-8ec9-20309f721b2f"
 
