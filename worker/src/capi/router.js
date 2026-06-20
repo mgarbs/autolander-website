@@ -647,6 +647,14 @@ async function handleConfirm(request, env, corsHeaders) {
   if (looksLikeBot(request).bot) {
     return jsonResponse({ ok: false, reason: 'blocked' }, 403, corsHeaders);
   }
+  // Real booker traffic reaches this cross-site POST from the thank-you page with
+  // an Origin header (a CORS JSON POST always sends one). Require it — mirroring
+  // /capi/track — so a leaked single-use bt token can't be redeemed from a
+  // non-browser context. The global gate (index.js) validates the Origin value
+  // when present; here we just refuse a missing one.
+  if (!request.headers.get('Origin')) {
+    return jsonResponse({ ok: false, reason: 'origin_required' }, 403, corsHeaders);
+  }
   const body = await safeJson(request);
   const token = clean(body.bt, 64);
   if (!/^[a-f0-9]{32}$/.test(token)) {

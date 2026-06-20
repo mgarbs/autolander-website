@@ -292,7 +292,13 @@ function buildHealth(totals) {
   let serverShare = null;
   let browserShare = null;
 
-  const tracked = ['PageView', 'ViewContent', 'Lead', 'InitiateCheckout', 'Schedule'];
+  // Schedule is intentionally excluded from the browser/server dedupe health math:
+  // its browser leg fires the pixel straight to Meta (never hits the Worker, so
+  // there is no `Schedule:browser` counter), while the Calendly webhook bumps both
+  // `Schedule` and `Schedule:server`. Including it would skew browser/server/deduped
+  // shares with a phantom "server-only" event. The "Booked Demos" KPI is computed
+  // separately from the deduped `Schedule` total and is unaffected.
+  const tracked = ['PageView', 'ViewContent', 'Lead', 'InitiateCheckout'];
   let total = 0;
   let browser = 0;
   let server = 0;
