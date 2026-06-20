@@ -57,7 +57,7 @@ function isWebsite(value) {
   return /^[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}(?:[/?#].*)?$/i.test(v);
 }
 
-export default function InstantCalendar({ onClose, onFallback }) {
+export default function InstantCalendar({ onClose }) {
   const [phase, setPhase] = useState('loading'); // loading | browse | capture | submitting | success | empty | error
   const [slots, setSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
@@ -510,18 +510,35 @@ export default function InstantCalendar({ onClose, onFallback }) {
             </div>
           )}
 
-          {/* Empty / Error → Calendly fallback so we never lose a booking */}
+          {/* Empty / Error — keep the lead with retry + email instead of an
+              off-site Calendly hand-off (that path skipped our website check). */}
           {(phase === 'empty' || phase === 'error') && (
             <div className="grid place-items-center gap-4 py-10 text-center">
               <p className="text-sm font-bold uppercase italic text-slate-200">
                 {phase === 'empty' ? 'No open times right now.' : "Couldn't load the calendar."}
               </p>
-              <button
-                onClick={() => { onFallback?.(); onClose?.(); }}
-                className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-black uppercase italic text-white transition-colors hover:bg-blue-500"
-              >
-                Book the classic way
-              </button>
+              <p className="max-w-xs text-xs leading-relaxed text-slate-400">
+                {phase === 'empty'
+                  ? "Email us and we'll get you on the calendar this week."
+                  : "Give it another go, or email us and we'll book you in."}
+              </p>
+              <div className="flex w-full flex-col gap-2">
+                {phase === 'error' && (
+                  <button
+                    type="button"
+                    onClick={() => { setPhase('loading'); load(); }}
+                    className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-black uppercase italic text-white transition-colors hover:bg-blue-500 active:scale-[0.99]"
+                  >
+                    Try again
+                  </button>
+                )}
+                <a
+                  href="mailto:sales@autolander.ai?subject=Book%20a%20demo"
+                  className="rounded-xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-black uppercase italic text-white transition-colors hover:bg-white/10"
+                >
+                  Email us to book
+                </a>
+              </div>
             </div>
           )}
 
