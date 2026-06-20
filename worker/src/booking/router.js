@@ -21,7 +21,7 @@ const HOST_TZ = 'America/New_York';
 // below MUST match the event type's question order verbatim.
 const PHONE_QUESTION = 'What is the best phone number to reach you at?';
 const ROLE_QUESTION = 'Are you a dealership owner, manager or sales rep?';
-const WEBSITE_QUESTION = "What's your dealership's website? (AutoLander is software for dealers — we don't sell vehicles.)";
+const WEBSITE_QUESTION = "What's your dealership's website? (AutoLander is software for dealers — we don't sell or finance vehicles.)";
 const INVENTORY_QUESTION = 'How many vehicles do you currently have in inventory?';
 const TEXT_REMINDER_QUESTION = 'Get text reminders about your demo';
 const INVENTORY_CHOICES = ['1-50', '51-150', '151+'];
