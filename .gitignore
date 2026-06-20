@@ -32,3 +32,17 @@ dist-ssr
 .dryrun/
 .probe/
 .playwright-mcp/
+
+# Local debug screenshots & session notes (kept on disk, not committed)
+/admin-page-render.txt
+/advert-homepage.jpg
+/booking-form-new.png
+/changes.txt.txt
+/chat-empty.png
+/chat-state.png
+/hero-cars.png
+/incorrect-data.txt
+/handoff.txt
+/local-modal-visible.png
+/mobile-scrolled.png
+/mobile-top.png
