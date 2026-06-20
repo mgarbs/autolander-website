@@ -38,20 +38,10 @@
     <meta name="twitter:image:alt" content="AutoLander helps car dealers automatically post inventory to Facebook Marketplace." />
 
     <link rel="preload" as="image" href="/autolander-logo.png" fetchpriority="high" />
-    <!-- Meta Pixel Code -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '2087440198847151');
-      fbq('track', 'PageView');
-    </script>
-    <!-- End Meta Pixel Code -->
+    <!-- Meta Pixel: injected at build time by vite.config.js (htmlTransformPlugin) from
+         VITE_META_PIXEL_ID — init only. PageView and all events are fired by src/lib/tracker.js
+         with a shared event_id so the browser Pixel and server CAPI dedupe into one. Preview
+         builds inject nothing (no Pixel on preview). -->
     <title>AutoLander — Sell 8-12 more cars a month on autopilot</title>
     <style>
       /* Critical fallback so first paint isn't a white flash before JS loads */
@@ -60,7 +50,7 @@
     </style>
   </head>
   <body>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2087440198847151&ev=PageView&noscript=1" /></noscript>
+    <!-- <noscript> Meta Pixel fallback is injected at build time by vite.config.js -->
     <script>
       (() => {
         const staleAppHashRoutes = new Set(['#/login', '#/sign-in', '#/signin', '#/auth', '#/signup']);

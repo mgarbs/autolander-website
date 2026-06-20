@@ -37,7 +37,6 @@ function htmlTransformPlugin(pixelId, isPreview) {
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', '${pixelIdJs}');
-      fbq('track', 'PageView');
     </script>
     <!-- End Meta Pixel Code -->`
       const noscript = `    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${pixelIdParam}&ev=PageView&noscript=1" /></noscript>`
