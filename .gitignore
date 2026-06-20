@@ -46,3 +46,11 @@ dist-ssr
 /local-modal-visible.png
 /mobile-scrolled.png
 /mobile-top.png
+
+# Internal docs, design drafts & unshipped asset sources (PUBLIC repo — keep local)
+/funnel-improvements.md
+/og-template.html
+/instant-calendar/
+/public/marketplace-video-poster.png
+/public/studio-after.png
+/public/studio-before.png
