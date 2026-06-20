@@ -57,24 +57,27 @@ Your live custom conversion (read directly from the ad account):
 
 **Why this inflates:** the campaign optimizes toward — and reports — *every* load of a `/thank-you` URL. Real bookings are a small fraction of that; the rest is refreshes, the back button, bookmarks, link previews, security scanners, and crawlers. Meta then spends budget chasing whatever produces more `/thank-you` loads (often cheap/bot traffic), not real dealers. This is the 107‑reported‑vs‑~12‑real gap, and it is **independent of every code fix** because it watches the URL, not the booking.
 
-### The fix (in Meta Events Manager / Ads Manager)
+### The fix (in Meta Events Manager)
 
 **Goal:** count a conversion only when a real booking happens — i.e., on the `Schedule` event, which the site now fires only on a verified booking and de‑duplicates between browser and server.
 
-**Recommended — optimize on the standard `Schedule` event:**
-1. Ads Manager → your campaign/ad set → **Edit**.
-2. **Performance goal / Conversion event** → Dataset **"AutoLander Web"** (pixel `2087440198847151`) → choose **`Schedule`**.
-3. Save. The ad set now optimizes + reports on real, deduped bookings.
+**You do NOT create a new *event*.** `Schedule` already fires correctly from the site. You create a new **Custom Conversion** that points at that existing `Schedule` event, to replace the archived URL‑based one. (Ads are currently paused, so this is setup for relaunch — there is no live campaign to edit yet.)
 
-**OR — create a clean named custom conversion (if you want a custom name/value):**
-1. Events Manager → **Custom Conversions** → **Create**.
-2. Data source: **AutoLander Web**.
-3. **Conversion event: `Schedule`** (a standard event) — **do NOT** choose "All URL traffic"/a URL rule.
-4. (Optional) add rule `content_name = demo_booked` for extra specificity. **Do not add any URL condition.**
-5. Name it e.g. **"Demo Booked (Verified)"**; set a value if you use value optimization.
-6. Point the campaign/ad set at this new conversion.
+**Create the custom conversion:**
+1. Events Manager → **Custom Conversions** → **Create Custom Conversion**.
+2. **Data source:** AutoLander Web (pixel `2087440198847151`).
+3. **Conversion event:** select **`Schedule`** from the dropdown — **NOT** "All URL Traffic", and do **not** add a "URL contains /thank-you" rule.
+   - *Optional precision:* add rule **`content_name` contains `demo_booked`** (every real booking sends this).
+4. **Name:** `Demo Booked (Verified)`.
+5. **Category:** Schedule (or "Book appointment").
+6. **Value:** optional — set what a demo is worth if you use value optimization.
+7. **Create.**
 
-**Critical:** do **not** simply duplicate "Demo Booked Calendly" — that reproduces the leak. Switch the campaign **off** the URL‑based one (archive/pause it once the new one is live).
+`Schedule` appears in the dropdown because it is already firing (a verification booking fired one on 2026‑06‑20, and every real Calendly booking fires it server‑side).
+
+**On relaunch:** set the ad set's **Conversion event** to either the **Demo Booked (Verified)** custom conversion or the standard **Schedule** event directly — both reflect real, deduped bookings.
+
+**Critical:** do **not** recreate "Demo Booked Calendly" or any rule based on the `/thank-you` URL — that reproduces the leak.
 
 **Optional cleanup — automatic events:** Meta's automatic event detection was inferring `SubscribedButtonClick` from time‑slot button clicks. As long as the campaign optimizes on `Schedule` (above), these are just noise, not counted conversions. If you want them gone: Events Manager → the dataset → **Settings** → turn off automatic/"track events without code" button detection.
 

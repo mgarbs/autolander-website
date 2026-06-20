@@ -24,5 +24,11 @@ dist-ssr
 *.sln
 *.sw?
 
-admin-credentials.local.txt
+*.local.txt
 .handoff/
+
+# Tooling caches & local scratch (regenerable — never commit)
+.wrangler/
+.dryrun/
+.probe/
+.playwright-mcp/
