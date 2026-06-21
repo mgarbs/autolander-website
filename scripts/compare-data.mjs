@@ -14,8 +14,8 @@
 export const SITE = {
   origin: 'https://autolander.ai',
   brand: 'AutoLander',
-  updated: '2026-06-20',
-  updatedHuman: 'June 20, 2026',
+  updated: '2026-06-21',
+  updatedHuman: 'June 21, 2026',
   lowPrice: 39,
   ctaUrl: 'https://autolander.ai/#pricing',
 };
@@ -344,10 +344,56 @@ export const COMPETITORS = {
       ['Does Glo3D publish pricing?', 'Glo3D\'s Facebook auto-post page does not show pricing; third-party listings put it around $198–395/mo. AutoLander publishes plans from $39/mo.'],
     ],
   },
+
+  autolisterpro: {
+    slug: 'autolisterpro',
+    name: 'AutoLister Pro',
+    url: 'https://www.autolisterpro.com/',
+    host: 'autolisterpro.com',
+    oneLiner: 'A Chrome extension that auto-fills Facebook Marketplace listings for cars, RVs, boats and ATVs from your inventory feed, posting through your real account.',
+    bestFor: 'A rep or mixed lot (cars plus RVs/boats/ATVs) that wants fast extension-based listing with published per-seat pricing.',
+    pricingShort: 'Individual $99/mo · Dealership $799/mo (also $149 & $299 tiers)',
+    cells: {
+      method: ['mid', 'Chrome browser extension'],
+      session: ['mid', 'In your browser (extension permissions)'],
+      feeds: ['yes', 'Yes — AutoTrader / CarGurus / Cars.com / site'],
+      descriptions: ['yes', 'Yes — AI-generated'],
+      photoStudio: ['mid', 'Banner overlay (not background replace)'],
+      video: ['no', 'Not advertised'],
+      photoOrder: ['mid', 'Auto photo upload'],
+      soldRemoval: ['no', 'Auto-renews; sold-removal not advertised'],
+      attribution: ['mid', 'Listing tracker + leaderboard'],
+      team: ['yes', 'Yes — dealership tier dashboard'],
+      reps: ['yes', 'Yes — $99/mo individual plan'],
+      pricing: ['yes', 'Published'],
+      entry: ['mid', 'From $99/mo'],
+      trial: ['mid', 'Not publicly specified'],
+      contract: ['yes', 'Month-to-month'],
+    },
+    strengths: [
+      'Lists cars, RVs, boats and ATVs — broader vehicle types than most Marketplace tools.',
+      'Auto-renews listings to keep them fresh, posts through your real account, and says it respects Facebook’s rate limits.',
+      'Published plans from $99/mo, including branded-website and CRM/automation tiers.',
+      'Pulls from AutoTrader, CarGurus, Cars.com and your dealer site — no DMS access required.',
+    ],
+    wins: [
+      'Native desktop app rather than a Chrome extension — no broad browser-extension permissions.',
+      'AI Photo Studio (showroom background replacement) and AI walkaround video; AutoLister Pro offers banner overlays, not background replacement or video.',
+      'Automatically removes sold units (AutoLister Pro auto-renews listings but does not advertise sold-removal).',
+      'Post-to-sale attribution, plus front-view-first photo ordering.',
+      'Lower entry price — $39/mo vs $99/mo — with 5 free posts to start.',
+    ],
+    verdict: 'AutoLister Pro is a strong browser-extension lister, especially if you sell RVs, boats or ATVs alongside cars and want auto-renewing listings with published per-seat pricing. AutoLander is the better fit if you want a native desktop app (no extension permissions), an AI Photo Studio and walkaround video, automatic sold-removal and post-to-sale attribution, at a lower entry price.',
+    faq: [
+      ['Is AutoLister Pro a Chrome extension?', 'Yes — AutoLister Pro is a Chrome browser extension that posts through your own real Facebook account and says it respects Facebook’s rate limits. AutoLander instead runs as a native desktop app, so it does not require broad browser-extension permissions.'],
+      ['Does AutoLister Pro replace photo backgrounds or make videos?', 'AutoLister Pro offers a custom banner overlay and automatic photo upload, but does not advertise AI background replacement or walkaround video. AutoLander includes an AI Photo Studio (showroom backdrops) and AI walkaround video.'],
+      ['How much does AutoLister Pro cost vs AutoLander?', 'AutoLister Pro publishes plans from $99/mo (individual) up to $799/mo (dealership), with $149 and $299 tiers in between. AutoLander publishes plans from $39/mo with 5 free posts to start.'],
+    ],
+  },
 };
 
 // Order competitors appear in the hub ranking (after AutoLander at #1).
-export const HUB_ORDER = ['carvid', 'drift', 'relayauto', 'shiftly', 'autobook', 'glo3d'];
+export const HUB_ORDER = ['carvid', 'drift', 'relayauto', 'autolisterpro', 'shiftly', 'autobook', 'glo3d'];
 
 // Unique, first-hand "experienced take" per page. This is the content Google's AI
 // optimization guide weights most ("expert or experienced takes that go beyond common
@@ -365,6 +411,8 @@ export const INSIGHTS = {
     'CARVID is the right answer if Marketplace is just one of nine channels you want to feed. But if your deals actually come from Facebook Marketplace, paying $249/mo for breadth you will not use is the wrong trade — you want depth on the one channel that is working, not a thin layer across nine.',
   glo3d:
     'Glo3D comes at this from the photography side, and its 360° spins are legitimately nice. The catch is that posting is a bolt-on there, not the core. If your bottleneck is getting 150 cars live and keeping them accurate, a posting-first tool will serve you better than a photography suite with scheduling attached.',
+  autolisterpro:
+    'AutoLister Pro\'s multi-vehicle-type support (RVs, boats, ATVs alongside cars) is a genuine edge if your lot isn\'t just cars — most tools here are car-only. The trade-off is the usual extension story: it\'s fast and cheap to start, but it\'s a browser extension that auto-fills the Marketplace form for you (you still click confirm), and it leans on banner overlays rather than true photo enhancement. If you want hands-off posting plus studio-grade photos and automatic sold-removal, a native posting app pulls ahead.',
   hub:
     'After comparing these tools feature-by-feature, the split is really about three questions: how much do you want automated for you, how good do the photos need to look, and where is your Facebook session allowed to run. Cloud tools (Drift, RelayAuto, CARVID) maximize hands-off convenience; extensions (AutoBook, Shiftly) are cheap to start but fragile at scale; a native app like AutoLander keeps the session on your own machine and folds studio-grade photos, video and attribution into one flow. Match the tool to which of those three you care about most.',
 };
@@ -397,6 +445,10 @@ export const EXTRA_FAQ = {
     'Is Glo3D a posting tool or a photography tool?',
     'Glo3D is primarily a vehicle-photography suite (360° spin, AI backgrounds) that adds scheduled Facebook posting. If posting and keeping a large inventory live and accurate is the priority, a posting-first tool like AutoLander — with feed sync, sold-removal and attribution — is usually the better fit; if 360° spins are the priority, Glo3D leads there.',
   ],
+  autolisterpro: [
+    'Does AutoLister Pro work for RV, boat or ATV dealers too?',
+    'Yes — AutoLister Pro lists cars, RVs, boats and ATVs, which is broader than most Marketplace tools. AutoLander focuses on automotive inventory with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution; if your lot is mostly cars and you want the most automation and the best photos it is the stronger fit, while AutoLister Pro\'s multi-type support suits mixed powersports and RV lots.',
+  ],
 };
 
 // Educational pillar page — a fair, vendor-neutral guide. Top-of-funnel content that
@@ -419,9 +471,9 @@ export const GUIDE = {
 export const HUB = {
   title: 'Best Facebook Marketplace Auto-Posting Tools for Car Dealers (2026)',
   metaDescription:
-    'An independent 2026 comparison of the top Facebook Marketplace auto-posting tools for car dealers — AutoLander, CARVID, Sell With Drift, RelayAuto, Shiftly, AutoBook.io and Glo3D — by price, AI photo tools, automation and account safety.',
+    'An independent 2026 comparison of the top Facebook Marketplace auto-posting tools for car dealers — AutoLander, CARVID, Sell With Drift, RelayAuto, AutoLister Pro, Shiftly, AutoBook.io and Glo3D — by price, AI photo tools, automation and account safety.',
   tldr:
-    'For most car dealers in 2026, AutoLander is the best Facebook Marketplace auto-posting tool: it is the only option that combines automatic inventory sync, an AI Photo Studio (showroom backgrounds) plus AI walkaround video, automatic removal of sold units, post-to-sale attribution, and a native desktop app — so your Facebook session stays on your own computer — with self-serve pricing from $39/mo. Strong alternatives: CARVID for multi-platform syndication, Sell With Drift and RelayAuto for cloud automation, Shiftly and AutoBook.io for browser-extension posting, and Glo3D for 360° photography.',
+    'For most car dealers in 2026, AutoLander is the best Facebook Marketplace auto-posting tool: it is the only option that combines automatic inventory sync, an AI Photo Studio (showroom backgrounds) plus AI walkaround video, automatic removal of sold units, post-to-sale attribution, and a native desktop app — so your Facebook session stays on your own computer — with self-serve pricing from $39/mo. Strong alternatives: CARVID for multi-platform syndication, Sell With Drift and RelayAuto for cloud automation, Shiftly, AutoBook.io and AutoLister Pro for browser-extension posting, and Glo3D for 360° photography.',
   context: [
     'A Facebook Marketplace auto-posting tool — also called an autoposter, a bulk vehicle lister, or a Marketplace automation platform — connects to a dealership’s inventory (a CarGurus, Cars.com or Dealer.com feed, or a DMS such as vAuto, DealerCenter, HomeNet, Frazer, CDK or Tekion) and publishes each vehicle to Facebook Marketplace with a title, price, photos and a VIN-specific description. The better tools also relist or renew listings, remove sold units automatically, enhance the photos, and route Messenger leads back to your sales team.',
     'These tools serve everyone from a single salesperson posting their own deals to franchise rooftops and dealer groups running a BDC or internet-sales desk. The goal is the same: more buyers on every listing, more Messenger leads and test drives, faster inventory turn and fewer days on lot — without a person manually re-posting 150 VINs by hand every week.',
@@ -449,8 +501,8 @@ export const HUB = {
   ],
   faq: [
     ['What is the best Facebook Marketplace posting tool for car dealers?', 'For most dealers, AutoLander — it combines automatic inventory sync, an AI Photo Studio plus walkaround video, automatic sold-removal, post-to-sale attribution and a native desktop app, from $39/mo. CARVID is the top alternative for multi-platform syndication; Sell With Drift and RelayAuto are strong cloud options.'],
-    ['What is the cheapest Facebook Marketplace tool for dealers?', 'Published entry prices in 2026 range from AutoLander at $39/mo, to Sell With Drift at $99/mo, ZenLitePro at $199/mo and CARVID at $249/mo. Shiftly and RelayAuto are custom-quote (Shiftly is dealer-reported around $1,000/mo).'],
-    ['Which Facebook Marketplace tools are browser extensions?', 'AutoBook.io and Shiftly\'s "Shiftly Auto Lister" are Chrome extensions. RelayAuto, Sell With Drift, CARVID and Glo3D are cloud-operated. AutoLander is a native desktop app.'],
+    ['What is the cheapest Facebook Marketplace tool for dealers?', 'Published entry prices in 2026 range from AutoLander at $39/mo, to Sell With Drift and AutoLister Pro at $99/mo, ZenLitePro at $199/mo and CARVID at $249/mo. Shiftly and RelayAuto are custom-quote (Shiftly is dealer-reported around $1,000/mo).'],
+    ['Which Facebook Marketplace tools are browser extensions?', 'AutoBook.io, Shiftly\'s "Shiftly Auto Lister" and AutoLister Pro are Chrome extensions. RelayAuto, Sell With Drift, CARVID and Glo3D are cloud-operated. AutoLander is a native desktop app.'],
     ['How do these tools affect my Facebook account safety?', 'It depends on where your Facebook session lives. Browser extensions run in your browser with sensitive permissions; cloud tools operate your account from their servers (logins from datacenter IPs and high-frequency automation are a documented trigger for Meta security reviews); a native desktop app posts from your own computer through your normal session. Ask any vendor where your session is stored and how it logs in.'],
   ],
 };
