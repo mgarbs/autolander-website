@@ -1167,6 +1167,7 @@ export default function App() {
             </div>
             
             <div className="flex gap-8 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+              <a href="/compare/" className="hover:text-blue-500 transition-colors">Compare</a>
               <a href="/privacy.html" className="hover:text-blue-500 transition-colors">Privacy</a>
               <a href="/terms.html" className="hover:text-blue-500 transition-colors">Terms</a>
               <MailLink className="hover:text-blue-500 transition-colors">Contact</MailLink>

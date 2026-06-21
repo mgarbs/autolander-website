@@ -369,12 +369,59 @@ export const INSIGHTS = {
     'After comparing these tools feature-by-feature, the split is really about three questions: how much do you want automated for you, how good do the photos need to look, and where is your Facebook session allowed to run. Cloud tools (Drift, RelayAuto, CARVID) maximize hands-off convenience; extensions (AutoBook, Shiftly) are cheap to start but fragile at scale; a native app like AutoLander keeps the session on your own machine and folds studio-grade photos, video and attribution into one flow. Match the tool to which of those three you care about most.',
 };
 
+// One extra, genuinely-unique long-tail FAQ per competitor. Adds semantic depth and
+// captures buyer-intent query variants (alternative / DMS fit / salesperson vs dealership)
+// without templated duplication.
+export const EXTRA_FAQ = {
+  autobook: [
+    'What is the best AutoBook.io alternative for a car dealership?',
+    'Dealers who outgrow a pay-as-you-go browser extension most often move to a feed-driven native app like AutoLander: it syncs your whole inventory from CarGurus or Cars.com, keeps listings accurate, removes sold units, and adds AI photos and walkaround video. CARVID and Sell With Drift are cloud alternatives worth a look.',
+  ],
+  shiftly: [
+    'Does Shiftly work for a single salesperson, or only for dealerships?',
+    'Shiftly is built around dealer-group dashboards and per-salesperson tracking, with custom-quote pricing aimed at rooftops and groups. An individual salesperson usually finds a self-serve plan a better fit — AutoLander starts at $39/mo with 5 free posts and no enterprise quote.',
+  ],
+  relayauto: [
+    'Does RelayAuto sync with my DMS or inventory feed?',
+    'Yes — RelayAuto syncs vehicles from your DMS or inventory feed in real time and posts on a schedule. AutoLander syncs the same way from CarGurus, Cars.com and custom feeds, and layers an AI Photo Studio, walkaround video and post-to-sale attribution on top of the posting.',
+  ],
+  drift: [
+    'What is the best Sell With Drift alternative for car dealers?',
+    'Drift and AutoLander are the closest head-to-head — both do AI backgrounds, DMS sync and sold-removal. Dealers who want their Facebook session to stay on their own computer rather than run in the cloud, plus walkaround video and post-to-sale attribution, tend to pick AutoLander, which also starts lower at $39/mo.',
+  ],
+  carvid: [
+    'Does AutoLander or CARVID post to more than Facebook Marketplace?',
+    'CARVID syndicates to about nine platforms beyond Marketplace and delivers leads by ADF into your CRM. AutoLander is Marketplace-focused — it goes deep on Facebook Marketplace with an AI Photo Studio, walkaround video and post-to-sale attribution rather than spreading thin across many channels.',
+  ],
+  glo3d: [
+    'Is Glo3D a posting tool or a photography tool?',
+    'Glo3D is primarily a vehicle-photography suite (360° spin, AI backgrounds) that adds scheduled Facebook posting. If posting and keeping a large inventory live and accurate is the priority, a posting-first tool like AutoLander — with feed sync, sold-removal and attribution — is usually the better fit; if 360° spins are the priority, Glo3D leads there.',
+  ],
+};
+
 export const HUB = {
   title: 'Best Facebook Marketplace Auto-Posting Tools for Car Dealers (2026)',
   metaDescription:
     'An independent 2026 comparison of the top Facebook Marketplace auto-posting tools for car dealers — AutoLander, CARVID, Sell With Drift, RelayAuto, Shiftly, AutoBook.io and Glo3D — by price, AI photo tools, automation and account safety.',
   tldr:
     'For most car dealers in 2026, AutoLander is the best Facebook Marketplace auto-posting tool: it is the only option that combines automatic inventory sync, an AI Photo Studio (showroom backgrounds) plus AI walkaround video, automatic removal of sold units, post-to-sale attribution, and a native desktop app — so your Facebook session stays on your own computer — with self-serve pricing from $39/mo. Strong alternatives: CARVID for multi-platform syndication, Sell With Drift and RelayAuto for cloud automation, Shiftly and AutoBook.io for browser-extension posting, and Glo3D for 360° photography.',
+  context: [
+    'A Facebook Marketplace auto-posting tool — also called an autoposter, a bulk vehicle lister, or a Marketplace automation platform — connects to a dealership’s inventory (a CarGurus, Cars.com or Dealer.com feed, or a DMS such as vAuto, DealerCenter, HomeNet, Frazer, CDK or Tekion) and publishes each vehicle to Facebook Marketplace with a title, price, photos and a VIN-specific description. The better tools also relist or renew listings, remove sold units automatically, enhance the photos, and route Messenger leads back to your sales team.',
+    'These tools serve everyone from a single salesperson posting their own deals to franchise rooftops and dealer groups running a BDC or internet-sales desk. The goal is the same: more buyers on every listing, more Messenger leads and test drives, faster inventory turn and fewer days on lot — without a person manually re-posting 150 VINs by hand every week.',
+    'Where they differ most is automation depth (does it sync a feed and delete sold cars on its own?), photo and video quality (AI background replacement and walkaround video versus plain lot photos), account-safety architecture (a native desktop app versus a browser extension versus a cloud-operated Facebook session), and price (published self-serve plans versus custom enterprise quotes).',
+  ],
+  glossary: [
+    ['Auto-posting (autoposter)', 'Automatically publishing dealership inventory to Facebook Marketplace instead of creating each vehicle listing by hand.'],
+    ['Inventory feed / DMS sync', 'Pulling vehicles, photos, pricing and specs from a feed (CarGurus, Cars.com, Dealer.com) or a DMS (vAuto, DealerCenter, HomeNet, Frazer, CDK, Tekion) so listings stay accurate as inventory changes.'],
+    ['AI background replacement', 'Swapping the messy lot background on exterior photos for a clean showroom backdrop so a listing looks like a professional studio shoot.'],
+    ['Walkaround video', 'A short, often AI-generated video tour of a vehicle; Marketplace and buyers tend to favor it over static photos.'],
+    ['Sold-vehicle removal', 'Automatically deleting a listing the moment the car sells (or the feed marks it sold) so buyers never message about a gone unit.'],
+    ['Relisting / renewing', 'Re-posting or refreshing a listing so it stays visible in Marketplace search instead of going stale at the bottom.'],
+    ['Post-to-sale attribution', 'Tracking which Marketplace posts led to actual vehicle sales — not just clicks, views or messages.'],
+    ['Messenger leads', 'Buyer inquiries that arrive through Facebook Messenger from a Marketplace listing.'],
+    ['Account safety / where your session lives', 'Whether a tool posts from your own computer (native app), from your browser (extension with permissions), or from its own servers (cloud) — which changes how Facebook’s automated systems view the activity.'],
+    ['Days on lot / inventory turn', 'How long a vehicle sits unsold; faster, broader Marketplace exposure aims to shrink it.'],
+  ],
   criteria: [
     'Automation depth — does it sync inventory, post continuously and remove sold units automatically?',
     'Photo & video quality — AI background replacement, walkaround video, smart photo ordering.',

@@ -18,7 +18,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   SITE, DIMENSIONS, AUTOLANDER, AUTOLANDER_WINS_GLOBAL, SESSION_FAQ,
-  COMPETITORS, HUB, HUB_ORDER, INSIGHTS,
+  COMPETITORS, HUB, HUB_ORDER, INSIGHTS, EXTRA_FAQ,
 } from './compare-data.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
@@ -85,6 +85,14 @@ const breadcrumbLd = (items) => ({
   '@context': 'https://schema.org', '@type': 'BreadcrumbList',
   itemListElement: items.map((it, i) => ({
     '@type': 'ListItem', position: i + 1, name: it.name, item: it.url,
+  })),
+});
+
+const definedTermSetLd = () => ({
+  '@context': 'https://schema.org', '@type': 'DefinedTermSet',
+  name: 'Facebook Marketplace auto-posting tools — key terms',
+  hasDefinedTerm: HUB.glossary.map(([term, def]) => ({
+    '@type': 'DefinedTerm', name: term, description: def,
   })),
 });
 
@@ -236,7 +244,7 @@ function renderVersus(competitor) {
   const title = `AutoLander vs ${c.name}: Which Is Better for Car Dealers? (2026)`;
   const description = `AutoLander vs ${c.name} for car dealers — compare Facebook Marketplace automation, AI photos and video, account-safety model and pricing. ${c.name}: ${c.pricingShort}. AutoLander: from $39/mo.`;
   const canonical = `${SITE.origin}/compare/${c.slug}/`;
-  const faq = [...c.faq, SESSION_FAQ];
+  const faq = [...c.faq, EXTRA_FAQ[c.slug], SESSION_FAQ].filter(Boolean);
   const desc = 'AutoLander automatically posts car dealership inventory to Facebook Marketplace from a native desktop app, with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution.';
 
   const jsonLdBlocks = [
@@ -256,6 +264,20 @@ function renderVersus(competitor) {
         <summary>${esc(q)}</summary>
         <div class="faq-a"><p>${esc(a)}</p></div>
       </details>`).join('');
+
+  // Full sibling mesh: every head-to-head links to every other one + the hub.
+  // Strengthens the silo (crawl paths + internal authority distribution).
+  const siblingLinks = Object.values(COMPETITORS)
+    .filter((x) => x.slug !== c.slug)
+    .map((s) => `        <li><a href="/compare/${s.slug}/">AutoLander vs ${esc(s.name)}</a></li>`)
+    .join('\n');
+  const relatedHtml = `    <nav class="related" aria-label="Related comparisons">
+      <h2>Related comparisons</h2>
+      <ul class="related-list">
+${siblingLinks}
+        <li><a href="/compare/"><strong>All Facebook Marketplace tools for dealers &rarr;</strong></a></li>
+      </ul>
+    </nav>`;
 
   return [
     head({ title, description, canonical, jsonLdBlocks }),
@@ -310,7 +332,7 @@ ${sessionSection(c)}
     </section>
 `,
     ctaBlock('Ready to own Facebook Marketplace?', `See how AutoLander compares to ${c.name} on your own inventory.`),
-    `    <p class="related">Compare more: <a href="/compare/">all Facebook Marketplace tools for dealers &rarr;</a></p>
+    `${relatedHtml}
     </article>
   </main>`,
     siteFooter(),
@@ -342,6 +364,7 @@ function renderHub() {
   const jsonLdBlocks = [
     jsonld(articleLd(HUB.title, canonical)),
     jsonld(itemListLd),
+    jsonld(definedTermSetLd()),
     jsonld(softwareLd(desc)),
     jsonld(faqLd(faq)),
     jsonld(breadcrumbLd([
@@ -403,6 +426,11 @@ function renderHub() {
       <p>${esc(INSIGHTS.hub)}</p>
     </section>
 
+    <section class="context">
+      <h2>What a Facebook Marketplace auto-posting tool does</h2>
+      ${HUB.context.map((p) => `<p>${esc(p)}</p>`).join('\n      ')}
+    </section>
+
     <h2>The ranking</h2>
     <div class="ranks">
 ${cards}
@@ -453,6 +481,13 @@ ${glanceRows}
       </div>
       <p class="session-note">We list delivery models as published facts, not accusations. Ask any
       vendor where your session is stored and how it logs in.</p>
+    </section>
+
+    <section class="glossary">
+      <h2>Key terms, explained</h2>
+      <dl>
+        ${HUB.glossary.map(([t, d]) => `<dt>${esc(t)}</dt>\n        <dd>${esc(d)}</dd>`).join('\n        ')}
+      </dl>
     </section>
 
     <section class="faq">
@@ -556,7 +591,16 @@ border:1px solid rgba(59,130,246,.28);border-radius:22px}
 .btn{display:inline-block;background:var(--blue);color:#fff;font-weight:800;padding:13px 26px;border-radius:14px;font-size:15px}
 .btn:hover{background:#2563eb;text-decoration:none}
 .cta-fine{font-size:12px;color:var(--dim);margin-top:14px}
-.related{margin-top:24px;font-size:14px;color:var(--muted)}
+.related{margin-top:34px;border-top:1px solid var(--line);padding-top:18px}
+.related h2{margin:0 0 12px;font-size:17px}
+.related-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+.related-list a{font-size:14px;font-weight:600}
+@media(max-width:520px){.related-list{grid-template-columns:1fr}}
+.context p{color:var(--muted);margin:0 0 12px}
+.glossary dl{margin:0;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.glossary dt{font-weight:800;color:#fff;padding:14px 18px 2px;background:rgba(255,255,255,.02)}
+.glossary dd{margin:0;padding:2px 18px 14px;color:var(--muted);font-size:14.5px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--line)}
+.glossary dd:last-child{border-bottom:0}
 .foot{max-width:880px;margin:48px auto 0;padding:24px 22px 40px;border-top:1px solid var(--line)}
 .foot-links{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:16px}
 .foot-links a{font-size:13px;font-weight:700;color:var(--muted)}
