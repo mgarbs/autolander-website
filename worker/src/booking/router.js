@@ -8,7 +8,7 @@
 
 import { createBooking, fetchAvailableTimes, isSlotAvailable } from '../calendly/client.js';
 import { sha256Hex } from '../capi/hash.js';
-import { rememberBookingToken } from '../capi/storage.js';
+import { lookupVisitor, rememberBookingToken } from '../capi/storage.js';
 import { looksLikeBot } from '../security/bot-filter.js';
 
 const AVAIL_KEY = 'avail:demo';
@@ -171,7 +171,15 @@ async function handleBook(request, env, corsHeaders, ctx) {
     return json({ ok: false, reason: 'slot_taken' }, 409, corsHeaders);
   }
 
-  const tracking = buildTracking(vid, utms);
+  // Bridge the Meta click id (fbc) to the CRM via Calendly's salesforce_uuid,
+  // which Calendly forwards in invitee.created + to Zapier. This lets GHL fire the
+  // downstream qualified-lead / purchase Conversions-API events matched to the
+  // original ad click. Carried here (NOT in utm_content, which already holds
+  // al_vid for our own webhook).
+  const crmVisitor = vid ? await lookupVisitor(env, vid).catch(() => null) : null;
+  const fbcForCrm = crmVisitor?.fbc
+    || (crmVisitor?.fbclid ? `fb.1.${Date.now()}.${crmVisitor.fbclid}` : '');
+  const tracking = buildTracking(vid, utms, fbcForCrm);
   // Positions MUST match the Calendly event type order exactly:
   // 0 phone · 1 role · 2 website · 3 inventory · 4 reminders.
   const questionsAndAnswers = [
@@ -241,7 +249,7 @@ async function handleBook(request, env, corsHeaders, ctx) {
   );
 }
 
-function buildTracking(vid, utms) {
+function buildTracking(vid, utms, fbc) {
   // Calendly's /invitees requires ALL tracking fields present (null is fine) —
   // it's all-or-nothing, so we always send the full shape.
   const field = (key) => clean(utms[key], 180) || null;
@@ -257,7 +265,9 @@ function buildTracking(vid, utms) {
     utm_campaign: field('utm_campaign'),
     utm_term: field('utm_term'),
     utm_content: utmContent,
-    salesforce_uuid: null,
+    // Meta click id (fbc) for the CRM bridge — Calendly forwards this field so GHL
+    // can match the downstream qualified-lead / purchase events to the ad click.
+    salesforce_uuid: clean(fbc, 255) || null,
   };
 }
 

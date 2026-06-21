@@ -13,6 +13,7 @@ const ALLOWED_EVENTS = new Set([
 
 const ALLOWED_CUSTOM_EVENTS = new Set([
   'AppDownload',
+  'BookingOpened',
   'ChatOpened',
   'EngagedVisit',
   'ScrollDepth',

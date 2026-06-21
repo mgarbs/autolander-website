@@ -321,6 +321,14 @@ export default function App() {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const openDemoBooking = useCallback(() => {
     setIsCalendarOpen(true);
+    // Funnel signal: visitor opened the booking calendar (once per session) so we
+    // can measure "opened but didn't book" drop-off. Lead fires later on slot
+    // select; Schedule fires only on a completed booking.
+    try {
+      if (window.sessionStorage.getItem('al_booking_opened') === '1') return;
+      window.sessionStorage.setItem('al_booking_opened', '1');
+    } catch { /* sessionStorage unavailable — fall through and fire once */ }
+    trackCustom('BookingOpened', { content_name: 'demo_calendar', content_category: 'demo' });
   }, []);
 
   const referralCode = getReferralCodeFromPath();
