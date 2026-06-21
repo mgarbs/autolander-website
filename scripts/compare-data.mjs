@@ -399,6 +399,23 @@ export const EXTRA_FAQ = {
   ],
 };
 
+// Educational pillar page — a fair, vendor-neutral guide. Top-of-funnel content that
+// interlinks with the /compare/ cluster to form one topical silo.
+export const GUIDE = {
+  path: 'guide/facebook-marketplace-automation',
+  title: 'The Honest Guide to Putting Facebook Marketplace on Autopilot (Without Torching Your Account)',
+  metaDescription:
+    'A fair, vendor-neutral guide for car dealers: how Facebook Marketplace auto-posting really works, the account-safety risks of browser extensions vs cloud tools vs native apps, and the dos, don’ts and questions to ask before you automate.',
+  summary:
+    'Facebook Marketplace is high-intent and cheap, which is why auto-posting tools exploded — but the risk lives in your account, not the feature list. This is a fair rundown of how it works, the four ways dealers do it, what actually gets accounts flagged, and the dos, don’ts and vendor questions that keep your profile safe.',
+  faq: [
+    ['Is automating Facebook Marketplace against the rules?', 'It is a gray area. Marketplace was built for individuals, and Meta offers a sanctioned dealer route via official vehicle inventory/catalog listings through approved partners and DMS integrations. Automating posts from a personal profile — by extension, cloud, or desktop app — is common and many dealers do it successfully, but it is not officially sanctioned and Meta’s policies can change. Any vendor claiming to be “100% Meta-approved” while automating a personal profile is overstating it.'],
+    ['What gets a dealer’s Facebook account banned on Marketplace?', 'Usually a pattern, not the tool itself: logins from datacenter IPs or sudden new locations, volume spikes (zero to 200 listings overnight on a cold profile), posting too fast, duplicate or bot-sounding listings, and insecure credential handling. The worst case is a cascade — if the personal profile that admins your Business Manager is restricted, you can lose Marketplace and jeopardize your ad accounts at once.'],
+    ['Is a cloud tool or a desktop app safer for Facebook Marketplace posting?', 'Neither is automatically safer — it depends on the architecture. Cloud tools run your account 24/7 from their servers, often logging in from datacenter IPs (a common flag trigger) and storing your session on their infrastructure. Native desktop apps post from your own machine and IP, which lowers technical triggers but requires your computer to stay on and is still automation. Ask where your session is stored and what IPs log in.'],
+    ['What is the safest way for a dealership to post inventory to Facebook Marketplace?', 'The most compliant path is Meta’s official dealer inventory/catalog route through an approved Marketplace partner or DMS integration. Beyond that, lower your risk: isolate automation from the profile that admins your ad accounts, use your own IP with human-like pacing, ramp volume gradually, keep listings accurate, and remove sold units promptly.'],
+  ],
+};
+
 export const HUB = {
   title: 'Best Facebook Marketplace Auto-Posting Tools for Car Dealers (2026)',
   metaDescription:

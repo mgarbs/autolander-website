@@ -18,7 +18,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   SITE, DIMENSIONS, AUTOLANDER, AUTOLANDER_WINS_GLOBAL, SESSION_FAQ,
-  COMPETITORS, HUB, HUB_ORDER, INSIGHTS, EXTRA_FAQ,
+  COMPETITORS, HUB, HUB_ORDER, INSIGHTS, EXTRA_FAQ, GUIDE,
 } from './compare-data.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
@@ -134,7 +134,7 @@ function head({ title, description, canonical, jsonLdBlocks }) {
 function siteHeader(crumbActive) {
   return `  <header class="topbar">
     <a class="brand" href="${SITE.origin}/">
-      <span class="brand-mark">&#9650;</span> AutoLander
+      <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" />
     </a>
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="${SITE.origin}/">Home</a>
@@ -157,6 +157,7 @@ function ctaBlock(heading, sub) {
 
 function siteFooter() {
   return `  <footer class="foot">
+    <a href="${SITE.origin}/" class="foot-brand"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
     <nav class="foot-links">
       <a href="/compare/">All comparisons</a>
       <a href="${SITE.origin}/">AutoLander home</a>
@@ -276,6 +277,7 @@ function renderVersus(competitor) {
       <ul class="related-list">
 ${siblingLinks}
         <li><a href="/compare/"><strong>All Facebook Marketplace tools for dealers &rarr;</strong></a></li>
+        <li><a href="/guide/facebook-marketplace-automation/">Guide: the dos &amp; don&#39;ts of Marketplace automation</a></li>
       </ul>
     </nav>`;
 
@@ -431,6 +433,8 @@ function renderHub() {
       ${HUB.context.map((p) => `<p>${esc(p)}</p>`).join('\n      ')}
     </section>
 
+    <p class="guidelink">New to automating Marketplace? Start with <a href="/guide/facebook-marketplace-automation/">our honest guide to the dos, don&#39;ts and account-safety risks &rarr;</a></p>
+
     <h2>The ranking</h2>
     <div class="ranks">
 ${cards}
@@ -501,6 +505,182 @@ ${glanceRows}
   ].join('\n');
 }
 
+// ---------- guide (educational pillar) ----------
+// Original, on-brand SVG diagram (neutral palette — the text carries the trade-offs, not
+// color-coding, to keep it fair). Inline so the <text> is crawlable.
+const SESSION_DIAGRAM = `<svg viewBox="0 0 960 400" role="img" aria-labelledby="ddt ddd" xmlns="http://www.w3.org/2000/svg" class="diagram-svg">
+  <title id="ddt">Where your Facebook session runs: browser extension vs cloud tool vs native desktop app</title>
+  <desc id="ddd">A browser extension runs in your own browser on your own IP. A cloud tool runs on the vendor's servers and logs in from datacenter IPs. A native desktop app runs on your own computer and your own IP.</desc>
+  <rect x="350" y="14" width="260" height="50" rx="12" fill="#0e1117" stroke="#3b82f6" stroke-opacity="0.55"/>
+  <text x="480" y="45" text-anchor="middle" fill="#e2e8f0" font-family="Inter,sans-serif" font-size="16" font-weight="700">Your Facebook account</text>
+  <path d="M480 64 L480 86 M150 86 L810 86 M150 86 L150 110 M480 86 L480 110 M810 86 L810 110" stroke="#ffffff" stroke-opacity="0.18" fill="none"/>
+  ${[
+    { cx: 150, t: 'Browser extension', run: 'Your browser', ip: 'Your IP', w: ['Broad browser permissions;', 'breaks when FB changes its UI'] },
+    { cx: 480, t: 'Cloud tool', run: "The vendor's servers", ip: 'Datacenter IP', w: ['Session lives on their infra;', 'datacenter logins draw scrutiny'] },
+    { cx: 810, t: 'Native desktop app', run: 'Your computer', ip: 'Your IP', w: ['Your PC must stay on;', 'still automation, not an API'] },
+  ].map((c) => {
+    const x = c.cx - 140; const tx = x + 22;
+    return `<g>
+    <rect x="${x}" y="110" width="280" height="262" rx="14" fill="#0d0f14" stroke="#ffffff" stroke-opacity="0.10"/>
+    <text x="${tx}" y="146" fill="#ffffff" font-family="Inter,sans-serif" font-size="17" font-weight="800">${c.t}</text>
+    <line x1="${tx}" y1="160" x2="${x + 258}" y2="160" stroke="#ffffff" stroke-opacity="0.08"/>
+    <text x="${tx}" y="192" fill="#60a5fa" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="1">RUNS IN</text>
+    <text x="${tx}" y="214" fill="#e2e8f0" font-family="Inter,sans-serif" font-size="15">${c.run}</text>
+    <text x="${tx}" y="250" fill="#60a5fa" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="1">LOGS IN FROM</text>
+    <text x="${tx}" y="272" fill="#e2e8f0" font-family="Inter,sans-serif" font-size="15">${c.ip}</text>
+    <text x="${tx}" y="308" fill="#60a5fa" font-family="Inter,sans-serif" font-size="11" font-weight="700" letter-spacing="1">WATCH-OUTS</text>
+    <text x="${tx}" y="330" fill="#94a3b8" font-family="Inter,sans-serif" font-size="13">${c.w[0]}</text>
+    <text x="${tx}" y="349" fill="#94a3b8" font-family="Inter,sans-serif" font-size="13">${c.w[1]}</text>
+  </g>`;
+  }).join('\n  ')}
+</svg>`;
+
+function compareClusterLinks() {
+  const spokes = Object.values(COMPETITORS)
+    .map((s) => `        <li><a href="/compare/${s.slug}/">AutoLander vs ${esc(s.name)}</a></li>`)
+    .join('\n');
+  return `      <ul class="related-list">
+        <li><a href="/compare/"><strong>Best Facebook Marketplace tools for dealers (the full comparison) &rarr;</strong></a></li>
+${spokes}
+      </ul>`;
+}
+
+function renderGuide() {
+  const canonical = `${SITE.origin}/${GUIDE.path}/`;
+  const faq = [...GUIDE.faq, SESSION_FAQ];
+  const desc = 'AutoLander automatically posts car dealership inventory to Facebook Marketplace from a native desktop app, with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution.';
+
+  const jsonLdBlocks = [
+    jsonld(articleLd(GUIDE.title, canonical)),
+    jsonld(faqLd(faq)),
+    jsonld(breadcrumbLd([
+      { name: 'Home', url: SITE.origin + '/' },
+      { name: 'Facebook Marketplace automation guide', url: canonical },
+    ])),
+    jsonld(orgLd),
+    jsonld(softwareLd(desc)),
+  ];
+
+  const faqHtml = faq.map(([q, a]) => `
+      <details class="faq-item">
+        <summary>${esc(q)}</summary>
+        <div class="faq-a"><p>${esc(a)}</p></div>
+      </details>`).join('');
+
+  return [
+    head({ title: GUIDE.title, description: GUIDE.metaDescription, canonical, jsonLdBlocks }),
+    `  <header class="topbar">
+    <a class="brand" href="${SITE.origin}/"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="${SITE.origin}/">Home</a><span>/</span><span>Guide</span><span>/</span>
+      <span class="crumb-active">Facebook Marketplace automation</span>
+    </nav>
+  </header>`,
+    `  <main class="wrap">
+    <article>
+    <p class="eyebrow">Dealer guide</p>
+    <h1>The honest guide to putting Facebook Marketplace on autopilot (without torching your account)</h1>
+    <p class="byline">By the <a href="${SITE.origin}/">AutoLander</a> team &middot; Updated <time datetime="${SITE.updated}">${esc(SITE.updatedHumanOr())}</time></p>
+    <div class="tldr"><p class="tldr-label">In short</p><p>${esc(GUIDE.summary)}</p></div>
+
+    <p class="prose">Facebook Marketplace is one of the highest-intent, lowest-cost places a dealer can put inventory &mdash; which is exactly why &ldquo;auto-posting&rdquo; tools have exploded. But most buying guides skip the part that actually matters: <strong>the risk lives in your account, not in the feature list.</strong> Here&rsquo;s a fair rundown of how this works, what&rsquo;s out there, and how to not learn the hard way.</p>
+
+    <h2>First, the part nobody likes to say out loud</h2>
+    <p class="prose">Facebook Marketplace was built for individuals, and Meta has a separate, sanctioned path for dealers: official vehicle inventory / catalog listings through approved Marketplace partners and DMS integrations. That route is the only one that&rsquo;s unambiguously within Meta&rsquo;s rules.</p>
+    <p class="prose">Everything else &mdash; automating posts from a personal profile, whether by extension, cloud, or desktop app &mdash; lives in a <strong>gray area</strong>. It&rsquo;s extremely common, lots of dealers do it successfully, but you should go in knowing it&rsquo;s automation of a personal profile, and Meta&rsquo;s Commerce Policies and Marketplace rules can change without notice. Anyone who tells you their tool is &ldquo;100% Meta-approved&rdquo; while auto-posting from your personal profile is overselling it. Fair is fair.</p>
+
+    <h2>The four ways people do it (and the honest trade-offs)</h2>
+    <ol class="prose ways">
+      <li><strong>Manual posting.</strong> Free, zero ToS risk, totally human. Also a soul-crushing time sink that doesn&rsquo;t scale past a handful of cars and dies the second your one &ldquo;Marketplace person&rdquo; quits.</li>
+      <li><strong>Browser extensions</strong> (e.g. tools like <a href="/compare/autobook/">AutoBook</a>, <a href="/compare/shiftly/">Shiftly&rsquo;s Auto Lister</a>). They drive your browser with your logged-in session. <em>Upside:</em> cheap, your own session and IP, nothing stored in someone else&rsquo;s cloud. <em>Risk:</em> they need broad browser permissions, they break whenever Facebook tweaks its UI, and browser automation is still automation in Meta&rsquo;s eyes.</li>
+      <li><strong>Cloud / SaaS tools</strong> (e.g. tools like <a href="/compare/drift/">Sell With Drift</a>, <a href="/compare/relayauto/">RelayAuto</a>, <a href="/compare/carvid/">CARVID</a>). Their servers run your account 24/7. <em>Upside:</em> truly hands-off, your computer doesn&rsquo;t need to be on, often the slickest dashboards. <em>Risk:</em> your Facebook session (and sometimes credentials) live on their infrastructure, and the login hits Facebook from datacenter IPs &mdash; one of the more common things that trips Meta&rsquo;s &ldquo;is this really you?&rdquo; detection. If their operation gets flagged, your account is in the blast radius.</li>
+      <li><strong>Native desktop apps.</strong> They post from your own machine and your normal session. <em>Upside:</em> your session and home/dealer IP, easier to mimic human pacing, nothing stored in a shared cloud. <em>Risk (being fair):</em> your computer has to actually be on and running, and it&rsquo;s still automation &mdash; it lowers the technical flag triggers, it doesn&rsquo;t make Marketplace automation officially sanctioned.</li>
+    </ol>
+
+    <figure class="diagram">
+      ${SESSION_DIAGRAM}
+      <figcaption>The real dividing line between these tools is <strong>where your Facebook session runs</strong> &mdash; and which IP addresses log in to your account.</figcaption>
+    </figure>
+
+    <h2>What actually gets accounts flagged or banned</h2>
+    <p class="prose">Not &ldquo;using a tool&rdquo; by itself &mdash; it&rsquo;s the pattern:</p>
+    <ul class="prose">
+      <li>Logins from datacenter IPs or sudden new locations/devices</li>
+      <li>Volume spikes (zero to 200 listings overnight on a cold profile)</li>
+      <li>Posting too fast, or duplicate/near-duplicate listings that read as bot output</li>
+      <li>Handing your password to something that stores it insecurely</li>
+    </ul>
+    <p class="prose">And the risk people underestimate most: <strong>the profile that runs your Marketplace automation is often the same personal profile that admins your Business Manager and ad accounts.</strong> If that profile gets restricted, you can lose Marketplace and jeopardize your paid ads at the same time. That cascade is the real worst case &mdash; protect that profile accordingly.</p>
+
+    <div class="dodont">
+      <section class="card win">
+        <h2>The DOs</h2>
+        <ul>
+          <li><strong>Know the rules first.</strong> Read Meta&rsquo;s Commerce Policies and look into the official dealer inventory/catalog route before you automate anything.</li>
+          <li><strong>Isolate risk.</strong> Don&rsquo;t run aggressive automation on the exact profile that admins your ad accounts.</li>
+          <li><strong>Go gradual.</strong> Warm up a profile; ramp volume instead of blasting your whole lot on day one.</li>
+          <li><strong>Stay accurate.</strong> Real descriptions, correct prices, and remove sold units promptly.</li>
+          <li><strong>Interrogate the vendor</strong> (see the questions below).</li>
+          <li><strong>Diversify.</strong> Don&rsquo;t bet your whole lead flow on one channel you don&rsquo;t control.</li>
+        </ul>
+      </section>
+      <section class="card dont">
+        <h2>The DON&rsquo;Ts</h2>
+        <ul>
+          <li><strong>Don&rsquo;t pick on price alone.</strong> A $99/mo tool that gets your account banned is the most expensive software you&rsquo;ll ever buy.</li>
+          <li><strong>Don&rsquo;t assume &ldquo;cloud = safer&rdquo; or &ldquo;extension = safer.&rdquo;</strong> It depends on the architecture.</li>
+          <li><strong>Don&rsquo;t hand your main credentials to a black box.</strong> No straight answer on where your login is stored? That&rsquo;s your answer.</li>
+          <li><strong>Don&rsquo;t run datacenter-IP automation at high frequency.</strong> It&rsquo;s the single most common flag trigger.</li>
+          <li><strong>Don&rsquo;t spam.</strong> Duplicate listings, rapid re-posts and bot-sounding copy are what Meta&rsquo;s systems are built to catch.</li>
+        </ul>
+      </section>
+    </div>
+
+    <figure class="shot">
+      <div class="shot-imgs">
+        <img src="/preview/studio-before.webp" width="1100" height="733" loading="lazy" decoding="async"
+          alt="A raw, cluttered dealer lot photo of a vehicle before cleanup" />
+        <img src="/preview/studio-after.webp" width="1100" height="733" loading="lazy" decoding="async"
+          alt="The same vehicle on a clean showroom backdrop — the kind of accurate, professional listing that performs and stays compliant" />
+      </div>
+      <figcaption>&ldquo;Stay accurate&rdquo; in practice: clean, honest, professional listings (right) age better with buyers and Meta than messy or misleading ones.</figcaption>
+    </figure>
+
+    <section class="qbox">
+      <h2>Five questions to ask any vendor before you connect your inventory</h2>
+      <ol>
+        <li>Where is my Facebook session stored, and what IP addresses log into my account?</li>
+        <li>Is posting done through an official Meta API, or unofficial automation of a profile?</li>
+        <li>What happens to my account if your servers get flagged?</li>
+        <li>Do you store my password, and how?</li>
+        <li>If I cancel, do my listings and access stay, or vanish?</li>
+      </ol>
+      <p class="qnote">A vendor that answers these plainly is one you can trust. A vendor that gets cagey just told you everything you need to know.</p>
+    </section>
+
+    <h2>The fair bottom line</h2>
+    <p class="prose">There&rsquo;s no risk-free way to fully automate a personal Facebook profile &mdash; the most compliant path is Meta&rsquo;s official dealer inventory route, and every automation tool is a trade-off between convenience and control. Pick based on <strong>where your session lives and how much you trust the vendor with your account</strong>, not the feature grid. The dealers who do this well treat their Facebook profile like the business asset it is.</p>
+
+    <section class="take">
+      <h2>Where we land (full disclosure)</h2>
+      <p>We build AutoLander, which is a native desktop app &mdash; so we have a point of view, and you should weigh it accordingly. We chose the native-app route specifically so a dealer&rsquo;s Facebook session stays on their own machine instead of a shared cloud server. But we tried to keep this guide fair, and we put a side-by-side comparison of every option &mdash; including the cloud and extension tools, with each one&rsquo;s real strengths &mdash; together so you can judge for yourself: <a href="/compare/">the full Facebook Marketplace tools comparison &rarr;</a></p>
+    </section>
+
+    <section class="faq">
+      <h2>Frequently asked questions</h2>${faqHtml}
+    </section>
+`,
+    ctaBlock('Want the native-app approach?', 'See how AutoLander keeps your Facebook session on your own machine — with studio-grade photos and post-to-sale attribution.'),
+    `    <nav class="related" aria-label="Related reading">
+      <h2>Keep reading</h2>
+${compareClusterLinks()}
+    </nav>
+    </article>
+  </main>`,
+    siteFooter(),
+  ].join('\n');
+}
+
 // ---------- stylesheet ----------
 const STYLES = `:root{color-scheme:dark;--bg:#050505;--panel:rgba(255,255,255,.03);--panel2:rgba(255,255,255,.05);
 --line:rgba(255,255,255,.08);--text:#e2e8f0;--muted:#94a3b8;--dim:#64748b;--blue:#3b82f6;--blue2:#60a5fa;--ink:#fff}
@@ -517,10 +697,11 @@ p{color:var(--text)}.muted{color:var(--muted)}
 .eyebrow{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--blue2);margin:0}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
 max-width:880px;margin:0 auto;padding:18px 22px;border-bottom:1px solid var(--line)}
-.brand{display:inline-flex;align-items:center;gap:9px;color:#fff;font-weight:900;font-size:18px;letter-spacing:-.02em}
+.brand{display:inline-flex;align-items:center}
 .brand:hover{text-decoration:none}
-.brand-mark{display:inline-flex;width:28px;height:28px;border-radius:8px;align-items:center;justify-content:center;
-background:linear-gradient(135deg,#3b82f6,#4f46e5);color:#fff;font-size:13px}
+.brand-logo{height:30px;width:auto;display:block}
+.foot-brand{display:inline-block;margin-bottom:16px}
+.foot-brand .brand-logo{height:34px}
 .crumbs{font-size:13px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .crumbs a{color:var(--muted)}.crumb-active{color:var(--text)}
 .lede{font-size:16px;color:var(--muted);margin:6px 0 8px}
@@ -601,6 +782,21 @@ border:1px solid rgba(59,130,246,.28);border-radius:22px}
 .glossary dt{font-weight:800;color:#fff;padding:14px 18px 2px;background:rgba(255,255,255,.02)}
 .glossary dd{margin:0;padding:2px 18px 14px;color:var(--muted);font-size:14.5px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--line)}
 .glossary dd:last-child{border-bottom:0}
+.prose{font-size:16px;color:var(--text)}
+.prose em{color:var(--muted);font-style:italic}
+.ways{padding-left:20px}.ways li{margin:0 0 14px}
+.diagram{margin:22px 0 8px}
+.diagram-svg{width:100%;height:auto;display:block;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:16px;padding:8px}
+.diagram figcaption{font-size:13px;color:var(--dim);margin-top:10px;text-align:center}
+.dodont{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.dodont .card h2{font-size:19px}
+.dont{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.05)}
+.qbox{margin-top:34px;background:var(--panel);border:1px solid rgba(59,130,246,.3);border-radius:18px;padding:20px 24px}
+.qbox h2{margin-top:0;font-size:19px}
+.qbox ol{margin:0;padding-left:22px}.qbox li{margin:0 0 10px;font-weight:600;color:#fff}
+.qnote{margin:14px 0 0;color:var(--muted);font-size:14px;font-style:italic}
+@media(max-width:640px){.dodont{grid-template-columns:1fr}}
+.guidelink{margin:18px 0 0;padding:14px 18px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.25);border-radius:12px;font-size:14.5px;font-weight:600}
 .foot{max-width:880px;margin:48px auto 0;padding:24px 22px 40px;border-top:1px solid var(--line)}
 .foot-links{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:16px}
 .foot-links a{font-size:13px;font-weight:700;color:var(--muted)}
@@ -631,6 +827,7 @@ function sitemapXml(slugs) {
   const urls = [
     { loc: SITE.origin + '/', pri: '1.0', freq: 'weekly' },
     { loc: SITE.origin + '/compare/', pri: '0.9', freq: 'weekly' },
+    { loc: `${SITE.origin}/${GUIDE.path}/`, pri: '0.8', freq: 'monthly' },
     ...slugs.map((s) => ({ loc: `${SITE.origin}/compare/${s}/`, pri: '0.8', freq: 'monthly' })),
   ];
   const body = urls.map((u) =>
@@ -652,6 +849,7 @@ write(resolve(COMPARE_DIR, 'index.html'), renderHub());
 for (const c of Object.values(COMPETITORS)) {
   write(resolve(COMPARE_DIR, c.slug, 'index.html'), renderVersus(c));
 }
+write(resolve(PUBLIC_DIR, GUIDE.path, 'index.html'), renderGuide());
 write(resolve(PUBLIC_DIR, 'robots.txt'), robotsTxt());
 write(resolve(PUBLIC_DIR, 'sitemap.xml'), sitemapXml(slugs));
 
