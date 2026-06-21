@@ -54,6 +54,7 @@ dist-ssr
 /public/marketplace-video-poster.png
 /public/studio-after.png
 /public/studio-before.png
+/docs/superpowers/
 
 # Claude Code per-machine settings (local only)
 .claude/settings.local.json
