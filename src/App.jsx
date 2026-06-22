@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion';
 import { newEventId, track, trackCustom } from './lib/meta-pixel.js';
 import { getVisitorId } from './lib/identity.js';
 import Hero from './sections/Hero.jsx';
@@ -204,14 +204,14 @@ const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
   };
 
   return (
-    <motion.div
+    <m.div
       initial={directions[direction]}
       whileInView={{ y: 0, x: 0, opacity: 1 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.8, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 };
 
@@ -434,6 +434,7 @@ export default function App() {
   ];
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="min-h-dvh bg-[#050505] text-slate-50 font-sans selection:bg-blue-500/30 selection:text-blue-200">
       {/* Background Orbs — hidden on mobile (large blur filters tank GPU on mobile) */}
       <div className="hidden md:block fixed inset-0 z-0 overflow-hidden pointer-events-none">
@@ -535,7 +536,7 @@ export default function App() {
             <FadeIn delay={0.3}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 {showDownloadButtons && (
-                  <motion.button
+                  <m.button
                     whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => openDownload({ contentName: 'referral_offer', value: 125 })}
@@ -543,7 +544,7 @@ export default function App() {
                   >
                     <span>Download + Claim Offer</span>
                     <Download className="w-6 h-6" />
-                  </motion.button>
+                  </m.button>
                 )}
                 <button
                   onClick={openInstalledApp}
@@ -769,7 +770,7 @@ export default function App() {
                   onClick={() => setIsAnnual(!isAnnual)}
                   className="w-14 h-7 rounded-full bg-white/10 border border-white/10 p-1 flex items-center transition-all"
                 >
-                  <motion.div 
+                  <m.div 
                     animate={{ x: isAnnual ? 28 : 0 }}
                     className="w-5 h-5 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50"
                   />
@@ -849,7 +850,7 @@ export default function App() {
                   </div>
 
                   {(!isPrivateMonthlyProOffer || showDownloadButtons) && (
-                    <motion.button
+                    <m.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={
@@ -866,7 +867,7 @@ export default function App() {
                       }`}
                     >
                       {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : plan.team ? 'Get Team' : 'Start Free Trial'}
-                    </motion.button>
+                    </m.button>
                   )}
                   <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">
                     {plan.proPromo && hasReferral
@@ -1028,14 +1029,14 @@ export default function App() {
           {/* CTA last */}
           <FadeIn>
             <div className="mt-12 flex justify-center">
-              <motion.button
+              <m.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={openDemoBooking}
                 className="px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all uppercase italic hover:bg-blue-500 shadow-lg shadow-blue-600/30"
               >
                 See the Studio in Action
-              </motion.button>
+              </m.button>
             </div>
           </FadeIn>
 
@@ -1135,14 +1136,14 @@ export default function App() {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <motion.button
+              <m.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={openDemoBooking}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500"
               >
                 Book a Live Demo
-              </motion.button>
+              </m.button>
               <button
                 onClick={openDemoBooking}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
@@ -1225,5 +1226,6 @@ export default function App() {
         </Suspense>
       )}
     </div>
+    </LazyMotion>
   );
 }

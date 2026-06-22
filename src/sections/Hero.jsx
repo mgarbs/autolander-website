@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { m, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Facebook, ShieldCheck, MessageSquareText, Zap } from 'lucide-react';
 import { FadeIn, Eyebrow, Stat } from './_ui.jsx';
 
@@ -91,7 +91,7 @@ function PostingEngine() {
           {LISTINGS.map((car, i) => {
             const status = i < live ? 'live' : i === live ? 'posting' : 'queued';
             return (
-              <motion.div
+              <m.div
                 key={car.title}
                 initial={reduce ? false : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ function PostingEngine() {
                   <p className="truncate font-mono text-[10px] uppercase tracking-wider text-slate-500">{car.meta}</p>
                 </div>
                 <StatusChip status={status} />
-              </motion.div>
+              </m.div>
             );
           })}
         </div>
@@ -121,7 +121,7 @@ function PostingEngine() {
         <div className="relative mt-3 h-9">
           <AnimatePresence mode="wait">
             {pingIndex >= 0 && (
-              <motion.div
+              <m.div
                 key={pingIndex}
                 initial={reduce ? false : { opacity: 0, x: 14 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -133,7 +133,7 @@ function PostingEngine() {
                 <span className="truncate font-mono text-[11px] text-blue-100">
                   New buyer message — {LISTINGS[pingIndex].city}
                 </span>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>
@@ -174,7 +174,7 @@ export default function Hero({ openDemoBooking }) {
 
         <FadeIn delay={0.24}>
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <motion.button
+            <m.button
               whileHover={{ y: -3 }}
               whileTap={{ scale: 0.98 }}
               onClick={openDemoBooking}
@@ -182,7 +182,7 @@ export default function Hero({ openDemoBooking }) {
             >
               Book a Demo
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </motion.button>
+            </m.button>
             <button
               onClick={openDemoBooking}
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-8 py-5 font-display text-lg font-bold uppercase italic tracking-tight text-white transition-colors hover:bg-white/10 sm:w-auto"
