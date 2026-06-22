@@ -99,7 +99,11 @@ const definedTermSetLd = () => ({
 const liList = (arr) => arr.map((x) => `<li>${esc(x)}</li>`).join('\n        ');
 
 // ---------- shared shell ----------
-function head({ title, description, canonical, jsonLdBlocks }) {
+// ogTitle/ogDescription let a page enrich its <title>/<meta description> for SEO while keeping the
+// social share preview (og:/twitter:) byte-identical. Default to title/description when not given.
+function head({ title, description, canonical, jsonLdBlocks, ogTitle, ogDescription }) {
+  const ogT = ogTitle ?? title;
+  const ogD = ogDescription ?? description;
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -114,13 +118,13 @@ function head({ title, description, canonical, jsonLdBlocks }) {
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="AutoLander" />
-  <meta property="og:title" content="${esc(title)}" />
-  <meta property="og:description" content="${esc(description)}" />
+  <meta property="og:title" content="${esc(ogT)}" />
+  <meta property="og:description" content="${esc(ogD)}" />
   <meta property="og:url" content="${esc(canonical)}" />
   <meta property="og:image" content="${SITE.origin}/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${esc(title)}" />
-  <meta name="twitter:description" content="${esc(description)}" />
+  <meta name="twitter:title" content="${esc(ogT)}" />
+  <meta name="twitter:description" content="${esc(ogD)}" />
   <meta name="twitter:image" content="${SITE.origin}/og-image.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -242,10 +246,19 @@ function sessionSection(competitor) {
 // ---------- head-to-head page ----------
 function renderVersus(competitor) {
   const c = competitor;
-  const title = `AutoLander vs ${c.name}: Which Is Better for Car Dealers? (2026)`;
-  const description = `AutoLander vs ${c.name} for car dealers — compare Facebook Marketplace automation, AI photos and video, account-safety model and pricing. ${c.name}: ${c.pricingShort}. AutoLander: from $39/mo.`;
+  // Enriched <title>/<meta description> capture "{name} alternative / pricing / reviews" intent.
+  // og*/twitter* are pinned to the ORIGINAL strings so the share preview is byte-identical.
+  const ogTitle = `AutoLander vs ${c.name}: Which Is Better for Car Dealers? (2026)`;
+  const ogDescription = `AutoLander vs ${c.name} for car dealers — compare Facebook Marketplace automation, AI photos and video, account-safety model and pricing. ${c.name}: ${c.pricingShort}. AutoLander: from $39/mo.`;
+  const title = `Best ${c.name} Alternative for Car Dealers (2026) | AutoLander vs ${c.name}`;
+  const description = `Best ${c.name} alternative for car dealers — AutoLander vs ${c.name}: compare Facebook Marketplace automation, AI photos & video, account safety, pricing & reviews. ${c.name}: ${c.pricingShort}. AutoLander from $39/mo.`;
   const canonical = `${SITE.origin}/compare/${c.slug}/`;
-  const faq = [...c.faq, EXTRA_FAQ[c.slug], SESSION_FAQ].filter(Boolean);
+  // Honest "{name} reviews" FAQ — points to the comparison + third-party sources, no fabricated ratings.
+  const reviewsFaq = [
+    `Where can I find honest ${c.name} reviews and comparisons?`,
+    `Rather than rely on a single review, compare ${c.name} against AutoLander and the other major Facebook Marketplace auto-posting tools for car dealers — on automation, AI photos and video, account-safety model and price — in our 2026 buyer's guide, and cross-check third-party reviews on G2, Capterra and the Chrome Web Store. ${c.name}: ${c.pricingShort}. AutoLander: from $39/mo, month-to-month, with 5 free posts.`,
+  ];
+  const faq = [...c.faq, EXTRA_FAQ[c.slug], reviewsFaq, SESSION_FAQ].filter(Boolean);
   const desc = 'AutoLander automatically posts car dealership inventory to Facebook Marketplace from a native desktop app, with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution.';
 
   const jsonLdBlocks = [
@@ -282,7 +295,7 @@ ${siblingLinks}
     </nav>`;
 
   return [
-    head({ title, description, canonical, jsonLdBlocks }),
+    head({ title, description, canonical, jsonLdBlocks, ogTitle, ogDescription }),
     siteHeader(`AutoLander vs ${c.name}`),
     `  <main class="wrap">
     <article>
@@ -345,7 +358,12 @@ ${sessionSection(c)}
 function renderHub() {
   const title = HUB.title;
   const canonical = `${SITE.origin}/compare/`;
-  const faq = [...HUB.faq, SESSION_FAQ];
+  // "auto poster reviews" intent — disclosed-bias buyer's guide framing, points to third-party reviews.
+  const reviewsFaq = [
+    'Are these Facebook Marketplace auto poster reviews independent?',
+    "This is a vendor comparison published by AutoLander, so we have a point of view — but every competitor fact is taken from that provider's public information and each tool's genuine strengths are listed. Use it alongside third-party reviews on G2, Capterra and the Chrome Web Store to form your own view.",
+  ];
+  const faq = [...HUB.faq, reviewsFaq, SESSION_FAQ];
   const desc = 'AutoLander automatically posts car dealership inventory to Facebook Marketplace from a native desktop app, with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution.';
 
   const ranked = [
@@ -806,34 +824,9 @@ border:1px solid rgba(59,130,246,.28);border-radius:22px}
 .rank-card--al{grid-column:auto}}
 `;
 
-// ---------- robots.txt & sitemap.xml ----------
-function robotsTxt() {
-  const aiBots = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'anthropic-ai',
-    'Claude-Web', 'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'Applebot',
-    'Applebot-Extended', 'Bingbot', 'cohere-ai', 'Amazonbot', 'meta-externalagent'];
-  const blocks = aiBots.map((ua) => `User-agent: ${ua}\nAllow: /`).join('\n\n');
-  return `# AutoLander robots.txt
-# All crawlers are welcome, including AI search & answer engines.
-User-agent: *
-Allow: /
-
-${blocks}
-
-Sitemap: ${SITE.origin}/sitemap.xml
-`;
-}
-
-function sitemapXml(slugs) {
-  const urls = [
-    { loc: SITE.origin + '/', pri: '1.0', freq: 'weekly' },
-    { loc: SITE.origin + '/compare/', pri: '0.9', freq: 'weekly' },
-    { loc: `${SITE.origin}/${GUIDE.path}/`, pri: '0.8', freq: 'monthly' },
-    ...slugs.map((s) => ({ loc: `${SITE.origin}/compare/${s}/`, pri: '0.8', freq: 'monthly' })),
-  ];
-  const body = urls.map((u) =>
-    `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${SITE.updated}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`).join('\n');
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
-}
+// NOTE: sitemap.xml + robots.txt are written by scripts/build-seo-pages.mjs (the single source of
+// truth for the UNIFIED sitemap covering this compare cluster + the new SEO silo). This script no
+// longer writes them, so the two generators can never drift or clobber each other's sitemap.
 
 // ---------- write everything ----------
 function write(path, contents) {
@@ -850,7 +843,6 @@ for (const c of Object.values(COMPETITORS)) {
   write(resolve(COMPARE_DIR, c.slug, 'index.html'), renderVersus(c));
 }
 write(resolve(PUBLIC_DIR, GUIDE.path, 'index.html'), renderGuide());
-write(resolve(PUBLIC_DIR, 'robots.txt'), robotsTxt());
-write(resolve(PUBLIC_DIR, 'sitemap.xml'), sitemapXml(slugs));
 
-console.log(`\nDone. ${slugs.length} head-to-head pages + hub + robots.txt + sitemap.xml.`);
+console.log(`\nDone. ${slugs.length} head-to-head pages + hub + guide.`);
+console.log('Run `node scripts/build-seo-pages.mjs` to (re)build the silo + the unified sitemap.xml/robots.txt.');
