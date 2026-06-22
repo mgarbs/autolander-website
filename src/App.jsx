@@ -1158,24 +1158,60 @@ export default function App() {
       {/* Footer */}
       <footer className="py-20 border-t border-white/5 bg-black">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-            <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+          {/* Link sitemap — responsive grid: 2 cols on mobile, 4 on tablet, brand + 4 on desktop.
+              Surfaces the SEO silo (auto poster / inventory / bulk / safety / pricing + integrations
+              + compare) so the homepage internally links the cluster. Wraps cleanly at every width. */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-x-6 sm:gap-x-8 gap-y-10">
+            {/* Brand */}
+            <div className="col-span-2 sm:col-span-4 lg:col-span-1 flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
                 <CarFront className="w-6 h-6 text-white" />
               </div>
-              <img src="/autolander-logo.png" alt="AutoLander" className="h-14 w-auto" />
-            </div>
-            
-            <div className="flex gap-8 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-              <a href="/compare/" className="hover:text-blue-500 transition-colors">Compare</a>
-              <a href="/guide/facebook-marketplace-automation/" className="hover:text-blue-500 transition-colors">Guide</a>
-              <a href="/privacy.html" className="hover:text-blue-500 transition-colors">Privacy</a>
-              <a href="/terms.html" className="hover:text-blue-500 transition-colors">Terms</a>
-              <MailLink className="hover:text-blue-500 transition-colors">Contact</MailLink>
-              <MailLink className="hover:text-blue-500 transition-colors">Support</MailLink>
+              <img src="/autolander-logo.png" alt="AutoLander" className="h-12 w-auto" />
             </div>
 
-            <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">© 2026 AutoLander. All rights reserved.</p>
+            {/* Product */}
+            <nav aria-label="Product" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
+              <h3 className="mb-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">Product</h3>
+              <a href="/facebook-marketplace-auto-poster/" className="block py-1 hover:text-blue-500 transition-colors">Auto Poster</a>
+              <a href="/facebook-marketplace-inventory-sync/" className="block py-1 hover:text-blue-500 transition-colors">Inventory Sync</a>
+              <a href="/bulk-post-cars-to-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">Bulk Posting</a>
+              <a href="/safest-facebook-marketplace-auto-poster/" className="block py-1 hover:text-blue-500 transition-colors">Account Safety</a>
+              <a href="/facebook-marketplace-auto-poster-pricing/" className="block py-1 hover:text-blue-500 transition-colors">Pricing</a>
+            </nav>
+
+            {/* Integrations */}
+            <nav aria-label="Integrations" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
+              <h3 className="mb-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">Integrations</h3>
+              <a href="/integrations/" className="block py-1 hover:text-blue-500 transition-colors">All Integrations</a>
+              <a href="/integrations/cargurus-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">CarGurus</a>
+              <a href="/integrations/vauto-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">vAuto</a>
+              <a href="/integrations/dealer-com-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">Dealer.com</a>
+              <a href="/integrations/dealercenter-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">DealerCenter</a>
+            </nav>
+
+            {/* Compare */}
+            <nav aria-label="Compare" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
+              <h3 className="mb-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">Compare</h3>
+              <a href="/compare/" className="block py-1 hover:text-blue-500 transition-colors">All Tools</a>
+              <a href="/compare/autobook/" className="block py-1 hover:text-blue-500 transition-colors">vs AutoBook</a>
+              <a href="/compare/shiftly/" className="block py-1 hover:text-blue-500 transition-colors">vs Shiftly</a>
+              <a href="/guide/facebook-marketplace-automation/" className="block py-1 hover:text-blue-500 transition-colors">Automation Guide</a>
+            </nav>
+
+            {/* Company */}
+            <nav aria-label="Company" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
+              <h3 className="mb-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">Company</h3>
+              <MailLink className="block py-1 hover:text-blue-500 transition-colors">Contact</MailLink>
+              <MailLink className="block py-1 hover:text-blue-500 transition-colors">Support</MailLink>
+              <a href="/privacy.html" className="block py-1 hover:text-blue-500 transition-colors">Privacy</a>
+              <a href="/terms.html" className="block py-1 hover:text-blue-500 transition-colors">Terms</a>
+            </nav>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="mt-12 pt-8 border-t border-white/5">
+            <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest text-center sm:text-left">© 2026 AutoLander. All rights reserved.</p>
           </div>
         </div>
       </footer>
