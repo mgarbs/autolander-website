@@ -1124,7 +1124,7 @@ export default function App() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 lg:py-48 relative overflow-hidden text-center">
+      <section className="py-20 sm:py-24 lg:py-32 relative overflow-hidden text-center">
         <div className="max-w-5xl mx-auto px-6 relative z-10">
           <FadeIn>
             <h2 className="font-display text-5xl lg:text-9xl font-black mb-8 tracking-tighter leading-[0.8] uppercase italic text-white">
@@ -1156,12 +1156,12 @@ export default function App() {
       </section>
 
       {/* Footer */}
-      <footer className="py-20 border-t border-white/5 bg-black">
+      <footer className="py-12 sm:py-16 lg:py-20 border-t border-white/5 bg-black">
         <div className="max-w-7xl mx-auto px-6">
           {/* Link sitemap — responsive grid: 2 cols on mobile, 4 on tablet, brand + 4 on desktop.
               Surfaces the SEO silo (auto poster / inventory / bulk / safety / pricing + integrations
               + compare) so the homepage internally links the cluster. Wraps cleanly at every width. */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-x-6 sm:gap-x-8 gap-y-10">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-x-6 sm:gap-x-8 gap-y-8 sm:gap-y-10">
             {/* Brand */}
             <div className="col-span-2 sm:col-span-4 lg:col-span-1 flex items-center space-x-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
@@ -1210,7 +1210,7 @@ export default function App() {
           </div>
 
           {/* Bottom bar */}
-          <div className="mt-12 pt-8 border-t border-white/5">
+          <div className="mt-8 pt-6 sm:mt-10 sm:pt-8 border-t border-white/5">
             <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest text-center sm:text-left">© 2026 AutoLander. All rights reserved.</p>
           </div>
         </div>
