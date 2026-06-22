@@ -434,7 +434,7 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-slate-50 font-sans selection:bg-blue-500/30 selection:text-blue-200">
+    <div className="min-h-dvh bg-[#050505] text-slate-50 font-sans selection:bg-blue-500/30 selection:text-blue-200">
       {/* Background Orbs — hidden on mobile (large blur filters tank GPU on mobile) */}
       <div className="hidden md:block fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 rounded-full blur-[120px]" />

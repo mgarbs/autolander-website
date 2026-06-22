@@ -24,6 +24,7 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #050505;
 }
 
 body {
@@ -34,6 +35,20 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+/*
+ * iOS Safari sizes `100vh` to the toolbar-COLLAPSED viewport. On a dark page,
+ * when the toolbar later collapses on scroll, the extra revealed area shows the
+ * body background below the content as a black gap under the fixed bottom CTA.
+ * Size the page shell to the DYNAMIC viewport instead so it always fills exactly
+ * what's visible. `vh` line first as the fallback for browsers without `dvh`.
+ */
+html,
+body,
+#root {
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* Long below-the-fold sections skip layout/paint until near the viewport. */
