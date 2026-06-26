@@ -32,11 +32,40 @@ function htmlTransformPlugin(pixelId, isPreview) {
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};
       if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      n.queue=[];n._load=function(){if(n._loading)return;n._loading=!0;
+      t=b.createElement(e);t.async=!0;t.src=v;
+      s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', '${pixelIdJs}');
+      (function(){
+        var loaded=false,timer=0;
+        function cleanup(){
+          window.removeEventListener('pointerdown',load);
+          window.removeEventListener('keydown',load);
+          window.removeEventListener('scroll',load);
+          window.removeEventListener('load',schedule);
+          document.removeEventListener('visibilitychange',onVisibilityChange);
+          if(timer) window.clearTimeout(timer);
+        }
+        function load(){
+          if(loaded) return;
+          loaded=true;
+          cleanup();
+          if(window.fbq && window.fbq._load) window.fbq._load();
+        }
+        function schedule(){
+          timer=window.setTimeout(load,2600);
+        }
+        function onVisibilityChange(){
+          if(document.visibilityState==='hidden') load();
+        }
+        window.addEventListener('pointerdown',load,{once:true,passive:true});
+        window.addEventListener('keydown',load,{once:true});
+        window.addEventListener('scroll',load,{once:true,passive:true});
+        document.addEventListener('visibilitychange',onVisibilityChange);
+        if(document.readyState==='complete') schedule();
+        else window.addEventListener('load',schedule,{once:true});
+      })();
     </script>
     <!-- End Meta Pixel Code -->`
       const noscript = `    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${pixelIdParam}&ev=PageView&noscript=1" /></noscript>`

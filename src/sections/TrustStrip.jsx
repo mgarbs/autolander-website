@@ -7,7 +7,7 @@ export default function TrustStrip() {
   return (
     <section className="border-y border-white/5 bg-[#080808] py-10">
       <div className="mx-auto max-w-7xl px-6">
-        <p className="mb-6 text-center font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-slate-500">
+        <p className="mb-6 text-center font-mono text-[10px] font-semibold uppercase tracking-[0.3em] text-slate-400">
           Syncs straight from your inventory feed &amp; DMS
         </p>
         <div className="relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]">
@@ -15,7 +15,7 @@ export default function TrustStrip() {
             {row.map((name, i) => (
               <span
                 key={i}
-                className="font-display text-xl font-bold uppercase italic tracking-tight text-slate-600 transition-colors hover:text-slate-300"
+                className="font-display text-xl font-bold uppercase italic tracking-tight text-slate-400 transition-colors hover:text-slate-200"
               >
                 {name}
               </span>

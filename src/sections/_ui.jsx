@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { m, useInView, useReducedMotion, animate } from 'framer-motion';
+import { m as motion, useInView, useReducedMotion, animate } from 'framer-motion';
 
 /**
  * Shared presentation primitives for the rebuilt landing page.
@@ -17,7 +17,7 @@ export const FadeIn = ({ children, delay = 0, direction = 'up', className }) => 
   };
 
   return (
-    <m.div
+    <motion.div
       className={className}
       initial={directions[direction]}
       whileInView={{ x: 0, y: 0, opacity: 1 }}
@@ -25,7 +25,7 @@ export const FadeIn = ({ children, delay = 0, direction = 'up', className }) => 
       transition={{ duration: 0.7, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
     >
       {children}
-    </m.div>
+    </motion.div>
   );
 };
 

@@ -1,14 +1,51 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-30H80LZMCH"></script>
+    <!-- Google tag (gtag.js): queue immediately, load the remote script after first paint. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'G-30H80LZMCH');
+      (() => {
+        let loaded = false;
+        let timer = 0;
+        const src = 'https://www.googletagmanager.com/gtag/js?id=G-30H80LZMCH';
+        const cleanup = () => {
+          window.removeEventListener('pointerdown', load);
+          window.removeEventListener('keydown', load);
+          window.removeEventListener('scroll', load);
+          window.removeEventListener('load', scheduleAfterLoad);
+          document.removeEventListener('visibilitychange', onVisibilityChange);
+          if (timer) window.clearTimeout(timer);
+        };
+        const scheduleAfterLoad = () => {
+          if (loaded) return;
+          timer = window.setTimeout(load, 3500);
+        };
+        const onVisibilityChange = () => {
+          if (document.visibilityState === 'hidden') load();
+        };
+        function load() {
+          if (loaded) return;
+          loaded = true;
+          cleanup();
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = src;
+          document.head.appendChild(script);
+        }
+        window.addEventListener('pointerdown', load, { once: true, passive: true });
+        window.addEventListener('keydown', load, { once: true });
+        window.addEventListener('scroll', load, { once: true, passive: true });
+        document.addEventListener('visibilitychange', onVisibilityChange);
+        if (document.readyState === 'complete') {
+          scheduleAfterLoad();
+        } else {
+          window.addEventListener('load', scheduleAfterLoad, { once: true });
+        }
+      })();
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -16,9 +53,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,700;0,900;1,800;1,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preload" href="/fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/archivo-latin-italic-var.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
     <meta name="facebook-domain-verification" content="y3cf43655kr1mfxdak6k4hy45mppyx" />
@@ -46,7 +82,50 @@
     <meta name="twitter:image" content="https://autolander.ai/og-image.jpg" />
     <meta name="twitter:image:alt" content="AutoLander helps car dealers automatically post inventory to Facebook Marketplace." />
 
-    <link rel="preload" as="image" href="/autolander-logo.png" fetchpriority="high" />
+    <link
+      rel="preload"
+      as="image"
+      href="/autolander-logo-240.webp"
+      imagesrcset="/autolander-logo-200.webp 200w, /autolander-logo-240.webp 240w, /autolander-logo.png 400w"
+      imagesizes="(min-width: 640px) 187px, 107px"
+      fetchpriority="high"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://autolander.ai/#organization",
+            "name": "AutoLander",
+            "url": "https://autolander.ai/",
+            "logo": "https://autolander.ai/autolander-logo.png"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://autolander.ai/#website",
+            "name": "AutoLander",
+            "url": "https://autolander.ai/",
+            "publisher": { "@id": "https://autolander.ai/#organization" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://autolander.ai/#software",
+            "name": "AutoLander",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Windows, macOS, Linux",
+            "url": "https://autolander.ai/",
+            "description": "AutoLander helps car dealers automatically post, update, and track inventory on Facebook Marketplace.",
+            "offers": {
+              "@type": "Offer",
+              "price": "39",
+              "priceCurrency": "USD"
+            },
+            "publisher": { "@id": "https://autolander.ai/#organization" }
+          }
+        ]
+      }
+    </script>
     <!-- Meta Pixel: injected at build time by vite.config.js (htmlTransformPlugin) from
          VITE_META_PIXEL_ID — init only. PageView and all events are fired by src/lib/tracker.js
          with a shared event_id so the browser Pixel and server CAPI dedupe into one. Preview

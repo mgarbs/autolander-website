@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { m, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion';
+import { m as motion, AnimatePresence, LazyMotion, domAnimation } from 'framer-motion';
 import { newEventId, track, trackCustom } from './lib/meta-pixel.js';
 import { getVisitorId } from './lib/identity.js';
 import Hero from './sections/Hero.jsx';
@@ -204,14 +204,14 @@ const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
   };
 
   return (
-    <m.div
+    <motion.div
       initial={directions[direction]}
       whileInView={{ y: 0, x: 0, opacity: 1 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.8, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
     >
       {children}
-    </m.div>
+    </motion.div>
   );
 };
 
@@ -240,6 +240,7 @@ export default function App() {
   const [studioView, setStudioView] = useState('after');
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [showDownloadButtons, setShowDownloadButtons] = useState(() => canShowDownloadButtons());
+  const [shouldMountChat, setShouldMountChat] = useState(false);
   const featuresSectionRef = useRef(null);
   const isMonthlyBilling = !isAnnual;
 
@@ -256,6 +257,46 @@ export default function App() {
     updateDownloadVisibility();
     mediaQuery.addEventListener('change', updateDownloadVisibility);
     return () => mediaQuery.removeEventListener('change', updateDownloadVisibility);
+  }, []);
+
+  useEffect(() => {
+    let mounted = false;
+    let timerId = null;
+
+    const cleanupIntentListeners = () => {
+      window.removeEventListener('pointerdown', mountChat);
+      window.removeEventListener('keydown', mountChat);
+      window.removeEventListener('scroll', mountChat);
+    };
+
+    function mountChat() {
+      if (mounted) return;
+      mounted = true;
+      if (timerId) window.clearTimeout(timerId);
+      cleanupIntentListeners();
+      setShouldMountChat(true);
+    }
+
+    const scheduleChatMount = () => {
+      timerId = window.setTimeout(mountChat, 2600);
+    };
+
+    window.addEventListener('pointerdown', mountChat, { once: true, passive: true });
+    window.addEventListener('keydown', mountChat, { once: true });
+    window.addEventListener('scroll', mountChat, { once: true, passive: true });
+
+    if (document.readyState === 'complete') {
+      scheduleChatMount();
+    } else {
+      window.addEventListener('load', scheduleChatMount, { once: true });
+    }
+
+    return () => {
+      mounted = true;
+      if (timerId) window.clearTimeout(timerId);
+      window.removeEventListener('load', scheduleChatMount);
+      cleanupIntentListeners();
+    };
   }, []);
 
   useEffect(() => {
@@ -445,12 +486,26 @@ export default function App() {
       {/* Navbar */}
       <nav className="fixed w-full z-50 top-0 px-4 sm:px-6 py-4">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between bg-black/80 md:bg-black/40 md:backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
-          <div className="flex items-center space-x-2 sm:space-x-3 group cursor-pointer shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <button
+            type="button"
+            aria-label="Back to top"
+            className="flex shrink-0 cursor-pointer items-center space-x-2 border-0 bg-transparent p-0 text-left sm:space-x-3 group"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
               <CarFront className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
-            <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" decoding="async" className="h-8 sm:h-14 w-auto group-hover:scale-105 transition-transform duration-300" />
-          </div>
+            <img
+              src="/autolander-logo-240.webp"
+              srcSet="/autolander-logo-200.webp 200w, /autolander-logo-240.webp 240w, /autolander-logo.png 400w"
+              sizes="(min-width: 640px) 187px, 107px"
+              alt="AutoLander"
+              width="400"
+              height="120"
+              decoding="async"
+              className="h-8 sm:h-14 w-auto group-hover:scale-105 transition-transform duration-300"
+            />
+          </button>
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
              <a href="#how-it-works" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">How It Works</a>
              <a href="#features" className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Features</a>
@@ -460,6 +515,7 @@ export default function App() {
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
             {showDownloadButtons && (
               <button
+                type="button"
                 onClick={() => openDownload({ contentName: 'nav_download', value: 39 })}
                 className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap"
               >
@@ -467,6 +523,7 @@ export default function App() {
               </button>
             )}
             <button
+              type="button"
               onClick={openDemoBooking}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
               Book a Demo
@@ -475,6 +532,7 @@ export default function App() {
         </div>
       </nav>
 
+      <main id="main-content">
       {/* Hero Section */}
       <section className={`relative z-10 overflow-hidden ${hasReferral ? 'pt-32 lg:pt-52 pb-20 lg:pb-40' : 'pt-28 lg:pt-36 pb-16 lg:pb-24'}`}>
         {hasReferral ? (
@@ -536,7 +594,7 @@ export default function App() {
             <FadeIn delay={0.3}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 {showDownloadButtons && (
-                  <m.button
+                  <motion.button
                     whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => openDownload({ contentName: 'referral_offer', value: 125 })}
@@ -544,7 +602,7 @@ export default function App() {
                   >
                     <span>Download + Claim Offer</span>
                     <Download className="w-6 h-6" />
-                  </m.button>
+                  </motion.button>
                 )}
                 <button
                   onClick={openInstalledApp}
@@ -579,9 +637,9 @@ export default function App() {
               <table className="w-full border-collapse">
                 <thead>
                   <tr className="border-b border-white/10">
-                    <th className="py-4 md:py-6 px-2 md:px-4 text-left text-slate-500 text-[10px] md:text-xs font-black uppercase tracking-widest"></th>
-                    <th className="py-4 md:py-6 px-2 md:px-4 text-center text-slate-500 text-[10px] md:text-xs font-black uppercase tracking-widest">Manual</th>
-                    <th className="py-4 md:py-6 px-2 md:px-4 text-center text-blue-500 text-[10px] md:text-xs font-black uppercase tracking-widest bg-blue-500/5 rounded-t-3xl">AutoLander</th>
+                    <th className="py-4 md:py-6 px-2 md:px-4 text-left text-slate-400 text-[10px] md:text-xs font-black uppercase tracking-widest"></th>
+                    <th className="py-4 md:py-6 px-2 md:px-4 text-center text-slate-400 text-[10px] md:text-xs font-black uppercase tracking-widest">Manual</th>
+                    <th className="py-4 md:py-6 px-2 md:px-4 text-center text-blue-400 text-[10px] md:text-xs font-black uppercase tracking-widest bg-blue-500/5 rounded-t-3xl">AutoLander</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -595,7 +653,7 @@ export default function App() {
                   ].map((row, i) => (
                     <tr key={i} className="border-b border-white/5 group">
                       <td className="py-4 md:py-6 px-2 md:px-4 text-white font-bold italic uppercase tracking-tight text-xs md:text-base">{row.label}</td>
-                      <td className="py-4 md:py-6 px-2 md:px-4 text-center text-slate-500 font-medium text-xs md:text-base">
+                      <td className="py-4 md:py-6 px-2 md:px-4 text-center text-slate-400 font-medium text-xs md:text-base">
                         <div className="flex items-center justify-center gap-1 md:gap-2">
                           <X className="w-3 h-3 md:w-4 md:h-4 text-red-500/50 shrink-0" /> {row.manual}
                         </div>
@@ -765,19 +823,24 @@ export default function App() {
               )}
               
               <div className="flex items-center justify-center gap-4 mt-8">
-                <span className={`text-sm font-bold uppercase italic ${!isAnnual ? 'text-white' : 'text-slate-500'}`}>Monthly</span>
+                <span id="billing-monthly-label" className={`text-sm font-bold uppercase italic ${!isAnnual ? 'text-white' : 'text-slate-400'}`}>Monthly</span>
                 <button 
+                  type="button"
+                  role="switch"
+                  aria-checked={isAnnual}
+                  aria-label={isAnnual ? 'Switch to monthly billing' : 'Switch to annual billing'}
+                  aria-describedby="billing-monthly-label billing-annual-label"
                   onClick={() => setIsAnnual(!isAnnual)}
                   className="w-14 h-7 rounded-full bg-white/10 border border-white/10 p-1 flex items-center transition-all"
                 >
-                  <m.div 
+                  <motion.div 
                     animate={{ x: isAnnual ? 28 : 0 }}
                     className="w-5 h-5 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50"
                   />
                 </button>
                 <div className="flex items-center gap-2">
-                  <span className={`text-sm font-bold uppercase italic ${isAnnual ? 'text-white' : 'text-slate-500'}`}>Annual</span>
-                  <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-500 text-[8px] font-black uppercase tracking-widest">Save 25%</span>
+                  <span id="billing-annual-label" className={`text-sm font-bold uppercase italic ${isAnnual ? 'text-white' : 'text-slate-400'}`}>Annual</span>
+                  <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-[8px] font-black uppercase tracking-widest">Save 25%</span>
                 </div>
               </div>
             </FadeIn>
@@ -850,7 +913,7 @@ export default function App() {
                   </div>
 
                   {(!isPrivateMonthlyProOffer || showDownloadButtons) && (
-                    <m.button
+                    <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={
@@ -867,7 +930,7 @@ export default function App() {
                       }`}
                     >
                       {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : plan.team ? 'Get Team' : 'Start Free Trial'}
-                    </m.button>
+                    </motion.button>
                   )}
                   <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">
                     {plan.proPromo && hasReferral
@@ -1012,7 +1075,7 @@ export default function App() {
           {/* Backdrop options below the visual */}
           <FadeIn>
             <div className="mt-12">
-              <p className="text-center text-[11px] font-black uppercase tracking-[0.2em] text-slate-500 mb-5">
+              <p className="text-center text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 mb-5">
                 Backdrop options
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-2xl mx-auto">
@@ -1029,14 +1092,14 @@ export default function App() {
           {/* CTA last */}
           <FadeIn>
             <div className="mt-12 flex justify-center">
-              <m.button
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={openDemoBooking}
                 className="px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all uppercase italic hover:bg-blue-500 shadow-lg shadow-blue-600/30"
               >
                 See the Studio in Action
-              </m.button>
+              </motion.button>
             </div>
           </FadeIn>
 
@@ -1080,7 +1143,7 @@ export default function App() {
                   <p className="text-slate-400 font-medium mb-8 flex-grow leading-relaxed">"{t.quote}"</p>
                   <div>
                     <p className="text-white font-black uppercase tracking-tight">{t.author}</p>
-                    <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest">{t.role}</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.role}</p>
                   </div>
                 </div>
               </FadeIn>
@@ -1113,9 +1176,9 @@ export default function App() {
             ].map((faq, i) => (
               <FadeIn key={i} delay={i * 0.1} direction="up">
                 <div className="p-8 rounded-3xl bg-white/[0.03] border border-white/5">
-                  <h4 className="text-lg font-black text-white uppercase italic tracking-tight mb-4 flex items-center gap-3">
+                  <h3 className="text-lg font-black text-white uppercase italic tracking-tight mb-4 flex items-center gap-3">
                     <HelpCircle className="w-5 h-5 text-blue-500" /> {faq.q}
-                  </h4>
+                  </h3>
                   <p className="text-slate-400 font-medium text-sm leading-relaxed italic">{faq.a}</p>
                 </div>
               </FadeIn>
@@ -1136,14 +1199,14 @@ export default function App() {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <m.button
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={openDemoBooking}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500"
               >
                 Book a Live Demo
-              </m.button>
+              </motion.button>
               <button
                 onClick={openDemoBooking}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
@@ -1151,10 +1214,11 @@ export default function App() {
                 Start Your Free Trial
               </button>
             </div>
-            <p className="mt-8 text-[10px] font-black text-slate-600 uppercase tracking-widest">No Credit Card Required • Instant Setup</p>
+            <p className="mt-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">No Credit Card Required • Instant Setup</p>
           </FadeIn>
         </div>
       </section>
+      </main>
 
       {/* Footer */}
       <footer className="py-12 sm:py-16 lg:py-20 border-t border-white/5 bg-black">
@@ -1168,12 +1232,22 @@ export default function App() {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
                 <CarFront className="w-6 h-6 text-white" />
               </div>
-              <img src="/autolander-logo.png" alt="AutoLander" className="h-12 w-auto" />
+              <img
+                src="/autolander-logo-240.webp"
+                srcSet="/autolander-logo-200.webp 200w, /autolander-logo-240.webp 240w, /autolander-logo.png 400w"
+                sizes="160px"
+                alt="AutoLander"
+                width="400"
+                height="120"
+                loading="lazy"
+                decoding="async"
+                className="h-12 w-auto"
+              />
             </div>
 
             {/* Product */}
             <nav aria-label="Product" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
-              <h3 className="mb-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">Product</h3>
+              <h3 className="mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Product</h3>
               <a href="/facebook-marketplace-auto-poster/" className="block py-1 hover:text-blue-500 transition-colors">Auto Poster</a>
               <a href="/facebook-marketplace-inventory-sync/" className="block py-1 hover:text-blue-500 transition-colors">Inventory Sync</a>
               <a href="/bulk-post-cars-to-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">Bulk Posting</a>
@@ -1183,7 +1257,7 @@ export default function App() {
 
             {/* Integrations */}
             <nav aria-label="Integrations" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
-              <h3 className="mb-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">Integrations</h3>
+              <h3 className="mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Integrations</h3>
               <a href="/integrations/" className="block py-1 hover:text-blue-500 transition-colors">All Integrations</a>
               <a href="/integrations/cargurus-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">CarGurus</a>
               <a href="/integrations/vauto-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">vAuto</a>
@@ -1193,7 +1267,7 @@ export default function App() {
 
             {/* Compare */}
             <nav aria-label="Compare" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
-              <h3 className="mb-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">Compare</h3>
+              <h3 className="mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Compare</h3>
               <a href="/compare/" className="block py-1 hover:text-blue-500 transition-colors">All Tools</a>
               <a href="/compare/autobook/" className="block py-1 hover:text-blue-500 transition-colors">vs AutoBook</a>
               <a href="/compare/shiftly/" className="block py-1 hover:text-blue-500 transition-colors">vs Shiftly</a>
@@ -1202,7 +1276,7 @@ export default function App() {
 
             {/* Company */}
             <nav aria-label="Company" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
-              <h3 className="mb-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">Company</h3>
+              <h3 className="mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Company</h3>
               <MailLink className="block py-1 hover:text-blue-500 transition-colors">Contact</MailLink>
               <MailLink className="block py-1 hover:text-blue-500 transition-colors">Support</MailLink>
               <a href="/privacy.html" className="block py-1 hover:text-blue-500 transition-colors">Privacy</a>
@@ -1212,14 +1286,16 @@ export default function App() {
 
           {/* Bottom bar */}
           <div className="mt-8 pt-6 sm:mt-10 sm:pt-8 border-t border-white/5">
-            <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest text-center sm:text-left">© 2026 AutoLander. All rights reserved.</p>
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest text-center sm:text-left">© 2026 AutoLander. All rights reserved.</p>
           </div>
         </div>
       </footer>
       <MobileCtaBar onBookDemo={openDemoBooking} />
-      <Suspense fallback={null}>
-        <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openDemoBooking} />
-      </Suspense>
+      {shouldMountChat && (
+        <Suspense fallback={null}>
+          <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openDemoBooking} />
+        </Suspense>
+      )}
       {isCalendarOpen && (
         <Suspense fallback={null}>
           <InstantCalendar onClose={() => setIsCalendarOpen(false)} onFallback={openCalendlyPopup} />

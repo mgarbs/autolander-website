@@ -1,14 +1,32 @@
 import { useEffect, useState } from 'react';
-import { m, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { m as motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Facebook, ShieldCheck, MessageSquareText, Zap } from 'lucide-react';
 import { FadeIn, Eyebrow, Stat } from './_ui.jsx';
 
 // Generic, badge-free inventory — the imagery is emblem-free and the copy is
 // brand-free on purpose (no fabricated makes/models).
 const LISTINGS = [
-  { img: '/preview/listing-truck.webp', title: 'Crew-Cab Pickup', meta: '2023 · 18,420 mi · $38,900', city: 'Dallas, TX' },
-  { img: '/preview/listing-suv.webp', title: 'Midsize SUV', meta: '2024 · 9,310 mi · $31,250', city: 'Austin, TX' },
-  { img: '/preview/listing-sedan.webp', title: 'Sport Sedan', meta: '2023 · 12,480 mi · $27,600', city: 'Houston, TX' },
+  {
+    img: '/preview/listing-truck-240.webp',
+    srcSet: '/preview/listing-truck-160.webp 160w, /preview/listing-truck-240.webp 240w, /preview/listing-truck.webp 1100w',
+    title: 'Crew-Cab Pickup',
+    meta: '2023 · 18,420 mi · $38,900',
+    city: 'Dallas, TX',
+  },
+  {
+    img: '/preview/listing-suv-240.webp',
+    srcSet: '/preview/listing-suv-160.webp 160w, /preview/listing-suv-240.webp 240w, /preview/listing-suv.webp 1100w',
+    title: 'Midsize SUV',
+    meta: '2024 · 9,310 mi · $31,250',
+    city: 'Austin, TX',
+  },
+  {
+    img: '/preview/listing-sedan-240.webp',
+    srcSet: '/preview/listing-sedan-160.webp 160w, /preview/listing-sedan-240.webp 240w, /preview/listing-sedan.webp 1100w',
+    title: 'Sport Sedan',
+    meta: '2023 · 12,480 mi · $27,600',
+    city: 'Houston, TX',
+  },
 ];
 
 function StatusChip({ status }) {
@@ -27,7 +45,7 @@ function StatusChip({ status }) {
     );
   }
   return (
-    <span className="shrink-0 rounded-full bg-white/5 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-slate-500">
+    <span className="shrink-0 rounded-full bg-white/5 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-slate-400">
       Queued
     </span>
   );
@@ -82,7 +100,7 @@ function PostingEngine() {
           <div className="text-right font-mono text-[10px] uppercase leading-relaxed tracking-widest text-emerald-400">
             ▲ 30 / hr
             <br />
-            <span className="text-slate-500">6.5× manual</span>
+            <span className="text-slate-400">6.5× manual</span>
           </div>
         </div>
 
@@ -91,7 +109,7 @@ function PostingEngine() {
           {LISTINGS.map((car, i) => {
             const status = i < live ? 'live' : i === live ? 'posting' : 'queued';
             return (
-              <m.div
+              <motion.div
                 key={car.title}
                 initial={reduce ? false : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -100,6 +118,8 @@ function PostingEngine() {
               >
                 <img
                   src={car.img}
+                  srcSet={car.srcSet}
+                  sizes="(min-width: 640px) 80px, 64px"
                   alt=""
                   width="120"
                   height="90"
@@ -109,10 +129,10 @@ function PostingEngine() {
                 />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold text-white">{car.title}</p>
-                  <p className="truncate font-mono text-[10px] uppercase tracking-wider text-slate-500">{car.meta}</p>
+                  <p className="truncate font-mono text-[10px] uppercase tracking-wider text-slate-400">{car.meta}</p>
                 </div>
                 <StatusChip status={status} />
-              </m.div>
+              </motion.div>
             );
           })}
         </div>
@@ -121,7 +141,7 @@ function PostingEngine() {
         <div className="relative mt-3 h-9">
           <AnimatePresence mode="wait">
             {pingIndex >= 0 && (
-              <m.div
+              <motion.div
                 key={pingIndex}
                 initial={reduce ? false : { opacity: 0, x: 14 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -133,7 +153,7 @@ function PostingEngine() {
                 <span className="truncate font-mono text-[11px] text-blue-100">
                   New buyer message — {LISTINGS[pingIndex].city}
                 </span>
-              </m.div>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
@@ -174,7 +194,7 @@ export default function Hero({ openDemoBooking }) {
 
         <FadeIn delay={0.24}>
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <m.button
+            <motion.button
               whileHover={{ y: -3 }}
               whileTap={{ scale: 0.98 }}
               onClick={openDemoBooking}
@@ -182,7 +202,7 @@ export default function Hero({ openDemoBooking }) {
             >
               Book a Demo
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </m.button>
+            </motion.button>
             <button
               onClick={openDemoBooking}
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-8 py-5 font-display text-lg font-bold uppercase italic tracking-tight text-white transition-colors hover:bg-white/10 sm:w-auto"
