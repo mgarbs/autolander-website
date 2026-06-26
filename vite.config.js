@@ -54,7 +54,7 @@ function htmlTransformPlugin(pixelId, isPreview) {
           if(window.fbq && window.fbq._load) window.fbq._load();
         }
         function schedule(){
-          timer=window.setTimeout(load,2600);
+          timer=window.setTimeout(load,14000);
         }
         function onVisibilityChange(){
           if(document.visibilityState==='hidden') load();

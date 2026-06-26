@@ -1,4 +1,4 @@
-import { FadeIn, Eyebrow, SectionHeading, Stat } from './_ui.jsx';
+import { Eyebrow, SectionHeading, StaticStat } from './StaticUi.jsx';
 
 // Conviction stats straight from the playbook (Part 6). Verifiable framing,
 // no fabricated claims.
@@ -16,10 +16,10 @@ export default function ExecutionGap() {
   return (
     <section className="relative py-24 lg:py-36">
       <div className="mx-auto max-w-4xl px-6 text-center">
-        <FadeIn>
+        <div>
           <Eyebrow>The real problem</Eyebrow>
-        </FadeIn>
-        <FadeIn delay={0.08}>
+        </div>
+        <div>
           <SectionHeading className="mt-6">
             Dealers don&apos;t have a demand problem.{' '}
             <span className={gradWord}>They</span>{' '}
@@ -28,23 +28,23 @@ export default function ExecutionGap() {
             <span className={gradWord}>execution</span>{' '}
             <span className={gradWord}>problem.</span>
           </SectionHeading>
-        </FadeIn>
-        <FadeIn delay={0.16}>
+        </div>
+        <div>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-400">
             The buyers are already on Marketplace. Your inventory already exists. The only broken
             link is consistent, fast, compliant posting — and reps can&apos;t keep up by hand.
             AutoLander closes that gap.
           </p>
-        </FadeIn>
+        </div>
       </div>
 
       <div className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-6 px-6 sm:grid-cols-3">
-        {STATS.map((s, i) => (
-          <FadeIn key={s.label} delay={0.1 + i * 0.1} direction="up">
+        {STATS.map((s) => (
+          <div key={s.label}>
             <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-8 text-center">
-              <Stat value={s.value} suffix={s.suffix} label={s.label} />
+              <StaticStat value={s.value} suffix={s.suffix} label={s.label} />
             </div>
-          </FadeIn>
+          </div>
         ))}
       </div>
     </section>

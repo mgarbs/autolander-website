@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { m as motion, LazyMotion, domAnimation } from 'framer-motion';
 import { newEventId, track, trackCustom } from './lib/meta-pixel.js';
 import { getVisitorId } from './lib/identity.js';
 import Hero from './sections/Hero.jsx';
@@ -191,25 +190,7 @@ function checkoutEventParams(contentName, value) {
   return params;
 }
 
-const FadeIn = ({ children, delay = 0, direction = 'up' }) => {
-  const directions = {
-    up: { y: 30, opacity: 0 },
-    down: { y: -30, opacity: 0 },
-    left: { x: 30, opacity: 0 },
-    right: { x: -30, opacity: 0 },
-  };
-
-  return (
-    <motion.div
-      initial={directions[direction]}
-      whileInView={{ y: 0, x: 0, opacity: 1 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.8, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
-    >
-      {children}
-    </motion.div>
-  );
-};
+const FadeIn = ({ children }) => <div>{children}</div>;
 
 export default function App() {
   const [isAnnual, setIsAnnual] = useState(false);
@@ -264,7 +245,7 @@ export default function App() {
     }
 
     const scheduleDeferredMount = () => {
-      timerId = window.setTimeout(mountDeferredSections, 6200);
+      timerId = window.setTimeout(mountDeferredSections, 14000);
     };
 
     window.addEventListener('keydown', mountDeferredSections, { once: true });
@@ -330,7 +311,7 @@ export default function App() {
     }
 
     const scheduleChatMount = () => {
-      timerId = window.setTimeout(mountChat, 8000);
+      timerId = window.setTimeout(mountChat, 16000);
     };
 
     window.addEventListener('pointerdown', mountChat, { once: true, passive: true });
@@ -477,7 +458,6 @@ export default function App() {
 
 
   return (
-    <LazyMotion features={domAnimation}>
     <div className="min-h-dvh bg-[#050505] text-slate-50 font-sans selection:bg-blue-500/30 selection:text-blue-200">
       {/* Background Orbs — hidden on mobile (large blur filters tank GPU on mobile) */}
       <div className="hidden md:block fixed inset-0 z-0 overflow-hidden pointer-events-none">
@@ -596,15 +576,13 @@ export default function App() {
             <FadeIn delay={0.3}>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 {showDownloadButtons && (
-                  <motion.button
-                    whileHover={{ y: -4, shadow: "0 20px 40px rgba(59,130,246,0.3)" }}
-                    whileTap={{ scale: 0.98 }}
+                  <button
                     onClick={() => openDownload({ contentName: 'referral_offer', value: 125 })}
-                    className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic"
+                    className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic hover:bg-blue-500 active:scale-95"
                   >
                     <span>Download + Claim Offer</span>
                     <Download className="w-6 h-6" />
-                  </motion.button>
+                  </button>
                 )}
                 <button
                   onClick={openInstalledApp}
@@ -661,6 +639,5 @@ export default function App() {
         </Suspense>
       )}
     </div>
-    </LazyMotion>
   );
 }

@@ -22,7 +22,7 @@
         };
         const scheduleAfterLoad = () => {
           if (loaded) return;
-          timer = window.setTimeout(load, 6500);
+          timer = window.setTimeout(load, 14000);
         };
         const onVisibilityChange = () => {
           if (document.visibilityState === 'hidden') load();

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { m as motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Facebook, ShieldCheck, MessageSquareText, Zap } from 'lucide-react';
-import { FadeIn, Eyebrow, Stat } from './_ui.jsx';
+import { Eyebrow, StaticStat } from './StaticUi.jsx';
 
 // Generic, badge-free inventory — the imagery is emblem-free and the copy is
 // brand-free on purpose (no fabricated makes/models).
@@ -53,8 +52,23 @@ function StatusChip({ status }) {
 
 // The signature element: a live product surface that turns inventory into
 // live Marketplace listings, one by one — the execution gap, visualized.
+function usePrefersReducedMotion() {
+  const [reduce, setReduce] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReduce(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener('change', update);
+    return () => mediaQuery.removeEventListener('change', update);
+  }, []);
+
+  return reduce;
+}
+
 function PostingEngine() {
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
   const [live, setLive] = useState(reduce ? LISTINGS.length : 0);
   const [pingIndex, setPingIndex] = useState(reduce ? 0 : -1);
 
@@ -96,7 +110,7 @@ function PostingEngine() {
 
         {/* live counter */}
         <div className="flex items-end justify-between py-4">
-          <Stat value={312} label="Total cars posted" />
+          <StaticStat value={312} label="Total cars posted" />
           <div className="text-right font-mono text-[10px] uppercase leading-relaxed tracking-widest text-emerald-400">
             ▲ 30 / hr
             <br />
@@ -109,11 +123,8 @@ function PostingEngine() {
           {LISTINGS.map((car, i) => {
             const status = i < live ? 'live' : i === live ? 'posting' : 'queued';
             return (
-              <motion.div
+              <div
                 key={car.title}
-                initial={reduce ? false : { opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: reduce ? 0 : 0.25 + i * 0.15, duration: 0.5 }}
                 className="flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5"
               >
                 <img
@@ -132,37 +143,68 @@ function PostingEngine() {
                   <p className="truncate font-mono text-[10px] uppercase tracking-wider text-slate-400">{car.meta}</p>
                 </div>
                 <StatusChip status={status} />
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* buyer-conversation ping */}
         <div className="relative mt-3 h-9">
-          <AnimatePresence mode="wait">
+          <>
             {pingIndex >= 0 && (
-              <motion.div
+              <div
                 key={pingIndex}
-                initial={reduce ? false : { opacity: 0, x: 14 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={reduce ? undefined : { opacity: 0, x: -14 }}
-                transition={{ duration: 0.4 }}
                 className="absolute inset-0 flex items-center gap-2 rounded-xl border border-blue-400/20 bg-blue-500/10 px-3"
               >
                 <MessageSquareText className="h-4 w-4 shrink-0 text-blue-300" />
                 <span className="truncate font-mono text-[11px] text-blue-100">
                   New buyer message — {LISTINGS[pingIndex].city}
                 </span>
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
+          </>
         </div>
       </div>
     </div>
   );
 }
 
+function useShouldShowPostingEngine() {
+  const [show, setShow] = useState(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return true;
+    return window.matchMedia('(min-width: 1024px)').matches;
+  });
+
+  useEffect(() => {
+    if (show || typeof window === 'undefined' || !window.matchMedia) return undefined;
+
+    let timerId = null;
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    const reveal = () => setShow(true);
+    const onMediaChange = () => {
+      if (mediaQuery.matches) reveal();
+    };
+
+    timerId = window.setTimeout(reveal, 10000);
+    window.addEventListener('scroll', reveal, { once: true, passive: true });
+    window.addEventListener('touchstart', reveal, { once: true, passive: true });
+    window.addEventListener('wheel', reveal, { once: true, passive: true });
+    mediaQuery.addEventListener('change', onMediaChange);
+
+    return () => {
+      if (timerId) window.clearTimeout(timerId);
+      window.removeEventListener('scroll', reveal);
+      window.removeEventListener('touchstart', reveal);
+      window.removeEventListener('wheel', reveal);
+      mediaQuery.removeEventListener('change', onMediaChange);
+    };
+  }, [show]);
+
+  return show;
+}
+
 export default function Hero({ openDemoBooking }) {
+  const showPostingEngine = useShouldShowPostingEngine();
   // Each gradient word is its own inline-block so the italic overhang of its
   // final glyph (e.g. the "2" in 8–12) isn't clipped by bg-clip-text on a line wrap.
   const gradWord =
@@ -170,11 +212,11 @@ export default function Hero({ openDemoBooking }) {
   return (
     <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-6 lg:min-h-[600px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
       <div className="max-w-2xl">
-        <FadeIn immediate>
+        <div>
           <Eyebrow>Facebook Marketplace Automation — For Dealers &amp; Sales Reps</Eyebrow>
-        </FadeIn>
+        </div>
 
-        <FadeIn immediate>
+        <div>
           <h1 className="mt-6 text-balance font-display text-5xl font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
             Sell{' '}
             <span className={gradWord}>8&ndash;12</span>{' '}
@@ -183,26 +225,24 @@ export default function Hero({ openDemoBooking }) {
             a month on{' '}
             <span className={gradWord}>autopilot.</span>
           </h1>
-        </FadeIn>
+        </div>
 
-        <FadeIn immediate>
+        <div>
           <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
             AutoLander auto-posts, updates, and tracks your entire inventory on Facebook
             Marketplace — 20 cars in minutes, not hours. More buyer conversations, zero manual work.
           </p>
-        </FadeIn>
+        </div>
 
-        <FadeIn immediate>
+        <div>
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-            <motion.button
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.98 }}
+            <button
               onClick={openDemoBooking}
-              className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 px-9 py-5 font-display text-lg font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 sm:w-auto"
+              className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 px-9 py-5 font-display text-lg font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 active:scale-95 sm:w-auto"
             >
               Book a Demo
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </motion.button>
+            </button>
             <button
               onClick={openDemoBooking}
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-8 py-5 font-display text-lg font-bold uppercase italic tracking-tight text-white transition-colors hover:bg-white/10 sm:w-auto"
@@ -210,9 +250,9 @@ export default function Hero({ openDemoBooking }) {
               Start Free Trial
             </button>
           </div>
-        </FadeIn>
+        </div>
 
-        <FadeIn immediate>
+        <div>
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-slate-400">
             <span className="flex items-center gap-1.5">
               <Zap className="h-3.5 w-3.5 text-blue-400" /> 5 free posts on your demo
@@ -222,12 +262,12 @@ export default function Hero({ openDemoBooking }) {
             </span>
             <span>$39/mo · Cancel anytime</span>
           </div>
-        </FadeIn>
+        </div>
       </div>
 
-      <FadeIn delay={0.2} direction="left" className="w-full">
-        <PostingEngine />
-      </FadeIn>
+      <div className="w-full min-h-[360px] lg:min-h-0">
+        {showPostingEngine && <PostingEngine />}
+      </div>
     </div>
   );
 }
