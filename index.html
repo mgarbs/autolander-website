@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js): queue immediately, load the remote script after first paint. -->
+    <!-- Google tag (gtag.js): queue immediately, load the remote script after the first screen settles. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -22,7 +22,7 @@
         };
         const scheduleAfterLoad = () => {
           if (loaded) return;
-          timer = window.setTimeout(load, 3500);
+          timer = window.setTimeout(load, 6500);
         };
         const onVisibilityChange = () => {
           if (document.visibilityState === 'hidden') load();
