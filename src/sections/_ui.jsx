@@ -7,7 +7,7 @@ import { m as motion, useInView, useReducedMotion, animate } from 'framer-motion
  */
 
 // Scroll-reveal wrapper (same behavior the old App.jsx FadeIn had).
-export const FadeIn = ({ children, delay = 0, direction = 'up', className }) => {
+export const FadeIn = ({ children, delay = 0, direction = 'up', className, immediate = false }) => {
   const directions = {
     up: { y: 28, opacity: 0 },
     down: { y: -28, opacity: 0 },
@@ -15,6 +15,10 @@ export const FadeIn = ({ children, delay = 0, direction = 'up', className }) => 
     right: { x: -28, opacity: 0 },
     none: { opacity: 0 },
   };
+
+  if (immediate) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div

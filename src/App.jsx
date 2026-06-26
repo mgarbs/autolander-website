@@ -265,6 +265,7 @@ export default function App() {
 
     const cleanupIntentListeners = () => {
       window.removeEventListener('pointerdown', mountChat);
+      window.removeEventListener('pointermove', mountChat);
       window.removeEventListener('keydown', mountChat);
       window.removeEventListener('scroll', mountChat);
     };
@@ -278,10 +279,11 @@ export default function App() {
     }
 
     const scheduleChatMount = () => {
-      timerId = window.setTimeout(mountChat, 2600);
+      timerId = window.setTimeout(mountChat, 8000);
     };
 
     window.addEventListener('pointerdown', mountChat, { once: true, passive: true });
+    window.addEventListener('pointermove', mountChat, { once: true, passive: true });
     window.addEventListener('keydown', mountChat, { once: true });
     window.addEventListener('scroll', mountChat, { once: true, passive: true });
 

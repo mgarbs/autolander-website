@@ -170,11 +170,11 @@ export default function Hero({ openDemoBooking }) {
   return (
     <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-6 lg:min-h-[600px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
       <div className="max-w-2xl">
-        <FadeIn>
+        <FadeIn immediate>
           <Eyebrow>Facebook Marketplace Automation — For Dealers &amp; Sales Reps</Eyebrow>
         </FadeIn>
 
-        <FadeIn delay={0.08}>
+        <FadeIn immediate>
           <h1 className="mt-6 text-balance font-display text-5xl font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
             Sell{' '}
             <span className={gradWord}>8&ndash;12</span>{' '}
@@ -185,14 +185,14 @@ export default function Hero({ openDemoBooking }) {
           </h1>
         </FadeIn>
 
-        <FadeIn delay={0.16}>
+        <FadeIn immediate>
           <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
             AutoLander auto-posts, updates, and tracks your entire inventory on Facebook
             Marketplace — 20 cars in minutes, not hours. More buyer conversations, zero manual work.
           </p>
         </FadeIn>
 
-        <FadeIn delay={0.24}>
+        <FadeIn immediate>
           <div className="mt-9 flex flex-col gap-4 sm:flex-row">
             <motion.button
               whileHover={{ y: -3 }}
@@ -212,7 +212,7 @@ export default function Hero({ openDemoBooking }) {
           </div>
         </FadeIn>
 
-        <FadeIn delay={0.32}>
+        <FadeIn immediate>
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-slate-400">
             <span className="flex items-center gap-1.5">
               <Zap className="h-3.5 w-3.5 text-blue-400" /> 5 free posts on your demo
