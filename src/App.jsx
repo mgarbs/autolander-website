@@ -4,13 +4,22 @@ import { getVisitorId } from './lib/identity.js';
 import Hero from './sections/Hero.jsx';
 import TrustStrip from './sections/TrustStrip.jsx';
 import ExecutionGap from './sections/ExecutionGap.jsx';
+import ComparisonSection from './sections/ComparisonSection.jsx';
 import MobileCtaBar from './sections/MobileCtaBar.jsx';
 import { CarFront, Gift, Download, Copy } from 'lucide-react';
 const ChatAssistant = lazy(() => import('./components/ChatAssistant.jsx'));
 const InstantCalendar = lazy(() => import('./components/InstantCalendar.jsx'));
-const DeferredLandingSections = lazy(() => import('./sections/DeferredLandingSections.jsx'));
+let deferredLandingSectionsPromise = null;
+const loadDeferredLandingSections = () => {
+  if (!deferredLandingSectionsPromise) {
+    deferredLandingSectionsPromise = import('./sections/DeferredLandingSections.jsx');
+  }
+  return deferredLandingSectionsPromise;
+};
+
+const DeferredLandingSections = lazy(loadDeferredLandingSections);
 const LandingFooter = lazy(() =>
-  import('./sections/DeferredLandingSections.jsx').then((module) => ({
+  loadDeferredLandingSections().then((module) => ({
     default: module.LandingFooter,
   }))
 );
@@ -223,6 +232,8 @@ export default function App() {
     let timerId = null;
 
     const cleanupIntentListeners = () => {
+      window.removeEventListener('pointerdown', mountDeferredSections);
+      window.removeEventListener('pointermove', mountDeferredSections);
       window.removeEventListener('keydown', mountDeferredSections);
       window.removeEventListener('scroll', mountDeferredSections);
       window.removeEventListener('touchstart', mountDeferredSections);
@@ -234,6 +245,7 @@ export default function App() {
       mounted = true;
       if (timerId) window.clearTimeout(timerId);
       cleanupIntentListeners();
+      loadDeferredLandingSections().catch(() => {});
       setShouldMountDeferredSections(true);
     }
 
@@ -248,6 +260,8 @@ export default function App() {
       timerId = window.setTimeout(mountDeferredSections, 14000);
     };
 
+    window.addEventListener('pointerdown', mountDeferredSections, { once: true, passive: true });
+    window.addEventListener('pointermove', mountDeferredSections, { once: true, passive: true });
     window.addEventListener('keydown', mountDeferredSections, { once: true });
     window.addEventListener('scroll', mountDeferredSections, { once: true, passive: true });
     window.addEventListener('touchstart', mountDeferredSections, { once: true, passive: true });
@@ -299,10 +313,10 @@ export default function App() {
       window.removeEventListener('pointerdown', mountChat);
       window.removeEventListener('pointermove', mountChat);
       window.removeEventListener('keydown', mountChat);
-      window.removeEventListener('scroll', mountChat);
     };
 
-    function mountChat() {
+    function mountChat(event) {
+      if (event?.pointerType && event.pointerType !== 'mouse') return;
       if (mounted) return;
       mounted = true;
       if (timerId) window.clearTimeout(timerId);
@@ -317,7 +331,6 @@ export default function App() {
     window.addEventListener('pointerdown', mountChat, { once: true, passive: true });
     window.addEventListener('pointermove', mountChat, { once: true, passive: true });
     window.addEventListener('keydown', mountChat, { once: true });
-    window.addEventListener('scroll', mountChat, { once: true, passive: true });
 
     if (document.readyState === 'complete') {
       scheduleChatMount();
@@ -600,6 +613,7 @@ export default function App() {
 
       <TrustStrip />
       <ExecutionGap />
+      <ComparisonSection />
 
       {shouldMountDeferredSections && (
         <Suspense fallback={null}>

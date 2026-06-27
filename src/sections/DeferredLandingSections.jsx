@@ -1,8 +1,7 @@
-import { m as motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import {
   Activity,
   CarFront,
-  Check,
   CheckCircle2,
   Gift,
   HelpCircle,
@@ -12,10 +11,76 @@ import {
   Sparkles,
   TrendingUp,
   Wand2,
-  X,
 } from 'lucide-react';
 import Audience from './Audience.jsx';
-import { Eyebrow, FadeIn, MailLink, SectionHeading } from './_ui.jsx';
+import { Eyebrow, SectionHeading } from './StaticUi.jsx';
+
+const FadeIn = ({ children, className = '' }) => <div className={className}>{children}</div>;
+
+// Kept local so the deferred landing bundle does not pull the animated UI helper.
+const MailLink = ({ email = 'sales@autolander.ai', subject = 'AutoLander support', children, className = '' }) => {
+  const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const ref = useRef(null);
+  const su = encodeURIComponent(subject);
+  const options = [
+    { label: 'Gmail', href: `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${su}` },
+    { label: 'Outlook', href: `https://outlook.office.com/mail/deeplink/compose?to=${email}&subject=${su}` },
+    { label: 'Default mail app', href: `mailto:${email}?subject=${su}` },
+  ];
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onDocClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, [open]);
+
+  const copy = () => {
+    navigator.clipboard?.writeText(email)?.catch(() => {});
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
+  };
+
+  return (
+    <span ref={ref} className="relative inline-block">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        style={{ font: 'inherit', letterSpacing: 'inherit', textTransform: 'inherit', color: 'inherit' }}
+        className={`cursor-pointer border-0 bg-transparent p-0 ${className}`}
+      >
+        {children}
+      </button>
+      {open && (
+        <div className="absolute bottom-full left-1/2 z-[60] mb-2 w-48 -translate-x-1/2 overflow-hidden rounded-2xl border border-white/10 bg-[#0b0d12] p-1.5 text-left shadow-2xl shadow-blue-950/50">
+          <p className="px-3 py-1.5 font-mono text-[9px] uppercase tracking-widest text-slate-500">Email {email}</p>
+          {options.map((o) => (
+            <a
+              key={o.label}
+              href={o.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="block rounded-xl px-3 py-2 text-xs font-bold normal-case tracking-normal text-slate-200 transition hover:bg-white/10"
+            >
+              {o.label}
+            </a>
+          ))}
+          <button
+            type="button"
+            onClick={copy}
+            className="block w-full rounded-xl px-3 py-2 text-left text-xs font-bold normal-case tracking-normal text-slate-200 transition hover:bg-white/10"
+          >
+            {copied ? 'Copied' : 'Copy address'}
+          </button>
+        </div>
+      )}
+    </span>
+  );
+};
 
 const FeatureCard = ({ icon: Icon, title, desc }) => (
   <div className="group p-8 rounded-3xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] hover:border-blue-500/30 transition-all duration-500">
@@ -115,56 +180,6 @@ export default function DeferredLandingSections({
 
   return (
     <>
-      {/* Comparison Section */}
-      <section className="py-24 lg:py-40 relative">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16 lg:mb-24">
-            <FadeIn>
-              <h2 className="font-display text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
-                MANUAL VS. <span className="text-blue-500">AUTOLANDER</span>
-              </h2>
-              <p className="text-slate-400 font-medium text-lg italic">Stop burning time on grunt work. Focus on closing deals while AI handles the rest.</p>
-            </FadeIn>
-          </div>
-
-          <FadeIn direction="up" delay={0.2}>
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b border-white/10">
-                    <th className="py-4 md:py-6 px-2 md:px-4 text-left text-slate-400 text-[10px] md:text-xs font-black uppercase tracking-widest"></th>
-                    <th className="py-4 md:py-6 px-2 md:px-4 text-center text-slate-400 text-[10px] md:text-xs font-black uppercase tracking-widest">Manual</th>
-                    <th className="py-4 md:py-6 px-2 md:px-4 text-center text-blue-400 text-[10px] md:text-xs font-black uppercase tracking-widest bg-blue-500/5 rounded-t-3xl">AutoLander</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[
-                    { label: 'Time per vehicle', manual: '13 minutes', auto: '2 minutes' },
-                    { label: 'Vehicles per hour', manual: '~4', auto: '30 — 6.5× faster' },
-                    { label: 'Descriptions', manual: 'Copy-paste', auto: 'AI-optimized' },
-                    { label: 'Photos', manual: 'Random order', auto: 'Front-view first' },
-                    { label: 'Sold units', manual: 'Stay listed', auto: 'Auto-removed' },
-                    { label: 'Attribution', manual: 'None', auto: 'Post-to-sale tracking' }
-                  ].map((row, i) => (
-                    <tr key={i} className="border-b border-white/5 group">
-                      <td className="py-4 md:py-6 px-2 md:px-4 text-white font-bold italic uppercase tracking-tight text-xs md:text-base">{row.label}</td>
-                      <td className="py-4 md:py-6 px-2 md:px-4 text-center text-slate-400 font-medium text-xs md:text-base">
-                        <div className="flex items-center justify-center gap-1 md:gap-2">
-                          <X className="w-3 h-3 md:w-4 md:h-4 text-red-500/50 shrink-0" /> {row.manual}
-                        </div>
-                      </td>
-                      <td className="py-4 md:py-6 px-2 md:px-4 text-center text-white font-black italic bg-blue-500/5 group-last:rounded-b-3xl text-xs md:text-base">
-                        <div className="flex items-center justify-center gap-1 md:gap-2">
-                          <Check className="w-3 h-3 md:w-5 md:h-5 text-blue-500 shrink-0" /> {row.auto}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-          </FadeIn>
-        </div>
-      </section>
-
       {/* How It Works */}
       <section id="how-it-works" className="py-24 lg:py-40 bg-[#080808] border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6">
@@ -327,9 +342,8 @@ export default function DeferredLandingSections({
                   onClick={() => setIsAnnual(!isAnnual)}
                   className="w-14 h-7 rounded-full bg-white/10 border border-white/10 p-1 flex items-center transition-all"
                 >
-                  <motion.div 
-                    animate={{ x: isAnnual ? 28 : 0 }}
-                    className="w-5 h-5 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50"
+                  <div
+                    className={`w-5 h-5 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50 transition-transform ${isAnnual ? 'translate-x-7' : 'translate-x-0'}`}
                   />
                 </button>
                 <div className="flex items-center gap-2">
@@ -407,9 +421,7 @@ export default function DeferredLandingSections({
                   </div>
 
                   {(!isPrivateMonthlyProOffer || showDownloadButtons) && (
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
+                    <button
                       onClick={
                         isPrivateMonthlyProOffer
                           ? () => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })
@@ -424,7 +436,7 @@ export default function DeferredLandingSections({
                       }`}
                     >
                       {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : plan.team ? 'Get Team' : 'Start Free Trial'}
-                    </motion.button>
+                    </button>
                   )}
                   <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">
                     {plan.proPromo && hasReferral
@@ -586,14 +598,12 @@ export default function DeferredLandingSections({
           {/* CTA last */}
           <FadeIn>
             <div className="mt-12 flex justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={openDemoBooking}
-                className="px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all uppercase italic hover:bg-blue-500 shadow-lg shadow-blue-600/30"
+                className="px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all uppercase italic hover:bg-blue-500 active:scale-95 shadow-lg shadow-blue-600/30"
               >
                 See the Studio in Action
-              </motion.button>
+              </button>
             </div>
           </FadeIn>
 
@@ -693,14 +703,12 @@ export default function DeferredLandingSections({
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <button
                 onClick={openDemoBooking}
-                className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500"
+                className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500 active:scale-95"
               >
                 Book a Live Demo
-              </motion.button>
+              </button>
               <button
                 onClick={openDemoBooking}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"

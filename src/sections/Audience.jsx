@@ -1,5 +1,7 @@
 import { Check, X } from 'lucide-react';
-import { FadeIn, Eyebrow, SectionHeading } from './_ui.jsx';
+import { Eyebrow, SectionHeading } from './StaticUi.jsx';
+
+const FadeIn = ({ children }) => <div>{children}</div>;
 
 // Straight from the playbook's landing-page formula: sharpen dealer targeting
 // by naming who it's for — and who it isn't (anyone shopping for a car).
