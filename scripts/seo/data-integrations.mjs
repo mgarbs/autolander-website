@@ -121,10 +121,33 @@ const COPY = {
   },
 };
 
+// ---- AI Photo Studio before/after pool — one distinct vehicle per spoke ----
+const STUDIO = [
+  { slug: 'hyundai-sonata', vehicle: '2024 Hyundai Sonata' },
+  { slug: 'nissan-kicks', vehicle: '2025 Nissan Kicks' },
+  { slug: 'jeep-wrangler', vehicle: '2026 Jeep Wrangler' },
+  { slug: 'tesla-model-y', vehicle: '2023 Tesla Model Y' },
+  { slug: 'ford-expedition', vehicle: '2024 Ford Expedition' },
+  { slug: 'toyota-tacoma', vehicle: '2025 Toyota Tacoma' },
+  { slug: 'chevrolet-malibu', vehicle: '2022 Chevrolet Malibu' },
+  { slug: 'jeep-renegade', vehicle: '2019 Jeep Renegade' },
+  { slug: 'kia-k5', vehicle: '2022 Kia K5' },
+];
+function studioFigure(v) {
+  return {
+    type: 'figure',
+    before: `/studio/${v.slug}-before.webp`,
+    after: `/studio/${v.slug}-after.webp`,
+    beforeAlt: `Raw dealership lot photo of a ${v.vehicle} before AutoLander`,
+    afterAlt: `The same ${v.vehicle} as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio`,
+    caption: `AutoLander’s AI Photo Studio: a raw dealer lot photo of a ${v.vehicle} (left) becomes a showroom-grade Facebook Marketplace listing (right), automatically.`,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Spoke builder — maps INTEGRATIONS so every spoke is consistent yet varied.
 // ---------------------------------------------------------------------------
-function buildSpoke(s) {
+function buildSpoke(s, i) {
   const path = integrationPath(s.slug);
   const isFeed = s.system === 'feed';
   const c = COPY[s.slug];
@@ -254,6 +277,7 @@ function buildSpoke(s) {
       ],
     },
   ];
+  sections.splice(1, 0, studioFigure(STUDIO[i % STUDIO.length]));
 
   const faq = [
     [
@@ -348,6 +372,14 @@ const hub = {
     { name: 'Integrations', url: SITE.origin + HUB_PATH },
   ],
   sections: [
+    {
+      type: 'figure',
+      before: '/studio/ford-maverick-before.webp',
+      after: '/studio/ford-maverick-after.webp',
+      beforeAlt: 'Raw dealership lot photo of a 2026 Ford Maverick before AutoLander',
+      afterAlt: 'The same 2026 Ford Maverick as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
+      caption: 'From your feed to a showroom-grade listing: a raw 2026 Ford Maverick lot photo (left) becomes a polished Facebook Marketplace listing (right), automatically.',
+    },
     {
       type: 'qa',
       q: 'What is a DMS Facebook Marketplace integration?',

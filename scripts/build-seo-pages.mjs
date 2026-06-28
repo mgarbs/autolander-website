@@ -26,10 +26,13 @@ import { PAGES as INVENTORY } from './seo/data-inventory.mjs';
 import { PAGES as BULK } from './seo/data-bulk.mjs';
 import { PAGES as SAFETY } from './seo/data-safety.mjs';
 import { PAGES as INTEG } from './seo/data-integrations.mjs';
+import { PAGES as LISTINGSW } from './seo/data-listing-software.mjs';
+import { PAGES as FBLISTING } from './seo/data-facebook-listing.mjs';
+import { PAGES as DEALERS } from './seo/data-dealers.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 
-const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG];
+const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS];
 
 function write(path, contents) {
   mkdirSync(dirname(path), { recursive: true });
@@ -54,6 +57,7 @@ for (const page of ALL) {
 // ---------- completeness check (warns if a registry page wasn't produced) ----------
 const expected = [
   NAV.category.path, NAV.integHub.path, NAV.inventory.path, NAV.bulk.path, NAV.safety.path, NAV.pricing.path,
+  NAV.listingSw.path, NAV.fbListing.path, NAV.dealers.path,
   ...INTEGRATIONS.map((s) => integrationPath(s.slug)),
 ];
 const missing = expected.filter((p) => !renderedPaths.has(p));
@@ -82,6 +86,7 @@ function sitemapXml() {
   const urls = [
     { loc: SITE.origin + '/', pri: '1.0', freq: 'weekly' },
     { loc: SITE.origin + NAV.category.path, pri: '0.9', freq: 'weekly' },
+    { loc: SITE.origin + NAV.listingSw.path, pri: '0.9', freq: 'weekly' },
     { loc: SITE.origin + '/compare/', pri: '0.9', freq: 'weekly' },
     { loc: SITE.origin + NAV.integHub.path, pri: '0.8', freq: 'monthly' },
     { loc: `${SITE.origin}/${GUIDE.path}/`, pri: '0.8', freq: 'monthly' },
@@ -89,6 +94,8 @@ function sitemapXml() {
     { loc: SITE.origin + NAV.bulk.path, pri: '0.8', freq: 'monthly' },
     { loc: SITE.origin + NAV.safety.path, pri: '0.8', freq: 'monthly' },
     { loc: SITE.origin + NAV.pricing.path, pri: '0.8', freq: 'monthly' },
+    { loc: SITE.origin + NAV.dealers.path, pri: '0.8', freq: 'monthly' },
+    { loc: SITE.origin + NAV.fbListing.path, pri: '0.8', freq: 'monthly' },
     ...competitorSlugs.map((s) => ({ loc: `${SITE.origin}/compare/${s}/`, pri: '0.7', freq: 'monthly' })),
     ...INTEGRATIONS.map((s) => ({ loc: integrationUrl(s.slug), pri: '0.7', freq: 'monthly' })),
   ];

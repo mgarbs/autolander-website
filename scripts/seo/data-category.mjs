@@ -38,6 +38,14 @@ export const PAGES = [
     ],
     sections: [
       {
+        type: 'figure',
+        before: '/studio/tesla-model-y-before.webp',
+        after: '/studio/tesla-model-y-after.webp',
+        beforeAlt: 'Raw dealership lot photo of a 2023 Tesla Model Y before AutoLander',
+        afterAlt: 'The same 2023 Tesla Model Y as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
+        caption: 'Before and after AutoLander: a raw dealer lot photo of a 2023 Tesla Model Y (left) becomes a showroom-grade Facebook Marketplace listing (right) — automatically.',
+      },
+      {
         type: 'qa',
         q: 'What is a Facebook Marketplace auto poster?',
         a: [

@@ -43,6 +43,14 @@ export const PAGES = [
     ],
     sections: [
       {
+        type: 'figure',
+        before: '/studio/jeep-renegade-before.webp',
+        after: '/studio/jeep-renegade-after.webp',
+        beforeAlt: 'Raw dealership lot photo of a 2019 Jeep Renegade before AutoLander',
+        afterAlt: 'The same 2019 Jeep Renegade as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
+        caption: 'Enhanced on your own machine: AutoLander turns a raw 2019 Jeep Renegade lot photo (left) into a showroom-grade Marketplace listing (right).',
+      },
+      {
         type: 'qa',
         q: 'What is the safest way to auto-post to Facebook Marketplace?',
         a: [

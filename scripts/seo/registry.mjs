@@ -20,6 +20,9 @@ export const NAV = {
   bulk:       { key: 'bulk',      path: '/bulk-post-cars-to-facebook-marketplace/',   anchor: 'Bulk post cars to Facebook Marketplace' },
   safety:     { key: 'safety',    path: '/safest-facebook-marketplace-auto-poster/',  anchor: 'Safest Facebook Marketplace auto poster' },
   pricing:    { key: 'pricing',   path: '/facebook-marketplace-auto-poster-pricing/', anchor: 'Facebook Marketplace auto poster pricing' },
+  listingSw:  { key: 'listingSw', path: '/facebook-marketplace-listing-software/',    anchor: 'Facebook Marketplace listing software & tools' },
+  fbListing:  { key: 'fbListing', path: '/facebook-listing-software/',                anchor: 'Facebook listing software & tool' },
+  dealers:    { key: 'dealers',   path: '/facebook-marketplace-for-car-dealers/',     anchor: 'Facebook Marketplace for car dealers' },
 };
 
 // Integration spokes. `system` = how AutoLander connects (honest):
@@ -48,17 +51,24 @@ export function relatedFor(pageKey, opts = {}) {
   const N = NAV;
   switch (pageKey) {
     case 'category':
-      return [L(N.inventory), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide)];
+      return [L(N.listingSw), L(N.dealers), L(N.fbListing), L(N.inventory), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide)];
     case 'inventory':
-      return [L(N.bulk), L(N.integHub), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
+      return [L(N.listingSw), L(N.bulk), L(N.integHub), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
     case 'bulk':
-      return [L(N.inventory), L(N.integHub), L(N.category), L(N.safety), L(N.compareHub), L(N.pricing)];
+      return [L(N.listingSw), L(N.dealers), L(N.inventory), L(N.integHub), L(N.category), L(N.safety), L(N.compareHub), L(N.pricing)];
     case 'safety':
-      return [L(N.guide), L(N.compareHub), L(N.category), L(N.inventory), L(N.pricing)];
+      return [L(N.guide), L(N.compareHub), L(N.category), L(N.dealers), L(N.inventory), L(N.pricing)];
     case 'pricing':
-      return [L(N.compareHub), L(N.category), L(N.bulk), L(N.inventory), L(N.safety)];
+      return [L(N.compareHub), L(N.category), L(N.listingSw), L(N.bulk), L(N.inventory), L(N.safety)];
     case 'integHub':
-      return [L(N.inventory), L(N.bulk), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
+      return [L(N.inventory), L(N.bulk), L(N.listingSw), L(N.dealers), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
+    // ---- new high-value commercial cluster (listing/posting software, fb listing, dealers use-case) ----
+    case 'listingSw':
+      return [L(N.category), L(N.dealers), L(N.fbListing), L(N.bulk), L(N.inventory), L(N.compareHub), L(N.pricing)];
+    case 'fbListing':
+      return [L(N.listingSw), L(N.category), L(N.dealers), L(N.inventory), L(N.compareHub), L(N.pricing), L(N.guide)];
+    case 'dealers':
+      return [L(N.category), L(N.listingSw), L(N.bulk), L(N.inventory), L(N.safety), L(N.compareHub), L(N.pricing)];
     case 'integrationSpoke': {
       // siblings (2-3) + hub + inventory + category + home handled by caller via siblingSpokes()
       return [L(N.integHub), L(N.inventory), L(N.bulk), L(N.category), L(N.compareHub), L(N.pricing)];

@@ -179,6 +179,8 @@ export function siteFooter() {
     <a href="${SITE.origin}/" class="foot-brand"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
     <nav class="foot-links">
       <a href="${NAV.category.path}">FB Marketplace auto poster</a>
+      <a href="${NAV.listingSw.path}">Listing software</a>
+      <a href="${NAV.dealers.path}">For car dealers</a>
       <a href="${NAV.compareHub.path}">Compare tools</a>
       <a href="${NAV.integHub.path}">Integrations</a>
       <a href="${NAV.inventory.path}">Inventory sync</a>
@@ -255,14 +257,18 @@ export function renderSection(s) {
       <section class="card win"><h2>${esc(s.left.h2)}</h2><ul>${s.left.items.map((x) => `<li>${fmt(x)}</li>`).join('')}</ul></section>
       <section class="card"><h2>${esc(s.right.h2)}</h2><ul>${s.right.items.map((x) => `<li>${fmt(x)}</li>`).join('')}</ul></section>
     </div>`;
-    case 'figure':
+    case 'figure': {
+      // Responsive: browser pulls 550w on low-DPR/desktop (display slot ~413px) and 1100w on retina.
+      const srcset = (src) => `${esc(src.replace(/\.webp$/, '-550.webp'))} 550w, ${esc(src)} 1100w`;
+      const sizes = '(max-width:520px) 92vw, 413px';
       return `    <figure class="shot">
       <div class="shot-imgs">
-        <img src="${esc(s.before)}" width="1100" height="733" loading="lazy" decoding="async" alt="${esc(s.beforeAlt || 'Before')}" />
-        <img src="${esc(s.after)}" width="1100" height="733" loading="lazy" decoding="async" alt="${esc(s.afterAlt || 'After')}" />
+        <img src="${esc(s.before)}" srcset="${srcset(s.before)}" sizes="${sizes}" width="1100" height="733" loading="lazy" decoding="async" alt="${esc(s.beforeAlt || 'Before')}" />
+        <img src="${esc(s.after)}" srcset="${srcset(s.after)}" sizes="${sizes}" width="1100" height="733" loading="lazy" decoding="async" alt="${esc(s.afterAlt || 'After')}" />
       </div>
       <figcaption>${esc(s.caption)}</figcaption>
     </figure>`;
+    }
     case 'html':
       return s.html; // trusted (orchestrator-supplied) only
     default:

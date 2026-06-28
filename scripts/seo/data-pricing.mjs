@@ -37,6 +37,14 @@ export const PAGES = [
     ],
     sections: [
       {
+        type: 'figure',
+        before: '/studio/chevrolet-malibu-before.webp',
+        after: '/studio/chevrolet-malibu-after.webp',
+        beforeAlt: 'Raw dealership lot photo of a 2022 Chevrolet Malibu before AutoLander',
+        afterAlt: 'The same 2022 Chevrolet Malibu as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
+        caption: 'Included from $39/mo: AutoLander turns a raw 2022 Chevrolet Malibu lot photo (left) into a showroom-grade Marketplace listing (right).',
+      },
+      {
         type: 'qa',
         q: 'How much does a Facebook Marketplace auto poster cost?',
         a: [

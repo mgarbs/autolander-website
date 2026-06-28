@@ -39,6 +39,14 @@ export const PAGES = [
     ],
     sections: [
       {
+        type: 'figure',
+        before: '/studio/toyota-tacoma-before.webp',
+        after: '/studio/toyota-tacoma-after.webp',
+        beforeAlt: 'Raw dealership lot photo of a 2025 Toyota Tacoma before AutoLander',
+        afterAlt: 'The same 2025 Toyota Tacoma as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
+        caption: 'Posted at scale, still polished — a raw 2025 Toyota Tacoma lot photo (left) becomes a showroom-grade Marketplace listing (right), automatically.',
+      },
+      {
         type: 'qa',
         q: 'How do you bulk post cars to Facebook Marketplace?',
         a: [
