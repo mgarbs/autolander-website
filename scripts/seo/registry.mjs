@@ -23,6 +23,10 @@ export const NAV = {
   listingSw:  { key: 'listingSw', path: '/facebook-marketplace-listing-software/',    anchor: 'Facebook Marketplace listing software & tools' },
   fbListing:  { key: 'fbListing', path: '/facebook-listing-software/',                anchor: 'Facebook listing software & tool' },
   dealers:    { key: 'dealers',   path: '/facebook-marketplace-for-car-dealers/',     anchor: 'Facebook Marketplace for car dealers' },
+  aiTools:    { key: 'aiTools',   path: '/facebook-ai-tools/',                         anchor: 'Facebook AI tools for car dealers' },
+  automation: { key: 'automation',path: '/facebook-marketplace-automation/',          anchor: 'Facebook Marketplace automation' },
+  assistant:  { key: 'assistant', path: '/facebook-marketplace-assistant/',           anchor: 'Facebook Marketplace assistant' },
+  autoposter: { key: 'autoposter',path: '/facebook-autoposter/',                       anchor: 'Facebook autoposter' },
 };
 
 // Integration spokes. `system` = how AutoLander connects (honest):
@@ -51,7 +55,7 @@ export function relatedFor(pageKey, opts = {}) {
   const N = NAV;
   switch (pageKey) {
     case 'category':
-      return [L(N.listingSw), L(N.dealers), L(N.fbListing), L(N.inventory), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide)];
+      return [L(N.aiTools), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.dealers), L(N.fbListing), L(N.inventory), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide)];
     case 'inventory':
       return [L(N.listingSw), L(N.bulk), L(N.integHub), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
     case 'bulk':
@@ -69,6 +73,15 @@ export function relatedFor(pageKey, opts = {}) {
       return [L(N.listingSw), L(N.category), L(N.dealers), L(N.inventory), L(N.compareHub), L(N.pricing), L(N.guide)];
     case 'dealers':
       return [L(N.category), L(N.listingSw), L(N.bulk), L(N.inventory), L(N.safety), L(N.compareHub), L(N.pricing)];
+    // ---- educational hub (aiTools) pushes DOWN to every commercial page; commercial pages link up + across ----
+    case 'aiTools':
+      return [L(N.category), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.fbListing), L(N.dealers), L(N.bulk), L(N.inventory), L(N.compareHub)];
+    case 'automation':
+      return [L(N.category), L(N.aiTools), L(N.assistant), L(N.autoposter), L(N.bulk), L(N.safety), L(N.guide), L(N.compareHub), L(N.pricing)];
+    case 'assistant':
+      return [L(N.category), L(N.aiTools), L(N.listingSw), L(N.automation), L(N.autoposter), L(N.compareHub), L(N.pricing)];
+    case 'autoposter':
+      return [L(N.category), L(N.listingSw), L(N.automation), L(N.aiTools), L(N.dealers), L(N.compareHub), L(N.pricing)];
     case 'integrationSpoke': {
       // siblings (2-3) + hub + inventory + category + home handled by caller via siblingSpokes()
       return [L(N.integHub), L(N.inventory), L(N.bulk), L(N.category), L(N.compareHub), L(N.pricing)];

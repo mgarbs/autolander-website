@@ -51,8 +51,9 @@ export const PAGES = [
         a: [
           'A Facebook Marketplace auto poster is software that automatically publishes a car dealership’s '
           + 'inventory to Facebook Marketplace instead of a person creating each listing by hand. It is also '
-          + 'called Marketplace posting software, listing software, an auto lister, or Facebook Marketplace '
-          + 'automation software. The tool reads your vehicles — year, make, model, price, mileage, photos and '
+          + 'called Facebook Marketplace auto posting software, Marketplace posting software, listing software, '
+          + 'an auto lister, or Facebook Marketplace automation software. People also search for it as Facebook '
+          + 'Marketplace auto posting. The tool reads your vehicles — year, make, model, price, mileage, photos and '
           + 'a description — and posts each one to Marketplace, then keeps the listings current as inventory changes.',
           'AutoLander is a Facebook Marketplace auto poster built specifically for car dealers and sales reps. '
           + 'It runs as a native desktop app on your own computer, so it posts through your normal Facebook '

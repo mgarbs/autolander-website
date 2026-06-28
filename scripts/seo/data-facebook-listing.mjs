@@ -20,14 +20,14 @@ const SOFTWARE_DESC =
 export const PAGES = [
   {
     key: 'fbListing',
-    title: 'Facebook Listing Software & Tool for Car Dealers | AutoLander',
+    title: 'Facebook Listing Tool & Software for Car Dealers | AutoLander',
     description:
-      'AutoLander is Facebook listing software for car dealers — a native desktop app and Facebook listing tool '
-      + 'that automatically lists your inventory on Facebook Marketplace, syncs your feed, enhances photos and '
-      + 'removes sold cars. From $39/mo, 5 free posts, no credit card.',
+      'AutoLander is a Facebook listing tool and listing software for car dealers — a native desktop app that '
+      + 'automatically lists your inventory on Facebook Marketplace, enhances photos and removes sold cars. '
+      + 'From $39/mo, 5 free posts, no credit card.',
     ogType: 'website',
     eyebrow: 'For car dealers & sales reps',
-    h1: 'Facebook listing software for car dealers',
+    h1: 'Facebook listing tool & software for car dealers',
     bylineUpdated: true,
     tldr:
       'For a car dealer, "Facebook listing" means getting your vehicles in front of buyers on Facebook — and the '

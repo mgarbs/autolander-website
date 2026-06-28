@@ -756,6 +756,10 @@ export function LandingFooter() {
             <nav aria-label="Product" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
               <h3 className="mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Product</h3>
               <a href="/facebook-marketplace-auto-poster/" className="block py-1 hover:text-blue-500 transition-colors">Auto Poster</a>
+              <a href="/facebook-marketplace-listing-software/" className="block py-1 hover:text-blue-500 transition-colors">Listing Software</a>
+              <a href="/facebook-marketplace-automation/" className="block py-1 hover:text-blue-500 transition-colors">Automation</a>
+              <a href="/facebook-marketplace-assistant/" className="block py-1 hover:text-blue-500 transition-colors">Assistant</a>
+              <a href="/facebook-autoposter/" className="block py-1 hover:text-blue-500 transition-colors">Autoposter</a>
               <a href="/facebook-marketplace-inventory-sync/" className="block py-1 hover:text-blue-500 transition-colors">Inventory Sync</a>
               <a href="/bulk-post-cars-to-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">Bulk Posting</a>
               <a href="/safest-facebook-marketplace-auto-poster/" className="block py-1 hover:text-blue-500 transition-colors">Account Safety</a>
@@ -779,6 +783,9 @@ export function LandingFooter() {
               <a href="/compare/autobook/" className="block py-1 hover:text-blue-500 transition-colors">vs AutoBook</a>
               <a href="/compare/shiftly/" className="block py-1 hover:text-blue-500 transition-colors">vs Shiftly</a>
               <a href="/guide/facebook-marketplace-automation/" className="block py-1 hover:text-blue-500 transition-colors">Automation Guide</a>
+              <a href="/facebook-ai-tools/" className="block py-1 hover:text-blue-500 transition-colors">AI Tools</a>
+              <a href="/facebook-listing-software/" className="block py-1 hover:text-blue-500 transition-colors">Facebook Listing</a>
+              <a href="/facebook-marketplace-for-car-dealers/" className="block py-1 hover:text-blue-500 transition-colors">For Car Dealers</a>
             </nav>
 
             {/* Company */}

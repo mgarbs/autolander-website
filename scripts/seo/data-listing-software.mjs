@@ -21,14 +21,14 @@ const SOFTWARE_DESC =
 export const PAGES = [
   {
     key: 'listingSw',
-    title: 'Facebook Marketplace Listing Software for Car Dealers | AutoLander',
+    title: 'Facebook Marketplace Listing Tool & Software for Car Dealers | AutoLander',
     description:
-      'AutoLander is Facebook Marketplace listing software and a listing tool for car dealers — a native '
+      'AutoLander is a Facebook Marketplace listing tool and posting software for car dealers — a native '
       + 'desktop app that automatically lists your whole inventory on Marketplace, syncs your feed, enhances '
-      + 'photos and removes sold cars. Marketplace posting software from $39/mo, 5 free posts, no credit card.',
+      + 'photos and removes sold cars. From $39/mo, 5 free posts, no credit card.',
     ogType: 'website',
     eyebrow: 'For car dealers & sales reps',
-    h1: 'Facebook Marketplace listing software for car dealers',
+    h1: 'Facebook Marketplace listing tool & software for car dealers',
     bylineUpdated: true,
     tldr:
       'AutoLander is Facebook Marketplace listing software for car dealers — also called a Marketplace '
@@ -107,8 +107,8 @@ export const PAGES = [
         type: 'qa',
         q: 'Is AutoLander a Facebook Marketplace posting software too, or just a listing tool?',
         a: [
-          'Both — they are the same thing. "Listing software," "listing tool," "listing tools" and "posting '
-          + 'software" all describe one job: getting your vehicles onto Facebook Marketplace automatically and '
+          'Both — they are the same thing. Facebook Marketplace listing tools, listing software, posting software '
+          + 'and auto-listers all describe one job: getting your vehicles onto Facebook Marketplace automatically and '
           + 'keeping them accurate. AutoLander does the full loop — it posts each listing, refreshes it, and removes '
           + 'it when the car sells.',
           'If you want to put your entire lot up at once, AutoLander is also built to [bulk post cars to Facebook '

@@ -29,10 +29,14 @@ import { PAGES as INTEG } from './seo/data-integrations.mjs';
 import { PAGES as LISTINGSW } from './seo/data-listing-software.mjs';
 import { PAGES as FBLISTING } from './seo/data-facebook-listing.mjs';
 import { PAGES as DEALERS } from './seo/data-dealers.mjs';
+import { PAGES as AITOOLS } from './seo/data-ai-tools.mjs';
+import { PAGES as AUTOMATION } from './seo/data-automation.mjs';
+import { PAGES as ASSISTANT } from './seo/data-assistant.mjs';
+import { PAGES as AUTOPOSTER } from './seo/data-autoposter.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 
-const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS];
+const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER];
 
 function write(path, contents) {
   mkdirSync(dirname(path), { recursive: true });
@@ -58,6 +62,7 @@ for (const page of ALL) {
 const expected = [
   NAV.category.path, NAV.integHub.path, NAV.inventory.path, NAV.bulk.path, NAV.safety.path, NAV.pricing.path,
   NAV.listingSw.path, NAV.fbListing.path, NAV.dealers.path,
+  NAV.aiTools.path, NAV.automation.path, NAV.assistant.path, NAV.autoposter.path,
   ...INTEGRATIONS.map((s) => integrationPath(s.slug)),
 ];
 const missing = expected.filter((p) => !renderedPaths.has(p));
@@ -96,6 +101,10 @@ function sitemapXml() {
     { loc: SITE.origin + NAV.pricing.path, pri: '0.8', freq: 'monthly' },
     { loc: SITE.origin + NAV.dealers.path, pri: '0.8', freq: 'monthly' },
     { loc: SITE.origin + NAV.fbListing.path, pri: '0.8', freq: 'monthly' },
+    { loc: SITE.origin + NAV.aiTools.path, pri: '0.8', freq: 'weekly' },
+    { loc: SITE.origin + NAV.automation.path, pri: '0.9', freq: 'weekly' },
+    { loc: SITE.origin + NAV.assistant.path, pri: '0.8', freq: 'monthly' },
+    { loc: SITE.origin + NAV.autoposter.path, pri: '0.8', freq: 'monthly' },
     ...competitorSlugs.map((s) => ({ loc: `${SITE.origin}/compare/${s}/`, pri: '0.7', freq: 'monthly' })),
     ...INTEGRATIONS.map((s) => ({ loc: integrationUrl(s.slug), pri: '0.7', freq: 'monthly' })),
   ];
