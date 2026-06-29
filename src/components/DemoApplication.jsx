@@ -7,12 +7,14 @@ import {
   Loader2,
   ShieldCheck,
   UserRound,
+  Warehouse,
   X,
 } from 'lucide-react';
 import { newSubmissionId, submitApplication } from '../lib/demo-application.js';
 import { formatPhoneInput, isValidEmail, isValidPhone } from '../lib/contact.js';
 
 const ROLES = ['Owner', 'Manager', 'Sales Rep'];
+const VEHICLE_COUNTS = ['1-50', '51-150', '151+'];
 
 const initialForm = {
   fullName: '',
@@ -20,6 +22,7 @@ const initialForm = {
   phone: '',
   role: '',
   inventoryUrl: '',
+  vehicleCount: '',
   smsConsent: true,
   company: '',
 };
@@ -152,7 +155,7 @@ export default function DemoApplication({ onClose }) {
             Apply for a private demo
           </h2>
           <p className="mt-2 text-sm font-medium leading-relaxed text-slate-400">
-            Drop your details. If AutoLander is a fit, a rep will text you with the next step.
+            Drop your details. If AutoLander is a fit, a rep will reach out to you with the next step.
           </p>
         </div>
 
@@ -220,6 +223,29 @@ export default function DemoApplication({ onClose }) {
                         }`}
                       >
                         {role}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div>
+                <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                  <Warehouse className="h-3.5 w-3.5" /> Vehicles in inventory
+                </span>
+                <div className="grid grid-cols-3 gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] p-1">
+                  {VEHICLE_COUNTS.map((option) => {
+                    const active = form.vehicleCount === option;
+                    return (
+                      <button
+                        type="button"
+                        key={option}
+                        onClick={() => update('vehicleCount', active ? '' : option)}
+                        className={`flex min-h-[2.75rem] items-center justify-center rounded-lg text-sm font-black tracking-tight transition-all ${
+                          active ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        {option}
                       </button>
                     );
                   })}
@@ -300,7 +326,7 @@ export default function DemoApplication({ onClose }) {
             </div>
             <h3 className="text-2xl font-black uppercase italic text-white">Application received</h3>
             <p className="max-w-sm text-sm leading-relaxed text-slate-400">
-              Our team is reviewing your request now. If there is a fit, a rep will text you shortly.
+              Our team is reviewing your request now. If there is a fit, a rep will reach out shortly.
             </p>
           </div>
         )}
