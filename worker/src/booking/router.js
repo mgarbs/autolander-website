@@ -47,6 +47,7 @@ const CUSTOM_FIELD_KEYS = [
   'role',
   'inventoryUrl',
   'vehicleCount',
+  'smsConsent',
   'utm_source',
   'utm_medium',
   'utm_campaign',
@@ -55,18 +56,53 @@ const CUSTOM_FIELD_KEYS = [
   'campaign_id',
   'adset_id',
   'ad_id',
+  'placement',
+  'site_source_name',
   'fbclid',
   'fbc',
   'fbp',
   'landingPageUrl',
+  'consentSourceUrl',
   'referrer',
+  'clientIpAddress',
   'userAgent',
   'consentTimestamp',
+  'consentTextVersion',
   'submissionTimestamp',
   'metaEventId',
   'visitorId',
   'submissionId',
 ];
+
+const CONSENT_TEXT_VERSION = 'demo-sms-consent-v1-2026-06-29';
+
+const DEFAULT_CUSTOM_FIELD_KEY_MAP = {
+  role: 'contact.role',
+  inventoryUrl: 'contact.dealership_website',
+  vehicleCount: 'contact.inventory_size',
+  smsConsent: 'contact.text_reminders_optin',
+  utm_source: 'contact.utm_source',
+  utm_medium: 'contact.utm_medium',
+  utm_campaign: 'contact.utm_campaign',
+  utm_content: 'contact.utm_content',
+  utm_term: 'contact.utm_term',
+  campaign_id: 'contact.campaign_id',
+  adset_id: 'contact.adset_id',
+  ad_id: 'contact.ad_id',
+  placement: 'contact.placement',
+  site_source_name: 'contact.site_source_name',
+  fbclid: 'contact.facebook_click_id',
+  fbc: 'contact.fbc',
+  fbp: 'contact.fbp',
+  landingPageUrl: 'contact.event_source_url',
+  consentSourceUrl: 'contact.consent_source_url',
+  clientIpAddress: 'contact.client_ip_address',
+  userAgent: 'contact.client_user_agent',
+  consentTimestamp: 'contact.consent_timestamp',
+  consentTextVersion: 'contact.consent_text_version',
+  submissionTimestamp: 'contact.submission_timestamp',
+  submissionId: 'contact.external_id',
+};
 
 export async function handleBooking(request, env, corsHeaders, ctx) {
   const url = new URL(request.url);
@@ -156,6 +192,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const sourceUrl = clean(page.current_page, 500) || clean(request.headers.get('Referer'), 500);
   const landingPageUrl = clean(page.landing_page, 500) || sourceUrl;
   const referrer = clean(page.referrer, 240);
+  const clientIpAddress = clean(request.headers.get('CF-Connecting-IP'), 80);
 
   const lead = {
     fullName,
@@ -179,6 +216,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
     fbclid,
     landingPageUrl,
     referrer,
+    clientIpAddress,
     eventId,
     utms: mergedUtms,
   };
@@ -193,6 +231,14 @@ async function handleApply(request, env, corsHeaders, ctx) {
   if (!contactId) {
     console.error('[api/apply] GHL upsert returned no contact id', JSON.stringify(upsert.body).slice(0, 400));
     return json({ ok: false, reason: 'ghl_contact_id_missing' }, 502, corsHeaders);
+  }
+
+  const customFields = await updateGhlContactCustomFields(env, config, contactId, lead);
+  if (!customFields.ok) {
+    console.error('[api/apply] GHL custom fields update failed', customFields.status, customFields.detail);
+    if (env.REQUIRE_GHL_CUSTOM_FIELDS === 'true') {
+      return json({ ok: false, reason: 'ghl_custom_fields_failed' }, 502, corsHeaders);
+    }
   }
 
   const alreadyRecorded = await wasEventSeen(env, eventId).catch(() => false);
@@ -267,12 +313,19 @@ async function upsertGhlContact(env, config, lead) {
   };
   if (lead.dealershipName) payload.companyName = lead.dealershipName;
 
-  const customFields = buildCustomFields(env, lead);
-  if (customFields.length) payload.customFields = customFields;
-
   return ghlRequest(env, config, '/contacts/upsert', {
     method: 'POST',
     body: JSON.stringify(payload),
+  });
+}
+
+async function updateGhlContactCustomFields(env, config, contactId, lead) {
+  const customFields = buildCustomFields(env, lead);
+  if (!customFields.length) return { ok: true, status: 204, body: {}, detail: '' };
+
+  return ghlRequest(env, config, `/contacts/${encodeURIComponent(contactId)}`, {
+    method: 'PUT',
+    body: JSON.stringify({ customFields }),
   });
 }
 
@@ -450,14 +503,18 @@ function buildCustomFields(env, lead) {
     role: lead.role,
     inventoryUrl: lead.inventoryUrl,
     vehicleCount: lead.vehicleCount,
+    smsConsent: lead.smsConsent ? 'Yes' : 'No',
     ...lead.utms,
     fbclid: lead.fbclid,
     fbc: lead.fbc,
     fbp: lead.fbp,
     landingPageUrl: lead.landingPageUrl,
+    consentSourceUrl: lead.landingPageUrl,
     referrer: lead.referrer,
+    clientIpAddress: lead.clientIpAddress,
     userAgent: lead.userAgent,
     consentTimestamp: lead.consentTimestamp,
+    consentTextVersion: CONSENT_TEXT_VERSION,
     submissionTimestamp: lead.submissionTimestamp,
     metaEventId: lead.eventId,
     visitorId: lead.vid,
@@ -466,10 +523,13 @@ function buildCustomFields(env, lead) {
   const map = customFieldMap(env);
   const fields = [];
   for (const key of CUSTOM_FIELD_KEYS) {
-    const id = fieldIdFor(env, map, key);
+    const target = fieldTargetFor(env, map, key);
     const value = values[key];
-    if (!id || value === undefined || value === null || value === '') continue;
-    fields.push({ id, fieldValue: String(value).slice(0, 1200) });
+    if (!target || value === undefined || value === null || value === '') continue;
+    const field = { field_value: String(value).slice(0, 1200) };
+    if (target.id) field.id = target.id;
+    if (target.key) field.key = target.key;
+    fields.push(field);
   }
   return fields;
 }
@@ -493,7 +553,7 @@ function buildApplicationNoteBody(lead) {
     'Consent',
     noteLine('SMS consent', lead.smsConsent ? 'Yes' : 'No'),
     noteLine('Consent timestamp', lead.consentTimestamp),
-    noteLine('Consent text version', 'demo-sms-consent-v1-2026-06-29'),
+    noteLine('Consent text version', CONSENT_TEXT_VERSION),
     noteLine('Consent source URL', lead.landingPageUrl),
     '',
     'Tracking',
@@ -540,8 +600,13 @@ function customFieldMap(env) {
   }
 }
 
-function fieldIdFor(env, map, key) {
-  return clean(map[key], 120) || clean(env[`GHL_FIELD_${toEnvKey(key)}`], 120);
+function fieldTargetFor(env, map, key) {
+  const configured = clean(map[key], 120) || clean(env[`GHL_FIELD_${toEnvKey(key)}`], 120);
+  const fallback = DEFAULT_CUSTOM_FIELD_KEY_MAP[key] || '';
+  if (configured && configured.startsWith('contact.')) return { key: configured };
+  if (configured) return { id: configured, key: fallback || '' };
+  if (fallback) return { key: fallback };
+  return null;
 }
 
 function toEnvKey(key) {
