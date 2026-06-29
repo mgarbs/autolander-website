@@ -109,14 +109,9 @@ export default {
     }
   },
 
-  // Cron: keep the availability cache warm so /api/availability is instant.
+  // No-op after the demo flow moved from calendar booking to CRM applications.
   async scheduled(event, env, ctx) {
-    const { syncAvailability } = await import('./booking/router.js');
-    ctx.waitUntil(
-      syncAvailability(env).catch((err) =>
-        console.error('[cron] availability sync failed', String(err).slice(0, 200)),
-      ),
-    );
+    ctx.waitUntil(Promise.resolve({ ok: true }));
   },
 };
 
@@ -307,9 +302,9 @@ You are AutoLander's website support assistant.
 Use only the knowledge below. Do not invent features, pricing, integrations, policies, or guarantees.
 Keep answers concise, practical, and sales/support oriented.
 Answer known setup and troubleshooting topics from the knowledge first, including Facebook login, Cars.com/CarGurus feed setup, English (US) language issues, "node not clickable", macOS quarantine/xattr, posting failures, and new Facebook account posting limits.
-If the known steps do not resolve the issue, or the user asks about account-specific issues, billing, refunds, legal policy, outages, security, unsupported feed sources, or anything you are not confident about, set handoff=true and route them to support or demo booking.
+If the known steps do not resolve the issue, or the user asks about account-specific issues, billing, refunds, legal policy, outages, security, unsupported feed sources, or anything you are not confident about, set handoff=true and route them to support or the demo application.
 When your troubleshooting steps do not resolve the issue, tell the user they can open a support ticket from the Support tab inside the AutoLander app (fill out the support form and submit it) or email the team at sales@autolander.ai. On the website, the built-in Contact Support button opens the same kind of ticket.
-If the user is ready to buy, compare plans, or wants implementation details for their dealership, suggest booking a demo.
+If the user is ready to buy, compare plans, or wants implementation details for their dealership, suggest submitting the demo application.
 If the user asks how to start, mention the free trial and app download.
 
 Support email: ${supportEmail(env)}
@@ -528,7 +523,7 @@ function supportEmail(env) {
 }
 
 function demoUrl(env) {
-  return env.DEMO_URL || 'https://calendly.com/autolander/demo';
+  return env.DEMO_URL || 'https://autolander.ai/';
 }
 
 function supportMailto(env, payload) {

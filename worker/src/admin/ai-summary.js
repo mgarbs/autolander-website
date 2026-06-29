@@ -301,15 +301,15 @@ function buildRuleBasedSummary(insights, recommendations) {
   const spend = moneyNumber(totals.spend);
   const pageViews = number(totals.pageViews);
   const leads = number(totals.leads);
-  const demos = number(totals.schedules);
+  const legacyDemos = number(totals.schedules);
   const topCampaign = topPerformanceRow(insights?.byCampaign, 'name');
   const topAd = topPerformanceRow(insights?.byAd, 'ad_name');
 
   const headline =
-    demos > 0
-      ? `${demos} booked demo${demos === 1 ? '' : 's'} came through; protect tracking before scaling.`
-      : leads > 0
-        ? `${leads} lead${leads === 1 ? '' : 's'} came through, but demo signal is not proven yet.`
+    leads > 0
+      ? `${leads} demo application${leads === 1 ? '' : 's'} came through; watch CPL and lead quality before scaling.`
+      : legacyDemos > 0
+        ? `${legacyDemos} legacy demo event${legacyDemos === 1 ? '' : 's'} came through, but the current application signal is thin.`
         : pageViews > 0
           ? 'Traffic is reaching the site, but conversion signal is still thin.'
           : 'The selected range does not have enough activity for a confident read.';
@@ -318,16 +318,16 @@ function buildRuleBasedSummary(insights, recommendations) {
   const executiveSummary = `Over the last ${days} days, the dashboard shows ${spendText}, ${countText(
     pageViews,
     'page view',
-  )}, ${countText(leads, 'lead')}, and ${countText(demos, 'booked demo')}. Use this as a conservative operating read: make tracking fixes first, avoid major budget moves on thin conversion data, and only scale or pause once the campaign/ad joins and demo volume are reliable.`;
+  )}, ${countText(leads, 'demo application')}, and ${countText(legacyDemos, 'legacy demo event')}. Use this as a conservative operating read: make tracking fixes first, avoid major budget moves on thin conversion data, and only scale or pause once the campaign/ad joins and application volume are reliable.`;
 
   const whatIsWorking = compactItems([
-    demos > 0 && {
-      title: 'Booked demos are being captured',
-      meaning: `${countText(demos, 'booked demo')} reached the dashboard in this window, so there is conversion signal to inspect.`,
+    legacyDemos > 0 && {
+      title: 'Legacy demo events are still visible',
+      meaning: `${countText(legacyDemos, 'legacy demo event')} reached the dashboard in this window. Treat these as historical Schedule conversions, not the current optimization event.`,
     },
     leads > 0 && {
-      title: 'Lead capture is producing signal',
-      meaning: `${countText(leads, 'lead')} came through. The next question is whether those leads are turning into booked demos at an acceptable rate.`,
+      title: 'Application capture is producing signal',
+      meaning: `${countText(leads, 'demo application')} came through. The next question is whether those applications are turning into qualified sales calls at an acceptable rate.`,
     },
     spend > 0 && {
       title: 'Spend data is connected',
@@ -344,14 +344,14 @@ function buildRuleBasedSummary(insights, recommendations) {
       title: `Top campaign: ${topCampaign.name || topCampaign.campaign_name || 'unnamed campaign'}`,
       meaning: `${moneyText(topCampaign.spend)} spend, ${countText(topCampaign.leads, 'lead')}, and ${countText(
         topCampaign.schedules,
-        'booked demo',
-      )}. Treat this as directional unless the conversion count is strong.`,
+        'legacy demo event',
+      )}. Treat this as directional unless the application count is strong.`,
     },
     topAd && {
       title: `Top ad: ${topAd.ad_name || topAd.ad_id || 'unnamed ad'}`,
       meaning: `${moneyText(topAd.spend)} spend, ${countText(topAd.leads, 'lead')}, and ${countText(
         topAd.schedules,
-        'booked demo',
+        'legacy demo event',
       )}. Compare this against other ads before shifting budget.`,
     },
     health.fbclidCaptureRate !== null &&
@@ -362,9 +362,9 @@ function buildRuleBasedSummary(insights, recommendations) {
   ]);
 
   const risks = compactItems([
-    demos === 0 && {
-      title: 'No booked-demo proof yet',
-      meaning: 'Do not scale based only on traffic or leads. Wait for booked-demo volume or inspect the lead-to-demo handoff before making major budget changes.',
+    leads === 0 && {
+      title: 'No application proof yet',
+      meaning: 'Do not scale based only on traffic. Wait for verified Lead volume or inspect the form, offer, and CRM handoff before making major budget changes.',
     },
     leads === 0 && pageViews > 0 && {
       title: 'Traffic is not converting into leads',
@@ -387,17 +387,17 @@ function buildRuleBasedSummary(insights, recommendations) {
     ? recommendations.map(recommendationToAction).slice(0, 6)
     : [
         {
-          priority: demos > 0 ? 'medium' : 'high',
+          priority: leads > 0 ? 'medium' : 'high',
           title: 'Keep budget changes conservative until conversion signal improves',
-          why: 'The selected range does not have enough reliable booked-demo evidence for aggressive scaling or pausing.',
-          nextStep: 'Collect more clean campaign/ad ID data and wait for at least a few booked demos before making major budget moves.',
+          why: 'The selected range does not have enough reliable application evidence for aggressive scaling or pausing.',
+          nextStep: 'Collect more clean campaign/ad ID data and wait for at least a few verified demo applications before making major budget moves.',
         },
       ];
 
   const trackingNotes = compactItems([
     !setup.metaInsightsReady && {
       title: 'Meta spend connection needs attention',
-      meaning: 'Set or verify the ad account and marketing token so spend can be tied to leads and demos.',
+      meaning: 'Set or verify the ad account and marketing token so spend can be tied to applications and legacy demo events.',
     },
     (health.missingCampaignId > 0 || health.missingAdId > 0) && {
       title: 'Use IDs as the join key',
@@ -458,7 +458,7 @@ function nextStepFromRecommendation(recommendation) {
   if (action.type === 'env' && action.name) return `Set or verify ${action.name}, then refresh the dashboard.`;
   if (action.type === 'copy') return 'Apply the Meta URL parameter template to every active ad.';
   if (action.type === 'pause_ad') return 'Review the ad in Meta Ads Manager and pause or replace it if the spend/conversion pattern still holds.';
-  if (action.type === 'scale_campaign') return 'Increase budget gradually, then watch cost per booked demo and lead quality.';
+  if (action.type === 'scale_campaign') return 'Increase budget gradually, then watch CPL and application quality.';
   if (action.type === 'refresh_creative') return 'Launch a fresh creative angle before adding more budget.';
   if (action.type === 'check_dedupe') return 'Confirm browser and server events share the same event_id for deduplication.';
   if (action.type === 'check_capi') return 'Verify the Worker endpoint, Pixel ID, and Conversions API token.';
@@ -520,12 +520,12 @@ function compactInsights(insights) {
       engagedVisits: number(totals.engagedVisits),
       deepScrolls: number(totals.deepScrolls),
       leads: number(totals.leads),
-      bookedDemos: number(totals.schedules),
+      legacyDemos: number(totals.schedules),
       costPerLead: moneyNumber(totals.cpl),
-      costPerDemo: moneyNumber(totals.cps),
+      costPerLegacyDemo: moneyNumber(totals.cps),
       leadRateFromPageView: rate(totals.leads, totals.pageViews),
-      demoRateFromPageView: rate(totals.schedules, totals.pageViews),
-      demoRateFromLead: rate(totals.schedules, totals.leads),
+      legacyDemoRateFromPageView: rate(totals.schedules, totals.pageViews),
+      legacyDemoRateFromLead: rate(totals.schedules, totals.leads),
       engagedShare: rate(totals.engagedVisits, totals.uniqueVisitors || totals.pageViews),
       deepScrollShare: rate(totals.deepScrolls, totals.uniqueVisitors || totals.pageViews),
       returningShare: rate(totals.returningVisitors, totals.newVisitors + totals.returningVisitors),
@@ -535,11 +535,11 @@ function compactInsights(insights) {
       viewContent: number(funnel.viewContent),
       lead: number(funnel.lead),
       initiateCheckout: number(funnel.initiateCheckout),
-      bookedDemo: number(funnel.schedule),
+      legacyDemo: number(funnel.schedule),
       viewContentRate: rate(funnel.viewContent, funnel.pageView),
       leadRate: rate(funnel.lead, funnel.pageView),
-      demoRate: rate(funnel.schedule, funnel.pageView),
-      leadToDemoRate: rate(funnel.schedule, funnel.lead),
+      legacyDemoRate: rate(funnel.schedule, funnel.pageView),
+      leadToLegacyDemoRate: rate(funnel.schedule, funnel.lead),
     },
     health: {
       metaVisits: number(health.metaVisits),
@@ -608,9 +608,9 @@ function compactPerformanceRows(rows, type) {
       cpm: moneyNumber(row.cpm),
       frequency: decimal(row.frequency),
       leads: number(row.leads),
-      bookedDemos: number(row.schedules),
+      legacyDemos: number(row.schedules),
       costPerLead: moneyNumber(row.cpl),
-      costPerDemo: moneyNumber(row.cps),
+      costPerLegacyDemo: moneyNumber(row.cps),
       attributionStatus: row.attribution_status || '',
     }))
     .sort((a, b) => b.spend - a.spend);
@@ -624,7 +624,7 @@ function compactDailyTrend(rows) {
     uniqueVisitors: number(row.uniqueVisitors),
     viewContent: number(row.viewContent),
     leads: number(row.lead),
-    bookedDemos: number(row.schedule),
+    legacyDemos: number(row.schedule),
   }));
 }
 
@@ -650,7 +650,7 @@ function topHours(rows) {
       hour: row.label || row.hour,
       pageViews: number(row.pageViews),
       leads: number(row.leads),
-      bookedDemos: number(row.schedules),
+      legacyDemos: number(row.schedules),
     }));
 }
 

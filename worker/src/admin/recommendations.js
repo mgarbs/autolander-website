@@ -50,12 +50,12 @@ function buildSetupRecommendations(setup) {
       action: { type: 'env', name: 'META_CAPI_ACCESS_TOKEN' },
     });
   }
-  if (!setup.hasCalendlySigningKey) {
+  if (!setup.hasGhlLeadRouting) {
     recs.push({
-      severity: 'warn',
-      title: 'Calendly webhook is not signed',
-      body: 'Create a Calendly webhook subscription pointing at /capi/calendly and store the signing key.',
-      action: { type: 'env', name: 'CALENDLY_SIGNING_KEY' },
+      severity: 'urgent',
+      title: 'GHL lead routing is not configured',
+      body: 'Set GHL_PRIVATE_INTEGRATION_TOKEN, GHL_LOCATION_ID, and GHL_WORKFLOW_ID so demo applications enter the CRM workflow.',
+      action: { type: 'env', name: 'GHL_WORKFLOW_ID' },
     });
   }
   if (!setup.hasMetaMarketingToken || !setup.hasAdAccountId) {
@@ -81,12 +81,12 @@ function buildSetupRecommendations(setup) {
 function buildPauseRecommendations({ ads }) {
   if (!Array.isArray(ads)) return [];
   return ads
-    .filter((ad) => ad.spend >= CONVERSION_THRESHOLDS.pauseSpendNoConversion && (ad.schedules || 0) === 0)
+    .filter((ad) => ad.spend >= CONVERSION_THRESHOLDS.pauseSpendNoConversion && (ad.leads || 0) === 0)
     .slice(0, 5)
     .map((ad) => ({
       severity: 'urgent',
-      title: `Pause "${ad.ad_name || ad.ad_id}" — $${ad.spend.toFixed(0)} spent, 0 demos`,
-      body: `Campaign: ${ad.campaign_name || '—'}. Over the selected window this ad has spent $${ad.spend.toFixed(2)} with no booked demos. Pause or replace creative.`,
+      title: `Pause "${ad.ad_name || ad.ad_id}" — $${ad.spend.toFixed(0)} spent, 0 applications`,
+      body: `Campaign: ${ad.campaign_name || '—'}. Over the selected window this ad has spent $${ad.spend.toFixed(2)} with no demo applications. Pause or replace creative.`,
       action: { type: 'pause_ad', adId: ad.ad_id, adName: ad.ad_name },
     }));
 }
@@ -94,7 +94,7 @@ function buildPauseRecommendations({ ads }) {
 function buildScaleRecommendations({ campaigns }) {
   if (!Array.isArray(campaigns)) return [];
   const eligible = campaigns.filter(
-    (c) => (c.schedules || 0) >= CONVERSION_THRESHOLDS.scaleMinConversions && c.cps !== null && c.spend > 0,
+    (c) => (c.leads || 0) >= CONVERSION_THRESHOLDS.scaleMinConversions && c.cpl !== null && c.spend > 0,
   );
   if (eligible.length === 0) return [];
 
@@ -103,22 +103,22 @@ function buildScaleRecommendations({ campaigns }) {
     return [
       {
         severity: 'info',
-        title: `Scale "${c.name}" — $${c.cps.toFixed(2)} cost per demo`,
-        body: `Your only campaign hitting the demo threshold. Consider scaling budget 20% to test demand.`,
+        title: `Scale "${c.name}" — $${c.cpl.toFixed(2)} cost per application`,
+        body: `Your only campaign hitting the application threshold. Consider scaling budget 20% to test demand.`,
         action: { type: 'scale_campaign', campaign: c.name },
       },
     ];
   }
 
-  const sorted = [...eligible].sort((a, b) => a.cps - b.cps);
-  const median = sorted[Math.floor(sorted.length / 2)].cps;
+  const sorted = [...eligible].sort((a, b) => a.cpl - b.cpl);
+  const median = sorted[Math.floor(sorted.length / 2)].cpl;
   return sorted
-    .filter((c) => c.cps <= median * CONVERSION_THRESHOLDS.scaleCplPercentileMax)
+    .filter((c) => c.cpl <= median * CONVERSION_THRESHOLDS.scaleCplPercentileMax)
     .slice(0, 3)
     .map((c) => ({
       severity: 'info',
-      title: `Scale "${c.name}" — $${c.cps.toFixed(2)} cost per demo`,
-      body: `Best-performing campaign in this window. Cost per booked demo is ${(((median - c.cps) / median) * 100).toFixed(0)}% below your median. Consider scaling budget 20%.`,
+      title: `Scale "${c.name}" — $${c.cpl.toFixed(2)} cost per application`,
+      body: `Best-performing campaign in this window. Cost per application is ${(((median - c.cpl) / median) * 100).toFixed(0)}% below your median. Consider scaling budget 20%.`,
       action: { type: 'scale_campaign', campaign: c.name },
     }));
 }

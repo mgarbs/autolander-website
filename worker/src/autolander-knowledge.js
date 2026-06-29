@@ -116,19 +116,19 @@ Support and demo:
 - Support email: sales@autolander.ai
 - Support phone: (919) 280-0967
 - Mailing address: AutoLander LLC, 5830 Memorial Highway, Apt 1322, Tampa, FL 33615
-- Demo booking URL: https://calendly.com/autolander/demo
+- Demo applications are submitted through the AutoLander website at https://autolander.ai/.
 - In-app Support tab: the AutoLander desktop app has a Support tab. If the troubleshooting suggestions in this chat do not resolve the user's problem, tell them to open the Support tab inside the app, fill out the support form, and submit it to open a support ticket — the team follows up by email. They can also email the team directly at sales@autolander.ai.
 - Whenever chat troubleshooting does not fix the issue, always offer this escalation: (1) open a ticket from the in-app Support tab (fill out the support form), or (2) email the team at sales@autolander.ai.
 
 Advertising and tracking:
 - The autolander.ai website uses the Meta (Facebook) Pixel and the Facebook Conversions API to measure ad performance, attribute conversions, build advertising audiences, and optimize ad delivery on Facebook and Instagram.
-- Event signals collected may include page views, content views, free trial starts, app downloads, and demo bookings, along with associated identifiers like IP address and browser type.
+- Event signals collected may include page views, content views, free trial starts, app downloads, and demo applications, along with associated identifiers like IP address and browser type.
 - Users can opt out of personalized Meta advertising via their Facebook ad preferences (facebook.com/adpreferences), or by emailing privacy@autolander.ai with the subject "Do Not Sell or Share My Personal Information."
 - Full disclosures are in https://autolander.ai/privacy.html (Section 1.5 Cookies, pixels, and advertising tracking technologies, and Section 6 Your Choices and Rights).
 
 SMS / text messaging:
-- AutoLander may send SMS text messages to phone numbers a user provides (e.g., when booking a demo) for appointment confirmations, reminders, and rescheduling, account and service notifications, customer support communications, and onboarding/account setup.
-- SMS Opt-In Details: Contacts opt in to receive SMS messages from AutoLander LLC when they book a product demo through our Calendly booking page (calendly.com/autolander/demo). During the booking process, contacts must check a separate, unchecked consent checkbox confirming they agree to receive SMS messages. Opt-in is voluntary and is not a condition of booking or purchase.
+- AutoLander may send SMS text messages to phone numbers a user provides (e.g., when submitting a demo application) for application follow-up, account and service notifications, customer support communications, and onboarding/account setup.
+- SMS Opt-In Details: Contacts opt in to receive SMS messages from AutoLander LLC when they submit the demo application form on autolander.ai. During the application process, contacts must check a separate, unchecked consent checkbox confirming they agree to receive SMS messages. Opt-in is voluntary and is not a condition of purchase.
 - SMS opt-in data and consent information will not be shared with any third parties, affiliates, or partners under any circumstances.
 - No mobile information will be shared with third parties or affiliates for marketing or promotional purposes.
 - Users can text STOP at any time to opt out, or HELP for help. Standard message and data rates may apply; message frequency varies. Opting out of SMS does not affect email or in-app communications or access to the Service.

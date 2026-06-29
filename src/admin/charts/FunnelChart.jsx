@@ -6,7 +6,7 @@ const STEPS = [
   { key: 'viewContent', label: 'Engaged', color: '#7dd3fc' },
   { key: 'lead', label: 'Leads', color: '#34d399' },
   { key: 'initiateCheckout', label: 'Started Checkout', color: '#fbbf24' },
-  { key: 'schedule', label: 'Booked Demos', color: '#f97316' },
+  { key: 'schedule', label: 'Legacy Demos', color: '#f97316' },
 ];
 
 export default function FunnelChart({ funnel }) {
@@ -17,6 +17,7 @@ export default function FunnelChart({ funnel }) {
   }));
 
   const max = data[0]?.value || 0;
+  const applicationCount = data.find((row) => row.label === 'Leads')?.value || 0;
   const enriched = data.map((row, i) => ({
     ...row,
     conversionFromTop: max > 0 ? (row.value / max) * 100 : 0,
@@ -28,10 +29,10 @@ export default function FunnelChart({ funnel }) {
       <header className="mb-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <h3 className="text-sm font-black uppercase italic tracking-tight text-white">Conversion funnel</h3>
-          <HelpTip text="This shows how many people make it from viewing the site to booking a demo. Big drops show where the page or offer may be losing people." />
+          <HelpTip text="This shows how many people make it from viewing the site to submitting a demo application. Big drops show where the page or offer may be losing people." />
         </div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-          {max > 0 ? `${((data[data.length - 1].value / max) * 100).toFixed(2)}% page-to-demo` : 'No traffic yet'}
+          {max > 0 ? `${((applicationCount / max) * 100).toFixed(2)}% page-to-application` : 'No traffic yet'}
         </p>
       </header>
       <div className="h-72">

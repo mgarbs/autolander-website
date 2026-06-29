@@ -13,7 +13,7 @@ const ALLOWED_EVENTS = new Set([
 
 const ALLOWED_CUSTOM_EVENTS = new Set([
   'AppDownload',
-  'BookingOpened',
+  'ApplicationOpened',
   'ChatOpened',
   'EngagedVisit',
   'ScrollDepth',
@@ -35,12 +35,12 @@ export function isCustomEvent(name) {
 }
 
 // High-value conversion events that the public website NEVER sends through the
-// open /capi/track endpoint. `Schedule` (the demo-booked conversion the ad
-// campaign optimizes on) arrives only from the signature-verified Calendly
-// webhook and the booking-token-gated thank-you pixel; the others aren't fired
-// client-side at all. Refusing them here means a scripted POST to /capi/track
-// can't inject the conversions that steer ad delivery toward junk audiences.
+// open /capi/track endpoint. `Lead` and `Schedule` arrive only from verified
+// backend paths plus the single-use thank-you pixel gate. Refusing them here
+// means a scripted POST to /capi/track can't inject the conversions that steer
+// ad delivery toward junk audiences.
 const INJECTION_PROTECTED_EVENTS = new Set([
+  'Lead',
   'Schedule',
   'Purchase',
   'CompleteRegistration',

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
-// Sticky mobile Book-a-Demo bar — fixes the known "no CTA on mobile" funnel
+// Sticky mobile demo-application bar — fixes the known "no CTA on mobile" funnel
 // leak. Slides up once the hero scrolls away; hidden on md+. Kept to a single
 // full-width button + one short centered line so nothing truncates, and the
 // chat launcher is raised above it on mobile (see ChatAssistant) so they never
@@ -25,7 +25,7 @@ export default function MobileCtaBar({ onBookDemo }) {
         onClick={onBookDemo}
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 active:scale-[0.99]"
       >
-        Book a Demo
+        Apply for Demo
         <ArrowRight className="h-4 w-4" />
       </button>
       <p className="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">

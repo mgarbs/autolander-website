@@ -1,4 +1,4 @@
-// Phone + email normalization/validation for the booking capture form.
+// Phone + email normalization/validation for the demo application form.
 // Audience is US/Canada car dealerships, so we default to North American
 // formatting and also accept an explicit +<country> international number.
 // The worker (worker/src/booking/router.js) mirrors normalizePhone/isValidEmail
@@ -68,7 +68,7 @@ export function isValidPhone(raw) {
 }
 
 // Rejects "a@b", "joe@gmail", "x@bad..com", "x@-bad.com" — the malformed
-// addresses that bounce the demo confirmation email.
+// addresses that would bounce follow-up email.
 export function isValidEmail(raw) {
   return EMAIL_RE.test(String(raw ?? '').trim());
 }

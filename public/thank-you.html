@@ -16,10 +16,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="description" content="Your AutoLander demo is confirmed. We will reach out shortly." />
+    <meta name="description" content="Your AutoLander application has been received. Our team will review it and reach out if there is a fit." />
     <link rel="canonical" href="https://autolander.ai/thank-you" />
     <meta property="fb:app_id" content="1692802435375416" />
-    <title>Demo Confirmed | AutoLander</title>
+    <title>Application Received | AutoLander</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;0,900;1,800;1,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -40,17 +40,15 @@
       fbq('init', '2087440198847151');
       fbq('track', 'PageView');
 
-      // GENUINE-BOOKING GATE for the 'Schedule' conversion.
-      // The ad campaign optimizes on 'Schedule', so it must fire ONLY for a real
-      // booking — never on a bot, crawler, scanner, or a shared /thank-you link.
-      // /api/book hands this page a single-use token (?bt=...). We redeem it
-      // server-side and fire the conversion only if the Worker confirms the token
-      // was real and unused. No token (or a reused/expired one) => no conversion.
-      (function gateScheduleConversion() {
+      // VERIFIED-APPLICATION GATE for the 'Lead' conversion.
+      // The ad campaign optimizes on Lead, so it must fire ONLY after the backend
+      // has accepted the application and routed it into GHL. A bare /thank-you
+      // visit, refresh, shared link, crawler, or scanner gets PageView only.
+      (function gateLeadConversion() {
         var WORKER = 'https://autolander-chatbot.michaelegarber.workers.dev';
         var bt = '';
         try { bt = new URLSearchParams(window.location.search).get('bt') || ''; } catch (e) {}
-        if (!/^[a-f0-9]{32}$/.test(bt)) return; // no proof of a real booking → fire nothing
+        if (!/^[a-f0-9]{32}$/.test(bt)) return; // no proof of a real application -> fire nothing
 
         fetch(WORKER + '/capi/confirm', {
           method: 'POST',
@@ -61,18 +59,22 @@
         })
           .then(function (r) { return r.ok ? r.json() : null; })
           .then(function (data) {
-            if (!data || !data.ok) return; // token rejected → not a genuine booking
-            // Use the shared eventID the server returns (cal_<hash of the Calendly
-            // event>) so this browser Schedule dedupes with the CAPI Schedule from
-            // the invitee.created webhook. Fall back to a per-visitor id if absent.
+            if (!data || !data.ok) return; // token rejected -> not a genuine application
+            // Use the shared eventID the server returns so this browser Lead
+            // dedupes with the Worker CAPI Lead. Fall back to a per-visitor id
+            // only if the token predates event IDs.
             var eventId = data.eventId;
             if (!eventId) {
               var match = document.cookie.match(/(?:^|;\s*)al_vid=([^;]+)/);
               var vid = match ? decodeURIComponent(match[1]) : '';
               var day = new Date().toISOString().slice(0, 10);
-              eventId = 'sched_' + (vid || bt) + '_' + day;
+              eventId = 'lead_' + (vid || bt) + '_' + day;
             }
-            fbq('track', 'Schedule', { content_name: 'demo_booked', content_category: 'demo' }, { eventID: eventId });
+            fbq('track', 'Lead', {
+              content_name: 'demo_application_submitted',
+              content_category: 'demo',
+              lead_type: 'website_application'
+            }, { eventID: eventId });
             // Drop the token from the address bar so a refresh or copy can't replay it.
             try { window.history.replaceState({}, document.title, window.location.pathname); } catch (e) {}
           })
@@ -396,24 +398,24 @@
             <circle cx="12" cy="12" r="10"/>
             <path d="m9 12 2 2 4-4"/>
           </svg>
-          Appointment Confirmed
+          Application Received
         </div>
 
         <h1>
-          YOU&rsquo;RE BOOKED.
-          <span class="accent">WE&rsquo;LL REACH OUT.</span>
+          YOU&rsquo;RE ON THE LIST.
+          <span class="accent">WE&rsquo;LL REVIEW IT.</span>
         </h1>
 
         <p class="lead">
-          Your AutoLander demo is locked in. Check your inbox for the calendar invite &mdash; we&rsquo;ll be in touch shortly with everything you need to make the most of our 30 minutes.
+          Thanks for applying. Our team reviews each dealership before opening a live demo slot. If it looks like a fit, one of our reps will reach out shortly.
         </p>
 
         <div class="panel">
           <h2>What happens next</h2>
           <ol>
-            <li><span class="step-num">1</span><span>Calendar invite lands in your inbox with the meeting link.</span></li>
-            <li><span class="step-num">2</span><span>We&rsquo;ll send a short prep note so we can hit the ground running.</span></li>
-            <li><span class="step-num">3</span><span>On the call, we&rsquo;ll get you set up to sell 8&ndash;12 extra cars a month.</span></li>
+            <li><span class="step-num">1</span><span>We review your dealership profile and current inventory path.</span></li>
+            <li><span class="step-num">2</span><span>If there is a fit, a rep reaches out by phone, text, or email.</span></li>
+            <li><span class="step-num">3</span><span>On the call, we map the fastest path to get your inventory moving on Marketplace.</span></li>
           </ol>
         </div>
 

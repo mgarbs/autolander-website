@@ -1,297 +1,567 @@
-// Native booking backend:
-//   GET  /api/availability  -> edge-fast cached slot list (Calendly-computed)
-//   POST /api/book          -> JIT re-check + create the booking via Calendly
+// Demo application backend:
+//   POST /api/apply -> validate lead, upsert contact in GHL, add to workflow,
+//                      send the verified server Lead event, mint thank-you token.
 //
-// Calendly stays the source of truth. The KV cache is advisory display data
-// (KV is eventually consistent), so every commit re-checks the slot live and
-// Calendly is the final arbiter against double-booking.
+// The browser never sees the GHL token. The thank-you page only fires the browser
+// Lead pixel after redeeming the single-use token minted here.
 
-import { createBooking, fetchAvailableTimes, isSlotAvailable } from '../calendly/client.js';
-import { sha256Hex } from '../capi/hash.js';
-import { lookupVisitor, rememberBookingToken } from '../capi/storage.js';
+import { ACTION_SOURCE, buildEvent, sendEvents } from '../capi/meta-client.js';
+import { hashEmail, hashLowercase, hashName, hashPhone, sha256Hex } from '../capi/hash.js';
+import {
+  bumpCounter,
+  lookupVisitor,
+  markEventSeen,
+  pushRecentEvent,
+  rememberConversionToken,
+  wasEventSeen,
+} from '../capi/storage.js';
 import { looksLikeBot } from '../security/bot-filter.js';
 
-const AVAIL_KEY = 'avail:demo';
-const FRESH_MS = 3 * 60 * 1000; // serve straight from cache
-const STALE_MS = 30 * 60 * 1000; // beyond this, refresh before serving
-const DURATION_MIN = 30;
-const HOST_TZ = 'America/New_York';
-
-// Exact custom-question strings from the Calendly event type. Positions 0-4
-// below MUST match the event type's question order verbatim.
-const PHONE_QUESTION = 'What is the best phone number to reach you at?';
-const ROLE_QUESTION = 'Are you a dealership owner, manager or sales rep?';
-const WEBSITE_QUESTION = "What's your dealership's website? (AutoLander is software for dealers — we don't sell or finance vehicles.)";
-const INVENTORY_QUESTION = 'How many vehicles do you currently have in inventory?';
-const TEXT_REMINDER_QUESTION = 'Get text reminders about your demo';
-const INVENTORY_CHOICES = ['1-50', '51-150', '151+'];
 const ROLE_CHOICES = ['Owner', 'Manager', 'Sales Rep'];
-const AL_VID_MARKER = 'al_vid:';
+const VEHICLE_COUNT_CHOICES = ['1-50', '51-150', '151+'];
+const APPLY_IP_HOURLY = 12;
+const APPLY_IP_DAILY = 30;
+const GHL_BASE_URL = 'https://services.leadconnectorhq.com';
+const GHL_VERSION = '2021-07-28';
 
-const BOOK_IP_HOURLY = 20;
-const BOOK_IP_DAILY = 60;
+const ATTR_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'utm_id',
+  'campaign_id',
+  'adset_id',
+  'ad_id',
+  'campaign_name',
+  'adset_name',
+  'ad_name',
+  'placement',
+  'site_source_name',
+];
+
+const CUSTOM_FIELD_KEYS = [
+  'dealershipName',
+  'role',
+  'inventoryUrl',
+  'vehicleCount',
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'campaign_id',
+  'adset_id',
+  'ad_id',
+  'fbclid',
+  'fbc',
+  'fbp',
+  'landingPageUrl',
+  'referrer',
+  'userAgent',
+  'consentTimestamp',
+  'metaEventId',
+  'visitorId',
+  'submissionId',
+];
 
 export async function handleBooking(request, env, corsHeaders, ctx) {
   const url = new URL(request.url);
 
-  if (url.pathname === '/api/availability' && request.method === 'GET') {
-    return handleAvailability(request, env, corsHeaders, ctx);
-  }
-  if (url.pathname === '/api/book' && request.method === 'POST') {
-    return handleBook(request, env, corsHeaders, ctx);
-  }
-  return json({ ok: false, reason: 'not_found' }, 404, corsHeaders);
-}
-
-// --- Availability -----------------------------------------------------------
-
-async function readCachedAvailability(env) {
-  if (!env.TRACKING) return null;
-  return env.TRACKING.get(AVAIL_KEY, 'json');
-}
-
-async function writeCachedAvailability(env, blob) {
-  if (!env.TRACKING) return;
-  // Long TTL as a floor; we overwrite on every sync and gate freshness on generated_at.
-  await env.TRACKING.put(AVAIL_KEY, JSON.stringify(blob), { expirationTtl: 24 * 60 * 60 });
-}
-
-function buildBlob(slots) {
-  return {
-    event: 'demo',
-    duration_min: DURATION_MIN,
-    timezone_host: HOST_TZ,
-    generated_at: new Date().toISOString(),
-    slots,
-  };
-}
-
-// Pull fresh slots from Calendly and cache them. Used by cron + on-demand.
-export async function syncAvailability(env) {
-  const slots = await fetchAvailableTimes(env, { days: 14 });
-  const blob = buildBlob(slots);
-  await writeCachedAvailability(env, blob);
-  return blob;
-}
-
-async function handleAvailability(request, env, corsHeaders, ctx) {
-  if (!env.CALENDLY_API_TOKEN) {
-    return json({ ok: false, reason: 'calendly_not_configured' }, 503, corsHeaders);
+  if (url.pathname === '/api/apply' && request.method === 'POST') {
+    return handleApply(request, env, corsHeaders, ctx);
   }
 
-  let blob = await readCachedAvailability(env);
-  const ageMs = blob?.generated_at ? Date.now() - new Date(blob.generated_at).getTime() : Infinity;
-
-  try {
-    if (!blob || ageMs > STALE_MS) {
-      // Cold/stale: refresh before serving so we never hand out badly stale data.
-      blob = await syncAvailability(env);
-    } else if (ageMs > FRESH_MS) {
-      // Warm-ish: serve now, refresh in the background (stale-while-revalidate).
-      if (ctx?.waitUntil) ctx.waitUntil(syncAvailability(env).catch(() => {}));
-    }
-  } catch (err) {
-    console.error('[api/availability] sync failed', String(err).slice(0, 200));
-    if (!blob) return json({ ok: false, reason: 'availability_unavailable' }, 502, corsHeaders);
-    // fall through and serve stale rather than nothing
-  }
-
-  return new Response(JSON.stringify({ ok: true, ...blob }), {
-    status: 200,
-    headers: {
-      ...corsHeaders,
-      'Content-Type': 'application/json; charset=utf-8',
-      // Brief browser cache; the calendar feels instant on repeat opens.
-      'Cache-Control': 'public, max-age=20',
-    },
-  });
-}
-
-// --- Booking ----------------------------------------------------------------
-
-async function handleBook(request, env, corsHeaders, ctx) {
-  if (!env.CALENDLY_API_TOKEN) {
-    return json({ ok: false, reason: 'calendly_not_configured' }, 503, corsHeaders);
-  }
-
-  if (looksLikeBot(request).bot) {
-    return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
-  }
-
-  const limited = await enforceBookRateLimit(request, env);
-  if (!limited.ok) {
-    return json({ ok: false, reason: 'rate_limited' }, 429, corsHeaders);
-  }
-
-  const body = await safeJson(request);
-
-  // Optional invisible bot challenge. Off by default (REQUIRE_BOOK_TURNSTILE
-  // unset/false) so live bookings are unaffected; once a Turnstile widget is
-  // added to the calendar and TURNSTILE_SECRET_KEY is set, flipping the flag
-  // blocks scripted /api/book abuse with no UX change for real users.
-  const challenge = await verifyBookTurnstile(request, env, body.turnstileToken);
-  if (!challenge.ok) {
-    return json({ ok: false, reason: 'verification_failed' }, 403, corsHeaders);
-  }
-
-  const slotStartUTC = normalizeIso(body.slotStartUTC);
-  const name = clean(body.name, 120);
-  const email = clean(body.email, 160);
-  const phone = clean(body.phone, 40);
-  const phoneNorm = normalizePhone(phone);
-  const textReminders = Boolean(body.textReminders);
-  const role = clean(body.role, 60);
-  const website = clean(body.website, 200);
-  const inventory = clean(body.inventory, 24);
-  const honeypot = clean(body.company, 200); // hidden field — only bots fill it
-  const timezone = clean(body.timezone, 64) || HOST_TZ;
-  const vid = isValidVid(body.vid) ? body.vid : '';
-  const utms = body.utms && typeof body.utms === 'object' ? body.utms : {};
-
-  // Honeypot: a real person never sees or fills the hidden "company" field.
-  if (honeypot) return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
-
-  if (!slotStartUTC) return json({ ok: false, reason: 'invalid_slot' }, 400, corsHeaders);
-  if (new Date(slotStartUTC).getTime() < Date.now()) {
-    return json({ ok: false, reason: 'slot_in_past' }, 400, corsHeaders);
-  }
-  if (!isEmail(email)) return json({ ok: false, reason: 'invalid_email' }, 400, corsHeaders);
-  if (!name) return json({ ok: false, reason: 'missing_name' }, 400, corsHeaders);
-  if (!phone) return json({ ok: false, reason: 'missing_phone' }, 400, corsHeaders);
-  if (!phoneNorm.ok) return json({ ok: false, reason: 'invalid_phone' }, 400, corsHeaders);
-  if (!ROLE_CHOICES.includes(role)) return json({ ok: false, reason: 'missing_role' }, 400, corsHeaders);
-  if (!isWebsite(website)) return json({ ok: false, reason: 'invalid_website' }, 400, corsHeaders);
-  if (!INVENTORY_CHOICES.includes(inventory)) return json({ ok: false, reason: 'invalid_inventory' }, 400, corsHeaders);
-
-  // JIT re-check: Calendly is the arbiter, but this gives a clean "just taken" UX
-  // instead of a generic failure.
-  const stillOpen = await isSlotAvailable(env, slotStartUTC);
-  if (stillOpen === false) {
-    if (ctx?.waitUntil) ctx.waitUntil(syncAvailability(env).catch(() => {}));
-    return json({ ok: false, reason: 'slot_taken' }, 409, corsHeaders);
-  }
-
-  // Bridge the Meta click id (fbc) to the CRM via Calendly's salesforce_uuid,
-  // which Calendly forwards in invitee.created + to Zapier. This lets GHL fire the
-  // downstream qualified-lead / purchase Conversions-API events matched to the
-  // original ad click. Carried here (NOT in utm_content, which already holds
-  // al_vid for our own webhook).
-  const crmVisitor = vid ? await lookupVisitor(env, vid).catch(() => null) : null;
-  const fbcForCrm = crmVisitor?.fbc
-    || (crmVisitor?.fbclid ? `fb.1.${Date.now()}.${crmVisitor.fbclid}` : '');
-  const tracking = buildTracking(vid, utms, fbcForCrm);
-  // Positions MUST match the Calendly event type order exactly:
-  // 0 phone · 1 role · 2 website · 3 inventory · 4 reminders.
-  const questionsAndAnswers = [
-    { question: PHONE_QUESTION, answer: phoneNorm.pretty, position: 0 },
-    { question: ROLE_QUESTION, answer: role, position: 1 },
-    { question: WEBSITE_QUESTION, answer: website, position: 2 },
-    { question: INVENTORY_QUESTION, answer: inventory, position: 3 },
-  ];
-  if (textReminders) {
-    questionsAndAnswers.push({ question: TEXT_REMINDER_QUESTION, answer: 'Yes', position: 4 });
-  }
-
-  let result;
-  try {
-    result = await createBooking(env, {
-      startTimeIso: slotStartUTC,
-      name,
-      email,
-      phone: phoneNorm.e164,
-      timezone,
-      textReminders,
-      tracking,
-      questionsAndAnswers,
-    });
-  } catch (err) {
-    console.error('[api/book] createBooking threw', String(err).slice(0, 200));
-    return json({ ok: false, reason: 'booking_error' }, 502, corsHeaders);
-  }
-
-  if (!result.ok) {
-    const taken = result.status === 409 || /already|taken|no longer|unavailable|conflict/i.test(result.raw || '');
-    console.error('[api/book] calendly rejected', result.status, (result.raw || '').slice(0, 200));
-    if (ctx?.waitUntil) ctx.waitUntil(syncAvailability(env).catch(() => {}));
+  if (url.pathname === '/api/availability' || url.pathname === '/api/book') {
     return json(
-      { ok: false, reason: taken ? 'slot_taken' : 'booking_failed' },
-      taken ? 409 : 502,
+      { ok: false, reason: 'calendar_disabled', message: 'Demo applications now use /api/apply.' },
+      410,
       corsHeaders,
     );
   }
 
-  // Booked. Drop the slot from the cache immediately (best-effort) so other
-  // visitors stop seeing it; the invitee.created webhook + cron also reconcile.
-  if (ctx?.waitUntil) ctx.waitUntil(removeSlotFromCache(env, slotStartUTC).catch(() => {}));
+  return json({ ok: false, reason: 'not_found' }, 404, corsHeaders);
+}
 
-  // We do NOT fire a Schedule event here: the existing invitee.created webhook
-  // sends the server-side CAPI Schedule, and the thank-you page fires the
-  // browser Schedule — identical to the current Calendly flow.
-  //
-  // Mint a single-use token that proves THIS booking really happened. The
-  // thank-you page must redeem it (via /capi/confirm) before it is allowed to
-  // fire the `Schedule` pixel conversion, so a bot, crawler, or shared
-  // /thank-you link can no longer mint a fake "demo booked" conversion. We await
-  // the KV write so the token is readable by the time the redirect lands.
-  // Derive the SAME eventID the invitee.created webhook uses (cal_<hash of the
-  // scheduled-event URI>, mirroring its event||uri precedence) so the browser
-  // pixel Schedule and the server CAPI Schedule share an eventID and Meta
-  // deduplicates them into a single conversion.
-  const inviteeResource = result.body?.resource || {};
-  const sharedEventUri = inviteeResource.event || inviteeResource.uri || '';
-  const fbEventId = sharedEventUri ? `cal_${(await sha256Hex(sharedEventUri)).slice(0, 32)}` : '';
-  const bookingToken = newBookingToken();
-  await rememberBookingToken(env, bookingToken, fbEventId).catch(() => {});
+// Kept for the Worker scheduled handler during deployments where the cron is
+// still configured. No calendar cache is needed for the application flow.
+export async function syncAvailability() {
+  return { ok: true, disabled: true };
+}
+
+async function handleApply(request, env, corsHeaders, ctx) {
+  if (looksLikeBot(request).bot) {
+    return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
+  }
+
+  const limited = await enforceApplyRateLimit(request, env);
+  if (!limited.ok) {
+    return json({ ok: false, reason: 'rate_limited' }, 429, corsHeaders);
+  }
+
+  const config = ghlConfig(env);
+  if (!config.ok) {
+    return json({ ok: false, reason: 'ghl_not_configured', missing: config.missing }, 503, corsHeaders);
+  }
+
+  const body = await safeJson(request);
+  const honeypot = clean(body.company, 200);
+  if (honeypot) return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
+
+  const firstName = clean(body.firstName, 80);
+  const lastName = clean(body.lastName, 80);
+  const email = clean(body.email, 160);
+  const phone = clean(body.phone, 40);
+  const phoneNorm = normalizePhone(phone);
+  const dealershipName = clean(body.dealershipName, 160);
+  const role = clean(body.role, 40);
+  const inventoryUrl = normalizeWebsite(body.inventoryUrl);
+  const vehicleCount = clean(body.vehicleCount, 24);
+  const smsConsent = Boolean(body.smsConsent);
+  const consentTimestamp = normalizeIso(body.consentTimestamp);
+  const submissionId = clean(body.submissionId, 96);
+  const userAgent = clean(body.userAgent, 500) || clean(request.headers.get('User-Agent'), 500);
+
+  if (!firstName) return json({ ok: false, reason: 'missing_first_name' }, 400, corsHeaders);
+  if (!lastName) return json({ ok: false, reason: 'missing_last_name' }, 400, corsHeaders);
+  if (!isEmail(email)) return json({ ok: false, reason: 'invalid_email' }, 400, corsHeaders);
+  if (!phoneNorm.ok) return json({ ok: false, reason: 'invalid_phone' }, 400, corsHeaders);
+  if (!dealershipName) return json({ ok: false, reason: 'missing_dealership' }, 400, corsHeaders);
+  if (!ROLE_CHOICES.includes(role)) return json({ ok: false, reason: 'missing_role' }, 400, corsHeaders);
+  if (!inventoryUrl) return json({ ok: false, reason: 'invalid_inventory_url' }, 400, corsHeaders);
+  if (vehicleCount && !VEHICLE_COUNT_CHOICES.includes(vehicleCount)) {
+    return json({ ok: false, reason: 'invalid_vehicle_count' }, 400, corsHeaders);
+  }
+  if (!smsConsent || !consentTimestamp) {
+    return json({ ok: false, reason: 'missing_consent' }, 400, corsHeaders);
+  }
+  if (!/^sub_[a-z0-9_-]{12,80}$/i.test(submissionId)) {
+    return json({ ok: false, reason: 'invalid_submission' }, 400, corsHeaders);
+  }
+
+  const attribution = sanitizeAttribution(body.attribution);
+  const visitor = attribution.vid ? await lookupVisitor(env, attribution.vid).catch(() => null) : null;
+  const mergedUtms = mergeUtms(visitor?.utms, attribution.utms);
+  const page = { ...(visitor?.page || {}), ...(attribution.page || {}) };
+  const fbp = attribution.fbp || visitor?.fbp || '';
+  const fbc = attribution.fbc || visitor?.fbc || buildFbc(attribution.fbclid || visitor?.fbclid || '');
+  const fbclid = attribution.fbclid || visitor?.fbclid || '';
+  const eventId = `lead_${(await sha256Hex(`lead:${submissionId}`)).slice(0, 32)}`;
+  const sourceUrl = clean(page.current_page, 500) || clean(request.headers.get('Referer'), 500);
+  const landingPageUrl = clean(page.landing_page, 500) || sourceUrl;
+  const referrer = clean(page.referrer, 240);
+
+  const lead = {
+    firstName,
+    lastName,
+    email,
+    phone: phoneNorm.e164,
+    phonePretty: phoneNorm.pretty,
+    dealershipName,
+    role,
+    inventoryUrl,
+    vehicleCount,
+    smsConsent,
+    consentTimestamp,
+    submissionId,
+    userAgent,
+    vid: attribution.vid,
+    fbp,
+    fbc,
+    fbclid,
+    landingPageUrl,
+    referrer,
+    eventId,
+    utms: mergedUtms,
+  };
+
+  const upsert = await upsertGhlContact(env, config, lead);
+  if (!upsert.ok) {
+    console.error('[api/apply] GHL upsert failed', upsert.status, upsert.detail);
+    return json({ ok: false, reason: 'ghl_upsert_failed' }, 502, corsHeaders);
+  }
+
+  const contactId = extractContactId(upsert.body);
+  if (!contactId) {
+    console.error('[api/apply] GHL upsert returned no contact id', JSON.stringify(upsert.body).slice(0, 400));
+    return json({ ok: false, reason: 'ghl_contact_id_missing' }, 502, corsHeaders);
+  }
+
+  const workflow = await addContactToWorkflow(env, config, contactId);
+  if (!workflow.ok && !isAlreadyInWorkflow(workflow.detail)) {
+    console.error('[api/apply] GHL workflow add failed', workflow.status, workflow.detail);
+    return json({ ok: false, reason: 'ghl_workflow_failed' }, 502, corsHeaders);
+  }
+
+  await recordLeadEvent({
+    request,
+    env,
+    ctx,
+    lead,
+    eventId,
+    sourceUrl,
+    contactId,
+    attribution: {
+      ...attribution,
+      utms: mergedUtms,
+      page,
+      fbp,
+      fbc,
+      fbclid,
+      ip: request.headers.get('CF-Connecting-IP') || '',
+      country: clean(request.cf?.country, 4).toLowerCase(),
+      region: clean(request.cf?.region, 48).toLowerCase(),
+      city: clean(request.cf?.city, 48).toLowerCase(),
+    },
+  });
+
+  const conversionToken = newConversionToken();
+  await rememberConversionToken(env, conversionToken, { eventId, eventName: 'Lead' }).catch(() => {});
+
   return json(
-    { ok: true, redirectPath: '/thank-you', startTime: slotStartUTC, bt: bookingToken },
+    {
+      ok: true,
+      redirectPath: '/thank-you',
+      bt: conversionToken,
+      contactId,
+      eventId,
+    },
     200,
     corsHeaders,
   );
 }
 
-function buildTracking(vid, utms, fbc) {
-  // Calendly's /invitees requires ALL tracking fields present (null is fine) —
-  // it's all-or-nothing, so we always send the full shape.
-  const field = (key) => clean(utms[key], 180) || null;
-  // Carry the visitor id inside utm_content so the existing webhook can recover
-  // it (regex: al_vid:(v_...)) and attribute the CAPI Schedule event.
-  const baseContent = clean(utms.utm_content, 160);
-  const utmContent = vid
-    ? baseContent ? `${baseContent}|${AL_VID_MARKER}${vid}` : `${AL_VID_MARKER}${vid}`
-    : baseContent || null;
+async function upsertGhlContact(env, config, lead) {
+  const payload = {
+    locationId: config.locationId,
+    firstName: lead.firstName,
+    lastName: lead.lastName,
+    name: `${lead.firstName} ${lead.lastName}`.trim(),
+    email: lead.email,
+    phone: lead.phone,
+    companyName: lead.dealershipName,
+    website: lead.inventoryUrl,
+    source: 'AutoLander website application',
+  };
+
+  const customFields = buildCustomFields(env, lead);
+  if (customFields.length) payload.customFields = customFields;
+
+  return ghlRequest(env, config, '/contacts/upsert', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+async function addContactToWorkflow(env, config, contactId) {
+  return ghlRequest(env, config, `/contacts/${encodeURIComponent(contactId)}/workflow/${encodeURIComponent(config.workflowId)}`, {
+    method: 'POST',
+    body: JSON.stringify({}),
+  });
+}
+
+async function ghlRequest(env, config, path, init) {
+  const baseUrl = (env.GHL_API_BASE_URL || GHL_BASE_URL).replace(/\/+$/, '');
+  const response = await fetch(`${baseUrl}${path}`, {
+    ...init,
+    headers: {
+      Authorization: `Bearer ${config.token}`,
+      Version: env.GHL_API_VERSION || GHL_VERSION,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...(init.headers || {}),
+    },
+  }).catch((err) => ({ ok: false, status: 0, text: async () => String(err?.message || err) }));
+
+  const text = await response.text();
+  let body = null;
+  try {
+    body = text ? JSON.parse(text) : {};
+  } catch {
+    body = null;
+  }
+
   return {
-    utm_source: field('utm_source'),
-    utm_medium: field('utm_medium'),
-    utm_campaign: field('utm_campaign'),
-    utm_term: field('utm_term'),
-    utm_content: utmContent,
-    // Meta click id (fbc) for the CRM bridge — Calendly forwards this field so GHL
-    // can match the downstream qualified-lead / purchase events to the ad click.
-    salesforce_uuid: clean(fbc, 255) || null,
+    ok: Boolean(response.ok),
+    status: response.status,
+    body,
+    detail: text.slice(0, 600),
   };
 }
 
-async function removeSlotFromCache(env, slotIso) {
-  const blob = await readCachedAvailability(env);
-  if (!blob || !Array.isArray(blob.slots)) return;
-  const next = blob.slots.filter((s) => s !== slotIso);
-  if (next.length !== blob.slots.length) {
-    await writeCachedAvailability(env, { ...blob, slots: next });
+async function recordLeadEvent({ request, env, ctx, lead, eventId, sourceUrl, contactId, attribution }) {
+  const today = isoDay(new Date());
+  const alreadySeen = await wasEventSeen(env, eventId).catch(() => false);
+  if (alreadySeen) return;
+
+  await markEventSeen(env, eventId).catch(() => {});
+  const keys = attributionKeys(lead.utms);
+  const hour = new Date().getUTCHours().toString().padStart(2, '0');
+  await Promise.all([
+    bumpCounter(env, today, 'event', 'Lead'),
+    bumpCounter(env, today, 'event', 'Lead:server'),
+    bumpCounter(env, today, 'hour_lead', hour),
+    keys.siteSource ? bumpCounter(env, today, 'site_source', keys.siteSource) : null,
+    keys.placement ? bumpCounter(env, today, 'placement', keys.placement) : null,
+    keys.campaignName ? bumpCounter(env, today, 'campaign_lead', keys.campaignName) : null,
+    keys.campaignId ? bumpCounter(env, today, 'campaign_id_lead', keys.campaignId) : null,
+    keys.adName ? bumpCounter(env, today, 'ad_lead', keys.adName) : null,
+    keys.adId ? bumpCounter(env, today, 'ad_id_lead', keys.adId) : null,
+    pushRecentEvent(env, {
+      at: new Date().toISOString(),
+      event: 'Lead',
+      source: 'website_application',
+      vid: lead.vid,
+      campaign_id: keys.campaignId,
+      adset_id: keys.adsetId,
+      ad_id: keys.adId,
+      utm_campaign: keys.campaignName,
+      utm_content: keys.adName,
+      utm_source: lead.utms.utm_source || '',
+      placement: keys.placement,
+      site_source_name: keys.siteSource,
+      fbclid: Boolean(lead.fbclid),
+      eventId,
+      contactId,
+    }),
+  ].filter(Boolean)).catch((err) => {
+    console.error('[api/apply] lead analytics write failed', String(err).slice(0, 200));
+  });
+
+  if (env.SEND_WORKER_LEAD_CAPI === 'false') return;
+
+  const userData = await buildUserData({
+    email: lead.email,
+    phone: lead.phone,
+    firstName: lead.firstName,
+    lastName: lead.lastName,
+    fbp: attribution.fbp,
+    fbc: attribution.fbc,
+    fbclid: attribution.fbclid,
+    vid: lead.vid,
+    ip: attribution.ip || request.headers.get('CF-Connecting-IP') || '',
+    ua: lead.userAgent || request.headers.get('User-Agent') || '',
+    country: attribution.country,
+    region: attribution.region,
+    city: attribution.city,
+    pixelId: env.META_PIXEL_ID,
+  });
+
+  const capiEvent = buildEvent({
+    name: 'Lead',
+    eventId,
+    eventTime: Math.floor(Date.now() / 1000),
+    sourceUrl,
+    actionSource: ACTION_SOURCE.website,
+    userData,
+    customData: {
+      content_name: 'demo_application_submitted',
+      content_category: 'demo',
+      lead_type: 'website_application',
+      dealership_name: lead.dealershipName,
+      role: lead.role,
+      vehicle_count: lead.vehicleCount,
+      ...lead.utms,
+    },
+  });
+
+  const sendPromise = (async () => {
+    const result = await sendEvents(env, [capiEvent]);
+    await bumpCounter(env, today, 'meta', result.ok ? 'capi_ok' : 'capi_failed').catch(() => {});
+  })();
+
+  if (ctx?.waitUntil) ctx.waitUntil(sendPromise);
+  else await sendPromise;
+}
+
+async function buildUserData({
+  email,
+  phone,
+  firstName,
+  lastName,
+  fbp,
+  fbc,
+  fbclid,
+  vid,
+  ip,
+  ua,
+  country,
+  region,
+  city,
+  pixelId,
+}) {
+  const userData = {};
+  const emHash = await hashEmail(email);
+  if (emHash) userData.em = emHash;
+  const phHash = await hashPhone(phone);
+  if (phHash) userData.ph = phHash;
+  const fnHash = await hashName(firstName);
+  if (fnHash) userData.fn = fnHash;
+  const lnHash = await hashName(lastName);
+  if (lnHash) userData.ln = lnHash;
+  if (country) userData.country = await hashLowercase(country);
+  if (region) userData.st = await hashLowercase(region);
+  if (city) userData.ct = await hashLowercase(city);
+  if (fbp) userData.fbp = fbp;
+  if (fbc) userData.fbc = fbc;
+  else if (fbclid) userData.fbc = buildFbc(fbclid);
+  if (vid) userData.external_id = await hashLowercase(pixelId ? `${pixelId}:${vid}` : vid);
+  if (ip) userData.client_ip_address = ip;
+  if (ua) userData.client_user_agent = ua;
+  return userData;
+}
+
+function buildCustomFields(env, lead) {
+  const values = {
+    dealershipName: lead.dealershipName,
+    role: lead.role,
+    inventoryUrl: lead.inventoryUrl,
+    vehicleCount: lead.vehicleCount,
+    ...lead.utms,
+    fbclid: lead.fbclid,
+    fbc: lead.fbc,
+    fbp: lead.fbp,
+    landingPageUrl: lead.landingPageUrl,
+    referrer: lead.referrer,
+    userAgent: lead.userAgent,
+    consentTimestamp: lead.consentTimestamp,
+    metaEventId: lead.eventId,
+    visitorId: lead.vid,
+    submissionId: lead.submissionId,
+  };
+  const map = customFieldMap(env);
+  const fields = [];
+  for (const key of CUSTOM_FIELD_KEYS) {
+    const id = fieldIdFor(env, map, key);
+    const value = values[key];
+    if (!id || value === undefined || value === null || value === '') continue;
+    fields.push({ id, fieldValue: String(value).slice(0, 1200) });
+  }
+  return fields;
+}
+
+function customFieldMap(env) {
+  if (!env.GHL_CUSTOM_FIELD_MAP) return {};
+  try {
+    const parsed = JSON.parse(env.GHL_CUSTOM_FIELD_MAP);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
   }
 }
 
-// --- helpers ----------------------------------------------------------------
+function fieldIdFor(env, map, key) {
+  return clean(map[key], 120) || clean(env[`GHL_FIELD_${toEnvKey(key)}`], 120);
+}
 
-async function enforceBookRateLimit(request, env) {
+function toEnvKey(key) {
+  return key
+    .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+    .replace(/[^a-zA-Z0-9]+/g, '_')
+    .toUpperCase();
+}
+
+function extractContactId(body) {
+  return clean(
+    body?.contact?.id
+      || body?.contactId
+      || body?.id
+      || body?.data?.contact?.id
+      || body?.data?.id,
+    120,
+  );
+}
+
+function isAlreadyInWorkflow(detail = '') {
+  return /already|duplicate|currently.*workflow|previously.*workflow/i.test(detail);
+}
+
+function ghlConfig(env) {
+  const token = clean(env.GHL_PRIVATE_INTEGRATION_TOKEN || env.GHL_API_TOKEN || env.HIGHLEVEL_API_TOKEN, 800);
+  const locationId = clean(env.GHL_LOCATION_ID, 120);
+  const workflowId = clean(env.GHL_WORKFLOW_ID, 120);
+  const missing = [];
+  if (!token) missing.push('GHL_PRIVATE_INTEGRATION_TOKEN');
+  if (!locationId) missing.push('GHL_LOCATION_ID');
+  if (!workflowId) missing.push('GHL_WORKFLOW_ID');
+  return { ok: missing.length === 0, missing, token, locationId, workflowId };
+}
+
+function sanitizeAttribution(raw) {
+  const attr = raw && typeof raw === 'object' ? raw : {};
+  return {
+    vid: /^v_[a-z0-9]{12,40}$/i.test(attr.vid || '') ? attr.vid : '',
+    sid: clean(attr.sid, 64),
+    fbp: /^fb\.\d+\.\d+\.\d+$/.test(attr.fbp || '') ? attr.fbp : '',
+    fbc: /^fb\.\d+\.\d+\.[A-Za-z0-9_.-]+$/.test(attr.fbc || '') ? attr.fbc : '',
+    fbclid: clean(attr.fbclid, 256),
+    utms: cleanUtms(attr.utms),
+    firstTouch: cleanUtms(attr.firstTouch),
+    page: sanitizePage(attr.page),
+    device: attr.device && typeof attr.device === 'object' ? attr.device : {},
+  };
+}
+
+function sanitizePage(raw) {
+  if (!raw || typeof raw !== 'object') return {};
+  return {
+    landing_page: clean(raw.landing_page, 500),
+    landing_path: clean(raw.landing_path, 160),
+    current_page: clean(raw.current_page, 500),
+    current_path: clean(raw.current_path, 160),
+    referrer: clean(raw.referrer, 240),
+    referrer_domain: clean(raw.referrer_domain, 120).toLowerCase(),
+    title: clean(raw.title, 160),
+  };
+}
+
+function cleanUtms(raw) {
+  if (!raw || typeof raw !== 'object') return {};
+  const out = {};
+  for (const key of ATTR_KEYS) {
+    const value = clean(raw[key], 180);
+    if (value) out[key] = value;
+  }
+  if (!out.campaign_id && out.utm_id) out.campaign_id = out.utm_id;
+  if (!out.campaign_name && out.utm_campaign) out.campaign_name = out.utm_campaign;
+  if (!out.ad_name && out.utm_content) out.ad_name = out.utm_content;
+  if (!out.adset_name && out.utm_term) out.adset_name = out.utm_term;
+  return out;
+}
+
+function mergeUtms(first, last) {
+  const out = {};
+  for (const key of ATTR_KEYS) {
+    const value = clean(last?.[key], 180) || clean(first?.[key], 180);
+    if (value) out[key] = value;
+  }
+  return out;
+}
+
+function attributionKeys(utms) {
+  return {
+    campaignId: utms.campaign_id || utms.utm_id || '',
+    campaignName: utms.campaign_name || utms.utm_campaign || '',
+    adsetId: utms.adset_id || '',
+    adsetName: utms.adset_name || utms.utm_term || '',
+    adId: utms.ad_id || '',
+    adName: utms.ad_name || utms.utm_content || '',
+    placement: utms.placement || '',
+    siteSource: utms.site_source_name || utms.utm_source || '',
+  };
+}
+
+async function enforceApplyRateLimit(request, env) {
   if (env.DISABLE_RATE_LIMITS === 'true' || !env.CHAT_RATE_LIMITS) return { ok: true };
   const now = new Date();
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const day = now.toISOString().slice(0, 10);
   const hour = now.toISOString().slice(0, 13);
-  const fp = await sha256Hex(`book:${ip}`);
+  const fp = await sha256Hex(`apply:${ip}`);
   const limits = [
-    { key: `book:ip:${fp}:${day}`, limit: BOOK_IP_DAILY, ttl: 26 * 60 * 60 },
-    { key: `book:ip:${fp}:${hour}`, limit: BOOK_IP_HOURLY, ttl: 60 * 60 + 120 },
+    { key: `apply:ip:${fp}:${day}`, limit: Number(env.APPLY_IP_DAILY_LIMIT || APPLY_IP_DAILY), ttl: secondsUntilTomorrow(now) },
+    { key: `apply:ip:${fp}:${hour}`, limit: Number(env.APPLY_IP_HOURLY_LIMIT || APPLY_IP_HOURLY), ttl: 60 * 60 + 120 },
   ];
   const counts = await Promise.all(limits.map((l) => env.CHAT_RATE_LIMITS.get(l.key)));
   if (limits.some((l, i) => Number(counts[i] || 0) >= l.limit)) return { ok: false };
@@ -301,69 +571,41 @@ async function enforceBookRateLimit(request, env) {
   return { ok: true };
 }
 
-function newBookingToken() {
+function newConversionToken() {
   const bytes = new Uint8Array(16);
   crypto.getRandomValues(bytes);
   return [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-async function verifyBookTurnstile(request, env, token) {
-  if (env.REQUIRE_BOOK_TURNSTILE !== 'true') return { ok: true };
-  // Flag on but no secret configured yet → fail OPEN so a misconfig never blocks
-  // a real booking. The challenge only enforces once the secret is set.
-  if (!env.TURNSTILE_SECRET_KEY) return { ok: true };
-  if (!token) return { ok: false };
-  const form = new FormData();
-  form.append('secret', env.TURNSTILE_SECRET_KEY);
-  form.append('response', token);
-  form.append('remoteip', request.headers.get('CF-Connecting-IP') || '');
-  const resp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    body: form,
-  }).catch(() => null);
-  if (!resp) return { ok: true }; // network blip reaching Cloudflare → don't punish a real booking
-  const result = await resp.json().catch(() => ({}));
-  return result.success ? { ok: true } : { ok: false };
+function normalizeWebsite(value) {
+  const raw = clean(value, 240);
+  if (!raw) return '';
+  const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    const url = new URL(withProtocol);
+    const host = url.hostname.replace(/^www\./i, '');
+    if (!/^[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}$/i.test(host)) return '';
+    return url.toString().slice(0, 240);
+  } catch {
+    return '';
+  }
 }
 
 function normalizeIso(value) {
   if (typeof value !== 'string') return '';
   const t = Date.parse(value);
   if (!Number.isFinite(t)) return '';
-  // Calendly slots are second-precision UTC (e.g. 2026-06-29T22:30:00Z) with no
-  // milliseconds. toISOString() adds ".000" which then fails the slot-equality
-  // check and the booking start_time match — strip it.
-  return new Date(t).toISOString().replace(/\.\d{3}Z$/, 'Z');
+  return new Date(t).toISOString();
 }
 
-function isValidVid(value) {
-  return typeof value === 'string' && /^v_[a-z0-9]{12,40}$/i.test(value);
-}
-
-// Mirror of src/lib/contact.js — keep the two in lockstep so a number/email the
-// browser accepts is the same one the server accepts.
 function isEmail(value) {
-  // DNS-style domain labels + 2+ char alphabetic TLD; local part permissive.
   return /^[^\s@]+@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$/i.test(value);
 }
 
-// Lenient dealership-website check (mirrors src/components/InstantCalendar.jsx).
-// Accepts with/without protocol or www and an optional path; rejects bare words.
-function isWebsite(value) {
-  const v = String(value || '').trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '');
-  return /^[a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}(?:[/?#].*)?$/i.test(v);
-}
-
-// Strict phone normalize. Returns { ok, e164, pretty }; ok=false for anything
-// that isn't a usable number.
 function normalizePhone(raw) {
   const s = typeof raw === 'string' ? raw.trim() : '';
   const hasPlus = s.startsWith('+');
   const digits = s.replace(/\D/g, '');
-
-  // North American first — handles a bare 10-digit number AND country code 1
-  // (with or without a +), so a +1 number can't skip the NANP rule. NPA + NXX
-  // must each start 2-9.
   let nat = digits;
   if (nat.length === 11 && nat.startsWith('1')) nat = nat.slice(1);
   if (/^[2-9]\d{2}[2-9]\d{6}$/.test(nat)) {
@@ -373,15 +615,15 @@ function normalizePhone(raw) {
       pretty: `(${nat.slice(0, 3)}) ${nat.slice(3, 6)}-${nat.slice(6)}`,
     };
   }
-
-  // International only when explicitly prefixed with + (country code 1 is NANP,
-  // handled above). 8-15 digits, E.164 shape.
   if (hasPlus && !digits.startsWith('1') && /^[1-9]\d{7,14}$/.test(digits)) {
     const e164 = `+${digits}`;
     return { ok: true, e164, pretty: e164 };
   }
-
   return { ok: false, e164: '', pretty: '' };
+}
+
+function buildFbc(fbclid) {
+  return fbclid ? `fb.1.${Date.now()}.${fbclid}` : '';
 }
 
 function clean(value, max) {
@@ -395,6 +637,17 @@ async function safeJson(request) {
   } catch {
     return {};
   }
+}
+
+function secondsUntilTomorrow(date) {
+  const tomorrow = new Date(date);
+  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  tomorrow.setUTCHours(0, 0, 0, 0);
+  return Math.max(60, Math.ceil((tomorrow.getTime() - date.getTime()) / 1000));
+}
+
+function isoDay(date) {
+  return date.toISOString().slice(0, 10);
 }
 
 function json(data, status, headers) {

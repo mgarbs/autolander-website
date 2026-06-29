@@ -42,33 +42,51 @@ export async function markEventSeen(env, eventId) {
   await tracking(env).put(`evt:${eventId}`, '1', { expirationTtl: EVENT_DEDUPE_TTL_SECONDS });
 }
 
-// Single-use proof that a real booking just completed. /api/book mints one of
-// these on success; the thank-you page redeems it via /capi/confirm before it
-// is allowed to fire the `Schedule` pixel conversion. 30-minute TTL covers the
-// redirect + page load; single-use (delete on read) stops a shared or forwarded
-// thank-you URL from minting a second fake conversion.
+// Single-use proof that a real high-intent conversion just completed. The site
+// mints one of these after the backend has accepted the submission; the thank-you
+// page redeems it via /capi/confirm before it is allowed to fire a browser pixel
+// conversion. 30-minute TTL covers the redirect + page load; single-use (delete
+// on read) stops a shared or forwarded thank-you URL from minting a fake event.
 const BOOKING_TOKEN_TTL_SECONDS = 30 * 60;
 
-export async function rememberBookingToken(env, token, eventId = '') {
+export async function rememberConversionToken(env, token, { eventId = '', eventName = 'Lead' } = {}) {
   if (!token) return;
-  // Store the shared Meta eventID (cal_<hash>) with the token so the thank-you
-  // page can fire its pixel Schedule with the SAME id the CAPI webhook uses,
-  // letting Meta deduplicate the browser + server events into one conversion.
-  await tracking(env).put(`booktok:${token}`, JSON.stringify({ e: eventId }), { expirationTtl: BOOKING_TOKEN_TTL_SECONDS });
+  await tracking(env).put(
+    `booktok:${token}`,
+    JSON.stringify({ e: eventId, n: eventName }),
+    { expirationTtl: BOOKING_TOKEN_TTL_SECONDS },
+  );
 }
 
 // Single-use: returns { ok: true, eventId } the first time a valid token is
 // presented (then deletes it), or null for an unknown/used/expired token.
 // Tolerates the legacy '1' value from before tokens carried an eventID.
-export async function consumeBookingToken(env, token) {
+export async function consumeConversionToken(env, token) {
   if (!token) return null;
   const key = `booktok:${token}`;
   const raw = await tracking(env).get(key);
   if (!raw) return null;
   await tracking(env).delete(key);
   let eventId = '';
-  try { eventId = (JSON.parse(raw) || {}).e || ''; } catch { eventId = ''; }
-  return { ok: true, eventId };
+  let eventName = 'Lead';
+  try {
+    const parsed = JSON.parse(raw) || {};
+    eventId = parsed.e || '';
+    eventName = parsed.n || eventName;
+  } catch {
+    eventId = '';
+  }
+  return { ok: true, eventId, eventName };
+}
+
+// Backward-compatible aliases for older booking code paths and any in-flight
+// redirects during deployment.
+export async function rememberBookingToken(env, token, eventId = '') {
+  return rememberConversionToken(env, token, { eventId, eventName: 'Schedule' });
+}
+
+export async function consumeBookingToken(env, token) {
+  return consumeConversionToken(env, token);
 }
 
 export async function rememberDailySeen(env, day, scope, key, ttlSeconds = COUNTER_TTL_SECONDS) {

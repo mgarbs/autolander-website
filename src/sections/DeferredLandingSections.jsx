@@ -707,13 +707,13 @@ export default function DeferredLandingSections({
                 onClick={openDemoBooking}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500 active:scale-95"
               >
-                Book a Live Demo
+                Apply for a Live Demo
               </button>
               <button
                 onClick={openDemoBooking}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
               >
-                Start Your Free Trial
+                Apply for Access
               </button>
             </div>
             <p className="mt-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">No Credit Card Required • Instant Setup</p>

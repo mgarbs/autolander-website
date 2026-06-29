@@ -34,11 +34,11 @@ export default function KpiTile({ label, value, sublabel, delta, format = 'numbe
 function helpForLabel(label) {
   const copy = {
     Spend: 'How much Meta says you spent in the selected date range.',
-    'Booked Demos': 'Calendly demo bookings attributed to website visitors in this range.',
-    Leads: 'People who took a lead action, such as opening chat or starting a lead path.',
-    'Cost per Demo': 'Spend divided by booked demos. Lower is better if demo quality stays good.',
+    'Legacy Demos': 'Historical Schedule conversions attributed to website visitors in this range.',
+    Leads: 'Verified website demo applications that reached the CRM workflow.',
+    CPL: 'Spend divided by verified demo applications.',
     'Meta ID Capture': 'How often Meta visitors arrive with campaign and ad IDs. High means spend and demos can be matched confidently.',
-    'fbclid Capture': 'How often Meta visitors include Meta’s click ID. This helps Pixel and CAPI attribution.',
+    'fbclid Capture': "How often Meta visitors include Meta's click ID. This helps Pixel and CAPI attribution.",
     'Unique Visitors': 'Different website visitors seen in this range. One person can still create multiple page views.',
     'Returning Visitors': 'Page views from people who had visited before. Returning traffic often means stronger intent.',
   };

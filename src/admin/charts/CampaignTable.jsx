@@ -34,10 +34,10 @@ export default function CampaignTable({ rows, title = 'Campaigns', emptyMessage 
               <HeaderCell label="Clicks" align="right" help="How many ad clicks Meta reported." />
               <HeaderCell label="CTR" align="right" help="Click-through rate. Higher means the creative is getting attention." />
               <HeaderCell label="Freq" align="right" help="Frequency: how many times the average person saw the ad. Too high can mean fatigue." />
-              <HeaderCell label="Leads" align="right" help="Lead actions attributed to this row." />
-              <HeaderCell label="Demos" align="right" help="Booked demos attributed to this row." />
+              <HeaderCell label="Leads" align="right" help="Verified demo applications attributed to this row." />
+              <HeaderCell label="Legacy Demos" align="right" help="Historical Schedule conversions attributed to this row." />
               <HeaderCell label="CPL" align="right" help="Cost per lead. Spend divided by leads." />
-              <HeaderCell label="Cost / Demo" align="right" help="Spend divided by booked demos." />
+              <HeaderCell label="Legacy CPA" align="right" help="Spend divided by historical Schedule conversions." />
             </tr>
           </thead>
           <tbody>

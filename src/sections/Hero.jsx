@@ -240,14 +240,14 @@ export default function Hero({ openDemoBooking }) {
               onClick={openDemoBooking}
               className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 px-9 py-5 font-display text-lg font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 active:scale-95 sm:w-auto"
             >
-              Book a Demo
+              Apply for a Demo
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
             <button
               onClick={openDemoBooking}
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-8 py-5 font-display text-lg font-bold uppercase italic tracking-tight text-white transition-colors hover:bg-white/10 sm:w-auto"
             >
-              Start Free Trial
+              Apply for Access
             </button>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { m as motion, useInView, useReducedMotion, animate } from 'framer-motion
 
 /**
  * Shared presentation primitives for the rebuilt landing page.
- * Logic-free on purpose — all booking/tracking/state stays in App.jsx.
+ * Logic-free on purpose — all application/tracking/state stays in App.jsx.
  */
 
 // Scroll-reveal wrapper (same behavior the old App.jsx FadeIn had).

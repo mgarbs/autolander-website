@@ -3,7 +3,7 @@ main = "src/index.js"
 compatibility_date = "2026-04-23"
 
 [vars]
-ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://mgarbs.github.io,http://localhost:5173,http://localhost:5176,http://127.0.0.1:5173,http://127.0.0.1:5176,http://localhost:4173,http://127.0.0.1:4173"
+ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://mgarbs.github.io,http://localhost:5173,http://localhost:5174,http://localhost:5176,http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5176,http://localhost:4173,http://127.0.0.1:4173"
 OPENAI_MODEL = "gpt-5.4-mini"
 MAX_OUTPUT_TOKENS = "360"
 ADMIN_AI_MODEL = "gpt-5.4-mini"
@@ -17,8 +17,12 @@ DAILY_SUPPORT_LIMIT = "40"
 SUPPORT_IP_DAILY_LIMIT = "3"
 SUPPORT_IP_HOURLY_LIMIT = "2"
 SUPPORT_EMAIL = "sales@autolander.ai"
-DEMO_URL = "https://calendly.com/autolander/demo"
 REQUIRE_TURNSTILE = "false"
+GHL_LOCATION_ID = "replace_with_ghl_location_id"
+GHL_WORKFLOW_ID = "replace_with_website_demo_request_workflow_id"
+# Optional: map captured website fields to GHL contact custom-field IDs.
+# Example: {"dealershipName":"abc123","role":"def456","utm_source":"ghi789","metaEventId":"jkl012"}
+GHL_CUSTOM_FIELD_MAP = "{}"
 
 [[kv_namespaces]]
 binding = "CHAT_RATE_LIMITS"
@@ -40,6 +44,9 @@ preview_id = "replace_with_preview_kv_namespace_id"
 #   META_AD_ACCOUNT_ID            (format act_XXXXXXXXX)
 #   META_MARKETING_ACCESS_TOKEN   (can equal META_CAPI_ACCESS_TOKEN)
 #   META_TEST_EVENT_CODE          (optional, unset for production)
-#   CALENDLY_SIGNING_KEY
+#   GHL_PRIVATE_INTEGRATION_TOKEN private integration/OAuth token with contact + workflow scopes
+#   SEND_WORKER_LEAD_CAPI         optional; set to "false" only if GHL sends the server Lead with the same metaEventId
+#   ENABLE_LEGACY_CALENDLY_WEBHOOK optional; set "true" only to temporarily accept old Calendly Schedule webhooks
+#   CALENDLY_SIGNING_KEY          legacy only, required if the legacy Calendly webhook is enabled
 #   ADMIN_PASSWORD
 #   ADMIN_SESSION_SECRET

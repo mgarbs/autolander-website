@@ -94,7 +94,10 @@ export default function Dashboard({ onLogout }) {
   }, [days, onLogout]);
 
   useEffect(() => {
-    refresh(days);
+    const timeoutId = window.setTimeout(() => {
+      refresh(days);
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
   }, [days, refresh]);
 
   const handleLogout = useCallback(async () => {
@@ -142,7 +145,7 @@ export default function Dashboard({ onLogout }) {
               className="rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white"
               disabled={refreshing}
             >
-              {refreshing ? 'Refreshing…' : 'Refresh'}
+              {refreshing ? 'Refreshing...' : 'Refresh'}
             </button>
             <button
               type="button"
@@ -184,9 +187,9 @@ export default function Dashboard({ onLogout }) {
         <section>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
             <KpiTile label="Spend" value={totals.spend ?? 0} format="currency" sublabel={`${days}d`} />
-            <KpiTile label="Booked Demos" value={totals.schedules ?? 0} sublabel={`${days}d`} />
             <KpiTile label="Leads" value={totals.leads ?? 0} sublabel={`${days}d`} />
-            <KpiTile label="Cost per Demo" value={totals.cps} format="currency" sublabel={`${days}d`} />
+            <KpiTile label="CPL" value={totals.cpl} format="currency" sublabel={`${days}d`} />
+            <KpiTile label="Legacy Demos" value={totals.schedules ?? 0} sublabel={`${days}d`} />
             <KpiTile label="Meta ID Capture" value={idCaptureRate} format="percent" sublabel="campaign + ad" />
             <KpiTile label="fbclid Capture" value={health?.fbclidCaptureRate} format="percent" sublabel="Meta visits" />
           </div>
@@ -206,7 +209,7 @@ export default function Dashboard({ onLogout }) {
         <section>
           <CampaignTable
             rows={sources}
-            title="Campaigns (spend vs. demos)"
+            title="Campaigns (spend vs. applications)"
             emptyMessage="No spend or conversions yet. Once your Meta campaigns start running, you'll see them here."
           />
         </section>
@@ -222,7 +225,7 @@ export default function Dashboard({ onLogout }) {
         {setup && <SetupGuide setup={setup} />}
 
         {loading && (
-          <p className="text-center text-xs font-bold uppercase tracking-widest text-slate-500">Loading data…</p>
+          <p className="text-center text-xs font-bold uppercase tracking-widest text-slate-500">Loading data...</p>
         )}
       </main>
     </div>
@@ -257,7 +260,7 @@ function SetupStrip({ setup }) {
     { label: 'Pixel ID configured', ok: setup.hasPixelId },
     { label: 'Conversions API token', ok: setup.hasCapiToken },
     { label: 'Ad account connected', ok: setup.hasAdAccountId && setup.hasMetaMarketingToken },
-    { label: 'Calendly webhook signed', ok: setup.hasCalendlySigningKey },
+    { label: 'GHL lead routing', ok: setup.hasGhlLeadRouting },
     { label: 'Tracking storage', ok: setup.hasTrackingKv },
     {
       label: setup.testEventCode ? 'Test events mode' : 'Live events mode',

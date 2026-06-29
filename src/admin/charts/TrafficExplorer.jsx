@@ -276,7 +276,7 @@ function TimeOfDayChart({ rows }) {
       <header className="mb-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <h3 className="text-sm font-black uppercase italic tracking-tight text-white">Time of Day</h3>
-          <HelpTip text="Shows the visitor's local hour when possible. Use this to find when people browse, become leads, and book demos." />
+          <HelpTip text="Shows the visitor's local hour when possible. Use this to find when people browse, apply, and trigger legacy demo events." />
         </div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Local visitor time</p>
       </header>
@@ -301,7 +301,7 @@ function TimeOfDayChart({ rows }) {
               <Legend wrapperStyle={{ fontSize: 10, color: '#94a3b8' }} />
               <Bar dataKey="pageViews" name="Page views" fill="#60a5fa" radius={[4, 4, 0, 0]} />
               <Bar dataKey="leads" name="Leads" fill="#34d399" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="schedules" name="Demos" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="schedules" name="Legacy Demos" fill="#f59e0b" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -451,7 +451,7 @@ function labelize(value) {
     research: 'Research',
     pricing_research: 'Pricing research',
     trial_or_checkout: 'Trial or checkout',
-    booked_demo: 'Booked demo',
+    booked_demo: 'Legacy demo',
     lead: 'Lead',
     converted: 'Converted',
     small_mobile: 'Small mobile',

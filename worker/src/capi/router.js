@@ -2,7 +2,7 @@ import { ACTION_SOURCE, buildEvent, sendEvents } from './meta-client.js';
 import { hashEmail, hashLowercase, hashName, hashPhone, sha256Hex } from './hash.js';
 import {
   bumpCounter,
-  consumeBookingToken,
+  consumeConversionToken,
   lookupVisitor,
   markEventSeen,
   pushRecentEvent,
@@ -207,6 +207,11 @@ export async function handleCapi(request, env, corsHeaders, ctx) {
         hasPixelId: Boolean(env.META_PIXEL_ID),
         hasCapiToken: Boolean(env.META_CAPI_ACCESS_TOKEN),
         hasCalendlySigningKey: Boolean(env.CALENDLY_SIGNING_KEY),
+        hasGhlLeadRouting: Boolean(
+          (env.GHL_PRIVATE_INTEGRATION_TOKEN || env.GHL_API_TOKEN || env.HIGHLEVEL_API_TOKEN)
+            && env.GHL_LOCATION_ID
+            && env.GHL_WORKFLOW_ID,
+        ),
         hasMetaMarketingToken: Boolean(env.META_MARKETING_ACCESS_TOKEN || env.META_CAPI_ACCESS_TOKEN),
         hasAdAccountId: Boolean(env.META_AD_ACCOUNT_ID),
         hasAdminPassword: Boolean(env.ADMIN_PASSWORD),
@@ -225,6 +230,9 @@ export async function handleCapi(request, env, corsHeaders, ctx) {
   }
 
   if (url.pathname === '/capi/calendly' && request.method === 'POST') {
+    if (env.ENABLE_LEGACY_CALENDLY_WEBHOOK !== 'true') {
+      return jsonResponse({ ok: true, ignored: 'legacy_calendly_disabled' }, 200, corsHeaders);
+    }
     return handleCalendly(request, env, corsHeaders, ctx);
   }
 
@@ -248,10 +256,10 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   }
 
   // This endpoint is intentionally open (no auth) so the site can report soft
-  // signals (PageView, ViewContent, Lead, InitiateCheckout, engagement). The
+  // signals (PageView, ViewContent, InitiateCheckout, engagement). The
   // high-value conversions the ad campaign optimizes on must NOT be injectable
-  // here — `Schedule` comes only from the signed Calendly webhook and the
-  // booking-token-gated thank-you pixel. Refuse them outright.
+  // here. Lead/Schedule come only from verified backend paths plus the
+  // single-use thank-you pixel gate. Refuse them outright.
   if (isInjectionProtectedEvent(eventName)) {
     return jsonResponse({ ok: false, reason: 'event_not_allowed_here' }, 403, corsHeaders);
   }
@@ -638,16 +646,14 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
   return jsonResponse({ ok: true }, 200, corsHeaders);
 }
 
-// Redeem the single-use booking token minted by /api/book. Returns ok:true only
-// the first time a genuine, unexpired token is presented — the thank-you page
-// fires the `Schedule` pixel conversion only on that ok:true. No token, a reused
-// token, or an expired token => ok:false => no conversion. This is what stops a
-// bot, crawler, scanner, or a shared /thank-you link from minting a fake demo.
+// Redeem the single-use conversion token minted by a verified backend flow.
+// Returns ok:true only the first time a genuine, unexpired token is presented.
+// No token, a reused token, or an expired token => no conversion.
 async function handleConfirm(request, env, corsHeaders) {
   if (looksLikeBot(request).bot) {
     return jsonResponse({ ok: false, reason: 'blocked' }, 403, corsHeaders);
   }
-  // Real booker traffic reaches this cross-site POST from the thank-you page with
+  // Real applicant traffic reaches this cross-site POST from the thank-you page with
   // an Origin header (a CORS JSON POST always sends one). Require it — mirroring
   // /capi/track — so a leaked single-use bt token can't be redeemed from a
   // non-browser context. The global gate (index.js) validates the Origin value
@@ -660,13 +666,15 @@ async function handleConfirm(request, env, corsHeaders) {
   if (!/^[a-f0-9]{32}$/.test(token)) {
     return jsonResponse({ ok: false, reason: 'invalid_token' }, 400, corsHeaders);
   }
-  const redeemed = await consumeBookingToken(env, token);
+  const redeemed = await consumeConversionToken(env, token);
   if (!redeemed) {
     return jsonResponse({ ok: false, reason: 'unrecognized_token' }, 403, corsHeaders);
   }
-  // Return the shared eventID so the thank-you pixel Schedule dedupes with the
-  // CAPI Schedule fired by the invitee.created webhook.
-  return jsonResponse({ ok: true, eventId: redeemed.eventId || '' }, 200, corsHeaders);
+  return jsonResponse(
+    { ok: true, eventId: redeemed.eventId || '', eventName: redeemed.eventName || 'Lead' },
+    200,
+    corsHeaders,
+  );
 }
 
 async function buildUserData({

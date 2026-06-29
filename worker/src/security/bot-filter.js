@@ -1,4 +1,4 @@
-// UX-invisible bot screen for the booking + conversion endpoints.
+// UX-invisible bot screen for the application + conversion endpoints.
 //
 // The Worker runs on *.workers.dev, where Cloudflare Bot Fight Mode / WAF can't
 // reach (those are zone features and autolander.ai is served by GitHub Pages,
@@ -9,9 +9,9 @@
 //
 // This is NOT a silver bullet — a determined attacker can spoof the UA — but it
 // turns away the bulk of unsophisticated automated abuse with zero impact on
-// real users. The single-use booking-token gate remains the real conversion
-// guard. Deliberately NOT applied to the signed Calendly webhook, whose
-// server-to-server agent would otherwise look bot-like.
+// real users. The single-use conversion-token gate remains the real conversion
+// guard. Deliberately NOT applied to explicitly enabled legacy webhooks, whose
+// server-to-server agents would otherwise look bot-like.
 const AUTOMATION_UA =
   /curl\/|wget\/|python-requests|python-urllib|libwww|httpclient|go-http-client|node-fetch|axios\/|okhttp|java\/|guzzle|scrapy|httpie|postmanruntime|insomnia|headlesschrome|phantomjs|puppeteer|playwright|selenium|googlebot|bingbot|yandexbot|ahrefsbot|semrushbot|facebookexternalhit|crawler|spider|\bbot\b/i;
 

@@ -6,7 +6,7 @@ workers_dev = true
 preview_urls = false
 
 [vars]
-ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://book.autolander.ai,https://preview.autolander.ai,https://autolander-preview.pages.dev,https://mgarbs.github.io,http://localhost:5173,http://localhost:5176,http://127.0.0.1:5173,http://127.0.0.1:5176,http://localhost:4173,http://127.0.0.1:4173"
+ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://book.autolander.ai,https://preview.autolander.ai,https://autolander-preview.pages.dev,https://mgarbs.github.io,http://localhost:5173,http://localhost:5174,http://localhost:5176,http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5176,http://localhost:4173,http://127.0.0.1:4173"
 OPENAI_MODEL = "gpt-5.4-mini"
 MAX_OUTPUT_TOKENS = "360"
 ADMIN_AI_MODEL = "gpt-5.4-mini"
@@ -20,21 +20,8 @@ DAILY_SUPPORT_LIMIT = "40"
 SUPPORT_IP_DAILY_LIMIT = "3"
 SUPPORT_IP_HOURLY_LIMIT = "2"
 SUPPORT_EMAIL = "sales@autolander.ai"
-DEMO_URL = "https://calendly.com/autolander/demo"
+GHL_CUSTOM_FIELD_MAP = "{}"
 REQUIRE_TURNSTILE = "false"
-# Invisible bot challenge on /api/book. DISABLED 2026-06-20: the invisible Turnstile
-# token is frequently absent/expired in privacy browsers and the Facebook/Instagram
-# in-app webview (which carries the paid traffic), so real prospects 403 silently and
-# the booking button appears dead. Honeypot + bot-filter + rate-limit + single-use
-# booking token still protect /api/book. Do not re-enable without a visible, reliable
-# widget verified in the FB/IG in-app webview.
-REQUIRE_BOOK_TURNSTILE = "false"
-# Native booking: Calendly event type to mirror/book (AutoLander Demo).
-CALENDLY_EVENT_TYPE_URI = "https://api.calendly.com/event_types/8969cc69-05d5-4c3d-8ec9-20309f721b2f"
-
-# Keep the availability cache warm for the native calendar (/api/availability).
-[triggers]
-crons = ["*/3 * * * *"]
 
 [[kv_namespaces]]
 binding = "CHAT_RATE_LIMITS"
@@ -54,7 +41,12 @@ preview_id = "273697d477e84296a0152a690e95884c"
 #   META_AD_ACCOUNT_ID            ad account, format act_XXXXXXXXX
 #   META_MARKETING_ACCESS_TOKEN   token with ads_read (can equal META_CAPI_ACCESS_TOKEN)
 #   META_TEST_EVENT_CODE          optional, e.g. TEST12345 (unset for production)
-#   CALENDLY_SIGNING_KEY          from Calendly webhook subscription
-#   CALENDLY_API_TOKEN            Calendly Personal Access Token (paid plan) for native availability + booking
+#   GHL_PRIVATE_INTEGRATION_TOKEN private integration/OAuth token with contact + workflow scopes
+#   GHL_LOCATION_ID               GHL location/sub-account id
+#   GHL_WORKFLOW_ID               "Website Demo Request" workflow id
+#   GHL_CUSTOM_FIELD_MAP          JSON map of captured fields to GHL contact custom-field IDs
+#   SEND_WORKER_LEAD_CAPI         optional; set to "false" only if GHL sends server Lead with the same metaEventId
+#   ENABLE_LEGACY_CALENDLY_WEBHOOK optional; set "true" only to temporarily accept old Calendly Schedule webhooks
+#   CALENDLY_SIGNING_KEY          legacy only, required if the legacy Calendly webhook is enabled
 #   ADMIN_PASSWORD                you choose
 #   ADMIN_SESSION_SECRET          random 32+ bytes for cookie HMAC

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { newEventId, track, trackCustom } from './lib/meta-pixel.js';
-import { getVisitorId } from './lib/identity.js';
 import Hero from './sections/Hero.jsx';
 import TrustStrip from './sections/TrustStrip.jsx';
 import ExecutionGap from './sections/ExecutionGap.jsx';
@@ -8,7 +7,7 @@ import ComparisonSection from './sections/ComparisonSection.jsx';
 import MobileCtaBar from './sections/MobileCtaBar.jsx';
 import { CarFront, Gift, Download, Copy } from 'lucide-react';
 const ChatAssistant = lazy(() => import('./components/ChatAssistant.jsx'));
-const InstantCalendar = lazy(() => import('./components/InstantCalendar.jsx'));
+const DemoApplication = lazy(() => import('./components/DemoApplication.jsx'));
 let deferredLandingSectionsPromise = null;
 const loadDeferredLandingSections = () => {
   if (!deferredLandingSectionsPromise) {
@@ -32,42 +31,6 @@ const DOWNLOADS = {
 };
 const REFERRAL_CODE_PATTERN = /^[a-z0-9]{4,64}$/;
 const FEATURES_VIEW_STORAGE_KEY = 'autolander_meta_view_content_features';
-const CALENDLY_WIDGET_JS = 'https://assets.calendly.com/assets/external/widget.js';
-const CALENDLY_WIDGET_CSS = 'https://assets.calendly.com/assets/external/widget.css';
-
-let calendlyAssetsPromise = null;
-function loadCalendlyAssets() {
-  if (typeof window === 'undefined') return Promise.reject(new Error('no-window'));
-  if (window.Calendly) return Promise.resolve(window.Calendly);
-  if (calendlyAssetsPromise) return calendlyAssetsPromise;
-
-  calendlyAssetsPromise = new Promise((resolve, reject) => {
-    if (!document.querySelector(`link[href="${CALENDLY_WIDGET_CSS}"]`)) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = CALENDLY_WIDGET_CSS;
-      document.head.appendChild(link);
-    }
-    const existing = document.querySelector(`script[src="${CALENDLY_WIDGET_JS}"]`);
-    if (existing && window.Calendly) {
-      resolve(window.Calendly);
-      return;
-    }
-    const script = existing || document.createElement('script');
-    if (!existing) {
-      script.src = CALENDLY_WIDGET_JS;
-      script.async = true;
-      document.head.appendChild(script);
-    }
-    script.addEventListener('load', () => resolve(window.Calendly));
-    script.addEventListener('error', () => {
-      calendlyAssetsPromise = null;
-      reject(new Error('calendly-load-failed'));
-    });
-  });
-
-  return calendlyAssetsPromise;
-}
 const STALE_APP_HASH_ROUTES = new Set([
   '#/login',
   '#/sign-in',
@@ -115,58 +78,6 @@ function withFbEventId(url, eventId) {
     return nextUrl.toString();
   } catch {
     return `${url}${url.includes('?') ? '&' : '?'}fb_event_id=${encodeURIComponent(eventId)}`;
-  }
-}
-
-const ATTR_KEYS = [
-  'utm_source',
-  'utm_medium',
-  'utm_campaign',
-  'utm_content',
-  'utm_term',
-  'utm_id',
-  'campaign_id',
-  'adset_id',
-  'ad_id',
-  'campaign_name',
-  'adset_name',
-  'ad_name',
-  'placement',
-  'site_source_name',
-];
-const AL_VID_MARKER = 'al_vid:';
-
-function withUtms(url) {
-  if (typeof window === 'undefined') return url;
-  const params = new URLSearchParams(window.location.search);
-  const utms = ATTR_KEYS
-    .filter((key) => params.has(key))
-    .map((key) => `${key}=${encodeURIComponent(params.get(key))}`)
-    .join('&');
-  if (!utms) return url;
-  const separator = url.includes('?') ? '&' : '?';
-  return `${url}${separator}${utms}`;
-}
-
-function withAttribution(url) {
-  if (typeof window === 'undefined') return url;
-  const vid = getVisitorId();
-  if (!vid) return withUtms(url);
-
-  const stamped = withUtms(url);
-  const marker = `${AL_VID_MARKER}${vid}`;
-
-  try {
-    const next = new URL(stamped, window.location.href);
-    const existing = next.searchParams.get('utm_content');
-    if (!existing) {
-      next.searchParams.set('utm_content', marker);
-    } else if (!existing.includes(AL_VID_MARKER)) {
-      next.searchParams.set('utm_content', `${existing}|${marker}`);
-    }
-    return next.toString();
-  } catch {
-    return stamped;
   }
 }
 
@@ -376,53 +287,17 @@ export default function App() {
     setShouldMountDeferredSections(true);
   }, []);
 
-  const demoUrl = "https://calendly.com/autolander/demo";
-  const bookingUrl = withAttribution(demoUrl);
 
-  const openCalendlyPopup = useCallback(async () => {
-    // Themed Calendly URL with site-matching dark palette.
-    // a2=Yes pre-checks the "Get text reminders about your demo" checkbox
-    // (verified via Calendly event-types API — multi_select at position 1).
-    let widgetUrl = bookingUrl;
-    try {
-      const u = new URL(bookingUrl, window.location.href);
-      u.searchParams.set('a2', 'Yes');
-      u.searchParams.set('hide_gdpr_banner', '1');
-      u.searchParams.set('background_color', '050505');
-      u.searchParams.set('text_color', 'cbd5e1');
-      u.searchParams.set('primary_color', '2563eb');
-      widgetUrl = u.toString();
-    } catch {
-      const params = `a2=Yes&hide_gdpr_banner=1&background_color=050505&text_color=cbd5e1&primary_color=2563eb`;
-      widgetUrl = `${bookingUrl}${bookingUrl.includes('?') ? '&' : '?'}${params}`;
-    }
-
-    try {
-      const Calendly = await loadCalendlyAssets();
-      if (!Calendly) {
-        window.open(widgetUrl, '_blank');
-        return;
-      }
-      Calendly.initPopupWidget({ url: widgetUrl });
-    } catch (err) {
-      console.error('[demo-booker] failed to load Calendly widget', err);
-      window.open(widgetUrl, '_blank');
-    }
-  }, [bookingUrl]);
-
-  // Native instant calendar (replaces the slow Calendly iframe on the hot path).
-  // openCalendlyPopup is kept as the fallback if availability can't load.
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const openDemoBooking = useCallback(() => {
-    setIsCalendarOpen(true);
-    // Funnel signal: visitor opened the booking calendar (once per session) so we
-    // can measure "opened but didn't book" drop-off. Lead fires later on slot
-    // select; Schedule fires only on a completed booking.
+    setIsApplicationOpen(true);
+    // Funnel signal: visitor opened the application form. Standard Lead is
+    // reserved for a verified submission that reached GHL.
     try {
-      if (window.sessionStorage.getItem('al_booking_opened') === '1') return;
-      window.sessionStorage.setItem('al_booking_opened', '1');
+      if (window.sessionStorage.getItem('al_application_opened') === '1') return;
+      window.sessionStorage.setItem('al_application_opened', '1');
     } catch { /* sessionStorage unavailable — fall through and fire once */ }
-    trackCustom('BookingOpened', { content_name: 'demo_calendar', content_category: 'demo' });
+    trackCustom('ApplicationOpened', { content_name: 'demo_application', content_category: 'demo' });
   }, []);
 
   const referralCode = getReferralCodeFromPath();
@@ -461,7 +336,7 @@ export default function App() {
   };
 
   const trackChatOpen = () => {
-    track('Lead', {
+    trackCustom('ChatOpened', {
       content_name: 'chat_assistant',
       content_category: 'landing',
     });
@@ -521,7 +396,7 @@ export default function App() {
               type="button"
               onClick={openDemoBooking}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
-              Book a Demo
+              Apply for Demo
             </button>
           </div>
         </div>
@@ -644,12 +519,12 @@ export default function App() {
       <MobileCtaBar onBookDemo={openDemoBooking} />
       {shouldMountChat && (
         <Suspense fallback={null}>
-          <ChatAssistant demoUrl={bookingUrl} supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openDemoBooking} />
+          <ChatAssistant supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openDemoBooking} />
         </Suspense>
       )}
-      {isCalendarOpen && (
+      {isApplicationOpen && (
         <Suspense fallback={null}>
-          <InstantCalendar onClose={() => setIsCalendarOpen(false)} onFallback={openCalendlyPopup} />
+          <DemoApplication onClose={() => setIsApplicationOpen(false)} />
         </Suspense>
       )}
     </div>

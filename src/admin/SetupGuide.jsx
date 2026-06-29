@@ -33,7 +33,7 @@ const ENABLEMENT_STEPS = [
       'Conversions API token means server events can be sent to Meta.',
       'Ad account connected means the dashboard can pull spend, impressions, clicks, CTR, CPM, and frequency.',
       'Tracking storage means the dashboard can remember visits, traffic sources, devices, and conversion events.',
-      'Calendly webhook signed means booked demos can be counted as reliable conversion events.',
+      'GHL lead routing configured means submitted demo applications can enter the CRM workflow.',
     ],
   },
   {
@@ -78,7 +78,7 @@ export default function SetupGuide({ setup }) {
     { label: 'Pixel ID configured', ok: setup.hasPixelId },
     { label: 'Conversions API token', ok: setup.hasCapiToken },
     { label: 'Ad account connected', ok: setup.hasAdAccountId && setup.hasMetaMarketingToken },
-    { label: 'Calendly webhook signed', ok: setup.hasCalendlySigningKey },
+    { label: 'GHL lead routing', ok: setup.hasGhlLeadRouting },
     { label: 'Tracking storage', ok: setup.hasTrackingKv },
     {
       label: setup.testEventCode ? 'Test events mode' : 'Live events mode',
@@ -96,7 +96,7 @@ export default function SetupGuide({ setup }) {
             <h3 className="text-sm font-black uppercase italic tracking-tight text-white">Setup checklist</h3>
           </div>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">
-            Follow this guide to connect Meta campaigns, UTMs, Pixel, Conversions API, spend, and booked demos into one
+            Follow this guide to connect Meta campaigns, UTMs, Pixel, Conversions API, spend, and demo applications into one
             clean reporting view.
           </p>
         </div>
@@ -163,8 +163,8 @@ export default function SetupGuide({ setup }) {
               body="Device, placement, platform, landing page, hour, returning visitor, country, browser, and intent views become more useful."
             />
             <Signal
-              title="Calendly demos show up"
-              body="Booked demos appear when the Calendly webhook is signed and firing into the worker."
+              title="Demo applications show up"
+              body="Applications appear when the custom form reaches the Worker and the contact is routed into the GHL workflow."
             />
             <Signal
               title="AI Summary has enough signal"

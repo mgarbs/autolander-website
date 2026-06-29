@@ -79,6 +79,11 @@ function buildSetup(env) {
     hasPixelId: Boolean(env.META_PIXEL_ID),
     hasCapiToken: Boolean(env.META_CAPI_ACCESS_TOKEN),
     hasCalendlySigningKey: Boolean(env.CALENDLY_SIGNING_KEY),
+    hasGhlLeadRouting: Boolean(
+      (env.GHL_PRIVATE_INTEGRATION_TOKEN || env.GHL_API_TOKEN || env.HIGHLEVEL_API_TOKEN)
+        && env.GHL_LOCATION_ID
+        && env.GHL_WORKFLOW_ID,
+    ),
     hasMetaMarketingToken: Boolean(env.META_MARKETING_ACCESS_TOKEN || env.META_CAPI_ACCESS_TOKEN),
     hasAdAccountId: Boolean(env.META_AD_ACCOUNT_ID),
     hasAdminSessionSecret: Boolean(env.ADMIN_SESSION_SECRET),
@@ -292,13 +297,12 @@ function buildHealth(totals) {
   let serverShare = null;
   let browserShare = null;
 
-  // Schedule is intentionally excluded from the browser/server dedupe health math:
-  // its browser leg fires the pixel straight to Meta (never hits the Worker, so
-  // there is no `Schedule:browser` counter), while the Calendly webhook bumps both
-  // `Schedule` and `Schedule:server`. Including it would skew browser/server/deduped
-  // shares with a phantom "server-only" event. The "Booked Demos" KPI is computed
-  // separately from the deduped `Schedule` total and is unaffected.
-  const tracked = ['PageView', 'ViewContent', 'Lead', 'InitiateCheckout'];
+  // Lead and Schedule are intentionally excluded from the browser/server dedupe
+  // health math: their browser legs fire the pixel straight to Meta from the
+  // gated thank-you page and never hit the Worker, while the Worker/webhook bumps
+  // the server counters. Including them would skew the health shares with a
+  // phantom "server-only" event.
+  const tracked = ['PageView', 'ViewContent', 'InitiateCheckout'];
   let total = 0;
   let browser = 0;
   let server = 0;

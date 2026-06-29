@@ -3,7 +3,7 @@ import {
   AlertCircle,
   ArrowLeft,
   Bot,
-  Calendar,
+  ClipboardCheck,
   Loader2,
   Mail,
   MessageCircle,
@@ -435,8 +435,8 @@ export default function ChatAssistant({ supportEmail = 'sales@autolander.ai', on
                           onClick={onBookDemo}
                           className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-4 py-2 text-xs font-black uppercase italic text-white transition hover:bg-white/10"
                         >
-                          <Calendar className="h-4 w-4" />
-                          Book Demo
+                          <ClipboardCheck className="h-4 w-4" />
+                          Apply for Demo
                         </button>
                       </div>
                     )}

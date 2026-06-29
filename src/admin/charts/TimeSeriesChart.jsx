@@ -20,10 +20,10 @@ export default function TimeSeriesChart({ data }) {
       <header className="mb-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <h3 className="text-sm font-black uppercase italic tracking-tight text-white">Daily activity</h3>
-          <HelpTip text="Page views show traffic volume. Leads and booked demos show whether that traffic is turning into action." />
+          <HelpTip text="Page views show traffic volume. Leads now mean verified demo applications that reached the CRM workflow." />
         </div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-          Traffic, leads, demos
+          Traffic and applications
         </p>
       </header>
       <div className="h-72">
@@ -53,7 +53,7 @@ export default function TimeSeriesChart({ data }) {
             <Line
               type="monotone"
               dataKey="schedule"
-              name="Booked Demos"
+              name="Legacy Demos"
               stroke="#f59e0b"
               strokeWidth={2}
               dot={{ r: 3 }}
