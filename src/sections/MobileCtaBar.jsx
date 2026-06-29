@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 // Sticky mobile demo-application bar — fixes the known "no CTA on mobile" funnel
@@ -6,8 +6,9 @@ import { ArrowRight } from 'lucide-react';
 // full-width button + one short centered line so nothing truncates, and the
 // chat launcher is raised above it on mobile (see ChatAssistant) so they never
 // overlap.
-export default function MobileCtaBar({ onBookDemo }) {
+export default function MobileCtaBar({ onBookDemo, onWarmDemo }) {
   const [show, setShow] = useState(false);
+  const warmedRef = useRef(false);
 
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > 560);
@@ -16,12 +17,22 @@ export default function MobileCtaBar({ onBookDemo }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!show || warmedRef.current) return;
+    warmedRef.current = true;
+    onWarmDemo?.();
+  }, [onWarmDemo, show]);
+
   return (
     <div
       className={`fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/90 px-4 pt-3 backdrop-blur-xl transition-transform duration-300 md:hidden ${show ? 'translate-y-0' : 'translate-y-full'}`}
       style={{ paddingBottom: 'max(0.7rem, env(safe-area-inset-bottom))' }}
     >
       <button
+        onPointerEnter={onWarmDemo}
+        onPointerDown={onWarmDemo}
+        onFocus={onWarmDemo}
+        onTouchStart={onWarmDemo}
         onClick={onBookDemo}
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 active:scale-[0.99]"
       >

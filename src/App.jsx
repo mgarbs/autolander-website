@@ -7,7 +7,17 @@ import ComparisonSection from './sections/ComparisonSection.jsx';
 import MobileCtaBar from './sections/MobileCtaBar.jsx';
 import { CarFront, Gift, Download, Copy } from 'lucide-react';
 const ChatAssistant = lazy(() => import('./components/ChatAssistant.jsx'));
-const DemoApplication = lazy(() => import('./components/DemoApplication.jsx'));
+let demoApplicationPromise = null;
+const loadDemoApplication = () => {
+  if (!demoApplicationPromise) {
+    demoApplicationPromise = import('./components/DemoApplication.jsx');
+  }
+  return demoApplicationPromise;
+};
+const preloadDemoApplication = () => {
+  loadDemoApplication().catch(() => {});
+};
+const DemoApplication = lazy(loadDemoApplication);
 let deferredLandingSectionsPromise = null;
 const loadDeferredLandingSections = () => {
   if (!deferredLandingSectionsPromise) {
@@ -111,6 +121,21 @@ function checkoutEventParams(contentName, value) {
 }
 
 const FadeIn = ({ children }) => <div>{children}</div>;
+
+const DemoApplicationFallback = ({ onClose }) => (
+  <div
+    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 px-4 py-8 backdrop-blur-md"
+    onClick={onClose}
+  >
+    <div
+      className="relative w-full max-w-lg rounded-3xl border border-white/10 bg-[#0a0a0f]/95 p-8 text-center shadow-2xl shadow-black/60"
+      onClick={(event) => event.stopPropagation()}
+    >
+      <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-white/15 border-t-blue-500" />
+      <p className="text-xs font-black uppercase italic tracking-widest text-slate-400">Opening demo form...</p>
+    </div>
+  </div>
+);
 
 export default function App() {
   const [isAnnual, setIsAnnual] = useState(false);
@@ -289,7 +314,12 @@ export default function App() {
 
 
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
+  const warmDemoApplication = useCallback(() => {
+    preloadDemoApplication();
+  }, []);
+
   const openDemoBooking = useCallback(() => {
+    warmDemoApplication();
     setIsApplicationOpen(true);
     // Funnel signal: visitor opened the application form. Standard Lead is
     // reserved for a verified submission that reached GHL.
@@ -298,7 +328,7 @@ export default function App() {
       window.sessionStorage.setItem('al_application_opened', '1');
     } catch { /* sessionStorage unavailable — fall through and fire once */ }
     trackCustom('ApplicationOpened', { content_name: 'demo_application', content_category: 'demo' });
-  }, []);
+  }, [warmDemoApplication]);
 
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
@@ -394,6 +424,10 @@ export default function App() {
             )}
             <button
               type="button"
+              onPointerEnter={warmDemoApplication}
+              onPointerDown={warmDemoApplication}
+              onFocus={warmDemoApplication}
+              onTouchStart={warmDemoApplication}
               onClick={openDemoBooking}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
               Apply for Demo
@@ -482,7 +516,7 @@ export default function App() {
             </FadeIn>
           </div>
         ) : (
-          <Hero openDemoBooking={openDemoBooking} />
+          <Hero openDemoBooking={openDemoBooking} onWarmDemo={warmDemoApplication} />
         )}
       </section>
 
@@ -506,6 +540,7 @@ export default function App() {
             showDownloadButtons={showDownloadButtons}
             openDownload={openDownload}
             openDemoBooking={openDemoBooking}
+            onWarmDemo={warmDemoApplication}
           />
         </Suspense>
       )}
@@ -516,14 +551,14 @@ export default function App() {
           <LandingFooter />
         </Suspense>
       )}
-      <MobileCtaBar onBookDemo={openDemoBooking} />
+      <MobileCtaBar onBookDemo={openDemoBooking} onWarmDemo={warmDemoApplication} />
       {shouldMountChat && (
         <Suspense fallback={null}>
-          <ChatAssistant supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openDemoBooking} />
+          <ChatAssistant supportEmail="sales@autolander.ai" onOpen={trackChatOpen} onBookDemo={openDemoBooking} onWarmDemo={warmDemoApplication} />
         </Suspense>
       )}
       {isApplicationOpen && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<DemoApplicationFallback onClose={() => setIsApplicationOpen(false)} />}>
           <DemoApplication onClose={() => setIsApplicationOpen(false)} />
         </Suspense>
       )}

@@ -175,8 +175,15 @@ export default function DeferredLandingSections({
   showDownloadButtons,
   openDownload,
   openDemoBooking,
+  onWarmDemo,
 }) {
   const pricing = PRICING;
+  const demoIntentHandlers = {
+    onPointerEnter: onWarmDemo,
+    onPointerDown: onWarmDemo,
+    onFocus: onWarmDemo,
+    onTouchStart: onWarmDemo,
+  };
 
   return (
     <>
@@ -599,6 +606,7 @@ export default function DeferredLandingSections({
           <FadeIn>
             <div className="mt-12 flex justify-center">
               <button
+                {...demoIntentHandlers}
                 onClick={openDemoBooking}
                 className="px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all uppercase italic hover:bg-blue-500 active:scale-95 shadow-lg shadow-blue-600/30"
               >
@@ -704,12 +712,14 @@ export default function DeferredLandingSections({
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <button
+                {...demoIntentHandlers}
                 onClick={openDemoBooking}
                 className="w-full sm:w-auto px-12 py-6 rounded-2xl bg-blue-600 text-white font-black text-xl transition-all shadow-2xl shadow-blue-600/30 uppercase italic tracking-tighter hover:bg-blue-500 active:scale-95"
               >
                 Apply for a Live Demo
               </button>
               <button
+                {...demoIntentHandlers}
                 onClick={openDemoBooking}
                 className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
               >
