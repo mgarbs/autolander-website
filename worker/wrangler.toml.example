@@ -23,6 +23,8 @@ GHL_WORKFLOW_ID = "replace_with_website_demo_request_workflow_id"
 # Optional: map captured website fields to GHL contact custom-field IDs.
 # Example: {"dealershipName":"abc123","role":"def456","utm_source":"ghi789","metaEventId":"jkl012"}
 GHL_CUSTOM_FIELD_MAP = "{}"
+# When true, /api/apply only returns success after the full application note is written to GHL.
+REQUIRE_GHL_APPLICATION_NOTE = "true"
 
 [[kv_namespaces]]
 binding = "CHAT_RATE_LIMITS"

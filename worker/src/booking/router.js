@@ -62,6 +62,7 @@ const CUSTOM_FIELD_KEYS = [
   'referrer',
   'userAgent',
   'consentTimestamp',
+  'submissionTimestamp',
   'metaEventId',
   'visitorId',
   'submissionId',
@@ -125,6 +126,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const vehicleCount = clean(body.vehicleCount, 24);
   const smsConsent = Boolean(body.smsConsent);
   const consentTimestamp = normalizeIso(body.consentTimestamp);
+  const submissionTimestamp = new Date().toISOString();
   const submissionId = clean(body.submissionId, 96);
   const userAgent = clean(body.userAgent, 500) || clean(request.headers.get('User-Agent'), 500);
 
@@ -168,6 +170,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
     vehicleCount,
     smsConsent,
     consentTimestamp,
+    submissionTimestamp,
     submissionId,
     userAgent,
     vid: attribution.vid,
@@ -190,6 +193,20 @@ async function handleApply(request, env, corsHeaders, ctx) {
   if (!contactId) {
     console.error('[api/apply] GHL upsert returned no contact id', JSON.stringify(upsert.body).slice(0, 400));
     return json({ ok: false, reason: 'ghl_contact_id_missing' }, 502, corsHeaders);
+  }
+
+  const alreadyRecorded = await wasEventSeen(env, eventId).catch(() => false);
+  let noteId = '';
+  if (!alreadyRecorded) {
+    const note = await createGhlApplicationNote(env, config, contactId, lead);
+    if (!note.ok) {
+      console.error('[api/apply] GHL application note failed', note.status, note.detail);
+      if (env.REQUIRE_GHL_APPLICATION_NOTE === 'true') {
+        return json({ ok: false, reason: 'ghl_note_failed' }, 502, corsHeaders);
+      }
+    } else {
+      noteId = extractNoteId(note.body);
+    }
   }
 
   const workflow = await addContactToWorkflow(env, config, contactId);
@@ -230,6 +247,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
       bt: conversionToken,
       contactId,
       eventId,
+      noteId,
     },
     200,
     corsHeaders,
@@ -262,6 +280,15 @@ async function addContactToWorkflow(env, config, contactId) {
   return ghlRequest(env, config, `/contacts/${encodeURIComponent(contactId)}/workflow/${encodeURIComponent(config.workflowId)}`, {
     method: 'POST',
     body: JSON.stringify({}),
+  });
+}
+
+async function createGhlApplicationNote(env, config, contactId, lead) {
+  return ghlRequest(env, config, `/contacts/${encodeURIComponent(contactId)}/notes`, {
+    method: 'POST',
+    body: JSON.stringify({
+      body: buildApplicationNoteBody(lead),
+    }),
   });
 }
 
@@ -431,6 +458,7 @@ function buildCustomFields(env, lead) {
     referrer: lead.referrer,
     userAgent: lead.userAgent,
     consentTimestamp: lead.consentTimestamp,
+    submissionTimestamp: lead.submissionTimestamp,
     metaEventId: lead.eventId,
     visitorId: lead.vid,
     submissionId: lead.submissionId,
@@ -444,6 +472,62 @@ function buildCustomFields(env, lead) {
     fields.push({ id, fieldValue: String(value).slice(0, 1200) });
   }
   return fields;
+}
+
+function buildApplicationNoteBody(lead) {
+  const utms = lead.utms || {};
+  const lines = [
+    'AutoLander demo application received',
+    '',
+    'Applicant',
+    noteLine('Full name', lead.fullName),
+    noteLine('Email', lead.email),
+    noteLine('Phone', lead.phonePretty || lead.phone),
+    '',
+    'Dealership profile',
+    noteLine('Dealership name', lead.dealershipName || 'Not collected on current modal'),
+    noteLine('Role', lead.role),
+    noteLine('Vehicles in inventory', lead.vehicleCount || 'Not selected'),
+    noteLine('Website / inventory link', lead.inventoryUrl),
+    '',
+    'Consent',
+    noteLine('SMS consent', lead.smsConsent ? 'Yes' : 'No'),
+    noteLine('Consent timestamp', lead.consentTimestamp),
+    noteLine('Consent text version', 'demo-sms-consent-v1-2026-06-29'),
+    noteLine('Consent source URL', lead.landingPageUrl),
+    '',
+    'Tracking',
+    noteLine('Submission ID', lead.submissionId),
+    noteLine('Meta event ID', lead.eventId),
+    noteLine('Visitor ID', lead.vid),
+    noteLine('Landing page', lead.landingPageUrl),
+    noteLine('Referrer', lead.referrer),
+    noteLine('Submission timestamp', lead.submissionTimestamp),
+    '',
+    'Attribution',
+    noteLine('utm_source', utms.utm_source),
+    noteLine('utm_medium', utms.utm_medium),
+    noteLine('utm_campaign', utms.utm_campaign),
+    noteLine('utm_content', utms.utm_content),
+    noteLine('utm_term', utms.utm_term),
+    noteLine('campaign_id', utms.campaign_id || utms.utm_id),
+    noteLine('adset_id', utms.adset_id),
+    noteLine('ad_id', utms.ad_id),
+    noteLine('placement', utms.placement),
+    noteLine('site_source_name', utms.site_source_name),
+    noteLine('fbclid', lead.fbclid),
+    noteLine('fbc', lead.fbc),
+    noteLine('fbp', lead.fbp),
+    '',
+    'Client',
+    noteLine('User agent', lead.userAgent),
+  ];
+  return lines.filter(Boolean).join('\n').slice(0, 8000);
+}
+
+function noteLine(label, value) {
+  const text = clean(String(value || ''), 1200);
+  return `${label}: ${text || 'Not provided'}`;
 }
 
 function customFieldMap(env) {
@@ -473,6 +557,17 @@ function extractContactId(body) {
       || body?.contactId
       || body?.id
       || body?.data?.contact?.id
+      || body?.data?.id,
+    120,
+  );
+}
+
+function extractNoteId(body) {
+  return clean(
+    body?.note?.id
+      || body?.noteId
+      || body?.id
+      || body?.data?.note?.id
       || body?.data?.id,
     120,
   );
