@@ -26,7 +26,7 @@ const initialForm = {
   role: '',
   inventoryUrl: '',
   vehicleCount: '',
-  smsConsent: false,
+  smsConsent: true,
   company: '',
 };
 
