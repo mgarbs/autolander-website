@@ -718,13 +718,6 @@ export default function DeferredLandingSections({
               >
                 Apply for a Live Demo
               </button>
-              <button
-                {...demoIntentHandlers}
-                onClick={openDemoBooking}
-                className="w-full sm:w-auto px-10 py-6 rounded-2xl bg-white/5 text-white font-bold text-xl hover:bg-white/10 border border-white/10 transition-all uppercase italic"
-              >
-                Apply for Access
-              </button>
             </div>
             <p className="mt-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">No Credit Card Required • Instant Setup</p>
           </FadeIn>

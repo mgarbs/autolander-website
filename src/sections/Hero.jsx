@@ -250,13 +250,6 @@ export default function Hero({ openDemoBooking, onWarmDemo }) {
               Apply for a Demo
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
-            <button
-              {...demoIntentHandlers}
-              onClick={openDemoBooking}
-              className="w-full rounded-2xl border border-white/10 bg-white/5 px-8 py-5 font-display text-lg font-bold uppercase italic tracking-tight text-white transition-colors hover:bg-white/10 sm:w-auto"
-            >
-              Apply for Access
-            </button>
           </div>
         </div>
 
