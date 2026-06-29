@@ -2,30 +2,24 @@ import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft,
-  Building2,
   Check,
   Globe,
   Loader2,
   ShieldCheck,
   UserRound,
-  Warehouse,
   X,
 } from 'lucide-react';
 import { newSubmissionId, submitApplication } from '../lib/demo-application.js';
 import { formatPhoneInput, isValidEmail, isValidPhone } from '../lib/contact.js';
 
 const ROLES = ['Owner', 'Manager', 'Sales Rep'];
-const VEHICLE_COUNTS = ['1-50', '51-150', '151+'];
 
 const initialForm = {
-  firstName: '',
-  lastName: '',
+  fullName: '',
   email: '',
   phone: '',
-  dealershipName: '',
   role: '',
   inventoryUrl: '',
-  vehicleCount: '',
   smsConsent: true,
   company: '',
 };
@@ -57,12 +51,8 @@ export default function DemoApplication({ onClose }) {
     event.preventDefault();
     const inventoryUrl = normalizeWebsite(form.inventoryUrl);
 
-    if (!form.firstName.trim()) {
-      setFormError('Enter your first name.');
-      return;
-    }
-    if (!form.lastName.trim()) {
-      setFormError('Enter your last name.');
+    if (!form.fullName.trim()) {
+      setFormError('Enter your full name.');
       return;
     }
     if (!isValidEmail(form.email)) {
@@ -75,10 +65,6 @@ export default function DemoApplication({ onClose }) {
       setInvalid((v) => ({ ...v, phone: true }));
       return;
     }
-    if (!form.dealershipName.trim()) {
-      setFormError('Enter your dealership name.');
-      return;
-    }
     if (!form.role) {
       setFormError('Tell us your role at the dealership.');
       return;
@@ -89,7 +75,7 @@ export default function DemoApplication({ onClose }) {
       return;
     }
     if (!form.smsConsent) {
-      setFormError('Confirm we can contact you about your application.');
+      setFormError('Confirm we can text you about your demo.');
       return;
     }
 
@@ -112,7 +98,9 @@ export default function DemoApplication({ onClose }) {
         return;
       }
 
-      if (res.reason === 'invalid_email') {
+      if (res.reason === 'missing_full_name') {
+        setFormError('Enter your full name.');
+      } else if (res.reason === 'invalid_email') {
         setFormError('That email does not look right. Re-enter it and try again.');
         setInvalid((v) => ({ ...v, email: true }));
       } else if (res.reason === 'invalid_phone') {
@@ -164,32 +152,21 @@ export default function DemoApplication({ onClose }) {
             Apply for a private demo
           </h2>
           <p className="mt-2 text-sm font-medium leading-relaxed text-slate-400">
-            Tell us about your dealership. If AutoLander is a fit, a rep will reach out with the next step.
+            Drop your details. If AutoLander is a fit, a rep will text you with the next step.
           </p>
         </div>
 
         {phase === 'capture' && (
           <form onSubmit={submit} noValidate className="space-y-4">
-            <div className="grid gap-3 sm:grid-cols-2">
-              <input
-                required
-                type="text"
-                placeholder="First name"
-                autoComplete="given-name"
-                value={form.firstName}
-                onChange={(event) => update('firstName', event.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
-              />
-              <input
-                required
-                type="text"
-                placeholder="Last name"
-                autoComplete="family-name"
-                value={form.lastName}
-                onChange={(event) => update('lastName', event.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
-              />
-            </div>
+            <input
+              required
+              type="text"
+              placeholder="Full name"
+              autoComplete="name"
+              value={form.fullName}
+              onChange={(event) => update('fullName', event.target.value)}
+              className="w-full rounded-xl border border-white/10 bg-white/5 p-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
+            />
 
             <input
               required
@@ -225,19 +202,6 @@ export default function DemoApplication({ onClose }) {
 
             <div className="space-y-3 border-t border-white/5 pt-4">
               <p className="text-[11px] font-black uppercase tracking-[0.18em] text-slate-500">Dealership profile</p>
-
-              <div className="relative">
-                <Building2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
-                <input
-                  required
-                  type="text"
-                  placeholder="Dealership name"
-                  autoComplete="organization"
-                  value={form.dealershipName}
-                  onChange={(event) => update('dealershipName', event.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-white/5 py-3 pl-9 pr-3 text-white outline-none placeholder:text-slate-500 focus:border-blue-500/60 focus:ring-2 focus:ring-blue-500/30"
-                />
-              </div>
 
               <div>
                 <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">
@@ -288,41 +252,16 @@ export default function DemoApplication({ onClose }) {
                   AutoLander is for dealers and sales teams. We do not sell vehicles or offer financing.
                 </p>
               </div>
-
-              <div>
-                <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">
-                  <Warehouse className="h-3.5 w-3.5" /> Vehicles in inventory
-                </span>
-                <div className="grid grid-cols-3 gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] p-1">
-                  {VEHICLE_COUNTS.map((option) => {
-                    const active = form.vehicleCount === option;
-                    return (
-                      <button
-                        type="button"
-                        key={option}
-                        onClick={() => update('vehicleCount', active ? '' : option)}
-                        className={`flex min-h-[2.75rem] items-center justify-center rounded-lg text-sm font-black tracking-tight transition-all ${
-                          active ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-400 hover:text-white'
-                        }`}
-                      >
-                        {option}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
             </div>
 
-            <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] p-3 text-xs leading-relaxed text-slate-400">
+            <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.03] p-3 text-[11px] font-semibold leading-relaxed text-slate-500">
               <input
                 type="checkbox"
                 checked={form.smsConsent}
                 onChange={(event) => update('smsConsent', event.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-white/10 bg-white/5 accent-blue-600"
+                className="h-4 w-4 rounded border-white/10 bg-white/5 accent-blue-600"
               />
-              <span>
-                I agree AutoLander may contact me by phone, email, or text about my application. Consent is not a condition of purchase.
-              </span>
+              <span>Text me about my demo.</span>
             </label>
 
             <input
@@ -342,7 +281,7 @@ export default function DemoApplication({ onClose }) {
               type="submit"
               className="w-full rounded-xl bg-green-600 p-4 text-sm font-black uppercase italic tracking-wider text-white shadow-lg shadow-green-900/30 transition-all hover:bg-green-500 active:scale-[0.99]"
             >
-              Submit application
+              Apply for demo
             </button>
           </form>
         )}
@@ -361,7 +300,7 @@ export default function DemoApplication({ onClose }) {
             </div>
             <h3 className="text-2xl font-black uppercase italic text-white">Application received</h3>
             <p className="max-w-sm text-sm leading-relaxed text-slate-400">
-              Our team is reviewing your dealership profile now. If there is a fit, a rep will reach out shortly.
+              Our team is reviewing your request now. If there is a fit, a rep will text you shortly.
             </p>
           </div>
         )}

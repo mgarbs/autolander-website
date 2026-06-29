@@ -42,6 +42,7 @@ const ATTR_KEYS = [
 ];
 
 const CUSTOM_FIELD_KEYS = [
+  'fullName',
   'dealershipName',
   'role',
   'inventoryUrl',
@@ -109,8 +110,12 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const honeypot = clean(body.company, 200);
   if (honeypot) return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
 
-  const firstName = clean(body.firstName, 80);
-  const lastName = clean(body.lastName, 80);
+  const parsedName = splitFullName({
+    fullName: body.fullName,
+    firstName: body.firstName,
+    lastName: body.lastName,
+  });
+  const { fullName, firstName, lastName } = parsedName;
   const email = clean(body.email, 160);
   const phone = clean(body.phone, 40);
   const phoneNorm = normalizePhone(phone);
@@ -123,11 +128,9 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const submissionId = clean(body.submissionId, 96);
   const userAgent = clean(body.userAgent, 500) || clean(request.headers.get('User-Agent'), 500);
 
-  if (!firstName) return json({ ok: false, reason: 'missing_first_name' }, 400, corsHeaders);
-  if (!lastName) return json({ ok: false, reason: 'missing_last_name' }, 400, corsHeaders);
+  if (!fullName) return json({ ok: false, reason: 'missing_full_name' }, 400, corsHeaders);
   if (!isEmail(email)) return json({ ok: false, reason: 'invalid_email' }, 400, corsHeaders);
   if (!phoneNorm.ok) return json({ ok: false, reason: 'invalid_phone' }, 400, corsHeaders);
-  if (!dealershipName) return json({ ok: false, reason: 'missing_dealership' }, 400, corsHeaders);
   if (!ROLE_CHOICES.includes(role)) return json({ ok: false, reason: 'missing_role' }, 400, corsHeaders);
   if (!inventoryUrl) return json({ ok: false, reason: 'invalid_inventory_url' }, 400, corsHeaders);
   if (vehicleCount && !VEHICLE_COUNT_CHOICES.includes(vehicleCount)) {
@@ -153,6 +156,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const referrer = clean(page.referrer, 240);
 
   const lead = {
+    fullName,
     firstName,
     lastName,
     email,
@@ -237,13 +241,13 @@ async function upsertGhlContact(env, config, lead) {
     locationId: config.locationId,
     firstName: lead.firstName,
     lastName: lead.lastName,
-    name: `${lead.firstName} ${lead.lastName}`.trim(),
+    name: lead.fullName || `${lead.firstName} ${lead.lastName}`.trim(),
     email: lead.email,
     phone: lead.phone,
-    companyName: lead.dealershipName,
     website: lead.inventoryUrl,
     source: 'AutoLander website application',
   };
+  if (lead.dealershipName) payload.companyName = lead.dealershipName;
 
   const customFields = buildCustomFields(env, lead);
   if (customFields.length) payload.customFields = customFields;
@@ -414,6 +418,7 @@ async function buildUserData({
 
 function buildCustomFields(env, lead) {
   const values = {
+    fullName: lead.fullName,
     dealershipName: lead.dealershipName,
     role: lead.role,
     inventoryUrl: lead.inventoryUrl,
@@ -575,6 +580,23 @@ function newConversionToken() {
   const bytes = new Uint8Array(16);
   crypto.getRandomValues(bytes);
   return [...bytes].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+function splitFullName({ fullName, firstName, lastName }) {
+  const first = clean(firstName, 80);
+  const last = clean(lastName, 80);
+  const raw = clean(fullName, 160) || clean(`${first} ${last}`, 160);
+  if (!raw) return { fullName: '', firstName: '', lastName: '' };
+
+  if (first || last) {
+    const joined = clean(`${first} ${last}`.trim() || raw, 160);
+    return { fullName: joined, firstName: first || raw.split(' ')[0] || '', lastName: last };
+  }
+
+  const parts = raw.split(' ').filter(Boolean);
+  const parsedFirst = clean(parts.shift() || '', 80);
+  const parsedLast = clean(parts.join(' '), 80);
+  return { fullName: raw, firstName: parsedFirst, lastName: parsedLast };
 }
 
 function normalizeWebsite(value) {

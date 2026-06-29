@@ -20,14 +20,11 @@ export function newSubmissionId() {
 }
 
 export async function submitApplication({
-  firstName,
-  lastName,
+  fullName,
   email,
   phone,
-  dealershipName,
   role,
   inventoryUrl,
-  vehicleCount,
   smsConsent,
   consentTimestamp,
   submissionId,
@@ -41,14 +38,11 @@ export async function submitApplication({
     mode: 'cors',
     credentials: 'omit',
     body: JSON.stringify({
-      firstName,
-      lastName,
+      fullName,
       email,
       phone,
-      dealershipName,
       role,
       inventoryUrl,
-      vehicleCount,
       smsConsent,
       consentTimestamp,
       submissionId,
