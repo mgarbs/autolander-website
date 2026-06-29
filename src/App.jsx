@@ -49,6 +49,11 @@ const STALE_APP_HASH_ROUTES = new Set([
   '#/signup',
 ]);
 
+function isDemoApplicationTriggerEvent(event) {
+  const target = event?.target;
+  return Boolean(target?.closest?.('[data-demo-application-trigger="true"]'));
+}
+
 function normalizeReferralCode(value) {
   const code = typeof value === 'string' ? value.trim().toLowerCase() : '';
   return REFERRAL_CODE_PATTERN.test(code) ? code : '';
@@ -176,7 +181,8 @@ export default function App() {
       window.removeEventListener('wheel', mountDeferredSections);
     };
 
-    function mountDeferredSections() {
+    function mountDeferredSections(event) {
+      if (isDemoApplicationTriggerEvent(event)) return;
       if (mounted) return;
       mounted = true;
       if (timerId) window.clearTimeout(timerId);
@@ -314,11 +320,17 @@ export default function App() {
 
 
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
+  const applicationOpenedAtRef = useRef(0);
   const warmDemoApplication = useCallback(() => {
     preloadDemoApplication();
   }, []);
 
-  const openDemoBooking = useCallback(() => {
+  const openDemoBooking = useCallback((event) => {
+    if (event?.type === 'pointerdown') {
+      if (event.button !== undefined && event.button !== 0) return;
+      event.preventDefault?.();
+    }
+    applicationOpenedAtRef.current = Date.now();
     warmDemoApplication();
     setIsApplicationOpen(true);
     // Funnel signal: visitor opened the application form. Standard Lead is
@@ -329,6 +341,11 @@ export default function App() {
     } catch { /* sessionStorage unavailable — fall through and fire once */ }
     trackCustom('ApplicationOpened', { content_name: 'demo_application', content_category: 'demo' });
   }, [warmDemoApplication]);
+
+  const closeDemoApplication = useCallback(() => {
+    if (Date.now() - applicationOpenedAtRef.current < 450) return;
+    setIsApplicationOpen(false);
+  }, []);
 
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
@@ -424,8 +441,9 @@ export default function App() {
             )}
             <button
               type="button"
+              data-demo-application-trigger="true"
               onPointerEnter={warmDemoApplication}
-              onPointerDown={warmDemoApplication}
+              onPointerDown={openDemoBooking}
               onFocus={warmDemoApplication}
               onTouchStart={warmDemoApplication}
               onClick={openDemoBooking}
@@ -558,8 +576,8 @@ export default function App() {
         </Suspense>
       )}
       {isApplicationOpen && (
-        <Suspense fallback={<DemoApplicationFallback onClose={() => setIsApplicationOpen(false)} />}>
-          <DemoApplication onClose={() => setIsApplicationOpen(false)} />
+        <Suspense fallback={<DemoApplicationFallback onClose={closeDemoApplication} />}>
+          <DemoApplication onClose={closeDemoApplication} />
         </Suspense>
       )}
     </div>

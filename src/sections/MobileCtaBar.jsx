@@ -29,8 +29,9 @@ export default function MobileCtaBar({ onBookDemo, onWarmDemo }) {
       style={{ paddingBottom: 'max(0.7rem, env(safe-area-inset-bottom))' }}
     >
       <button
+        data-demo-application-trigger="true"
         onPointerEnter={onWarmDemo}
-        onPointerDown={onWarmDemo}
+        onPointerDown={onBookDemo}
         onFocus={onWarmDemo}
         onTouchStart={onWarmDemo}
         onClick={onBookDemo}

@@ -206,8 +206,9 @@ function useShouldShowPostingEngine() {
 export default function Hero({ openDemoBooking, onWarmDemo }) {
   const showPostingEngine = useShouldShowPostingEngine();
   const demoIntentHandlers = {
+    'data-demo-application-trigger': 'true',
     onPointerEnter: onWarmDemo,
-    onPointerDown: onWarmDemo,
+    onPointerDown: openDemoBooking,
     onFocus: onWarmDemo,
     onTouchStart: onWarmDemo,
   };

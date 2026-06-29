@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
 import {
   ArrowLeft,
   Check,
@@ -125,18 +124,13 @@ export default function DemoApplication({ onClose }) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+    <div
       onClick={onClose}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 px-4 py-8 backdrop-blur-md"
+      className="demo-application-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-black/80 px-4 py-8 backdrop-blur-md"
     >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.94, y: 30 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+      <div
         onClick={(event) => event.stopPropagation()}
-        className="relative max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-white/10 bg-[#0a0a0f]/95 p-6 shadow-2xl shadow-black/60"
+        className="demo-application-panel relative max-h-[88vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-white/10 bg-[#0a0a0f]/95 p-6 shadow-2xl shadow-black/60"
       >
         <button
           onClick={onClose}
@@ -337,7 +331,7 @@ export default function DemoApplication({ onClose }) {
             Reviewed before a live demo is opened
           </div>
         )}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

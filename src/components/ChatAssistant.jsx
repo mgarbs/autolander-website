@@ -432,8 +432,9 @@ export default function ChatAssistant({ supportEmail = 'sales@autolander.ai', on
                         </button>
                         <button
                           type="button"
+                          data-demo-application-trigger="true"
                           onPointerEnter={onWarmDemo}
-                          onPointerDown={onWarmDemo}
+                          onPointerDown={onBookDemo}
                           onFocus={onWarmDemo}
                           onTouchStart={onWarmDemo}
                           onClick={onBookDemo}

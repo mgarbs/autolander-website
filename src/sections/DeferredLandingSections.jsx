@@ -179,8 +179,9 @@ export default function DeferredLandingSections({
 }) {
   const pricing = PRICING;
   const demoIntentHandlers = {
+    'data-demo-application-trigger': 'true',
     onPointerEnter: onWarmDemo,
-    onPointerDown: onWarmDemo,
+    onPointerDown: openDemoBooking,
     onFocus: onWarmDemo,
     onTouchStart: onWarmDemo,
   };
