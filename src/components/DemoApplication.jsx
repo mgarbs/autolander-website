@@ -76,11 +76,6 @@ export default function DemoApplication({ onClose }) {
       setInvalid((v) => ({ ...v, inventoryUrl: true }));
       return;
     }
-    if (!form.smsConsent) {
-      setFormError('Confirm we can text you about your demo.');
-      return;
-    }
-
     setPhase('submitting');
     setFormError('');
 

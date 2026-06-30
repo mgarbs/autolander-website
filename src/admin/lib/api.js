@@ -20,10 +20,6 @@ export function setStoredToken(token) {
 }
 
 async function request(path, { method = 'GET', body } = {}) {
-  if (!API_URL) {
-    throw new ApiError('Admin API URL is not configured. Set VITE_CAPI_URL.', { status: 0 });
-  }
-
   const headers = {};
   if (body) headers['Content-Type'] = 'application/json';
   const token = getStoredToken();

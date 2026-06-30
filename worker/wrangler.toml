@@ -4,6 +4,20 @@ compatibility_date = "2026-04-23"
 account_id = "6d0317be0a7586e7f90e454db7c6989a"
 workers_dev = true
 preview_urls = false
+routes = [
+  { pattern = "autolander.ai/api/*", zone_name = "autolander.ai" },
+  { pattern = "autolander.ai/capi/*", zone_name = "autolander.ai" },
+  { pattern = "autolander.ai/chat", zone_name = "autolander.ai" },
+  { pattern = "autolander.ai/support", zone_name = "autolander.ai" },
+  { pattern = "autolander.ai/health", zone_name = "autolander.ai" },
+  { pattern = "autolander.ai/admin/*", zone_name = "autolander.ai" },
+  { pattern = "www.autolander.ai/api/*", zone_name = "autolander.ai" },
+  { pattern = "www.autolander.ai/capi/*", zone_name = "autolander.ai" },
+  { pattern = "www.autolander.ai/chat", zone_name = "autolander.ai" },
+  { pattern = "www.autolander.ai/support", zone_name = "autolander.ai" },
+  { pattern = "www.autolander.ai/health", zone_name = "autolander.ai" },
+  { pattern = "www.autolander.ai/admin/*", zone_name = "autolander.ai" },
+]
 
 [vars]
 ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://book.autolander.ai,https://preview.autolander.ai,https://autolander-preview.pages.dev,https://mgarbs.github.io,http://localhost:5173,http://localhost:5174,http://localhost:5176,http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5176,http://localhost:4173,http://127.0.0.1:4173"

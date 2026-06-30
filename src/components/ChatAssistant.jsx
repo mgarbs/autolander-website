@@ -13,7 +13,7 @@ import {
   X,
 } from 'lucide-react';
 
-const DEFAULT_CHAT_API_URL = 'https://autolander-chatbot.michaelegarber.workers.dev';
+const DEFAULT_CHAT_API_URL = '';
 const CHAT_API_BASE = (import.meta.env.VITE_CHAT_API_URL || DEFAULT_CHAT_API_URL).replace(/\/$/, '');
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
@@ -40,7 +40,6 @@ const supportDefaults = {
 };
 
 function endpoint(path) {
-  if (!CHAT_API_BASE) return '';
   return `${CHAT_API_BASE}${path}`;
 }
 
@@ -141,14 +140,6 @@ export default function ChatAssistant({ supportEmail = 'sales@autolander.ai', on
 
     setMessages((current) => [...current, { role: 'user', content: message }]);
 
-    if (!CHAT_API_BASE) {
-      addAssistantMessage(
-        `The chat backend is not connected yet. For now, email ${supportEmail} or book a live demo and we will help directly.`,
-        { handoff: true }
-      );
-      return;
-    }
-
     setIsSending(true);
     try {
       const response = await fetch(endpoint('/chat'), {
@@ -207,12 +198,6 @@ export default function ChatAssistant({ supportEmail = 'sales@autolander.ai', on
     const supportBody = `${details}\n\nName: ${supportForm.name}\nEmail: ${supportForm.email}\nPhone: ${supportForm.phone}\n\nRecent chat:\n${transcript}`;
     setSupportFallbackBody(supportBody);
     const fallbackMailto = mailtoUrl(supportEmail, 'AutoLander support request', supportBody);
-
-    if (!CHAT_API_BASE) {
-      setSupportFallbackUrl(fallbackMailto);
-      setSupportStatus('Support backend is not connected. Use the email link below so we can help.');
-      return;
-    }
 
     setIsSendingSupport(true);
     try {
@@ -512,11 +497,6 @@ export default function ChatAssistant({ supportEmail = 'sales@autolander.ai', on
               </button>
             </form>
             {error && <p className="mt-3 text-xs font-bold text-amber-300">{error}</p>}
-            {!CHAT_API_BASE && (
-              <p className="mt-3 text-xs font-medium text-slate-500">
-                Chat API is not configured yet. Set VITE_CHAT_API_URL after deploying the Worker.
-              </p>
-            )}
           </div>
           )}
         </div>

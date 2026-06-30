@@ -2,6 +2,16 @@ name = "autolander-chatbot"
 main = "src/index.js"
 compatibility_date = "2026-04-23"
 
+# In production, route the Worker behind the same origin used by the site.
+# routes = [
+#   { pattern = "autolander.ai/api/*", zone_name = "autolander.ai" },
+#   { pattern = "autolander.ai/capi/*", zone_name = "autolander.ai" },
+#   { pattern = "autolander.ai/chat", zone_name = "autolander.ai" },
+#   { pattern = "autolander.ai/support", zone_name = "autolander.ai" },
+#   { pattern = "autolander.ai/health", zone_name = "autolander.ai" },
+#   { pattern = "autolander.ai/admin/*", zone_name = "autolander.ai" },
+# ]
+
 [vars]
 ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://mgarbs.github.io,http://localhost:5173,http://localhost:5174,http://localhost:5176,http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5176,http://localhost:4173,http://127.0.0.1:4173"
 OPENAI_MODEL = "gpt-5.4-mini"

@@ -40,7 +40,7 @@ export function buildEvent({
   return event;
 }
 
-export async function sendEvents(env, events, { logger = console } = {}) {
+export async function sendEvents(env, events, { logger = console, testEventCode = '' } = {}) {
   if (!env.META_PIXEL_ID || !env.META_CAPI_ACCESS_TOKEN) {
     logger.warn?.('[capi] Missing META_PIXEL_ID or META_CAPI_ACCESS_TOKEN, skipping send');
     return { ok: false, reason: 'missing_credentials' };
@@ -50,7 +50,8 @@ export async function sendEvents(env, events, { logger = console } = {}) {
   url.searchParams.set('access_token', env.META_CAPI_ACCESS_TOKEN);
 
   const body = { data: events };
-  if (env.META_TEST_EVENT_CODE) body.test_event_code = env.META_TEST_EVENT_CODE;
+  const resolvedTestEventCode = String(testEventCode || env.META_TEST_EVENT_CODE || '').trim();
+  if (resolvedTestEventCode) body.test_event_code = resolvedTestEventCode;
 
   try {
     const response = await fetch(url.toString(), {

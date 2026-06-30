@@ -21,6 +21,7 @@ const ROLE_CHOICES = ['Owner', 'Manager', 'Sales Rep'];
 const VEHICLE_COUNT_CHOICES = ['1-50', '51-150', '151+'];
 const APPLY_IP_HOURLY = 12;
 const APPLY_IP_DAILY = 30;
+const APPLY_SUBMISSION_TTL_SECONDS = 30 * 24 * 60 * 60;
 const GHL_BASE_URL = 'https://services.leadconnectorhq.com';
 const GHL_VERSION = '2021-07-28';
 
@@ -133,6 +134,20 @@ async function handleApply(request, env, corsHeaders, ctx) {
     return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
   }
 
+  const body = await safeJson(request);
+  const honeypot = clean(body.company, 200);
+  if (honeypot) return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
+  const submissionId = clean(body.submissionId, 96);
+
+  if (!/^sub_[a-z0-9_-]{12,80}$/i.test(submissionId)) {
+    return json({ ok: false, reason: 'invalid_submission' }, 400, corsHeaders);
+  }
+
+  const priorSubmission = await readApplySubmission(env, submissionId);
+  if (priorSubmission?.ok) {
+    return json({ ...priorSubmission, duplicate: true }, 200, corsHeaders);
+  }
+
   const limited = await enforceApplyRateLimit(request, env);
   if (!limited.ok) {
     return json({ ok: false, reason: 'rate_limited' }, 429, corsHeaders);
@@ -142,10 +157,6 @@ async function handleApply(request, env, corsHeaders, ctx) {
   if (!config.ok) {
     return json({ ok: false, reason: 'ghl_not_configured', missing: config.missing }, 503, corsHeaders);
   }
-
-  const body = await safeJson(request);
-  const honeypot = clean(body.company, 200);
-  if (honeypot) return json({ ok: false, reason: 'blocked' }, 403, corsHeaders);
 
   const parsedName = splitFullName({
     fullName: body.fullName,
@@ -160,11 +171,11 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const role = clean(body.role, 40);
   const inventoryUrl = normalizeWebsite(body.inventoryUrl);
   const vehicleCount = clean(body.vehicleCount, 24);
-  const smsConsent = Boolean(body.smsConsent);
+  const smsConsent = body.smsConsent === true;
   const consentTimestamp = normalizeIso(body.consentTimestamp);
   const submissionTimestamp = new Date().toISOString();
-  const submissionId = clean(body.submissionId, 96);
   const userAgent = clean(body.userAgent, 500) || clean(request.headers.get('User-Agent'), 500);
+  const metaTestEventCode = qaTestEventCode(new URL(request.url), body, env);
 
   if (!fullName) return json({ ok: false, reason: 'missing_full_name' }, 400, corsHeaders);
   if (!isEmail(email)) return json({ ok: false, reason: 'invalid_email' }, 400, corsHeaders);
@@ -174,11 +185,8 @@ async function handleApply(request, env, corsHeaders, ctx) {
   if (vehicleCount && !VEHICLE_COUNT_CHOICES.includes(vehicleCount)) {
     return json({ ok: false, reason: 'invalid_vehicle_count' }, 400, corsHeaders);
   }
-  if (!smsConsent || !consentTimestamp) {
-    return json({ ok: false, reason: 'missing_consent' }, 400, corsHeaders);
-  }
-  if (!/^sub_[a-z0-9_-]{12,80}$/i.test(submissionId)) {
-    return json({ ok: false, reason: 'invalid_submission' }, 400, corsHeaders);
+  if (!consentTimestamp) {
+    return json({ ok: false, reason: 'missing_consent_timestamp' }, 400, corsHeaders);
   }
 
   const attribution = sanitizeAttribution(body.attribution);
@@ -232,6 +240,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
     console.error('[api/apply] GHL upsert returned no contact id', JSON.stringify(upsert.body).slice(0, 400));
     return json({ ok: false, reason: 'ghl_contact_id_missing' }, 502, corsHeaders);
   }
+  lead.externalId = contactId;
 
   const customFields = await updateGhlContactCustomFields(env, config, contactId, lead);
   if (!customFields.ok) {
@@ -281,23 +290,25 @@ async function handleApply(request, env, corsHeaders, ctx) {
       region: clean(request.cf?.region, 48).toLowerCase(),
       city: clean(request.cf?.city, 48).toLowerCase(),
     },
+    metaTestEventCode,
   });
 
   const conversionToken = newConversionToken();
   await rememberConversionToken(env, conversionToken, { eventId, eventName: 'Lead' }).catch(() => {});
 
-  return json(
-    {
-      ok: true,
-      redirectPath: '/thank-you',
-      bt: conversionToken,
-      contactId,
-      eventId,
-      noteId,
-    },
-    200,
-    corsHeaders,
-  );
+  const responsePayload = {
+    ok: true,
+    duplicate: false,
+    submissionId,
+    redirectPath: '/thank-you',
+    bt: conversionToken,
+    contactId,
+    eventId,
+    noteId,
+  };
+  await rememberApplySubmission(env, submissionId, responsePayload).catch(() => {});
+
+  return json(responsePayload, 200, corsHeaders);
 }
 
 async function upsertGhlContact(env, config, lead) {
@@ -374,7 +385,7 @@ async function ghlRequest(env, config, path, init) {
   };
 }
 
-async function recordLeadEvent({ request, env, ctx, lead, eventId, sourceUrl, contactId, attribution }) {
+async function recordLeadEvent({ request, env, ctx, lead, eventId, sourceUrl, contactId, attribution, metaTestEventCode }) {
   const today = isoDay(new Date());
   const alreadySeen = await wasEventSeen(env, eventId).catch(() => false);
   if (alreadySeen) return;
@@ -430,6 +441,7 @@ async function recordLeadEvent({ request, env, ctx, lead, eventId, sourceUrl, co
     region: attribution.region,
     city: attribution.city,
     pixelId: env.META_PIXEL_ID,
+    externalId: contactId,
   });
 
   const capiEvent = buildEvent({
@@ -451,7 +463,7 @@ async function recordLeadEvent({ request, env, ctx, lead, eventId, sourceUrl, co
   });
 
   const sendPromise = (async () => {
-    const result = await sendEvents(env, [capiEvent]);
+    const result = await sendEvents(env, [capiEvent], { testEventCode: metaTestEventCode });
     await bumpCounter(env, today, 'meta', result.ok ? 'capi_ok' : 'capi_failed').catch(() => {});
   })();
 
@@ -474,6 +486,7 @@ async function buildUserData({
   region,
   city,
   pixelId,
+  externalId,
 }) {
   const userData = {};
   const emHash = await hashEmail(email);
@@ -490,7 +503,10 @@ async function buildUserData({
   if (fbp) userData.fbp = fbp;
   if (fbc) userData.fbc = fbc;
   else if (fbclid) userData.fbc = buildFbc(fbclid);
-  if (vid) userData.external_id = await hashLowercase(pixelId ? `${pixelId}:${vid}` : vid);
+  const stableExternalId = externalId || vid;
+  if (stableExternalId) {
+    userData.external_id = await hashLowercase(pixelId ? `${pixelId}:${stableExternalId}` : stableExternalId);
+  }
   if (ip) userData.client_ip_address = ip;
   if (ua) userData.client_user_agent = ua;
   return userData;
@@ -503,7 +519,7 @@ function buildCustomFields(env, lead) {
     role: lead.role,
     inventoryUrl: lead.inventoryUrl,
     vehicleCount: lead.vehicleCount,
-    smsConsent: lead.smsConsent ? 'Yes' : 'No',
+    smsConsent: lead.smsConsent ? 'true' : 'false',
     ...lead.utms,
     fbclid: lead.fbclid,
     fbc: lead.fbc,
@@ -518,7 +534,7 @@ function buildCustomFields(env, lead) {
     submissionTimestamp: lead.submissionTimestamp,
     metaEventId: lead.eventId,
     visitorId: lead.vid,
-    submissionId: lead.submissionId,
+    submissionId: lead.externalId || lead.submissionId,
   };
   const map = customFieldMap(env);
   const fields = [];
@@ -532,6 +548,22 @@ function buildCustomFields(env, lead) {
     fields.push(field);
   }
   return fields;
+}
+
+async function readApplySubmission(env, submissionId) {
+  if (!env.TRACKING || !submissionId) return null;
+  try {
+    return await env.TRACKING.get(`apply:submission:${submissionId}`, 'json');
+  } catch {
+    return null;
+  }
+}
+
+async function rememberApplySubmission(env, submissionId, payload) {
+  if (!env.TRACKING || !submissionId || !payload?.ok) return;
+  await env.TRACKING.put(`apply:submission:${submissionId}`, JSON.stringify(payload), {
+    expirationTtl: APPLY_SUBMISSION_TTL_SECONDS,
+  });
 }
 
 function buildApplicationNoteBody(lead) {
@@ -551,7 +583,7 @@ function buildApplicationNoteBody(lead) {
     noteLine('Website / inventory link', lead.inventoryUrl),
     '',
     'Consent',
-    noteLine('SMS consent', lead.smsConsent ? 'Yes' : 'No'),
+    noteLine('SMS consent', lead.smsConsent ? 'true' : 'false'),
     noteLine('Consent timestamp', lead.consentTimestamp),
     noteLine('Consent text version', CONSENT_TEXT_VERSION),
     noteLine('Consent source URL', lead.landingPageUrl),
@@ -651,6 +683,11 @@ function ghlConfig(env) {
   if (!locationId) missing.push('GHL_LOCATION_ID');
   if (!workflowId) missing.push('GHL_WORKFLOW_ID');
   return { ok: missing.length === 0, missing, token, locationId, workflowId };
+}
+
+function qaTestEventCode(url, body, env) {
+  if (env.ALLOW_QA_TEST_EVENT_CODE !== 'true') return '';
+  return clean(body.test_event_code || url.searchParams.get('test_event_code'), 80);
 }
 
 function sanitizeAttribution(raw) {

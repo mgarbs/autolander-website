@@ -3,7 +3,7 @@ import { getAttributionPayload } from './identity.js';
 const CAPI_URL = (import.meta.env.VITE_CAPI_URL || import.meta.env.VITE_CHAT_API_URL || '').replace(/\/+$/, '');
 
 export function applicationApiConfigured() {
-  return Boolean(CAPI_URL);
+  return true;
 }
 
 function randomBase32(length) {
@@ -31,7 +31,6 @@ export async function submitApplication({
   submissionId,
   company,
 }) {
-  if (!CAPI_URL) throw new Error('application_api_unconfigured');
   const attribution = getAttributionPayload();
   const res = await fetch(`${CAPI_URL}/api/apply`, {
     method: 'POST',
