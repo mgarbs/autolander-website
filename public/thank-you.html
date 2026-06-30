@@ -45,7 +45,7 @@
       // has accepted the application and routed it into GHL. A bare /thank-you
       // visit, refresh, shared link, crawler, or scanner gets PageView only.
       (function gateLeadConversion() {
-        var WORKER = 'https://autolander-chatbot.michaelegarber.workers.dev';
+        var WORKER = 'https://autolander.ai';
         var bt = '';
         try { bt = new URLSearchParams(window.location.search).get('bt') || ''; } catch (e) {}
         if (!/^[a-f0-9]{32}$/.test(bt)) return; // no proof of a real application -> fire nothing
