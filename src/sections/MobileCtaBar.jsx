@@ -37,7 +37,7 @@ export default function MobileCtaBar({ onBookDemo, onWarmDemo }) {
         onClick={onBookDemo}
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 py-3.5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 active:scale-[0.99]"
       >
-        Apply for Demo
+        Book Demo
         <ArrowRight className="h-4 w-4" />
       </button>
       <p className="mt-2 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">

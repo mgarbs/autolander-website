@@ -72,7 +72,7 @@ export default function ChatAssistant({ supportEmail = 'sales@autolander.ai', on
   }, [messages, isOpen, showSupportForm]);
 
   // On mobile, hold the chat launcher back until the hero scrolls away — same
-  // 560px trigger as the mobile Book-a-Demo bar (src/sections/MobileCtaBar.jsx)
+  // 560px trigger as the mobile Book Demo bar (src/sections/MobileCtaBar.jsx)
   // — so it doesn't hover mid-screen and compete with the CTA when people land.
   // Desktop always shows it (handled by the md: classes on the button).
   useEffect(() => {
@@ -441,7 +441,7 @@ export default function ChatAssistant({ supportEmail = 'sales@autolander.ai', on
                           className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 px-4 py-2 text-xs font-black uppercase italic text-white transition hover:bg-white/10"
                         >
                           <ClipboardCheck className="h-4 w-4" />
-                          Apply for Demo
+                          Book Demo
                         </button>
                       </div>
                     )}

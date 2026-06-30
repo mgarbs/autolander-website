@@ -146,10 +146,10 @@ export default function DemoApplication({ onClose }) {
             Reviewed by our team
           </div>
           <h2 className="text-2xl font-black uppercase italic tracking-tight text-white">
-            Apply for a private demo
+            Apply for demo
           </h2>
           <p className="mt-2 text-sm font-medium leading-relaxed text-slate-400">
-            Drop your details. If AutoLander is a fit, a rep will reach out to you with the next step.
+            Submit your information. If AutoLander is a fit, we will reach out with the next steps.
           </p>
         </div>
 

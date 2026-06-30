@@ -255,10 +255,12 @@ export default function App() {
       window.removeEventListener('pointerdown', mountChat);
       window.removeEventListener('pointermove', mountChat);
       window.removeEventListener('keydown', mountChat);
+      window.removeEventListener('scroll', mountChat);
+      window.removeEventListener('touchstart', mountChat);
     };
 
     function mountChat(event) {
-      if (event?.pointerType && event.pointerType !== 'mouse') return;
+      if (isDemoApplicationTriggerEvent(event)) return;
       if (mounted) return;
       mounted = true;
       if (timerId) window.clearTimeout(timerId);
@@ -273,6 +275,8 @@ export default function App() {
     window.addEventListener('pointerdown', mountChat, { once: true, passive: true });
     window.addEventListener('pointermove', mountChat, { once: true, passive: true });
     window.addEventListener('keydown', mountChat, { once: true });
+    window.addEventListener('scroll', mountChat, { once: true, passive: true });
+    window.addEventListener('touchstart', mountChat, { once: true, passive: true });
 
     if (document.readyState === 'complete') {
       scheduleChatMount();
@@ -448,7 +452,7 @@ export default function App() {
               onTouchStart={warmDemoApplication}
               onClick={openDemoBooking}
               className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
-              Apply for Demo
+              Book Demo
             </button>
           </div>
         </div>
