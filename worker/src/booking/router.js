@@ -143,14 +143,16 @@ async function handleApply(request, env, corsHeaders, ctx) {
     return json({ ok: false, reason: 'invalid_submission' }, 400, corsHeaders);
   }
 
-  const priorSubmission = await readApplySubmission(env, submissionId);
-  if (priorSubmission?.ok) {
-    return json({ ...priorSubmission, duplicate: true }, 200, corsHeaders);
+  let applyState = await readApplySubmission(env, submissionId);
+  if (applyState?.ok) {
+    return json({ ...applyState, duplicate: true }, 200, corsHeaders);
   }
 
-  const limited = await enforceApplyRateLimit(request, env);
-  if (!limited.ok) {
-    return json({ ok: false, reason: 'rate_limited' }, 429, corsHeaders);
+  if (!applyState) {
+    const limited = await enforceApplyRateLimit(request, env);
+    if (!limited.ok) {
+      return json({ ok: false, reason: 'rate_limited' }, 429, corsHeaders);
+    }
   }
 
   const config = ghlConfig(env);
@@ -196,7 +198,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const fbp = attribution.fbp || visitor?.fbp || '';
   const fbc = attribution.fbc || visitor?.fbc || buildFbc(attribution.fbclid || visitor?.fbclid || '');
   const fbclid = attribution.fbclid || visitor?.fbclid || '';
-  const eventId = `lead_${(await sha256Hex(`lead:${submissionId}`)).slice(0, 32)}`;
+  const eventId = clean(applyState?.eventId, 80) || `lead_${(await sha256Hex(`lead:${submissionId}`)).slice(0, 32)}`;
   const sourceUrl = clean(page.current_page, 500) || clean(request.headers.get('Referer'), 500);
   const landingPageUrl = clean(page.landing_page, 500) || sourceUrl;
   const referrer = clean(page.referrer, 240);
@@ -229,30 +231,46 @@ async function handleApply(request, env, corsHeaders, ctx) {
     utms: mergedUtms,
   };
 
-  const upsert = await upsertGhlContact(env, config, lead);
-  if (!upsert.ok) {
-    console.error('[api/apply] GHL upsert failed', upsert.status, upsert.detail);
-    return json({ ok: false, reason: 'ghl_upsert_failed' }, 502, corsHeaders);
-  }
-
-  const contactId = extractContactId(upsert.body);
+  let contactId = clean(applyState?.contactId, 120);
   if (!contactId) {
-    console.error('[api/apply] GHL upsert returned no contact id', JSON.stringify(upsert.body).slice(0, 400));
+    const upsert = await upsertGhlContact(env, config, lead);
+    if (!upsert.ok) {
+      console.error('[api/apply] GHL upsert failed', upsert.status, upsert.detail);
+      return json({ ok: false, reason: 'ghl_upsert_failed' }, 502, corsHeaders);
+    }
+
+    contactId = extractContactId(upsert.body);
+  }
+  if (!contactId) {
+    console.error('[api/apply] GHL upsert returned no contact id');
     return json({ ok: false, reason: 'ghl_contact_id_missing' }, 502, corsHeaders);
   }
   lead.externalId = contactId;
+  applyState = await rememberApplySubmissionProgress(env, submissionId, {
+    status: 'contact_upserted',
+    submissionId,
+    eventId,
+    contactId,
+  }, applyState);
 
-  const customFields = await updateGhlContactCustomFields(env, config, contactId, lead);
-  if (!customFields.ok) {
-    console.error('[api/apply] GHL custom fields update failed', customFields.status, customFields.detail);
-    if (env.REQUIRE_GHL_CUSTOM_FIELDS === 'true') {
-      return json({ ok: false, reason: 'ghl_custom_fields_failed' }, 502, corsHeaders);
+  if (!applyState?.customFieldsUpdated) {
+    const customFields = await updateGhlContactCustomFields(env, config, contactId, lead);
+    if (!customFields.ok) {
+      console.error('[api/apply] GHL custom fields update failed', customFields.status, customFields.detail);
+      if (env.REQUIRE_GHL_CUSTOM_FIELDS === 'true') {
+        return json({ ok: false, reason: 'ghl_custom_fields_failed' }, 502, corsHeaders);
+      }
+    } else {
+      applyState = await rememberApplySubmissionProgress(env, submissionId, {
+        status: 'custom_fields_updated',
+        customFieldsUpdated: true,
+      }, applyState);
     }
   }
 
   const alreadyRecorded = await wasEventSeen(env, eventId).catch(() => false);
-  let noteId = '';
-  if (!alreadyRecorded) {
+  let noteId = clean(applyState?.noteId, 120);
+  if (!alreadyRecorded && !applyState?.applicationNoteWritten) {
     const note = await createGhlApplicationNote(env, config, contactId, lead);
     if (!note.ok) {
       console.error('[api/apply] GHL application note failed', note.status, note.detail);
@@ -261,13 +279,24 @@ async function handleApply(request, env, corsHeaders, ctx) {
       }
     } else {
       noteId = extractNoteId(note.body);
+      applyState = await rememberApplySubmissionProgress(env, submissionId, {
+        status: 'application_note_written',
+        applicationNoteWritten: true,
+        ...(noteId ? { noteId } : {}),
+      }, applyState);
     }
   }
 
-  const workflow = await addContactToWorkflow(env, config, contactId);
-  if (!workflow.ok && !isAlreadyInWorkflow(workflow.detail)) {
-    console.error('[api/apply] GHL workflow add failed', workflow.status, workflow.detail);
-    return json({ ok: false, reason: 'ghl_workflow_failed' }, 502, corsHeaders);
+  if (!applyState?.workflowEnrolled) {
+    const workflow = await addContactToWorkflow(env, config, contactId);
+    if (!workflow.ok && !isAlreadyInWorkflow(workflow.detail)) {
+      console.error('[api/apply] GHL workflow add failed', workflow.status, workflow.detail);
+      return json({ ok: false, reason: 'ghl_workflow_failed' }, 502, corsHeaders);
+    }
+    applyState = await rememberApplySubmissionProgress(env, submissionId, {
+      status: 'workflow_enrolled',
+      workflowEnrolled: true,
+    }, applyState);
   }
 
   await recordLeadEvent({
@@ -564,6 +593,29 @@ async function rememberApplySubmission(env, submissionId, payload) {
   await env.TRACKING.put(`apply:submission:${submissionId}`, JSON.stringify(payload), {
     expirationTtl: APPLY_SUBMISSION_TTL_SECONDS,
   });
+}
+
+async function rememberApplySubmissionProgress(env, submissionId, patch, current = null) {
+  const fallback = {
+    ...(current && typeof current === 'object' ? current : {}),
+    ...(patch && typeof patch === 'object' ? patch : {}),
+    submissionId,
+  };
+  if (!env.TRACKING || !submissionId) return fallback;
+  try {
+    const existing = current || await readApplySubmission(env, submissionId);
+    const next = {
+      ...(existing && typeof existing === 'object' ? existing : {}),
+      ...(patch && typeof patch === 'object' ? patch : {}),
+      submissionId,
+    };
+    await env.TRACKING.put(`apply:submission:${submissionId}`, JSON.stringify(next), {
+      expirationTtl: APPLY_SUBMISSION_TTL_SECONDS,
+    });
+    return next;
+  } catch {
+    return fallback;
+  }
 }
 
 function buildApplicationNoteBody(lead) {
