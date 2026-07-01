@@ -62,3 +62,4 @@ preview_id = "replace_with_preview_kv_namespace_id"
 #   CALENDLY_SIGNING_KEY          legacy only, required if the legacy Calendly webhook is enabled
 #   ADMIN_PASSWORD
 #   ADMIN_SESSION_SECRET
+#   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions

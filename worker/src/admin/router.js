@@ -2,6 +2,7 @@ import { handleLogin, handleLogout, requireAdmin, unauthorized } from './auth.js
 import { buildAiSummaryPayload } from './ai-summary.js';
 import { getAdInsights, getCampaignInsights, hasMetaInsightsConfig } from './meta-insights.js';
 import { buildRecommendations, META_URL_PARAM_TEMPLATE } from './recommendations.js';
+import { createAdminSubscriptionLink } from './stripe-links.js';
 import { readDimensionForDay, readRecentEvents } from '../capi/storage.js';
 import { readSupportRequests } from '../support/storage.js';
 
@@ -50,6 +51,11 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
     return jsonResponse(await buildAiSummaryPayload(env, days, insights), 200, corsHeaders);
   }
 
+  if (path === '/admin/subscription-link' && request.method === 'POST') {
+    const result = await createAdminSubscriptionLink(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
   if (path === '/admin/events/recent') {
     const limit = Math.min(Number(url.searchParams.get('limit') || 50), 100);
     return jsonResponse({ ok: true, events: await readRecentEvents(env, limit) }, 200, corsHeaders);
@@ -88,6 +94,7 @@ function buildSetup(env) {
     hasAdAccountId: Boolean(env.META_AD_ACCOUNT_ID),
     hasAdminSessionSecret: Boolean(env.ADMIN_SESSION_SECRET),
     hasTrackingKv: Boolean(env.TRACKING),
+    hasStripeSubscriptionLinks: Boolean(env.STRIPE_SECRET_KEY || env.STRIPE_RESTRICTED_KEY),
     testEventCode: env.META_TEST_EVENT_CODE || null,
     metaInsightsReady: hasMetaInsightsConfig(env),
     urlParamTemplate: META_URL_PARAM_TEMPLATE,
