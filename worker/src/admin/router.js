@@ -11,7 +11,7 @@ const MAX_DAYS = 90;
 
 export async function handleAdmin(request, env, corsHeaders, _ctx) {
   const url = new URL(request.url);
-  const path = url.pathname;
+  const path = url.pathname.replace(/^\/admin-api(?=\/|$)/, '/admin');
 
   if (path === '/admin/login' && request.method === 'POST') {
     return handleLogin(request, env, corsHeaders);

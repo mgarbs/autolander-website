@@ -9,7 +9,7 @@ compatibility_date = "2026-04-23"
 #   { pattern = "autolander.ai/chat", zone_name = "autolander.ai" },
 #   { pattern = "autolander.ai/support", zone_name = "autolander.ai" },
 #   { pattern = "autolander.ai/health", zone_name = "autolander.ai" },
-#   { pattern = "autolander.ai/admin/*", zone_name = "autolander.ai" },
+#   { pattern = "autolander.ai/admin-api/*", zone_name = "autolander.ai" },
 # ]
 
 [vars]

@@ -77,7 +77,7 @@ export default {
       return handleBooking(request, env, corsHeaders, ctx);
     }
 
-    if (url.pathname.startsWith('/admin/')) {
+    if (url.pathname.startsWith('/admin-api/')) {
       const { handleAdmin } = await import('./admin/router.js');
       return handleAdmin(request, env, corsHeaders, ctx);
     }

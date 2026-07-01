@@ -10,13 +10,13 @@ routes = [
   { pattern = "autolander.ai/chat", zone_name = "autolander.ai" },
   { pattern = "autolander.ai/support", zone_name = "autolander.ai" },
   { pattern = "autolander.ai/health", zone_name = "autolander.ai" },
-  { pattern = "autolander.ai/admin/*", zone_name = "autolander.ai" },
+  { pattern = "autolander.ai/admin-api/*", zone_name = "autolander.ai" },
   { pattern = "www.autolander.ai/api/*", zone_name = "autolander.ai" },
   { pattern = "www.autolander.ai/capi/*", zone_name = "autolander.ai" },
   { pattern = "www.autolander.ai/chat", zone_name = "autolander.ai" },
   { pattern = "www.autolander.ai/support", zone_name = "autolander.ai" },
   { pattern = "www.autolander.ai/health", zone_name = "autolander.ai" },
-  { pattern = "www.autolander.ai/admin/*", zone_name = "autolander.ai" },
+  { pattern = "www.autolander.ai/admin-api/*", zone_name = "autolander.ai" },
 ]
 
 [vars]

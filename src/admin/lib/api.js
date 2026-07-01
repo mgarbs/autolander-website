@@ -25,9 +25,11 @@ async function request(path, { method = 'GET', body } = {}) {
   const token = getStoredToken();
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
+  const workerPath = path.replace(/^\/admin(?=\/|$)/, '/admin-api');
+
   let response;
   try {
-    response = await fetch(`${API_URL}${path}`, {
+    response = await fetch(`${API_URL}${workerPath}`, {
       method,
       credentials: 'include',
       headers,
