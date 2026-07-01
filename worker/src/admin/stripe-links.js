@@ -125,6 +125,7 @@ export async function createAdminSubscriptionLink(request, env) {
 
   const metadata = {
     source: 'website_admin_subscription_link',
+    purchase_source: 'website_admin',
     product: 'posting_subscription',
     plan: label,
     interval: interval.metadata,
