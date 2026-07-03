@@ -35,6 +35,9 @@ GHL_WORKFLOW_ID = "replace_with_website_demo_request_workflow_id"
 GHL_CUSTOM_FIELD_MAP = "{}"
 # When true, /api/apply only returns success after the full application note is written to GHL.
 REQUIRE_GHL_APPLICATION_NOTE = "true"
+# Optional: base URL of the AutoLander cloud used by the admin ops-linking proxy.
+# Defaults to https://autolander-cloud.onrender.com when unset.
+# AUTOLANDER_CLOUD_URL = "https://autolander-cloud.onrender.com"
 
 [[kv_namespaces]]
 binding = "CHAT_RATE_LIMITS"
@@ -63,3 +66,6 @@ preview_id = "replace_with_preview_kv_namespace_id"
 #   ADMIN_PASSWORD
 #   ADMIN_SESSION_SECRET
 #   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions
+#   OPS_ADMIN_TOKEN               shared bearer token for the AutoLander cloud /api/ops/billing/* endpoints;
+#                                 must match the cloud's OPS_ADMIN_TOKEN. Powers the admin "Account Linking"
+#                                 panel + subscription-link account picker. Never sent to the browser.

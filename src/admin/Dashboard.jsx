@@ -11,6 +11,7 @@ import ActionItems from './ActionItems.jsx';
 import SetupGuide from './SetupGuide.jsx';
 import SupportInbox from './SupportInbox.jsx';
 import SubscriptionLinkGenerator from './SubscriptionLinkGenerator.jsx';
+import OpsLinking from './OpsLinking.jsx';
 
 const RANGES = [
   { days: 7, label: '7d' },
@@ -175,6 +176,8 @@ export default function Dashboard({ onLogout }) {
         <ActionItems recommendations={recommendations} loading={recsLoading} />
 
         <SubscriptionLinkGenerator />
+
+        <OpsLinking />
 
         <SupportInbox requests={supportRequests} loading={supportLoading} error={supportError} />
 

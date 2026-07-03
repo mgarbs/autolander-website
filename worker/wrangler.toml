@@ -66,3 +66,6 @@ preview_id = "273697d477e84296a0152a690e95884c"
 #   ADMIN_PASSWORD                you choose
 #   ADMIN_SESSION_SECRET          random 32+ bytes for cookie HMAC
 #   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions
+#   OPS_ADMIN_TOKEN               shared bearer token for the AutoLander cloud /api/ops/billing/* endpoints;
+#                                 must match the cloud's OPS_ADMIN_TOKEN. Powers the admin "Account Linking"
+#                                 panel + subscription-link account picker. Never sent to the browser.

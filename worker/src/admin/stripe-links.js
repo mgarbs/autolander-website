@@ -117,6 +117,12 @@ export async function createAdminSubscriptionLink(request, env) {
   const customerName = normalizeText(body.customerName || body.name, 160);
   const customerPhone = normalizeText(body.customerPhone || body.phone, 64);
   const label = normalizeText(body.label || body.planLabel || 'AutoLander Subscription', 120);
+  // Optional fully-automatic account linking: when the admin picks an account,
+  // orgId rides along in BOTH metadata and subscription_data[metadata] below, so
+  // the cloud checkout webhook provisions that org with zero manual steps.
+  // pickedOrgName is for humans reading the Stripe dashboard only.
+  const orgId = normalizeText(body.orgId || body.org_id, 200);
+  const pickedOrgName = normalizeText(body.pickedOrgName || body.orgName, 160);
   const tracking = collectTracking(body);
   const clientReferenceId = normalizeText(
     tracking.ghl_contact_id || tracking.external_id || customerEmail || customerPhone,
@@ -133,6 +139,8 @@ export async function createAdminSubscriptionLink(request, env) {
     ...(customerEmail ? { customer_email: customerEmail } : {}),
     ...(customerName ? { customer_name: customerName } : {}),
     ...(customerPhone ? { customer_phone: customerPhone } : {}),
+    ...(orgId ? { orgId } : {}),
+    ...(orgId && pickedOrgName ? { pickedOrgName } : {}),
     ...tracking,
   };
 
