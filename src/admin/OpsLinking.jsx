@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, CheckCircle, Link2, Loader2, RefreshCw, Search, UserRoundSearch, X, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle, Info, Link2, Loader2, RefreshCw, Search, UserRoundSearch, X, Zap } from 'lucide-react';
 import { apiPost } from './lib/api.js';
 import {
   OPS_SETUP_NOTE,
   candidateSubscriptionSummary,
+  describeLinkEffect,
   fetchUnlinked,
   formatAge,
   formatCents,
@@ -31,6 +32,8 @@ export default function OpsLinking() {
   const [applyPending, setApplyPending] = useState(false);
   const [linkError, setLinkError] = useState('');
   const [linkedMessage, setLinkedMessage] = useState('');
+  const [showDetails, setShowDetails] = useState(false);
+  const previewSeq = useRef(0);
 
   const loadUnlinked = useCallback(async (query = '') => {
     setUnlinkedLoading(true);
@@ -85,57 +88,95 @@ export default function OpsLinking() {
   }, [candQuery, opsUnavailable]);
 
   function resetLinkFlow() {
+    previewSeq.current += 1; // discard any in-flight preview for the old selection
     setPreview(null);
     setLinkError('');
-    setLinkedMessage('');
-    setForce(false);
+    setShowDetails(false);
   }
 
   function pickPayer(payer) {
     setSelectedPayer((current) => (current?.subId === payer.subId ? null : payer));
+    setLinkedMessage('');
+    setForce(false);
     resetLinkFlow();
   }
 
   function pickCandidate(candidate) {
     setSelectedCandidate((current) => (current?.orgId === candidate.orgId ? null : candidate));
+    setLinkedMessage('');
+    setForce(false);
     resetLinkFlow();
   }
 
-  async function runLink({ apply }) {
+  // Auto-run the dry-run the moment BOTH sides are picked, so the operator sees a
+  // plain-English "what will happen" summary without hunting for a button. The
+  // sequence guard drops a stale preview if the selection changes mid-request.
+  useEffect(() => {
+    // No preview to run until both sides are picked. `preview` is already cleared
+    // by resetLinkFlow() on every pick, so nothing to reset here (a synchronous
+    // setState in an effect body triggers cascading renders — avoid it).
+    if (!selectedPayer?.subId || !selectedCandidate?.orgId) {
+      return undefined;
+    }
+    const seq = previewSeq.current + 1;
+    previewSeq.current = seq;
+    const subscriptionId = selectedPayer.subId;
+    const orgId = selectedCandidate.orgId;
+    const plan = selectedPayer.detectedPlan;
+    const timeoutId = window.setTimeout(async () => {
+      if (previewSeq.current !== seq) return;
+      setPreviewPending(true);
+      setLinkError('');
+      try {
+        const response = await apiPost('/admin/ops/link', {
+          subscriptionId,
+          orgId,
+          ...(plan ? { plan } : {}),
+          ...(force ? { force: true } : {}),
+          apply: false,
+        });
+        if (previewSeq.current !== seq) return;
+        setPreview(response);
+      } catch (err) {
+        if (previewSeq.current !== seq) return;
+        setPreview(null);
+        if (isOpsNotConfigured(err)) setOpsUnavailable(true);
+        else setLinkError(friendlyLinkError(err));
+      } finally {
+        if (previewSeq.current === seq) setPreviewPending(false);
+      }
+    }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [selectedPayer, selectedCandidate, force]);
+
+  async function applyLink() {
     if (!selectedPayer?.subId || !selectedCandidate?.orgId) return;
-    if (apply) setApplyPending(true);
-    else setPreviewPending(true);
+    setApplyPending(true);
     setLinkError('');
     try {
-      const response = await apiPost('/admin/ops/link', {
+      await apiPost('/admin/ops/link', {
         subscriptionId: selectedPayer.subId,
         orgId: selectedCandidate.orgId,
         ...(selectedPayer.detectedPlan ? { plan: selectedPayer.detectedPlan } : {}),
         ...(force ? { force: true } : {}),
-        apply: apply === true,
+        apply: true,
       });
-      if (apply) {
-        setLinkedMessage(
-          `${selectedPayer.email || selectedPayer.subId} is now linked to ${
-            selectedCandidate.orgName || selectedCandidate.orgId
-          }.`,
-        );
-        setPreview(null);
-        setUnlinked((rows) => rows.filter((row) => row.subId !== selectedPayer.subId));
-        setSelectedPayer(null);
-        setSelectedCandidate(null);
-        setForce(false);
-      } else {
-        setPreview(response);
-      }
+      setLinkedMessage(
+        `${selectedPayer.email || selectedPayer.subId} is now linked to ${
+          selectedCandidate.orgName || selectedCandidate.orgId
+        }. That account is active and the customer needs to do nothing.`,
+      );
+      previewSeq.current += 1;
+      setPreview(null);
+      setUnlinked((rows) => rows.filter((row) => row.subId !== selectedPayer.subId));
+      setSelectedPayer(null);
+      setSelectedCandidate(null);
+      setForce(false);
+      setShowDetails(false);
     } catch (err) {
-      if (isOpsNotConfigured(err)) {
-        setOpsUnavailable(true);
-      } else {
-        setLinkError(err?.message || 'Link request failed.');
-      }
+      if (isOpsNotConfigured(err)) setOpsUnavailable(true);
+      else setLinkError(friendlyLinkError(err));
     } finally {
-      setPreviewPending(false);
       setApplyPending(false);
     }
   }
@@ -174,6 +215,26 @@ export default function OpsLinking() {
           </div>
         ) : (
           <>
+            <div className="flex gap-3 rounded-xl border border-blue-400/20 bg-blue-400/[0.06] px-4 py-3">
+              <Info size={16} className="mt-0.5 shrink-0 text-blue-300" />
+              <div className="space-y-1.5 text-xs leading-relaxed text-slate-300">
+                <p className="font-bold text-white">Most payments attach to their account on their own.</p>
+                <p>
+                  A payment only shows up here when we couldn&apos;t match it automatically — usually because the customer
+                  paid with a different email than the one on their AutoLander login. To attach one by hand:
+                </p>
+                <ol className="ml-1 list-inside list-decimal space-y-0.5 text-slate-400">
+                  <li><span className="font-bold text-slate-200">Step 1</span> — click the payment on the left.</li>
+                  <li>
+                    <span className="font-bold text-slate-200">Step 2</span> — search the right side for the dealership
+                    (by business name, the person&apos;s first or last name, or their email) and click it.
+                  </li>
+                  <li><span className="font-bold text-slate-200">Step 3</span> — read the plain-English summary of what will happen.</li>
+                  <li><span className="font-bold text-slate-200">Step 4</span> — click <span className="font-bold text-emerald-300">Confirm &amp; Link</span>.</li>
+                </ol>
+              </div>
+            </div>
+
             {linkedMessage && (
               <div className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-bold uppercase tracking-widest text-emerald-200">
                 <CheckCircle size={14} />
@@ -186,7 +247,7 @@ export default function OpsLinking() {
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
                   <UserRoundSearch size={14} />
-                  Unlinked payers
+                  Step 1 · Pick the payment
                 </div>
                 <form
                   onSubmit={(event) => {
@@ -199,7 +260,7 @@ export default function OpsLinking() {
                   <input
                     value={unlinkedQuery}
                     onChange={(event) => setUnlinkedQuery(event.target.value)}
-                    placeholder="Filter by email or name, then Enter…"
+                    placeholder="Filter these payments by email or name, then Enter…"
                     className="h-10 w-full rounded-xl border border-white/10 bg-black/40 pl-9 pr-3 text-xs text-white outline-none focus:border-blue-500/60"
                   />
                 </form>
@@ -259,14 +320,14 @@ export default function OpsLinking() {
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
                   <Search size={14} />
-                  Link to account
+                  Step 2 · Pick the account
                 </div>
                 <div className="relative">
                   <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                   <input
                     value={candQuery}
                     onChange={(event) => setCandQuery(event.target.value)}
-                    placeholder="Search accounts by dealership, org, or admin email…"
+                    placeholder="Search by dealership, first &amp; last name, or email…"
                     className="h-10 w-full rounded-xl border border-white/10 bg-black/40 pl-9 pr-3 text-xs text-white outline-none focus:border-blue-500/60"
                   />
                   {candSearching && (
@@ -308,36 +369,70 @@ export default function OpsLinking() {
                   <p className="text-xs text-slate-500">No matching accounts.</p>
                 )}
 
-                {/* Link flow */}
-                <div className="rounded-xl border border-white/10 bg-black/40 p-3">
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-300">
+                {/* Step 3/4 — what will happen + confirm */}
+                <div className="rounded-xl border border-white/10 bg-black/40 p-4">
+                  <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
                     <span className={selectedPayer ? 'text-white' : 'text-slate-600'}>
-                      {selectedPayer ? selectedPayer.email || selectedPayer.subId : 'Pick a payer'}
+                      {selectedPayer ? selectedPayer.email || selectedPayer.subId : 'Step 1: pick a payment'}
                     </span>
                     <ArrowRight size={13} className="text-slate-600" />
                     <span className={selectedCandidate ? 'text-white' : 'text-slate-600'}>
-                      {selectedCandidate ? selectedCandidate.orgName || selectedCandidate.orgId : 'Pick an account'}
+                      {selectedCandidate ? selectedCandidate.orgName || selectedCandidate.orgId : 'Step 2: pick an account'}
                     </span>
                   </div>
 
-                  {linkError && (
-                    <p className="mt-2 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-200">
-                      {linkError}
+                  {!selectedPayer || !selectedCandidate ? (
+                    <p className="mt-3 text-xs text-slate-500">
+                      Pick a payment and an account above to see exactly what linking them will do.
                     </p>
-                  )}
-
-                  {preview ? (
+                  ) : linkError ? (
                     <div className="mt-3 space-y-3">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-amber-300">
-                        Dry run — nothing has been changed yet
-                      </p>
-                      <DiffView result={preview} />
+                      <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-200">
+                        These two can&apos;t be linked: {linkError}
+                      </div>
+                      {/^(.*already.*link|different.*org|conflict)/i.test(linkError) && !force && (
+                        <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-amber-300">
+                          <input
+                            type="checkbox"
+                            checked={force}
+                            onChange={(event) => setForce(event.target.checked)}
+                            className="h-3.5 w-3.5 rounded border-white/20 bg-black/40 accent-amber-500"
+                          />
+                          Override the existing link (only if you&apos;re sure)
+                        </label>
+                      )}
+                    </div>
+                  ) : previewPending ? (
+                    <p className="mt-3 flex items-center gap-2 text-xs font-bold text-slate-400">
+                      <Loader2 size={14} className="animate-spin" />
+                      Checking what will happen…
+                    </p>
+                  ) : preview ? (
+                    <div className="mt-3 space-y-3">
+                      {(() => {
+                        const effect = describeLinkEffect({ payer: selectedPayer, candidate: selectedCandidate, preview });
+                        return (
+                          <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-3">
+                            <p className="text-[10px] font-black uppercase tracking-widest text-emerald-300">Here&apos;s what will happen</p>
+                            <p className="mt-1.5 text-sm font-bold text-white">{effect.lead}</p>
+                            <ul className="mt-2 space-y-1.5">
+                              {effect.bullets.map((line, i) => (
+                                <li key={i} className="flex gap-2 text-xs leading-relaxed text-slate-300">
+                                  <CheckCircle size={13} className="mt-0.5 shrink-0 text-emerald-400" />
+                                  <span>{line}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        );
+                      })()}
+
                       <div className="flex flex-wrap items-center gap-3">
                         <button
                           type="button"
-                          onClick={() => runLink({ apply: true })}
+                          onClick={applyLink}
                           disabled={applyPending}
-                          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 text-[10px] font-black uppercase italic tracking-tight text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 text-[10px] font-black uppercase italic tracking-tight text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {applyPending ? <Loader2 size={14} className="animate-spin" /> : <Zap size={14} />}
                           Confirm &amp; Link
@@ -345,38 +440,31 @@ export default function OpsLinking() {
                         <button
                           type="button"
                           onClick={() => {
-                            setPreview(null);
-                            setLinkError('');
+                            setSelectedPayer(null);
+                            setSelectedCandidate(null);
+                            setForce(false);
+                            resetLinkFlow();
                           }}
                           className="inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white"
                         >
                           <X size={14} />
                           Cancel
                         </button>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-600">
+                          Nothing changes until you confirm
+                        </span>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="mt-3 flex flex-wrap items-center gap-3">
+
                       <button
                         type="button"
-                        onClick={() => runLink({ apply: false })}
-                        disabled={!selectedPayer || !selectedCandidate || previewPending}
-                        className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 text-[10px] font-black uppercase italic tracking-tight text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+                        onClick={() => setShowDetails((v) => !v)}
+                        className="text-[10px] font-bold uppercase tracking-widest text-slate-500 underline-offset-2 hover:text-slate-300 hover:underline"
                       >
-                        {previewPending ? <Loader2 size={14} className="animate-spin" /> : <Link2 size={14} />}
-                        Preview Link
+                        {showDetails ? 'Hide technical details' : 'Show technical details'}
                       </button>
-                      <label className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                        <input
-                          type="checkbox"
-                          checked={force}
-                          onChange={(event) => setForce(event.target.checked)}
-                          className="h-3.5 w-3.5 rounded border-white/20 bg-black/40 accent-blue-500"
-                        />
-                        Force (override an existing link)
-                      </label>
+                      {showDetails && <DiffView result={preview} />}
                     </div>
-                  )}
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -385,6 +473,19 @@ export default function OpsLinking() {
       </div>
     </section>
   );
+}
+
+// Turn a link API error into something a non-technical operator can act on.
+function friendlyLinkError(err) {
+  const reason = String(err?.reason || '').toUpperCase();
+  const map = {
+    DIFFERENT_ORG: 'this payment is already linked to a different account. Tick the override box to move it.',
+    GROUP_CUSTOMER: 'this payment belongs to a dealer group and is billed through the group, so it can’t be attached to one rooftop here.',
+    BAD_STATUS: 'this subscription isn’t in a linkable state (it may be canceled or unpaid).',
+    PLAN_MISMATCH: 'the amount paid doesn’t match this plan. Double-check you picked the right payment.',
+    PLAN_UNDETECTED: 'we couldn’t tell which plan this payment is for from its price.',
+  };
+  return map[reason] || err?.message || 'the link could not be completed.';
 }
 
 function DiffView({ result }) {

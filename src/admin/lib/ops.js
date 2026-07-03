@@ -67,6 +67,44 @@ export function candidateSubscriptionSummary(candidate) {
   return parts.length ? parts.join(' · ') : 'subscription on file';
 }
 
+// The account's CURRENT plan (before linking), for the plain-English summary.
+export function candidateCurrentPlan(candidate) {
+  const sub = candidate?.subscription;
+  const subPlan = sub && typeof sub === 'object' ? text(sub.plan ?? sub.detectedPlan) : '';
+  return subPlan || text(candidate?.plan) || 'FREE';
+}
+
+function priceLabel(payer) {
+  const money = formatCents(payer?.priceCents);
+  if (money === '—') return '';
+  const iv = text(payer?.interval);
+  const suffix = iv === 'year' || iv === 'annual' ? '/yr' : '/mo';
+  return `${money}${suffix}`;
+}
+
+// Plain-English description of what a link will DO, for non-technical operators.
+// Returns { lead, bullets } — derived from the picked payer + account, and
+// (when present) sharpened by the cloud's dry-run diff (authoritative new plan).
+export function describeLinkEffect({ payer, candidate, preview }) {
+  const payerLabel = text(payer?.email) || text(payer?.name) || text(payer?.subId) || 'this payment';
+  const orgLabel = text(candidate?.orgName) || text(candidate?.orgId) || 'the account';
+  const price = priceLabel(payer);
+  const currentPlan = candidateCurrentPlan(candidate);
+  const after = preview?.diff?.after && typeof preview.diff.after === 'object' ? preview.diff.after : null;
+  const newPlan = text(after?.plan) || text(payer?.detectedPlan) || currentPlan;
+
+  const lead = `Connect ${payerLabel}'s payment${price ? ` (${price})` : ''} to the ${orgLabel} account.`;
+  const bullets = [];
+  if (newPlan && currentPlan && newPlan.toUpperCase() !== currentPlan.toUpperCase()) {
+    bullets.push(`${orgLabel} changes from the ${currentPlan} plan to the ${newPlan} plan and receives that plan's included credits.`);
+  } else if (newPlan) {
+    bullets.push(`${orgLabel} is set to the ${newPlan} plan and receives that plan's included credits.`);
+  }
+  bullets.push('From now on this payment keeps the account active automatically — if it ever fails, the account pauses; when it succeeds again, the account turns back on.');
+  bullets.push('The customer does nothing — they never see this screen.');
+  return { lead, bullets };
+}
+
 export function formatCents(cents) {
   if (!Number.isFinite(Number(cents))) return '—';
   return (Number(cents) / 100).toLocaleString(undefined, { style: 'currency', currency: 'USD' });
