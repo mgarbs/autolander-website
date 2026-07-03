@@ -57,6 +57,33 @@ export async function readSupportRequests(env, limit = 25) {
     .slice(0, cappedLimit);
 }
 
+export async function deleteSupportRequest(env, id) {
+  const store = supportStore(env);
+  if (!store) return { ok: false, status: 503, reason: 'support_storage_not_configured' };
+
+  const cleanId = String(id || '').trim();
+  if (!/^[a-zA-Z0-9-]{8,80}$/.test(cleanId)) {
+    return { ok: false, status: 400, reason: 'invalid_support_request_id' };
+  }
+
+  let cursor;
+  do {
+    const list = await store.list({
+      prefix: SUPPORT_PREFIX,
+      limit: 1000,
+      ...(cursor ? { cursor } : {}),
+    });
+    const match = list.keys.find((entry) => entry.name.endsWith(`:${cleanId}`));
+    if (match) {
+      await store.delete(match.name);
+      return { ok: true, status: 200, id: cleanId };
+    }
+    cursor = list.list_complete ? undefined : list.cursor;
+  } while (cursor);
+
+  return { ok: false, status: 404, reason: 'support_request_not_found' };
+}
+
 function supportStore(env) {
   return env.SUPPORT_REQUESTS || env.TRACKING || env.CHAT_RATE_LIMITS || null;
 }

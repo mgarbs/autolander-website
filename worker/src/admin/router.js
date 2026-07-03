@@ -5,7 +5,7 @@ import { buildRecommendations, META_URL_PARAM_TEMPLATE } from './recommendations
 import { createAdminSubscriptionLink } from './stripe-links.js';
 import { handleOpsCandidates, handleOpsLink, handleOpsUnlinked } from './ops-linking.js';
 import { readDimensionForDay, readRecentEvents } from '../capi/storage.js';
-import { readSupportRequests } from '../support/storage.js';
+import { deleteSupportRequest, readSupportRequests } from '../support/storage.js';
 
 const DEFAULT_DAYS = 30;
 const MAX_DAYS = 90;
@@ -80,6 +80,12 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
   if (path === '/admin/support/recent') {
     const limit = Math.min(Number(url.searchParams.get('limit') || 25), 100);
     return jsonResponse({ ok: true, requests: await readSupportRequests(env, limit) }, 200, corsHeaders);
+  }
+
+  if (path === '/admin/support/delete' && request.method === 'POST') {
+    const body = await safeJson(request);
+    const result = await deleteSupportRequest(env, body.id);
+    return jsonResponse(result.ok ? { ok: true, id: result.id } : { ok: false, reason: result.reason }, result.status, corsHeaders);
   }
 
   return jsonResponse({ ok: false, reason: 'not_found' }, 404, corsHeaders);

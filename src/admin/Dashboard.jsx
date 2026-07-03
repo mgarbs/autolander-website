@@ -16,7 +16,7 @@ export default function Dashboard({ onLogout }) {
       else setSupportLoading(true);
       setSupportError('');
       try {
-        const supportResp = await apiGet('/admin/support/recent?limit=25');
+        const supportResp = await apiGet('/admin/support/recent?limit=100');
         setSupportRequests(supportResp?.requests || []);
         setSupportError(supportResp?.ok === false ? supportResp.message || 'Chatbot messages are unavailable.' : '');
       } catch (err) {
@@ -51,6 +51,24 @@ export default function Dashboard({ onLogout }) {
     onLogout();
   }, [onLogout]);
 
+  const handleDeleteSupportRequest = useCallback(
+    async (id) => {
+      setSupportError('');
+      try {
+        await apiPost('/admin/support/delete', { id });
+        setSupportRequests((current) => current.filter((request) => request.id !== id));
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 401) {
+          onLogout();
+          return;
+        }
+        setSupportError(err?.message || 'Could not delete chatbot message.');
+        throw err;
+      }
+    },
+    [onLogout],
+  );
+
   return (
     <div className="min-h-screen bg-[#050505] text-slate-100">
       <header className="sticky top-0 z-10 border-b border-white/10 bg-black/70 backdrop-blur">
@@ -82,7 +100,12 @@ export default function Dashboard({ onLogout }) {
       </header>
 
       <main className="mx-auto max-w-6xl space-y-6 px-6 py-8">
-        <SupportInbox requests={supportRequests} loading={supportLoading} error={supportError} />
+        <SupportInbox
+          requests={supportRequests}
+          loading={supportLoading}
+          error={supportError}
+          onDelete={handleDeleteSupportRequest}
+        />
         <SubscriptionLinkGenerator />
         <OpsLinking />
       </main>
