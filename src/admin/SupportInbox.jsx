@@ -1,17 +1,17 @@
 import { Mail, RefreshCw } from 'lucide-react';
 
 export default function SupportInbox({ requests, loading, error }) {
-  const rows = Array.isArray(requests) ? requests.slice(0, 8) : [];
+  const rows = Array.isArray(requests) ? requests.slice(0, 25) : [];
 
   return (
     <section className="rounded-3xl border border-white/5 bg-white/[0.03] p-6">
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-center gap-2">
           <Mail className="h-4 w-4 text-emerald-300" aria-hidden="true" />
-          <h2 className="text-sm font-black uppercase italic tracking-tight text-white">Support Inbox</h2>
+          <h2 className="text-sm font-black uppercase italic tracking-tight text-white">Chatbot Messages</h2>
         </div>
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-          {loading ? 'Loading' : rows.length ? `${rows.length} recent` : 'No open requests'}
+          {loading ? 'Loading' : rows.length ? `${rows.length} recent` : 'No messages'}
         </p>
       </div>
 
@@ -28,7 +28,7 @@ export default function SupportInbox({ requests, loading, error }) {
         </div>
       ) : rows.length === 0 ? (
         <p className="text-sm leading-6 text-slate-500">
-          Support requests submitted through the chatbot will appear here when no webhook is configured.
+          Messages submitted through the chatbot support form will appear here.
         </p>
       ) : (
         <div className="space-y-3">
@@ -43,6 +43,14 @@ export default function SupportInbox({ requests, loading, error }) {
                   >
                     {request.email}
                   </a>
+                  {request.phone && (
+                    <a
+                      href={`tel:${request.phone}`}
+                      className="mt-1 block truncate text-xs font-bold text-slate-400 hover:text-slate-200"
+                    >
+                      {request.phone}
+                    </a>
+                  )}
                 </div>
                 <p className="shrink-0 font-mono text-[10px] text-slate-500">{formatTime(request.at)}</p>
               </div>

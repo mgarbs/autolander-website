@@ -35,7 +35,7 @@ export default function Login({ onSuccess }) {
         className="w-full max-w-sm rounded-3xl border border-white/10 bg-white/[0.03] p-10 shadow-2xl"
       >
         <h1 className="text-2xl font-black uppercase italic tracking-tight">AutoLander Admin</h1>
-        <p className="mt-2 text-sm text-slate-400">Sign in to see your live ad performance.</p>
+        <p className="mt-2 text-sm text-slate-400">Sign in to manage chatbot messages, Stripe links, and account links.</p>
 
         <label className="mt-8 block text-[10px] font-black uppercase tracking-widest text-slate-400">
           Password

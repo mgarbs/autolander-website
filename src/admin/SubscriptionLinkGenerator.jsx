@@ -3,30 +3,6 @@ import { BadgeDollarSign, Building2, CheckCircle, Copy, ExternalLink, Link2, Loa
 import { apiPost } from './lib/api.js';
 import { candidateSubscriptionSummary, isOpsNotConfigured, searchCandidates } from './lib/ops.js';
 
-const TRACKING_FIELDS = [
-  ['ghl_contact_id', 'GHL contact ID'],
-  ['external_id', 'External ID'],
-  ['fbc', 'FBC'],
-  ['fbp', 'FBP'],
-  ['fbclid', 'FBCLID'],
-  ['campaign_id', 'Campaign ID'],
-  ['adset_id', 'Adset ID'],
-  ['ad_id', 'Ad ID'],
-  ['event_source_url', 'Source URL'],
-];
-
-function blankTracking() {
-  return Object.fromEntries(TRACKING_FIELDS.map(([key]) => [key, '']));
-}
-
-function cleanObject(value) {
-  return Object.fromEntries(
-    Object.entries(value)
-      .map(([key, item]) => [key, String(item || '').trim()])
-      .filter(([, item]) => item),
-  );
-}
-
 function formatMoney(cents) {
   const amount = Number(cents || 0) / 100;
   return amount.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
@@ -39,7 +15,6 @@ export default function SubscriptionLinkGenerator() {
   const [customerEmail, setCustomerEmail] = useState('');
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
-  const [tracking, setTracking] = useState(() => blankTracking());
   const [result, setResult] = useState(null);
   const [message, setMessage] = useState(null);
   const [pending, setPending] = useState(false);
@@ -85,27 +60,6 @@ export default function SubscriptionLinkGenerator() {
     setOrgResults([]);
   }
 
-  function setTrackingField(key, value) {
-    setTracking((current) => ({ ...current, [key]: value }));
-  }
-
-  function parseSourceUrl() {
-    const raw = tracking.event_source_url.trim();
-    if (!raw) return;
-    try {
-      const parsed = new URL(raw);
-      const params = parsed.searchParams;
-      const next = { ...tracking };
-      for (const key of ['fbclid', 'campaign_id', 'adset_id', 'ad_id']) {
-        if (!next[key] && params.get(key)) next[key] = params.get(key);
-      }
-      if (!next.campaign_id && params.get('utm_id')) next.campaign_id = params.get('utm_id');
-      setTracking(next);
-    } catch {
-      setMessage({ type: 'error', text: 'Source URL is not valid.' });
-    }
-  }
-
   async function generateLink(event) {
     event.preventDefault();
     if (pending) return;
@@ -124,7 +78,6 @@ export default function SubscriptionLinkGenerator() {
         ...(selectedOrg?.orgId
           ? { orgId: selectedOrg.orgId, pickedOrgName: selectedOrg.orgName }
           : {}),
-        tracking: cleanObject(tracking),
       });
       setResult(response);
       setMessage({
@@ -238,34 +191,6 @@ export default function SubscriptionLinkGenerator() {
               className="h-11 w-full rounded-xl border border-white/10 bg-black/40 px-3 text-sm text-white outline-none focus:border-blue-500/60"
             />
           </label>
-        </div>
-
-        <div className="space-y-3">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
-              <Link2 size={14} />
-              Attribution
-            </div>
-            <button
-              type="button"
-              onClick={parseSourceUrl}
-              className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white"
-            >
-              Parse URL
-            </button>
-          </div>
-          <div className="grid gap-3 md:grid-cols-3">
-            {TRACKING_FIELDS.map(([key, fieldLabel]) => (
-              <label key={key} className={key === 'event_source_url' ? 'space-y-2 md:col-span-3' : 'space-y-2'}>
-                <span className="text-[9px] font-black uppercase tracking-widest text-slate-600">{fieldLabel}</span>
-                <input
-                  value={tracking[key]}
-                  onChange={(event) => setTrackingField(key, event.target.value)}
-                  className="h-10 w-full rounded-xl border border-white/10 bg-black/40 px-3 text-xs text-white outline-none focus:border-blue-500/60"
-                />
-              </label>
-            ))}
-          </div>
         </div>
 
         <div className="space-y-3">
