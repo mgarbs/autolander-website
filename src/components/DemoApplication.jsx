@@ -264,7 +264,7 @@ export default function DemoApplication({ onClose }) {
                   />
                 </div>
                 <p className="mt-1.5 pl-1 text-xs font-semibold leading-snug text-slate-300">
-                  AutoLander is for dealers and sales teams. We do not sell vehicles or offer financing.
+                  AutoLander is for dealers and sales reps. We do not sell vehicles or offer financing.
                 </p>
               </div>
             </div>

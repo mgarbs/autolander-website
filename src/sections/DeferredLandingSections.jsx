@@ -112,7 +112,7 @@ const PRICING = [
         "Instant Inventory Sync",
         "Auto Queue",
         "Standard AI Descriptions",
-        "Feed Sync (CarGurus / Cars.com)",
+        "Feed Sync (Website / DMS / Custom Feeds / CarGurus / Cars.com)",
         "25 welcome AI Studio credits",
       ]
     },
@@ -207,7 +207,7 @@ export default function DeferredLandingSections({
               <Step 
                 number="01" 
                 title="Connect Feed" 
-                desc="Paste your CarGurus or Cars.com feed URL. Your entire inventory (100-200+ units) syncs automatically with all specs and features."
+                desc="Connect your website, DMS, custom feeds, CarGurus, or Cars.com inventory source. Your entire inventory (100-200+ units) syncs automatically with all specs and features."
               />
             </FadeIn>
             <FadeIn delay={0.2}>
@@ -244,7 +244,7 @@ export default function DeferredLandingSections({
               <FeatureCard 
                 icon={RefreshCw}
                 title="Automatic Sync"
-                desc="Sync hundreds of vehicles from CarGurus or Cars.com automatically. VIN, price, trim, and specs are always 100% accurate."
+                desc="Sync hundreds of vehicles from your website, DMS, custom feeds, CarGurus, or Cars.com automatically. VIN, price, trim, and specs are always 100% accurate."
               />
             </FadeIn>
             <FadeIn delay={0.2} direction="up">
