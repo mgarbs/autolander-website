@@ -187,10 +187,10 @@ export default function SelfServePicker() {
                 }`}
               >
                 {isPending && <Loader2 size={16} className="animate-spin" />}
-                {isPending ? 'Redirecting…' : 'Start Free Trial'}
+                {isPending ? 'Redirecting...' : 'Continue to Checkout'}
               </button>
               <p className="mt-4 text-center text-[10px] font-black uppercase italic tracking-widest opacity-40">
-                First 5 posts are free
+                {isAnnual ? 'Annual billing - cancel anytime' : 'Monthly billing - cancel anytime'}
               </p>
             </div>
           );
