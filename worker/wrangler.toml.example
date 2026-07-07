@@ -35,7 +35,8 @@ GHL_WORKFLOW_ID = "replace_with_website_demo_request_workflow_id"
 GHL_CUSTOM_FIELD_MAP = "{}"
 # When true, /api/apply only returns success after the full application note is written to GHL.
 REQUIRE_GHL_APPLICATION_NOTE = "true"
-# Optional: base URL of the AutoLander cloud used by the admin ops-linking proxy.
+# Optional: base URL of the AutoLander cloud used by the admin ops-linking + billing-links proxies
+# AND the public /api/pay/* proxy (worker/src/booking/pay-proxy.js).
 # Defaults to https://autolander-cloud.onrender.com when unset.
 # AUTOLANDER_CLOUD_URL = "https://autolander-cloud.onrender.com"
 
@@ -66,6 +67,7 @@ preview_id = "replace_with_preview_kv_namespace_id"
 #   ADMIN_PASSWORD
 #   ADMIN_SESSION_SECRET
 #   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions
-#   OPS_ADMIN_TOKEN               shared bearer token for the AutoLander cloud /api/ops/billing/* endpoints;
-#                                 must match the cloud's OPS_ADMIN_TOKEN. Powers the admin "Account Linking"
-#                                 panel + subscription-link account picker. Never sent to the browser.
+#   OPS_ADMIN_TOKEN               shared bearer token for the AutoLander cloud /api/ops/billing/* AND
+#                                 /api/billing-links* endpoints; must match the cloud's OPS_ADMIN_TOKEN.
+#                                 Powers the admin "Account Linking" panel, subscription-link account
+#                                 picker, and the "Payment Links" panel. Never sent to the browser.

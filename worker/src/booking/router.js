@@ -16,6 +16,7 @@ import {
   wasEventSeen,
 } from '../capi/storage.js';
 import { looksLikeBot } from '../security/bot-filter.js';
+import { getPaySummary, openPaySession, openSelfServeSession } from './pay-proxy.js';
 
 const ROLE_CHOICES = ['Owner', 'Manager', 'Sales Rep'];
 const VEHICLE_COUNT_CHOICES = ['1-50', '51-150', '151+'];
@@ -118,6 +119,27 @@ export async function handleBooking(request, env, corsHeaders, ctx) {
       410,
       corsHeaders,
     );
+  }
+
+  // Centralized billing-link pay pages — public, proxied straight to the
+  // cloud (packages/cloud owns the CheckoutRequest record + Stripe calls).
+  // Order matters: /api/pay/self-serve must be checked before the generic
+  // /api/pay/:token pattern so the literal path never gets treated as a token.
+  if (url.pathname === '/api/pay/self-serve' && request.method === 'POST') {
+    const result = await openSelfServeSession(env, request);
+    return json(result.body, result.status, corsHeaders);
+  }
+
+  const payTokenMatch = url.pathname.match(/^\/api\/pay\/([^/]+)$/);
+  if (payTokenMatch && request.method === 'GET') {
+    const result = await getPaySummary(env, decodeURIComponent(payTokenMatch[1]));
+    return json(result.body, result.status, corsHeaders);
+  }
+
+  const paySessionMatch = url.pathname.match(/^\/api\/pay\/([^/]+)\/session$/);
+  if (paySessionMatch && request.method === 'POST') {
+    const result = await openPaySession(env, request, decodeURIComponent(paySessionMatch[1]));
+    return json(result.body, result.status, corsHeaders);
   }
 
   return json({ ok: false, reason: 'not_found' }, 404, corsHeaders);

@@ -4,6 +4,13 @@ import { getAdInsights, getCampaignInsights, hasMetaInsightsConfig } from './met
 import { buildRecommendations, META_URL_PARAM_TEMPLATE } from './recommendations.js';
 import { createAdminSubscriptionLink } from './stripe-links.js';
 import { handleOpsCandidates, handleOpsLink, handleOpsUnlinked } from './ops-linking.js';
+import {
+  handleBillingLinkDetail,
+  handleBillingLinkDisable,
+  handleBillingLinkRecreate,
+  handleBillingLinksCreate,
+  handleBillingLinksList,
+} from './billing-links.js';
 import { readDimensionForDay, readRecentEvents } from '../capi/storage.js';
 import { deleteSupportRequest, readSupportRequests } from '../support/storage.js';
 
@@ -69,6 +76,37 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
 
   if (path === '/admin/ops/link' && request.method === 'POST') {
     const result = await handleOpsLink(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  // Centralized billing links (§7) — create/list/detail/disable/recreate.
+  // Same ops-admin-token proxy pattern as /admin/ops/*, just against the
+  // cloud's /api/billing-links* surface instead of /api/ops/billing/*.
+  if (path === '/admin/billing-links' && request.method === 'GET') {
+    const result = await handleBillingLinksList(url, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/billing-links' && request.method === 'POST') {
+    const result = await handleBillingLinksCreate(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  const billingLinkDisableMatch = path.match(/^\/admin\/billing-links\/([^/]+)\/disable$/);
+  if (billingLinkDisableMatch && request.method === 'POST') {
+    const result = await handleBillingLinkDisable(env, decodeURIComponent(billingLinkDisableMatch[1]));
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  const billingLinkRecreateMatch = path.match(/^\/admin\/billing-links\/([^/]+)\/recreate$/);
+  if (billingLinkRecreateMatch && request.method === 'POST') {
+    const result = await handleBillingLinkRecreate(env, decodeURIComponent(billingLinkRecreateMatch[1]));
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  const billingLinkDetailMatch = path.match(/^\/admin\/billing-links\/([^/]+)$/);
+  if (billingLinkDetailMatch && request.method === 'GET') {
+    const result = await handleBillingLinkDetail(env, decodeURIComponent(billingLinkDetailMatch[1]));
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 

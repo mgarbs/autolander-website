@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ApiError, apiGet, apiPost, setStoredToken } from './lib/api.js';
 import SupportInbox from './SupportInbox.jsx';
+import BillingLinks from './BillingLinks.jsx';
 import SubscriptionLinkGenerator from './SubscriptionLinkGenerator.jsx';
 import OpsLinking from './OpsLinking.jsx';
 
@@ -76,7 +77,7 @@ export default function Dashboard({ onLogout }) {
           <div>
             <h1 className="text-lg font-black uppercase italic tracking-tight text-white">AutoLander Admin</h1>
             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-              Chatbot messages, Stripe links, and account linking
+              Chatbot messages, payment links, and account linking
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -106,6 +107,7 @@ export default function Dashboard({ onLogout }) {
           error={supportError}
           onDelete={handleDeleteSupportRequest}
         />
+        <BillingLinks />
         <SubscriptionLinkGenerator />
         <OpsLinking />
       </main>

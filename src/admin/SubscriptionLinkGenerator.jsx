@@ -108,8 +108,15 @@ export default function SubscriptionLinkGenerator() {
             <BadgeDollarSign size={20} />
           </span>
           <div>
-            <h2 className="text-sm font-black uppercase italic tracking-tight text-white">Stripe Subscription Link</h2>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Manual close path</p>
+            <h2 className="flex items-center gap-2 text-sm font-black uppercase italic tracking-tight text-white">
+              Stripe Subscription Link
+              <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-amber-300">
+                Legacy
+              </span>
+            </h2>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+              Manual close path — superseded by Payment Links above, kept functional
+            </p>
           </div>
         </div>
         {result?.amountCents && (
