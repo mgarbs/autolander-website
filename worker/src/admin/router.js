@@ -5,6 +5,11 @@ import { buildRecommendations, META_URL_PARAM_TEMPLATE } from './recommendations
 import { createAdminSubscriptionLink } from './stripe-links.js';
 import { handleOpsCandidates, handleOpsLink, handleOpsUnlinked } from './ops-linking.js';
 import {
+  handleSupportAdjustmentCandidates,
+  handleSupportCreditGrant,
+  handleSupportDiscount,
+} from './support-adjustments.js';
+import {
   handleBillingLinkDetail,
   handleBillingLinkDisable,
   handleBillingLinkRecreate,
@@ -76,6 +81,21 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
 
   if (path === '/admin/ops/link' && request.method === 'POST') {
     const result = await handleOpsLink(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/support-adjustments/candidates' && request.method === 'GET') {
+    const result = await handleSupportAdjustmentCandidates(url, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/support-adjustments/credits' && request.method === 'POST') {
+    const result = await handleSupportCreditGrant(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/support-adjustments/discount' && request.method === 'POST') {
+    const result = await handleSupportDiscount(request, env);
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 

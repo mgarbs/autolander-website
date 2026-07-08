@@ -68,8 +68,9 @@ preview_id = "273697d477e84296a0152a690e95884c"
 #   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions
 #   OPS_ADMIN_TOKEN               shared bearer token for the AutoLander cloud /api/ops/billing/* AND
 #                                 /api/billing-links* endpoints; must match the cloud's OPS_ADMIN_TOKEN.
-#                                 Powers the admin "Account Linking" panel, subscription-link account
-#                                 picker, and the "Payment Links" panel. Never sent to the browser.
+#                                 Powers the admin "Account Linking" panel, support adjustments,
+#                                 subscription-link account picker, and the "Payment Links" panel.
+#                                 Never sent to the browser.
 #   AUTOLANDER_CLOUD_URL          optional; base URL of the AutoLander cloud used by the admin ops-linking +
 #                                 billing-links proxies AND the public /api/pay/* proxy (worker/src/booking/pay-proxy.js).
 #                                 Defaults to https://autolander-cloud.onrender.com when unset.

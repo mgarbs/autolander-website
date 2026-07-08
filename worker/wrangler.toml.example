@@ -69,5 +69,6 @@ preview_id = "replace_with_preview_kv_namespace_id"
 #   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions
 #   OPS_ADMIN_TOKEN               shared bearer token for the AutoLander cloud /api/ops/billing/* AND
 #                                 /api/billing-links* endpoints; must match the cloud's OPS_ADMIN_TOKEN.
-#                                 Powers the admin "Account Linking" panel, subscription-link account
-#                                 picker, and the "Payment Links" panel. Never sent to the browser.
+#                                 Powers the admin "Account Linking" panel, support adjustments,
+#                                 subscription-link account picker, and the "Payment Links" panel.
+#                                 Never sent to the browser.
