@@ -18,9 +18,8 @@ export const PAGES = [
     key: 'autoposter',
     title: 'Facebook Autoposter for Car Dealers | AutoLander',
     description:
-      'AutoLander is a Facebook autoposter for car dealers — a native desktop app that automatically posts your '
-      + 'inventory to Facebook Marketplace, enhances photos and removes sold cars. Auto poster software from '
-      + '$39/mo, 5 free posts, no credit card.',
+      'Facebook autoposter for car dealers: automatically post inventory to Marketplace, enhance photos and '
+      + 'remove sold cars. From $39/mo, 5 free posts.',
     ogType: 'website',
     eyebrow: 'For car dealers & sales reps',
     h1: 'Facebook autoposter for car dealers',
@@ -28,7 +27,7 @@ export const PAGES = [
     tldr:
       'A Facebook autoposter is software that automatically posts your listings to Facebook for you. For a car '
       + 'dealer, that means posting your inventory to Facebook Marketplace — where local buyers shop — instead of '
-      + 'creating each listing by hand. AutoLander is a native desktop app that auto-posts your whole lot, '
+      + 'creating each listing by hand. AutoLander is a native desktop app that loads your lot into a managed workflow, '
       + 'enhances every photo and removes sold units, from $39/mo with 5 free posts.',
     softwareDesc: SOFTWARE_DESC,
     breadcrumbs: [
@@ -43,8 +42,8 @@ export const PAGES = [
         a: [
           'A Facebook autoposter (or auto poster) is software that automatically publishes listings to Facebook '
           + 'instead of a person posting each one by hand. For car dealers, the listings go to Facebook '
-          + 'Marketplace — the part of Facebook where local buyers actually browse for vehicles — so an autoposter '
-          + 'reads your inventory and posts every car for you, then keeps the listings current.',
+          + 'Marketplace, a local vehicle-discovery surface. An autoposter reads inventory data, prepares eligible '
+          + 'listings and helps keep published listings current; Meta permission and account limits still apply.',
           'AutoLander is a Facebook autoposter built for car dealers. If you specifically mean Marketplace, the '
           + 'full detail is on the [Facebook Marketplace auto poster](/facebook-marketplace-auto-poster/) page; '
           + 'this page covers Facebook auto-posting for dealers more broadly. Either way, AutoLander runs as a '
@@ -65,7 +64,7 @@ export const PAGES = [
         steps: [
           { title: 'Connect your inventory', body: 'Point AutoLander at your CarGurus or Cars.com feed, or a custom feed/export. Your vehicles load automatically — see the [integrations](/integrations/) page.' },
           { title: 'Auto-enhance each listing', body: 'The AI Photo Studio swaps lot backgrounds for showroom backdrops, AI writes the description, and a walkaround video is generated.' },
-          { title: 'Auto-post at a human-like pace', body: 'AutoLander posts each vehicle from your own computer at a measured pace, not a suspicious burst — the account-safety reasoning is on the [safest auto poster](/safest-facebook-marketplace-auto-poster/) page.' },
+          { title: 'Work through a posting queue', body: 'AutoLander prepares eligible listings and works through a configurable queue from your own computer while the app is running. Meta account eligibility and current listing limits still apply.' },
           { title: 'Keep it accurate', body: 'New VINs auto-post and sold units auto-remove via [inventory sync](/facebook-marketplace-inventory-sync/).' },
         ],
       },
@@ -74,33 +73,33 @@ export const PAGES = [
         variant: 'win',
         h2: 'Why dealers pick AutoLander as their Facebook autoposter',
         items: [
-          'It auto-posts your whole lot — see [bulk posting to Facebook Marketplace](/bulk-post-cars-to-facebook-marketplace/) — not just a handful of cars.',
-          'It is a native desktop app: auto-posting runs through your own Facebook session on your machine, not a shared cloud server, with no ToS-exposed browser extension.',
-          'It paces posts to look human, a deliberate account-safety choice rather than a mass blast.',
+          'It loads your whole inventory feed, then manages eligible vehicles within the limits shown for the account — see [bulk posting to Facebook Marketplace](/bulk-post-cars-to-facebook-marketplace/).',
+          'It is a native desktop app: the workflow runs through the Facebook session on your own machine, not AutoLander’s cloud, and no browser extension is required.',
+          'It gives your team a configurable queue and posting controls instead of requiring each listing to be entered from scratch.',
           'It bundles AI photos, AI descriptions, sold-removal and post-to-sale attribution — published plans from $39/mo, 5 free posts.',
         ],
       },
       {
         type: 'callout',
-        title: 'Auto-posting a personal profile is a gray area',
-        body: 'Marketplace was built for individuals, and Meta’s sanctioned dealer route is the vehicle catalog. '
-          + 'Auto-posting from a personal profile — with any autoposter — is common but not officially blessed, and '
-          + 'policies can change. AutoLander paces posting and keeps your session local to lower technical triggers, '
-          + 'but no honest vendor can promise you will never be flagged. See the '
-          + '[honest automation guide](/guide/facebook-marketplace-automation/).',
+        title: 'Automation does not override Meta’s rules',
+        body: 'Meta’s Terms prohibit accessing its products by automated means without prior permission. Marketplace '
+          + 'eligibility, category availability and current listing limits can also change by account and market. '
+          + 'AutoLander provides a local desktop workflow and posting controls; it cannot make a workflow Meta-approved '
+          + 'or guarantee an account will not be restricted. Read the '
+          + '[Marketplace policy and safety guide](/guide/facebook-marketplace-automation/).',
       },
     ],
     faq: [
       ['What is the best Facebook autoposter for car dealers?',
-        'It depends on automation depth, photo quality, account-safety model and price. AutoLander bundles auto-posting with AI photos and video, sold-removal and post-to-sale attribution at the lowest entry price — see the [2026 comparison](/compare/).'],
+        'It depends on feed compatibility, listing review controls, photo and video tools, sold-unit reconciliation, attribution, session architecture and price. AutoLander bundles those workflows with published plans from $39/mo — see the [2026 comparison](/compare/).'],
       ['Is a Facebook autoposter the same as a Marketplace auto poster?',
         'For a car dealer, effectively yes — the listings post to Facebook Marketplace, where buyers shop. "Facebook autoposter" is just the broader term. For the Marketplace-specific detail, see the [Facebook Marketplace auto poster](/facebook-marketplace-auto-poster/) page.'],
       ['How much does Facebook auto poster software cost?',
         'AutoLander publishes self-serve plans from $39/mo with 5 free posts and no credit card. Competing tools run roughly $99–$249/mo. See [pricing](/facebook-marketplace-auto-poster-pricing/).'],
       ['Can the autoposter post my entire inventory automatically?',
-        'Yes. AutoLander loads your whole inventory from a feed and auto-posts every vehicle, then keeps it in sync as the lot turns. See [bulk posting](/bulk-post-cars-to-facebook-marketplace/).'],
+        'AutoLander can load the whole inventory feed and manage a queue of eligible vehicles, then keep those listings in sync as the lot turns. Meta controls Marketplace access and listing limits, so software cannot promise that every VIN can be live at once. See [bulk posting](/bulk-post-cars-to-facebook-marketplace/).'],
       ['Will a Facebook autoposter get my account banned?',
-        'It is a gray area and no tool can guarantee against it. Auto-posting a personal profile is common but not sanctioned; Meta’s official dealer route is the vehicle catalog. AutoLander reduces obvious triggers by pacing posts and keeping your session on your own machine — risk reduction, not a guarantee. Read the [automation guide](/guide/facebook-marketplace-automation/) first.'],
+        'No vendor can guarantee that an account will not be restricted. Meta’s Terms prohibit automated access without prior permission, and Marketplace eligibility and listing limits still apply. AutoLander’s local desktop architecture does not create Meta approval. Read the [policy and safety guide](/guide/facebook-marketplace-automation/) first.'],
     ],
     cta: {
       heading: 'Auto-post your lot to Facebook',

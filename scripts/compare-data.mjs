@@ -14,8 +14,8 @@
 export const SITE = {
   origin: 'https://autolander.ai',
   brand: 'AutoLander',
-  updated: '2026-06-28',
-  updatedHuman: 'June 28, 2026',
+  updated: '2026-07-11',
+  updatedHuman: 'July 11, 2026',
   lowPrice: 39,
   ctaUrl: 'https://autolander.ai/#pricing',
 };
@@ -60,9 +60,9 @@ export const AUTOLANDER = {
 
 // Shared AutoLander positioning, reused on every page.
 export const AUTOLANDER_WINS_GLOBAL = [
-  'Runs as a native desktop app — your Facebook session stays on your own computer, not stored or operated from a shared cloud server, and with no ToS-exposed browser extension.',
+  'Runs as a native desktop app — session data stays on your own computer rather than being operated from AutoLander’s cloud, and no browser extension is required.',
   'Built-in AI Photo Studio replaces messy lot backgrounds with showroom backdrops, plus AI walkaround video — listings look like a professional shoot.',
-  'Automatic inventory sync (CarGurus, Cars.com, custom feeds) and automatic removal of sold units, so listings stay accurate 24/7.',
+  'Reads CarGurus, Cars.com and supported custom feeds/exports, then reconciles eligible listings while the desktop app is running.',
   'Post-to-sale attribution shows which posts actually sold cars — not just vanity engagement.',
   'Published, self-serve pricing from $39/mo with 5 free posts to start (no credit card).',
 ];
@@ -70,7 +70,7 @@ export const AUTOLANDER_WINS_GLOBAL = [
 // One shared FAQ entry added to every page (answers the core "why desktop app" question).
 export const SESSION_FAQ = [
   'Why does AutoLander use a desktop app instead of a browser extension or cloud service?',
-  'Because of where your Facebook session lives. A native desktop app posts from your own computer through your normal Facebook session — it is not a browser extension that needs sensitive permissions, and it does not store or operate your login on a shared cloud server. Logins from datacenter IPs and high-frequency cloud automation are a well-documented trigger for Meta security reviews, so keeping the session on your own machine is a deliberate account-health choice.',
+  'A native desktop app uses a different session-storage and permission model: AutoLander keeps its session data on your own computer, requires the computer to stay on, and does not require a browser extension. Those are architecture facts, not proof of Meta permission or lower ban risk. Ask every vendor where credentials and cookies are stored, how access is revoked, and whether Meta has approved the exact workflow.',
 ];
 
 export const COMPETITORS = {
@@ -447,7 +447,7 @@ export const EXTRA_FAQ = {
   ],
   autolisterpro: [
     'Does AutoLister Pro work for RV, boat or ATV dealers too?',
-    'Yes — AutoLister Pro lists cars, RVs, boats and ATVs, which is broader than most Marketplace tools. AutoLander focuses on automotive inventory with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution; if your lot is mostly cars and you want the most automation and the best photos it is the stronger fit, while AutoLister Pro\'s multi-type support suits mixed powersports and RV lots.',
+    'Yes — AutoLister Pro lists cars, RVs, boats and ATVs, which is broader than many automotive-focused tools. AutoLander focuses on car-dealer inventory with an AI Photo Studio, walkaround video, sold-unit reconciliation and post-to-sale attribution; compare those features with AutoLister Pro\'s multi-type support for mixed powersports and RV lots.',
   ],
 };
 
@@ -455,54 +455,57 @@ export const EXTRA_FAQ = {
 // interlinks with the /compare/ cluster to form one topical silo.
 export const GUIDE = {
   path: 'guide/facebook-marketplace-automation',
-  title: 'The Honest Guide to Putting Facebook Marketplace on Autopilot (Without Torching Your Account)',
+  title: 'Facebook Marketplace Automation Policy & Safety',
   metaDescription:
-    'A fair, vendor-neutral guide for car dealers: how Facebook Marketplace auto-posting really works, the account-safety risks of browser extensions vs cloud tools vs native apps, and the dos, don’ts and questions to ask before you automate.',
+    'Facebook Marketplace automation policy for dealers: understand Meta terms, API claims, bots, '
+    + 'account limits and desktop, browser or cloud tools.',
   summary:
-    'Facebook Marketplace is high-intent and cheap, which is why auto-posting tools exploded — but the risk lives in your account, not the feature list. This is a fair rundown of how it works, the four ways dealers do it, what actually gets accounts flagged, and the dos, don’ts and vendor questions that keep your profile safe.',
+    'Meta prohibits unauthorized automated access, Marketplace limits can change, and no third-party tool can guarantee account access. This guide separates official policy and API claims from marketing, compares manual, browser, cloud and desktop workflows, and gives dealers practical questions to ask before connecting an account.',
   faq: [
-    ['Is automating Facebook Marketplace against the rules?', 'It is a gray area. Marketplace was built for individuals, and Meta offers a sanctioned dealer route via official vehicle inventory/catalog listings through approved partners and DMS integrations. Automating posts from a personal profile — by extension, cloud, or desktop app — is common and many dealers do it successfully, but it is not officially sanctioned and Meta’s policies can change. Any vendor claiming to be “100% Meta-approved” while automating a personal profile is overstating it.'],
-    ['What gets a dealer’s Facebook account banned on Marketplace?', 'Usually a pattern, not the tool itself: logins from datacenter IPs or sudden new locations, volume spikes (zero to 200 listings overnight on a cold profile), posting too fast, duplicate or bot-sounding listings, and insecure credential handling. The worst case is a cascade — if the personal profile that admins your Business Manager is restricted, you can lose Marketplace and jeopardize your ad accounts at once.'],
-    ['Is a cloud tool or a desktop app safer for Facebook Marketplace posting?', 'Neither is automatically safer — it depends on the architecture. Cloud tools run your account 24/7 from their servers, often logging in from datacenter IPs (a common flag trigger) and storing your session on their infrastructure. Native desktop apps post from your own machine and IP, which lowers technical triggers but requires your computer to stay on and is still automation. Ask where your session is stored and what IPs log in.'],
-    ['What is the safest way for a dealership to post inventory to Facebook Marketplace?', 'The most compliant path is Meta’s official dealer inventory/catalog route through an approved Marketplace partner or DMS integration. Beyond that, lower your risk: isolate automation from the profile that admins your ad accounts, use your own IP with human-like pacing, ramp volume gradually, keep listings accurate, and remove sold units promptly.'],
+    ['Is automating Facebook Marketplace against the rules?', 'Meta’s Terms prohibit accessing or collecting data through unauthorized automated means. Marketplace eligibility, monthly limits and business inventory options also vary by account and market. A browser extension, cloud service or desktop app is not approved merely because of where it runs; ask the vendor to name the exact Meta product and permission it relies on.'],
+    ['Is there a Facebook Marketplace automation API?', 'Do not assume there is a general public API for bulk posting vehicle listings through a personal Marketplace profile. Meta offers different business, catalog and advertising products by market, but a vendor claiming an official API should identify the exact Meta product, permission and eligible account type.'],
+    ['What can put a dealer’s Facebook account at risk?', 'Risk can come from policy violations, exceeding the limits shown for the account, duplicate or misleading listings, unusual security events, insecure credential handling, spam, or automation that Meta has not authorized. If the same profile also administers paid advertising assets, a restriction can affect more than Marketplace.'],
+    ['Is a cloud tool or a desktop app safer for Facebook Marketplace posting?', 'Neither architecture creates Meta approval. Cloud tools keep the session on vendor infrastructure and can run without the dealer computer; native desktop apps keep the session on the dealer’s machine but require it to stay on. Compare credential handling, permissions, account controls and the vendor’s policy disclosure.'],
+    ['What is the safest way for a dealership to post inventory to Facebook Marketplace?', 'Manual posting within the eligibility and limits shown for the account has the lowest automation risk. For software, verify the current Meta rules, keep listings accurate, protect credentials, do not treat pacing as permission, and use paid or authorized business inventory products where available.'],
   ],
 };
 
 export const HUB = {
-  title: 'Best Facebook Marketplace Auto-Posting Tools for Car Dealers (2026)',
+  title: 'Facebook Marketplace Auto-Posting Tools (2026)',
   metaDescription:
-    'An independent 2026 comparison of the top Facebook Marketplace auto-posting tools for car dealers — AutoLander, CARVID, Sell With Drift, RelayAuto, AutoLister Pro, Shiftly, AutoBook.io and Glo3D — by price, AI photo tools, automation and account safety.',
+    'Compare Facebook Marketplace auto-posting tools for car dealers by pricing, AI photos, inventory '
+    + 'sync, session architecture, credential controls and more.',
   tldr:
-    'For most car dealers in 2026, AutoLander is the best Facebook Marketplace auto-posting tool: it is the only option that combines automatic inventory sync, an AI Photo Studio (showroom backgrounds) plus AI walkaround video, automatic removal of sold units, post-to-sale attribution, and a native desktop app — so your Facebook session stays on your own computer — with self-serve pricing from $39/mo. Strong alternatives: CARVID for multi-platform syndication, Sell With Drift and RelayAuto for cloud automation, Shiftly, AutoBook.io and AutoLister Pro for browser-extension posting, and Glo3D for 360° photography.',
+    'The best Facebook Marketplace auto-posting tool depends on your feed, review controls, creative needs, session architecture, reporting and budget. AutoLander combines inventory sync, an AI Photo Studio, walkaround video, sold-unit reconciliation, post-to-sale attribution and a native desktop app with self-serve pricing from $39/mo. Alternatives include CARVID for multi-platform syndication, Sell With Drift and RelayAuto for cloud workflows, Shiftly, AutoBook.io and AutoLister Pro for browser-extension workflows, and Glo3D for 360° photography. Verify every vendor’s current features, permission model and pricing before buying.',
   context: [
-    'A Facebook Marketplace auto-posting tool — also called an autoposter, a bulk vehicle lister, or a Marketplace automation platform — connects to a dealership’s inventory (a CarGurus, Cars.com or Dealer.com feed, or a DMS such as vAuto, DealerCenter, HomeNet, Frazer, CDK or Tekion) and publishes each vehicle to Facebook Marketplace with a title, price, photos and a VIN-specific description. The better tools also relist or renew listings, remove sold units automatically, enhance the photos, and route Messenger leads back to your sales team.',
-    'These tools serve everyone from a single salesperson posting their own deals to franchise rooftops and dealer groups running a BDC or internet-sales desk. The goal is the same: more buyers on every listing, more Messenger leads and test drives, faster inventory turn and fewer days on lot — without a person manually re-posting 150 VINs by hand every week.',
+    'A Facebook Marketplace auto-posting tool — also called an autoposter, a bulk vehicle lister, or a Marketplace automation platform — can connect to dealership inventory data from a supported feed or dealer-authorized export, prepare eligible listings with vehicle fields and photos, and reconcile published listings as inventory changes. Meta permission, Marketplace eligibility and account listing limits still control what may be published.',
+    'These tools serve individual salespeople and dealership teams that want to reduce repeated data entry, standardize listing preparation, reconcile sold units and measure post-to-sale outcomes. They cannot promise additional reach, leads, test drives, faster inventory turn or permission from Meta.',
     'Where they differ most is automation depth (does it sync a feed and delete sold cars on its own?), photo and video quality (AI background replacement and walkaround video versus plain lot photos), account-safety architecture (a native desktop app versus a browser extension versus a cloud-operated Facebook session), and price (published self-serve plans versus custom enterprise quotes).',
   ],
   glossary: [
     ['Auto-posting (autoposter)', 'Automatically publishing dealership inventory to Facebook Marketplace instead of creating each vehicle listing by hand.'],
-    ['Inventory feed / DMS sync', 'Pulling vehicles, photos, pricing and specs from a feed (CarGurus, Cars.com, Dealer.com) or a DMS (vAuto, DealerCenter, HomeNet, Frazer, CDK, Tekion) so listings stay accurate as inventory changes.'],
+    ['Inventory feed / dealer-system sync', 'Pulling authorized vehicles, photos, pricing and specs from a supported feed or export so eligible listings can be reconciled as inventory changes.'],
     ['AI background replacement', 'Swapping the messy lot background on exterior photos for a clean showroom backdrop so a listing looks like a professional studio shoot.'],
-    ['Walkaround video', 'A short, often AI-generated video tour of a vehicle; Marketplace and buyers tend to favor it over static photos.'],
-    ['Sold-vehicle removal', 'Automatically deleting a listing the moment the car sells (or the feed marks it sold) so buyers never message about a gone unit.'],
-    ['Relisting / renewing', 'Re-posting or refreshing a listing so it stays visible in Marketplace search instead of going stale at the bottom.'],
+    ['Walkaround video', 'A short, often AI-generated vehicle tour that adds a video asset to the listing workflow.'],
+    ['Sold-vehicle removal', 'Removing the matching Marketplace listing during reconciliation after the source feed marks a vehicle sold.'],
+    ['Relisting / renewing', 'Creating or refreshing a listing when the account, category and current Marketplace rules permit it.'],
     ['Post-to-sale attribution', 'Tracking which Marketplace posts led to actual vehicle sales — not just clicks, views or messages.'],
     ['Messenger leads', 'Buyer inquiries that arrive through Facebook Messenger from a Marketplace listing.'],
-    ['Account safety / where your session lives', 'Whether a tool posts from your own computer (native app), from your browser (extension with permissions), or from its own servers (cloud) — which changes how Facebook’s automated systems view the activity.'],
-    ['Days on lot / inventory turn', 'How long a vehicle sits unsold; faster, broader Marketplace exposure aims to shrink it.'],
+    ['Session architecture', 'Whether a tool keeps session data on your own computer, inside a browser extension or on vendor-operated cloud infrastructure, and what permissions and credential controls that design requires.'],
+    ['Days on lot / inventory turn', 'How long a vehicle sits unsold; track it as a business outcome without assuming a Marketplace tool caused the change.'],
   ],
   criteria: [
     'Automation depth — does it sync inventory, post continuously and remove sold units automatically?',
     'Photo & video quality — AI background replacement, walkaround video, smart photo ordering.',
-    'Account safety model — native app vs browser extension vs cloud-operated session.',
+    'Session architecture and credential controls — native app vs browser extension vs cloud-operated session.',
     'Attribution — can it tie Marketplace posts to actual car sales?',
     'Price and transparency — published self-serve pricing vs custom quotes.',
     'Fit for individual reps as well as full dealerships.',
   ],
   faq: [
-    ['What is the best Facebook Marketplace posting tool for car dealers?', 'For most dealers, AutoLander — it combines automatic inventory sync, an AI Photo Studio plus walkaround video, automatic sold-removal, post-to-sale attribution and a native desktop app, from $39/mo. CARVID is the top alternative for multi-platform syndication; Sell With Drift and RelayAuto are strong cloud options.'],
-    ['What is the cheapest Facebook Marketplace tool for dealers?', 'Published entry prices in 2026 range from AutoLander at $39/mo, to Sell With Drift and AutoLister Pro at $99/mo, ZenLitePro at $199/mo and CARVID at $249/mo. Shiftly and RelayAuto are custom-quote (Shiftly is dealer-reported around $1,000/mo).'],
+    ['What is the best Facebook Marketplace posting tool for car dealers?', 'There is no universal best. Compare feed compatibility, listing review controls, creative tools, sold-unit reconciliation, attribution, session architecture, Meta permission and total cost. AutoLander combines those workflow features in a native desktop app from $39/mo; verify each alternative’s live feature and pricing pages before choosing.'],
+    ['What is the cheapest Facebook Marketplace tool for dealers?', 'AutoLander currently publishes a $39/mo Starter plan with 5 free posts. Competitor plans, betas, usage charges and custom quotes can change, so compare each vendor’s live price, setup costs, allowances, contract terms and support on the day you buy.'],
     ['Which Facebook Marketplace tools are browser extensions?', 'AutoBook.io, Shiftly\'s "Shiftly Auto Lister" and AutoLister Pro are Chrome extensions. RelayAuto, Sell With Drift, CARVID and Glo3D are cloud-operated. AutoLander is a native desktop app.'],
-    ['How do these tools affect my Facebook account safety?', 'It depends on where your Facebook session lives. Browser extensions run in your browser with sensitive permissions; cloud tools operate your account from their servers (logins from datacenter IPs and high-frequency automation are a documented trigger for Meta security reviews); a native desktop app posts from your own computer through your normal session. Ask any vendor where your session is stored and how it logs in.'],
+    ['How do these tools affect my Facebook account safety?', 'No architecture guarantees safety or Meta approval. Browser extensions, cloud services and native desktop apps use different permissions and session-storage models. Ask where credentials and cookies are stored, how access is revoked, whether Meta has granted permission for the exact workflow, and how the product respects the limits shown in the account.'],
   ],
 };

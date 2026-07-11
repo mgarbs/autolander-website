@@ -103,18 +103,18 @@ function PostingEngine() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 motion-safe:animate-ping" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
             </span>
-            Marketplace Queue — Live
+            Inventory Queue — Ready
           </div>
           <Facebook className="h-4 w-4 text-blue-400" />
         </div>
 
         {/* live counter */}
         <div className="flex items-end justify-between py-4">
-          <StaticStat value={312} label="Total cars posted" />
+          <StaticStat value={312} label="Inventory units loaded" />
           <div className="text-right font-mono text-[10px] uppercase leading-relaxed tracking-widest text-emerald-400">
-            ▲ 30 / hr
+            Feed synced
             <br />
-            <span className="text-slate-400">6.5× manual</span>
+            <span className="text-slate-400">Limits still apply</span>
           </div>
         </div>
 
@@ -212,8 +212,8 @@ export default function Hero({ openDemoBooking, onWarmDemo }) {
     onFocus: onWarmDemo,
     onTouchStart: onWarmDemo,
   };
-  // Each gradient word is its own inline-block so the italic overhang of its
-  // final glyph (e.g. the "2" in 8–12) isn't clipped by bg-clip-text on a line wrap.
+  // Each gradient phrase is an inline block so italic overhang is not clipped
+  // by background-clip on a line wrap.
   const gradWord =
     'inline-block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent pr-[0.14em]';
   return (
@@ -225,19 +225,17 @@ export default function Hero({ openDemoBooking, onWarmDemo }) {
 
         <div>
           <h1 className="mt-6 text-balance font-display text-5xl font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
-            Sell{' '}
-            <span className={gradWord}>8&ndash;12</span>{' '}
-            <span className={gradWord}>more</span>{' '}
-            <span className={gradWord}>cars</span>{' '}
-            a month on{' '}
-            <span className={gradWord}>autopilot.</span>
+            Facebook Marketplace{' '}
+            <span className={gradWord}>software</span>{' '}
+            built to{' '}
+            <span className={gradWord}>sell more cars.</span>
           </h1>
         </div>
 
         <div>
           <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
-            AutoLander auto-posts, updates, and tracks your entire inventory on Facebook
-            Marketplace — 20 cars in minutes, not hours. More buyer conversations, zero manual work.
+            Connect your inventory feed, prepare stronger listings, manage an eligible posting queue,
+            reconcile prices and sold units, and track which posts lead to sales&mdash;from one desktop app.
           </p>
         </div>
 

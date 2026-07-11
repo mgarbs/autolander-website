@@ -59,7 +59,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
     <meta name="facebook-domain-verification" content="y3cf43655kr1mfxdak6k4hy45mppyx" />
-    <meta name="description" content="Sell 8-12 more cars a month on autopilot. AutoLander ranks your cars to the top of Facebook Marketplace, so 3-4x more buyers see your listings." />
+    <meta name="description" content="Facebook Marketplace software for car dealers that auto-posts inventory, updates prices, removes sold cars and tracks sales. From $39/mo." />
     <link rel="canonical" href="https://autolander.ai/" />
 
     <!-- Open Graph (Facebook, iMessage, Slack, LinkedIn, etc.) -->
@@ -67,8 +67,8 @@
     <meta property="og:url" content="https://autolander.ai/" />
     <meta property="og:site_name" content="AutoLander" />
     <meta property="fb:app_id" content="1692802435375416" />
-    <meta property="og:title" content="AutoLander — Sell 8-12 more cars a month on autopilot" />
-    <meta property="og:description" content="More eyes on every listing. AutoLander ranks your cars to the top of Facebook Marketplace, so 3-4x more buyers see them, on average." />
+    <meta property="og:title" content="AutoLander | Facebook Marketplace Software for Car Dealers" />
+    <meta property="og:description" content="Prepare dealership inventory, manage eligible Marketplace listings, reconcile sold cars and track sales. Plans from $39/mo." />
     <meta property="og:image" content="https://autolander.ai/og-image.jpg" />
     <meta property="og:image:secure_url" content="https://autolander.ai/og-image.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
@@ -78,8 +78,8 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AutoLander — Sell 8-12 more cars a month on autopilot" />
-    <meta name="twitter:description" content="More eyes on every listing. AutoLander ranks your cars to the top of Facebook Marketplace, so 3-4x more buyers see them, on average." />
+    <meta name="twitter:title" content="AutoLander | Facebook Marketplace Software for Car Dealers" />
+    <meta name="twitter:description" content="Prepare dealership inventory, manage eligible Marketplace listings, reconcile sold cars and track sales. Plans from $39/mo." />
     <meta name="twitter:image" content="https://autolander.ai/og-image.jpg" />
     <meta name="twitter:image:alt" content="AutoLander helps car dealers automatically post inventory to Facebook Marketplace." />
 
@@ -99,8 +99,10 @@
             "@type": "Organization",
             "@id": "https://autolander.ai/#organization",
             "name": "AutoLander",
+            "legalName": "AutoLander LLC",
             "url": "https://autolander.ai/",
-            "logo": "https://autolander.ai/autolander-logo.png"
+            "logo": "https://autolander.ai/autolander-logo.png",
+            "email": "sales@autolander.ai"
           },
           {
             "@type": "WebSite",
@@ -110,19 +112,20 @@
             "publisher": { "@id": "https://autolander.ai/#organization" }
           },
           {
-            "@type": "SoftwareApplication",
-            "@id": "https://autolander.ai/#software",
+            "@type": "Product",
+            "@id": "https://autolander.ai/#product",
             "name": "AutoLander",
-            "applicationCategory": "BusinessApplication",
-            "operatingSystem": "Windows, macOS, Linux",
-            "url": "https://autolander.ai/",
-            "description": "AutoLander helps car dealers automatically post, update, and track inventory on Facebook Marketplace.",
+            "description": "Facebook Marketplace software for car dealers that prepares and posts inventory, keeps prices current, removes sold vehicles and tracks sales.",
+            "image": "https://autolander.ai/og-image.jpg",
+            "brand": { "@type": "Brand", "name": "AutoLander" },
+            "category": "Facebook Marketplace software for car dealers",
             "offers": {
               "@type": "Offer",
+              "url": "https://autolander.ai/#pricing",
               "price": "39",
-              "priceCurrency": "USD"
-            },
-            "publisher": { "@id": "https://autolander.ai/#organization" }
+              "priceCurrency": "USD",
+              "availability": "https://schema.org/InStock"
+            }
           }
         ]
       }
@@ -131,7 +134,7 @@
          VITE_META_PIXEL_ID — init only. PageView and all events are fired by src/lib/tracker.js
          with a shared event_id so the browser Pixel and server CAPI dedupe into one. Preview
          builds inject nothing (no Pixel on preview). -->
-    <title>AutoLander — Sell 8-12 more cars a month on autopilot</title>
+    <title>AutoLander | Facebook Marketplace Software for Car Dealers</title>
     <style>
       /* Critical fallback so first paint isn't a white flash before JS loads */
       html, body { background: #050505; color: #f8fafc; margin: 0; -webkit-font-smoothing: antialiased; }
@@ -149,6 +152,22 @@
       })();
     </script>
     <div id="root"></div>
+    <noscript>
+      <main style="max-width:760px;margin:0 auto;padding:48px 24px;font:16px/1.65 Inter,Arial,sans-serif">
+        <h1>Facebook Marketplace software for car dealers</h1>
+        <p>AutoLander is a native desktop app that helps dealerships and sales reps prepare and post vehicle inventory to Facebook Marketplace, keep prices current, remove sold vehicles, and track which listings lead to sales.</p>
+        <p>Plans start at $39 per month with five free posts and no credit card. JavaScript is required to book a live demo on this page.</p>
+        <nav aria-label="AutoLander dealer resources">
+          <a href="/facebook-marketplace-auto-poster/">Facebook Marketplace auto poster</a> &middot;
+          <a href="/facebook-marketplace-automation/">Marketplace automation</a> &middot;
+          <a href="/facebook-marketplace-listing-software/">Listing software</a> &middot;
+          <a href="/facebook-marketplace-auto-poster-pricing/">Pricing</a> &middot;
+          <a href="/guide/how-to-sell-cars-on-facebook-marketplace/">How to sell cars on Marketplace</a> &middot;
+          <a href="/integrations/">Inventory integrations</a> &middot;
+          <a href="/compare/">Compare tools</a>
+        </nav>
+      </main>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

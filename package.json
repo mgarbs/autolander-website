@@ -8,6 +8,8 @@
     "build": "vite build && node scripts/spa-fallback.mjs",
     "build:preview": "vite build --mode preview && node scripts/spa-fallback.mjs",
     "lint": "eslint .",
+    "seo:audit": "node scripts/seo-audit.mjs",
+    "seo:indexnow": "node scripts/submit-indexnow.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

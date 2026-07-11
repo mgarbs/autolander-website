@@ -20,7 +20,7 @@
 //   faqHeading,     // optional override
 //   cta,            // {heading, sub}
 //   related,        // [{href,text}] (defaults to relatedFor(key))
-//   schema,         // {software?:desc|true, itemList?:[{name,url}], offer?:bool|{price}, breadcrumb?:true}
+//   schema,         // {software?:desc, itemList?:[{name,url}]} (software is held until verified reviews exist)
 //   ogType,         // default 'website'
 // }
 //
@@ -66,14 +66,9 @@ const updatedHuman = () => SITE.updatedHuman || SITE.updated;
 // ---------- schema.org builders ----------
 export const orgLd = {
   '@context': 'https://schema.org', '@type': 'Organization', name: 'AutoLander',
-  url: SITE.origin + '/', logo: SITE.origin + '/autolander-logo.png',
+  legalName: 'AutoLander LLC', url: SITE.origin + '/', logo: SITE.origin + '/autolander-logo.png',
+  email: 'sales@autolander.ai',
 };
-export const softwareLd = (desc) => ({
-  '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'AutoLander',
-  applicationCategory: 'BusinessApplication', operatingSystem: 'Windows, macOS, Linux',
-  url: SITE.origin + '/', description: desc,
-  offers: { '@type': 'Offer', price: String(SITE.lowPrice), priceCurrency: 'USD' },
-});
 export const faqLd = (faq) => ({
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: faq.map(([q, a]) => ({
@@ -96,7 +91,10 @@ export const webPageLd = (title, canonical, desc) => ({
   '@context': 'https://schema.org', '@type': 'WebPage',
   name: title, url: canonical, description: desc,
   isPartOf: { '@type': 'WebSite', name: 'AutoLander', url: SITE.origin + '/' },
-  primaryImageOfPage: SITE.origin + '/og-image.jpg',
+  primaryImageOfPage: {
+    '@type': 'ImageObject',
+    url: SITE.origin + '/og-image.jpg',
+  },
   dateModified: SITE.updated,
 });
 
@@ -184,6 +182,8 @@ export function siteFooter() {
       <a href="${NAV.compareHub.path}">Compare tools</a>
       <a href="${NAV.integHub.path}">Integrations</a>
       <a href="${NAV.inventory.path}">Inventory sync</a>
+      <a href="${NAV.automation.path}">Automation</a>
+      <a href="${NAV.sellGuide.path}">How to sell cars</a>
       <a href="${NAV.guide.path}">Guide</a>
       <a href="${SITE.origin}/">AutoLander home</a>
       <a href="${SITE.origin}/#pricing">Pricing</a>
@@ -194,8 +194,8 @@ export function siteFooter() {
       AutoLander is a native desktop app for car dealers. Third-party product names, DMS and feed
       providers (e.g. CarGurus, Cars.com, vAuto, DealerCenter, Dealer.com, HomeNet, Frazer, CDK, Tekion)
       are trademarks of their respective owners; AutoLander is not affiliated with or endorsed by them.
-      Facebook and Facebook Marketplace are trademarks of Meta Platforms, Inc. Automating a personal
-      Facebook profile is a gray area &mdash; see our <a href="${NAV.guide.path}">honest automation guide</a>.
+      Facebook and Facebook Marketplace are trademarks of Meta Platforms, Inc. AutoLander does not
+      override Meta eligibility, listing limits or terms &mdash; see our <a href="${NAV.guide.path}">policy and safety guide</a>.
     </p>
     <p class="copyright">&copy; 2026 AutoLander. Last updated ${esc(updatedHuman())}.</p>
   </footer>
@@ -301,12 +301,10 @@ export function renderPage(page) {
   const nav = page.key ? NAV[page.key] : null;
   const path = page.path || (nav && nav.path);
   const canonical = SITE.origin + path;
-  const desc = page.softwareDesc
-    || 'AutoLander automatically posts car dealership inventory to Facebook Marketplace from a native desktop app, with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution.';
-
   const jsonLdBlocks = [];
   jsonLdBlocks.push(jsonld(webPageLd(page.title, canonical, page.description)));
-  if (page.schema?.software) jsonLdBlocks.push(jsonld(softwareLd(typeof page.schema.software === 'string' ? page.schema.software : desc)));
+  // Google requires a genuine aggregateRating or review for SoftwareApplication rich results.
+  // AutoLander does not currently publish verified review data, so do not emit that type until it does.
   if (page.schema?.itemList) jsonLdBlocks.push(jsonld(itemListLd(page.schema.itemList)));
   if (page.faq && page.faq.length) jsonLdBlocks.push(jsonld(faqLd(page.faq)));
   if (page.breadcrumbs) jsonLdBlocks.push(jsonld(breadcrumbLd(page.breadcrumbs)));

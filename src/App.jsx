@@ -432,6 +432,7 @@ export default function App() {
              <a href="#features" onClick={openDeferredSection('features')} className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Features</a>
              <a href="#pricing" onClick={openDeferredSection('pricing')} className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Pricing</a>
              <a href="#studio" onClick={openDeferredSection('studio')} className="text-sm font-semibold text-slate-400 hover:text-white transition-all">AI Studio</a>
+             <a href="/guide/how-to-sell-cars-on-facebook-marketplace/" className="hidden text-sm font-semibold text-slate-400 transition-all hover:text-white xl:inline">Dealer Guide</a>
           </div>
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
             {showDownloadButtons && (

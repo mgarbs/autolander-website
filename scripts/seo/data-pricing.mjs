@@ -1,6 +1,6 @@
 // PRICING page — targets buyer-intent pricing/cost terms for a Facebook Marketplace auto poster.
 // Answers "how much does it cost", states AutoLander's published self-serve pricing honestly
-// (Starter $39/mo, Pro $79/mo, month-to-month, 5 free posts, no card), compares published entry
+// (Starter $39, Growth $59, Pro $79, Dealer Plan from $117 monthly, 5 free posts, no card), compares published entry
 // prices across tools (labeled "as published; verify"), and is honest about "cheapest". Funnels to
 // /#pricing (book a demo), with deep links to /compare/ and /facebook-marketplace-auto-poster/.
 //
@@ -17,18 +17,16 @@ export const PAGES = [
     key: 'pricing',
     title: 'Facebook Marketplace Auto Poster Pricing (2026) | AutoLander',
     description:
-      'How much does a Facebook Marketplace auto poster cost? AutoLander publishes self-serve plans — '
-      + 'Starter $39/mo and Pro $79/mo, month-to-month, with 5 free posts to start and no credit card. '
-      + 'See 2026 pricing vs other tools, the free trial and how to book a demo.',
+      'AutoLander pricing: Starter $39, Growth $59, Pro $79 and Dealer plans from $117 monthly. '
+      + 'Start with 5 free posts and no credit card.',
     ogType: 'website',
     eyebrow: 'Pricing & plans',
     h1: 'Facebook Marketplace auto poster pricing',
     bylineUpdated: true,
     tldr:
-      'AutoLander has published, self-serve pricing for its Facebook Marketplace auto poster: Starter is '
-      + '$39/mo and Pro is $79/mo, both month-to-month, with 5 free posts to start and no credit card. '
-      + 'That $39/mo Starter is the lowest published entry price among dealer-focused tools — most others '
-      + 'start at $99–$249/mo or quote custom. Try it free, then book a demo to see it on your own inventory.',
+      'AutoLander has four published monthly options: Starter is $39 for 5 posts/day, Growth is $59 for '
+      + '10 posts/day, Pro is $79 for 20 posts/day, and the Dealer Plan starts at $117 for a three-seat team. '
+      + 'Start with 5 free posts and no credit card; annual billing is optional at a lower monthly equivalent.',
     softwareDesc: SOFTWARE_DESC,
     breadcrumbs: [
       { name: 'Home', url: SITE.origin + '/' },
@@ -48,10 +46,10 @@ export const PAGES = [
         type: 'qa',
         q: 'How much does a Facebook Marketplace auto poster cost?',
         a: [
-          'For AutoLander, it costs $39/mo for the Starter plan or $79/mo for the Pro plan. Both are '
-          + 'month-to-month with no annual contract, and you get 5 free posts to start with no credit card. '
-          + 'You can post your dealership inventory to Facebook Marketplace, enhance the photos and keep '
-          + 'listings current for that flat monthly price — there is no per-listing or per-VIN fee on top.',
+          'AutoLander’s individual monthly plans are Starter at $39 for 5 posts/day, Growth at $59 for '
+          + '10 posts/day, and Pro at $79 for 20 posts/day. The Dealer Plan starts at $117/mo for three '
+          + 'Starter seats and can mix Starter, Growth and Pro seats for the team. Annual billing is optional '
+          + 'and lowers the monthly equivalent.',
           'Across the wider market, a Facebook Marketplace auto poster typically costs anywhere from about '
           + '$39/mo at the low end to $249/mo or more, and several dealer tools only quote a custom price. '
           + 'AutoLander deliberately publishes its pricing so you can see the cost before you ever talk to '
@@ -61,24 +59,32 @@ export const PAGES = [
       },
       {
         type: 'features',
-        h2: 'AutoLander plans: Starter $39/mo and Pro $79/mo',
-        intro: 'Two simple, published plans — month-to-month, with 5 free posts to start and no credit card.',
+        h2: 'AutoLander plans from $39/mo',
+        intro: 'Three individual tiers plus a flexible team plan — all published, with 5 free posts to start and no credit card.',
         cards: [
           {
             title: 'Starter — $39/mo',
-            body: 'Built for an individual sales rep posting their own deals to Facebook Marketplace. '
-              + 'Automatic posting, AI-enhanced photos and listings that stay current — the lowest published '
-              + 'entry price for a dealer-focused auto poster. Month-to-month, cancel anytime.',
+            body: 'For an individual rep posting up to 5 vehicles per day. Includes inventory sync, auto queue, '
+              + 'standard AI descriptions and 25 welcome AI Studio credits.',
+          },
+          {
+            title: 'Growth — $59/mo',
+            body: 'For higher-volume reps posting up to 10 vehicles per day. Adds Pro AI descriptions, priority '
+              + 'syncing and 50 welcome AI Studio credits.',
           },
           {
             title: 'Pro — $79/mo',
-            body: 'Built for a dealership or team. Everything in Starter plus the team features for running '
-              + 'Marketplace across a rooftop, including a live manager dashboard so a manager can see posting '
-              + 'and activity across the team. Still month-to-month, still no annual contract.',
+            body: 'For power users posting up to 20 vehicles per day. Adds concierge setup, dedicated support '
+              + 'and 150 welcome AI Studio credits.',
+          },
+          {
+            title: 'Dealer Plan — from $117/mo',
+            body: 'For dealerships with at least three seats in any Starter, Growth or Pro mix. Adds a live manager '
+              + 'dashboard, real-time team presence, attribution and team analytics.',
           },
           {
             title: '5 free posts to start',
-            body: 'Both plans start with 5 free posts and no credit card, so you can post real vehicles and see '
+            body: 'Every plan starts with 5 free posts and no credit card, so you can post real vehicles and see '
               + 'how listings look before you pay anything.',
           },
           {
@@ -98,7 +104,7 @@ export const PAGES = [
         alCol: 1,
         head: ['Tool', 'Published entry price', 'Notes'],
         rows: [
-          ['AutoLander', 'from $39/mo', 'Self-serve, published. Starter $39/mo, Pro $79/mo, month-to-month, 5 free posts, no card.'],
+          ['AutoLander', 'from $39/mo', 'Starter $39, Growth $59, Pro $79; Dealer Plan from $117/mo for 3 seats. 5 free posts, no card.'],
           ['Sell With Drift', 'from $99/mo', 'As published; verify on vendor site.'],
           ['AutoLister Pro', 'from $99/mo', 'As published; verify on vendor site.'],
           ['CARVID', '$249/mo (flat)', 'As published; verify on vendor site.'],
@@ -114,16 +120,15 @@ export const PAGES = [
       },
       {
         type: 'qa',
-        q: 'Is AutoLander the cheapest Facebook Marketplace auto poster?',
+        q: 'What is the cheapest Facebook Marketplace auto poster?',
         a: [
-          'Among dealer-focused tools, yes — AutoLander has the lowest published entry price at $39/mo, where '
-          + 'the next options start around $99/mo and some run to $249/mo or quote custom. Because the price is '
-          + 'published and self-serve, there is no enterprise quote between you and getting started.',
-          'To be honest about it: cheapest depends on volume. AutoBook.io is running a free open beta with a '
-          + 'pay-as-you-go model at the time of writing, so for a handful of posts that can be cheaper than any '
-          + 'monthly plan. For a dealer or rep posting inventory regularly on a predictable flat monthly price, '
-          + 'AutoLander’s $39/mo Starter is the lowest published cost. Compare what you actually get at each '
-          + 'price on our comparison page before you decide on price alone.',
+          'There is no permanently cheapest tool because competitor plans, betas and usage charges change. '
+          + 'AutoLander’s current published entry price is $39/mo for Starter, with 5 free posts and no credit card. '
+          + 'That makes the cost visible before a sales call rather than hidden behind a custom quote.',
+          'Compare the live vendor price, included posting allowance, setup costs, AI credits, support and contract '
+          + 'terms on the day you buy. A free beta or pay-as-you-go tool may cost less for occasional use, while a '
+          + 'flat plan can be easier to budget for a recurring dealership workflow. See our comparison page before '
+          + 'deciding on price alone.',
         ],
       },
       {
@@ -131,11 +136,11 @@ export const PAGES = [
         variant: 'win',
         h2: 'What makes AutoLander’s pricing dealer-friendly',
         items: [
-          'Published and self-serve — you see Starter $39/mo and Pro $79/mo before you ever talk to sales.',
+          'Published and self-serve — Starter $39, Growth $59, Pro $79 and Dealer Plan from $117 monthly.',
           'Month-to-month with no annual contract or enterprise lock-in — cancel anytime.',
           'Flat monthly price with no per-listing or per-VIN fee stacked on top.',
-          'The lowest published entry price ($39/mo) among dealer-focused Facebook Marketplace auto posters.',
-          '5 free posts to start with no credit card, so you can try it on real vehicles risk-free.',
+          'A published $39/mo entry price, so you can compare the plan without requesting a sales quote.',
+          '5 free posts to start with no credit card, so you can test the workflow before paying.',
         ],
       },
       {
@@ -153,16 +158,18 @@ export const PAGES = [
       {
         type: 'callout',
         title: 'A note on honesty',
-        body: 'AutoLander’s pricing above ($39/mo Starter, $79/mo Pro, month-to-month, 5 free posts, no card) '
+        body: 'AutoLander’s pricing above (Starter $39, Growth $59, Pro $79, Dealer Plan from $117 monthly, '
+          + '5 free posts, no card) '
           + 'is our own published pricing. Competitor prices are listed as publicly advertised or reported and can '
-          + 'change at any time — always verify on each vendor’s site. And automating a personal Facebook profile '
-          + 'is a gray area no matter which tool you pay for; no honest vendor can promise you will never be flagged.',
+          + 'change at any time — always verify on each vendor’s site. Meta account eligibility, listing limits and '
+          + 'terms apply regardless of the plan you buy, and no vendor can guarantee Meta approval or access. Daily '
+          + 'plan allowances describe AutoLander workflow capacity, not permission to exceed the limits shown by Meta.',
       },
     ],
     faq: [
       ['How much does a Facebook Marketplace auto poster cost?',
-        'AutoLander costs $39/mo for the Starter plan or $79/mo for the Pro plan, both month-to-month, with '
-        + '5 free posts to start and no credit card. There is no per-listing fee on top. Across the market, '
+        'AutoLander costs $39/mo for Starter, $59/mo for Growth, $79/mo for Pro, or from $117/mo for a '
+        + 'three-seat Dealer Plan. Start with 5 free posts and no credit card. Across the market, '
         + 'other tools generally range from about $99/mo to $249/mo, and some only quote custom pricing.'],
       ['Is there a free trial?',
         'Yes — every plan starts with 5 free posts and no credit card required, so you can post real vehicles '
@@ -171,18 +178,16 @@ export const PAGES = [
         'Use the "See plans & book a demo" button to schedule a walkthrough. A demo shows automatic posting, '
         + 'the AI-enhanced photos and the team dashboard running on your own dealership inventory.'],
       ['What is the cheapest Facebook Marketplace auto poster?',
-        'AutoLander has the lowest published entry price among dealer-focused tools at $39/mo. For a very small '
-        + 'number of posts, AutoBook.io’s pay-as-you-go free open beta (at the time of writing) can be cheaper. '
-        + 'For dealers posting inventory regularly on a flat monthly price, AutoLander’s $39/mo Starter is the '
-        + 'lowest published cost.'],
+        'There is no permanently cheapest option because plans and usage charges change. AutoLander publishes its '
+        + 'current Starter price at $39/mo, with 5 free posts and no credit card. Compare each vendor’s live price, '
+        + 'allowances, setup fees, AI credits and contract terms on the day you buy.'],
       ['Is there a contract or commitment?',
-        'No. Both AutoLander plans are billed month-to-month with no annual contract and no enterprise lock-in. '
-        + 'You can cancel anytime, and the pricing is published and self-serve rather than quote-based.'],
+        'No annual contract is required. Monthly billing is available, or you can choose annual billing for a '
+        + 'lower monthly equivalent. Pricing is published rather than hidden behind a sales quote.'],
       ['What is included in each plan?',
-        'Starter ($39/mo) is built for an individual rep: automatic posting to Facebook Marketplace, '
-        + 'AI-enhanced photos and listings that stay current. Pro ($79/mo) adds the team features for a '
-        + 'dealership, including a live manager dashboard to see posting and activity across the team. Both '
-        + 'include 5 free posts to start and are month-to-month with no credit card up front.'],
+        'Starter ($39/mo) supports 5 posts/day, Growth ($59/mo) supports 10, and Pro ($79/mo) supports 20, '
+        + 'with increasing AI and support allowances. The Dealer Plan starts at three seats, allows any tier mix, '
+        + 'and adds the live manager dashboard, team presence and attribution analytics.'],
     ],
     cta: {
       heading: 'See AutoLander plans & book a demo',
@@ -191,8 +196,7 @@ export const PAGES = [
     relatedHeading: 'Keep comparing & exploring',
     schema: {
       software: SOFTWARE_DESC,
-      // faq auto-derived from page.faq by the renderer; SoftwareApplication already nests an Offer at $39 —
-      // do NOT add a standalone Offer here.
+      // The renderer deliberately holds SoftwareApplication schema until genuine review data exists.
     },
   },
 ];

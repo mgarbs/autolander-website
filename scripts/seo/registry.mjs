@@ -16,6 +16,7 @@ export const NAV = {
   compareHub: { key: 'compareHub',path: '/compare/',                                  anchor: 'Best Facebook Marketplace auto-posting tools (2026 comparison)' },
   integHub:   { key: 'integHub',  path: '/integrations/',                             anchor: 'Facebook Marketplace integrations & DMS feeds' },
   guide:      { key: 'guide',     path: '/guide/facebook-marketplace-automation/',    anchor: 'Guide: Facebook Marketplace automation (the honest version)' },
+  sellGuide:  { key: 'sellGuide', path: '/guide/how-to-sell-cars-on-facebook-marketplace/', anchor: 'How to sell cars on Facebook Marketplace' },
   inventory:  { key: 'inventory', path: '/facebook-marketplace-inventory-sync/',      anchor: 'Facebook Marketplace inventory sync & feed' },
   bulk:       { key: 'bulk',      path: '/bulk-post-cars-to-facebook-marketplace/',   anchor: 'Bulk post cars to Facebook Marketplace' },
   safety:     { key: 'safety',    path: '/safest-facebook-marketplace-auto-poster/',  anchor: 'Safest Facebook Marketplace auto poster' },
@@ -55,7 +56,7 @@ export function relatedFor(pageKey, opts = {}) {
   const N = NAV;
   switch (pageKey) {
     case 'category':
-      return [L(N.aiTools), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.dealers), L(N.fbListing), L(N.inventory), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide)];
+      return [L(N.aiTools), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.dealers), L(N.sellGuide), L(N.fbListing), L(N.inventory), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide)];
     case 'inventory':
       return [L(N.listingSw), L(N.bulk), L(N.integHub), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
     case 'bulk':
@@ -72,12 +73,12 @@ export function relatedFor(pageKey, opts = {}) {
     case 'fbListing':
       return [L(N.listingSw), L(N.category), L(N.dealers), L(N.inventory), L(N.compareHub), L(N.pricing), L(N.guide)];
     case 'dealers':
-      return [L(N.category), L(N.listingSw), L(N.bulk), L(N.inventory), L(N.safety), L(N.compareHub), L(N.pricing)];
+      return [L(N.sellGuide), L(N.category), L(N.listingSw), L(N.bulk), L(N.inventory), L(N.safety), L(N.compareHub), L(N.pricing)];
     // ---- educational hub (aiTools) pushes DOWN to every commercial page; commercial pages link up + across ----
     case 'aiTools':
       return [L(N.category), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.fbListing), L(N.dealers), L(N.bulk), L(N.inventory), L(N.compareHub)];
     case 'automation':
-      return [L(N.category), L(N.aiTools), L(N.assistant), L(N.autoposter), L(N.bulk), L(N.safety), L(N.guide), L(N.compareHub), L(N.pricing)];
+      return [L(N.category), L(N.aiTools), L(N.assistant), L(N.autoposter), L(N.bulk), L(N.safety), L(N.guide), L(N.sellGuide), L(N.compareHub), L(N.pricing)];
     case 'assistant':
       return [L(N.category), L(N.aiTools), L(N.listingSw), L(N.automation), L(N.autoposter), L(N.compareHub), L(N.pricing)];
     case 'autoposter':
@@ -87,7 +88,7 @@ export function relatedFor(pageKey, opts = {}) {
       return [L(N.integHub), L(N.inventory), L(N.bulk), L(N.category), L(N.compareHub), L(N.pricing)];
     }
     default:
-      return [L(N.category), L(N.compareHub), L(N.integHub), L(N.guide)];
+      return [L(N.category), L(N.compareHub), L(N.integHub), L(N.guide), L(N.sellGuide)];
   }
 }
 

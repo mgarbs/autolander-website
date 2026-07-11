@@ -90,11 +90,14 @@ function sitemapXml() {
   const competitorSlugs = Object.values(COMPETITORS).map((c) => c.slug);
   const urls = [
     { loc: SITE.origin + '/', pri: '1.0', freq: 'weekly' },
+    { loc: SITE.origin + '/terms.html', pri: '0.3', freq: 'yearly' },
+    { loc: SITE.origin + '/privacy.html', pri: '0.3', freq: 'yearly' },
     { loc: SITE.origin + NAV.category.path, pri: '0.9', freq: 'weekly' },
     { loc: SITE.origin + NAV.listingSw.path, pri: '0.9', freq: 'weekly' },
     { loc: SITE.origin + '/compare/', pri: '0.9', freq: 'weekly' },
     { loc: SITE.origin + NAV.integHub.path, pri: '0.8', freq: 'monthly' },
     { loc: `${SITE.origin}/${GUIDE.path}/`, pri: '0.8', freq: 'monthly' },
+    { loc: SITE.origin + NAV.sellGuide.path, pri: '0.9', freq: 'weekly' },
     { loc: SITE.origin + NAV.inventory.path, pri: '0.8', freq: 'monthly' },
     { loc: SITE.origin + NAV.bulk.path, pri: '0.8', freq: 'monthly' },
     { loc: SITE.origin + NAV.safety.path, pri: '0.8', freq: 'monthly' },

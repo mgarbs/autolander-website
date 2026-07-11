@@ -19,11 +19,10 @@ const SOFTWARE_DESC =
 export const PAGES = [
   {
     key: 'inventory',
-    title: 'Facebook Marketplace Inventory Sync for Car Dealers | AutoLander',
+    title: 'Facebook Marketplace Inventory Sync for Car Dealers',
     description:
-      'Facebook Marketplace inventory sync that keeps your listings matched to your live lot — auto-posts new '
-      + 'arrivals, updates prices when your feed changes, and removes sold units automatically. Connect a '
-      + 'CarGurus, Cars.com or custom feed (incl. your dealership website). From $39/mo, 5 free posts.',
+      'Keep Facebook Marketplace matched to your live lot: auto-post new arrivals, update prices and remove '
+      + 'sold units. From $39/mo with 5 free posts.',
     ogType: 'website',
     eyebrow: 'For car dealers & sales reps',
     h1: 'Facebook Marketplace inventory sync',
@@ -32,7 +31,7 @@ export const PAGES = [
       'Facebook Marketplace inventory sync keeps your Marketplace listings automatically matched to your live '
       + 'lot — instead of editing posts by hand. AutoLander pulls vehicles, photos and prices from your '
       + 'CarGurus, Cars.com or custom feed, posts new arrivals as new VINs appear, updates a listing when its '
-      + 'feed price changes, and takes a listing down the moment the feed marks the car sold. Plans from $39/mo '
+      + 'feed price changes, and removes a listing on the next reconciliation after the feed marks the car sold. Plans from $39/mo '
       + 'with 5 free posts.',
     softwareDesc: SOFTWARE_DESC,
     breadcrumbs: [
@@ -85,7 +84,7 @@ export const PAGES = [
         cards: [
           { title: 'New arrivals post automatically', body: 'When a new VIN appears in your feed, AutoLander posts it to Marketplace — photos, price and description included — so fresh inventory goes live without anyone creating the listing by hand.' },
           { title: 'Price updates flow through', body: 'When a vehicle’s feed price changes, its Marketplace listing updates to match. No stale prices, and no buyers arriving expecting last week’s number.' },
-          { title: 'Automatic sold-unit removal', body: 'The moment your feed marks a car sold, AutoLander takes the listing down — so buyers never message about a car that is already gone.' },
+          { title: 'Automatic sold-unit removal', body: 'When your feed marks a car sold, AutoLander removes the matching listing during reconciliation, reducing stale-listing inquiries.' },
           { title: 'Listing details stay in step', body: 'Mileage, photos and descriptions are pulled from the feed, so an edit in your system flows through to Marketplace instead of being re-typed.' },
         ],
       },
@@ -96,7 +95,7 @@ export const PAGES = [
         steps: [
           { title: 'Connect your feed', body: 'Point AutoLander at your CarGurus or Cars.com feed, or a custom feed/export from your dealership website, DMS or inventory provider. Your vehicles load automatically.' },
           { title: 'Map and enhance', body: 'AutoLander reads each vehicle’s details and photos from the feed and builds an accurate listing — with showroom-grade photos and a clear description, ready for Marketplace.' },
-          { title: 'Post and reconcile', body: 'New arrivals post from your own computer at a human-like pace, and existing listings are reconciled against the feed so the Marketplace lot matches your real lot.' },
+          { title: 'Post and reconcile', body: 'Eligible new arrivals move through a configurable posting queue on your own computer, and existing listings are reconciled against the feed so Marketplace reflects the vehicles you have listed.' },
           { title: 'Stay accurate on autopilot', body: 'On every sync, price changes flow through, new VINs get posted, and sold units come down — so your dealership website to Facebook Marketplace pipeline runs without manual edits.' },
         ],
       },
@@ -141,13 +140,12 @@ export const PAGES = [
       },
       {
         type: 'callout',
-        title: 'Sync depends on a feed, and on account health',
+        title: 'Sync depends on a current feed and an eligible account',
         body: 'Inventory sync is only as current as the feed behind it — if your feed updates daily, your '
           + 'Marketplace listings track it daily. AutoLander supports CarGurus, Cars.com and custom feeds/exports '
-          + '(named DMS and website systems connect via a custom export — see the integrations page). And because '
-          + 'automating a personal Facebook profile is a gray area no matter the tool, AutoLander keeps your '
-          + 'session on your own machine as a deliberate account-health choice — but no honest vendor can promise '
-          + 'you will never be flagged.',
+          + '(named dealer inventory and website systems connect via a custom export — see the integrations page). '
+          + 'Meta controls Marketplace eligibility, categories and listing limits. AutoLander can reconcile the '
+          + 'listings an account is eligible to create, but it cannot unlock access, raise a limit or guarantee approval.',
       },
     ],
     faq: [
@@ -156,13 +154,13 @@ export const PAGES = [
       ['How often does AutoLander sync my Marketplace listings?',
         'AutoLander reconciles your listings against your feed on a recurring basis, so new arrivals, price changes and sold units flow through automatically. How current your listings are depends on how often your feed itself updates — a feed that refreshes daily keeps Marketplace tracking daily.'],
       ['Does AutoLander remove sold cars from Facebook Marketplace automatically?',
-        'Yes. When your feed marks a vehicle sold, AutoLander takes the matching Marketplace listing down automatically — so buyers never message about a car that is already gone, and your team stops chasing dead leads.'],
+        'Yes. When your feed marks a vehicle sold, AutoLander removes the matching Marketplace listing during its next reconciliation. That reduces stale-listing inquiries without promising a zero-lag update.'],
       ['Can AutoLander post from my dealership website to Facebook Marketplace?',
         'Yes, if your website can produce an inventory feed or scheduled export. AutoLander uses that feed as the source for your listings, then posts new arrivals, updates prices and removes sold units to keep Marketplace matched to your site.'],
       ['What about a DMS like vAuto or CDK — is it a direct integration?',
         'Not a named one-click integration. AutoLander ingests inventory from systems like vAuto or CDK via a custom feed/export from that platform, then runs the same sync — new arrivals, price updates and automatic sold-removal. The integrations page covers the specific systems and how they connect.'],
       ['Does inventory sync also bulk post my existing lot?',
-        'Inventory sync keeps your listings accurate over time; for the first push of your existing inventory, AutoLander does an initial bulk post of your whole lot from the feed. After that, the sync takes over — posting new arrivals, updating prices and removing sold units.'],
+        'Inventory sync keeps eligible listings accurate over time. AutoLander first loads the inventory feed into a managed queue; after that, reconciliation handles eligible new arrivals, price updates and sold-unit removal. Meta account access and listing limits still apply.'],
     ],
     cta: {
       heading: 'Keep your Marketplace listings in sync automatically',

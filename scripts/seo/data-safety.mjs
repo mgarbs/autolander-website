@@ -2,7 +2,7 @@
 // category: "safest facebook marketplace auto poster", "...without getting banned",
 // "facebook marketplace account safety", "native desktop app". Tone mirrors GUIDE/SESSION_FAQ
 // in compare-data.mjs: honest, fair, NON-GUARANTEE. This page MUST NOT promise safety from bans.
-// The most compliant route is Meta's official dealer inventory/catalog listings.
+// The safest policy posture is manual use within Meta's current terms, eligibility rules and limits.
 //
 // Written to the page-object contract in scripts/seo/shell.mjs.
 
@@ -12,29 +12,27 @@ const canonical = SITE.origin + NAV.safety.path;
 
 const SOFTWARE_DESC =
   'AutoLander is a native desktop app that auto-posts car dealership inventory to Facebook '
-  + 'Marketplace from your own computer and your normal Facebook session — not a browser extension '
-  + 'and not a cloud server operating your login — to lower common technical triggers for Meta '
-  + 'security reviews, without ever guaranteeing your account will not be flagged.';
+  + 'Marketplace from your own computer and normal Facebook session, with a configurable queue and '
+  + 'local session storage. Meta account eligibility, listing limits and enforcement still apply.';
 
 export const PAGES = [
   {
     key: 'safety',
-    title: 'Safest Facebook Marketplace Auto Poster? The Honest Answer | AutoLander',
+    title: 'Safest Facebook Marketplace Auto Poster? | AutoLander',
     description:
-      'An honest look at the safest way to auto-post to Facebook Marketplace for car dealers. Why a '
-      + 'native desktop app lowers common technical ban triggers, what actually gets accounts flagged, '
-      + 'and the questions to ask any vendor. No tool can promise you won’t be banned — here’s the real picture.',
+      'Compare Facebook Marketplace auto-poster safety models, account risks and warning signs. Learn why no '
+      + 'automation tool can guarantee against bans.',
     ogType: 'article',
     eyebrow: 'Account safety, honestly',
     h1: 'The safest way to use a Facebook Marketplace auto poster',
     bylineUpdated: true,
     tldr:
-      'There is no Facebook Marketplace auto poster that is guaranteed safe — automating a personal '
-      + 'profile is a gray area no matter which tool you use, and the most compliant route is Meta’s '
-      + 'official dealer inventory/catalog listings. Among tools that automate a personal profile, a '
-      + 'native desktop app like AutoLander lowers common technical triggers because it posts from your '
-      + 'own computer and IP through your normal session — not a browser extension, and not a cloud server '
-      + 'logging in from datacenter IPs. That reduces risk; it cannot promise you won’t be flagged.',
+      'No Facebook Marketplace auto poster can guarantee account safety or listing approval. Meta’s Terms '
+      + 'prohibit accessing or collecting data from its products through automated means without prior '
+      + 'permission, and Marketplace eligibility, features and limits can change by account or market. '
+      + 'AutoLander is a native desktop app with local session storage and a configurable posting queue, '
+      + 'but that architecture does not create Meta permission or override Meta’s rules. Review the '
+      + '[current dealer posting guide](/guide/how-to-sell-cars-on-facebook-marketplace/) before using any tool.',
     softwareDesc: SOFTWARE_DESC,
     breadcrumbs: [
       { name: 'Home', url: SITE.origin + '/' },
@@ -54,48 +52,42 @@ export const PAGES = [
         type: 'qa',
         q: 'What is the safest way to auto-post to Facebook Marketplace?',
         a: [
-          'The most compliant route is not a third-party auto poster at all — it is Meta’s official dealer '
-          + 'inventory route: vehicle catalog/inventory listings published through an approved Marketplace '
-          + 'partner or a sanctioned DMS integration. That is the path Meta actually built for dealers, so it '
-          + 'carries the least account-safety risk. If that route fits your dealership, it is the honest answer '
-          + 'to "safest."',
-          'Everything else is a gray area. Any tool that automates a personal Facebook profile — whether it is '
-          + 'a browser extension, a cloud service, or a native desktop app — is automating something Marketplace '
-          + 'was built for individuals to do by hand. We are not going to pretend otherwise. Many dealers run '
-          + 'personal-profile automation successfully, but it is not officially sanctioned, and Meta’s policies '
-          + 'can change. So the real question is not "which tool is safe" but "which tool keeps my risk lowest '
-          + 'while I do this." On that narrower question, the architecture of the tool matters a great deal.',
+          'The lowest-risk answer is manual posting that follows Meta’s current Terms, Marketplace eligibility '
+          + 'rules and account-specific limits. Meta’s Terms prohibit automated access or data collection without '
+          + 'prior permission. A vendor cannot turn an unapproved workflow into an approved one simply by calling '
+          + 'it a desktop app, integration or dealer tool.',
+          'If you evaluate automation, verify what the product does, where credentials and session data are stored, '
+          + 'whether Meta has granted permission for the exact workflow, and what controls let you stop or review '
+          + 'activity. AutoLander cannot guarantee safety, approval or continued access. Our '
+          + '[dealer posting guide](/guide/how-to-sell-cars-on-facebook-marketplace/) explains the current limits '
+          + 'and a practical manual-review workflow.',
         ],
       },
       {
         type: 'qa',
-        q: 'Why a native desktop app is a deliberate account-safety choice',
+        q: 'What does AutoLander’s native desktop architecture change?',
         a: [
           'AutoLander is a native desktop app, which means it posts from your own computer, through your normal '
-          + 'Facebook session, on your own internet connection and IP address. It is not a browser extension, so '
-          + 'it does not ask for the sensitive permissions an extension needs to read and act inside your browser. '
-          + 'And it does not operate your login from a shared cloud server — your session is never stored on, or '
-          + 'driven from, someone else’s datacenter infrastructure.',
-          'That distinction is the whole point. Logins from datacenter IPs, sudden location changes, and '
-          + 'high-frequency automation run from the cloud are a well-documented trigger for Meta security reviews. '
-          + 'Keeping the session on your own machine and IP means the activity looks far more like a normal person '
-          + 'using Facebook from one consistent place — which lowers those specific technical triggers. To be clear, '
-          + 'this is a risk-reduction choice, not a safety guarantee. It removes some of the patterns Meta’s '
-          + 'automated systems flag; it does not make automating a personal profile compliant or invisible, and '
-          + 'how you operate the tool still matters as much as the tool itself.',
+          + 'Facebook session, with session data kept locally rather than operated from AutoLander’s cloud. It also '
+          + 'uses a configurable queue so the dealer can choose which eligible vehicles are prepared for posting.',
+          'Those are product-architecture facts, not claims of Meta approval. A local session, queue setting or '
+          + 'posting schedule does not bypass Meta limits, grant API access or guarantee that a listing or account '
+          + 'will remain available. Dealers remain responsible for confirming eligibility and following the terms '
+          + 'and limits shown in their own Marketplace account.',
         ],
       },
       {
         type: 'bullets',
-        h2: 'What actually gets a dealer’s account flagged or banned',
-        intro: 'Bans usually come from a pattern of signals, not the mere existence of a tool. The common triggers:',
+        h2: 'Facebook Marketplace account-safety checks for car dealers',
+        intro: 'Use this policy-first checklist before posting vehicles or enabling any automation:',
         items: [
-          'Datacenter-IP and sudden-location logins — your account suddenly signing in from a cloud server, a different state, or a brand-new device instead of your usual computer and connection.',
-          'Volume spikes — going from zero to 200 listings overnight on a cold or low-history profile, which looks nothing like organic human behavior.',
-          'Posting too fast — firing listings back-to-back with no human-like pacing or gaps between them.',
-          'Duplicate or bot-sounding listings — near-identical, templated, or obviously machine-written posts repeated across vehicles.',
-          'Insecure credential handling — handing your Facebook password to a third party, or storing your session somewhere it can be reused from another machine or IP.',
-          'The cascade risk: the profile running automation is often the same one that admins your Business Manager and ad accounts — so if that profile gets restricted, you can lose Marketplace and jeopardize your ad accounts at the same time. Isolating the automating profile from the one that runs your ads is one of the highest-value precautions you can take.',
+          'Read Meta’s current Terms and Marketplace Help Center guidance; features, eligibility and limits can vary or change.',
+          '[Meta says Marketplace is intended for consumers](https://www.facebook.com/help/1968285150185577) and that businesses that list there may be blocked or have listings removed. Confirm permission for the dealership’s exact workflow.',
+          'Meta’s Help Center currently says sellers may create up to 5 new Vehicles listings per calendar month and 20 new listings total per calendar month. The limits shown in your account control.',
+          'Confirm that every vehicle is eligible and that its price, mileage, condition, availability and photos are accurate before publishing.',
+          'Do not share your Facebook password with a vendor. Ask exactly where credentials, cookies and session data are stored and how access is revoked.',
+          'Treat claims such as “ban-proof,” “100% safe” or “Meta-approved” as unverified unless the vendor can document Meta’s permission for the exact workflow.',
+          'Keep a person responsible for reviewing queued vehicles, monitoring account notices and stopping the workflow if Meta changes access or requirements.',
         ],
       },
       {
@@ -103,53 +95,50 @@ export const PAGES = [
         title: 'What AutoLander can and cannot promise',
         body: 'AutoLander cannot and does not guarantee that you will not be banned or restricted — no honest '
           + 'vendor can, and anyone claiming "100% safe," "ban-proof," or "Meta-approved" personal-profile '
-          + 'automation is overstating it. What AutoLander does is reduce the common technical triggers above by '
-          + 'posting from your own computer and IP, through your normal session, at a human-like pace. The rest '
-          + 'comes down to how you operate: ramp your volume gradually, keep listings accurate and varied, remove '
-          + 'sold units promptly, and keep automation off the profile that admins your ad accounts.',
+          + 'automation should provide evidence of permission for the exact workflow. AutoLander keeps its session '
+          + 'local and provides queue controls, but it cannot override Meta’s account eligibility, monthly listing '
+          + 'limits, review decisions or policy enforcement. Dealers must review and follow the rules shown by Meta.',
       },
       {
         type: 'bullets',
         h2: 'Questions to ask any Facebook Marketplace vendor',
         intro: 'Before you trust any tool with your dealership’s Facebook account, get straight answers to these:',
         items: [
-          'Where is my Facebook session stored, and which IP addresses log in to my account — my own computer and IP, or your datacenter servers?',
-          'Do you use an official Meta API and the sanctioned dealer catalog route, or unofficial automation of a personal profile? Be skeptical of "100% Meta-approved" claims attached to personal-profile automation.',
-          'What happens to my account if your servers get flagged, rate-limited, or blocked by Meta? Does my exposure depend on other customers’ behavior?',
-          'Do you ever store my Facebook password, and how is it protected? Can my session be replayed from a machine that isn’t mine?',
+          'What exact actions does the product perform, and has Meta granted permission for that specific automated workflow?',
+          'Where are my Facebook credentials, cookies and session data stored, and how can I revoke access?',
+          'How does the product respond when my account reaches a listing limit, loses Marketplace eligibility or receives a review notice?',
+          'Can I review, pause and remove vehicles from the queue before any Marketplace action occurs?',
           'If I cancel, do my listings and account access stay intact, or do they disappear with the subscription?',
-          'How do you pace posting and ramp volume, and can I control it — or does it blast my whole inventory at once?',
+          'Does the vendor clearly state that it cannot override Meta limits or guarantee account safety and listing approval?',
         ],
       },
       {
         type: 'qa',
         q: 'So is AutoLander the "safest" Facebook Marketplace auto poster?',
         a: [
-          'Among tools that automate a personal Facebook profile, AutoLander’s native-desktop-app model is built '
-          + 'to keep your risk lower than a browser extension (which needs broad permissions) or a cloud service '
-          + '(which logs in from datacenter IPs and runs your account from its own servers). That is a real, '
-          + 'deliberate account-health advantage — and you can see how the session model differs tool-by-tool in '
-          + 'our comparison.',
-          'But "safest" is a relative term, and we will not stretch it into a guarantee. The genuinely safest route '
-          + 'is Meta’s official dealer catalog. If you choose to automate a personal profile, a native app plus '
-          + 'sensible operating habits is the lower-risk way to do it — and our honest automation guide walks '
-          + 'through exactly how to lower that risk further.',
+          'AutoLander’s native-desktop model keeps session data on the dealer’s machine and provides a configurable '
+          + 'vehicle queue. That may be useful when comparing product architecture, but it is not evidence that Meta '
+          + 'has approved the workflow and it does not make AutoLander categorically safer than every alternative.',
+          'The safest policy posture is manual use within Meta’s current rules. If you choose software, verify '
+          + 'permission, protect credentials, review every queued vehicle and stop when your account reaches its '
+          + 'limit or loses eligibility. Read the '
+          + '[current dealer posting guide](/guide/how-to-sell-cars-on-facebook-marketplace/) for the full checklist.',
         ],
       },
     ],
     faq: [
       ['Is there a Facebook Marketplace auto poster that is 100% safe from bans?',
-        'No — and any vendor that claims to be "100% safe," "ban-proof," or "Meta-approved" while automating a personal Facebook profile is overstating it. Automating a personal profile is a gray area no matter which tool you use. The only route Meta actually sanctions for dealers is official vehicle inventory/catalog listings through an approved partner or DMS integration. Among personal-profile automation tools, you can lower your risk, but you cannot eliminate it.'],
+        'No. No vendor can guarantee account safety, continued Marketplace eligibility or listing approval. Meta’s Terms prohibit unauthorized automated access, and Meta can change product features, limits and enforcement. Ask for evidence before accepting any claim that a workflow is Meta-approved.'],
       ['Will AutoLander get my Facebook account banned?',
-        'AutoLander cannot guarantee that it won’t — no honest tool can. What it does is reduce the common technical triggers for Meta security reviews: it posts from your own computer and IP through your normal session (not a browser extension, and not a cloud server logging in from datacenter IPs), at a human-like pace. The rest depends on how you operate — ramping volume gradually, keeping listings accurate and varied, removing sold units, and keeping automation off the profile that admins your ad accounts.'],
+        'AutoLander cannot guarantee that your account will not be restricted or that a listing will be approved. It keeps session data locally and uses a configurable vehicle queue, but those architecture choices do not create Meta permission or override account eligibility, listing limits or enforcement.'],
       ['Is a cloud tool or a desktop app safer for Facebook Marketplace posting?',
-        'Neither is automatically safer — it depends on the architecture. Cloud tools run your account 24/7 from their own servers and often log in from datacenter IPs, a documented flag trigger, and store your session on their infrastructure. A native desktop app posts from your own machine and IP, which lowers those specific triggers, but it requires your computer to stay on and it is still automation of a personal profile. Ask any vendor where your session is stored and which IPs log in to your account.'],
+        'Neither architecture is automatically safe or approved. A cloud service and a desktop app store and operate session data differently, so ask where credentials and cookies are kept and how access is revoked. Regardless of architecture, Meta’s terms, eligibility rules and account-specific limits still apply.'],
       ['Is automating Facebook Marketplace against the rules?',
-        'It is a gray area. Marketplace was built for individuals, and Meta offers a sanctioned dealer route via official vehicle inventory/catalog listings through approved partners and DMS integrations — that is the compliant path. Automating posts from a personal profile, by any tool, is common and many dealers do it successfully, but it is not officially sanctioned and Meta’s policies can change.'],
+        'Meta’s Terms prohibit accessing or collecting data from its products using automated means without prior permission. Whether a particular workflow is permitted depends on Meta’s permission and current product rules; a vendor’s marketing claim is not proof. Review Meta’s current terms before using any automation.'],
       ['Why does a native desktop app lower ban risk versus a browser extension?',
-        'A browser extension needs sensitive permissions to read and act inside your browser, and it can break with any browser update. A native desktop app posts directly from your own computer through your normal session without those broad extension permissions. It does not eliminate risk — it is still automating a personal profile — but it removes one category of permission exposure and keeps the session on your own machine and IP.'],
+        'A native desktop app and a browser extension use different technical architectures and permissions. AutoLander keeps its session data on the dealer’s machine, but we do not claim that this guarantees lower ban risk. Meta’s permission, eligibility rules, listing limits and enforcement apply regardless of architecture.'],
       ['What is the single most important thing I can do to protect my dealership’s Facebook account?',
-        'Isolate automation from the profile that admins your Business Manager and ad accounts. The most damaging outcome isn’t losing one Marketplace listing — it’s a cascade where a restricted personal profile takes your ad accounts down with it. Beyond that: post from your own IP at a human-like pace, ramp volume gradually instead of overnight, keep listings accurate and varied, and remove sold units promptly.'],
+        'Follow Meta’s current Terms and the eligibility and limits displayed in the account. Keep credentials private, verify every vehicle’s accuracy, review queued activity, monitor Meta notices and stop if access or requirements change. AutoLander cannot override those rules or guarantee account safety.'],
     ],
     cta: {
       heading: 'Want the native-app approach?',

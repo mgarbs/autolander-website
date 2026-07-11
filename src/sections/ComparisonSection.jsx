@@ -1,12 +1,12 @@
 import { Check, X } from 'lucide-react';
 
 const ROWS = [
-  { label: 'Time per vehicle', manual: '13 minutes', auto: '2 minutes' },
-  { label: 'Vehicles per hour', manual: '~4', auto: <>30 &mdash; 6.5&times; faster</> },
-  { label: 'Descriptions', manual: 'Copy-paste', auto: 'AI-optimized' },
-  { label: 'Photos', manual: 'Random order', auto: 'Front-view first' },
-  { label: 'Sold units', manual: 'Stay listed', auto: 'Auto-removed' },
-  { label: 'Attribution', manual: 'None', auto: 'Post-to-sale tracking' },
+  { label: 'Vehicle data', manual: 'Re-enter each field', auto: 'Mapped from your feed' },
+  { label: 'Descriptions', manual: 'Write or copy-paste', auto: 'AI draft for review' },
+  { label: 'Photos', manual: 'Sort one by one', auto: 'AI-assisted ordering' },
+  { label: 'Sold units', manual: 'Check and remove', auto: 'Feed reconciliation' },
+  { label: 'Attribution', manual: 'Spreadsheet or guesswork', auto: 'Post-to-sale tracking' },
+  { label: 'Meta limits', manual: 'Account rules apply', auto: 'The same rules apply' },
 ];
 
 export default function ComparisonSection() {
@@ -18,7 +18,7 @@ export default function ComparisonSection() {
             MANUAL VS. <span className="text-blue-500">AUTOLANDER</span>
           </h2>
           <p className="text-lg font-medium italic text-slate-400">
-            Stop burning time on grunt work. Focus on closing deals while AI handles the rest.
+            Reduce repetitive inventory work so your team can focus on accurate listings, buyer follow-up, and sales.
           </p>
         </div>
 

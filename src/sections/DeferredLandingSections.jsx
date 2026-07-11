@@ -8,7 +8,6 @@ import {
   Layout,
   PlayCircle,
   RefreshCw,
-  Sparkles,
   TrendingUp,
   Wand2,
 } from 'lucide-react';
@@ -207,7 +206,7 @@ export default function DeferredLandingSections({
               <Step 
                 number="01" 
                 title="Connect Feed" 
-                desc="Connect your website, DMS, custom feeds, CarGurus, or Cars.com inventory source. Your entire inventory (100-200+ units) syncs automatically with all specs and features."
+                desc="Connect your website, dealer inventory system, custom feed, CarGurus, or Cars.com. AutoLander maps the available vehicle fields into one inventory workflow for review."
               />
             </FadeIn>
             <FadeIn delay={0.2}>
@@ -220,8 +219,8 @@ export default function DeferredLandingSections({
             <FadeIn delay={0.3}>
               <Step 
                 number="03" 
-                title="Start Auto Sales" 
-                desc="Hit 'Start' and AutoLander posts your inventory to Marketplace. Add AI background replacement (5-10 credits / vehicle) for showroom-quality photos."
+                title="Review & Run"
+                desc="Choose eligible vehicles, review the listing fields, then run the queue within the access and limits shown by Meta. AI background replacement is optional."
               />
             </FadeIn>
           </div>
@@ -244,42 +243,42 @@ export default function DeferredLandingSections({
               <FeatureCard 
                 icon={RefreshCw}
                 title="Automatic Sync"
-                desc="Sync hundreds of vehicles from your website, DMS, custom feeds, CarGurus, or Cars.com automatically. VIN, price, trim, and specs are always 100% accurate."
+                desc="Load hundreds of vehicles from your website, dealer inventory system, custom feeds, CarGurus, or Cars.com. VIN, price, trim, and specs map from the source feed for your team to review."
               />
             </FadeIn>
             <FadeIn delay={0.2} direction="up">
               <FeatureCard
                 icon={Wand2}
                 title="AI Posting & Photo Studio"
-                desc="Our AI fetches photos, generates descriptions, and posts to Marketplace — all automatically. Optionally enable AI background replacement (5-10 credits / vehicle) for studio-quality results."
+                desc="AutoLander fetches source photos, drafts descriptions, and manages the eligible posting queue. Optional AI background replacement uses 5-10 credits per vehicle."
               />
             </FadeIn>
             <FadeIn delay={0.3} direction="up">
               <FeatureCard
                 icon={RefreshCw}
                 title="Auto Updates"
-                desc="Listings stay accurate 24/7. Price drops, sold vehicles, and inventory changes sync automatically — no manual edits, no stale posts."
+                desc="While the desktop app is running, price changes, sold vehicles, and inventory updates reconcile automatically — reducing manual edits and stale posts."
               />
             </FadeIn>
             <FadeIn delay={0.4} direction="up">
               <FeatureCard 
                 icon={Activity}
-                title="Continuous Queue"
-                desc="Set it and forget it. AutoLander posts your inventory one-by-one with intelligent logic to maximize visibility."
+                title="Configurable Queue"
+                desc="Choose eligible vehicles, review their data, and control the queue while the desktop app is running. Meta account rules and limits still apply."
               />
             </FadeIn>
             <FadeIn delay={0.5} direction="up">
               <FeatureCard 
                 icon={Layout}
-                title="Zero Setup"
-                desc="No complex integrations. Just paste a URL, log into Facebook, and start selling more cars today."
+                title="Guided Setup"
+                desc="Connect a supported feed or dealer-authorized export, map the fields, review the inventory, and keep the workflow on your own computer."
               />
             </FadeIn>
             <FadeIn delay={0.6} direction="up">
               <FeatureCard 
                 icon={TrendingUp}
-                title="Lead Acceleration"
-                desc="Our AI-optimized listings are designed to rank higher and generate 30% more Messenger inquiries."
+                title="Listing Quality & Attribution"
+                desc="Use consistent fields, stronger creative, and post-to-sale reporting so your team can improve listings based on business outcomes."
               />
             </FadeIn>
           </div>
@@ -619,45 +618,40 @@ export default function DeferredLandingSections({
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Measurable workflow outcomes */}
       <section className="py-24 lg:py-40 bg-[#080808] border-y border-white/5">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 lg:mb-24">
             <FadeIn>
               <h2 className="font-display text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none text-white">
-                 DEALER <span className="text-blue-500">VOICES.</span>
+                 MEASURE WHAT <span className="text-blue-500">MATTERS.</span>
                </h2>
+              <p className="mx-auto max-w-3xl text-lg font-medium leading-relaxed text-slate-400">
+                Replace vague activity claims with an inventory workflow your team can inspect and business outcomes your manager can review.
+              </p>
             </FadeIn>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                quote: "We sold 10 more cars last month straight from Marketplace leads. AutoLander has already paid for itself many times over.",
-                author: "Mike Thompson",
-                role: "General Manager, City Ford"
+                title: "Inventory accuracy",
+                body: "Compare source data with the eligible listings in your queue, then reconcile price and sold-unit changes while the desktop app is running."
               },
               {
-                quote: "I used to spend my entire morning manual posting to Facebook. Now it's all automated. It's the best investment we make for our digital presence.",
-                author: "Sarah Jenkins",
-                role: "Internet Director, Elite Motors"
+                title: "Team execution",
+                body: "See which vehicles are prepared, queued, completed, or need review instead of depending on a salesperson's private checklist."
               },
               {
-                quote: "Our Marketplace leads turned into real sales — we're moving units that used to sit for weeks. Easily the best ROI in our marketing stack.",
-                author: "David Chen",
-                role: "Owner, DC Auto Group"
+                title: "Post-to-sale attribution",
+                body: "Connect Marketplace activity to sold inventory so managers can evaluate outcomes instead of relying on views or unsupported ROI promises."
               }
             ].map((t, i) => (
               <FadeIn key={i} delay={i * 0.1} direction="up">
-                <div className="p-10 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all flex flex-col h-full italic">
-                  <div className="flex gap-1 mb-6">
-                    {[1,2,3,4,5].map(s => <Sparkles key={s} className="w-3 h-3 text-blue-500" />)}
-                  </div>
-                  <p className="text-slate-400 font-medium mb-8 flex-grow leading-relaxed">"{t.quote}"</p>
-                  <div>
-                    <p className="text-white font-black uppercase tracking-tight">{t.author}</p>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.role}</p>
-                  </div>
+                <div className="p-10 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-blue-500/30 transition-all flex flex-col h-full">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">0{i + 1}</p>
+                  <h3 className="mt-5 text-xl font-black uppercase italic tracking-tight text-white">{t.title}</h3>
+                  <p className="mt-4 text-slate-400 font-medium flex-grow leading-relaxed">{t.body}</p>
                 </div>
               </FadeIn>
             ))}
@@ -680,12 +674,12 @@ export default function DeferredLandingSections({
 
           <div className="space-y-6">
             {[
-              { q: "Will this get my Facebook account banned?", a: "Very unlikely. AutoLander stays within Meta's guidelines and posts natural, dealer-style listings with human-like behavior — built-in delays and thoughtful pacing that mimic real activity — and never uses ToS-violating browser extensions. That combination keeps account health high and significantly reduces the risk of flags or restrictions." },
-              { q: "Which inventory feeds do you work with?", a: "Paste your inventory feed or DMS and we extract every vehicle's data, photos, and specs automatically. We work with CarGurus and Cars.com out of the box, plus custom feeds from most dealership websites and DMS providers." },
-              { q: "How fast can I get live?", a: "Most dealers have their first 20–30 vehicles live on Marketplace in under 15 minutes. Connect your inventory, pick the vehicles, hit post — the AI handles descriptions and photo ordering." },
+              { q: "Will this get my Facebook account banned?", a: "No software can guarantee that a Facebook account will never be restricted. Meta's terms prohibit automated access without prior permission, and Marketplace eligibility and listing limits can change. AutoLander keeps session data on your own computer and provides queue controls, but those choices do not create Meta approval. Review our policy and safety guide and the rules shown in your account before posting." },
+              { q: "Which inventory feeds do you work with?", a: "CarGurus and Cars.com are directly supported feed sources. Other dealer inventory and website systems may connect through a dealer-authorized custom feed/export in a supported format; confirm the format and delivery method with us before buying." },
+              { q: "How fast can I get live?", a: "Setup time depends on the source format, field mapping, photo quality, inventory review, and the access shown in the Facebook account. We can verify the feed path during a demo; actual publishing remains subject to Meta's permission, eligibility, and listing limits." },
               { q: "How does the AI Photo Studio work?", a: "Optional background replacement uses AI Studio credits (5–10 per vehicle). The AI classifies every photo, leaves interiors and closeups alone, and replaces the background on full-exterior shots. Walkaround videos are 20 credits each. Every plan includes welcome credits, and you can buy more in-app." },
-              { q: "Do I need any technical skills?", a: "Zero. If you can copy a URL and click a button, you can run AutoLander. It's built for busy sales teams who want to sell cars, not manage software." },
-              { q: "Can I cancel anytime?", a: "Yes — month-to-month, no contracts, zero penalties. Try it on a live demo with up to 5 free posts, no credit card required. If it's not selling cars for you, walk away." }
+              { q: "Do I need any technical skills?", a: "No coding is required for a supported feed. A custom dealer-system export may still need provider authorization, format confirmation, and field mapping; we verify that path during setup before your team runs the queue." },
+              { q: "Can I cancel anytime?", a: "Yes — monthly plans are month-to-month with no annual contract required. You can test the workflow with up to 5 free posts and no credit card, then cancel a monthly subscription if it is not a fit." }
             ].map((faq, i) => (
               <FadeIn key={i} delay={i * 0.1} direction="up">
                 <div className="p-8 rounded-3xl bg-white/[0.03] border border-white/5">
@@ -786,6 +780,7 @@ export function LandingFooter() {
               <a href="/compare/" className="block py-1 hover:text-blue-500 transition-colors">All Tools</a>
               <a href="/compare/autobook/" className="block py-1 hover:text-blue-500 transition-colors">vs AutoBook</a>
               <a href="/compare/shiftly/" className="block py-1 hover:text-blue-500 transition-colors">vs Shiftly</a>
+              <a href="/guide/how-to-sell-cars-on-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">How to Sell Cars</a>
               <a href="/guide/facebook-marketplace-automation/" className="block py-1 hover:text-blue-500 transition-colors">Automation Guide</a>
               <a href="/facebook-ai-tools/" className="block py-1 hover:text-blue-500 transition-colors">AI Tools</a>
               <a href="/facebook-listing-software/" className="block py-1 hover:text-blue-500 transition-colors">Facebook Listing</a>

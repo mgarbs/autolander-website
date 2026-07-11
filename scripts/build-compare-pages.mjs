@@ -54,14 +54,9 @@ const questionsToAsk = (c) => {
 
 const orgLd = {
   '@context': 'https://schema.org', '@type': 'Organization', name: 'AutoLander',
-  url: SITE.origin + '/', logo: SITE.origin + '/autolander-logo.png',
+  legalName: 'AutoLander LLC', url: SITE.origin + '/', logo: SITE.origin + '/autolander-logo.png',
+  email: 'sales@autolander.ai',
 };
-const softwareLd = (desc) => ({
-  '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: 'AutoLander',
-  applicationCategory: 'BusinessApplication', operatingSystem: 'Windows, macOS, Linux',
-  url: SITE.origin + '/', description: desc,
-  offers: { '@type': 'Offer', price: String(SITE.lowPrice), priceCurrency: 'USD' },
-});
 const articleLd = (title, canonical) => ({
   '@context': 'https://schema.org', '@type': 'Article',
   headline: title,
@@ -173,6 +168,11 @@ function siteFooter() {
     <a href="${SITE.origin}/" class="foot-brand"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
     <nav class="foot-links">
       <a href="/compare/">All comparisons</a>
+      <a href="/facebook-marketplace-auto-poster/">Auto poster</a>
+      <a href="/facebook-marketplace-automation/">Automation</a>
+      <a href="/facebook-marketplace-listing-software/">Listing software</a>
+      <a href="/facebook-marketplace-for-car-dealers/">For car dealers</a>
+      <a href="/guide/how-to-sell-cars-on-facebook-marketplace/">How to sell cars</a>
       <a href="${SITE.origin}/">AutoLander home</a>
       <a href="${SITE.origin}/#pricing">Pricing</a>
       <a href="/privacy.html">Privacy</a>
@@ -226,9 +226,8 @@ function sessionSection(competitor) {
       <h2>Where does your Facebook session live?</h2>
       <p>
         One of the biggest differences between these tools is <strong>where your Facebook login
-        actually runs</strong> &mdash; and that affects account health. Logins from datacenter IP
-        ranges and high-frequency cloud automation are a well-documented trigger for Meta security
-        reviews, and browser extensions require sensitive permissions to act on your account.
+        actually runs</strong>. That changes credential storage, permissions, uptime and revocation,
+        but it does not determine whether Meta has approved a workflow or guarantee account safety.
       </p>
       <div class="session-grid">
         <div class="session-card session-card--al">
@@ -246,9 +245,9 @@ function sessionSection(competitor) {
       <ul class="q-list">
         ${liList(questionsToAsk(competitor))}
       </ul>
-      <p class="session-note">We list delivery models as published facts and do not claim any tool
-      &ldquo;will get you banned.&rdquo; The right model is a judgment call &mdash; these questions
-      help you make it.</p>
+      <p class="session-note">We list delivery models as published facts and do not claim that any
+      architecture is automatically approved or safe. Ask for evidence of Meta permission for the
+      exact workflow before connecting an account.</p>
     </section>`;
 }
 
@@ -258,21 +257,20 @@ function renderVersus(competitor) {
   // Enriched <title>/<meta description> capture "{name} alternative / pricing / reviews" intent.
   // og*/twitter* are pinned to the ORIGINAL strings so the share preview is byte-identical.
   const ogTitle = `AutoLander vs ${c.name}: Which Is Better for Car Dealers? (2026)`;
-  const ogDescription = `AutoLander vs ${c.name} for car dealers — compare Facebook Marketplace automation, AI photos and video, account-safety model and pricing. ${c.name}: ${c.pricingShort}. AutoLander: from $39/mo.`;
-  const title = `Best ${c.name} Alternative for Car Dealers (2026) | AutoLander vs ${c.name}`;
-  const description = `Best ${c.name} alternative for car dealers — AutoLander vs ${c.name}: compare Facebook Marketplace automation, AI photos & video, account safety, pricing & reviews. ${c.name}: ${c.pricingShort}. AutoLander from $39/mo.`;
+  const ogDescription = `AutoLander vs ${c.name} for car dealers — compare Marketplace workflows, AI photos, session architecture and pricing. ${c.name}: ${c.pricingShort}. AutoLander: from $39/mo.`;
+  const title = `${c.name} Alternative for Dealers (2026) | AutoLander`;
+  const description = `${c.name} alternative for dealers: compare Facebook automation, AI photos, account safety `
+    + 'and pricing with AutoLander. From $39/mo.';
   const canonical = `${SITE.origin}/compare/${c.slug}/`;
   // Honest "{name} reviews" FAQ — points to the comparison + third-party sources, no fabricated ratings.
   const reviewsFaq = [
     `Where can I find honest ${c.name} reviews and comparisons?`,
-    `Rather than rely on a single review, compare ${c.name} against AutoLander and the other major Facebook Marketplace auto-posting tools for car dealers — on automation, AI photos and video, account-safety model and price — in our 2026 buyer's guide, and cross-check third-party reviews on G2, Capterra and the Chrome Web Store. ${c.name}: ${c.pricingShort}. AutoLander: from $39/mo, month-to-month, with 5 free posts.`,
+    `Rather than rely on a single review, compare ${c.name} against AutoLander and the other major Facebook Marketplace auto-posting tools for car dealers — on workflow depth, AI photos and video, session architecture and price — in our 2026 buyer's guide, and cross-check third-party reviews on G2, Capterra and the Chrome Web Store. ${c.name}: ${c.pricingShort}. AutoLander: from $39/mo, month-to-month, with 5 free posts.`,
   ];
   const faq = [...c.faq, EXTRA_FAQ[c.slug], reviewsFaq, SESSION_FAQ].filter(Boolean);
-  const desc = 'AutoLander automatically posts car dealership inventory to Facebook Marketplace from a native desktop app, with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution.';
-
   const jsonLdBlocks = [
     jsonld(articleLd(title, canonical)),
-    jsonld(softwareLd(desc)),
+    // SoftwareApplication is intentionally omitted until genuine review or aggregate-rating data exists.
     jsonld(faqLd(faq)),
     jsonld(breadcrumbLd([
       { name: 'Home', url: SITE.origin + '/' },
@@ -299,7 +297,10 @@ function renderVersus(competitor) {
       <ul class="related-list">
 ${siblingLinks}
         <li><a href="/compare/"><strong>All Facebook Marketplace tools for dealers &rarr;</strong></a></li>
+        <li><a href="/facebook-marketplace-auto-poster/">Facebook Marketplace auto poster for car dealers</a></li>
+        <li><a href="/facebook-marketplace-automation/">Facebook Marketplace automation software</a></li>
         <li><a href="/guide/facebook-marketplace-automation/">Guide: the dos &amp; don&#39;ts of Marketplace automation</a></li>
+        <li><a href="/guide/how-to-sell-cars-on-facebook-marketplace/">How to sell cars on Facebook Marketplace</a></li>
       </ul>
     </nav>`;
 
@@ -373,12 +374,10 @@ function renderHub() {
     "This is a vendor comparison published by AutoLander, so we have a point of view — but every competitor fact is taken from that provider's public information and each tool's genuine strengths are listed. Use it alongside third-party reviews on G2, Capterra and the Chrome Web Store to form your own view.",
   ];
   const faq = [...HUB.faq, reviewsFaq, SESSION_FAQ];
-  const desc = 'AutoLander automatically posts car dealership inventory to Facebook Marketplace from a native desktop app, with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution.';
-
   const ranked = [
     { name: 'AutoLander', slug: '', url: SITE.origin + '/', isAL: true,
-      oneLiner: 'Native desktop app that automates Marketplace end-to-end — AI Photo Studio, walkaround video, auto sold-removal and post-to-sale attribution, from $39/mo.',
-      bestFor: 'Dealers and individual reps who want the most automation and the best photos for the lowest entry price.',
+      oneLiner: 'Native desktop workflow with inventory sync, AI Photo Studio, walkaround video, sold-unit reconciliation and post-to-sale attribution, from $39/mo.',
+      bestFor: 'Dealers and reps comparing feed sync, AI creative, attribution, a native desktop architecture and published self-serve pricing.',
       pricingShort: 'From $39/mo' },
     ...HUB_ORDER.map((slug) => COMPETITORS[slug]),
   ];
@@ -394,7 +393,7 @@ function renderHub() {
     jsonld(articleLd(HUB.title, canonical)),
     jsonld(itemListLd),
     jsonld(definedTermSetLd()),
-    jsonld(softwareLd(desc)),
+    // SoftwareApplication is intentionally omitted until genuine review or aggregate-rating data exists.
     jsonld(faqLd(faq)),
     jsonld(breadcrumbLd([
       { name: 'Home', url: SITE.origin + '/' },
@@ -460,7 +459,13 @@ function renderHub() {
       ${HUB.context.map((p) => `<p>${esc(p)}</p>`).join('\n      ')}
     </section>
 
-    <p class="guidelink">New to automating Marketplace? Start with <a href="/guide/facebook-marketplace-automation/">our honest guide to the dos, don&#39;ts and account-safety risks &rarr;</a></p>
+    <section class="context">
+      <h2>Car dealership marketing software vs. Marketplace posting tools</h2>
+      <p>Car dealership marketing software is a broad category: CRM follow-up, paid media, website conversion, inventory merchandising and attribution may all be included. A Facebook Marketplace posting tool is narrower. It prepares vehicle listings, keeps inventory accurate and helps the sales team turn local Marketplace conversations into appointments.</p>
+      <p>Used-car dealership marketing software often prioritizes inventory turn and aged-unit visibility, while new-car dealership marketing software may emphasize OEM programs, co-op rules and campaign management. AutoLander is not a replacement for a full CRM or ad platform; it is the Marketplace execution layer. See the <a href="/facebook-marketplace-for-car-dealers/">dealer workflow</a> and <a href="/facebook-marketplace-auto-poster/">auto-poster overview</a> before comparing vendors.</p>
+    </section>
+
+    <p class="guidelink">New to Marketplace? Start with <a href="/guide/how-to-sell-cars-on-facebook-marketplace/">the practical dealer selling guide</a>, then read the <a href="/guide/facebook-marketplace-automation/">automation policy and safety guide &rarr;</a></p>
 
     <h2>The ranking</h2>
     <div class="ranks">
@@ -499,16 +504,16 @@ ${glanceRows}
 
     <section class="session">
       <h2>Where does your Facebook session live?</h2>
-      <p>Account safety is mostly about <strong>where your Facebook login actually runs</strong>.
-      Logins from datacenter IPs and high-frequency cloud automation are a documented trigger for
-      Meta security reviews, and browser extensions need sensitive permissions to act on your account.</p>
+      <p>Architecture affects <strong>credential handling, permissions, uptime and control</strong>, but it does
+      not decide whether a workflow is approved. Ask what accesses the account, where the session is stored,
+      how access is revoked and which Meta permission the vendor relies on.</p>
       <div class="session-grid session-grid--3">
         <div class="session-card session-card--al"><h3>Native app</h3><p><strong>AutoLander.</strong>
-          Posts from your own computer through your normal session. Nothing stored on a shared server.</p></div>
+          Runs from your own computer through your normal session; the computer must stay on.</p></div>
         <div class="session-card"><h3>Browser extension</h3><p>AutoBook.io, Shiftly. Runs in your
           browser with sensitive permissions.</p></div>
         <div class="session-card"><h3>Cloud-operated</h3><p>Sell With Drift, RelayAuto, CARVID,
-          Glo3D. Run your account from their servers (Drift advertises a 99.9% safety rate).</p></div>
+          Glo3D. Run account workflows from vendor-operated servers; any published safety rate is a vendor claim, not Meta approval.</p></div>
       </div>
       <p class="session-note">We list delivery models as published facts, not accusations. Ask any
       vendor where your session is stored and how it logs in.</p>
@@ -525,7 +530,7 @@ ${glanceRows}
       <h2>Frequently asked questions</h2>${faqHtml}
     </section>
 `,
-    ctaBlock('See why dealers rank AutoLander #1', 'Automatic posting, studio-grade photos and the best entry price — on your own inventory.'),
+    ctaBlock('Compare AutoLander on your own inventory', 'Automatic posting, studio-grade photos and published pricing from $39/mo.'),
     `    </article>
   </main>`,
     siteFooter(),
@@ -542,9 +547,9 @@ const SESSION_DIAGRAM = `<svg viewBox="0 0 960 400" role="img" aria-labelledby="
   <text x="480" y="45" text-anchor="middle" fill="#e2e8f0" font-family="Inter,sans-serif" font-size="16" font-weight="700">Your Facebook account</text>
   <path d="M480 64 L480 86 M150 86 L810 86 M150 86 L150 110 M480 86 L480 110 M810 86 L810 110" stroke="#ffffff" stroke-opacity="0.18" fill="none"/>
   ${[
-    { cx: 150, t: 'Browser extension', run: 'Your browser', ip: 'Your IP', w: ['Broad browser permissions;', 'breaks when FB changes its UI'] },
-    { cx: 480, t: 'Cloud tool', run: "The vendor's servers", ip: 'Datacenter IP', w: ['Session lives on their infra;', 'datacenter logins draw scrutiny'] },
-    { cx: 810, t: 'Native desktop app', run: 'Your computer', ip: 'Your IP', w: ['Your PC must stay on;', 'still automation, not an API'] },
+    { cx: 150, t: 'Browser extension', run: 'Your browser', ip: 'Your IP', w: ['Broad browser permissions;', 'UI changes can break workflows'] },
+    { cx: 480, t: 'Cloud tool', run: "The vendor's servers", ip: 'Vendor infrastructure', w: ['Session lives on their infra;', 'third-party access dependency'] },
+    { cx: 810, t: 'Native desktop app', run: 'Your computer', ip: 'Your IP', w: ['Your PC must stay on;', 'still automation, not approval'] },
   ].map((c) => {
     const x = c.cx - 140; const tx = x + 22;
     return `<g>
@@ -568,6 +573,9 @@ function compareClusterLinks() {
     .join('\n');
   return `      <ul class="related-list">
         <li><a href="/compare/"><strong>Best Facebook Marketplace tools for dealers (the full comparison) &rarr;</strong></a></li>
+        <li><a href="/guide/how-to-sell-cars-on-facebook-marketplace/">How to sell cars on Facebook Marketplace</a></li>
+        <li><a href="/facebook-marketplace-auto-poster/">Facebook Marketplace auto poster for car dealers</a></li>
+        <li><a href="/facebook-marketplace-automation/">Facebook Marketplace automation software</a></li>
 ${spokes}
       </ul>`;
 }
@@ -575,8 +583,6 @@ ${spokes}
 function renderGuide() {
   const canonical = `${SITE.origin}/${GUIDE.path}/`;
   const faq = [...GUIDE.faq, SESSION_FAQ];
-  const desc = 'AutoLander automatically posts car dealership inventory to Facebook Marketplace from a native desktop app, with an AI Photo Studio, walkaround video, automatic sold-removal and post-to-sale attribution.';
-
   const jsonLdBlocks = [
     jsonld(articleLd(GUIDE.title, canonical)),
     jsonld(faqLd(faq)),
@@ -585,7 +591,7 @@ function renderGuide() {
       { name: 'Facebook Marketplace automation guide', url: canonical },
     ])),
     jsonld(orgLd),
-    jsonld(softwareLd(desc)),
+    // SoftwareApplication is intentionally omitted until genuine review or aggregate-rating data exists.
   ];
 
   const faqHtml = faq.map(([q, a]) => `
@@ -606,22 +612,26 @@ function renderGuide() {
     `  <main class="wrap">
     <article>
     <p class="eyebrow">Dealer guide</p>
-    <h1>The honest guide to putting Facebook Marketplace on autopilot (without torching your account)</h1>
+    <h1>Facebook Marketplace automation policy and safety guide for car dealers</h1>
     <p class="byline">By the <a href="${SITE.origin}/">AutoLander</a> team &middot; Updated <time datetime="${SITE.updated}">${esc(SITE.updatedHumanOr())}</time></p>
     <div class="tldr"><p class="tldr-label">In short</p><p>${esc(GUIDE.summary)}</p></div>
 
-    <p class="prose">Facebook Marketplace is one of the highest-intent, lowest-cost places a dealer can put inventory &mdash; which is exactly why &ldquo;auto-posting&rdquo; tools have exploded. But most buying guides skip the part that actually matters: <strong>the risk lives in your account, not in the feature list.</strong> Here&rsquo;s a fair rundown of how this works, what&rsquo;s out there, and how to not learn the hard way.</p>
+    <p class="prose">Facebook Marketplace can put dealership inventory in front of local shoppers, which is why posting tools are attractive. The first comparison should not be a feature grid, though. It should be policy, permission, credential handling and what happens if Marketplace access changes.</p>
 
-    <h2>First, the part nobody likes to say out loud</h2>
-    <p class="prose">Facebook Marketplace was built for individuals, and Meta has a separate, sanctioned path for dealers: official vehicle inventory / catalog listings through approved Marketplace partners and DMS integrations. That route is the only one that&rsquo;s unambiguously within Meta&rsquo;s rules.</p>
-    <p class="prose">Everything else &mdash; automating posts from a personal profile, whether by extension, cloud, or desktop app &mdash; lives in a <strong>gray area</strong>. It&rsquo;s extremely common, lots of dealers do it successfully, but you should go in knowing it&rsquo;s automation of a personal profile, and Meta&rsquo;s Commerce Policies and Marketplace rules can change without notice. Anyone who tells you their tool is &ldquo;100% Meta-approved&rdquo; while auto-posting from your personal profile is overselling it. Fair is fair.</p>
+    <h2>Facebook Marketplace automation policy: what Meta says</h2>
+    <p class="prose">Meta&rsquo;s current <a href="https://www.facebook.com/legal/terms">Terms of Service</a> prohibit accessing or collecting data through automated means without prior permission. Marketplace also has account and category rules: Meta&rsquo;s Help Center currently documents <a href="https://www.facebook.com/help/811082570742714">monthly listing limits</a>, including five new listings in Vehicles and 20 total new Marketplace listings.</p>
+    <p class="prose">Business options are not static either. Meta says <a href="https://www.facebook.com/help/1968285150185577">Marketplace is intended for consumers and businesses that list may be blocked or have listings removed</a>. It also <a href="https://www.facebook.com/help/326913291370580">discontinued vehicle listings from business Pages</a> in major markets in 2023. A dealer should verify permission, current products and account eligibility instead of relying on an old workflow or a vendor&rsquo;s broad &ldquo;Meta-approved&rdquo; claim.</p>
+
+    <h2>Facebook Marketplace API, bot and n8n reality</h2>
+    <p class="prose">Do not assume there is a general public Facebook Marketplace API that permits bulk vehicle posting through a personal profile. A vendor claiming an official API should be able to name the exact Meta product, permission and eligible account type. &ldquo;API integration&rdquo; can also describe the inventory-feed side of a product, not permission to automate Marketplace itself.</p>
+    <p class="prose">Workflow tools such as n8n can coordinate approved work around inventory, CRM records or lead notifications, but they do not create permission to automate Marketplace, bypass a listing limit or operate a personal profile. The same applies to a bot, browser extension, cloud service or desktop app: architecture changes where the work runs; it does not rewrite Meta&rsquo;s rules. See the practical <a href="/guide/how-to-sell-cars-on-facebook-marketplace/">guide to selling cars on Facebook Marketplace</a> for the manual listing and follow-up workflow.</p>
 
     <h2>The four ways people do it (and the honest trade-offs)</h2>
     <ol class="prose ways">
-      <li><strong>Manual posting.</strong> Free, zero ToS risk, totally human. Also a soul-crushing time sink that doesn&rsquo;t scale past a handful of cars and dies the second your one &ldquo;Marketplace person&rdquo; quits.</li>
-      <li><strong>Browser extensions</strong> (e.g. tools like <a href="/compare/autobook/">AutoBook</a>, <a href="/compare/shiftly/">Shiftly&rsquo;s Auto Lister</a>, <a href="/compare/autolisterpro/">AutoLister Pro</a>). They drive your browser with your logged-in session. <em>Upside:</em> cheap, your own session and IP, nothing stored in someone else&rsquo;s cloud. <em>Risk:</em> they need broad browser permissions, they break whenever Facebook tweaks its UI, and browser automation is still automation in Meta&rsquo;s eyes.</li>
-      <li><strong>Cloud / SaaS tools</strong> (e.g. tools like <a href="/compare/drift/">Sell With Drift</a>, <a href="/compare/relayauto/">RelayAuto</a>, <a href="/compare/carvid/">CARVID</a>). Their servers run your account 24/7. <em>Upside:</em> truly hands-off, your computer doesn&rsquo;t need to be on, often the slickest dashboards. <em>Risk:</em> your Facebook session (and sometimes credentials) live on their infrastructure, and the login hits Facebook from datacenter IPs &mdash; one of the more common things that trips Meta&rsquo;s &ldquo;is this really you?&rdquo; detection. If their operation gets flagged, your account is in the blast radius.</li>
-      <li><strong>Native desktop apps.</strong> They post from your own machine and your normal session. <em>Upside:</em> your session and home/dealer IP, easier to mimic human pacing, nothing stored in a shared cloud. <em>Risk (being fair):</em> your computer has to actually be on and running, and it&rsquo;s still automation &mdash; it lowers the technical flag triggers, it doesn&rsquo;t make Marketplace automation officially sanctioned.</li>
+      <li><strong>Manual posting.</strong> No posting software touches the account, so it has the lowest automation risk. It still requires accurate listings, current eligibility and compliance with the limits shown for the account, and it becomes labor-intensive as inventory grows.</li>
+      <li><strong>Browser extensions</strong> (e.g. tools like <a href="/compare/autobook/">AutoBook</a>, <a href="/compare/shiftly/">Shiftly&rsquo;s Auto Lister</a>, <a href="/compare/autolisterpro/">AutoLister Pro</a>). They operate inside the logged-in browser. <em>Trade-off:</em> quick setup and a local session, but broad browser permissions, dependence on Facebook&rsquo;s interface and automation that still needs a policy basis.</li>
+      <li><strong>Cloud / SaaS tools</strong> (e.g. tools like <a href="/compare/drift/">Sell With Drift</a>, <a href="/compare/relayauto/">RelayAuto</a>, <a href="/compare/carvid/">CARVID</a>). Vendor infrastructure performs the work without the dealer computer staying on. <em>Trade-off:</em> convenient dashboards and continuous operation, but the vendor controls session storage, access security and availability.</li>
+      <li><strong>Native desktop apps.</strong> They operate from the dealer&rsquo;s own machine and session. <em>Trade-off:</em> the session stays local, but the computer must remain on and the workflow is still automation. A local session is an architectural choice, not Meta approval.</li>
     </ol>
 
     <figure class="diagram">
@@ -629,13 +639,13 @@ function renderGuide() {
       <figcaption>The real dividing line between these tools is <strong>where your Facebook session runs</strong> &mdash; and which IP addresses log in to your account.</figcaption>
     </figure>
 
-    <h2>What actually gets accounts flagged or banned</h2>
-    <p class="prose">Not &ldquo;using a tool&rdquo; by itself &mdash; it&rsquo;s the pattern:</p>
+    <h2>What can put a Marketplace account at risk</h2>
+    <p class="prose">Meta does not publish a complete enforcement formula. Practical risks include:</p>
     <ul class="prose">
-      <li>Logins from datacenter IPs or sudden new locations/devices</li>
-      <li>Volume spikes (zero to 200 listings overnight on a cold profile)</li>
-      <li>Posting too fast, or duplicate/near-duplicate listings that read as bot output</li>
-      <li>Handing your password to something that stores it insecurely</li>
+      <li>Unauthorized automated access or a workflow without the required permission</li>
+      <li>Exceeding the listing limits or eligibility shown for the account</li>
+      <li>Duplicate, misleading, prohibited or spam-like listings</li>
+      <li>Unusual security events, shared credentials or insecure session storage</li>
     </ul>
     <p class="prose">And the risk people underestimate most: <strong>the profile that runs your Marketplace automation is often the same personal profile that admins your Business Manager and ad accounts.</strong> If that profile gets restricted, you can lose Marketplace and jeopardize your paid ads at the same time. That cascade is the real worst case &mdash; protect that profile accordingly.</p>
 
@@ -643,9 +653,9 @@ function renderGuide() {
       <section class="card win">
         <h2>The DOs</h2>
         <ul>
-          <li><strong>Know the rules first.</strong> Read Meta&rsquo;s Commerce Policies and look into the official dealer inventory/catalog route before you automate anything.</li>
-          <li><strong>Isolate risk.</strong> Don&rsquo;t run aggressive automation on the exact profile that admins your ad accounts.</li>
-          <li><strong>Go gradual.</strong> Warm up a profile; ramp volume instead of blasting your whole lot on day one.</li>
+          <li><strong>Know the rules first.</strong> Read Meta&rsquo;s Terms, Commerce Policies and the current Marketplace help shown for the account.</li>
+          <li><strong>Confirm eligibility and limits.</strong> Software cannot create a vehicle category or posting permission the account does not have.</li>
+          <li><strong>Protect credentials.</strong> Ask who can access the session, where it is stored and how access is revoked.</li>
           <li><strong>Stay accurate.</strong> Real descriptions, correct prices, and remove sold units promptly.</li>
           <li><strong>Interrogate the vendor</strong> (see the questions below).</li>
           <li><strong>Diversify.</strong> Don&rsquo;t bet your whole lead flow on one channel you don&rsquo;t control.</li>
@@ -654,10 +664,10 @@ function renderGuide() {
       <section class="card dont">
         <h2>The DON&rsquo;Ts</h2>
         <ul>
-          <li><strong>Don&rsquo;t pick on price alone.</strong> A $99/mo tool that gets your account banned is the most expensive software you&rsquo;ll ever buy.</li>
+          <li><strong>Don&rsquo;t pick on price alone.</strong> Compare permissions, data handling, support and the actual inventory workflow.</li>
           <li><strong>Don&rsquo;t assume &ldquo;cloud = safer&rdquo; or &ldquo;extension = safer.&rdquo;</strong> It depends on the architecture.</li>
           <li><strong>Don&rsquo;t hand your main credentials to a black box.</strong> No straight answer on where your login is stored? That&rsquo;s your answer.</li>
-          <li><strong>Don&rsquo;t run datacenter-IP automation at high frequency.</strong> It&rsquo;s the single most common flag trigger.</li>
+          <li><strong>Don&rsquo;t treat pacing as permission.</strong> Slower automation is still automation and remains subject to Meta&rsquo;s terms.</li>
           <li><strong>Don&rsquo;t spam.</strong> Duplicate listings, rapid re-posts and bot-sounding copy are what Meta&rsquo;s systems are built to catch.</li>
         </ul>
       </section>
@@ -686,7 +696,7 @@ function renderGuide() {
     </section>
 
     <h2>The fair bottom line</h2>
-    <p class="prose">There&rsquo;s no risk-free way to fully automate a personal Facebook profile &mdash; the most compliant path is Meta&rsquo;s official dealer inventory route, and every automation tool is a trade-off between convenience and control. Pick based on <strong>where your session lives and how much you trust the vendor with your account</strong>, not the feature grid. The dealers who do this well treat their Facebook profile like the business asset it is.</p>
+    <p class="prose">There is no risk-free way to automate a personal Facebook profile. Start with the current Meta rules and products available to the account, then compare each tool&rsquo;s permissions, credential handling, session location, controls and support. Pick based on <strong>what the workflow is authorized to do and how much you trust the vendor with the account</strong>, not the feature grid alone.</p>
 
     <section class="take">
       <h2>Where we land (full disclosure)</h2>

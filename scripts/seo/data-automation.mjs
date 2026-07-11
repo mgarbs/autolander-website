@@ -19,9 +19,8 @@ export const PAGES = [
     key: 'automation',
     title: 'Facebook Marketplace Automation for Car Dealers | AutoLander',
     description:
-      'Automate Facebook Marketplace with AutoLander — a native desktop app that automatically posts your '
-      + 'dealership inventory, refreshes prices, removes sold cars and enhances every photo. Facebook '
-      + 'Marketplace automation software from $39/mo, 5 free posts, no credit card.',
+      'Facebook Marketplace automation for car dealers: auto-post inventory, update prices, remove sold cars '
+      + 'and enhance photos. From $39/mo, 5 free posts.',
     ogType: 'website',
     eyebrow: 'For car dealers & sales reps',
     h1: 'Facebook Marketplace automation for car dealers',
@@ -29,7 +28,7 @@ export const PAGES = [
     tldr:
       'Facebook Marketplace automation is software that runs your Marketplace listings for you — posting your '
       + 'whole inventory, refreshing prices, and removing sold units automatically instead of by hand. AutoLander '
-      + 'is a native desktop app that automates all of it at a human-like pace, and enhances every photo with an '
+      + 'is a native desktop app with a configurable posting queue, and enhances every photo with an '
       + 'AI Photo Studio. Plans from $39/mo with 5 free posts.',
     softwareDesc: SOFTWARE_DESC,
     breadcrumbs: [
@@ -63,11 +62,11 @@ export const PAGES = [
       {
         type: 'steps',
         h2: 'What AutoLander automates on Facebook Marketplace',
-        intro: 'Connect your feed once and the whole Marketplace workflow runs itself.',
+        intro: 'Connect your feed once; while the desktop app is running, it handles the repetitive inventory workflow.',
         steps: [
-          { title: 'Auto-post your inventory', body: 'AutoLander reads your CarGurus or Cars.com feed (or a custom feed/export) and posts every vehicle to Marketplace at a human-like pace — see [bulk posting](/bulk-post-cars-to-facebook-marketplace/).' },
+          { title: 'Auto-post your inventory', body: 'AutoLander reads your CarGurus or Cars.com feed (or a custom feed/export) and works through eligible vehicles with a configurable posting queue — see [bulk posting](/bulk-post-cars-to-facebook-marketplace/).' },
           { title: 'Auto-enhance every listing', body: 'The AI Photo Studio swaps lot backgrounds for showroom backdrops, AI writes each description, and a walkaround video is generated per vehicle.' },
-          { title: 'Auto-refresh and auto-remove', body: 'Prices update as your feed changes and sold units come down automatically via [inventory sync](/facebook-marketplace-inventory-sync/) — nothing stale stays up.' },
+          { title: 'Refresh and reconcile', body: 'Prices update as your feed changes and sold units are removed during [inventory sync](/facebook-marketplace-inventory-sync/), reducing stale-listing inquiries.' },
           { title: 'Measure it', body: 'Post-to-sale attribution shows which automated listings actually sold cars, not just views.' },
         ],
       },
@@ -77,28 +76,27 @@ export const PAGES = [
         h2: 'Why dealers automate Facebook Marketplace with AutoLander',
         items: [
           'It automates the whole loop — post, enhance, refresh, remove — not just the initial post.',
-          'It is a native desktop app: automation runs through your own Facebook session on your machine, not a shared cloud server, and with no ToS-exposed browser extension.',
-          'It paces posting to look human, a deliberate account-safety choice — see the [safest auto poster](/safest-facebook-marketplace-auto-poster/) page.',
+          'It is a native desktop app: the session stays on your machine rather than a shared cloud server, and no browser extension is required.',
+          'It gives dealers configurable queue and pacing controls; those controls organize work but do not create Meta approval or override listing limits.',
           'It is honestly priced: published self-serve plans from $39/mo with 5 free posts, no contract.',
         ],
       },
       {
         type: 'callout',
-        title: 'Automating a personal profile is a gray area',
-        body: 'Be clear-eyed: Marketplace was built for individuals and Meta’s sanctioned dealer route is the '
-          + 'vehicle catalog. Automating a personal profile — with any tool — is common but not officially blessed, '
-          + 'and policies can change. AutoLander lowers technical triggers by pacing and keeping your session local, '
-          + 'but no honest vendor can promise you will never be flagged. Read the full '
-          + '[honest automation guide](/guide/facebook-marketplace-automation/) before you start.',
+        title: 'Automation requires a policy check',
+        body: 'Meta’s Terms prohibit unauthorized automated access, and Marketplace eligibility, listing limits '
+          + 'and business products can change. Keeping a session local is an architectural choice, not Meta '
+          + 'approval. Read the full [automation policy and safety guide](/guide/facebook-marketplace-automation/) '
+          + 'and confirm the rules shown for the account before you start.',
       },
     ],
     faq: [
       ['Can you automate Facebook Marketplace posting for a whole dealership?',
-        'Yes. AutoLander automates posting your entire inventory from a feed, then keeps it in sync — new VINs auto-post and sold units auto-remove. A 150-car lot stays current on Marketplace without manual re-posting. See [bulk posting](/bulk-post-cars-to-facebook-marketplace/).'],
+        'AutoLander can load an entire inventory feed, build a configurable queue of eligible vehicles and keep published listings in sync as prices and availability change. Meta controls Marketplace access and listing limits, so software cannot promise that a 150-car lot can be live at once. See [bulk posting](/bulk-post-cars-to-facebook-marketplace/).'],
       ['How much does Facebook Marketplace automation software cost?',
         'AutoLander publishes self-serve plans from $39/mo with 5 free posts and no credit card. Competing tools run roughly $99–$249/mo, some on custom quotes. See the [pricing page](/facebook-marketplace-auto-poster-pricing/).'],
       ['Is automating Facebook Marketplace against the rules?',
-        'It is a gray area. Automating a personal profile — by any tool — is common but not sanctioned; Meta’s official dealer route is the vehicle catalog. AutoLander reduces obvious technical triggers by pacing posts and keeping your session on your own machine, but treat that as risk reduction, not a guarantee. See the [automation guide](/guide/facebook-marketplace-automation/).'],
+        'Meta’s Terms prohibit unauthorized automated access, while eligibility and business products vary by account and market. AutoLander’s local desktop architecture is not Meta approval and cannot guarantee access. See the [automation policy and safety guide](/guide/facebook-marketplace-automation/).'],
       ['What is the difference between this and the automation guide?',
         'This page is about the automation software itself — what AutoLander automates and what it costs. The [automation guide](/guide/facebook-marketplace-automation/) is the honest deep-dive on whether and how to automate Marketplace safely. Read both.'],
       ['Does the automation also improve my photos and descriptions?',

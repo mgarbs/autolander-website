@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const distDir = join(process.cwd(), 'dist');
@@ -30,12 +30,20 @@ function inlineAppStyles(htmlPath) {
 }
 
 inlineAppStyles(indexPath);
-copyFileSync(indexPath, fallbackPath);
+const appShell = readFileSync(indexPath, 'utf8');
+const noindexShell = appShell
+  .replace(/\s*<link rel="canonical" href="https:\/\/autolander\.ai\/" \/>/, '')
+  .replace('    <meta name="description"', '    <meta name="robots" content="noindex, nofollow, noarchive" />\n    <meta name="description"');
+
+// GitHub Pages serves 404.html for dynamic SPA paths such as /pay/:token and
+// referral links. These utility/customer-specific routes must never compete
+// with the public marketing pages in search.
+writeFileSync(fallbackPath, noindexShell, 'utf8');
 mkdirSync(adminDir, { recursive: true });
-copyFileSync(indexPath, adminIndexPath);
+writeFileSync(adminIndexPath, noindexShell, 'utf8');
 // Same trick for the bare /pay route (self-serve picker). /pay/:token deep
 // links still rely on the 404.html SPA-fallback above — GitHub Pages can't
 // pre-generate a page per token — but the exact /pay path gets this same
 // zero-redirect shell the /admin path already has.
 mkdirSync(payDir, { recursive: true });
-copyFileSync(indexPath, payIndexPath);
+writeFileSync(payIndexPath, noindexShell, 'utf8');

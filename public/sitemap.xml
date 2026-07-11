@@ -2,193 +2,211 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://autolander.ai/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://autolander.ai/terms.html</loc>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://autolander.ai/privacy.html</loc>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://autolander.ai/facebook-marketplace-auto-poster/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://autolander.ai/facebook-marketplace-listing-software/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://autolander.ai/compare/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/guide/facebook-marketplace-automation/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/</loc>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://autolander.ai/facebook-marketplace-inventory-sync/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/bulk-post-cars-to-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/safest-facebook-marketplace-auto-poster/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/facebook-marketplace-auto-poster-pricing/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/facebook-marketplace-for-car-dealers/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/facebook-listing-software/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/facebook-ai-tools/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/facebook-marketplace-automation/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://autolander.ai/facebook-marketplace-assistant/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/facebook-autoposter/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://autolander.ai/compare/autobook/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/compare/shiftly/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/compare/relayauto/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/compare/drift/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/compare/carvid/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/compare/glo3d/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/compare/autolisterpro/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/cargurus-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/cars-com-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/vauto-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/dealercenter-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/dealer-com-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/homenet-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/frazer-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/cdk-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://autolander.ai/integrations/tekion-facebook-marketplace/</loc>
-    <lastmod>2026-06-28</lastmod>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
