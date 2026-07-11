@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { CheckCircle, Gift, Loader2, Percent, RefreshCw, Search, Sparkles } from 'lucide-react';
+import { CalendarDays, CheckCircle, Gift, Loader2, Percent, RefreshCw, Search, Sparkles } from 'lucide-react';
 import {
   SUPPORT_ADJUSTMENTS_SETUP_NOTE,
   canDiscount,
+  canScheduleBillingDate,
   candidateLabel,
   candidatePeople,
   formatCents,
@@ -11,6 +12,7 @@ import {
   grantSupportCredits,
   isSupportAdjustmentsNotConfigured,
   issueSupportDiscount,
+  scheduleNextBillingDate,
   searchSupportCandidates,
   subscriptionSummary,
 } from './lib/support-adjustments.js';
@@ -36,6 +38,10 @@ export default function SupportAdjustments() {
   const [discountNote, setDiscountNote] = useState(DEFAULT_DISCOUNT_NOTE);
   const [discountPending, setDiscountPending] = useState(false);
   const [discountMessage, setDiscountMessage] = useState(null);
+
+  const [nextBillingDate, setNextBillingDate] = useState('');
+  const [billingDatePending, setBillingDatePending] = useState(false);
+  const [billingDateMessage, setBillingDateMessage] = useState(null);
 
   useEffect(() => {
     const q = query.trim();
@@ -72,6 +78,8 @@ export default function SupportAdjustments() {
     setSelected(candidate);
     setCreditMessage(null);
     setDiscountMessage(null);
+    setBillingDateMessage(null);
+    setNextBillingDate(firstSafeBillingDate(candidate));
   }
 
   async function submitCredits(event) {
@@ -139,6 +147,49 @@ export default function SupportAdjustments() {
     }
   }
 
+  async function submitBillingDate(event) {
+    event.preventDefault();
+    const subscriptionId = selected?.subscription?.stripeSubscriptionId;
+    if (!subscriptionId || billingDatePending) return;
+    if (!nextBillingDate) {
+      setBillingDateMessage({ type: 'error', text: 'Choose the date normal monthly billing should resume.' });
+      return;
+    }
+    if (!canScheduleBillingDate(selected)) {
+      setBillingDateMessage({
+        type: 'error',
+        text: 'This account needs an active, uncancelled monthly Stripe subscription. Complex subscriptions must be adjusted in Stripe.',
+      });
+      return;
+    }
+
+    setBillingDatePending(true);
+    setBillingDateMessage(null);
+    try {
+      const response = await scheduleNextBillingDate({ subscriptionId, nextBillingDate });
+      const scheduleId = response?.scheduleId;
+      const updated = {
+        ...selected,
+        subscription: {
+          ...selected.subscription,
+          ...(scheduleId ? { stripeScheduleId: scheduleId } : {}),
+        },
+      };
+      setSelected(updated);
+      setCandidates((rows) => rows.map((row) => (row.orgId === updated.orgId ? updated : row)));
+      setBillingDateMessage({
+        type: 'success',
+        text: response?.nextBillingAt
+          ? `Current renewal waived. Normal monthly billing resumes ${formatDateTime(response.nextBillingAt)}.`
+          : 'Current renewal waived. Normal monthly billing will resume on the selected date.',
+      });
+    } catch (err) {
+      setBillingDateMessage({ type: 'error', text: friendlyAdjustmentError(err) });
+    } finally {
+      setBillingDatePending(false);
+    }
+  }
+
   if (unavailable) {
     return (
       <section className="rounded-2xl border border-white/10 bg-white/[0.03]">
@@ -148,7 +199,7 @@ export default function SupportAdjustments() {
           </span>
           <div>
             <h2 className="text-sm font-black uppercase italic tracking-tight text-white">Support Adjustments</h2>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Credits and next-month discounts</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Credits, billing dates, and next-month discounts</p>
           </div>
         </div>
         <div className="p-5">
@@ -170,7 +221,7 @@ export default function SupportAdjustments() {
           <div>
             <h2 className="text-sm font-black uppercase italic tracking-tight text-white">Support Adjustments</h2>
             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-              Credits and next-month discounts
+              Credits, billing dates, and next-month discounts
             </p>
           </div>
         </div>
@@ -184,6 +235,8 @@ export default function SupportAdjustments() {
             setSearchError('');
             setCreditMessage(null);
             setDiscountMessage(null);
+            setNextBillingDate('');
+            setBillingDateMessage(null);
           }}
           className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-[10px] font-black uppercase tracking-widest text-slate-300 transition hover:text-white"
         >
@@ -270,6 +323,50 @@ export default function SupportAdjustments() {
                     <Summary label="Subscription" value={subscriptionSummary(selected)} />
                   </div>
                 </div>
+
+                <form onSubmit={submitBillingDate} className="space-y-3 border-t border-white/10 pt-4">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                    <CalendarDays size={14} />
+                    Next Billing Date
+                  </div>
+                  <p className="text-xs leading-relaxed text-slate-400">
+                    Waives the current renewal once, then resumes normal monthly billing on your selected date. The account
+                    stays active — it does not enter a free-trial state.
+                  </p>
+                  {selected?.subscription?.currentPeriodEnd && (
+                    <p className="rounded-lg border border-blue-400/20 bg-blue-400/[0.06] px-3 py-2 text-xs font-bold text-blue-100">
+                      Current Stripe renewal: {formatDateTime(selected.subscription.currentPeriodEnd)}
+                    </p>
+                  )}
+                  <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
+                    <label className="space-y-1.5">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">Resume billing on</span>
+                      <input
+                        required
+                        type="date"
+                        min={firstSafeBillingDate(selected) || undefined}
+                        value={nextBillingDate}
+                        onChange={(event) => setNextBillingDate(event.target.value)}
+                        disabled={!canScheduleBillingDate(selected) || billingDatePending}
+                        className="h-10 w-full rounded-xl border border-white/10 bg-black/40 px-3 text-sm font-bold text-white outline-none focus:border-blue-500/60 disabled:cursor-not-allowed disabled:opacity-50"
+                      />
+                    </label>
+                    <button
+                      type="submit"
+                      disabled={billingDatePending || !canScheduleBillingDate(selected)}
+                      className="mt-auto inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-[10px] font-black uppercase italic tracking-tight text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {billingDatePending ? <Loader2 size={14} className="animate-spin" /> : <CalendarDays size={14} />}
+                      Schedule Date
+                    </button>
+                  </div>
+                  {!canScheduleBillingDate(selected) && (
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-600">
+                      Active, uncancelled monthly Stripe subscription required
+                    </span>
+                  )}
+                  <Message message={billingDateMessage} />
+                </form>
 
                 <form onSubmit={submitCredits} className="space-y-3">
                   <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
@@ -383,4 +480,27 @@ function Message({ message }) {
 function makeIdempotencyKey(prefix) {
   if (window.crypto?.randomUUID) return `${prefix}-${window.crypto.randomUUID()}`;
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function toDate(value) {
+  if (value === undefined || value === null || value === '') return null;
+  if (typeof value === 'number') {
+    const millis = value < 10000000000 ? value * 1000 : value;
+    const date = new Date(millis);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function firstSafeBillingDate(candidate) {
+  const end = toDate(candidate?.subscription?.currentPeriodEnd);
+  if (!end) return '';
+  end.setUTCDate(end.getUTCDate() + 1);
+  return end.toISOString().slice(0, 10);
+}
+
+function formatDateTime(value) {
+  const date = toDate(value);
+  return date ? date.toLocaleString() : 'the current renewal date';
 }

@@ -45,7 +45,7 @@ export async function recreateBillingLink(id) {
 }
 
 export function normalizeBillingLinkList(payload) {
-  const rows = firstArray(payload, ['links', 'checkoutRequests', 'results', 'rows']);
+  const rows = firstArray(payload, ['requests', 'links', 'checkoutRequests', 'results', 'rows']);
   return rows.map(normalizeBillingLinkRow).filter((row) => row.id);
 }
 
@@ -69,7 +69,11 @@ export function normalizeBillingLinkRow(row) {
 }
 
 export function normalizeBillingLinkDetail(payload) {
-  const record = payload?.checkoutRequest && typeof payload.checkoutRequest === 'object' ? payload.checkoutRequest : payload;
+  const record = payload?.request && typeof payload.request === 'object'
+    ? payload.request
+    : payload?.checkoutRequest && typeof payload.checkoutRequest === 'object'
+      ? payload.checkoutRequest
+      : payload;
   const events = firstArray(payload, ['billingEvents', 'events']);
   const stripeEvents = firstArray(payload, ['stripeEvents', 'stripeEventRecords']);
   return {

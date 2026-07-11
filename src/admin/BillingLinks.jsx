@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   BadgeCheck,
   Ban,
+  Building2,
   CheckCircle,
   Copy,
   ExternalLink,
@@ -9,9 +10,11 @@ import {
   Loader2,
   RefreshCw,
   RotateCcw,
+  Search,
   Wallet,
+  X,
+  Zap,
 } from 'lucide-react';
-import { ApiError } from './lib/api.js';
 import {
   BILLING_LINKS_SETUP_NOTE,
   PLAN_CHOICES,
@@ -25,6 +28,8 @@ import {
   payUrlForToken,
   recreateBillingLink,
 } from './lib/billing-links.js';
+import SubscriptionLinkGenerator from './SubscriptionLinkGenerator.jsx';
+import { candidateSubscriptionSummary, isOpsNotConfigured, searchCandidates } from './lib/ops.js';
 
 const EMPTY_FORM = {
   planCode: 'STARTER',
@@ -67,6 +72,7 @@ export default function BillingLinks() {
   const [createMessage, setCreateMessage] = useState(null);
   const [createPending, setCreatePending] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [selectedOrg, setSelectedOrg] = useState(null);
 
   const [links, setLinks] = useState([]);
   const [listLoading, setListLoading] = useState(true);
@@ -108,18 +114,32 @@ export default function BillingLinks() {
     setForm((current) => ({ ...current, ...patch }));
   }
 
-  function ghlIdsProvided(values) {
-    return Boolean(values.ghlContactId.trim() || values.ghlOpportunityId.trim());
+  function ghlIds(values) {
+    const contactId = values.ghlContactId.trim();
+    const opportunityId = values.ghlOpportunityId.trim();
+    return {
+      hasAny: Boolean(contactId || opportunityId),
+      hasBoth: Boolean(contactId && opportunityId),
+    };
   }
 
   async function submitCreate(event) {
     event.preventDefault();
     if (createPending) return;
 
-    if (!ghlIdsProvided(form) && !form.notCrmLinked) {
+    const ghl = ghlIds(form);
+    if (ghl.hasAny && !ghl.hasBoth) {
       setCreateMessage({
         type: 'error',
-        text: 'Enter a GHL Contact ID (or Opportunity ID), or check "Not CRM-linked" to confirm this is intentional.',
+        text: 'GHL-linked links need both a Contact ID and an Opportunity ID.',
+      });
+      return;
+    }
+
+    if (!ghl.hasBoth && !form.notCrmLinked) {
+      setCreateMessage({
+        type: 'error',
+        text: 'Enter both GHL IDs, or check "Not CRM-linked" to confirm this is intentional.',
       });
       return;
     }
@@ -135,19 +155,20 @@ export default function BillingLinks() {
         billingInterval: form.billingInterval,
         ...(form.planCode === 'PRO_TEAM'
           ? {
-              seatCounts: {
-                starter: Number(form.seatsStarter) || 0,
-                growth: Number(form.seatsGrowth) || 0,
-                pro: Number(form.seatsPro) || 0,
+              seats: {
+                seatsStarter: Number(form.seatsStarter) || 0,
+                seatsGrowth: Number(form.seatsGrowth) || 0,
+                seatsPro: Number(form.seatsPro) || 0,
               },
             }
           : {}),
         ...(form.couponId.trim() ? { couponId: form.couponId.trim() } : {}),
-        setupFee: form.setupFee,
+        withSetupFee: form.setupFee,
+        ...(selectedOrg?.orgId ? { orgId: selectedOrg.orgId } : {}),
         ...(form.ghlContactId.trim() ? { ghlContactId: form.ghlContactId.trim() } : {}),
         ...(form.ghlOpportunityId.trim() ? { ghlOpportunityId: form.ghlOpportunityId.trim() } : {}),
         ...(form.assignedSalesRepId.trim() ? { assignedSalesRepId: form.assignedSalesRepId.trim() } : {}),
-        notCrmLinked: !ghlIdsProvided(form) && form.notCrmLinked,
+        notCrmLinked: !ghl.hasBoth && form.notCrmLinked,
         crmSnapshot: {
           ...(form.crmEmail.trim() ? { email: form.crmEmail.trim() } : {}),
           ...(form.crmPhone.trim() ? { phone: form.crmPhone.trim() } : {}),
@@ -208,7 +229,7 @@ export default function BillingLinks() {
     setActionPending('recreate');
     try {
       const response = await recreateBillingLink(id);
-      const newId = response?.checkoutRequest?.id || response?.id;
+      const newId = response?.request?.id || response?.checkoutRequest?.id || response?.id;
       loadLinks();
       if (newId) await openDetail(newId);
     } catch (err) {
@@ -234,6 +255,12 @@ export default function BillingLinks() {
           <p className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm font-bold text-amber-200">
             {BILLING_LINKS_SETUP_NOTE}
           </p>
+          <details className="mt-4 rounded-xl border border-white/10 bg-black/20">
+            <summary className="cursor-pointer list-none px-5 py-4 text-xs font-black uppercase tracking-widest text-slate-400 marker:content-none hover:text-white">
+              Advanced: custom-price Stripe checkout (legacy, not CRM-linked)
+            </summary>
+            <SubscriptionLinkGenerator embedded />
+          </details>
         </div>
       </section>
     );
@@ -384,7 +411,12 @@ export default function BillingLinks() {
                 />
               </label>
             </div>
-            {!ghlIdsProvided(form) && (
+            {ghlIds(form).hasAny && !ghlIds(form).hasBoth && (
+              <p className="text-[10px] font-bold uppercase tracking-widest text-amber-300">
+                A CRM-linked payment link requires both IDs so the billing record stays tied to the right opportunity.
+              </p>
+            )}
+            {!ghlIds(form).hasAny && (
               <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-amber-300">
                 <input
                   type="checkbox"
@@ -398,7 +430,9 @@ export default function BillingLinks() {
           </div>
 
           <div className="space-y-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">CRM snapshot (what the CRM says — never overwritten by billing input)</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+              CRM snapshot (reference only — billing never writes back to GoHighLevel)
+            </p>
             <div className="grid gap-4 md:grid-cols-3">
               <label className="space-y-2">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Email</span>
@@ -452,6 +486,8 @@ export default function BillingLinks() {
             </div>
           </div>
 
+          <AccountAttachment selectedOrg={selectedOrg} onSelect={setSelectedOrg} onClear={() => setSelectedOrg(null)} />
+
           <div className="flex flex-col gap-3 sm:flex-row">
             <button
               type="submit"
@@ -463,23 +499,23 @@ export default function BillingLinks() {
             </button>
           </div>
 
-          {createResult?.checkoutRequest?.token || createResult?.token ? (
+          {createResult?.request?.token || createResult?.checkoutRequest?.token || createResult?.token ? (
             <div className="rounded-xl border border-white/10 bg-black/40 p-3">
               <p className="mb-2 text-[9px] font-black uppercase tracking-widest text-slate-600">Durable pay URL</p>
               <p className="break-all font-mono text-xs text-slate-300">
-                {payUrlForToken(createResult.checkoutRequest?.token || createResult.token)}
+                {createResult.payUrl || payUrlForToken(createResult.request?.token || createResult.checkoutRequest?.token || createResult.token)}
               </p>
               <div className="mt-3 flex flex-wrap gap-3">
                 <button
                   type="button"
-                  onClick={() => copyPayUrl(createResult.checkoutRequest?.token || createResult.token)}
+                  onClick={() => copyPayUrl(createResult.request?.token || createResult.checkoutRequest?.token || createResult.token)}
                   className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white"
                 >
                   <Copy size={13} />
                   {copied ? 'Copied' : 'Copy Link'}
                 </button>
                 <a
-                  href={payUrlForToken(createResult.checkoutRequest?.token || createResult.token)}
+                  href={createResult.payUrl || payUrlForToken(createResult.request?.token || createResult.checkoutRequest?.token || createResult.token)}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-white"
@@ -583,8 +619,145 @@ export default function BillingLinks() {
             onClose={() => setSelectedId('')}
           />
         )}
+
+        <details className="rounded-xl border border-white/10 bg-black/20">
+          <summary className="cursor-pointer list-none px-5 py-4 text-xs font-black uppercase tracking-widest text-slate-400 marker:content-none hover:text-white">
+            Advanced: custom-price Stripe checkout (legacy, not CRM-linked)
+          </summary>
+          <SubscriptionLinkGenerator embedded />
+        </details>
       </div>
     </section>
+  );
+}
+
+function AccountAttachment({ selectedOrg, onSelect, onClear }) {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [error, setError] = useState('');
+  const [opsUnavailable, setOpsUnavailable] = useState(false);
+  const searchSeq = useRef(0);
+
+  useEffect(() => {
+    const q = query.trim();
+    const seq = searchSeq.current + 1;
+    searchSeq.current = seq;
+    const shouldSearch = q.length >= 2 && !opsUnavailable;
+    const timeoutId = window.setTimeout(async () => {
+      if (searchSeq.current !== seq) return;
+      if (!shouldSearch) {
+        setResults([]);
+        setSearching(false);
+        setError('');
+        return;
+      }
+      setSearching(true);
+      setError('');
+      try {
+        const candidates = await searchCandidates(q);
+        if (searchSeq.current !== seq) return;
+        setResults(candidates);
+      } catch (err) {
+        if (searchSeq.current !== seq) return;
+        setResults([]);
+        if (isOpsNotConfigured(err)) setOpsUnavailable(true);
+        else setError(err?.message || 'Could not search AutoLander accounts.');
+      } finally {
+        if (searchSeq.current === seq) setSearching(false);
+      }
+    }, shouldSearch ? 300 : 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [opsUnavailable, query]);
+
+  function choose(candidate) {
+    onSelect(candidate);
+    searchSeq.current += 1;
+    setQuery('');
+    setResults([]);
+    setError('');
+  }
+
+  return (
+    <div className="space-y-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
+      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
+        <Building2 size={14} />
+        Attach to AutoLander account
+        <span className="font-bold normal-case tracking-normal text-slate-600">(optional)</span>
+      </div>
+
+      {opsUnavailable ? (
+        <p className="rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-xs text-slate-500">
+          Account attachment is unavailable until the shared ops connection is configured. This payment link can still be created.
+        </p>
+      ) : selectedOrg ? (
+        <div className="flex items-start justify-between gap-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-3">
+          <div className="min-w-0">
+            <p className="flex items-center gap-2 text-sm font-black text-white">
+              <Zap size={14} className="shrink-0 text-emerald-300" />
+              <span className="truncate">{selectedOrg.orgName || selectedOrg.orgId}</span>
+            </p>
+            <p className="mt-1 text-xs font-bold text-emerald-200">
+              When this link is paid, the subscription attaches to this account automatically.
+            </p>
+            <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+              {candidateSubscriptionSummary(selectedOrg)}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClear}
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/20 text-slate-300 transition hover:bg-white/10 hover:text-white"
+            title="Remove account attachment"
+          >
+            <X size={14} aria-hidden="true" />
+            <span className="sr-only">Remove account attachment</span>
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="relative">
+            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search accounts by dealership, org, or admin email…"
+              className="h-11 w-full rounded-xl border border-white/10 bg-black/40 pl-9 pr-9 text-sm text-white outline-none focus:border-blue-500/60"
+            />
+            {searching && <Loader2 size={14} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-slate-400" />}
+          </div>
+          <p className="text-[10px] text-slate-600">
+            Attach an account to activate it automatically after payment. Leave this blank to create a CRM-only payment link.
+          </p>
+          {error && <p className="text-xs font-bold text-red-200">{error}</p>}
+          {results.length > 0 && (
+            <div className="max-h-56 space-y-1 overflow-y-auto rounded-xl border border-white/10 bg-black/40 p-1">
+              {results.map((candidate) => (
+                <button
+                  key={candidate.orgId}
+                  type="button"
+                  onClick={() => choose(candidate)}
+                  className="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left transition hover:bg-white/10"
+                >
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-bold text-white">{candidate.orgName || candidate.orgId}</span>
+                    <span className="block truncate text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                      {candidate.admins?.length ? candidate.admins.join(', ') : candidate.orgId}
+                    </span>
+                  </span>
+                  <span className="shrink-0 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                    {candidateSubscriptionSummary(candidate)}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+          {!searching && query.trim().length >= 2 && results.length === 0 && !error && (
+            <p className="text-xs text-slate-500">No matching accounts.</p>
+          )}
+        </>
+      )}
+    </div>
   );
 }
 

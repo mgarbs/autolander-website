@@ -8,7 +8,7 @@ function formatMoney(cents) {
   return amount.toLocaleString(undefined, { style: 'currency', currency: 'USD' });
 }
 
-export default function SubscriptionLinkGenerator() {
+export default function SubscriptionLinkGenerator({ embedded = false }) {
   const [amount, setAmount] = useState('997');
   const [interval, setInterval] = useState('monthly');
   const [label, setLabel] = useState('AutoLander Subscription');
@@ -101,8 +101,9 @@ export default function SubscriptionLinkGenerator() {
   }
 
   return (
-    <section className="rounded-2xl border border-white/10 bg-white/[0.03]">
-      <div className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+    <section className={embedded ? 'bg-transparent' : 'rounded-2xl border border-white/10 bg-white/[0.03]'}>
+      {!embedded && (
+        <div className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/10 text-emerald-300">
             <BadgeDollarSign size={20} />
@@ -124,7 +125,15 @@ export default function SubscriptionLinkGenerator() {
             {formatMoney(result.amountCents)} / {result.interval === 'annual' ? 'yr' : 'mo'}
           </div>
         )}
-      </div>
+        </div>
+      )}
+
+      {embedded && (
+        <p className="px-5 pt-5 text-xs leading-relaxed text-amber-200">
+          Use this only for a negotiated custom-price close. It creates a direct Stripe Checkout link, not a centralized
+          payment-link record, so it does not carry the full GoHighLevel opportunity workflow.
+        </p>
+      )}
 
       <form onSubmit={generateLink} className="space-y-5 p-5">
         {message && (

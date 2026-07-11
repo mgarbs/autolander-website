@@ -9,6 +9,7 @@ import {
   handleSupportCreditGrant,
   handleSupportDiscount,
 } from './support-adjustments.js';
+import { handleBillingDateSchedule } from './billing-cycle.js';
 import {
   handleBillingLinkDetail,
   handleBillingLinkDisable,
@@ -96,6 +97,11 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
 
   if (path === '/admin/support-adjustments/discount' && request.method === 'POST') {
     const result = await handleSupportDiscount(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/support-adjustments/billing-date' && request.method === 'POST') {
+    const result = await handleBillingDateSchedule(request, env);
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 

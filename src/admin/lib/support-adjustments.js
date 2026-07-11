@@ -23,6 +23,10 @@ export async function issueSupportDiscount(input) {
   return apiPost('/admin/support-adjustments/discount', input);
 }
 
+export async function scheduleNextBillingDate(input) {
+  return apiPost('/admin/support-adjustments/billing-date', input);
+}
+
 export function normalizeCandidates(payload) {
   const rows = firstArray(payload, ['candidates', 'results', 'orgs', 'rows']);
   return rows.map(normalizeCandidate).filter((row) => row.orgId);
@@ -82,6 +86,22 @@ export function canDiscount(candidate) {
   );
 }
 
+// The Worker performs the full Stripe/schedule safety check. This only keeps the
+// control out of the way when the selected record plainly cannot qualify.
+export function canScheduleBillingDate(candidate) {
+  const sub = candidate?.subscription;
+  if (!sub) return false;
+  const status = text(sub.status).toLowerCase();
+  const interval = text(sub.billingInterval ?? sub.interval).toLowerCase();
+  return Boolean(
+    sub.stripeSubscriptionId
+      && status === 'active'
+      && (!interval || interval === 'monthly' || interval === 'month')
+      && !sub.cancelAtPeriodEnd
+      && !sub.stripeScheduleId,
+  );
+}
+
 export function formatCredits(value) {
   if (!Number.isFinite(Number(value))) return '-';
   return Number(value).toLocaleString();
@@ -106,6 +126,17 @@ export function friendlyAdjustmentError(err) {
     PRORATION_PRESENT: 'The upcoming invoice has proration lines, so the support UI will not discount it.',
     STRIPE_CUSTOMER_MISMATCH: 'Stripe customer IDs do not match. Check the account before adjusting billing.',
     COUPON_INVALID: 'A Stripe coupon with that support ID already exists but has different settings.',
+    STRIPE_NOT_CONFIGURED: 'Stripe is not configured for billing-date adjustments.',
+    INVALID_BILLING_DATE_REQUEST: 'Choose a valid next billing date before scheduling it.',
+    BILLING_DATE_BEFORE_CURRENT_PERIOD_END: 'Choose a date after the subscription’s current Stripe renewal date.',
+    BILLING_DATE_TOO_FAR: 'Choose a date no more than one monthly period after the current Stripe renewal date.',
+    BILLING_DATE_COUPON_INVALID: 'The billing-date grace coupon is not configured as a valid 100% one-time Stripe coupon.',
+    BILLING_DATE_COUPON_INELIGIBLE: 'The billing-date grace coupon does not apply to this subscription product.',
+    UNSUPPORTED_SUBSCRIPTION: 'This subscription has billing settings that must be adjusted directly in Stripe.',
+    UNSUPPORTED_SCHEDULE: 'Stripe returned a schedule that cannot be safely adjusted here.',
+    SCHEDULE_VERIFICATION_FAILED: 'Stripe returned an unexpected schedule, so the billing-date change was not kept.',
+    SCHEDULE_ROLLBACK_FAILED: 'Stripe could not safely roll back a temporary schedule. Review the subscription in Stripe immediately.',
+    STRIPE_ERROR: 'Stripe could not complete the billing-date adjustment.',
   };
   return map[reason] || err?.message || 'The adjustment could not be completed.';
 }

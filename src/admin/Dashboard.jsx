@@ -3,7 +3,6 @@ import { ApiError, apiGet, apiPost, setStoredToken } from './lib/api.js';
 import SupportInbox from './SupportInbox.jsx';
 import SupportAdjustments from './SupportAdjustments.jsx';
 import BillingLinks from './BillingLinks.jsx';
-import SubscriptionLinkGenerator from './SubscriptionLinkGenerator.jsx';
 import OpsLinking from './OpsLinking.jsx';
 
 export default function Dashboard({ onLogout }) {
@@ -108,10 +107,9 @@ export default function Dashboard({ onLogout }) {
           error={supportError}
           onDelete={handleDeleteSupportRequest}
         />
+        <OpsLinking />
         <SupportAdjustments />
         <BillingLinks />
-        <SubscriptionLinkGenerator />
-        <OpsLinking />
       </main>
     </div>
   );

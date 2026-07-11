@@ -66,7 +66,13 @@ preview_id = "replace_with_preview_kv_namespace_id"
 #   CALENDLY_SIGNING_KEY          legacy only, required if the legacy Calendly webhook is enabled
 #   ADMIN_PASSWORD
 #   ADMIN_SESSION_SECRET
-#   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions
+#   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions;
+#                                 billing-date adjustments additionally need Subscription + Subscription Schedule write
+#                                 permissions and Coupon read access.
+#   STRIPE_BILLING_ADMIN_KEY       optional dedicated restricted Stripe key for billing-date adjustments;
+#                                 preferred when STRIPE_SECRET_KEY lacks the required Billing scopes.
+#   BILLING_DATE_GRACE_COUPON_ID  optional valid Stripe 100%-off, one-time coupon for a billing-date bridge;
+#                                 defaults to FREE_MONTH_100 when unset.
 #   OPS_ADMIN_TOKEN               shared bearer token for the AutoLander cloud /api/ops/billing/* AND
 #                                 /api/billing-links* endpoints; must match the cloud's OPS_ADMIN_TOKEN.
 #                                 Powers the admin "Account Linking" panel, support adjustments,
