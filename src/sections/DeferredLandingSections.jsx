@@ -143,7 +143,7 @@ const PRICING = [
       ]
     },
     {
-      name: "Team",
+      name: "Dealer Plan",
       monthly: 117,
       annual: 87,
       fromPrefix: true,
@@ -443,7 +443,7 @@ export default function DeferredLandingSections({
                             : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'
                       }`}
                     >
-                      {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : plan.team ? 'Get Team' : 'Start Free Trial'}
+                      {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : plan.team ? 'Get Dealer Plan' : 'Start Free Trial'}
                     </button>
                   )}
                   <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">

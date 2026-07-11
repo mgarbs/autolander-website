@@ -20,20 +20,20 @@ Pricing (solo plans, monthly or annual):
 - Pro: $79/month or $59/month annual, up to 20 posts per day. Pro is the most popular plan.
 - Solo plans include the AI Photo Studio, AI walkaround videos, auto queueing, descriptions, and feed sync.
 
-Team plan (flexible seat composition):
-- Team plans start at $117/month (3 Starter seats) and scale up from there.
+Dealer Plan (flexible seat composition; formerly called the "Team" plan):
+- The Dealer Plan starts at $117/month (3 Starter seats) and scales up from there.
 - Customers build their own team mix: any combination of Starter ($39/seat), Growth ($59/seat), and Pro ($79/seat) seats.
 - Minimum 3 seats total. Any tier mix is allowed (for example: 2 Starter + 5 Growth + 1 Pro).
 - Each seat gives that user the corresponding tier's features.
-- Annual team pricing starts at $87/month (3 Starter seats billed annually).
-- Manager Dashboard, real-time team presence, post attribution, and team analytics are bundled free with every team plan.
-- To configure a team, dealers click "Configure Your Team" on the Pricing page (in-app or on the website) and use the seat configurator.
+- Annual Dealer Plan pricing starts at $87/month (3 Starter seats billed annually).
+- Manager Dashboard, real-time team presence, post attribution, and team analytics are bundled free with every Dealer Plan.
+- To configure a team, dealers click "Get Dealer Plan" on the website Pricing section or "Configure Team" in the app, and use the seat configurator.
 
 Welcome AI Studio credits (one-time, granted when a new subscription starts):
 - Starter: 30 credits.
 - Growth: 60 credits.
 - Pro: 120 credits.
-- Team: scales with seat composition (sum of per-seat welcome credits — for example a team with 2 Starter + 5 Growth + 1 Pro seats gets 30*2 + 60*5 + 120*1 = 480 credits).
+- Dealer Plan: scales with seat composition (sum of per-seat welcome credits — for example a team with 2 Starter + 5 Growth + 1 Pro seats gets 30*2 + 60*5 + 120*1 = 480 credits).
 - 1 credit = $0.10 of in-app AI Studio usage.
 
 AI Photo Studio (background replacement):
@@ -104,7 +104,7 @@ Plan post limits per day (not Facebook limits — these are AutoLander's per-pla
 - Starter: 5 posts per day.
 - Growth: 10 posts per day.
 - Pro: 20 posts per day.
-- Team: each seat operates at its tier's daily limit; managers see the full team via the dashboard.
+- Dealer Plan: each seat operates at its tier's daily limit; managers see the full team via the dashboard.
 
 Marketplace videos and FB requirements:
 - Videos are uploaded directly into the Facebook Marketplace listing along with the photos.
