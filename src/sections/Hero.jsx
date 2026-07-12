@@ -217,14 +217,14 @@ export default function Hero({ openDemoBooking, onWarmDemo }) {
   const gradWord =
     'inline-block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent pr-[0.14em]';
   return (
-    <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-6 lg:min-h-[600px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
-      <div className="max-w-2xl">
+    <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:min-h-[600px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+      <div className="min-w-0 max-w-2xl">
         <div>
           <Eyebrow>Facebook Marketplace Automation — For Dealers &amp; Sales Reps</Eyebrow>
         </div>
 
         <div>
-          <h1 className="mt-6 text-balance font-display text-5xl font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
+          <h1 className="mt-6 text-balance font-display text-[clamp(2.5rem,10.5vw,3rem)] font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
             Facebook Marketplace{' '}
             <span className={gradWord}>software</span>{' '}
             built to{' '}

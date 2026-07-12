@@ -22,7 +22,12 @@ export default function ComparisonSection() {
           </p>
         </div>
 
-        <table className="w-full border-collapse">
+        <table className="w-full table-fixed border-collapse">
+          <colgroup>
+            <col className="w-[24%]" />
+            <col className="w-[38%]" />
+            <col className="w-[38%]" />
+          </colgroup>
           <thead>
             <tr className="border-b border-white/10">
               <th className="px-2 py-4 text-left text-[10px] font-black uppercase tracking-widest text-slate-400 md:px-4 md:py-6 md:text-xs"></th>
@@ -35,15 +40,15 @@ export default function ComparisonSection() {
               <tr key={row.label} className="group border-b border-white/5">
                 <td className="px-2 py-4 text-xs font-bold uppercase italic tracking-tight text-white md:px-4 md:py-6 md:text-base">{row.label}</td>
                 <td className="px-2 py-4 text-center text-xs font-medium text-slate-400 md:px-4 md:py-6 md:text-base">
-                  <div className="flex items-center justify-center gap-1 md:gap-2">
+                  <div className="flex min-w-0 items-start justify-center gap-1 md:items-center md:gap-2">
                     <X className="h-3 w-3 shrink-0 text-red-500/50 md:h-4 md:w-4" />
-                    {row.manual}
+                    <span className="min-w-0 break-words">{row.manual}</span>
                   </div>
                 </td>
                 <td className="bg-blue-500/5 px-2 py-4 text-center text-xs font-black italic text-white group-last:rounded-b-3xl md:px-4 md:py-6 md:text-base">
-                  <div className="flex items-center justify-center gap-1 md:gap-2">
+                  <div className="flex min-w-0 items-start justify-center gap-1 md:items-center md:gap-2">
                     <Check className="h-3 w-3 shrink-0 text-blue-500 md:h-5 md:w-5" />
-                    {row.auto}
+                    <span className="min-w-0 break-words">{row.auto}</span>
                   </div>
                 </td>
               </tr>
