@@ -1,15 +1,15 @@
 export const Eyebrow = ({ children, className = '' }) => (
   <span
-    className={`inline-flex items-center gap-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-blue-300/90 ${className}`}
+    className={`flex max-w-full items-start gap-2.5 font-mono text-[11px] font-semibold uppercase leading-relaxed tracking-[0.28em] text-blue-300/90 ${className}`}
   >
-    <span className="h-1.5 w-1.5 rounded-[2px] bg-blue-400 shadow-[0_0_12px_2px_rgba(96,165,250,0.65)]" />
-    {children}
+    <span className="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-[2px] bg-blue-400 shadow-[0_0_12px_2px_rgba(96,165,250,0.65)]" />
+    <span className="min-w-0">{children}</span>
   </span>
 );
 
 export const SectionHeading = ({ children, className = '', as: Tag = 'h2' }) => (
   <Tag
-    className={`font-display text-4xl font-extrabold uppercase italic leading-[0.92] tracking-[-0.01em] text-white sm:text-5xl lg:text-6xl ${className}`}
+    className={`font-display text-[clamp(2rem,9vw,2.25rem)] font-extrabold uppercase italic leading-[0.92] tracking-[-0.01em] text-white sm:text-5xl lg:text-6xl ${className}`}
   >
     {children}
   </Tag>

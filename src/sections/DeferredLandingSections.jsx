@@ -483,7 +483,7 @@ export default function DeferredLandingSections({
               <div className="hidden md:block absolute inset-0 bg-blue-600/20 blur-[100px] opacity-40" />
 
               {/* Tab buttons */}
-              <div className="relative inline-flex p-1.5 mb-6 rounded-2xl bg-white/[0.04] border border-white/5 backdrop-blur-sm">
+              <div className="relative inline-flex max-w-full p-1.5 mb-6 rounded-2xl bg-white/[0.04] border border-white/5 backdrop-blur-sm">
                 {[
                   { id: 'before', label: 'Before' },
                   { id: 'after', label: 'After' },
@@ -494,7 +494,7 @@ export default function DeferredLandingSections({
                     <button
                       key={tab.id}
                       onClick={() => setStudioView(tab.id)}
-                      className={`px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${
+                      className={`min-w-0 px-3 py-2.5 text-[11px] font-black uppercase tracking-[0.14em] transition-all sm:px-5 sm:tracking-widest rounded-xl ${
                         active
                           ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20'
                           : 'text-slate-400 hover:text-white'
