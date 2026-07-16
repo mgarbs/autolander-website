@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { CheckCircle2, Loader2, Lock, ShieldCheck, TriangleAlert } from 'lucide-react';
 import { getPaySummary, openPaySession, PayApiError, redirectToCheckout } from './lib/pay-api.js';
 import { buildAttributionSnapshot } from './lib/attribution.js';
+import { amountPresentation, normalizeSummary } from './lib/summary.js';
 
 const PHASE = {
   loading: 'loading',
@@ -12,38 +13,6 @@ const PHASE = {
   unavailable: 'unavailable', // disabled / expired / not found / 410
   error: 'error',
 };
-
-function formatMoney(cents, currency = 'usd') {
-  if (!Number.isFinite(Number(cents))) return null;
-  return (Number(cents) / 100).toLocaleString(undefined, {
-    style: 'currency',
-    currency: String(currency || 'usd').toUpperCase(),
-  });
-}
-
-function intervalLabel(interval) {
-  if (interval === 'annual' || interval === 'year' || interval === 'yearly') return '/year';
-  if (interval === 'one_time' || interval === 'one-time') return ' one-time';
-  return '/month';
-}
-
-// Normalizes the cloud's GET /api/pay/:token summary payload defensively, the
-// same way admin/lib/ops.js normalizes ops payloads — so minor field-name
-// drift on the cloud side doesn't break this page.
-function normalizeSummary(payload) {
-  const amount = payload?.amountSummary && typeof payload.amountSummary === 'object' ? payload.amountSummary : {};
-  return {
-    planName: payload?.planName || payload?.plan?.name || payload?.planCode || 'AutoLander plan',
-    amountCents: Number.isFinite(Number(amount.cents ?? payload?.amountCents))
-      ? Number(amount.cents ?? payload?.amountCents)
-      : null,
-    currency: amount.currency || payload?.currency || 'usd',
-    interval: payload?.interval || payload?.billingInterval || 'monthly',
-    businessName: payload?.businessName || payload?.crmSnapshot?.businessName || '',
-    status: payload?.status || 'created',
-    livemode: Boolean(payload?.livemode),
-  };
-}
 
 export default function TokenCheckout({ token, state }) {
   // `?state=success` is presentational-only: the return URL from Stripe.
@@ -205,7 +174,7 @@ export default function TokenCheckout({ token, state }) {
 
   // PHASE.ready (covers both the fresh open and the `?state=cancel` return —
   // cancel just re-shows this exact same checkout button per the design doc).
-  const money = formatMoney(summary?.amountCents, summary?.currency);
+  const price = amountPresentation(summary);
   return (
     <CenteredCard>
       {state === 'cancel' && (
@@ -226,13 +195,18 @@ export default function TokenCheckout({ token, state }) {
       <div className="mt-8 w-full rounded-2xl border border-white/10 bg-black/40 p-6 text-left">
         <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Plan</p>
         <p className="mt-1 text-lg font-black uppercase italic tracking-tight text-white">{summary?.planName}</p>
-        {money && (
-          <p className="mt-3 text-3xl font-black italic tracking-tight text-white">
-            {money}
-            <span className="text-sm font-bold uppercase tracking-widest text-slate-500">
-              {intervalLabel(summary?.interval)}
-            </span>
-          </p>
+        {price && (
+          <>
+            <p className="mt-3 text-3xl font-black italic tracking-tight text-white">
+              {price.amount}
+              <span className="text-sm font-bold uppercase tracking-widest text-slate-500">
+                {price.suffix}
+              </span>
+            </p>
+            {price.detail && (
+              <p className="mt-1 text-xs font-bold uppercase tracking-widest text-slate-500">{price.detail}</p>
+            )}
+          </>
         )}
       </div>
 

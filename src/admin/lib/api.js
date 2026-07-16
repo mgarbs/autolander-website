@@ -1,4 +1,5 @@
-const RAW_API_URL = import.meta.env.VITE_CAPI_URL || import.meta.env.VITE_CHAT_API_URL || '';
+const RUNTIME_ENV = import.meta.env || {};
+const RAW_API_URL = RUNTIME_ENV.VITE_CAPI_URL || RUNTIME_ENV.VITE_CHAT_API_URL || '';
 const API_URL = RAW_API_URL.replace(/\/+$/, '');
 
 class ApiError extends Error {

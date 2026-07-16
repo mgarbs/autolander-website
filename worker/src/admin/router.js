@@ -10,6 +10,7 @@ import {
   handleSupportDiscount,
 } from './support-adjustments.js';
 import { handleBillingDateSchedule } from './billing-cycle.js';
+import { handleGhlOpportunitySearch } from './ghl-linking.js';
 import {
   handleBillingLinkDetail,
   handleBillingLinkDisable,
@@ -102,6 +103,14 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
 
   if (path === '/admin/support-adjustments/billing-date' && request.method === 'POST') {
     const result = await handleBillingDateSchedule(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  // Read-only, server-authenticated GHL resolver for billing-link creation.
+  // The private integration token never reaches the browser; admins select a
+  // canonical contact/opportunity pair instead of transcribing names into ID fields.
+  if (path === '/admin/ghl/opportunities' && request.method === 'GET') {
+    const result = await handleGhlOpportunitySearch(url, env);
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 

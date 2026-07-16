@@ -60,7 +60,8 @@ preview_id = "replace_with_preview_kv_namespace_id"
 #   META_AD_ACCOUNT_ID            (format act_XXXXXXXXX)
 #   META_MARKETING_ACCESS_TOKEN   (can equal META_CAPI_ACCESS_TOKEN)
 #   META_TEST_EVENT_CODE          (optional, unset for production)
-#   GHL_PRIVATE_INTEGRATION_TOKEN private integration/OAuth token with contact + workflow scopes
+#   GHL_PRIVATE_INTEGRATION_TOKEN private integration/OAuth token with contact, workflow,
+#                                 and opportunities.readonly scopes (the billing-link picker is read-only)
 #   SEND_WORKER_LEAD_CAPI         optional; set to "false" only if GHL sends the server Lead with the same metaEventId
 #   ENABLE_LEGACY_CALENDLY_WEBHOOK optional; set "true" only to temporarily accept old Calendly Schedule webhooks
 #   CALENDLY_SIGNING_KEY          legacy only, required if the legacy Calendly webhook is enabled
