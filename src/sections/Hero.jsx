@@ -239,7 +239,7 @@ export default function Hero({ openDemoBooking, onWarmDemo }) {
 
         <div>
           <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
-            AutoLander is Facebook Marketplace auto-posting software for car dealers and sales reps. It
+            AutoLander is Facebook Marketplace auto posting software for car dealers and sales reps. It
             creates listings from your inventory in minutes, keeps prices current, flags sold units,
             and tracks which posts generate buyer conversations.
           </p>
