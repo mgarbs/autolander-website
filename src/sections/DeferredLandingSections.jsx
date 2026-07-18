@@ -367,11 +367,11 @@ export default function DeferredLandingSections({
               const isPrivateAnnualPro = plan.proPromo && hasReferral && isAnnual;
               const isPopularPlan = plan.popular && !hasReferral;
               const isHighlighted = isPopularPlan || isPrivateMonthlyProOffer;
-              const showsPlanCta = (isPrivateMonthlyProOffer && showDownloadButtons) || plan.team;
+              const showsPlanCta = isPrivateMonthlyProOffer && showDownloadButtons;
 
               return (
               <FadeIn key={i} delay={i * 0.1} direction="up">
-                <div className={`relative p-10 rounded-[40px] h-full flex flex-col transition-all duration-500 ${
+                <div className={`relative flex flex-col rounded-[40px] p-10 transition-all duration-500 ${
                   isPrivateMonthlyProOffer
                     ? 'bg-gradient-to-br from-blue-600 via-blue-600 to-amber-500 text-white scale-105 shadow-2xl shadow-amber-500/20 z-10'
                     : isPopularPlan
@@ -430,20 +430,10 @@ export default function DeferredLandingSections({
 
                   {showsPlanCta && (
                     <button
-                      onClick={
-                        isPrivateMonthlyProOffer
-                          ? () => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })
-                          : openDemoBooking
-                      }
-                      className={`hidden w-full rounded-2xl py-4 text-sm font-black uppercase italic tracking-tighter transition-all md:block ${
-                        isPrivateMonthlyProOffer || isPopularPlan
-                          ? 'bg-white text-blue-600 hover:bg-slate-100'
-                          : plan.team
-                            ? 'bg-emerald-500 text-white hover:bg-emerald-400 shadow-lg shadow-emerald-500/20'
-                            : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'
-                      }`}
+                      onClick={() => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })}
+                      className="hidden w-full rounded-2xl bg-white py-4 text-sm font-black uppercase italic tracking-tighter text-blue-600 transition-all hover:bg-slate-100 md:block"
                     >
-                      {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : 'Get Dealer Plan'}
+                      Claim Limited-Time Offer
                     </button>
                   )}
                   <p className={`mt-0 text-center text-[10px] font-black uppercase italic tracking-widest opacity-40 ${showsPlanCta ? 'md:mt-4' : ''}`}>
