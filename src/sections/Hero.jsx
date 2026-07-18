@@ -224,10 +224,16 @@ export default function Hero({ openDemoBooking, onWarmDemo }) {
         </div>
 
         <div>
-          <h1 className="mt-6 text-balance font-display text-[clamp(2.5rem,10.5vw,3rem)] font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-[4rem] 2xl:text-7xl">
-            Sell <span className={gradWord}>more cars</span>{' '}
-            on Facebook Marketplace&mdash;without posting them{' '}
-            <span className={gradWord}>one by one.</span>
+          <h1 className="mt-6 font-display text-[clamp(2rem,8.4vw,2.5rem)] font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-balance sm:text-6xl lg:text-[4rem] 2xl:text-7xl">
+            Sell <span className={gradWord}>more cars</span>
+            <br className="sm:hidden" />{' '}
+            on <span className={gradWord}>Facebook</span>
+            <br className="sm:hidden" />{' '}
+            <span className={gradWord}>Marketplace&mdash;</span>
+            <br className="sm:hidden" />
+            without posting
+            <br className="sm:hidden" />{' '}
+            them <span className={gradWord}>one by one.</span>
           </h1>
         </div>
 
@@ -235,7 +241,7 @@ export default function Hero({ openDemoBooking, onWarmDemo }) {
           <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
             AutoLander is Facebook Marketplace auto-posting software for car dealers and sales reps. It
             creates listings from your inventory in minutes, keeps prices current, flags sold units,
-            and tracks which posts generate buyer conversations&mdash;all automatically from one desktop app.
+            and tracks which posts generate buyer conversations.
           </p>
         </div>
 
