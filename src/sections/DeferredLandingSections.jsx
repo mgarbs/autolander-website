@@ -82,7 +82,7 @@ const MailLink = ({ email = 'sales@autolander.ai', subject = 'AutoLander support
 };
 
 const FeatureCard = ({ icon: Icon, title, desc }) => (
-  <div className="group p-8 rounded-3xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] hover:border-blue-500/30 transition-all duration-500">
+  <div className="group h-full p-8 rounded-3xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] hover:border-blue-500/30 transition-all duration-500">
     <div className="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
       <Icon className="w-7 h-7 text-blue-500" />
     </div>
@@ -228,7 +228,7 @@ export default function DeferredLandingSections({
       </section>
 
       {/* Features Grid */}
-      <section id="features" ref={featuresSectionRef} className="py-24 lg:py-40 relative">
+      <section id="features" ref={featuresSectionRef} className="relative pb-24 pt-24 lg:pb-32 lg:pt-40">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 lg:mb-24">
             <FadeIn>
@@ -286,7 +286,7 @@ export default function DeferredLandingSections({
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-24 lg:py-40 relative">
+      <section id="pricing" className="relative pb-24 pt-0 lg:pb-40 lg:pt-0">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 lg:mb-24">
             <FadeIn>
@@ -662,7 +662,7 @@ export default function DeferredLandingSections({
       <Audience />
 
       {/* FAQ */}
-      <section className="py-24 lg:py-40 relative">
+      <section className="relative pb-24 pt-24 lg:pb-32 lg:pt-40">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16 lg:mb-24">
             <FadeIn>
@@ -695,7 +695,7 @@ export default function DeferredLandingSections({
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 sm:py-24 lg:py-32 relative overflow-hidden text-center">
+      <section className="relative overflow-hidden pb-20 pt-0 text-center sm:pb-24 lg:pb-32 lg:pt-0">
         <div className="max-w-5xl mx-auto px-6 relative z-10">
           <FadeIn>
             <h2 className="font-display text-5xl lg:text-9xl font-black mb-8 tracking-tighter leading-[0.8] uppercase italic text-white">

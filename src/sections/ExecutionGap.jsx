@@ -14,7 +14,7 @@ export default function ExecutionGap() {
   const gradWord =
     'inline-block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent pr-[0.12em]';
   return (
-    <section className="relative py-24 lg:py-36">
+    <section className="relative py-24 lg:pb-32 lg:pt-36">
       <div className="mx-auto max-w-4xl px-6 text-center">
         <div>
           <Eyebrow>The real problem</Eyebrow>
