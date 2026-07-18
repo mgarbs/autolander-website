@@ -193,7 +193,7 @@ export default function DeferredLandingSections({
           <div className="text-center mb-20 lg:mb-32">
             <FadeIn>
               <h2 className="font-display text-4xl lg:text-7xl font-black mb-6 tracking-tighter uppercase italic leading-none">
-                3 STEPS TO <span className="text-blue-500">DOMINANCE.</span>
+                HOW AUTOLANDER <span className="text-blue-500">WORKS.</span>
               </h2>
             </FadeIn>
           </div>
@@ -205,22 +205,22 @@ export default function DeferredLandingSections({
             <FadeIn delay={0.1}>
               <Step 
                 number="01" 
-                title="Connect Feed" 
-                desc="Connect your website, dealer inventory system, custom feed, CarGurus, or Cars.com. AutoLander maps the available vehicle fields into one inventory workflow for review."
+                title="Connect Your Inventory"
+                desc="Connect a supported inventory feed or dealer-authorized export. AutoLander maps the available vehicle data into one workflow for review."
               />
             </FadeIn>
             <FadeIn delay={0.2}>
               <Step 
                 number="02" 
-                title="Enhance Visuals" 
-                desc="Select from our AI Studio backdrops—Showroom, Outdoor, or Luxury—to make your lot photos look like a professional shoot."
+                title="Review and Prepare"
+                desc="Review vehicle details, descriptions, photo order, prices, and eligible inventory before anything enters the posting queue."
               />
             </FadeIn>
             <FadeIn delay={0.3}>
               <Step 
                 number="03" 
-                title="Review & Run"
-                desc="Choose eligible vehicles, review the listing fields, then run the queue within the access and limits shown by Meta. AI background replacement is optional."
+                title="Run the Queue and Track"
+                desc="Control the posting workflow, keep inventory current, and track Marketplace activity from one desktop app."
               />
             </FadeIn>
           </div>
@@ -416,7 +416,7 @@ export default function DeferredLandingSections({
                     )}
                   </div>
 
-                  <div className="space-y-4 mb-10 flex-grow">
+                  <div className="mb-4 flex-grow space-y-4 md:mb-10">
                     {plan.features.map((feat, j) => (
                       <div key={j} className="flex items-center gap-3">
                         <CheckCircle2 className={`w-4 h-4 shrink-0 ${
@@ -434,7 +434,7 @@ export default function DeferredLandingSections({
                           ? () => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })
                           : openDemoBooking
                       }
-                      className={`w-full py-4 rounded-2xl font-black text-sm uppercase italic tracking-tighter transition-all ${
+                      className={`hidden w-full rounded-2xl py-4 text-sm font-black uppercase italic tracking-tighter transition-all md:block ${
                         isPrivateMonthlyProOffer || isPopularPlan
                           ? 'bg-white text-blue-600 hover:bg-slate-100'
                           : plan.team
@@ -445,7 +445,7 @@ export default function DeferredLandingSections({
                       {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : plan.team ? 'Get Dealer Plan' : 'Start Free Trial'}
                     </button>
                   )}
-                  <p className="mt-4 text-[10px] font-black uppercase tracking-widest text-center opacity-40 italic">
+                  <p className="mt-0 text-center text-[10px] font-black uppercase italic tracking-widest opacity-40 md:mt-4">
                     {plan.proPromo && hasReferral
                       ? (isMonthlyBilling ? 'Limited-time offer requires monthly $125 Pro' : 'Annual Pro is not part of this limited-time referral offer')
                       : plan.proPromo ? 'Best for high-volume single rooftops'
@@ -627,7 +627,7 @@ export default function DeferredLandingSections({
                  MEASURE WHAT <span className="text-blue-500">MATTERS.</span>
                </h2>
               <p className="mx-auto max-w-3xl text-lg font-medium leading-relaxed text-slate-400">
-                Replace vague activity claims with an inventory workflow your team can inspect and business outcomes your manager can review.
+                See what is ready, what is live, what changed, and what sold—without relying on rep memory or vanity metrics.
               </p>
             </FadeIn>
           </div>
@@ -644,7 +644,7 @@ export default function DeferredLandingSections({
               },
               {
                 title: "Post-to-sale attribution",
-                body: "Connect Marketplace activity to sold inventory so managers can evaluate outcomes instead of relying on views or unsupported ROI promises."
+                body: "Connect Marketplace activity to sold inventory so managers can evaluate outcomes by vehicle, listing, and rep."
               }
             ].map((t, i) => (
               <FadeIn key={i} delay={i * 0.1} direction="up">

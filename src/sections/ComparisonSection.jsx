@@ -4,9 +4,9 @@ const ROWS = [
   { label: 'Vehicle data', manual: 'Re-enter each field', auto: 'Mapped from your feed' },
   { label: 'Descriptions', manual: 'Write or copy-paste', auto: 'AI draft for review' },
   { label: 'Photos', manual: 'Sort one by one', auto: 'AI-assisted ordering' },
-  { label: 'Sold units', manual: 'Check and remove', auto: 'Feed reconciliation' },
+  { label: 'Sold units', manual: 'Check and remove', auto: 'Alerts you in dashboard' },
   { label: 'Attribution', manual: 'Spreadsheet or guesswork', auto: 'Post-to-sale tracking' },
-  { label: 'Meta limits', manual: 'Account rules apply', auto: 'The same rules apply' },
+  { label: 'Visibility', manual: 'Memorize posted inventory', auto: 'See queue and activity in one dashboard' },
 ];
 
 export default function ComparisonSection() {

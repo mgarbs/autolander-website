@@ -147,10 +147,12 @@ export default function App() {
   const [studioView, setStudioView] = useState('after');
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [showDownloadButtons, setShowDownloadButtons] = useState(() => canShowDownloadButtons());
+  const [isMobileNavVisible, setIsMobileNavVisible] = useState(true);
   const [shouldMountChat, setShouldMountChat] = useState(false);
   const [shouldMountDeferredSections, setShouldMountDeferredSections] = useState(false);
   const [pendingDeferredSection, setPendingDeferredSection] = useState('');
   const featuresSectionRef = useRef(null);
+  const lastNavScrollYRef = useRef(0);
   const isMonthlyBilling = !isAnnual;
 
   useEffect(() => {
@@ -166,6 +168,46 @@ export default function App() {
     updateDownloadVisibility();
     mediaQuery.addEventListener('change', updateDownloadVisibility);
     return () => mediaQuery.removeEventListener('change', updateDownloadVisibility);
+  }, []);
+
+  useEffect(() => {
+    const mobileQuery = window.matchMedia('(max-width: 767px)');
+    let frameId = 0;
+
+    const updateNavVisibility = () => {
+      const currentScrollY = Math.max(window.scrollY, 0);
+      const scrollDelta = currentScrollY - lastNavScrollYRef.current;
+
+      if (!mobileQuery.matches || currentScrollY <= 96) {
+        setIsMobileNavVisible(true);
+      } else if (scrollDelta > 10) {
+        setIsMobileNavVisible(false);
+      } else if (scrollDelta < -6) {
+        setIsMobileNavVisible(true);
+      }
+
+      lastNavScrollYRef.current = currentScrollY;
+      frameId = 0;
+    };
+
+    const onScroll = () => {
+      if (!frameId) frameId = window.requestAnimationFrame(updateNavVisibility);
+    };
+
+    const onViewportChange = () => {
+      lastNavScrollYRef.current = Math.max(window.scrollY, 0);
+      setIsMobileNavVisible(true);
+    };
+
+    lastNavScrollYRef.current = Math.max(window.scrollY, 0);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    mobileQuery.addEventListener('change', onViewportChange);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      mobileQuery.removeEventListener('change', onViewportChange);
+      if (frameId) window.cancelAnimationFrame(frameId);
+    };
   }, []);
 
   useEffect(() => {
@@ -405,7 +447,7 @@ export default function App() {
       </div>
 
       {/* Navbar */}
-      <nav className="fixed w-full z-50 top-0 px-4 sm:px-6 py-4">
+      <nav className={`fixed top-0 z-50 w-full px-4 py-4 transition-transform duration-300 ease-out motion-reduce:transition-none sm:px-6 ${isMobileNavVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'}`}>
         <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between bg-black/80 md:bg-black/40 md:backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
           <button
             type="button"
