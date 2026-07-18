@@ -11,7 +11,7 @@ const ROWS = [
 
 export default function ComparisonSection() {
   return (
-    <section className="relative py-24 lg:py-40">
+    <section className="relative pb-24 pt-16 lg:pb-40 lg:pt-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-16 text-center lg:mb-24">
           <h2 className="mb-6 font-display text-4xl font-black uppercase italic leading-none tracking-tighter lg:text-7xl">
