@@ -220,22 +220,22 @@ export default function Hero({ openDemoBooking, onWarmDemo }) {
     <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:min-h-[600px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
       <div className="min-w-0 max-w-2xl">
         <div>
-          <Eyebrow>Facebook Marketplace Automation — For Dealers &amp; Sales Reps</Eyebrow>
+          <Eyebrow>Facebook Marketplace Automation — For Car Dealers &amp; Sales Reps</Eyebrow>
         </div>
 
         <div>
-          <h1 className="mt-6 text-balance font-display text-[clamp(2.5rem,10.5vw,3rem)] font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-7xl">
-            Facebook Marketplace{' '}
-            <span className={gradWord}>software</span>{' '}
-            built to{' '}
-            <span className={gradWord}>sell more cars.</span>
+          <h1 className="mt-6 text-balance font-display text-[clamp(2.5rem,10.5vw,3rem)] font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-6xl lg:text-[4rem] 2xl:text-7xl">
+            Sell <span className={gradWord}>more cars</span>{' '}
+            on Facebook Marketplace&mdash;without posting them{' '}
+            <span className={gradWord}>one by one.</span>
           </h1>
         </div>
 
         <div>
           <p className="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
-            Connect your inventory feed, prepare stronger listings, manage an eligible posting queue,
-            reconcile prices and sold units, and track which posts lead to sales&mdash;from one desktop app.
+            AutoLander is Facebook Marketplace auto-posting software for car dealers and sales reps. It
+            creates listings from your inventory in minutes, keeps prices current, flags sold units,
+            and tracks which posts generate buyer conversations&mdash;all automatically from one desktop app.
           </p>
         </div>
 
@@ -255,12 +255,12 @@ export default function Hero({ openDemoBooking, onWarmDemo }) {
         <div>
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-slate-400">
             <span className="flex items-center gap-1.5">
-              <Zap className="h-3.5 w-3.5 text-blue-400" /> 5 free posts on your demo
+              <Zap className="h-3.5 w-3.5 text-blue-400" /> 5 free posts in your demo
             </span>
             <span className="flex items-center gap-1.5">
-              <ShieldCheck className="h-3.5 w-3.5 text-blue-400" /> No credit card
+              <ShieldCheck className="h-3.5 w-3.5 text-blue-400" /> No credit card required
             </span>
-            <span>$39/mo · Cancel anytime</span>
+            <span>Plans from $39/month</span>
           </div>
         </div>
       </div>
