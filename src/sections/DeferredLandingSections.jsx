@@ -367,6 +367,7 @@ export default function DeferredLandingSections({
               const isPrivateAnnualPro = plan.proPromo && hasReferral && isAnnual;
               const isPopularPlan = plan.popular && !hasReferral;
               const isHighlighted = isPopularPlan || isPrivateMonthlyProOffer;
+              const showsPlanCta = (isPrivateMonthlyProOffer && showDownloadButtons) || plan.team;
 
               return (
               <FadeIn key={i} delay={i * 0.1} direction="up">
@@ -416,7 +417,7 @@ export default function DeferredLandingSections({
                     )}
                   </div>
 
-                  <div className="mb-4 flex-grow space-y-4 md:mb-10">
+                  <div className={`mb-4 space-y-4 ${showsPlanCta ? 'flex-grow md:mb-10' : ''}`}>
                     {plan.features.map((feat, j) => (
                       <div key={j} className="flex items-center gap-3">
                         <CheckCircle2 className={`w-4 h-4 shrink-0 ${
@@ -427,7 +428,7 @@ export default function DeferredLandingSections({
                     ))}
                   </div>
 
-                  {(!isPrivateMonthlyProOffer || showDownloadButtons) && (
+                  {showsPlanCta && (
                     <button
                       onClick={
                         isPrivateMonthlyProOffer
@@ -442,10 +443,10 @@ export default function DeferredLandingSections({
                             : 'bg-blue-600 text-white hover:bg-blue-500 shadow-lg shadow-blue-600/20'
                       }`}
                     >
-                      {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : plan.team ? 'Get Dealer Plan' : 'Start Free Trial'}
+                      {isPrivateMonthlyProOffer ? 'Claim Limited-Time Offer' : 'Get Dealer Plan'}
                     </button>
                   )}
-                  <p className="mt-0 text-center text-[10px] font-black uppercase italic tracking-widest opacity-40 md:mt-4">
+                  <p className={`mt-0 text-center text-[10px] font-black uppercase italic tracking-widest opacity-40 ${showsPlanCta ? 'md:mt-4' : ''}`}>
                     {plan.proPromo && hasReferral
                       ? (isMonthlyBilling ? 'Limited-time offer requires monthly $125 Pro' : 'Annual Pro is not part of this limited-time referral offer')
                       : plan.proPromo ? 'Best for high-volume single rooftops'

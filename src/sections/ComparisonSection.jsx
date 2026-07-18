@@ -6,7 +6,7 @@ const ROWS = [
   { label: 'Photos', manual: 'Sort one by one', auto: 'AI-assisted ordering' },
   { label: 'Sold units', manual: 'Check and remove', auto: 'Alerts you in dashboard' },
   { label: 'Attribution', manual: 'Spreadsheet or guesswork', auto: 'Post-to-sale tracking' },
-  { label: 'Visibility', manual: 'Memorize posted inventory', auto: 'See queue and activity in one dashboard' },
+  { label: 'Team visibility', manual: 'Ask reps what they posted', auto: 'See queue and team activity in one dashboard' },
 ];
 
 export default function ComparisonSection() {
