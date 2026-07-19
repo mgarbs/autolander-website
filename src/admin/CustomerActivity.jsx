@@ -39,6 +39,7 @@ export default function CustomerActivity({ onUnauthorized }) {
   const [chartLoading, setChartLoading] = useState(false);
   const [detailDays, setDetailDays] = useState(30);
   const [writePending, setWritePending] = useState(false);
+  const [followUpPendingId, setFollowUpPendingId] = useState('');
 
   const accountRequest = useMemo(
     () => ({ ...filters, q: debouncedSearch }),
@@ -242,6 +243,35 @@ export default function CustomerActivity({ onUnauthorized }) {
     }
   }
 
+  async function setRowFollowUp(row, followUp) {
+    const orgId = String(row.orgId || row.id || '');
+    if (!orgId) return;
+    setFollowUpPendingId(orgId);
+    setPageError('');
+    try {
+      await saveCsMeta(orgId, { followUp });
+      setPage((current) => ({
+        ...current,
+        rows: current.rows.map((item) => String(item.orgId || item.id) === orgId
+          ? { ...item, followUp }
+          : item),
+      }));
+      if (expandedOrgId === orgId) {
+        setDetail((current) => ({
+          ...current,
+          account: current.account
+            ? { ...current.account, csMeta: { ...(current.account.csMeta || {}), followUp } }
+            : current.account,
+        }));
+      }
+    } catch (err) {
+      const message = handleError(err, 'Could not update the follow-up flag.');
+      if (message) setPageError(message);
+    } finally {
+      setFollowUpPendingId((current) => current === orgId ? '' : current);
+    }
+  }
+
   async function refreshAll() {
     setRefreshing(true);
     try {
@@ -256,13 +286,13 @@ export default function CustomerActivity({ onUnauthorized }) {
   }
 
   return (
-    <section className="rounded-3xl border border-white/10 bg-white/[0.03]">
+    <section className="min-w-0 rounded-3xl border border-white/10 bg-white/[0.03]">
       <div className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-400/10 text-blue-300"><Activity size={20} /></span>
-          <div>
+          <div className="min-w-0">
             <h2 className="text-sm font-black uppercase italic tracking-tight text-white">Customer Activity</h2>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+            <p className="min-w-0 text-[10px] font-bold uppercase tracking-widest text-slate-500">
               Subscribers, account health, posting activity, and follow-up
               {overview?.generatedAt ? ` · updated ${new Date(overview.generatedAt).toLocaleTimeString()}` : ''}
             </p>
@@ -275,14 +305,14 @@ export default function CustomerActivity({ onUnauthorized }) {
         )}
       </div>
 
-      <div className="space-y-5 p-5">
+      <div className="min-w-0 space-y-5 p-5">
         {opsUnavailable ? (
           <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm font-bold leading-relaxed text-amber-200">{OPS_SETUP_NOTE}</div>
         ) : (
           <>
             {overviewError && <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs font-bold text-red-200">{overviewError}</div>}
             {overviewLoading && !overview ? (
-              <div className="grid animate-pulse gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">{Array.from({ length: 11 }, (_, index) => <div key={index} className="h-24 rounded-2xl bg-white/[0.04]" />)}</div>
+              <div className="grid animate-pulse grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">{Array.from({ length: 11 }, (_, index) => <div key={index} className="h-24 rounded-2xl bg-white/[0.04]" />)}</div>
             ) : (
               <KpiRow overview={overview || {}} onPreset={applyPreset} />
             )}
@@ -292,7 +322,9 @@ export default function CustomerActivity({ onUnauthorized }) {
               loading={pageLoading}
               error={pageError}
               expandedOrgId={expandedOrgId}
+              followUpPendingId={followUpPendingId}
               onToggle={toggleAccount}
+              onFollowUp={setRowFollowUp}
               onPage={setPageOffset}
               renderExpanded={(row) => {
                 const orgId = String(row.orgId || row.id || '');
@@ -306,8 +338,9 @@ export default function CustomerActivity({ onUnauthorized }) {
                   <>
                     {detail.error && <div className="border-b border-amber-500/20 bg-amber-500/10 px-5 py-3 text-xs font-bold text-amber-200">{detail.error}</div>}
                     <AccountDetail
-                      key={orgId}
+                      key={`${orgId}:${Boolean(row.followUp)}`}
                       orgId={orgId}
+                      summary={row}
                       detail={detail.account}
                       daily={detail.daily}
                       tickets={detail.tickets}

@@ -10,7 +10,7 @@ import {
   Search,
   Users,
 } from 'lucide-react';
-import { formatDate, formatRelative, healthColor, healthReasons, healthState } from './lib/analytics-format.js';
+import { formatRelative, healthColor, healthReasons, healthState } from './lib/analytics-format.js';
 
 const PRESETS = [
   ['no_posts_7d', 'No posts 7d'],
@@ -40,7 +40,7 @@ export function KpiRow({ overview, onPreset }) {
   ];
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
       {tiles.map((tile) => {
         const Icon = tile.icon;
         const content = (
@@ -57,13 +57,13 @@ export function KpiRow({ overview, onPreset }) {
             key={tile.label}
             type="button"
             onClick={() => onPreset(tile.preset)}
-            className="rounded-2xl border border-white/10 bg-black/35 p-4 text-left transition hover:border-blue-500/40 hover:bg-blue-500/[0.06]"
+            className="min-w-0 rounded-2xl border border-white/10 bg-black/35 p-4 text-left transition hover:border-blue-500/40 hover:bg-blue-500/[0.06]"
             title={`Filter accounts: ${tile.label}`}
           >
             {content}
           </button>
         ) : (
-          <div key={tile.label} className="rounded-2xl border border-white/10 bg-black/35 p-4">
+          <div key={tile.label} className="min-w-0 rounded-2xl border border-white/10 bg-black/35 p-4">
             {content}
           </div>
         );
@@ -74,19 +74,19 @@ export function KpiRow({ overview, onPreset }) {
 
 export function FiltersBar({ search, filters, onSearch, onFilter, onPreset, onClear }) {
   const selectClass =
-    'h-10 rounded-xl border border-white/10 bg-black/50 px-3 text-[10px] font-black uppercase tracking-widest text-slate-300 outline-none focus:border-blue-500/60';
+    'h-10 min-w-0 w-full max-w-full flex-1 basis-36 rounded-xl border border-white/10 bg-black/50 px-3 text-[10px] font-black uppercase tracking-widest text-slate-300 outline-none focus:border-blue-500/60 sm:max-w-48';
 
   return (
-    <div className="space-y-3 rounded-2xl border border-white/10 bg-black/30 p-4">
-      <div className="grid gap-3 lg:grid-cols-[minmax(220px,1fr)_repeat(4,auto)]">
-        <label className="relative">
+    <div className="min-w-0 space-y-3 rounded-2xl border border-white/10 bg-black/30 p-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <label className="relative min-w-0 flex-[2_1_280px]">
           <span className="sr-only">Search accounts</span>
           <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
             value={search}
             onChange={(event) => onSearch(event.target.value)}
             placeholder="Search account, slug, or org ID..."
-            className="h-10 w-full rounded-xl border border-white/10 bg-black/50 pl-9 pr-3 text-xs text-white outline-none placeholder:text-slate-600 focus:border-blue-500/60"
+            className="h-10 w-full min-w-0 rounded-xl border border-white/10 bg-black/50 pl-9 pr-3 text-xs text-white outline-none placeholder:text-slate-600 focus:border-blue-500/60"
           />
         </label>
         <select value={filters.plan} onChange={(event) => onFilter('plan', event.target.value)} className={selectClass}>
@@ -148,7 +148,17 @@ export function FiltersBar({ search, filters, onSearch, onFilter, onPreset, onCl
   );
 }
 
-export function AccountsTable({ page, loading, error, expandedOrgId, onToggle, onPage, renderExpanded }) {
+export function AccountsTable({
+  page,
+  loading,
+  error,
+  expandedOrgId,
+  followUpPendingId,
+  onToggle,
+  onFollowUp,
+  onPage,
+  renderExpanded,
+}) {
   const rows = page?.rows || [];
   const limit = Number(page?.limit) || 25;
   const offset = Number(page?.offset) || 0;
@@ -157,82 +167,101 @@ export function AccountsTable({ page, loading, error, expandedOrgId, onToggle, o
   const end = Math.min(offset + rows.length, total);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/30">
+    <div className="min-w-0 rounded-2xl border border-white/10 bg-black/30">
       {error && (
         <div className="border-b border-red-500/20 bg-red-500/10 px-4 py-3 text-xs font-bold text-red-200">{error}</div>
       )}
-      <div className="overflow-x-auto">
-        <table className="min-w-[1540px] w-full border-collapse text-left">
-          <thead className="border-b border-white/10 bg-white/[0.03] text-[9px] font-black uppercase tracking-widest text-slate-500">
-            <tr>
-              <Th>Account</Th><Th>Plan / status</Th><Th>Health</Th><Th>Seats</Th><Th>Posts 7 / 30</Th>
-              <Th>Last post</Th><Th>Last active</Th><Th>Facebook</Th><Th>AutoPilot</Th><Th>Feed</Th>
-              <Th>Version</Th><Th>Credits</Th><Th>Tickets</Th><Th>CS</Th><Th>Created</Th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5">
-            {loading && rows.length === 0 ? (
-              Array.from({ length: 5 }, (_, index) => (
-                <tr key={index} className="animate-pulse">
-                  <td colSpan="15" className="px-4 py-4"><div className="h-6 rounded-lg bg-white/[0.05]" /></td>
-                </tr>
-              ))
-            ) : rows.length === 0 ? (
-              <tr><td colSpan="15" className="px-5 py-12 text-center text-xs font-bold uppercase tracking-widest text-slate-600">No accounts match these filters.</td></tr>
-            ) : (
-              rows.map((row) => {
-                const orgId = String(row.orgId || row.id || '');
-                const expanded = expandedOrgId === orgId;
-                const reasons = healthReasons(row);
-                return (
-                  <FragmentRow key={orgId || row.slug}>
-                    <tr
-                      tabIndex="0"
-                      onClick={() => onToggle(row)}
-                      onKeyDown={(event) => {
-                        if (event.key === 'Enter' || event.key === ' ') {
-                          event.preventDefault();
-                          onToggle(row);
-                        }
-                      }}
-                      className={`cursor-pointer text-xs text-slate-300 transition hover:bg-white/[0.04] ${expanded ? 'bg-blue-500/[0.05]' : ''}`}
-                    >
-                      <Td>
-                        <span className="flex max-w-60 items-start gap-2">
-                          {expanded ? <ChevronDown size={14} className="mt-0.5 shrink-0 text-blue-300" /> : <ChevronRight size={14} className="mt-0.5 shrink-0 text-slate-600" />}
-                          <span className="min-w-0">
-                            <span className="flex items-center gap-1.5 truncate font-bold text-white">
-                              {row.name || row.slug || orgId || 'Unnamed account'}
-                              {row.followUp && <Flag size={12} className="shrink-0 fill-amber-400 text-amber-400" aria-label="Follow-up" />}
-                            </span>
-                            <span className="block truncate text-[9px] font-bold uppercase tracking-widest text-slate-600">{row.slug || orgId}</span>
-                          </span>
-                        </span>
-                      </Td>
-                      <Td><strong className="text-white">{row.plan || '—'}</strong><Small>{row.subStatus || 'No subscription'}</Small></Td>
-                      <Td><HealthDot value={row.health} reasons={reasons} /></Td>
-                      <Td>{metric(row.seats?.occupied ?? row.seatsOccupied)} / {metric(row.seats?.purchased ?? row.seatsPurchased)}</Td>
-                      <Td><strong className="text-white">{metric(row.posts7d)}</strong> / {metric(row.posts30d)}</Td>
-                      <Td>{formatRelative(row.lastPostAt)}</Td>
-                      <Td>{formatRelative(row.lastActiveAt)}</Td>
-                      <Td><StatePill active={row.fbConnected} yes="Connected" no="Disconnected" /></Td>
-                      <Td><StatePill active={row.autoPilotOn} yes="On" no="Off" /></Td>
-                      <Td><FeedState row={row} /></Td>
-                      <Td><span className="font-mono text-[10px] text-slate-300">{row.appVersion || 'Unknown'}</span><Small>{row.versionSource || ''}</Small></Td>
-                      <Td>{formatNumber(row.creditBalance)}</Td>
-                      <Td>{metric(row.openTickets)}</Td>
-                      <Td>{row.csOwner || 'Unassigned'}</Td>
-                      <Td>{formatDate(row.createdAt)}</Td>
-                    </tr>
-                    {expanded && (
-                      <tr className="bg-[#080808]"><td colSpan="15" className="p-0">{renderExpanded(row)}</td></tr>
-                    )}
-                  </FragmentRow>
-                );
-              })
-            )}
-          </tbody>
-        </table>
+      <div className="hidden grid-cols-[minmax(0,1.55fr)_minmax(0,0.9fr)_minmax(0,1.15fr)_minmax(0,1.2fr)_minmax(0,0.9fr)_2rem] gap-4 border-b border-white/10 bg-white/[0.03] px-4 py-3 text-[9px] font-black uppercase tracking-widest text-slate-500 xl:grid">
+        <span className="min-w-0 truncate">Account</span>
+        <span className="min-w-0 truncate">Activity</span>
+        <span className="min-w-0 truncate">Signals</span>
+        <span className="min-w-0 truncate">Health</span>
+        <span className="min-w-0 truncate">CS</span>
+        <span className="sr-only">Expand</span>
+      </div>
+      <div className="divide-y divide-white/5">
+        {loading && rows.length === 0 ? (
+          Array.from({ length: 5 }, (_, index) => (
+            <div key={index} className="animate-pulse px-4 py-4"><div className="h-12 rounded-lg bg-white/[0.05]" /></div>
+          ))
+        ) : rows.length === 0 ? (
+          <div className="px-5 py-12 text-center text-xs font-bold uppercase tracking-widest text-slate-600">No accounts match these filters.</div>
+        ) : (
+          rows.map((row) => {
+            const orgId = String(row.orgId || row.id || '');
+            const expanded = expandedOrgId === orgId;
+            const reasons = healthReasons(row);
+            const accountName = row.name || row.slug || orgId || 'Unnamed account';
+            return (
+              <div key={orgId || row.slug} className={expanded ? 'bg-blue-500/[0.05]' : ''}>
+                <div
+                  role="button"
+                  tabIndex="0"
+                  aria-expanded={expanded}
+                  onClick={() => onToggle(row)}
+                  onKeyDown={(event) => {
+                    if (event.target !== event.currentTarget) return;
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      onToggle(row);
+                    }
+                  }}
+                  className="grid min-w-0 cursor-pointer grid-cols-[minmax(0,1fr)_2rem] gap-x-3 gap-y-3 px-4 py-4 text-xs text-slate-300 transition hover:bg-white/[0.04] md:grid-cols-[minmax(0,1.45fr)_minmax(0,0.9fr)_minmax(0,1.1fr)_2rem] md:gap-x-4 xl:grid-cols-[minmax(0,1.55fr)_minmax(0,0.9fr)_minmax(0,1.15fr)_minmax(0,1.2fr)_minmax(0,0.9fr)_2rem] xl:items-center xl:gap-y-0"
+                >
+                  <div className="col-start-1 row-start-1 min-w-0 md:col-start-1 md:row-start-1 xl:col-start-1 xl:row-start-1">
+                    <MobileLabel>Account</MobileLabel>
+                    <p className="min-w-0 truncate font-medium text-white" title={accountName}>{accountName}</p>
+                    <div className="mt-1.5 flex min-w-0 items-center gap-1.5">
+                      <span className="min-w-0 truncate text-[9px] font-bold uppercase tracking-widest text-slate-600" title={row.slug || orgId}>{row.slug || orgId}</span>
+                      <AccountChip>{row.plan || 'No plan'}</AccountChip>
+                      <AccountChip>{row.subStatus || 'No status'}</AccountChip>
+                    </div>
+                  </div>
+
+                  <div className="col-start-1 row-start-2 min-w-0 md:col-start-2 md:row-start-1 xl:col-start-2 xl:row-start-1">
+                    <MobileLabel>Activity</MobileLabel>
+                    <p className="min-w-0 truncate font-bold text-white" title={`${metric(row.posts7d)} posts in 7 days / ${metric(row.posts30d)} posts in 30 days`}>
+                      {metric(row.posts7d)} <span className="text-slate-600">/</span> {metric(row.posts30d)}
+                    </p>
+                    <p className="mt-1 min-w-0 truncate text-[10px] text-slate-500" title={`Last post ${formatRelative(row.lastPostAt)}`}>
+                      Last post {formatRelative(row.lastPostAt)}
+                    </p>
+                  </div>
+
+                  <div className="col-start-1 row-start-3 min-w-0 md:col-start-3 md:row-start-1 xl:col-start-3 xl:row-start-1">
+                    <MobileLabel>Signals</MobileLabel>
+                    <Signals row={row} />
+                  </div>
+
+                  <div className="col-start-1 row-start-4 min-w-0 md:col-span-2 md:col-start-1 md:row-start-2 xl:col-span-1 xl:col-start-4 xl:row-start-1">
+                    <MobileLabel>Health</MobileLabel>
+                    <HealthSummary value={row.health} reasons={reasons} />
+                  </div>
+
+                  <div className="col-start-1 row-start-5 min-w-0 md:col-start-3 md:row-start-2 xl:col-start-5 xl:row-start-1">
+                    <MobileLabel>CS</MobileLabel>
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span className="min-w-0 flex-1 truncate" title={row.csOwner || 'Unassigned'}>{row.csOwner || 'Unassigned'}</span>
+                      <FollowUpToggle
+                        active={Boolean(row.followUp)}
+                        disabled={followUpPendingId === orgId}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          onFollowUp(row, !row.followUp);
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <span className="col-start-2 row-start-1 row-span-5 flex items-center justify-end self-stretch md:col-start-4 md:row-start-1 md:row-span-2 xl:col-start-6 xl:row-start-1 xl:row-span-1" aria-hidden="true">
+                    {expanded ? <ChevronDown size={16} className="text-blue-300" /> : <ChevronRight size={16} className="text-slate-600" />}
+                  </span>
+                </div>
+                {expanded && <div className="min-w-0 bg-[#080808]">{renderExpanded(row)}</div>}
+              </div>
+            );
+          })
+        )}
       </div>
       <div className="flex flex-col gap-3 border-t border-white/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
         <span className="text-[9px] font-black uppercase tracking-widest text-slate-600">
@@ -247,46 +276,71 @@ export function AccountsTable({ page, loading, error, expandedOrgId, onToggle, o
   );
 }
 
-function FragmentRow({ children }) {
-  return <>{children}</>;
+function MobileLabel({ children }) {
+  return <span className="mb-1 block text-[9px] font-black uppercase tracking-widest text-slate-600 xl:hidden">{children}</span>;
 }
 
-function Th({ children }) {
-  return <th className="whitespace-nowrap px-4 py-3">{children}</th>;
+function AccountChip({ children }) {
+  return <span className="max-w-24 shrink-0 truncate rounded-full border border-white/10 bg-white/[0.03] px-1.5 py-0.5 text-[8px] font-black uppercase tracking-widest text-slate-500" title={String(children)}>{children}</span>;
 }
 
-function Td({ children }) {
-  return <td className="whitespace-nowrap px-4 py-3 align-top">{children}</td>;
-}
-
-function Small({ children }) {
-  return children ? <span className="mt-1 block text-[9px] font-bold uppercase tracking-widest text-slate-600">{children}</span> : null;
-}
-
-function PageButton({ children, ...props }) {
-  return <button type="button" {...props} className="rounded-lg border border-white/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30">{children}</button>;
-}
-
-function HealthDot({ value, reasons }) {
-  const state = healthState(value);
+function Signals({ row }) {
+  const feedState = healthState(row.feedHealth);
+  const version = shortVersion(row.appVersion);
   return (
-    <span className="group relative inline-flex items-center gap-2">
-      <span className={`h-2.5 w-2.5 rounded-full ${healthColor(state)}`} />
-      <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">{state}</span>
-      <span className="pointer-events-none absolute left-0 top-full z-30 mt-2 hidden w-64 whitespace-normal rounded-xl border border-white/10 bg-slate-950 p-3 text-[10px] font-medium leading-relaxed text-slate-300 shadow-2xl group-hover:block">
+    <div className="flex min-w-0 items-center gap-3">
+      <span className="inline-flex shrink-0 items-center gap-1.5" title={`Facebook session: ${row.fbConnected ? 'connected' : 'disconnected'}`}>
+        <span className={`h-2.5 w-2.5 rounded-full ${row.fbConnected ? 'bg-emerald-400' : 'bg-red-400'}`} />
+        <span className="sr-only">Facebook {row.fbConnected ? 'connected' : 'disconnected'}</span>
+      </span>
+      <span className={`inline-flex shrink-0 ${row.autoPilotOn ? 'text-emerald-300' : 'text-slate-600'}`} title={`AutoPilot: ${row.autoPilotOn ? 'on' : 'off'}`}>
+        <Bot size={15} aria-hidden="true" />
+        <span className="sr-only">AutoPilot {row.autoPilotOn ? 'on' : 'off'}</span>
+      </span>
+      <span className="inline-flex shrink-0 items-center" title={`Worst feed health: ${feedState}${row.lastSyncAt ? `; last sync ${formatRelative(row.lastSyncAt)}` : ''}`}>
+        <span className={`h-2.5 w-2.5 rounded-full ${healthColor(feedState)}`} />
+        <span className="sr-only">Feed health {feedState}</span>
+      </span>
+      <span className="min-w-0 max-w-24 truncate rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-0.5 font-mono text-[9px] text-slate-300" title={`App version: ${row.appVersion || 'unknown'}${row.versionSource ? ` (${row.versionSource})` : ''}`}>
+        {version}
+      </span>
+    </div>
+  );
+}
+
+function HealthSummary({ value, reasons }) {
+  const state = healthState(value);
+  const topReason = reasons[0] || 'No health reasons reported.';
+  return (
+    <span className="group relative flex min-w-0 items-center gap-2" title={reasons.length > 0 ? reasons.join(' · ') : 'No health reasons reported.'}>
+      <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${healthColor(state)}`} />
+      <span className="shrink-0 text-[9px] font-black uppercase tracking-widest text-slate-400">{state}</span>
+      <span className="min-w-0 truncate text-[10px] text-slate-500">{topReason}</span>
+      <span className="pointer-events-none absolute left-0 top-full z-30 mt-2 hidden w-64 max-w-[min(16rem,calc(100vw-3rem))] whitespace-normal rounded-xl border border-white/10 bg-slate-950 p-3 text-[10px] font-medium leading-relaxed text-slate-300 shadow-2xl group-hover:block">
         {reasons.length > 0 ? reasons.join(' · ') : 'No health reasons reported.'}
       </span>
     </span>
   );
 }
 
-function StatePill({ active, yes, no }) {
-  return <span className={`rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-widest ${active ? 'bg-emerald-500/10 text-emerald-300' : 'bg-white/[0.04] text-slate-600'}`}>{active ? yes : no}</span>;
+function FollowUpToggle({ active, disabled, onClick }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      aria-label={`${active ? 'Remove' : 'Add'} follow-up flag`}
+      title={`${active ? 'Remove' : 'Add'} follow-up flag`}
+      disabled={disabled}
+      onClick={onClick}
+      className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border transition disabled:cursor-wait disabled:opacity-40 ${active ? 'border-amber-400/30 bg-amber-400/10 text-amber-300' : 'border-white/10 bg-white/[0.03] text-slate-600 hover:text-slate-300'}`}
+    >
+      <Flag size={12} className={active ? 'fill-current' : ''} />
+    </button>
+  );
 }
 
-function FeedState({ row }) {
-  const state = healthState(row.feedHealth);
-  return <span><span className={`mr-2 inline-block h-2 w-2 rounded-full ${healthColor(state)}`} />{state}<Small>{formatRelative(row.lastSyncAt)}</Small></span>;
+function PageButton({ children, ...props }) {
+  return <button type="button" {...props} className="rounded-lg border border-white/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30">{children}</button>;
 }
 
 function metric(value) {
@@ -299,7 +353,7 @@ function sumMetric(value) {
   return metric(value);
 }
 
-function formatNumber(value) {
-  const number = Number(value);
-  return Number.isFinite(number) ? number.toLocaleString(undefined, { maximumFractionDigits: 1 }) : '—';
+function shortVersion(value) {
+  if (!value) return '?';
+  return String(value).trim().replace(/^v/i, '').split(/\s+/)[0] || '?';
 }
