@@ -4,6 +4,7 @@ import SupportInbox from './SupportInbox.jsx';
 import SupportAdjustments from './SupportAdjustments.jsx';
 import BillingLinks from './BillingLinks.jsx';
 import OpsLinking from './OpsLinking.jsx';
+import CustomerActivity from './CustomerActivity.jsx';
 
 export default function Dashboard({ onLogout }) {
   const [supportRequests, setSupportRequests] = useState([]);
@@ -77,7 +78,7 @@ export default function Dashboard({ onLogout }) {
           <div>
             <h1 className="text-lg font-black uppercase italic tracking-tight text-white">AutoLander Admin</h1>
             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-              Chatbot messages, support adjustments, payment links, and account linking
+              Customer health, chatbot messages, support adjustments, payment links, and account linking
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -101,6 +102,7 @@ export default function Dashboard({ onLogout }) {
       </header>
 
       <main className="mx-auto max-w-6xl space-y-6 px-6 py-8">
+        <CustomerActivity onUnauthorized={onLogout} />
         <SupportInbox
           requests={supportRequests}
           loading={supportLoading}

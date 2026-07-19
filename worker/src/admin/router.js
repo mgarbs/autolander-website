@@ -4,6 +4,7 @@ import { getAdInsights, getCampaignInsights, hasMetaInsightsConfig } from './met
 import { buildRecommendations, META_URL_PARAM_TEMPLATE } from './recommendations.js';
 import { createAdminSubscriptionLink } from './stripe-links.js';
 import { handleOpsCandidates, handleOpsLink, handleOpsUnlinked } from './ops-linking.js';
+import { handleAnalyticsProxy } from './analytics.js';
 import {
   handleSupportAdjustmentCandidates,
   handleSupportCreditGrant,
@@ -68,6 +69,12 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
 
   if (path === '/admin/subscription-link' && request.method === 'POST') {
     const result = await createAdminSubscriptionLink(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  const analyticsMatch = path.match(/^\/admin\/analytics(\/.*)?$/);
+  if (analyticsMatch && ['GET', 'POST', 'PUT'].includes(request.method)) {
+    const result = await handleAnalyticsProxy(request, url, env, analyticsMatch[1] || '');
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 

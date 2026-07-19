@@ -57,4 +57,5 @@ async function request(path, { method = 'GET', body } = {}) {
 
 export const apiGet = (path) => request(path, { method: 'GET' });
 export const apiPost = (path, body) => request(path, { method: 'POST', body });
+export const apiPut = (path, body) => request(path, { method: 'PUT', body });
 export { ApiError, API_URL };

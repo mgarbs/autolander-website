@@ -1,0 +1,332 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Activity, Loader2, RefreshCw } from 'lucide-react';
+import AccountDetail from './AccountDetail.jsx';
+import { AccountsTable, FiltersBar, KpiRow } from './CustomerActivityParts.jsx';
+import { ApiError } from './lib/api.js';
+import {
+  OPS_SETUP_NOTE,
+  fetchAccount,
+  fetchAccounts,
+  fetchOverview,
+  fetchPostsDaily,
+  fetchTickets,
+  isOpsNotConfigured,
+  saveCsMeta,
+  saveNote,
+} from './lib/analytics.js';
+
+const EMPTY_PAGE = { rows: [], total: 0, limit: 25, offset: 0 };
+const EMPTY_DETAIL = { account: null, daily: [], tickets: { rows: [], sheetUrl: '' }, error: '' };
+const DEFAULT_FILTERS = { plan: '', status: '', health: '', preset: '', sort: 'health', limit: 25, offset: 0 };
+
+export default function CustomerActivity({ onUnauthorized }) {
+  const [overview, setOverview] = useState(null);
+  const [overviewLoading, setOverviewLoading] = useState(true);
+  const [overviewError, setOverviewError] = useState('');
+  const [page, setPage] = useState(EMPTY_PAGE);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [pageError, setPageError] = useState('');
+  const [opsUnavailable, setOpsUnavailable] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
+
+  const [expandedOrgId, setExpandedOrgId] = useState('');
+  const [detail, setDetail] = useState(EMPTY_DETAIL);
+  const [detailLoading, setDetailLoading] = useState(false);
+  const [chartLoading, setChartLoading] = useState(false);
+  const [detailDays, setDetailDays] = useState(30);
+  const [writePending, setWritePending] = useState(false);
+
+  const accountRequest = useMemo(
+    () => ({ ...filters, q: debouncedSearch }),
+    [debouncedSearch, filters],
+  );
+  const accountsSeq = useRef(0);
+  const detailSeq = useRef(0);
+  const chartSeq = useRef(0);
+
+  const handleError = useCallback((err, fallback) => {
+    if (err instanceof ApiError && err.status === 401) {
+      onUnauthorized?.();
+      return 'Your admin session expired.';
+    }
+    if (isOpsNotConfigured(err)) {
+      setOpsUnavailable(true);
+      return '';
+    }
+    if (err?.reason === 'ops_token_rejected') return 'The analytics service token was rejected. Check the matching Worker and cloud secrets.';
+    if (err?.reason === 'cloud_unreachable') return 'The analytics service is temporarily unreachable.';
+    return fallback;
+  }, [onUnauthorized]);
+
+  const loadOverview = useCallback(async ({ silent = false } = {}) => {
+    if (!silent) setOverviewLoading(true);
+    setOverviewError('');
+    try {
+      setOverview(await fetchOverview());
+      setOpsUnavailable(false);
+    } catch (err) {
+      const message = handleError(err, 'Could not load customer-activity totals.');
+      if (message) setOverviewError(message);
+    } finally {
+      setOverviewLoading(false);
+    }
+  }, [handleError]);
+
+  const loadAccounts = useCallback(async ({ silent = false } = {}) => {
+    const seq = accountsSeq.current + 1;
+    accountsSeq.current = seq;
+    if (!silent) setPageLoading(true);
+    setPageError('');
+    try {
+      const response = await fetchAccounts(accountRequest);
+      if (accountsSeq.current !== seq) return;
+      setPage(response);
+      setOpsUnavailable(false);
+    } catch (err) {
+      if (accountsSeq.current !== seq) return;
+      const message = handleError(err, 'Could not load customer accounts.');
+      if (message) setPageError(message);
+    } finally {
+      if (accountsSeq.current === seq) setPageLoading(false);
+    }
+  }, [accountRequest, handleError]);
+
+  const loadDetail = useCallback(async (orgId, days, { silent = false } = {}) => {
+    const seq = detailSeq.current + 1;
+    detailSeq.current = seq;
+    chartSeq.current += 1;
+    if (!silent) setDetailLoading(true);
+    setDetail((current) => ({ ...current, error: '' }));
+
+    const results = await Promise.allSettled([
+      fetchAccount(orgId),
+      fetchPostsDaily(orgId, days),
+      fetchTickets(orgId),
+    ]);
+    if (detailSeq.current !== seq) return;
+
+    const rejected = results.find((result) => result.status === 'rejected');
+    if (rejected) {
+      const message = handleError(rejected.reason, 'Some account details could not be loaded.');
+      setDetail((current) => ({
+        account: results[0].status === 'fulfilled' ? results[0].value : current.account,
+        daily: results[1].status === 'fulfilled' ? results[1].value : current.daily,
+        tickets: results[2].status === 'fulfilled' ? results[2].value : current.tickets,
+        error: message,
+      }));
+    } else {
+      setDetail({ account: results[0].value, daily: results[1].value, tickets: results[2].value, error: '' });
+      setOpsUnavailable(false);
+    }
+    setDetailLoading(false);
+    setChartLoading(false);
+  }, [handleError]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => { loadOverview(); }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [loadOverview]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => { loadAccounts(); }, 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [loadAccounts]);
+
+  useEffect(() => {
+    const tick = () => {
+      if (document.hidden) return;
+      loadOverview({ silent: true });
+      loadAccounts({ silent: true });
+      if (expandedOrgId) loadDetail(expandedOrgId, detailDays, { silent: true });
+    };
+    const intervalId = window.setInterval(tick, 45000);
+    const handleVisibility = () => {
+      if (!document.hidden) tick();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => {
+      window.clearInterval(intervalId);
+      document.removeEventListener('visibilitychange', handleVisibility);
+    };
+  }, [detailDays, expandedOrgId, loadAccounts, loadDetail, loadOverview]);
+
+  function setFilter(name, value) {
+    setFilters((current) => ({ ...current, [name]: value, offset: 0 }));
+  }
+
+  function applyPreset(preset) {
+    setFilters((current) => ({ ...current, preset, offset: 0 }));
+  }
+
+  function clearFilters() {
+    setSearch('');
+    setDebouncedSearch('');
+    setFilters(DEFAULT_FILTERS);
+  }
+
+  function setPageOffset(offset) {
+    setFilters((current) => ({ ...current, offset }));
+  }
+
+  function toggleAccount(row) {
+    const orgId = String(row.orgId || row.id || '');
+    if (!orgId) return;
+    if (expandedOrgId === orgId) {
+      detailSeq.current += 1;
+      chartSeq.current += 1;
+      setExpandedOrgId('');
+      setDetail(EMPTY_DETAIL);
+      setDetailLoading(false);
+      return;
+    }
+    setExpandedOrgId(orgId);
+    setDetailDays(30);
+    setDetail(EMPTY_DETAIL);
+    setDetailLoading(true);
+    loadDetail(orgId, 30);
+  }
+
+  async function changeDetailDays(days) {
+    if (!expandedOrgId || days === detailDays) return;
+    setDetailDays(days);
+    setChartLoading(true);
+    const seq = chartSeq.current + 1;
+    chartSeq.current = seq;
+    try {
+      const rows = await fetchPostsDaily(expandedOrgId, days);
+      if (chartSeq.current === seq) setDetail((current) => ({ ...current, daily: rows }));
+    } catch (err) {
+      if (chartSeq.current === seq) {
+        const message = handleError(err, 'Could not load daily posting data.');
+        setDetail((current) => ({ ...current, error: message }));
+      }
+    } finally {
+      if (chartSeq.current === seq) setChartLoading(false);
+    }
+  }
+
+  async function addNote(note) {
+    if (!expandedOrgId) return;
+    setWritePending(true);
+    try {
+      await saveNote(expandedOrgId, note);
+      await loadDetail(expandedOrgId, detailDays, { silent: true });
+    } finally {
+      setWritePending(false);
+    }
+  }
+
+  async function saveMeta(meta) {
+    if (!expandedOrgId) return;
+    setWritePending(true);
+    try {
+      await saveCsMeta(expandedOrgId, meta);
+      setPage((current) => ({
+        ...current,
+        rows: current.rows.map((row) => String(row.orgId || row.id) === expandedOrgId
+          ? { ...row, csOwner: meta.owner || '', followUp: Boolean(meta.followUp) }
+          : row),
+      }));
+      await loadDetail(expandedOrgId, detailDays, { silent: true });
+    } finally {
+      setWritePending(false);
+    }
+  }
+
+  async function refreshAll() {
+    setRefreshing(true);
+    try {
+      await Promise.all([
+        loadOverview({ silent: true }),
+        loadAccounts({ silent: true }),
+        expandedOrgId ? loadDetail(expandedOrgId, detailDays, { silent: true }) : Promise.resolve(),
+      ]);
+    } finally {
+      setRefreshing(false);
+    }
+  }
+
+  return (
+    <section className="rounded-3xl border border-white/10 bg-white/[0.03]">
+      <div className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-400/10 text-blue-300"><Activity size={20} /></span>
+          <div>
+            <h2 className="text-sm font-black uppercase italic tracking-tight text-white">Customer Activity</h2>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+              Subscribers, account health, posting activity, and follow-up
+              {overview?.generatedAt ? ` · updated ${new Date(overview.generatedAt).toLocaleTimeString()}` : ''}
+            </p>
+          </div>
+        </div>
+        {!opsUnavailable && (
+          <button type="button" onClick={refreshAll} disabled={refreshing} className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-[10px] font-black uppercase tracking-widest text-slate-300 transition hover:text-white disabled:opacity-50">
+            {refreshing ? <Loader2 size={13} className="animate-spin" /> : <RefreshCw size={13} />} Refresh
+          </button>
+        )}
+      </div>
+
+      <div className="space-y-5 p-5">
+        {opsUnavailable ? (
+          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm font-bold leading-relaxed text-amber-200">{OPS_SETUP_NOTE}</div>
+        ) : (
+          <>
+            {overviewError && <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-xs font-bold text-red-200">{overviewError}</div>}
+            {overviewLoading && !overview ? (
+              <div className="grid animate-pulse gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">{Array.from({ length: 11 }, (_, index) => <div key={index} className="h-24 rounded-2xl bg-white/[0.04]" />)}</div>
+            ) : (
+              <KpiRow overview={overview || {}} onPreset={applyPreset} />
+            )}
+            <FiltersBar search={search} filters={filters} onSearch={(value) => { setSearch(value); setFilters((current) => ({ ...current, offset: 0 })); }} onFilter={setFilter} onPreset={applyPreset} onClear={clearFilters} />
+            <AccountsTable
+              page={page}
+              loading={pageLoading}
+              error={pageError}
+              expandedOrgId={expandedOrgId}
+              onToggle={toggleAccount}
+              onPage={setPageOffset}
+              renderExpanded={(row) => {
+                const orgId = String(row.orgId || row.id || '');
+                if (!detail.account && detailLoading) {
+                  return <div className="flex items-center justify-center gap-2 px-5 py-12 text-[10px] font-black uppercase tracking-widest text-slate-500"><Loader2 size={16} className="animate-spin" /> Loading account detail</div>;
+                }
+                if (!detail.account) {
+                  return <div className="px-5 py-8 text-center text-xs font-bold text-red-300">{detail.error || 'Account detail is unavailable.'}</div>;
+                }
+                return (
+                  <>
+                    {detail.error && <div className="border-b border-amber-500/20 bg-amber-500/10 px-5 py-3 text-xs font-bold text-amber-200">{detail.error}</div>}
+                    <AccountDetail
+                      key={orgId}
+                      orgId={orgId}
+                      detail={detail.account}
+                      daily={detail.daily}
+                      tickets={detail.tickets}
+                      days={detailDays}
+                      chartLoading={chartLoading}
+                      refreshing={detailLoading}
+                      writePending={writePending}
+                      onDaysChange={changeDetailDays}
+                      onRefresh={() => loadDetail(orgId, detailDays)}
+                      onAddNote={addNote}
+                      onSaveCs={saveMeta}
+                    />
+                  </>
+                );
+              }}
+            />
+          </>
+        )}
+      </div>
+    </section>
+  );
+}
