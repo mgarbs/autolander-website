@@ -46,7 +46,7 @@ export default function AccountDetail({
 }) {
   const org = detail?.org || detail?.organization || detail || {};
   const subscription = detail?.subscription || org.subscription || {};
-  const users = array(detail?.users);
+  const users = sortUsersBySeatSilence(array(detail?.users));
   const feeds = array(detail?.feeds);
   const notes = array(detail?.notes);
   const aiStudio = detail?.aiStudio || {};
@@ -151,7 +151,8 @@ export default function AccountDetail({
             const pilot = user.autoPilot || {};
             const userKey = user.id || user.username || user.email || user.displayName;
             const userName = user.displayName || user.username || user.email || 'Unnamed user';
-            const seat = user.canPostMarketplace && !user.deactivatedAt ? user.seatPlan || 'Posting' : 'No posting seat';
+            const postingSeat = isPostingSeat(user);
+            const seat = postingSeat ? user.seatPlan || 'Posting' : 'No posting seat';
             return (
               <article key={userKey} className="grid min-w-0 grid-cols-[repeat(auto-fit,minmax(145px,1fr))] gap-x-4 gap-y-3 px-4 py-4 text-[10px] text-slate-300">
                 <UserFact label="User">
@@ -160,7 +161,12 @@ export default function AccountDetail({
                 </UserFact>
                 <UserFact label="Access">
                   <span className="block min-w-0 truncate" title={user.role || 'No role'}>{user.role || '—'}</span>
-                  <Sub title={seat}>{seat}</Sub>
+                  {postingSeat ? (
+                    <span className="mt-1 flex min-w-0 flex-wrap items-center gap-1.5">
+                      <span className="min-w-0 truncate text-[9px] font-bold uppercase tracking-widest text-slate-600" title={seat}>{seat}</span>
+                      <SeatActivityBadge silentDays={user.silentDays} lastActivityAt={user.lastActivityAt} />
+                    </span>
+                  ) : <Sub title={seat}>{seat}</Sub>}
                 </UserFact>
                 <UserFact label="Activity">
                   <strong className="text-white">{number(user.postsToday)}</strong> / {number(user.posts7d)} / {number(user.posts30d)}
@@ -358,6 +364,66 @@ function Presence({ presence }) {
   const live = status === 'online' || status === 'connected' || status === 'active';
   const away = status === 'away' || status === 'idle';
   return <span className="inline-flex min-w-0 items-center gap-2"><span className={`h-2 w-2 shrink-0 rounded-full ${live ? 'bg-emerald-400' : away ? 'bg-amber-400' : 'bg-slate-500'}`} /><span className="min-w-0 truncate">{status}</span></span>;
+}
+
+function SeatActivityBadge({ silentDays, lastActivityAt }) {
+  if (silentDays === undefined) return null;
+
+  let label;
+  let color;
+  if (silentDays === null) {
+    label = 'never';
+    color = 'border-white/10 bg-white/[0.03] text-slate-400';
+  } else {
+    const days = Number(silentDays);
+    if (!Number.isFinite(days)) return null;
+    if (days > 7) {
+      label = `silent ${number(days)}d`;
+      color = 'border-red-400/20 bg-red-400/10 text-red-300';
+    } else if (days >= 3) {
+      label = `silent ${number(days)}d`;
+      color = 'border-amber-400/20 bg-amber-400/10 text-amber-300';
+    } else {
+      label = 'active';
+      color = 'border-emerald-400/20 bg-emerald-400/10 text-emerald-300';
+    }
+  }
+
+  const title = lastActivityAt
+    ? `Last activity ${formatRelative(lastActivityAt)}`
+    : label === 'never' ? 'No posting activity recorded' : `Posting seat ${label}`;
+
+  return (
+    <span className={`shrink-0 rounded-full border px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider ${color}`} title={title}>
+      {label}
+    </span>
+  );
+}
+
+function sortUsersBySeatSilence(users) {
+  return users
+    .map((user, index) => ({ user, index }))
+    .sort((left, right) => {
+      const leftPosting = isPostingSeat(left.user) && left.user.silentDays !== undefined;
+      const rightPosting = isPostingSeat(right.user) && right.user.silentDays !== undefined;
+      if (leftPosting !== rightPosting) return leftPosting ? -1 : 1;
+      if (!leftPosting) return left.index - right.index;
+
+      const daysDifference = silentSortValue(right.user.silentDays) - silentSortValue(left.user.silentDays);
+      return daysDifference || left.index - right.index;
+    })
+    .map(({ user }) => user);
+}
+
+function silentSortValue(value) {
+  if (value === null) return Number.POSITIVE_INFINITY;
+  if (value === undefined) return Number.NEGATIVE_INFINITY;
+  const days = Number(value);
+  return Number.isFinite(days) ? days : Number.NEGATIVE_INFINITY;
+}
+
+function isPostingSeat(user) {
+  return Boolean(user?.canPostMarketplace && !user.deactivatedAt);
 }
 
 function pilotSummary(pilot) {

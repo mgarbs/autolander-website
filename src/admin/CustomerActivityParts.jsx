@@ -14,6 +14,7 @@ import { feedHealthState, formatRelative, healthColor, healthReasons, healthStat
 import VersionBadge from './VersionBadge.jsx';
 
 const PRESETS = [
+  ['silent_seats', 'Silent seats'],
   ['no_posts_7d', 'No posts 7d'],
   ['no_posts_14d', 'No posts 14d'],
   ['never_posted', 'Never posted'],
@@ -26,6 +27,7 @@ const PRESETS = [
 
 export function KpiRow({ overview, onPreset }) {
   const seats = overview?.postingSeats || {};
+  const seatStats = overview?.seatStats;
   const activeSubscribers = overview?.activeSubscribers || {};
   const tiles = [
     {
@@ -35,6 +37,10 @@ export function KpiRow({ overview, onPreset }) {
       scope: activeSubscriberBreakdown(activeSubscribers),
     },
     { label: 'Seats occupied / purchased', value: `${metric(seats.occupied)} / ${metric(seats.purchased)}`, icon: Users },
+    ...(seatStats ? [
+      { label: 'Seats posting 7d', value: metric(seatStats.posting7d), icon: Users, scope: 'active subs' },
+      { label: 'Seats silent 7d+', value: metric(seatStats.silent7d), icon: AlertTriangle, preset: 'silent_seats', scope: 'active subs' },
+    ] : []),
     { label: 'Posts today', value: metric(overview?.postsToday), icon: Activity },
     { label: 'Posts this week', value: metric(overview?.postsWeek), icon: CalendarDays },
     { label: 'Posts this month', value: metric(overview?.postsMonth), icon: CalendarDays },
@@ -204,6 +210,9 @@ export function AccountsTable({
             const hasLastActivity = row.lastActivityAt !== undefined && row.lastActivityAt !== null && row.lastActivityAt !== '';
             const activityTimestamp = hasLastActivity ? row.lastActivityAt : row.lastPostAt;
             const activityLabel = hasLastActivity ? 'Last activity' : 'Last post';
+            const seatTotal = Number(row.seatSummary?.total);
+            const seatActive7d = Number(row.seatSummary?.active7d);
+            const hasSeatSummary = Number.isFinite(seatTotal) && seatTotal > 0 && Number.isFinite(seatActive7d);
             return (
               <div key={orgId || row.slug} className={expanded ? 'bg-blue-500/[0.05]' : ''}>
                 <div
@@ -238,6 +247,18 @@ export function AccountsTable({
                     <p className="mt-1 min-w-0 truncate text-[10px] text-slate-500" title={`${activityLabel} ${formatRelative(activityTimestamp)}`}>
                       {activityLabel} {formatRelative(activityTimestamp)}
                     </p>
+                    {hasSeatSummary && (
+                      <span
+                        className={`mt-1.5 inline-flex max-w-full rounded-full border px-2 py-0.5 text-[8px] font-black uppercase tracking-wider ${
+                          seatActive7d < seatTotal
+                            ? 'border-amber-400/20 bg-amber-400/[0.08] text-amber-300'
+                            : 'border-white/10 bg-white/[0.03] text-slate-400'
+                        }`}
+                        title="Posting seats active in the last 7 days"
+                      >
+                        {metric(seatActive7d)}/{metric(seatTotal)} seats active
+                      </span>
+                    )}
                   </div>
 
                   <div className="col-start-1 row-start-3 min-w-0 md:col-start-3 md:row-start-1 xl:col-start-3 xl:row-start-1">
