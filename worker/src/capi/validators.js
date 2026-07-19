@@ -62,7 +62,7 @@ export function isValidFbp(value) {
 }
 
 export function isValidFbc(value) {
-  return typeof value === 'string' && FBC_PATTERN.test(value);
+  return typeof value === 'string' && value.length <= 1200 && FBC_PATTERN.test(value);
 }
 
 export function isValidEventId(value) {
@@ -72,6 +72,23 @@ export function isValidEventId(value) {
 export function clean(value, max = 200) {
   if (typeof value !== 'string') return '';
   return value.replace(/\s+/g, ' ').trim().slice(0, max);
+}
+
+export function cleanFbclid(value) {
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  if (trimmed.length > 1000 || /\s/.test(trimmed)) return '';
+  return trimmed;
+}
+
+export function buildFbc(fbclid, timestampSeconds) {
+  const clickId = cleanFbclid(fbclid);
+  if (!clickId) return '';
+  const timestamp = Number(timestampSeconds);
+  const timestampMs = Number.isSafeInteger(timestamp) && timestamp > 0
+    ? timestamp * 1000
+    : Date.now();
+  return `fb.1.${timestampMs}.${clickId}`;
 }
 
 export function cleanUtms(raw) {

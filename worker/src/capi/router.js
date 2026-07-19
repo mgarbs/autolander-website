@@ -11,7 +11,9 @@ import {
   wasEventSeen,
 } from './storage.js';
 import {
+  buildFbc,
   clean,
+  cleanFbclid,
   cleanUtms,
   isAllowedEvent,
   isCustomEvent,
@@ -284,7 +286,12 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   const sid = clean(body.sid, 64);
   const fbp = isValidFbp(body.fbp) ? body.fbp : '';
   const fbc = isValidFbc(body.fbc) ? body.fbc : '';
-  const fbclid = clean(body.fbclid, 256);
+  const fbclid = cleanFbclid(body.fbclid);
+  const clickTimestamp = attributionTimestampSeconds(body.firstTouch?.ts ?? body.ts);
+  const firstTouch = body.firstTouch && typeof body.firstTouch === 'object'
+    ? enrichUtms(cleanUtms(body.firstTouch))
+    : {};
+  if (clickTimestamp) firstTouch.ts = clickTimestamp;
   const utms = enrichUtms(cleanUtms(body.utms));
   const sourceUrl = clean(body.sourceUrl, 500);
   const eventTime = Number(body.eventTime) || Math.floor(Date.now() / 1000);
@@ -312,7 +319,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
       sid,
       fbclid,
       utms,
-      firstTouch: body.firstTouch && typeof body.firstTouch === 'object' ? enrichUtms(cleanUtms(body.firstTouch)) : {},
+      firstTouch,
       page,
       device,
       ip,
@@ -452,6 +459,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     fbp,
     fbc,
     fbclid,
+    clickTimestamp,
     vid,
     email: body.email,
     phone: body.phone,
@@ -549,8 +557,9 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
   const visitor = vid ? await lookupVisitor(env, vid) : null;
 
   const fbp = visitor?.fbp || '';
-  const fbc = visitor?.fbc || '';
-  const fbclid = visitor?.fbclid || '';
+  const fbc = isValidFbc(visitor?.fbc) ? visitor.fbc : '';
+  const fbclid = cleanFbclid(visitor?.fbclid);
+  const clickTimestamp = attributionTimestampSeconds(visitor?.firstTouch?.ts ?? visitor?.ts);
   const ip = visitor?.ip || '';
   const ua = visitor?.ua || '';
   const country = visitor?.country || '';
@@ -576,6 +585,7 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
     fbp,
     fbc,
     fbclid,
+    clickTimestamp,
     vid,
     ip,
     ua,
@@ -685,6 +695,7 @@ async function buildUserData({
   fbp,
   fbc,
   fbclid,
+  clickTimestamp,
   vid,
   ip,
   ua,
@@ -715,7 +726,7 @@ async function buildUserData({
   if (fbc) {
     userData.fbc = fbc;
   } else if (fbclid) {
-    userData.fbc = `fb.1.${Date.now()}.${fbclid}`;
+    userData.fbc = buildFbc(fbclid, clickTimestamp);
   }
 
   if (vid) {
@@ -726,6 +737,11 @@ async function buildUserData({
   if (ua) userData.client_user_agent = ua;
 
   return userData;
+}
+
+function attributionTimestampSeconds(value) {
+  const timestamp = Number(value);
+  return Number.isSafeInteger(timestamp) && timestamp > 0 ? timestamp : 0;
 }
 
 function sanitizeCustomData(raw) {

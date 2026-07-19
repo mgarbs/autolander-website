@@ -16,6 +16,7 @@ import {
   wasEventSeen,
 } from '../capi/storage.js';
 import { looksLikeBot } from '../security/bot-filter.js';
+import { buildFbc, cleanFbclid, isValidFbc } from '../capi/validators.js';
 import { getPaySummary, openPaySession, openSelfServeSession } from './pay-proxy.js';
 
 const ROLE_CHOICES = ['Owner', 'Manager', 'Sales Rep'];
@@ -218,8 +219,12 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const mergedUtms = mergeUtms(visitor?.utms, attribution.utms);
   const page = { ...(visitor?.page || {}), ...(attribution.page || {}) };
   const fbp = attribution.fbp || visitor?.fbp || '';
-  const fbc = attribution.fbc || visitor?.fbc || buildFbc(attribution.fbclid || visitor?.fbclid || '');
-  const fbclid = attribution.fbclid || visitor?.fbclid || '';
+  const fbclid = cleanFbclid(attribution.fbclid || visitor?.fbclid);
+  const clickTimestamp = attributionTimestampSeconds(
+    attribution.ts || visitor?.firstTouch?.ts || visitor?.ts,
+  );
+  const visitorFbc = isValidFbc(visitor?.fbc) ? visitor.fbc : '';
+  const fbc = attribution.fbc || visitorFbc || buildFbc(fbclid, clickTimestamp);
   const eventId = clean(applyState?.eventId, 80) || `lead_${(await sha256Hex(`lead:${submissionId}`)).slice(0, 32)}`;
   const sourceUrl = clean(page.current_page, 500) || clean(request.headers.get('Referer'), 500);
   const landingPageUrl = clean(page.landing_page, 500) || sourceUrl;
@@ -336,6 +341,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
       fbp,
       fbc,
       fbclid,
+      ts: clickTimestamp,
       ip: request.headers.get('CF-Connecting-IP') || '',
       country: clean(request.cf?.country, 4).toLowerCase(),
       region: clean(request.cf?.region, 48).toLowerCase(),
@@ -485,6 +491,7 @@ async function recordLeadEvent({ request, env, ctx, lead, eventId, sourceUrl, co
     fbp: attribution.fbp,
     fbc: attribution.fbc,
     fbclid: attribution.fbclid,
+    clickTimestamp: attribution.ts || attribution.firstTouch?.ts,
     vid: lead.vid,
     ip: attribution.ip || request.headers.get('CF-Connecting-IP') || '',
     ua: lead.userAgent || request.headers.get('User-Agent') || '',
@@ -530,6 +537,7 @@ async function buildUserData({
   fbp,
   fbc,
   fbclid,
+  clickTimestamp,
   vid,
   ip,
   ua,
@@ -553,7 +561,7 @@ async function buildUserData({
   if (city) userData.ct = await hashLowercase(city);
   if (fbp) userData.fbp = fbp;
   if (fbc) userData.fbc = fbc;
-  else if (fbclid) userData.fbc = buildFbc(fbclid);
+  else if (fbclid) userData.fbc = buildFbc(fbclid, clickTimestamp);
   const stableExternalId = externalId || vid;
   if (stableExternalId) {
     userData.external_id = await hashLowercase(pixelId ? `${pixelId}:${stableExternalId}` : stableExternalId);
@@ -766,14 +774,18 @@ function qaTestEventCode(url, body, env) {
 
 function sanitizeAttribution(raw) {
   const attr = raw && typeof raw === 'object' ? raw : {};
+  const firstTouch = cleanUtms(attr.firstTouch);
+  const ts = attributionTimestampSeconds(attr.firstTouch?.ts ?? attr.ts);
+  if (ts) firstTouch.ts = ts;
   return {
     vid: /^v_[a-z0-9]{12,40}$/i.test(attr.vid || '') ? attr.vid : '',
     sid: clean(attr.sid, 64),
     fbp: /^fb\.\d+\.\d+\.\d+$/.test(attr.fbp || '') ? attr.fbp : '',
-    fbc: /^fb\.\d+\.\d+\.[A-Za-z0-9_.-]+$/.test(attr.fbc || '') ? attr.fbc : '',
-    fbclid: clean(attr.fbclid, 256),
+    fbc: isValidFbc(attr.fbc) ? attr.fbc : '',
+    fbclid: cleanFbclid(attr.fbclid),
+    ts,
     utms: cleanUtms(attr.utms),
-    firstTouch: cleanUtms(attr.firstTouch),
+    firstTouch,
     page: sanitizePage(attr.page),
     device: attr.device && typeof attr.device === 'object' ? attr.device : {},
   };
@@ -915,13 +927,14 @@ function normalizePhone(raw) {
   return { ok: false, e164: '', pretty: '' };
 }
 
-function buildFbc(fbclid) {
-  return fbclid ? `fb.1.${Date.now()}.${fbclid}` : '';
-}
-
 function clean(value, max) {
   if (typeof value !== 'string') return '';
   return value.replace(/\s+/g, ' ').trim().slice(0, max);
+}
+
+function attributionTimestampSeconds(value) {
+  const timestamp = Number(value);
+  return Number.isSafeInteger(timestamp) && timestamp > 0 ? timestamp : 0;
 }
 
 async function safeJson(request) {
