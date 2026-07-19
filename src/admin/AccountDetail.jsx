@@ -24,6 +24,9 @@ import {
 } from 'recharts';
 import { formatDate, formatRelative, healthColor, healthState } from './lib/analytics-format.js';
 
+const UNKNOWN_SPLIT_LABEL = 'Unknown (pre-update)';
+const UNKNOWN_SPLIT_TITLE = 'Posts recorded before source telemetry shipped (v3.60.0) or by older app versions — cannot be attributed to Manual vs AutoPilot.';
+
 export default function AccountDetail({
   orgId,
   summary,
@@ -220,11 +223,11 @@ export default function AccountDetail({
                   <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
                   <XAxis dataKey="date" tickFormatter={shortDate} stroke="#475569" tick={{ fontSize: 9 }} minTickGap={20} />
                   <YAxis stroke="#475569" tick={{ fontSize: 9 }} allowDecimals={false} />
-                  <Tooltip contentStyle={{ background: '#09090b', border: '1px solid rgba(255,255,255,.12)', borderRadius: 12, fontSize: 11 }} />
-                  <Legend wrapperStyle={{ fontSize: 10, paddingTop: 8 }} />
+                  <Tooltip formatter={formatChartTooltip} contentStyle={{ background: '#09090b', border: '1px solid rgba(255,255,255,.12)', borderRadius: 12, fontSize: 11 }} />
+                  <Legend formatter={formatChartLegend} wrapperStyle={{ fontSize: 10, paddingTop: 8 }} />
                   <Bar dataKey="manual" name="Manual" stackId="posts" fill="#3b82f6" radius={[0, 0, 2, 2]} />
                   <Bar dataKey="autopilot" name="AutoPilot" stackId="posts" fill="#10b981" />
-                  <Bar dataKey="unknownSplit" name="Unknown split" stackId="posts" fill="#64748b" radius={[2, 2, 0, 0]} />
+                  <Bar dataKey="unknownSplit" name={UNKNOWN_SPLIT_LABEL} stackId="posts" fill="#64748b" radius={[2, 2, 0, 0]} />
                   <Line dataKey="failed" name="Failed" type="monotone" stroke="#ef4444" strokeWidth={2} dot={false} />
                 </ComposedChart>
               </ResponsiveContainer>
@@ -253,6 +256,16 @@ export default function AccountDetail({
       <NotesPanel notes={notes} pending={writePending} onAdd={onAddNote} />
     </div>
   );
+}
+
+function formatChartLegend(value) {
+  return value === UNKNOWN_SPLIT_LABEL ? <span title={UNKNOWN_SPLIT_TITLE}>{value}</span> : value;
+}
+
+function formatChartTooltip(value, name) {
+  return name === UNKNOWN_SPLIT_LABEL
+    ? [<span title={UNKNOWN_SPLIT_TITLE}>{name}: {value}</span>, null]
+    : [value, name];
 }
 
 function SummaryFact({ label, value }) {

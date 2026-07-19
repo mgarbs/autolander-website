@@ -192,6 +192,9 @@ export function AccountsTable({
             const expanded = expandedOrgId === orgId;
             const reasons = healthReasons(row);
             const accountName = row.name || row.slug || orgId || 'Unnamed account';
+            const hasLastActivity = row.lastActivityAt !== undefined && row.lastActivityAt !== null && row.lastActivityAt !== '';
+            const activityTimestamp = hasLastActivity ? row.lastActivityAt : row.lastPostAt;
+            const activityLabel = hasLastActivity ? 'Last activity' : 'Last post';
             return (
               <div key={orgId || row.slug} className={expanded ? 'bg-blue-500/[0.05]' : ''}>
                 <div
@@ -223,8 +226,8 @@ export function AccountsTable({
                     <p className="min-w-0 truncate font-bold text-white" title={`${metric(row.posts7d)} posts in 7 days / ${metric(row.posts30d)} posts in 30 days`}>
                       {metric(row.posts7d)} <span className="text-slate-600">/</span> {metric(row.posts30d)}
                     </p>
-                    <p className="mt-1 min-w-0 truncate text-[10px] text-slate-500" title={`Last post ${formatRelative(row.lastPostAt)}`}>
-                      Last post {formatRelative(row.lastPostAt)}
+                    <p className="mt-1 min-w-0 truncate text-[10px] text-slate-500" title={`${activityLabel} ${formatRelative(activityTimestamp)}`}>
+                      {activityLabel} {formatRelative(activityTimestamp)}
                     </p>
                   </div>
 

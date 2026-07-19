@@ -1,3 +1,8 @@
+const HEALTH_REASON_LABELS = new Map([
+  ['no_fb_activity_7d', 'No FB activity in 7+ days (posts, renewals, or updates)'],
+  ['trial_never_activated', 'Trial — never activated'],
+]);
+
 export function healthState(value) {
   const raw = typeof value === 'object' && value ? value.state || value.status || value.bucket : value;
   const state = String(raw || 'gray').toLowerCase();
@@ -9,7 +14,10 @@ export function healthState(value) {
 
 export function healthReasons(row) {
   const reasons = Array.isArray(row?.reasons) ? row.reasons : Array.isArray(row?.health?.reasons) ? row.health.reasons : [];
-  return reasons.map((reason) => String(reason)).filter(Boolean);
+  return reasons
+    .map((reason) => String(reason))
+    .filter(Boolean)
+    .map((reason) => HEALTH_REASON_LABELS.get(reason) ?? reason);
 }
 
 export function healthColor(state) {
