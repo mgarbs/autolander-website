@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ChevronDown, Mail, RefreshCw, Search, Trash2 } from 'lucide-react';
 
-export default function SupportInbox({ requests, loading, error, onDelete }) {
+export default function SupportInbox({ embedded = false, requests, loading, error, onDelete }) {
   const [query, setQuery] = useState('');
   const [openIds, setOpenIds] = useState(() => new Set());
   const [deletingIds, setDeletingIds] = useState(() => new Set());
@@ -60,9 +60,9 @@ export default function SupportInbox({ requests, loading, error, onDelete }) {
   }
 
   return (
-    <section className="rounded-3xl border border-white/5 bg-white/[0.03] p-6">
+    <section className={embedded ? 'p-5' : 'rounded-3xl border border-white/5 bg-white/[0.03] p-6'}>
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex items-center gap-2">
+        <div className={embedded ? 'hidden' : 'flex items-center gap-2'}>
           <Mail className="h-4 w-4 text-emerald-300" aria-hidden="true" />
           <h2 className="text-sm font-black uppercase italic tracking-tight text-white">Chatbot Messages</h2>
         </div>

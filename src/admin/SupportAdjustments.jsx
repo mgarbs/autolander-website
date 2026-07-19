@@ -20,7 +20,7 @@ import {
 const DEFAULT_CREDIT_NOTE = 'Support credit adjustment';
 const DEFAULT_DISCOUNT_NOTE = 'Support discount adjustment';
 
-export default function SupportAdjustments() {
+export default function SupportAdjustments({ embedded = false }) {
   const [query, setQuery] = useState('');
   const [candidates, setCandidates] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -192,8 +192,8 @@ export default function SupportAdjustments() {
 
   if (unavailable) {
     return (
-      <section className="rounded-2xl border border-white/10 bg-white/[0.03]">
-        <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
+      <section className={embedded ? 'min-w-0' : 'rounded-2xl border border-white/10 bg-white/[0.03]'}>
+        <div className={embedded ? 'hidden' : 'flex items-center gap-3 border-b border-white/10 px-5 py-4'}>
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/10 text-emerald-300">
             <Sparkles size={20} />
           </span>
@@ -212,9 +212,9 @@ export default function SupportAdjustments() {
   }
 
   return (
-    <section className="rounded-2xl border border-white/10 bg-white/[0.03]">
-      <div className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
+    <section className={embedded ? 'min-w-0' : 'rounded-2xl border border-white/10 bg-white/[0.03]'}>
+      <div className={`flex flex-col gap-3 px-5 sm:flex-row sm:items-center sm:justify-between ${embedded ? 'pt-5' : 'border-b border-white/10 py-4'}`}>
+        <div className={embedded ? 'hidden' : 'flex items-center gap-3'}>
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/10 text-emerald-300">
             <Sparkles size={20} />
           </span>

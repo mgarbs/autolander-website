@@ -26,8 +26,14 @@ const PRESETS = [
 
 export function KpiRow({ overview, onPreset }) {
   const seats = overview?.postingSeats || {};
+  const activeSubscribers = overview?.activeSubscribers || {};
   const tiles = [
-    { label: 'Active subscribers', value: sumMetric(overview?.activeSubscribers), icon: Users },
+    {
+      label: 'Active subscribers',
+      value: metric(activeSubscribers.total),
+      icon: Users,
+      scope: activeSubscriberBreakdown(activeSubscribers),
+    },
     { label: 'Seats occupied / purchased', value: `${metric(seats.occupied)} / ${metric(seats.purchased)}`, icon: Users },
     { label: 'Posts today', value: metric(overview?.postsToday), icon: Activity },
     { label: 'Posts this week', value: metric(overview?.postsWeek), icon: CalendarDays },
@@ -351,7 +357,15 @@ function metric(value) {
   return Number.isFinite(number) ? number.toLocaleString() : '0';
 }
 
-function sumMetric(value) {
-  if (value && typeof value === 'object') return metric(Object.values(value).reduce((sum, item) => sum + (Number(item) || 0), 0));
-  return metric(value);
+function activeSubscriberBreakdown(value) {
+  if (!value || typeof value !== 'object') return '';
+  return [
+    ['S', value.starter ?? value.STARTER],
+    ['G', value.growth ?? value.GROWTH],
+    ['P', value.pro ?? value.PRO],
+    ['T', value.team ?? value.PRO_TEAM ?? value.TEAM],
+  ]
+    .filter(([, count]) => Number.isFinite(Number(count)))
+    .map(([label, count]) => `${label}${metric(count)}`)
+    .join(' · ');
 }

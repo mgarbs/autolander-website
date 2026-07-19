@@ -20,7 +20,7 @@ const EMPTY_PAGE = { rows: [], total: 0, limit: 25, offset: 0 };
 const EMPTY_DETAIL = { account: null, daily: [], tickets: { rows: [], sheetUrl: '' }, error: '' };
 const DEFAULT_FILTERS = { plan: '', status: '', health: '', preset: '', sort: 'health', limit: 25, offset: 0 };
 
-export default function CustomerActivity({ onUnauthorized }) {
+export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   const [overview, setOverview] = useState(null);
   const [analyticsMeta, setAnalyticsMeta] = useState(null);
   const [overviewLoading, setOverviewLoading] = useState(true);
@@ -293,9 +293,9 @@ export default function CustomerActivity({ onUnauthorized }) {
   }
 
   return (
-    <section className="min-w-0 rounded-3xl border border-white/10 bg-white/[0.03]">
-      <div className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex min-w-0 items-center gap-3">
+    <section className={embedded ? 'min-w-0' : 'min-w-0 rounded-3xl border border-white/10 bg-white/[0.03]'}>
+      <div className={`flex flex-col gap-3 px-5 sm:flex-row sm:items-center sm:justify-between ${embedded ? 'pt-5' : 'border-b border-white/10 py-4'}`}>
+        <div className={embedded ? 'hidden' : 'flex min-w-0 items-center gap-3'}>
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-400/10 text-blue-300"><Activity size={20} /></span>
           <div className="min-w-0">
             <h2 className="text-sm font-black uppercase italic tracking-tight text-white">Customer Activity</h2>

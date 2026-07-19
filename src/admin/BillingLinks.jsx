@@ -71,7 +71,7 @@ function statusTone(status) {
   }
 }
 
-export default function BillingLinks() {
+export default function BillingLinks({ embedded = false }) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [createResult, setCreateResult] = useState(null);
   const [createMessage, setCreateMessage] = useState(null);
@@ -210,8 +210,8 @@ export default function BillingLinks() {
 
   if (unavailable) {
     return (
-      <section className="rounded-2xl border border-white/10 bg-white/[0.03]">
-        <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4">
+      <section className={embedded ? 'min-w-0' : 'rounded-2xl border border-white/10 bg-white/[0.03]'}>
+        <div className={embedded ? 'hidden' : 'flex items-center gap-3 border-b border-white/10 px-5 py-4'}>
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-400/10 text-blue-300">
             <Wallet size={20} />
           </span>
@@ -230,8 +230,8 @@ export default function BillingLinks() {
   }
 
   return (
-    <section className="rounded-2xl border border-white/10 bg-white/[0.03]">
-      <div className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+    <section className={embedded ? 'min-w-0' : 'rounded-2xl border border-white/10 bg-white/[0.03]'}>
+      <div className={embedded ? 'hidden' : 'flex flex-col gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between'}>
         <div className="flex items-center gap-3">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-400/10 text-blue-300">
             <Wallet size={20} />

@@ -12,7 +12,7 @@ import {
   searchCandidates,
 } from './lib/ops.js';
 
-export default function OpsLinking() {
+export default function OpsLinking({ embedded = false }) {
   const [unlinked, setUnlinked] = useState([]);
   const [unlinkedLoading, setUnlinkedLoading] = useState(true);
   const [unlinkedError, setUnlinkedError] = useState('');
@@ -182,9 +182,9 @@ export default function OpsLinking() {
   }
 
   return (
-    <section className="rounded-2xl border border-white/10 bg-white/[0.03]">
-      <div className="flex flex-col gap-3 border-b border-white/10 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
+    <section className={embedded ? 'min-w-0' : 'rounded-2xl border border-white/10 bg-white/[0.03]'}>
+      <div className={`flex flex-col gap-3 px-5 sm:flex-row sm:items-center sm:justify-between ${embedded ? 'pt-5' : 'border-b border-white/10 py-4'}`}>
+        <div className={embedded ? 'hidden' : 'flex items-center gap-3'}>
           <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-400/10 text-blue-300">
             <Link2 size={20} />
           </span>
