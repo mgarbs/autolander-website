@@ -10,7 +10,7 @@ import {
   Search,
   Users,
 } from 'lucide-react';
-import { formatRelative, healthColor, healthReasons, healthState } from './lib/analytics-format.js';
+import { feedHealthState, formatRelative, healthColor, healthReasons, healthState } from './lib/analytics-format.js';
 
 const PRESETS = [
   ['no_posts_7d', 'No posts 7d'],
@@ -288,7 +288,7 @@ function AccountChip({ children }) {
 }
 
 function Signals({ row }) {
-  const feedState = healthState(row.feedHealth);
+  const feedState = feedHealthState(row.feedHealth);
   const version = shortVersion(row.appVersion);
   return (
     <div className="flex min-w-0 items-center gap-3">
@@ -300,8 +300,8 @@ function Signals({ row }) {
         <Bot size={15} aria-hidden="true" />
         <span className="sr-only">AutoPilot {row.autoPilotOn ? 'on' : 'off'}</span>
       </span>
-      <span className="inline-flex shrink-0 items-center" title={`Worst feed health: ${feedState}${row.lastSyncAt ? `; last sync ${formatRelative(row.lastSyncAt)}` : ''}`}>
-        <span className={`h-2.5 w-2.5 rounded-full ${healthColor(feedState)}`} />
+      <span className="inline-flex shrink-0 items-center" title={`Feed health: ${feedState}`}>
+        <span className={`h-2.5 w-2.5 rounded-full ${healthColor(healthState(feedState))}`} />
         <span className="sr-only">Feed health {feedState}</span>
       </span>
       <span className="min-w-0 max-w-24 truncate rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-0.5 font-mono text-[9px] text-slate-300" title={`App version: ${row.appVersion || 'unknown'}${row.versionSource ? ` (${row.versionSource})` : ''}`}>

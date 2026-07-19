@@ -3,6 +3,14 @@ const HEALTH_REASON_LABELS = new Map([
   ['trial_never_activated', 'Trial — never activated'],
 ]);
 
+const FEED_HEALTH_STATES = new Set(['ok', 'stale', 'failing', 'paused', 'unchanged', 'unknown']);
+
+export function feedHealthState(value) {
+  const raw = typeof value === 'object' && value ? value.healthState || value.state || value.status : value;
+  const state = String(raw || 'unknown').trim().toLowerCase();
+  return FEED_HEALTH_STATES.has(state) ? state : 'unknown';
+}
+
 export function healthState(value) {
   const raw = typeof value === 'object' && value ? value.state || value.status || value.bucket : value;
   const state = String(raw || 'gray').toLowerCase();
