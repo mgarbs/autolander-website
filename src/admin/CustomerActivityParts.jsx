@@ -31,12 +31,12 @@ export function KpiRow({ overview, onPreset }) {
     { label: 'Posts today', value: metric(overview?.postsToday), icon: Activity },
     { label: 'Posts this week', value: metric(overview?.postsWeek), icon: CalendarDays },
     { label: 'Posts this month', value: metric(overview?.postsMonth), icon: CalendarDays },
-    { label: 'No posts 7d', value: metric(overview?.noPosts7d), icon: AlertTriangle, preset: 'no_posts_7d' },
-    { label: 'No posts 14d', value: metric(overview?.noPosts14d), icon: AlertTriangle, preset: 'no_posts_14d' },
-    { label: 'Never posted', value: metric(overview?.neverPosted), icon: AlertTriangle, preset: 'never_posted' },
-    { label: 'Failed posts 7d', value: metric(overview?.failedPosts7d), icon: AlertTriangle, preset: 'failed_posts' },
-    { label: 'AutoPilot orgs', value: metric(overview?.autoPilotOrgs), icon: Bot, preset: 'autopilot_on' },
-    { label: 'Outdated version', value: metric(overview?.outdatedVersionOrgs), icon: MonitorDown, preset: 'outdated_version' },
+    { label: 'No posts 7d', value: metric(overview?.noPosts7d), icon: AlertTriangle, preset: 'no_posts_7d', scope: 'active subs' },
+    { label: 'No posts 14d', value: metric(overview?.noPosts14d), icon: AlertTriangle, preset: 'no_posts_14d', scope: 'active subs' },
+    { label: 'Never posted', value: metric(overview?.neverPosted), icon: AlertTriangle, preset: 'never_posted', scope: 'active subs' },
+    { label: 'Failed posts 7d', value: metric(overview?.failedPosts7d), icon: AlertTriangle, preset: 'failed_posts', scope: 'active subs' },
+    { label: 'AutoPilot orgs', value: metric(overview?.autoPilotOrgs), icon: Bot, preset: 'autopilot_on', scope: 'active subs' },
+    { label: 'Outdated version', value: metric(overview?.outdatedVersionOrgs), icon: MonitorDown, preset: 'outdated_version', scope: 'active subs' },
   ];
 
   return (
@@ -50,6 +50,7 @@ export function KpiRow({ overview, onPreset }) {
               <Icon size={14} className={tile.preset ? 'text-blue-300' : 'text-slate-600'} />
             </span>
             <span className="mt-3 block text-xl font-black tracking-tight text-white">{tile.value}</span>
+            {tile.scope && <span className="mt-1 block text-[10px] uppercase tracking-widest text-slate-400">{tile.scope}</span>}
           </>
         );
         return tile.preset ? (
