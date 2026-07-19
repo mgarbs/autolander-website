@@ -25,7 +25,7 @@ export default function VersionBadge({ version, latestVersion, className = '' })
       className={`inline-flex min-w-0 max-w-full items-center truncate rounded-md border px-1.5 py-0.5 font-mono text-[9px] ${tone} ${className}`}
       title={tooltip}
     >
-      {current}
+      {comparison !== null && comparison >= 0 ? 'latest' : current}
     </span>
   );
 }
