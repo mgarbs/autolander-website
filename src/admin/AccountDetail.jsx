@@ -23,6 +23,7 @@ import {
   YAxis,
 } from 'recharts';
 import { formatDate, formatRelative, healthColor, healthState } from './lib/analytics-format.js';
+import VersionBadge from './VersionBadge.jsx';
 
 const UNKNOWN_SPLIT_LABEL = 'Unknown (pre-update)';
 const UNKNOWN_SPLIT_TITLE = 'Posts recorded before source telemetry shipped (v3.60.0) or by older app versions — cannot be attributed to Manual vs AutoPilot.';
@@ -30,6 +31,7 @@ const UNKNOWN_SPLIT_TITLE = 'Posts recorded before source telemetry shipped (v3.
 export default function AccountDetail({
   orgId,
   summary,
+  latestDesktopVersion,
   detail,
   daily,
   tickets,
@@ -99,7 +101,16 @@ export default function AccountDetail({
             <SummaryFact label="Created" value={formatDate(createdAt)} />
             <SummaryFact label="Open tickets" value={optionalNumber(openTickets)} />
             <SummaryFact label="Last feed sync" value={formatRelative(summary?.lastSyncAt)} />
-            <SummaryFact label="App version" value={versionSummary} />
+            <SummaryFact
+              label="App version"
+              title={versionSummary}
+              value={(
+                <span className="flex min-w-0 items-center gap-1.5">
+                  <VersionBadge version={summary?.appVersion} latestVersion={latestDesktopVersion} />
+                  {summary?.versionSource && <span className="min-w-0 truncate text-slate-500">{summary.versionSource}</span>}
+                </span>
+              )}
+            />
             <SummaryFact label="AI Studio" value={truthy(aiStudio.active ?? aiStudio.enabled) ? 'Active' : 'Off'} />
           </div>
         </div>
@@ -167,7 +178,7 @@ export default function AccountDetail({
                   <Sub title={pilot.enabled ? pilotSummary(pilot) : ''}>{pilot.enabled ? pilotSummary(pilot) : ''}</Sub>
                 </UserFact>
                 <UserFact label="Version">
-                  <span className="block min-w-0 truncate font-mono" title={presence.appVersion || 'Unknown'}>{presence.appVersion || 'Unknown'}</span>
+                  <VersionBadge version={presence.appVersion} latestVersion={latestDesktopVersion} />
                   <Sub title={user.lastLoginProxy ? `Login ${formatRelative(user.lastLoginProxy)}` : ''}>{user.lastLoginProxy ? `Login ${formatRelative(user.lastLoginProxy)}` : ''}</Sub>
                 </UserFact>
               </article>
@@ -268,11 +279,11 @@ function formatChartTooltip(value, name) {
     : [value, name];
 }
 
-function SummaryFact({ label, value }) {
+function SummaryFact({ label, value, title }) {
   return (
     <div className="min-w-0 rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2">
       <span className="block text-[9px] font-black uppercase tracking-widest text-slate-600">{label}</span>
-      <strong className="mt-1 block min-w-0 truncate text-[10px] text-white" title={String(value)}>{value}</strong>
+      <strong className="mt-1 block min-w-0 truncate text-[10px] text-slate-200" title={title || String(value)}>{value}</strong>
     </div>
   );
 }

@@ -11,6 +11,7 @@ import {
   Users,
 } from 'lucide-react';
 import { feedHealthState, formatRelative, healthColor, healthReasons, healthState } from './lib/analytics-format.js';
+import VersionBadge from './VersionBadge.jsx';
 
 const PRESETS = [
   ['no_posts_7d', 'No posts 7d'],
@@ -151,6 +152,7 @@ export function FiltersBar({ search, filters, onSearch, onFilter, onPreset, onCl
 
 export function AccountsTable({
   page,
+  latestDesktopVersion,
   loading,
   error,
   expandedOrgId,
@@ -234,7 +236,7 @@ export function AccountsTable({
 
                   <div className="col-start-1 row-start-3 min-w-0 md:col-start-3 md:row-start-1 xl:col-start-3 xl:row-start-1">
                     <MobileLabel>Signals</MobileLabel>
-                    <Signals row={row} />
+                    <Signals row={row} latestDesktopVersion={latestDesktopVersion} />
                   </div>
 
                   <div className="col-start-1 row-start-4 min-w-0 md:col-span-2 md:col-start-1 md:row-start-2 xl:col-span-1 xl:col-start-4 xl:row-start-1">
@@ -288,9 +290,8 @@ function AccountChip({ children }) {
   return <span className="max-w-24 shrink-0 truncate rounded-full border border-white/10 bg-white/[0.03] px-1.5 py-0.5 text-[8px] font-black uppercase tracking-widest text-slate-500" title={String(children)}>{children}</span>;
 }
 
-function Signals({ row }) {
+function Signals({ row, latestDesktopVersion }) {
   const feedState = feedHealthState(row.feedHealth);
-  const version = shortVersion(row.appVersion);
   return (
     <div className="flex min-w-0 items-center gap-3">
       <span className="inline-flex shrink-0 items-center gap-1.5" title={`Facebook session: ${row.fbConnected ? 'connected' : 'disconnected'}`}>
@@ -305,9 +306,7 @@ function Signals({ row }) {
         <span className={`h-2.5 w-2.5 rounded-full ${healthColor(healthState(feedState))}`} />
         <span className="sr-only">Feed health {feedState}</span>
       </span>
-      <span className="min-w-0 max-w-24 truncate rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-0.5 font-mono text-[9px] text-slate-300" title={`App version: ${row.appVersion || 'unknown'}${row.versionSource ? ` (${row.versionSource})` : ''}`}>
-        {version}
-      </span>
+      <VersionBadge version={row.appVersion} latestVersion={latestDesktopVersion} className="max-w-24" />
     </div>
   );
 }
@@ -355,9 +354,4 @@ function metric(value) {
 function sumMetric(value) {
   if (value && typeof value === 'object') return metric(Object.values(value).reduce((sum, item) => sum + (Number(item) || 0), 0));
   return metric(value);
-}
-
-function shortVersion(value) {
-  if (!value) return '?';
-  return String(value).trim().replace(/^v/i, '').split(/\s+/)[0] || '?';
 }

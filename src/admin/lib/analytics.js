@@ -8,6 +8,11 @@ export async function fetchOverview() {
   return payload?.overview && typeof payload.overview === 'object' ? payload.overview : payload || {};
 }
 
+export async function fetchAnalyticsMeta() {
+  const payload = await apiGet(`${BASE}/meta`);
+  return payload?.meta && typeof payload.meta === 'object' ? payload.meta : payload || {};
+}
+
 export async function fetchAccounts(params = {}) {
   const payload = await apiGet(`${BASE}/accounts${queryString(params)}`);
   return {

@@ -7,6 +7,7 @@ import {
   OPS_SETUP_NOTE,
   fetchAccount,
   fetchAccounts,
+  fetchAnalyticsMeta,
   fetchOverview,
   fetchPostsDaily,
   fetchTickets,
@@ -21,6 +22,7 @@ const DEFAULT_FILTERS = { plan: '', status: '', health: '', preset: '', sort: 'h
 
 export default function CustomerActivity({ onUnauthorized }) {
   const [overview, setOverview] = useState(null);
+  const [analyticsMeta, setAnalyticsMeta] = useState(null);
   const [overviewLoading, setOverviewLoading] = useState(true);
   const [overviewError, setOverviewError] = useState('');
   const [page, setPage] = useState(EMPTY_PAGE);
@@ -67,7 +69,12 @@ export default function CustomerActivity({ onUnauthorized }) {
     if (!silent) setOverviewLoading(true);
     setOverviewError('');
     try {
-      setOverview(await fetchOverview());
+      const [nextOverview, nextMeta] = await Promise.all([
+        fetchOverview(),
+        fetchAnalyticsMeta(),
+      ]);
+      setOverview(nextOverview);
+      setAnalyticsMeta(nextMeta);
       setOpsUnavailable(false);
     } catch (err) {
       const message = handleError(err, 'Could not load customer-activity totals.');
@@ -319,6 +326,7 @@ export default function CustomerActivity({ onUnauthorized }) {
             <FiltersBar search={search} filters={filters} onSearch={(value) => { setSearch(value); setFilters((current) => ({ ...current, offset: 0 })); }} onFilter={setFilter} onPreset={applyPreset} onClear={clearFilters} />
             <AccountsTable
               page={page}
+              latestDesktopVersion={analyticsMeta?.latestDesktopVersion}
               loading={pageLoading}
               error={pageError}
               expandedOrgId={expandedOrgId}
@@ -341,6 +349,7 @@ export default function CustomerActivity({ onUnauthorized }) {
                       key={`${orgId}:${Boolean(row.followUp)}`}
                       orgId={orgId}
                       summary={row}
+                      latestDesktopVersion={analyticsMeta?.latestDesktopVersion}
                       detail={detail.account}
                       daily={detail.daily}
                       tickets={detail.tickets}
