@@ -44,7 +44,12 @@ export default function DemoApplication({ onClose }) {
   const [phase, setPhase] = useState('capture');
   const [form, setForm] = useState(initialForm);
   const [formError, setFormError] = useState('');
-  const [invalid, setInvalid] = useState({ email: false, phone: false, inventoryUrl: false });
+  const [invalid, setInvalid] = useState({
+    email: false,
+    phone: false,
+    vehicleCount: false,
+    inventoryUrl: false,
+  });
   const submissionId = useMemo(() => newSubmissionId(), []);
 
   const update = (key, value) => setForm((current) => ({ ...current, [key]: value }));
@@ -69,6 +74,11 @@ export default function DemoApplication({ onClose }) {
     }
     if (!form.role) {
       setFormError('Tell us your role at the dealership.');
+      return;
+    }
+    if (!form.vehicleCount) {
+      setFormError('Select how many vehicles are in your inventory.');
+      setInvalid((v) => ({ ...v, vehicleCount: true }));
       return;
     }
     if (!inventoryUrl) {
@@ -103,6 +113,9 @@ export default function DemoApplication({ onClose }) {
       } else if (res.reason === 'invalid_phone') {
         setFormError('That phone number does not look right. Re-enter it and try again.');
         setInvalid((v) => ({ ...v, phone: true }));
+      } else if (res.reason === 'missing_vehicle_count' || res.reason === 'invalid_vehicle_count') {
+        setFormError('Select how many vehicles are in your inventory.');
+        setInvalid((v) => ({ ...v, vehicleCount: true }));
       } else if (res.reason === 'invalid_inventory_url') {
         setFormError('That website or inventory link does not look right.');
         setInvalid((v) => ({ ...v, inventoryUrl: true }));
@@ -219,17 +232,31 @@ export default function DemoApplication({ onClose }) {
               </div>
 
               <div>
-                <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-400">
-                  <Warehouse className="h-3.5 w-3.5" /> Vehicles in inventory
+                <span
+                  id="vehicle-count-label"
+                  className={`mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest ${invalid.vehicleCount ? 'text-red-400' : 'text-slate-400'}`}
+                >
+                  <Warehouse className="h-3.5 w-3.5" /> Vehicles in inventory <span aria-hidden="true">*</span>
                 </span>
-                <div className="grid grid-cols-3 gap-1 rounded-xl border border-white/[0.06] bg-white/[0.03] p-1">
+                <div
+                  role="radiogroup"
+                  aria-labelledby="vehicle-count-label"
+                  aria-required="true"
+                  aria-invalid={invalid.vehicleCount}
+                  className={`grid grid-cols-3 gap-1 rounded-xl border bg-white/[0.03] p-1 ${invalid.vehicleCount ? 'border-red-500/70' : 'border-white/[0.06]'}`}
+                >
                   {VEHICLE_COUNTS.map((option) => {
                     const active = form.vehicleCount === option;
                     return (
                       <button
                         type="button"
+                        role="radio"
+                        aria-checked={active}
                         key={option}
-                        onClick={() => update('vehicleCount', active ? '' : option)}
+                        onClick={() => {
+                          update('vehicleCount', option);
+                          if (invalid.vehicleCount) setInvalid((v) => ({ ...v, vehicleCount: false }));
+                        }}
                         className={`flex min-h-[2.75rem] items-center justify-center rounded-lg text-sm font-black tracking-tight transition-all ${
                           active ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' : 'text-slate-400 hover:text-white'
                         }`}

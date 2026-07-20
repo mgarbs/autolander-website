@@ -207,7 +207,10 @@ async function handleApply(request, env, corsHeaders, ctx) {
   if (!phoneNorm.ok) return json({ ok: false, reason: 'invalid_phone' }, 400, corsHeaders);
   if (!ROLE_CHOICES.includes(role)) return json({ ok: false, reason: 'missing_role' }, 400, corsHeaders);
   if (!inventoryUrl) return json({ ok: false, reason: 'invalid_inventory_url' }, 400, corsHeaders);
-  if (vehicleCount && !VEHICLE_COUNT_CHOICES.includes(vehicleCount)) {
+  if (!vehicleCount) {
+    return json({ ok: false, reason: 'missing_vehicle_count' }, 400, corsHeaders);
+  }
+  if (!VEHICLE_COUNT_CHOICES.includes(vehicleCount)) {
     return json({ ok: false, reason: 'invalid_vehicle_count' }, 400, corsHeaders);
   }
   if (!consentTimestamp) {
