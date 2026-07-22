@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Activity, Loader2, RefreshCw } from 'lucide-react';
-import AccountDetail from './AccountDetail.jsx';
+import AccountDetail from './AccountDetailDiagnostics.jsx';
 import { AccountsTable, FiltersBar, KpiRow } from './CustomerActivityParts.jsx';
 import { ApiError } from './lib/api.js';
 import {
   OPS_SETUP_NOTE,
   fetchAccount,
+  fetchAccountFailures,
   fetchAccounts,
   fetchAnalyticsMeta,
   fetchOverview,
@@ -17,8 +18,17 @@ import {
 } from './lib/analytics.js';
 
 const EMPTY_PAGE = { rows: [], total: 0, limit: 25, offset: 0 };
-const EMPTY_DETAIL = { account: null, daily: [], tickets: { rows: [], sheetUrl: '' }, error: '' };
+const EMPTY_FAILURES = { rows: [], total: 0, limit: 50, offset: 0, summary: {} };
+const EMPTY_DETAIL = {
+  account: null,
+  daily: [],
+  tickets: { rows: [], sheetUrl: '' },
+  failures: EMPTY_FAILURES,
+  error: '',
+  failuresError: '',
+};
 const DEFAULT_FILTERS = { plan: '', status: '', health: '', preset: '', sort: 'health', limit: 25, offset: 0 };
+const FAILURE_WINDOW_DAYS = 30;
 
 export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   const [overview, setOverview] = useState(null);
@@ -38,6 +48,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   const [expandedOrgId, setExpandedOrgId] = useState('');
   const [detail, setDetail] = useState(EMPTY_DETAIL);
   const [detailLoading, setDetailLoading] = useState(false);
+  const [failuresLoading, setFailuresLoading] = useState(false);
   const [chartLoading, setChartLoading] = useState(false);
   const [detailDays, setDetailDays] = useState(30);
   const [writePending, setWritePending] = useState(false);
@@ -108,30 +119,57 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     detailSeq.current = seq;
     chartSeq.current += 1;
     if (!silent) setDetailLoading(true);
-    setDetail((current) => ({ ...current, error: '' }));
+    setFailuresLoading(true);
+    setDetail((current) => ({ ...current, error: '', failuresError: '' }));
 
-    const results = await Promise.allSettled([
+    const detailPromise = Promise.allSettled([
       fetchAccount(orgId),
       fetchPostsDaily(orgId, days),
       fetchTickets(orgId),
     ]);
+    const failuresPromise = Promise.allSettled([
+      fetchAccountFailures(orgId, { days: FAILURE_WINDOW_DAYS, limit: 50, offset: 0 }),
+    ]).then(([result]) => result);
+
+    const results = await detailPromise;
     if (detailSeq.current !== seq) return;
 
     const rejected = results.find((result) => result.status === 'rejected');
     if (rejected) {
       const message = handleError(rejected.reason, 'Some account details could not be loaded.');
       setDetail((current) => ({
+        ...current,
         account: results[0].status === 'fulfilled' ? results[0].value : current.account,
         daily: results[1].status === 'fulfilled' ? results[1].value : current.daily,
         tickets: results[2].status === 'fulfilled' ? results[2].value : current.tickets,
         error: message,
       }));
     } else {
-      setDetail({ account: results[0].value, daily: results[1].value, tickets: results[2].value, error: '' });
+      setDetail((current) => ({
+        ...current,
+        account: results[0].value,
+        daily: results[1].value,
+        tickets: results[2].value,
+        error: '',
+      }));
       setOpsUnavailable(false);
     }
     setDetailLoading(false);
     setChartLoading(false);
+
+    const failuresResult = await failuresPromise;
+    if (detailSeq.current !== seq) return;
+    if (failuresResult.status === 'fulfilled') {
+      setDetail((current) => ({
+        ...current,
+        failures: failuresResult.value,
+        failuresError: '',
+      }));
+    } else {
+      const message = handleError(failuresResult.reason, 'Could not load failure diagnostics.');
+      setDetail((current) => ({ ...current, failuresError: message }));
+    }
+    setFailuresLoading(false);
   }, [handleError]);
 
   useEffect(() => {
@@ -194,12 +232,14 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       setExpandedOrgId('');
       setDetail(EMPTY_DETAIL);
       setDetailLoading(false);
+      setFailuresLoading(false);
       return;
     }
     setExpandedOrgId(orgId);
     setDetailDays(30);
     setDetail(EMPTY_DETAIL);
     setDetailLoading(true);
+    setFailuresLoading(true);
     loadDetail(orgId, 30);
   }
 
@@ -353,9 +393,12 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
                       detail={detail.account}
                       daily={detail.daily}
                       tickets={detail.tickets}
+                      failures={detail.failures}
+                      failuresLoading={failuresLoading}
+                      failuresError={detail.failuresError}
                       days={detailDays}
                       chartLoading={chartLoading}
-                      refreshing={detailLoading}
+                      refreshing={detailLoading || failuresLoading}
                       writePending={writePending}
                       onDaysChange={changeDetailDays}
                       onRefresh={() => loadDetail(orgId, detailDays)}

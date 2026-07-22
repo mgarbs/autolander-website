@@ -1,4 +1,5 @@
 import { apiGet, apiPost, apiPut } from './api.js';
+import { normalizeFailureResponse } from './failure-diagnostics.js';
 export { isOpsNotConfigured, OPS_SETUP_NOTE } from './ops.js';
 
 const BASE = '/admin/analytics';
@@ -47,6 +48,18 @@ export async function fetchTickets(orgId) {
     offset: finiteNumber(payload?.offset, 0),
     sheetUrl: text(payload?.sheetUrl),
   };
+}
+
+export async function fetchAccountFailures(orgId, params = {}) {
+  const request = {
+    days: params.days ?? 30,
+    limit: params.limit ?? 50,
+    offset: params.offset ?? 0,
+  };
+  const payload = await apiGet(
+    `${BASE}/accounts/${encodeURIComponent(orgId)}/failures${queryString(request)}`,
+  );
+  return normalizeFailureResponse(payload, request);
 }
 
 export function saveNote(orgId, note) {
