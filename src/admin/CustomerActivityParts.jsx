@@ -7,9 +7,9 @@ import {
   ChevronRight,
   Flag,
   MonitorDown,
-  Search,
   Users,
 } from 'lucide-react';
+import CustomerSearch, { ContactPhoneActions } from './CustomerSearch.jsx';
 import { feedHealthState, formatRelative, healthColor, healthReasons, healthState } from './lib/analytics-format.js';
 import VersionBadge from './VersionBadge.jsx';
 
@@ -86,23 +86,26 @@ export function KpiRow({ overview, onPreset }) {
   );
 }
 
-export function FiltersBar({ search, filters, onSearch, onFilter, onPreset, onClear }) {
+export function FiltersBar({
+  search,
+  filters,
+  onSearch,
+  onCandidateSelect,
+  onFilter,
+  onPreset,
+  onClear,
+}) {
   const selectClass =
     'h-10 min-w-0 w-full max-w-full flex-1 basis-36 rounded-xl border border-white/10 bg-black/50 px-3 text-[10px] font-black uppercase tracking-widest text-slate-300 outline-none focus:border-blue-500/60 sm:max-w-48';
 
   return (
     <div className="min-w-0 space-y-3 rounded-2xl border border-white/10 bg-black/30 p-4">
       <div className="flex flex-wrap items-center gap-3">
-        <label className="relative min-w-0 flex-[2_1_280px]">
-          <span className="sr-only">Search accounts</span>
-          <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
-          <input
-            value={search}
-            onChange={(event) => onSearch(event.target.value)}
-            placeholder="Search account, slug, or org ID..."
-            className="h-10 w-full min-w-0 rounded-xl border border-white/10 bg-black/50 pl-9 pr-3 text-xs text-white outline-none placeholder:text-slate-600 focus:border-blue-500/60"
-          />
-        </label>
+        <CustomerSearch
+          value={search}
+          onChange={onSearch}
+          onSelectCandidate={onCandidateSelect}
+        />
         <select value={filters.plan} onChange={(event) => onFilter('plan', event.target.value)} className={selectClass}>
           <option value="">All plans</option>
           <option value="starter">Starter</option>
@@ -213,6 +216,7 @@ export function AccountsTable({
             const seatTotal = Number(row.seatSummary?.total);
             const seatActive7d = Number(row.seatSummary?.active7d);
             const hasSeatSummary = Number.isFinite(seatTotal) && seatTotal > 0 && Number.isFinite(seatActive7d);
+            const contact = accountContact(row);
             return (
               <div key={orgId || row.slug} className={expanded ? 'bg-blue-500/[0.05]' : ''}>
                 <div
@@ -237,6 +241,23 @@ export function AccountsTable({
                       <AccountChip>{row.plan || 'No plan'}</AccountChip>
                       <AccountChip>{row.subStatus || 'No status'}</AccountChip>
                     </div>
+                    {(contact.name || contact.email) && (
+                      <p
+                        className="mt-1.5 min-w-0 truncate text-[10px] text-slate-400"
+                        title={[contact.name, contact.email].filter(Boolean).join(' · ')}
+                      >
+                        {[contact.name, contact.email].filter(Boolean).join(' · ')}
+                      </p>
+                    )}
+                    {contact.phone && (
+                      <div className="mt-1.5">
+                        <ContactPhoneActions
+                          phone={contact.phone}
+                          label={contact.name || contact.email || accountName}
+                          compact
+                        />
+                      </div>
+                    )}
                   </div>
 
                   <div className="col-start-1 row-start-2 min-w-0 md:col-start-2 md:row-start-1 xl:col-start-2 xl:row-start-1">
@@ -371,6 +392,59 @@ function FollowUpToggle({ active, disabled, onClick }) {
 
 function PageButton({ children, ...props }) {
   return <button type="button" {...props} className="rounded-lg border border-white/10 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-30">{children}</button>;
+}
+
+function accountContact(row) {
+  const person = firstContactObject(
+    row?.matchedUser,
+    row?.matchedCustomer,
+    row?.searchMatch,
+    row?.matchedUsers?.[0],
+    row?.admins?.[0],
+    row?.adminUsers?.[0],
+    row?.users?.[0],
+    row?.primaryContact,
+    row?.contact,
+    row?.customer,
+  );
+  const firstName = firstText(person?.firstName, person?.first_name, row?.firstName, row?.first_name);
+  const lastName = firstText(person?.lastName, person?.last_name, row?.lastName, row?.last_name);
+  const name = firstText(
+    person?.displayName,
+    person?.display_name,
+    person?.name,
+    row?.contactName,
+    row?.customerName,
+    [firstName, lastName].filter(Boolean).join(' '),
+  );
+  return {
+    name,
+    email: firstText(person?.email, row?.email, row?.contactEmail, row?.customerEmail),
+    phone: firstText(
+      person?.phone,
+      person?.phoneNumber,
+      person?.phone_number,
+      person?.mobile,
+      person?.mobilePhone,
+      person?.mobile_phone,
+      row?.phone,
+      row?.phoneNumber,
+      row?.phone_number,
+      row?.mobile,
+      row?.mobilePhone,
+      row?.contactPhone,
+      row?.customerPhone,
+    ),
+  };
+}
+
+function firstContactObject(...values) {
+  return values.find((value) => value && typeof value === 'object' && !Array.isArray(value)) || null;
+}
+
+function firstText(...values) {
+  const value = values.find((item) => item !== undefined && item !== null && String(item).trim());
+  return value === undefined ? '' : String(value).trim();
 }
 
 function metric(value) {

@@ -62,12 +62,74 @@ export async function fetchAccountFailures(orgId, params = {}) {
   return normalizeFailureResponse(payload, request);
 }
 
+export async function fetchAllAccountFailures(orgId, params = {}) {
+  const days = params.days ?? 30;
+  const pageLimit = Math.min(200, Math.max(1, finiteNumber(params.limit, 200)));
+  const maxRows = Math.min(10_000, Math.max(pageLimit, finiteNumber(params.maxRows, 5_000)));
+  const first = await fetchAccountFailures(orgId, {
+    days,
+    limit: pageLimit,
+    offset: 0,
+  });
+  const rows = [...first.rows];
+
+  while (rows.length < first.total && rows.length < maxRows) {
+    const page = await fetchAccountFailures(orgId, {
+      days,
+      limit: Math.min(pageLimit, maxRows - rows.length),
+      offset: rows.length,
+    });
+    if (page.rows.length === 0) break;
+    rows.push(...page.rows);
+  }
+
+  return {
+    ...first,
+    rows,
+    limit: pageLimit,
+    offset: 0,
+    loaded: rows.length,
+    truncated: rows.length < first.total,
+  };
+}
+
+export async function fetchGlobalFailures(params = {}) {
+  const days = params.days ?? 30;
+  const pageLimit = Math.min(200, Math.max(1, finiteNumber(params.limit, 200)));
+  const maxRows = Math.min(10_000, Math.max(pageLimit, finiteNumber(params.maxRows, 5_000)));
+  const first = await fetchGlobalFailurePage({ days, limit: pageLimit, offset: 0 });
+  const rows = [...first.rows];
+  while (rows.length < first.total && rows.length < maxRows) {
+    const page = await fetchGlobalFailurePage({
+      days,
+      limit: Math.min(pageLimit, maxRows - rows.length),
+      offset: rows.length,
+    });
+    if (page.rows.length === 0) break;
+    rows.push(...page.rows);
+  }
+  return {
+    ...first,
+    rows,
+    limit: pageLimit,
+    offset: 0,
+    loaded: rows.length,
+    truncated: rows.length < first.total,
+    source: 'global_endpoint',
+  };
+}
+
 export function saveNote(orgId, note) {
   return apiPost(`${BASE}/accounts/${encodeURIComponent(orgId)}/notes`, note);
 }
 
 export function saveCsMeta(orgId, meta) {
   return apiPut(`${BASE}/accounts/${encodeURIComponent(orgId)}/cs`, meta);
+}
+
+async function fetchGlobalFailurePage(request) {
+  const payload = await apiGet(`${BASE}/failures${queryString(request)}`);
+  return normalizeFailureResponse(payload, request);
 }
 
 function queryString(params) {

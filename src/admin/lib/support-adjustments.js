@@ -10,7 +10,7 @@ export const SUPPORT_ADJUSTMENTS_SETUP_NOTE =
 
 export async function searchSupportCandidates(query) {
   const q = String(query || '').trim();
-  if (!q) return [];
+  if (q.length < 2) return [];
   const payload = await apiGet(`/admin/support-adjustments/candidates?q=${encodeURIComponent(q)}`);
   return normalizeCandidates(payload);
 }
@@ -34,19 +34,71 @@ export function normalizeCandidates(payload) {
 
 export function normalizeCandidate(row) {
   const org = row?.org && typeof row.org === 'object' ? row.org : row;
+  const primaryContact = firstObject(
+    row?.primaryContact,
+    row?.contact,
+    row?.customer,
+    org?.primaryContact,
+    org?.contact,
+    org?.customer,
+  );
   const subscription = row?.subscription && typeof row.subscription === 'object'
     ? row.subscription
     : org?.subscription && typeof org.subscription === 'object'
       ? org.subscription
       : null;
+  const matchedUsers = normalizePeople(row?.matchedUsers ?? row?.matches ?? row?.matchedUser ?? row?.match);
+  const admins = normalizePeople(row?.adminUsers ?? row?.admins ?? org?.users);
+  const fallbackPerson = matchedUsers[0] || admins[0] || null;
+  const contactName = personDisplayName(primaryContact) || fallbackPerson?.displayName || '';
+  const email = text(
+    row?.email
+    ?? row?.contactEmail
+    ?? primaryContact?.email
+    ?? row?.contact?.email
+    ?? row?.customer?.email
+    ?? org?.email
+    ?? org?.contactEmail
+    ?? org?.contact?.email
+    ?? org?.customer?.email
+    ?? fallbackPerson?.email,
+  );
+  const phone = phoneText(
+    row?.phone,
+    row?.phoneNumber,
+    row?.phone_number,
+    row?.mobile,
+    row?.mobilePhone,
+    row?.contactPhone,
+    primaryContact?.phone,
+    primaryContact?.phoneNumber,
+    primaryContact?.phone_number,
+    primaryContact?.mobile,
+    primaryContact?.mobilePhone,
+    row?.contact?.phone,
+    row?.contact?.phoneNumber,
+    row?.contact?.mobile,
+    row?.customer?.phone,
+    row?.customer?.phoneNumber,
+    row?.customer?.mobile,
+    org?.phone,
+    org?.phoneNumber,
+    org?.contactPhone,
+    org?.contact?.phone,
+    org?.customer?.phone,
+    fallbackPerson?.phone,
+  );
   return {
     orgId: text(row?.orgId ?? row?.org_id ?? org?.id ?? org?.orgId),
     orgName: text(row?.orgName ?? row?.org_name ?? org?.name ?? org?.orgName),
     slug: text(org?.slug),
     plan: text(row?.plan ?? org?.plan),
     creditBalance: numberOrNull(row?.creditBalance ?? org?.creditBalance),
-    admins: normalizePeople(row?.adminUsers ?? row?.admins ?? org?.users),
-    matchedUsers: normalizePeople(row?.matchedUsers ?? row?.matches),
+    contactName,
+    email,
+    phone,
+    admins,
+    matchedUsers,
     subscription,
   };
 }
@@ -57,11 +109,44 @@ export function candidateLabel(candidate) {
 
 export function candidatePeople(candidate) {
   const people = candidate?.matchedUsers?.length ? candidate.matchedUsers : candidate?.admins || [];
-  return people
-    .map((person) => person.email || person.displayName || person.username || person.name)
+  const descriptions = people
+    .map((person) => {
+      const identity = person.displayName || person.email || person.username || person.phone || person.name;
+      const secondary = [
+        person.displayName && person.email,
+        person.displayName && !person.email && person.username,
+        person.phone,
+      ].filter(Boolean);
+      return [identity, ...secondary].filter(Boolean).join(' · ');
+    })
     .filter(Boolean)
-    .slice(0, 3)
-    .join(', ');
+    .slice(0, 3);
+  if (descriptions.length > 0) return descriptions.join(', ');
+  return [candidate?.contactName, candidate?.email, candidate?.phone].filter(Boolean).join(' · ');
+}
+
+export function candidateContacts(candidate) {
+  const people = candidate?.matchedUsers?.length ? candidate.matchedUsers : candidate?.admins || [];
+  if (people.length > 0) return people;
+  if (!candidate?.contactName && !candidate?.email && !candidate?.phone) return [];
+  return [{
+    displayName: text(candidate?.contactName),
+    email: text(candidate?.email),
+    phone: text(candidate?.phone),
+    username: '',
+    firstName: '',
+    lastName: '',
+    id: '',
+    role: '',
+  }];
+}
+
+export function dialablePhone(value) {
+  const raw = text(value);
+  if (!raw) return '';
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length < 3) return '';
+  return `${raw.startsWith('+') ? '+' : ''}${digits}`;
 }
 
 export function subscriptionSummary(candidate) {
@@ -141,21 +226,64 @@ export function friendlyAdjustmentError(err) {
   return map[reason] || err?.message || 'The adjustment could not be completed.';
 }
 
-function normalizePeople(value) {
-  if (!Array.isArray(value)) return [];
-  return value
+export function normalizePeople(value) {
+  const rows = Array.isArray(value) ? value : value ? [value] : [];
+  return rows
     .map((person) => {
-      if (typeof person === 'string') return { email: person };
+      if (typeof person === 'string') {
+        return {
+          id: '',
+          username: '',
+          firstName: '',
+          lastName: '',
+          displayName: '',
+          email: text(person),
+          phone: '',
+          role: '',
+        };
+      }
       if (!person || typeof person !== 'object') return null;
+      const profile = firstObject(person.profile, person.contact);
+      const firstName = text(person.firstName ?? person.first_name ?? person.givenName ?? profile?.firstName);
+      const lastName = text(person.lastName ?? person.last_name ?? person.familyName ?? profile?.lastName);
       return {
-        id: text(person.id),
-        username: text(person.username),
-        displayName: text(person.displayName ?? person.name),
-        email: text(person.email),
+        id: text(person.id ?? person.userId ?? person.user_id),
+        username: text(person.username ?? person.handle),
+        firstName,
+        lastName,
+        displayName: text(person.displayName ?? person.display_name ?? person.name) || [firstName, lastName].filter(Boolean).join(' '),
+        email: text(person.email ?? profile?.email),
+        phone: phoneText(
+          person.phone,
+          person.phoneNumber,
+          person.phone_number,
+          person.mobile,
+          person.mobilePhone,
+          person.mobile_phone,
+          profile?.phone,
+          profile?.phoneNumber,
+          profile?.mobile,
+        ),
         role: text(person.role),
       };
     })
     .filter(Boolean);
+}
+
+function personDisplayName(person) {
+  if (!person) return '';
+  const firstName = text(person.firstName ?? person.first_name ?? person.givenName);
+  const lastName = text(person.lastName ?? person.last_name ?? person.familyName);
+  return text(person.displayName ?? person.display_name ?? person.name) || [firstName, lastName].filter(Boolean).join(' ');
+}
+
+function phoneText(...values) {
+  const value = values.find((item) => item !== undefined && item !== null && text(item));
+  return text(value);
+}
+
+function firstObject(...values) {
+  return values.find((value) => value && typeof value === 'object' && !Array.isArray(value)) || null;
 }
 
 function firstArray(payload, keys) {
