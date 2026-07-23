@@ -6,6 +6,8 @@ import {
   Flag,
   Loader2,
   MessageSquarePlus,
+  MessageCircle,
+  Phone,
   RefreshCw,
   Save,
   Ticket,
@@ -81,6 +83,12 @@ export default function AccountDetail({
   const openTickets = summary?.openTickets ?? tickets?.total ?? ticketRows.length;
   const appVersion = summary?.appVersion || 'Unknown';
   const versionSummary = summary?.versionSource ? `${appVersion} · ${summary.versionSource}` : appVersion;
+  const accountPhone = firstText(
+    org.phone,
+    detail?.phone,
+    summary?.phone,
+    detail?.contact?.phone,
+  );
 
   return (
     <div className="min-w-0 space-y-5 border-t border-blue-500/20 p-4 md:p-5">
@@ -101,6 +109,13 @@ export default function AccountDetail({
             <SummaryFact label="Created" value={formatDate(createdAt)} />
             <SummaryFact label="Open tickets" value={optionalNumber(openTickets)} />
             <SummaryFact label="Last feed sync" value={formatRelative(summary?.lastSyncAt)} />
+            {accountPhone && (
+              <SummaryFact
+                label="Customer phone"
+                title={accountPhone}
+                value={<PhoneActions phone={accountPhone} compact />}
+              />
+            )}
             <SummaryFact
               label="App version"
               title={versionSummary}
@@ -159,6 +174,25 @@ export default function AccountDetail({
                   <strong className="block min-w-0 truncate text-white" title={userName}>{userName}</strong>
                   <Sub title={user.username && user.displayName ? user.username : ''}>{user.username && user.displayName ? user.username : ''}</Sub>
                 </UserFact>
+                <UserFact label="Contact">
+                  {user.email ? (
+                    <a
+                      href={`mailto:${user.email}`}
+                      className="block min-w-0 truncate text-blue-300 hover:text-blue-200"
+                      title={user.email}
+                    >
+                      {user.email}
+                    </a>
+                  ) : <span className="text-slate-600">No email</span>}
+                  {firstText(user.phone, user.phoneNumber, user.mobile, accountPhone) && (
+                    <div className="mt-1.5">
+                      <PhoneActions
+                        phone={firstText(user.phone, user.phoneNumber, user.mobile, accountPhone)}
+                        compact
+                      />
+                    </div>
+                  )}
+                </UserFact>
                 <UserFact label="Access">
                   <span className="block min-w-0 truncate" title={user.role || 'No role'}>{user.role || '—'}</span>
                   {postingSeat ? (
@@ -202,6 +236,13 @@ export default function AccountDetail({
             {feeds.map((feed, index) => {
               const state = healthState(feed.healthState || feed.health);
               const feedName = feed.name || feed.label || `Feed ${index + 1}`;
+              const feedUrl = firstText(
+                feed.feedUrl,
+                feed.url,
+                feed.sourceUrl,
+                feed.inventoryUrl,
+              );
+              const openableFeedUrl = safeHttpUrl(feedUrl);
               return (
                 <div key={feed.id || feed.feedId || index} className="min-w-0 rounded-2xl border border-white/10 bg-black/35 p-4">
                   <div className="flex min-w-0 items-start justify-between gap-3">
@@ -212,6 +253,22 @@ export default function AccountDetail({
                     <span className="inline-flex shrink-0 items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-400"><span className={`h-2 w-2 rounded-full ${healthColor(state)}`} />{state}</span>
                   </div>
                   <p className="mt-3 min-w-0 truncate text-[10px] text-slate-500" title={`Last sync: ${formatRelative(feed.lastSyncAt)}`}>Last sync: {formatRelative(feed.lastSyncAt)}</p>
+                  {feedUrl && (
+                    openableFeedUrl ? (
+                      <a
+                        href={openableFeedUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-2 inline-flex max-w-full items-center gap-1.5 text-[10px] font-bold text-blue-300 hover:text-blue-200"
+                        title={feedUrl}
+                      >
+                        <span className="min-w-0 truncate">{feedUrl}</span>
+                        <ExternalLink size={11} className="shrink-0" />
+                      </a>
+                    ) : (
+                      <p className="mt-2 min-w-0 truncate font-mono text-[9px] text-slate-500" title={feedUrl}>{feedUrl}</p>
+                    )
+                  )}
                   {feed.lastSyncError && <p className="mt-2 break-words rounded-lg border border-red-500/20 bg-red-500/10 px-2 py-1.5 text-[10px] text-red-200">{feed.lastSyncError}</p>}
                 </div>
               );
@@ -347,6 +404,30 @@ function NotesPanel({ notes, pending, onAdd }) {
   );
 }
 
+function PhoneActions({ phone, compact = false }) {
+  const hrefValue = phoneHref(phone);
+  if (!hrefValue) return <span className="text-slate-600">{phone || '—'}</span>;
+  return (
+    <span className="flex min-w-0 flex-wrap items-center gap-1.5">
+      <span className="min-w-0 truncate text-slate-300" title={phone}>{phone}</span>
+      <a
+        href={`tel:${hrefValue}`}
+        className={`inline-flex items-center gap-1 rounded-lg border border-emerald-400/20 bg-emerald-400/[0.08] text-emerald-300 hover:text-emerald-200 ${compact ? 'px-1.5 py-0.5 text-[8px]' : 'px-2 py-1 text-[9px]'}`}
+        aria-label={`Call ${phone}`}
+      >
+        <Phone size={compact ? 9 : 11} /> Call
+      </a>
+      <a
+        href={`sms:${hrefValue}`}
+        className={`inline-flex items-center gap-1 rounded-lg border border-blue-400/20 bg-blue-400/[0.08] text-blue-300 hover:text-blue-200 ${compact ? 'px-1.5 py-0.5 text-[8px]' : 'px-2 py-1 text-[9px]'}`}
+        aria-label={`Text ${phone}`}
+      >
+        <MessageCircle size={compact ? 9 : 11} /> Text
+      </a>
+    </span>
+  );
+}
+
 function SectionTitle({ icon: Icon, children }) {
   return <h4 className="flex min-w-0 items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400"><Icon size={14} className="shrink-0 text-blue-300" /><span className="min-w-0 truncate">{children}</span></h4>;
 }
@@ -457,3 +538,26 @@ function array(value) { return Array.isArray(value) ? value : []; }
 function number(value) { const parsed = Number(value); return Number.isFinite(parsed) ? parsed.toLocaleString() : '0'; }
 function optionalNumber(value) { const parsed = Number(value); return value !== undefined && value !== null && value !== '' && Number.isFinite(parsed) ? parsed.toLocaleString(undefined, { maximumFractionDigits: 1 }) : '—'; }
 function truthy(value) { return value === true || value === 'true' || value === 1; }
+function firstText(...values) {
+  for (const value of values) {
+    if (value === undefined || value === null) continue;
+    const text = String(value).trim();
+    if (text) return text;
+  }
+  return '';
+}
+function phoneHref(value) {
+  const raw = firstText(value);
+  if (!raw) return '';
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length < 7) return '';
+  return `${raw.trim().startsWith('+') ? '+' : ''}${digits}`;
+}
+function safeHttpUrl(value) {
+  try {
+    const url = new URL(firstText(value));
+    return ['http:', 'https:'].includes(url.protocol) ? url.toString() : '';
+  } catch {
+    return '';
+  }
+}

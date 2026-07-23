@@ -2,11 +2,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Activity, Loader2, RefreshCw } from 'lucide-react';
 import AccountDetail from './AccountDetailDiagnostics.jsx';
 import { AccountsTable, FiltersBar, KpiRow } from './CustomerActivityParts.jsx';
+import GlobalFailureMonitor from './GlobalFailureMonitor.jsx';
 import { ApiError } from './lib/api.js';
 import {
   OPS_SETUP_NOTE,
   fetchAccount,
-  fetchAccountFailures,
+  fetchAllAccountFailures,
   fetchAccounts,
   fetchAnalyticsMeta,
   fetchOverview,
@@ -18,7 +19,7 @@ import {
 } from './lib/analytics.js';
 
 const EMPTY_PAGE = { rows: [], total: 0, limit: 25, offset: 0 };
-const EMPTY_FAILURES = { rows: [], total: 0, limit: 50, offset: 0, summary: {} };
+const EMPTY_FAILURES = { rows: [], total: 0, limit: 200, offset: 0, available: false, summary: {} };
 const EMPTY_DETAIL = {
   account: null,
   daily: [],
@@ -28,8 +29,6 @@ const EMPTY_DETAIL = {
   failuresError: '',
 };
 const DEFAULT_FILTERS = { plan: '', status: '', health: '', preset: '', sort: 'health', limit: 25, offset: 0 };
-const FAILURE_WINDOW_DAYS = 30;
-
 export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   const [overview, setOverview] = useState(null);
   const [analyticsMeta, setAnalyticsMeta] = useState(null);
@@ -43,6 +42,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
 
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [selectedSearchCandidate, setSelectedSearchCandidate] = useState(null);
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
 
   const [expandedOrgId, setExpandedOrgId] = useState('');
@@ -51,6 +51,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   const [failuresLoading, setFailuresLoading] = useState(false);
   const [chartLoading, setChartLoading] = useState(false);
   const [detailDays, setDetailDays] = useState(30);
+  const [failureDays, setFailureDays] = useState(30);
   const [writePending, setWritePending] = useState(false);
   const [followUpPendingId, setFollowUpPendingId] = useState('');
 
@@ -58,9 +59,29 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     () => ({ ...filters, q: debouncedSearch }),
     [debouncedSearch, filters],
   );
+  const displayPage = useMemo(() => {
+    const candidateOrgId = String(selectedSearchCandidate?.orgId || '');
+    if (!candidateOrgId) return page;
+    return {
+      ...page,
+      rows: page.rows.map((row) => (
+        String(row.orgId || row.id || '') === candidateOrgId
+          ? {
+              ...row,
+              matchedUsers: selectedSearchCandidate.matchedUsers || row.matchedUsers,
+              admins: selectedSearchCandidate.admins || row.admins,
+              contactName: selectedSearchCandidate.contactName || row.contactName,
+              contactEmail: selectedSearchCandidate.email || row.contactEmail,
+              phone: selectedSearchCandidate.phone || row.phone,
+            }
+          : row
+      )),
+    };
+  }, [page, selectedSearchCandidate]);
   const accountsSeq = useRef(0);
   const detailSeq = useRef(0);
   const chartSeq = useRef(0);
+  const failuresSeq = useRef(0);
 
   const handleError = useCallback((err, fallback) => {
     if (err instanceof ApiError && err.status === 401) {
@@ -114,10 +135,16 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     }
   }, [accountRequest, handleError]);
 
-  const loadDetail = useCallback(async (orgId, days, { silent = false } = {}) => {
+  const loadDetail = useCallback(async (
+    orgId,
+    days,
+    { silent = false, failureWindowDays = failureDays } = {},
+  ) => {
     const seq = detailSeq.current + 1;
     detailSeq.current = seq;
     chartSeq.current += 1;
+    const failureRequestSeq = failuresSeq.current + 1;
+    failuresSeq.current = failureRequestSeq;
     if (!silent) setDetailLoading(true);
     setFailuresLoading(true);
     setDetail((current) => ({ ...current, error: '', failuresError: '' }));
@@ -128,7 +155,11 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       fetchTickets(orgId),
     ]);
     const failuresPromise = Promise.allSettled([
-      fetchAccountFailures(orgId, { days: FAILURE_WINDOW_DAYS, limit: 50, offset: 0 }),
+      fetchAllAccountFailures(orgId, {
+        days: failureWindowDays,
+        limit: 200,
+        maxRows: 5_000,
+      }),
     ]).then(([result]) => result);
 
     const results = await detailPromise;
@@ -158,7 +189,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     setChartLoading(false);
 
     const failuresResult = await failuresPromise;
-    if (detailSeq.current !== seq) return;
+    if (detailSeq.current !== seq || failuresSeq.current !== failureRequestSeq) return;
     if (failuresResult.status === 'fulfilled') {
       setDetail((current) => ({
         ...current,
@@ -170,7 +201,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       setDetail((current) => ({ ...current, failuresError: message }));
     }
     setFailuresLoading(false);
-  }, [handleError]);
+  }, [failureDays, handleError]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
@@ -216,6 +247,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   function clearFilters() {
     setSearch('');
     setDebouncedSearch('');
+    setSelectedSearchCandidate(null);
     setFilters(DEFAULT_FILTERS);
   }
 
@@ -229,6 +261,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     if (expandedOrgId === orgId) {
       detailSeq.current += 1;
       chartSeq.current += 1;
+      failuresSeq.current += 1;
       setExpandedOrgId('');
       setDetail(EMPTY_DETAIL);
       setDetailLoading(false);
@@ -237,10 +270,11 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     }
     setExpandedOrgId(orgId);
     setDetailDays(30);
+    setFailureDays(30);
     setDetail(EMPTY_DETAIL);
     setDetailLoading(true);
     setFailuresLoading(true);
-    loadDetail(orgId, 30);
+    loadDetail(orgId, 30, { failureWindowDays: 30 });
   }
 
   async function changeDetailDays(days) {
@@ -259,6 +293,38 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       }
     } finally {
       if (chartSeq.current === seq) setChartLoading(false);
+    }
+  }
+
+  async function changeFailureDays(days) {
+    if (!expandedOrgId || days === failureDays) return;
+    setFailureDays(days);
+    setFailuresLoading(true);
+    const seq = failuresSeq.current + 1;
+    failuresSeq.current = seq;
+    setDetail((current) => ({
+      ...current,
+      failures: {
+        ...EMPTY_FAILURES,
+        summary: { windowDays: days },
+      },
+      failuresError: '',
+    }));
+    try {
+      const failures = await fetchAllAccountFailures(
+        expandedOrgId,
+        { days, limit: 200, maxRows: 5_000 },
+      );
+      if (failuresSeq.current === seq) {
+        setDetail((current) => ({ ...current, failures, failuresError: '' }));
+      }
+    } catch (err) {
+      if (failuresSeq.current === seq) {
+        const message = handleError(err, 'Could not load failure diagnostics.');
+        setDetail((current) => ({ ...current, failuresError: message }));
+      }
+    } finally {
+      if (failuresSeq.current === seq) setFailuresLoading(false);
     }
   }
 
@@ -363,9 +429,24 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
             ) : (
               <KpiRow overview={overview || {}} onPreset={applyPreset} />
             )}
-            <FiltersBar search={search} filters={filters} onSearch={(value) => { setSearch(value); setFilters((current) => ({ ...current, offset: 0 })); }} onFilter={setFilter} onPreset={applyPreset} onClear={clearFilters} />
+            <GlobalFailureMonitor onUnauthorized={onUnauthorized} />
+            <FiltersBar
+              search={search}
+              filters={filters}
+              onSearch={(value) => {
+                setSearch(value);
+                if (String(value) !== String(selectedSearchCandidate?.orgId || '')) {
+                  setSelectedSearchCandidate(null);
+                }
+                setFilters((current) => ({ ...current, offset: 0 }));
+              }}
+              onCandidateSelect={(_orgId, candidate) => setSelectedSearchCandidate(candidate)}
+              onFilter={setFilter}
+              onPreset={applyPreset}
+              onClear={clearFilters}
+            />
             <AccountsTable
-              page={page}
+              page={displayPage}
               latestDesktopVersion={analyticsMeta?.latestDesktopVersion}
               loading={pageLoading}
               error={pageError}
@@ -396,11 +477,13 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
                       failures={detail.failures}
                       failuresLoading={failuresLoading}
                       failuresError={detail.failuresError}
+                      failureDays={failureDays}
                       days={detailDays}
                       chartLoading={chartLoading}
                       refreshing={detailLoading || failuresLoading}
                       writePending={writePending}
                       onDaysChange={changeDetailDays}
+                      onFailureDaysChange={changeFailureDays}
                       onRefresh={() => loadDetail(orgId, detailDays)}
                       onAddNote={addNote}
                       onSaveCs={saveMeta}

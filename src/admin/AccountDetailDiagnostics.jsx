@@ -5,6 +5,8 @@ export default function AccountDetailDiagnostics({
   failures,
   failuresLoading,
   failuresError,
+  failureDays,
+  onFailureDaysChange,
   detail,
   ...accountDetailProps
 }) {
@@ -18,6 +20,10 @@ export default function AccountDetailDiagnostics({
           loading={failuresLoading}
           error={failuresError}
           legacyFeeds={feeds}
+          account={detail?.org || detail?.organization || null}
+          users={Array.isArray(detail?.users) ? detail.users : []}
+          windowDays={failureDays}
+          onWindowDaysChange={onFailureDaysChange}
         />
       </div>
       <AccountDetail detail={detail} {...accountDetailProps} />
