@@ -2,6 +2,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
 import {
   AlertTriangle,
   Check,
+  ChevronDown,
   Copy,
   Loader2,
   RefreshCw,
@@ -28,8 +29,21 @@ const EMPTY_FAILURES = {
   source: '',
 };
 const MAX_VISIBLE_EVENTS = 150;
+const PAGE_LIMIT = 200;
+const FULL_MAX_ROWS = 5_000;
+const COLLAPSE_KEY = 'al_admin_collapse_error-monitor';
+
+function readStoredOpen() {
+  if (typeof window === 'undefined') return false;
+  try {
+    return window.localStorage.getItem(COLLAPSE_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
 
 export default function GlobalFailureMonitor({ onUnauthorized }) {
+  const [open, setOpen] = useState(readStoredOpen);
   const [windowDays, setWindowDays] = useState(30);
   const [failures, setFailures] = useState(EMPTY_FAILURES);
   const [loading, setLoading] = useState(true);
@@ -39,9 +53,22 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
   const [selectedUserId, setSelectedUserId] = useState('');
   const [copyStatus, setCopyStatus] = useState({ state: 'idle', message: '' });
   const requestSeq = useRef(0);
+  const loadedRef = useRef({ days: 0, full: false });
   const copyStatusId = useId();
+  const sectionId = useId();
+  const headerId = `${sectionId}-header`;
+  const bodyId = `${sectionId}-body`;
 
-  const loadFailures = useCallback(async ({ clear = false } = {}) => {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(COLLAPSE_KEY, String(open));
+    } catch {
+      // Local storage may be unavailable in locked-down browser contexts.
+    }
+  }, [open]);
+
+  const loadFailures = useCallback(async ({ clear = false, full = open } = {}) => {
     const seq = requestSeq.current + 1;
     requestSeq.current = seq;
     setLoading(true);
@@ -50,10 +77,12 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
     try {
       const next = await fetchGlobalFailures({
         days: windowDays,
-        limit: 200,
-        maxRows: 5_000,
+        limit: PAGE_LIMIT,
+        // Collapsed, only the header count is on screen — one page already carries the total.
+        maxRows: full ? FULL_MAX_ROWS : PAGE_LIMIT,
       });
       if (requestSeq.current !== seq) return;
+      loadedRef.current = { days: windowDays, full };
       setFailures(next);
     } catch (err) {
       if (requestSeq.current !== seq) return;
@@ -66,15 +95,19 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
     } finally {
       if (requestSeq.current === seq) setLoading(false);
     }
-  }, [onUnauthorized, windowDays]);
+  }, [onUnauthorized, open, windowDays]);
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => loadFailures({ clear: true }), 0);
+    const loaded = loadedRef.current;
+    // Collapsing never needs a refetch, and re-expanding a full window is already covered.
+    if (loaded.days === windowDays && (loaded.full || !open)) return undefined;
+    const clear = loaded.days !== windowDays;
+    const timeoutId = window.setTimeout(() => loadFailures({ clear }), 0);
     return () => {
       window.clearTimeout(timeoutId);
       requestSeq.current += 1;
     };
-  }, [loadFailures]);
+  }, [loadFailures, open, windowDays]);
 
   const rows = useMemo(
     () => (Array.isArray(failures?.rows) ? failures.rows : []),
@@ -188,58 +221,88 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
   }
 
   const windowLabel = windowDays === 1 ? 'last 24 hours' : `last ${windowDays} days`;
+  const pending = loading && rows.length === 0;
 
   return (
-    <section className="min-w-0 overflow-hidden rounded-2xl border border-red-500/20 bg-red-500/[0.035]">
-      <div className="flex min-w-0 flex-col gap-3 border-b border-red-500/15 px-4 py-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex min-w-0 items-start gap-3">
+    <section
+      aria-labelledby={headerId}
+      className="min-w-0 overflow-hidden rounded-2xl border border-red-500/20 bg-red-500/[0.035]"
+    >
+      <div className={`flex min-w-0 flex-col lg:flex-row lg:items-center lg:justify-between ${open ? 'border-b border-red-500/15' : ''}`}>
+        <button
+          id={headerId}
+          type="button"
+          aria-expanded={open}
+          aria-controls={bodyId}
+          onClick={() => setOpen((current) => !current)}
+          className="flex min-w-0 flex-1 items-start gap-3 px-4 py-4 text-left transition hover:bg-red-500/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60 focus-visible:ring-inset"
+        >
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-red-400/20 bg-red-400/10 text-red-300">
             {loading ? <Loader2 size={17} className="animate-spin" /> : <AlertTriangle size={17} />}
           </span>
-          <span className="min-w-0">
+          <span className="min-w-0 flex-1">
             <span className="block text-[10px] font-black uppercase tracking-widest text-slate-200">
               All-customer error monitor
             </span>
             <span className="mt-1 block text-[10px] leading-relaxed text-slate-500">
-              {loading && rows.length === 0
+              {pending
                 ? `Loading failures from the ${windowLabel}...`
-                : `${total.toLocaleString()} failure${total === 1 ? '' : 's'} across ${accounts.length.toLocaleString()} loaded customer${accounts.length === 1 ? '' : 's'} in the ${windowLabel}. Select the graph to drill into a customer, user, and raw event JSON.`}
+                : `${total.toLocaleString()} failure${total === 1 ? '' : 's'} across ${accounts.length.toLocaleString()} loaded customer${accounts.length === 1 ? '' : 's'} in the ${windowLabel}.${open ? ' Select the graph to drill into a customer, user, and raw event JSON.' : ''}`}
             </span>
           </span>
-        </div>
-
-        <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <div className="flex rounded-xl border border-white/10 bg-black/45 p-1" aria-label="Overall failure reporting window">
-            {WINDOWS.map((days) => (
-              <button
-                key={days}
-                type="button"
-                disabled={loading}
-                aria-pressed={windowDays === days}
-                onClick={() => changeWindow(days)}
-                className={`rounded-lg px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition disabled:cursor-not-allowed disabled:opacity-45 ${
-                  windowDays === days
-                    ? 'bg-red-500 text-white'
-                    : 'text-slate-500 hover:text-white'
-                }`}
-              >
-                {days === 1 ? '24h' : `${days}d`}
-              </button>
-            ))}
-          </div>
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => loadFailures()}
-            className="inline-flex h-9 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:border-white/20 hover:text-white disabled:cursor-wait disabled:opacity-45"
+          <span
+            className={`shrink-0 rounded-lg border px-2 py-1 text-[9px] font-black uppercase tracking-widest ${
+              error
+                ? 'border-amber-400/30 bg-amber-500/10 text-amber-200'
+                : total > 0
+                  ? 'border-red-400/30 bg-red-500/15 text-red-200'
+                  : 'border-emerald-400/25 bg-emerald-500/10 text-emerald-300'
+            }`}
           >
-            <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
-            Refresh
-          </button>
-        </div>
+            {error ? 'Unavailable' : pending ? '···' : total > 0 ? total.toLocaleString() : 'All clear'}
+          </span>
+          <ChevronDown
+            size={18}
+            aria-hidden="true"
+            className={`mt-0.5 shrink-0 text-slate-500 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          />
+        </button>
+
+        {open && (
+          <div className="flex min-w-0 flex-wrap items-center gap-2 px-4 pb-4 lg:pb-0 lg:pl-0">
+            <div className="flex rounded-xl border border-white/10 bg-black/45 p-1" aria-label="Overall failure reporting window">
+              {WINDOWS.map((days) => (
+                <button
+                  key={days}
+                  type="button"
+                  disabled={loading}
+                  aria-pressed={windowDays === days}
+                  onClick={() => changeWindow(days)}
+                  className={`rounded-lg px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition disabled:cursor-not-allowed disabled:opacity-45 ${
+                    windowDays === days
+                      ? 'bg-red-500 text-white'
+                      : 'text-slate-500 hover:text-white'
+                  }`}
+                >
+                  {days === 1 ? '24h' : `${days}d`}
+                </button>
+              ))}
+            </div>
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => loadFailures()}
+              className="inline-flex h-9 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-3 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:border-white/20 hover:text-white disabled:cursor-wait disabled:opacity-45"
+            >
+              <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
+              Refresh
+            </button>
+          </div>
+        )}
       </div>
 
-      <div className="min-w-0 space-y-3 p-4">
+      {open && (
+      <div id={bodyId} role="region" aria-labelledby={headerId} className="min-w-0 space-y-3 p-4">
         {error && (
           <p className="rounded-xl border border-red-500/25 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-200">
             {error}
@@ -365,6 +428,7 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
           </>
         )}
       </div>
+      )}
     </section>
   );
 }
