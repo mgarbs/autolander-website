@@ -31,14 +31,17 @@ const EMPTY_FAILURES = {
 const MAX_VISIBLE_EVENTS = 150;
 const PAGE_LIMIT = 200;
 const FULL_MAX_ROWS = 5_000;
-const COLLAPSE_KEY = 'al_admin_collapse_error-monitor';
+// Renamed from al_admin_collapse_error-monitor so the old default-closed
+// preference does not keep the monitor hidden now that it opens by default.
+const OPEN_KEY = 'al_admin_error_monitor_open';
 
 function readStoredOpen() {
-  if (typeof window === 'undefined') return false;
+  if (typeof window === 'undefined') return true;
   try {
-    return window.localStorage.getItem(COLLAPSE_KEY) === 'true';
+    const stored = window.localStorage.getItem(OPEN_KEY);
+    return stored === null ? true : stored === 'true';
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -62,7 +65,7 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      window.localStorage.setItem(COLLAPSE_KEY, String(open));
+      window.localStorage.setItem(OPEN_KEY, String(open));
     } catch {
       // Local storage may be unavailable in locked-down browser contexts.
     }
