@@ -1,5 +1,6 @@
 import { apiGet, apiPost, apiPut } from './api.js';
 import { normalizeFailureResponse } from './failure-diagnostics.js';
+import { normalizePostResponse } from './post-analytics.js';
 export { isOpsNotConfigured, OPS_SETUP_NOTE } from './ops.js';
 
 const BASE = '/admin/analytics';
@@ -119,6 +120,38 @@ export async function fetchGlobalFailures(params = {}) {
   };
 }
 
+export async function fetchGlobalPosts(params = {}) {
+  const days = clampWindowDays(params.days);
+  const pageLimit = Math.min(200, Math.max(1, finiteNumber(params.limit, 200)));
+  const maxRows = Math.min(10_000, Math.max(pageLimit, finiteNumber(params.maxRows, 5_000)));
+  const first = await fetchGlobalPostPage(
+    { days, limit: pageLimit, offset: 0 },
+    { signal: params.signal },
+  );
+  const rows = [...first.rows];
+  while (rows.length < first.total && rows.length < maxRows) {
+    const page = await fetchGlobalPostPage(
+      {
+        days,
+        limit: Math.min(pageLimit, maxRows - rows.length),
+        offset: rows.length,
+      },
+      { signal: params.signal },
+    );
+    if (page.rows.length === 0) break;
+    rows.push(...page.rows);
+  }
+  return {
+    ...first,
+    rows,
+    limit: pageLimit,
+    offset: 0,
+    loaded: rows.length,
+    truncated: rows.length < first.total,
+    source: 'global_post_deliveries',
+  };
+}
+
 export function saveNote(orgId, note) {
   return apiPost(`${BASE}/accounts/${encodeURIComponent(orgId)}/notes`, note);
 }
@@ -130,6 +163,11 @@ export function saveCsMeta(orgId, meta) {
 async function fetchGlobalFailurePage(request) {
   const payload = await apiGet(`${BASE}/failures${queryString(request)}`);
   return normalizeFailureResponse(payload, request);
+}
+
+async function fetchGlobalPostPage(request, options = {}) {
+  const payload = await apiGet(`${BASE}/posts${queryString(request)}`, options);
+  return normalizePostResponse(payload, request);
 }
 
 function queryString(params) {
@@ -145,6 +183,10 @@ function queryString(params) {
 function finiteNumber(value, fallback = 0) {
   const number = Number(value);
   return Number.isFinite(number) ? number : fallback;
+}
+
+function clampWindowDays(value) {
+  return Math.min(30, Math.max(1, finiteNumber(value, 30)));
 }
 
 function text(value) {

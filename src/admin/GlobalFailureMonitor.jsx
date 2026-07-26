@@ -231,7 +231,7 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
       aria-labelledby={headerId}
       className="min-w-0 overflow-hidden rounded-2xl border border-red-500/20 bg-red-500/[0.035]"
     >
-      <div className={`flex min-w-0 flex-col lg:flex-row lg:items-center lg:justify-between ${open ? 'border-b border-red-500/15' : ''}`}>
+      <div className={`flex min-w-0 flex-col 2xl:flex-row 2xl:items-center 2xl:justify-between ${open ? 'border-b border-red-500/15' : ''}`}>
         <button
           id={headerId}
           type="button"
@@ -272,7 +272,7 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
         </button>
 
         {open && (
-          <div className="flex min-w-0 flex-wrap items-center gap-2 px-4 pb-4 lg:pb-0 lg:pl-0">
+          <div className="flex min-w-0 flex-wrap items-center gap-2 px-4 pb-4 2xl:pb-0 2xl:pl-0">
             <div className="flex rounded-xl border border-white/10 bg-black/45 p-1" aria-label="Overall failure reporting window">
               {WINDOWS.map((days) => (
                 <button
@@ -340,8 +340,8 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
             />
 
             <div className="min-w-0 rounded-xl border border-blue-400/15 bg-blue-400/[0.045] p-3">
-              <div className="grid min-w-0 gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(14rem,0.75fr)_minmax(14rem,0.75fr)] lg:items-end">
-                <div className="min-w-0">
+              <div className="grid min-w-0 gap-3 sm:grid-cols-2">
+                <div className="min-w-0 sm:col-span-2">
                   <p className="text-[8px] font-black uppercase tracking-widest text-blue-300/70">
                     Drill-down scope
                   </p>
@@ -411,7 +411,7 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
               </button>
             </div>
 
-            <div className="min-w-0 space-y-2">
+            <div className="max-h-[34rem] min-w-0 space-y-2 overflow-y-auto overscroll-contain pr-1">
               {displayedRows.length === 0 ? (
                 <div className="rounded-xl border border-dashed border-white/10 px-3 py-7 text-center text-[9px] font-black uppercase tracking-widest text-slate-600">
                   No loaded events match this drill-down

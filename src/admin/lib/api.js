@@ -20,7 +20,7 @@ export function setStoredToken(token) {
   sessionToken = token || '';
 }
 
-async function request(path, { method = 'GET', body } = {}) {
+async function request(path, { method = 'GET', body, signal } = {}) {
   const headers = {};
   if (body) headers['Content-Type'] = 'application/json';
   const token = getStoredToken();
@@ -35,8 +35,10 @@ async function request(path, { method = 'GET', body } = {}) {
       credentials: 'include',
       headers,
       body: body ? JSON.stringify(body) : undefined,
+      signal,
     });
   } catch (err) {
+    if (err?.name === 'AbortError') throw err;
     throw new ApiError(err?.message || 'Network error', { status: 0 });
   }
 
@@ -55,7 +57,7 @@ async function request(path, { method = 'GET', body } = {}) {
   return json;
 }
 
-export const apiGet = (path) => request(path, { method: 'GET' });
+export const apiGet = (path, options = {}) => request(path, { ...options, method: 'GET' });
 export const apiPost = (path, body) => request(path, { method: 'POST', body });
 export const apiPut = (path, body) => request(path, { method: 'PUT', body });
 export { ApiError, API_URL };

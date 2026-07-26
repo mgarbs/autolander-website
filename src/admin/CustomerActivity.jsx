@@ -3,6 +3,7 @@ import { Activity, Loader2, RefreshCw } from 'lucide-react';
 import AccountDetail from './AccountDetailDiagnostics.jsx';
 import { AccountsTable, FiltersBar, KpiRow } from './CustomerActivityParts.jsx';
 import GlobalFailureMonitor from './GlobalFailureMonitor.jsx';
+import GlobalPostMonitor from './GlobalPostMonitor.jsx';
 import { ApiError } from './lib/api.js';
 import {
   OPS_SETUP_NOTE,
@@ -429,7 +430,10 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
             ) : (
               <KpiRow overview={overview || {}} onPreset={applyPreset} />
             )}
-            <GlobalFailureMonitor onUnauthorized={onUnauthorized} />
+            <div className="grid min-w-0 items-start gap-4 xl:grid-cols-2">
+              <GlobalPostMonitor onUnauthorized={onUnauthorized} />
+              <GlobalFailureMonitor onUnauthorized={onUnauthorized} />
+            </div>
             <FiltersBar
               search={search}
               filters={filters}
