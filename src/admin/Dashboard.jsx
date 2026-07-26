@@ -155,7 +155,7 @@ export default function Dashboard({ onLogout }) {
   return (
     <div className="min-h-screen bg-[#050505] text-slate-100">
       <header className="sticky top-0 z-10 border-b border-white/10 bg-black/70 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-[1500px] flex-col gap-3 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-lg font-black uppercase italic tracking-tight text-white">AutoLander Admin</h1>
             <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
@@ -182,7 +182,7 @@ export default function Dashboard({ onLogout }) {
         </div>
       </header>
 
-      <main className="mx-auto max-w-6xl space-y-4 px-6 py-8">
+      <main className="mx-auto max-w-[1500px] space-y-4 px-6 py-8">
         <div className="flex justify-end">
           <button
             type="button"

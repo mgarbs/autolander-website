@@ -282,7 +282,7 @@ export default function AccountDetail({
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <SectionTitle icon={Bot}>Daily posting mix</SectionTitle>
             <div className="flex shrink-0 gap-1 rounded-xl border border-white/10 bg-black/50 p-1">
-              {[7, 30, 90].map((value) => (
+              {[7, 30].map((value) => (
                 <button key={value} type="button" onClick={() => onDaysChange(value)} className={`rounded-lg px-3 py-1.5 text-[9px] font-black uppercase tracking-widest ${days === value ? 'bg-blue-600 text-white' : 'text-slate-500 hover:text-white'}`}>{value}d</button>
               ))}
             </div>
