@@ -12,7 +12,6 @@ import {
   fetchAccounts,
   fetchAnalyticsMeta,
   fetchOverview,
-  fetchPostsDaily,
   fetchTickets,
   isOpsNotConfigured,
   saveCsMeta,
@@ -23,7 +22,6 @@ const EMPTY_PAGE = { rows: [], total: 0, limit: 25, offset: 0 };
 const EMPTY_FAILURES = { rows: [], total: 0, limit: 200, offset: 0, available: false, summary: {} };
 const EMPTY_DETAIL = {
   account: null,
-  daily: [],
   tickets: { rows: [], sheetUrl: '' },
   failures: EMPTY_FAILURES,
   error: '',
@@ -50,8 +48,6 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   const [detail, setDetail] = useState(EMPTY_DETAIL);
   const [detailLoading, setDetailLoading] = useState(false);
   const [failuresLoading, setFailuresLoading] = useState(false);
-  const [chartLoading, setChartLoading] = useState(false);
-  const [detailDays, setDetailDays] = useState(30);
   const [failureDays, setFailureDays] = useState(30);
   const [writePending, setWritePending] = useState(false);
   const [followUpPendingId, setFollowUpPendingId] = useState('');
@@ -81,7 +77,6 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   }, [page, selectedSearchCandidate]);
   const accountsSeq = useRef(0);
   const detailSeq = useRef(0);
-  const chartSeq = useRef(0);
   const failuresSeq = useRef(0);
 
   const handleError = useCallback((err, fallback) => {
@@ -138,12 +133,10 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
 
   const loadDetail = useCallback(async (
     orgId,
-    days,
     { silent = false, failureWindowDays = failureDays } = {},
   ) => {
     const seq = detailSeq.current + 1;
     detailSeq.current = seq;
-    chartSeq.current += 1;
     const failureRequestSeq = failuresSeq.current + 1;
     failuresSeq.current = failureRequestSeq;
     if (!silent) setDetailLoading(true);
@@ -152,7 +145,6 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
 
     const detailPromise = Promise.allSettled([
       fetchAccount(orgId),
-      fetchPostsDaily(orgId, days),
       fetchTickets(orgId),
     ]);
     const failuresPromise = Promise.allSettled([
@@ -172,22 +164,19 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       setDetail((current) => ({
         ...current,
         account: results[0].status === 'fulfilled' ? results[0].value : current.account,
-        daily: results[1].status === 'fulfilled' ? results[1].value : current.daily,
-        tickets: results[2].status === 'fulfilled' ? results[2].value : current.tickets,
+        tickets: results[1].status === 'fulfilled' ? results[1].value : current.tickets,
         error: message,
       }));
     } else {
       setDetail((current) => ({
         ...current,
         account: results[0].value,
-        daily: results[1].value,
-        tickets: results[2].value,
+        tickets: results[1].value,
         error: '',
       }));
       setOpsUnavailable(false);
     }
     setDetailLoading(false);
-    setChartLoading(false);
 
     const failuresResult = await failuresPromise;
     if (detailSeq.current !== seq || failuresSeq.current !== failureRequestSeq) return;
@@ -224,7 +213,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       if (document.hidden) return;
       loadOverview({ silent: true });
       loadAccounts({ silent: true });
-      if (expandedOrgId) loadDetail(expandedOrgId, detailDays, { silent: true });
+      if (expandedOrgId) loadDetail(expandedOrgId, { silent: true });
     };
     const intervalId = window.setInterval(tick, 45000);
     const handleVisibility = () => {
@@ -235,7 +224,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       window.clearInterval(intervalId);
       document.removeEventListener('visibilitychange', handleVisibility);
     };
-  }, [detailDays, expandedOrgId, loadAccounts, loadDetail, loadOverview]);
+  }, [expandedOrgId, loadAccounts, loadDetail, loadOverview]);
 
   function setFilter(name, value) {
     setFilters((current) => ({ ...current, [name]: value, offset: 0 }));
@@ -261,7 +250,6 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     if (!orgId) return;
     if (expandedOrgId === orgId) {
       detailSeq.current += 1;
-      chartSeq.current += 1;
       failuresSeq.current += 1;
       setExpandedOrgId('');
       setDetail(EMPTY_DETAIL);
@@ -270,31 +258,11 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       return;
     }
     setExpandedOrgId(orgId);
-    setDetailDays(30);
     setFailureDays(30);
     setDetail(EMPTY_DETAIL);
     setDetailLoading(true);
     setFailuresLoading(true);
-    loadDetail(orgId, 30, { failureWindowDays: 30 });
-  }
-
-  async function changeDetailDays(days) {
-    if (!expandedOrgId || days === detailDays) return;
-    setDetailDays(days);
-    setChartLoading(true);
-    const seq = chartSeq.current + 1;
-    chartSeq.current = seq;
-    try {
-      const rows = await fetchPostsDaily(expandedOrgId, days);
-      if (chartSeq.current === seq) setDetail((current) => ({ ...current, daily: rows }));
-    } catch (err) {
-      if (chartSeq.current === seq) {
-        const message = handleError(err, 'Could not load daily posting data.');
-        setDetail((current) => ({ ...current, error: message }));
-      }
-    } finally {
-      if (chartSeq.current === seq) setChartLoading(false);
-    }
+    loadDetail(orgId, { failureWindowDays: 30 });
   }
 
   async function changeFailureDays(days) {
@@ -334,7 +302,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     setWritePending(true);
     try {
       await saveNote(expandedOrgId, note);
-      await loadDetail(expandedOrgId, detailDays, { silent: true });
+      await loadDetail(expandedOrgId, { silent: true });
     } finally {
       setWritePending(false);
     }
@@ -351,7 +319,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
           ? { ...row, csOwner: meta.owner || '', followUp: Boolean(meta.followUp) }
           : row),
       }));
-      await loadDetail(expandedOrgId, detailDays, { silent: true });
+      await loadDetail(expandedOrgId, { silent: true });
     } finally {
       setWritePending(false);
     }
@@ -392,7 +360,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       await Promise.all([
         loadOverview({ silent: true }),
         loadAccounts({ silent: true }),
-        expandedOrgId ? loadDetail(expandedOrgId, detailDays, { silent: true }) : Promise.resolve(),
+        expandedOrgId ? loadDetail(expandedOrgId, { silent: true }) : Promise.resolve(),
       ]);
     } finally {
       setRefreshing(false);
@@ -476,19 +444,16 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
                       summary={row}
                       latestDesktopVersion={analyticsMeta?.latestDesktopVersion}
                       detail={detail.account}
-                      daily={detail.daily}
                       tickets={detail.tickets}
                       failures={detail.failures}
                       failuresLoading={failuresLoading}
                       failuresError={detail.failuresError}
                       failureDays={failureDays}
-                      days={detailDays}
-                      chartLoading={chartLoading}
                       refreshing={detailLoading || failuresLoading}
                       writePending={writePending}
-                      onDaysChange={changeDetailDays}
+                      onUnauthorized={onUnauthorized}
                       onFailureDaysChange={changeFailureDays}
-                      onRefresh={() => loadDetail(orgId, detailDays)}
+                      onRefresh={() => loadDetail(orgId)}
                       onAddNote={addNote}
                       onSaveCs={saveMeta}
                     />

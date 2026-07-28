@@ -121,16 +121,30 @@ export async function fetchGlobalFailures(params = {}) {
 }
 
 export async function fetchGlobalPosts(params = {}) {
+  return fetchPostCollection(`${BASE}/posts`, params, 'global_post_deliveries');
+}
+
+export async function fetchAccountPosts(orgId, params = {}) {
+  return fetchPostCollection(
+    `${BASE}/accounts/${encodeURIComponent(orgId)}/posts`,
+    params,
+    'account_post_deliveries',
+  );
+}
+
+async function fetchPostCollection(path, params, source) {
   const days = clampWindowDays(params.days);
   const pageLimit = Math.min(200, Math.max(1, finiteNumber(params.limit, 200)));
   const maxRows = Math.min(10_000, Math.max(pageLimit, finiteNumber(params.maxRows, 5_000)));
-  const first = await fetchGlobalPostPage(
+  const first = await fetchPostPage(
+    path,
     { days, limit: pageLimit, offset: 0 },
     { signal: params.signal },
   );
   const rows = [...first.rows];
   while (rows.length < first.total && rows.length < maxRows) {
-    const page = await fetchGlobalPostPage(
+    const page = await fetchPostPage(
+      path,
       {
         days,
         limit: Math.min(pageLimit, maxRows - rows.length),
@@ -148,7 +162,7 @@ export async function fetchGlobalPosts(params = {}) {
     offset: 0,
     loaded: rows.length,
     truncated: rows.length < first.total,
-    source: 'global_post_deliveries',
+    source,
   };
 }
 
@@ -165,8 +179,8 @@ async function fetchGlobalFailurePage(request) {
   return normalizeFailureResponse(payload, request);
 }
 
-async function fetchGlobalPostPage(request, options = {}) {
-  const payload = await apiGet(`${BASE}/posts${queryString(request)}`, options);
+async function fetchPostPage(path, request, options = {}) {
+  const payload = await apiGet(`${path}${queryString(request)}`, options);
   return normalizePostResponse(payload, request);
 }
 
