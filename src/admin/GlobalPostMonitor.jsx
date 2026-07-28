@@ -14,7 +14,7 @@ import { ContactPhoneActions } from './CustomerSearch.jsx';
 import PostEventRow from './PostEventRow.jsx';
 import PostTrendChart from './PostTrendChart.jsx';
 import { ApiError } from './lib/api.js';
-import { fetchGlobalPosts } from './lib/analytics.js';
+import { fetchAccountPosts, fetchGlobalPosts } from './lib/analytics.js';
 import {
   buildPostTimeline,
   filterPosts,
@@ -33,20 +33,24 @@ const EMPTY_POSTS = {
 const PAGE_LIMIT = 200;
 const FULL_MAX_ROWS = 600;
 const MAX_VISIBLE_EVENTS = 150;
-const OPEN_KEY = 'al_admin_post_monitor_open';
+const GLOBAL_OPEN_KEY = 'al_admin_post_monitor_open';
+const ACCOUNT_OPEN_KEY = 'al_admin_account_post_monitor_open';
 
-function readStoredOpen() {
+function readStoredOpen(key) {
   if (typeof window === 'undefined') return true;
   try {
-    const stored = window.localStorage.getItem(OPEN_KEY);
+    const stored = window.localStorage.getItem(key);
     return stored === null ? true : stored === 'true';
   } catch {
     return true;
   }
 }
 
-export default function GlobalPostMonitor({ onUnauthorized }) {
-  const [open, setOpen] = useState(readStoredOpen);
+export default function GlobalPostMonitor({ onUnauthorized, orgId = '' }) {
+  const scopedOrgId = String(orgId || '').trim();
+  const accountScoped = Boolean(scopedOrgId);
+  const openKey = accountScoped ? ACCOUNT_OPEN_KEY : GLOBAL_OPEN_KEY;
+  const [open, setOpen] = useState(() => readStoredOpen(openKey));
   const [windowDays, setWindowDays] = useState(30);
   const [posts, setPosts] = useState(EMPTY_POSTS);
   const [loading, setLoading] = useState(true);
@@ -66,11 +70,11 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      window.localStorage.setItem(OPEN_KEY, String(open));
+      window.localStorage.setItem(openKey, String(open));
     } catch {
       // Local storage may be unavailable in locked-down browser contexts.
     }
-  }, [open]);
+  }, [open, openKey]);
 
   const loadPosts = useCallback(async ({ clear = false, full = open } = {}) => {
     abortRef.current?.abort();
@@ -82,14 +86,17 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
     setError('');
     if (clear) setPosts(EMPTY_POSTS);
     try {
-      const next = await fetchGlobalPosts({
+      const request = {
         days: windowDays,
         limit: PAGE_LIMIT,
         maxRows: full ? FULL_MAX_ROWS : PAGE_LIMIT,
         signal: controller.signal,
-      });
+      };
+      const next = accountScoped
+        ? await fetchAccountPosts(scopedOrgId, request)
+        : await fetchGlobalPosts(request);
       if (requestSeq.current !== seq) return;
-      loadedRef.current = { days: windowDays, full };
+      loadedRef.current = { days: windowDays, full, orgId: scopedOrgId };
       setPosts(next);
     } catch (err) {
       if (requestSeq.current !== seq) return;
@@ -98,13 +105,15 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
         onUnauthorized?.();
         setError('Your admin session expired.');
       } else {
-        setError('Could not load the all-customer posting monitor.');
+        setError(accountScoped
+          ? 'Could not load this customer posting monitor.'
+          : 'Could not load the all-customer posting monitor.');
       }
     } finally {
       if (abortRef.current === controller) abortRef.current = null;
       if (requestSeq.current === seq) setLoading(false);
     }
-  }, [onUnauthorized, open, windowDays]);
+  }, [accountScoped, onUnauthorized, open, scopedOrgId, windowDays]);
 
   useEffect(() => {
     if (!open) {
@@ -112,8 +121,8 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
       return undefined;
     }
     const loaded = loadedRef.current;
-    if (loaded.days === windowDays && loaded.full) return undefined;
-    const clear = loaded.days !== windowDays;
+    if (loaded.days === windowDays && loaded.full && loaded.orgId === scopedOrgId) return undefined;
+    const clear = loaded.days !== windowDays || loaded.orgId !== scopedOrgId;
     const timeoutId = window.setTimeout(() => loadPosts({ clear }), 0);
     return () => {
       window.clearTimeout(timeoutId);
@@ -121,7 +130,7 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
       abortRef.current?.abort();
       abortRef.current = null;
     };
-  }, [loadPosts, open, windowDays]);
+  }, [loadPosts, open, scopedOrgId, windowDays]);
 
   useEffect(() => () => {
     requestSeq.current += 1;
@@ -143,7 +152,7 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
     [activeSelection, rows],
   );
   const accounts = useMemo(() => uniqueEntities(segmentRows, 'account'), [segmentRows]);
-  const activeAccountId = accounts.some((account) => account.id === selectedAccountId) ? selectedAccountId : '';
+  const activeAccountId = !accountScoped && accounts.some((account) => account.id === selectedAccountId) ? selectedAccountId : '';
   const accountRows = useMemo(
     () => (activeAccountId ? filterPosts(segmentRows, { accountId: activeAccountId }) : segmentRows),
     [activeAccountId, segmentRows],
@@ -154,9 +163,10 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
     () => (activeUserId ? filterPosts(accountRows, { userId: activeUserId }) : accountRows),
     [accountRows, activeUserId],
   );
-  const selectedAccount = accounts.find((account) => account.id === activeAccountId) || null;
+  const selectedAccount = accounts.find((account) => account.id === activeAccountId)
+    || (accountScoped ? accounts[0] : null);
   const selectedUser = users.find((user) => user.id === activeUserId) || null;
-  const drillActive = Boolean(activeSelection || activeAccountId || activeUserId);
+  const drillActive = Boolean(activeSelection || activeUserId || (!accountScoped && activeAccountId));
   const displayedRows = drillActive ? visibleRows.slice(0, MAX_VISIBLE_EVENTS) : [];
   const loadedSummary = useMemo(() => summarize(rows), [rows]);
   const summary = {
@@ -243,15 +253,17 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
             {loading ? <Loader2 size={17} className="animate-spin" /> : <BarChart3 size={17} />}
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-[10px] font-black uppercase tracking-widest text-slate-200">All-customer posting monitor</span>
+            <span className="block text-[10px] font-black uppercase tracking-widest text-slate-200">{accountScoped ? 'Customer posting monitor' : 'All-customer posting monitor'}</span>
             <span className="mt-1 block text-[11px] leading-relaxed text-slate-400">
               {pending
                 ? `Loading posting activity from the ${windowLabel}...`
                 : windowDays === 1
-                  ? `${receiptTotal.toLocaleString()} successful posting action${receiptTotal === 1 ? '' : 's'} tracked across ${summary.accounts.toLocaleString()} customer${summary.accounts === 1 ? '' : 's'} in the ${windowLabel}.${open ? ' Hourly activity includes new posts, renewals, and updates.' : ''}`
+                  ? accountScoped
+                    ? `${receiptTotal.toLocaleString()} successful posting action${receiptTotal === 1 ? '' : 's'} tracked for this customer in the ${windowLabel}.${open ? ' Hourly activity includes new posts, renewals, and updates.' : ''}`
+                    : `${receiptTotal.toLocaleString()} successful posting action${receiptTotal === 1 ? '' : 's'} tracked across ${summary.accounts.toLocaleString()} customer${summary.accounts === 1 ? '' : 's'} in the ${windowLabel}.${open ? ' Hourly activity includes new posts, renewals, and updates.' : ''}`
                   : meteredPosts === null
                     ? `Metered new-post totals are unavailable for the ${windowLabel}. ${receiptTotal.toLocaleString()} timestamped delivery receipt${receiptTotal === 1 ? ' is' : 's are'} available to inspect.`
-                    : `${meteredPosts.toLocaleString()} metered new post${meteredPosts === 1 ? '' : 's'} in the ${windowLabel}, with ${receiptTotal.toLocaleString()} timestamped delivery receipt${receiptTotal === 1 ? '' : 's'} available to inspect.`}
+                    : `${meteredPosts.toLocaleString()} metered new post${meteredPosts === 1 ? '' : 's'} ${accountScoped ? 'for this customer ' : ''}in the ${windowLabel}, with ${receiptTotal.toLocaleString()} timestamped delivery receipt${receiptTotal === 1 ? '' : 's'} available to inspect.`}
             </span>
           </span>
           <span className="shrink-0 rounded-lg border border-cyan-300/25 bg-cyan-300/10 px-2 py-1 text-[9px] font-black uppercase tracking-widest text-cyan-100">
@@ -262,7 +274,7 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
 
         {open && (
           <div className="flex min-w-0 flex-wrap items-center gap-2 px-4 pb-4 2xl:pb-0 2xl:pl-0">
-            <div role="group" className="flex rounded-xl border border-white/10 bg-black/45 p-1" aria-label="Overall posting reporting window">
+            <div role="group" className="flex rounded-xl border border-white/10 bg-black/45 p-1" aria-label={accountScoped ? 'Customer posting reporting window' : 'Overall posting reporting window'}>
               {WINDOWS.map((days) => (
                 <button
                   key={days}
@@ -304,7 +316,7 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
             </div>
           ) : rows.length === 0 && !hasTimelineData ? (
             <div className="rounded-xl border border-dashed border-cyan-400/20 bg-cyan-400/[0.04] px-4 py-10 text-center text-[11px] font-black uppercase tracking-widest text-cyan-100/80">
-              {error ? 'Overall posting data is unavailable' : `No posting activity recorded in the ${windowLabel}`}
+              {error ? `${accountScoped ? 'Customer' : 'Overall'} posting data is unavailable` : `No posting activity recorded in the ${windowLabel}`}
             </div>
           ) : (
             <>
@@ -326,15 +338,15 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
               </p>
 
               <div className="min-w-0 rounded-xl border border-cyan-400/15 bg-cyan-400/[0.045] p-3">
-                <div className="grid min-w-0 gap-3 sm:grid-cols-2">
-                  <div className="min-w-0 sm:col-span-2">
+                <div className={`grid min-w-0 gap-3 ${accountScoped ? '' : 'sm:grid-cols-2'}`}>
+                  <div className={`min-w-0 ${accountScoped ? '' : 'sm:col-span-2'}`}>
                     <p className="text-[10px] font-black uppercase tracking-widest text-cyan-100/80">Drill-down scope</p>
                     <p className="mt-1 break-words text-xs font-semibold text-slate-200">
                       {activeSelection ? activeSelection.bucketLabel : 'All loaded posting receipts'}
                     </p>
                     <p className="mt-1 text-[11px] text-slate-400">{visibleRows.length.toLocaleString()} matching loaded receipt{visibleRows.length === 1 ? '' : 's'}</p>
                   </div>
-                  <SelectField label="Customer account" value={activeAccountId} onChange={changeAccount} emptyLabel={`All customers (${segmentRows.length.toLocaleString()})`} rows={accounts} />
+                  {!accountScoped && <SelectField label="Customer account" value={activeAccountId} onChange={changeAccount} emptyLabel={`All customers (${segmentRows.length.toLocaleString()})`} rows={accounts} />}
                   <SelectField label="User" value={activeUserId} onChange={changeUser} emptyLabel={`All users (${accountRows.length.toLocaleString()})`} rows={users} />
                 </div>
 
@@ -349,7 +361,9 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
                 <p id={copyStatusId} role={copyStatus.state === 'error' ? 'alert' : 'status'} aria-live="polite" className={`min-w-0 text-[11px] font-bold ${copyStatus.state === 'error' ? 'text-red-300' : 'text-emerald-300'}`}>
                   {copyStatus.message || (drillActive
                     ? 'Copy the current read-only drill-down as structured JSON.'
-                    : 'Choose a time slice, customer, or user to open receipt details.')}
+                    : accountScoped
+                      ? 'Choose a time slice or user to open receipt details.'
+                      : 'Choose a time slice, customer, or user to open receipt details.')}
                 </p>
                 <button
                   type="button"
@@ -366,7 +380,9 @@ export default function GlobalPostMonitor({ onUnauthorized }) {
               <div className="max-h-[34rem] min-w-0 space-y-2 overflow-y-auto overscroll-contain pr-1">
                 {!drillActive ? (
                   <div className="rounded-xl border border-dashed border-cyan-400/20 bg-cyan-400/[0.025] px-3 py-7 text-center text-[11px] font-black uppercase tracking-widest text-cyan-100/80">
-                    Select a graph bar, customer, or user to inspect individual receipts
+                    {accountScoped
+                      ? 'Select a graph bar or user to inspect individual receipts'
+                      : 'Select a graph bar, customer, or user to inspect individual receipts'}
                   </div>
                 ) : displayedRows.length === 0 ? (
                   <div className="rounded-xl border border-dashed border-white/10 px-3 py-7 text-center text-[11px] font-black uppercase tracking-widest text-slate-400">No loaded receipts match this drill-down</div>

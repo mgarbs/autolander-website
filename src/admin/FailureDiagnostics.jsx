@@ -10,6 +10,7 @@ import FailureEventRow from './FailureEventRow.jsx';
 import FailureTrendChart from './FailureTrendChart.jsx';
 
 const WINDOWS = [1, 7, 30];
+const MAX_VISIBLE_EVENTS = 150;
 
 export default function FailureDiagnostics({
   failures,
@@ -26,7 +27,10 @@ export default function FailureDiagnostics({
   const [selection, setSelection] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState('');
   const [copyStatus, setCopyStatus] = useState({ state: 'idle', message: '' });
+  const sectionId = useId();
   const copyStatusId = useId();
+  const headerId = `${sectionId}-header`;
+  const bodyId = `${sectionId}-body`;
   const endpointRows = Array.isArray(failures?.rows) ? failures.rows : [];
   const endpointUnavailable = failures?.available === false || Boolean(error);
   const legacyRows = endpointRows.length === 0 && endpointUnavailable
@@ -64,6 +68,7 @@ export default function FailureDiagnostics({
   const visibleRows = activeSelectedUserId
     ? filterFailures(rows, { ...selectionOptions, userId: activeSelectedUserId })
     : segmentRows;
+  const displayedRows = visibleRows.slice(0, MAX_VISIBLE_EVENTS);
   const selectedUser = drillUsers.find((user) => user.id === activeSelectedUserId) || null;
 
   function changeWindow(value) {
@@ -114,20 +119,20 @@ export default function FailureDiagnostics({
   const windowLabel = resolvedWindowDays === 1 ? 'the last 24 hours' : `the last ${resolvedWindowDays} days`;
 
   return (
-    <section className="min-w-0 overflow-hidden rounded-2xl border border-red-500/20 bg-red-500/[0.035]">
+    <section aria-labelledby={headerId} className="min-w-0 overflow-hidden rounded-2xl border border-red-500/20 bg-red-500/[0.035]">
       <details
         open={open}
         onToggle={(event) => setOpen(event.currentTarget.open)}
         className="group min-w-0"
       >
-        <summary className="flex min-w-0 cursor-pointer list-none flex-col gap-3 px-4 py-4 marker:hidden sm:flex-row sm:items-center sm:justify-between">
+        <summary id={headerId} aria-controls={bodyId} className="flex min-w-0 cursor-pointer list-none flex-col gap-3 px-4 py-4 marker:hidden transition hover:bg-red-500/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60 focus-visible:ring-inset sm:flex-row sm:items-center sm:justify-between">
           <span className="flex min-w-0 items-center gap-3">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-red-400/20 bg-red-400/10 text-red-300">
-              {loading ? <Loader2 size={16} className="animate-spin" /> : <AlertTriangle size={16} />}
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-red-400/20 bg-red-400/10 text-red-300">
+              {loading ? <Loader2 size={17} className="animate-spin" /> : <AlertTriangle size={17} />}
             </span>
             <span className="min-w-0">
               <span className="block text-[10px] font-black uppercase tracking-widest text-slate-200">Failure diagnostics</span>
-              <span className="mt-1 block text-[10px] text-slate-500">
+              <span className="mt-1 block text-[11px] leading-relaxed text-slate-400">
                 {loading && rows.length === 0
                   ? 'Loading customer failures…'
                   : loading
@@ -145,9 +150,9 @@ export default function FailureDiagnostics({
           </span>
         </summary>
 
-        <div className="min-w-0 border-t border-red-500/15 px-4 pb-4 pt-3">
+        <div id={bodyId} role="region" aria-labelledby={headerId} className="min-w-0 border-t border-red-500/15 px-4 pb-4 pt-3">
           <div className="mb-3 flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex w-fit shrink-0 gap-1 rounded-xl border border-white/10 bg-black/45 p-1" aria-label="Failure reporting window">
+            <div role="group" className="flex w-fit shrink-0 gap-1 rounded-xl border border-white/10 bg-black/45 p-1" aria-label="Failure reporting window">
               {WINDOWS.map((value) => (
                 <button
                   key={value}
@@ -155,7 +160,7 @@ export default function FailureDiagnostics({
                   disabled={!onWindowDaysChange || loading}
                   aria-pressed={resolvedWindowDays === value}
                   onClick={() => changeWindow(value)}
-                  className={`rounded-lg px-3 py-1.5 text-[9px] font-black uppercase tracking-widest transition disabled:cursor-not-allowed disabled:opacity-45 ${
+                  className={`rounded-lg px-3 py-1.5 text-[10px] font-black uppercase tracking-widest transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-200 disabled:cursor-not-allowed disabled:opacity-45 ${
                     resolvedWindowDays === value
                       ? 'bg-red-500 text-white'
                       : 'text-slate-500 hover:text-white'
@@ -171,7 +176,7 @@ export default function FailureDiagnostics({
                 onClick={copyErrors}
                 disabled={copyStatus.state === 'working' || rows.length === 0}
                 aria-describedby={copyStatusId}
-                className="inline-flex h-8 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.035] px-3 text-[8px] font-black uppercase tracking-widest text-slate-300 hover:border-white/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex h-8 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.035] px-3 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:border-white/20 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-200 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {copyStatus.state === 'working' ? (
                   <Loader2 size={12} aria-hidden="true" className="animate-spin" />
@@ -184,7 +189,7 @@ export default function FailureDiagnostics({
               </button>
               <p
                 id={copyStatusId}
-                role="status"
+                role={copyStatus.state === 'error' ? 'alert' : 'status'}
                 aria-live="polite"
                 className={`text-[9px] font-bold ${
                   copyStatus.state === 'error' ? 'text-red-300' : 'text-emerald-300'
@@ -196,7 +201,7 @@ export default function FailureDiagnostics({
           </div>
 
           {error && (
-            <p className="mb-3 rounded-xl border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-xs font-bold text-amber-200">
+            <p role="alert" className="mb-3 rounded-xl border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-xs font-bold text-amber-200">
               {errorMessage(error)}
               {rows.length > 0
                 ? showingLegacy
@@ -242,17 +247,22 @@ export default function FailureDiagnostics({
                 />
               )}
 
-              <div className="min-w-0 space-y-2">
+              <div className="max-h-[34rem] min-w-0 space-y-2 overflow-y-auto overscroll-contain pr-1">
                 {visibleRows.length === 0 ? (
                   <div className="rounded-xl border border-dashed border-white/10 px-3 py-6 text-center text-[9px] font-black uppercase tracking-widest text-slate-600">
                     No loaded events match this drill-down
                   </div>
-                ) : visibleRows.map((failure, index) => (
+                ) : displayedRows.map((failure, index) => (
                   <FailureEventRow
                     key={failure.id || `${failure.fingerprint || failure.code}-${index}`}
                     failure={failure}
                   />
                 ))}
+                {visibleRows.length > displayedRows.length && (
+                  <p className="rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2 text-center text-[11px] font-bold text-slate-400">
+                    Showing the first {displayedRows.length.toLocaleString()} of {visibleRows.length.toLocaleString()} matching loaded events. Copy includes all matching loaded errors.
+                  </p>
+                )}
               </div>
             </div>
           )}

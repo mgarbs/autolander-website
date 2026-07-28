@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { fetchAllAccountFailures } from '../src/admin/lib/analytics.js';
+import { fetchAccountPosts, fetchAllAccountFailures } from '../src/admin/lib/analytics.js';
 
 test('loads every account failure page up to the explicit safety cap', async () => {
   const originalFetch = globalThis.fetch;
@@ -62,6 +62,51 @@ test('loads every account failure page up to the explicit safety cap', async () 
     assert.deepEqual(requests, [
       { offset: 0, limit: 2 },
       { offset: 2, limit: 1 },
+    ]);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('loads bounded post-receipt pages from the encoded account endpoint', async () => {
+  const originalFetch = globalThis.fetch;
+  const requests = [];
+  globalThis.fetch = async (url) => {
+    const parsed = new URL(String(url), 'https://admin.example.test');
+    const offset = Number(parsed.searchParams.get('offset'));
+    const limit = Number(parsed.searchParams.get('limit'));
+    requests.push({ pathname: parsed.pathname, offset, limit });
+    const allRows = Array.from({ length: 4 }, (_, index) => ({
+      id: `post-${index + 1}`,
+      occurredAt: `2026-07-${String(28 - index).padStart(2, '0')}T12:00:00Z`,
+      account: { id: 'org/42' },
+    }));
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        rows: allRows.slice(offset, offset + limit),
+        total: allRows.length,
+        limit,
+        offset,
+        summary: { meteredPosts: 4 },
+      }),
+    };
+  };
+
+  try {
+    const result = await fetchAccountPosts('org/42', {
+      days: 7,
+      limit: 2,
+      maxRows: 3,
+    });
+    assert.equal(result.rows.length, 3);
+    assert.equal(result.total, 4);
+    assert.equal(result.truncated, true);
+    assert.equal(result.source, 'account_post_deliveries');
+    assert.deepEqual(requests, [
+      { pathname: '/admin-api/analytics/accounts/org%2F42/posts', offset: 0, limit: 2 },
+      { pathname: '/admin-api/analytics/accounts/org%2F42/posts', offset: 2, limit: 1 },
     ]);
   } finally {
     globalThis.fetch = originalFetch;

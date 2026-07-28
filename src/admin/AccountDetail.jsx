@@ -14,34 +14,21 @@ import {
   Users,
 } from 'lucide-react';
 import {
-  Bar,
-  CartesianGrid,
-  ComposedChart,
-  Legend,
-  Line,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
-import { formatDate, formatRelative, healthColor, healthState } from './lib/analytics-format.js';
+  formatDate,
+  formatRelative,
+  healthColor,
+  healthState,
+} from './lib/analytics-format.js';
 import VersionBadge from './VersionBadge.jsx';
-
-const UNKNOWN_SPLIT_LABEL = 'Unknown (pre-update)';
-const UNKNOWN_SPLIT_TITLE = 'Posts recorded before source telemetry shipped (v3.60.0) or by older app versions — cannot be attributed to Manual vs AutoPilot.';
 
 export default function AccountDetail({
   orgId,
   summary,
   latestDesktopVersion,
   detail,
-  daily,
   tickets,
-  days,
-  chartLoading,
   refreshing,
   writePending,
-  onDaysChange,
   onRefresh,
   onAddNote,
   onSaveCs,
@@ -277,69 +264,26 @@ export default function AccountDetail({
         )}
       </section>
 
-      <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(300px,1fr)]">
-        <section className="min-w-0 rounded-2xl border border-white/10 bg-black/35 p-4">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <SectionTitle icon={Bot}>Daily posting mix</SectionTitle>
-            <div className="flex shrink-0 gap-1 rounded-xl border border-white/10 bg-black/50 p-1">
-              {[7, 30].map((value) => (
-                <button key={value} type="button" onClick={() => onDaysChange(value)} className={`rounded-lg px-3 py-1.5 text-[9px] font-black uppercase tracking-widest ${days === value ? 'bg-blue-600 text-white' : 'text-slate-500 hover:text-white'}`}>{value}d</button>
-              ))}
-            </div>
+      <section className="min-w-0 rounded-2xl border border-white/10 bg-black/35 p-4">
+        <div className="mb-4 flex min-w-0 items-center justify-between gap-3">
+          <SectionTitle icon={Ticket}>Support tickets</SectionTitle>
+          {tickets?.sheetUrl && <a href={tickets.sheetUrl} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()} className="inline-flex shrink-0 items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-blue-300 hover:text-blue-200">Open Sheet <ExternalLink size={11} /></a>}
+        </div>
+        {ticketRows.length === 0 ? <Empty>No recent tickets.</Empty> : (
+          <div className="min-w-0 space-y-2">
+            {ticketRows.slice(0, 10).map((ticket, index) => (
+              <div key={ticket.id || ticket.ref || index} className="min-w-0 rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2.5">
+                <div className="flex min-w-0 items-center justify-between gap-3"><strong className="min-w-0 truncate text-xs text-white" title={ticket.ref || ticket.reference || ticket.ticketRef || 'Ticket'}>{ticket.ref || ticket.reference || ticket.ticketRef || 'Ticket'}</strong><span className={`shrink-0 text-[9px] font-black uppercase tracking-widest ${severityColor(ticket.severity)}`}>{ticket.severity || 'normal'}</span></div>
+                <div className="mt-1 flex min-w-0 justify-between gap-3 text-[9px] font-bold uppercase tracking-widest text-slate-600"><span className="min-w-0 truncate">{ticket.status || 'Unknown'}</span><span className="shrink-0">{formatDate(ticket.createdAt || ticket.date)}</span></div>
+              </div>
+            ))}
           </div>
-          <div className="relative h-72 min-w-0">
-            {chartLoading && <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl bg-black/50"><Loader2 size={20} className="animate-spin text-blue-300" /></div>}
-            {daily.length === 0 && !chartLoading ? (
-              <div className="flex h-full items-center justify-center text-[10px] font-bold uppercase tracking-widest text-slate-600">No daily posting data.</div>
-            ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={daily} margin={{ top: 10, right: 8, left: -18, bottom: 0 }}>
-                  <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
-                  <XAxis dataKey="date" tickFormatter={shortDate} stroke="#475569" tick={{ fontSize: 9 }} minTickGap={20} />
-                  <YAxis stroke="#475569" tick={{ fontSize: 9 }} allowDecimals={false} />
-                  <Tooltip formatter={formatChartTooltip} contentStyle={{ background: '#09090b', border: '1px solid rgba(255,255,255,.12)', borderRadius: 12, fontSize: 11 }} />
-                  <Legend formatter={formatChartLegend} wrapperStyle={{ fontSize: 10, paddingTop: 8 }} />
-                  <Bar dataKey="manual" name="Manual" stackId="posts" fill="#3b82f6" radius={[0, 0, 2, 2]} />
-                  <Bar dataKey="autopilot" name="AutoPilot" stackId="posts" fill="#10b981" />
-                  <Bar dataKey="unknownSplit" name={UNKNOWN_SPLIT_LABEL} stackId="posts" fill="#64748b" radius={[2, 2, 0, 0]} />
-                  <Line dataKey="failed" name="Failed" type="monotone" stroke="#ef4444" strokeWidth={2} dot={false} />
-                </ComposedChart>
-              </ResponsiveContainer>
-            )}
-          </div>
-        </section>
-
-        <section className="min-w-0 rounded-2xl border border-white/10 bg-black/35 p-4">
-          <div className="mb-4 flex min-w-0 items-center justify-between gap-3">
-            <SectionTitle icon={Ticket}>Support tickets</SectionTitle>
-            {tickets?.sheetUrl && <a href={tickets.sheetUrl} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()} className="inline-flex shrink-0 items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-blue-300 hover:text-blue-200">Open Sheet <ExternalLink size={11} /></a>}
-          </div>
-          {ticketRows.length === 0 ? <Empty>No recent tickets.</Empty> : (
-            <div className="min-w-0 space-y-2">
-              {ticketRows.slice(0, 10).map((ticket, index) => (
-                <div key={ticket.id || ticket.ref || index} className="min-w-0 rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2.5">
-                  <div className="flex min-w-0 items-center justify-between gap-3"><strong className="min-w-0 truncate text-xs text-white" title={ticket.ref || ticket.reference || ticket.ticketRef || 'Ticket'}>{ticket.ref || ticket.reference || ticket.ticketRef || 'Ticket'}</strong><span className={`shrink-0 text-[9px] font-black uppercase tracking-widest ${severityColor(ticket.severity)}`}>{ticket.severity || 'normal'}</span></div>
-                  <div className="mt-1 flex min-w-0 justify-between gap-3 text-[9px] font-bold uppercase tracking-widest text-slate-600"><span className="min-w-0 truncate">{ticket.status || 'Unknown'}</span><span className="shrink-0">{formatDate(ticket.createdAt || ticket.date)}</span></div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-      </div>
+        )}
+      </section>
 
       <NotesPanel notes={notes} pending={writePending} onAdd={onAddNote} />
     </div>
   );
-}
-
-function formatChartLegend(value) {
-  return value === UNKNOWN_SPLIT_LABEL ? <span title={UNKNOWN_SPLIT_TITLE}>{value}</span> : value;
-}
-
-function formatChartTooltip(value, name) {
-  return name === UNKNOWN_SPLIT_LABEL
-    ? [<span title={UNKNOWN_SPLIT_TITLE}>{name}: {value}</span>, null]
-    : [value, name];
 }
 
 function SummaryFact({ label, value, title }) {
@@ -522,11 +466,6 @@ function severityColor(value) {
   if (severity === 'critical' || severity === 'high') return 'text-red-300';
   if (severity === 'medium') return 'text-amber-300';
   return 'text-slate-500';
-}
-
-function shortDate(value) {
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? value : `${date.getMonth() + 1}/${date.getDate()}`;
 }
 
 function sumDefined(...values) {
