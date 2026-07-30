@@ -8,6 +8,7 @@ import { ApiError } from './lib/api.js';
 import {
   OPS_SETUP_NOTE,
   fetchAccount,
+  fetchAccountFeedFailures,
   fetchAllAccountFailures,
   fetchAccounts,
   fetchAnalyticsMeta,
@@ -20,12 +21,20 @@ import {
 
 const EMPTY_PAGE = { rows: [], total: 0, limit: 25, offset: 0 };
 const EMPTY_FAILURES = { rows: [], total: 0, limit: 200, offset: 0, available: false, summary: {} };
+const EMPTY_FEED_FAILURES = {
+  rows: [],
+  available: false,
+  summary: { total: 0, windowDays: 30, byCode: {} },
+  truncated: false,
+};
 const EMPTY_DETAIL = {
   account: null,
   tickets: { rows: [], sheetUrl: '' },
   failures: EMPTY_FAILURES,
+  feedFailures: EMPTY_FEED_FAILURES,
   error: '',
   failuresError: '',
+  feedFailuresError: '',
 };
 const DEFAULT_FILTERS = { plan: '', status: '', health: '', preset: '', sort: 'health', limit: 25, offset: 0 };
 export default function CustomerActivity({ embedded = false, onUnauthorized }) {
@@ -49,6 +58,8 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   const [detailLoading, setDetailLoading] = useState(false);
   const [failuresLoading, setFailuresLoading] = useState(false);
   const [failureDays, setFailureDays] = useState(30);
+  const [feedFailuresLoading, setFeedFailuresLoading] = useState(false);
+  const [feedFailureDays, setFeedFailureDays] = useState(30);
   const [writePending, setWritePending] = useState(false);
   const [followUpPendingId, setFollowUpPendingId] = useState('');
 
@@ -78,6 +89,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   const accountsSeq = useRef(0);
   const detailSeq = useRef(0);
   const failuresSeq = useRef(0);
+  const feedFailuresSeq = useRef(0);
 
   const handleError = useCallback((err, fallback) => {
     if (err instanceof ApiError && err.status === 401) {
@@ -133,15 +145,27 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
 
   const loadDetail = useCallback(async (
     orgId,
-    { silent = false, failureWindowDays = failureDays } = {},
+    {
+      silent = false,
+      failureWindowDays = failureDays,
+      feedFailureWindowDays = feedFailureDays,
+    } = {},
   ) => {
     const seq = detailSeq.current + 1;
     detailSeq.current = seq;
     const failureRequestSeq = failuresSeq.current + 1;
     failuresSeq.current = failureRequestSeq;
+    const feedFailureRequestSeq = feedFailuresSeq.current + 1;
+    feedFailuresSeq.current = feedFailureRequestSeq;
     if (!silent) setDetailLoading(true);
     setFailuresLoading(true);
-    setDetail((current) => ({ ...current, error: '', failuresError: '' }));
+    setFeedFailuresLoading(true);
+    setDetail((current) => ({
+      ...current,
+      error: '',
+      failuresError: '',
+      feedFailuresError: '',
+    }));
 
     const detailPromise = Promise.allSettled([
       fetchAccount(orgId),
@@ -152,6 +176,13 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
         days: failureWindowDays,
         limit: 200,
         maxRows: 5_000,
+      }),
+    ]).then(([result]) => result);
+    const feedFailuresPromise = Promise.allSettled([
+      fetchAccountFeedFailures(orgId, {
+        days: feedFailureWindowDays,
+        limit: 200,
+        offset: 0,
       }),
     ]).then(([result]) => result);
 
@@ -179,19 +210,42 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     setDetailLoading(false);
 
     const failuresResult = await failuresPromise;
-    if (detailSeq.current !== seq || failuresSeq.current !== failureRequestSeq) return;
-    if (failuresResult.status === 'fulfilled') {
-      setDetail((current) => ({
-        ...current,
-        failures: failuresResult.value,
-        failuresError: '',
-      }));
-    } else {
-      const message = handleError(failuresResult.reason, 'Could not load failure diagnostics.');
-      setDetail((current) => ({ ...current, failuresError: message }));
+    if (detailSeq.current !== seq) return;
+
+    if (failuresSeq.current === failureRequestSeq) {
+      if (failuresResult.status === 'fulfilled') {
+        setDetail((current) => ({
+          ...current,
+          failures: failuresResult.value,
+          failuresError: '',
+        }));
+      } else {
+        const message = handleError(failuresResult.reason, 'Could not load failure diagnostics.');
+        setDetail((current) => ({ ...current, failuresError: message }));
+      }
+      setFailuresLoading(false);
     }
-    setFailuresLoading(false);
-  }, [failureDays, handleError]);
+
+    const feedFailuresResult = await feedFailuresPromise;
+    if (detailSeq.current !== seq) return;
+
+    if (feedFailuresSeq.current === feedFailureRequestSeq) {
+      if (feedFailuresResult.status === 'fulfilled') {
+        setDetail((current) => ({
+          ...current,
+          feedFailures: feedFailuresResult.value,
+          feedFailuresError: '',
+        }));
+      } else {
+        const message = handleError(
+          feedFailuresResult.reason,
+          'Could not load feed failure diagnostics.',
+        );
+        setDetail((current) => ({ ...current, feedFailuresError: message }));
+      }
+      setFeedFailuresLoading(false);
+    }
+  }, [failureDays, feedFailureDays, handleError]);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
@@ -251,18 +305,22 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     if (expandedOrgId === orgId) {
       detailSeq.current += 1;
       failuresSeq.current += 1;
+      feedFailuresSeq.current += 1;
       setExpandedOrgId('');
       setDetail(EMPTY_DETAIL);
       setDetailLoading(false);
       setFailuresLoading(false);
+      setFeedFailuresLoading(false);
       return;
     }
     setExpandedOrgId(orgId);
     setFailureDays(30);
+    setFeedFailureDays(30);
     setDetail(EMPTY_DETAIL);
     setDetailLoading(true);
     setFailuresLoading(true);
-    loadDetail(orgId, { failureWindowDays: 30 });
+    setFeedFailuresLoading(true);
+    loadDetail(orgId, { failureWindowDays: 30, feedFailureWindowDays: 30 });
   }
 
   async function changeFailureDays(days) {
@@ -294,6 +352,38 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       }
     } finally {
       if (failuresSeq.current === seq) setFailuresLoading(false);
+    }
+  }
+
+  async function changeFeedFailureDays(days) {
+    if (!expandedOrgId || days === feedFailureDays) return;
+    setFeedFailureDays(days);
+    setFeedFailuresLoading(true);
+    const seq = feedFailuresSeq.current + 1;
+    feedFailuresSeq.current = seq;
+    setDetail((current) => ({
+      ...current,
+      feedFailures: {
+        ...EMPTY_FEED_FAILURES,
+        summary: { ...EMPTY_FEED_FAILURES.summary, windowDays: days },
+      },
+      feedFailuresError: '',
+    }));
+    try {
+      const feedFailures = await fetchAccountFeedFailures(
+        expandedOrgId,
+        { days, limit: 200, offset: 0 },
+      );
+      if (feedFailuresSeq.current === seq) {
+        setDetail((current) => ({ ...current, feedFailures, feedFailuresError: '' }));
+      }
+    } catch (err) {
+      if (feedFailuresSeq.current === seq) {
+        const message = handleError(err, 'Could not load feed failure diagnostics.');
+        setDetail((current) => ({ ...current, feedFailuresError: message }));
+      }
+    } finally {
+      if (feedFailuresSeq.current === seq) setFeedFailuresLoading(false);
     }
   }
 
@@ -449,10 +539,15 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
                       failuresLoading={failuresLoading}
                       failuresError={detail.failuresError}
                       failureDays={failureDays}
-                      refreshing={detailLoading || failuresLoading}
+                      feedFailures={detail.feedFailures}
+                      feedFailuresLoading={feedFailuresLoading}
+                      feedFailuresError={detail.feedFailuresError}
+                      feedFailureDays={feedFailureDays}
+                      refreshing={detailLoading || failuresLoading || feedFailuresLoading}
                       writePending={writePending}
                       onUnauthorized={onUnauthorized}
                       onFailureDaysChange={changeFailureDays}
+                      onFeedFailureDaysChange={changeFeedFailureDays}
                       onRefresh={() => loadDetail(orgId)}
                       onAddNote={addNote}
                       onSaveCs={saveMeta}

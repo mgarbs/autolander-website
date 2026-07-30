@@ -63,6 +63,19 @@ export async function fetchAccountFailures(orgId, params = {}) {
   return normalizeFailureResponse(payload, request);
 }
 
+export async function fetchAccountFeedFailures(
+  orgId,
+  { days = 30, limit = 50, offset = 0 } = {},
+) {
+  return apiGet(
+    `${BASE}/accounts/${encodeURIComponent(orgId)}/feed-failures${queryString({
+      days,
+      limit,
+      offset,
+    })}`,
+  );
+}
+
 export async function fetchAllAccountFailures(orgId, params = {}) {
   const days = params.days ?? 30;
   const pageLimit = Math.min(200, Math.max(1, finiteNumber(params.limit, 200)));

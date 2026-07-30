@@ -1,6 +1,39 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { fetchAccountPosts, fetchAllAccountFailures } from '../src/admin/lib/analytics.js';
+import {
+  fetchAccountFeedFailures,
+  fetchAccountPosts,
+  fetchAllAccountFailures,
+} from '../src/admin/lib/analytics.js';
+
+test('requests account feed failures with an encoded account and preserves unavailable responses', async () => {
+  const originalFetch = globalThis.fetch;
+  let request;
+  globalThis.fetch = async (url) => {
+    request = new URL(String(url), 'https://admin.example.test');
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({ available: false }),
+    };
+  };
+
+  try {
+    const response = await fetchAccountFeedFailures('org/42', {
+      days: 7,
+      limit: 25,
+      offset: 5,
+    });
+    assert.deepEqual(response, { available: false });
+    assert.equal(request.pathname, '/admin-api/analytics/accounts/org%2F42/feed-failures');
+    assert.deepEqual(
+      Object.fromEntries(request.searchParams),
+      { days: '7', limit: '25', offset: '5' },
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
 
 test('loads every account failure page up to the explicit safety cap', async () => {
   const originalFetch = globalThis.fetch;

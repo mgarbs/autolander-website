@@ -1,5 +1,6 @@
 import AccountDetail from './AccountDetail.jsx';
 import FailureDiagnostics from './FailureDiagnostics.jsx';
+import FeedFailureDiagnostics from './FeedFailureDiagnostics.jsx';
 import GlobalPostMonitor from './GlobalPostMonitor.jsx';
 
 export default function AccountDetailDiagnostics({
@@ -10,6 +11,11 @@ export default function AccountDetailDiagnostics({
   failuresError,
   failureDays,
   onFailureDaysChange,
+  feedFailures,
+  feedFailuresLoading,
+  feedFailuresError,
+  feedFailureDays,
+  onFeedFailureDaysChange,
   detail,
   ...accountDetailProps
 }) {
@@ -29,6 +35,15 @@ export default function AccountDetailDiagnostics({
             users={Array.isArray(detail?.users) ? detail.users : []}
             windowDays={failureDays}
             onWindowDaysChange={onFailureDaysChange}
+          />
+          <FeedFailureDiagnostics
+            failures={feedFailures}
+            feeds={feeds}
+            loading={feedFailuresLoading}
+            error={feedFailuresError}
+            account={detail?.org || detail?.organization || null}
+            windowDays={feedFailureDays}
+            onWindowDaysChange={onFeedFailureDaysChange}
           />
         </div>
       </div>
