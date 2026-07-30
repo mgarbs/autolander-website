@@ -223,6 +223,14 @@ export default function AccountDetail({
             {feeds.map((feed, index) => {
               const state = healthState(feed.healthState || feed.health);
               const feedName = feed.name || feed.label || `Feed ${index + 1}`;
+              const lastFeedFailure = feed.lastFeedFailure && typeof feed.lastFeedFailure === 'object'
+                ? feed.lastFeedFailure
+                : null;
+              const failureOccurrences = Number(lastFeedFailure?.occurrenceCount);
+              const hasLastSuccessfulSyncAt = Object.prototype.hasOwnProperty.call(
+                feed,
+                'lastSuccessfulSyncAt',
+              );
               const feedUrl = firstText(
                 feed.feedUrl,
                 feed.url,
@@ -255,6 +263,28 @@ export default function AccountDetail({
                     ) : (
                       <p className="mt-2 min-w-0 truncate font-mono text-[9px] text-slate-500" title={feedUrl}>{feedUrl}</p>
                     )
+                  )}
+                  {lastFeedFailure && (
+                    <p
+                      className="mt-2 break-words text-[10px] leading-relaxed text-red-500"
+                      title={`Last error: ${firstText(lastFeedFailure.code, 'Feed sync error')}${lastFeedFailure.stage ? ` · ${lastFeedFailure.stage}` : ''}${lastFeedFailure.occurredAt ? ` · ${formatDate(lastFeedFailure.occurredAt, true)}` : ''}`}
+                    >
+                      <span className="font-black uppercase tracking-wider">Last error:</span>{' '}
+                      <span className="font-mono font-semibold">{firstText(lastFeedFailure.code, 'Feed sync error')}</span>
+                      {lastFeedFailure.stage ? ` · ${lastFeedFailure.stage}` : ''}
+                      {Number.isFinite(failureOccurrences) && failureOccurrences > 0
+                        ? ` · ${failureOccurrences.toLocaleString()} occurrence${failureOccurrences === 1 ? '' : 's'}`
+                        : ''}
+                      {lastFeedFailure.occurredAt ? ` · ${formatRelative(lastFeedFailure.occurredAt)}` : ''}
+                    </p>
+                  )}
+                  {hasLastSuccessfulSyncAt && (
+                    <p
+                      className="mt-1 min-w-0 truncate text-[10px] text-emerald-500"
+                      title={`Last good sync: ${formatDate(feed.lastSuccessfulSyncAt, true)}`}
+                    >
+                      Last good sync: {formatRelative(feed.lastSuccessfulSyncAt)}
+                    </p>
                   )}
                   {feed.lastSyncError && <p className="mt-2 break-words rounded-lg border border-red-500/20 bg-red-500/10 px-2 py-1.5 text-[10px] text-red-200">{feed.lastSyncError}</p>}
                 </div>
