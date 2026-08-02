@@ -12,7 +12,7 @@ function notConfigured() {
   return { status: 503, body: { ok: false, reason: 'ops_not_configured' } };
 }
 
-async function proxyOps(env, path, { search = '', method = 'GET', body } = {}) {
+async function proxyOps(env, path, { search = '', method = 'GET', body, signal } = {}) {
   if (!env.OPS_ADMIN_TOKEN) return notConfigured();
 
   const url = `${cloudBase(env)}/api/ops/billing${path}${search}`;
@@ -26,6 +26,7 @@ async function proxyOps(env, path, { search = '', method = 'GET', body } = {}) {
         ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,
+      signal,
     });
   } catch (err) {
     return {
@@ -69,12 +70,12 @@ async function proxyOps(env, path, { search = '', method = 'GET', body } = {}) {
   return { status: response.status, body: json };
 }
 
-export function handleOpsUnlinked(url, env) {
-  return proxyOps(env, '/unlinked', { search: url.search || '' });
+export function handleOpsUnlinked(request, url, env) {
+  return proxyOps(env, '/unlinked', { search: url.search || '', signal: request.signal });
 }
 
-export function handleOpsCandidates(url, env) {
-  return proxyOps(env, '/candidates', { search: url.search || '' });
+export function handleOpsCandidates(request, url, env) {
+  return proxyOps(env, '/candidates', { search: url.search || '', signal: request.signal });
 }
 
 export async function handleOpsLink(request, env) {

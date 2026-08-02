@@ -12,7 +12,11 @@ function notConfigured() {
   return { status: 503, body: { ok: false, reason: 'ops_not_configured' } };
 }
 
-async function proxySupportAdjustments(env, path, { search = '', method = 'GET', body } = {}) {
+async function proxySupportAdjustments(
+  env,
+  path,
+  { search = '', method = 'GET', body, signal } = {},
+) {
   if (!env.OPS_ADMIN_TOKEN) return notConfigured();
 
   const url = `${cloudBase(env)}/api/ops/support-adjustments${path}${search}`;
@@ -26,6 +30,7 @@ async function proxySupportAdjustments(env, path, { search = '', method = 'GET',
         ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,
+      signal,
     });
   } catch (err) {
     return {
@@ -62,8 +67,11 @@ async function proxySupportAdjustments(env, path, { search = '', method = 'GET',
   return { status: response.status, body: json };
 }
 
-export function handleSupportAdjustmentCandidates(url, env) {
-  return proxySupportAdjustments(env, '/candidates', { search: url.search || '' });
+export function handleSupportAdjustmentCandidates(request, url, env) {
+  return proxySupportAdjustments(env, '/candidates', {
+    search: url.search || '',
+    signal: request.signal,
+  });
 }
 
 export async function handleSupportCreditGrant(request, env) {

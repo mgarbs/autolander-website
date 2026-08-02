@@ -8,10 +8,10 @@ export const SUPPORT_ADJUSTMENTS_SETUP_NOTE =
   'Support adjustments are not configured yet. Set the OPS_ADMIN_TOKEN secret on the Cloudflare Worker '
   + 'and the matching OPS_ADMIN_TOKEN on the AutoLander cloud, then redeploy both services.';
 
-export async function searchSupportCandidates(query) {
+export async function searchSupportCandidates(query, options = {}) {
   const q = String(query || '').trim();
   if (q.length < 2) return [];
-  const payload = await apiGet(`/admin/support-adjustments/candidates?q=${encodeURIComponent(q)}`);
+  const payload = await apiGet(`/admin/support-adjustments/candidates?q=${encodeURIComponent(q)}`, options);
   return normalizeCandidates(payload);
 }
 
