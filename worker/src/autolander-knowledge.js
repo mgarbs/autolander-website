@@ -17,7 +17,7 @@ Supported feeds:
 Pricing (solo plans, monthly or annual):
 - Starter: $39/month or $29/month annual, up to 5 Marketplace posts per day.
 - Growth: $59/month or $44/month annual, up to 10 posts per day.
-- Pro: $79/month or $59/month annual, up to 20 posts per day. Pro is the most popular plan.
+- Pro: $79/month or $59/month annual, up to 15 posts per day. Pro is the most popular plan.
 - Solo plans include the AI Photo Studio, AI walkaround videos, auto queueing, descriptions, and feed sync.
 
 Dealer Plan (flexible seat composition; formerly called the "Team" plan):
@@ -103,7 +103,7 @@ Facebook posting limits:
 Plan post limits per day (not Facebook limits — these are AutoLander's per-plan caps):
 - Starter: 5 posts per day.
 - Growth: 10 posts per day.
-- Pro: 20 posts per day.
+- Pro: 15 posts per day.
 - Dealer Plan: each seat operates at its tier's daily limit; managers see the full team via the dashboard.
 
 Marketplace videos and FB requirements:
