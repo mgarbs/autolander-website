@@ -30,7 +30,7 @@ const EMPTY_POSTS = {
   timeline: null,
   source: '',
 };
-const PAGE_LIMIT = 200;
+const PAGE_LIMIT = 600;
 const FULL_MAX_ROWS = 600;
 const MAX_VISIBLE_EVENTS = 150;
 const GLOBAL_OPEN_KEY = 'al_admin_post_monitor_open';

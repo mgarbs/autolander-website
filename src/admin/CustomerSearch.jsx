@@ -8,7 +8,7 @@ import {
 } from './lib/support-adjustments.js';
 
 const MIN_QUERY_LENGTH = 2;
-const SEARCH_DELAY_MS = 250;
+const SEARCH_DELAY_MS = 100;
 
 export default function CustomerSearch({
   value,
@@ -22,10 +22,13 @@ export default function CustomerSearch({
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const searchSeq = useRef(0);
+  const abortRef = useRef(null);
   const selectedOrgQuery = useRef('');
   const listId = useId();
 
   useEffect(() => {
+    abortRef.current?.abort();
+    abortRef.current = null;
     const query = String(value || '').trim();
     const seq = searchSeq.current + 1;
     searchSeq.current = seq;
@@ -46,24 +49,33 @@ export default function CustomerSearch({
 
       setSearching(true);
       setSearchError('');
+      const controller = new AbortController();
+      abortRef.current = controller;
       try {
-        const rows = await searchSupportCandidates(query);
+        const rows = await searchSupportCandidates(query, { signal: controller.signal });
         if (searchSeq.current !== seq) return;
         setCandidates(rows);
         setOpen(rows.length > 0);
         setActiveIndex(rows.length > 0 ? 0 : -1);
-      } catch {
+      } catch (err) {
         if (searchSeq.current !== seq) return;
+        if (err?.name === 'AbortError') return;
         setCandidates([]);
         setOpen(false);
         setActiveIndex(-1);
         setSearchError('Customer lookup is unavailable. Direct account search is still active.');
       } finally {
-        if (searchSeq.current === seq) setSearching(false);
+        if (searchSeq.current === seq) {
+          abortRef.current = null;
+          setSearching(false);
+        }
       }
     }, shouldSearch ? SEARCH_DELAY_MS : 0);
 
-    return () => window.clearTimeout(timeoutId);
+    return () => {
+      window.clearTimeout(timeoutId);
+      abortRef.current?.abort();
+    };
   }, [disabled, value]);
 
   function changeValue(nextValue) {
@@ -77,6 +89,8 @@ export default function CustomerSearch({
     const orgId = String(candidate?.orgId || '').trim();
     if (!orgId) return;
     searchSeq.current += 1;
+    abortRef.current?.abort();
+    abortRef.current = null;
     selectedOrgQuery.current = orgId;
     setCandidates([]);
     setOpen(false);

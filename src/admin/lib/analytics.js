@@ -4,19 +4,20 @@ import { normalizePostResponse } from './post-analytics.js';
 export { isOpsNotConfigured, OPS_SETUP_NOTE } from './ops.js';
 
 const BASE = '/admin/analytics';
+const PAGE_CONCURRENCY = 4;
 
-export async function fetchOverview() {
-  const payload = await apiGet(`${BASE}/overview`);
+export async function fetchOverview(params = {}, options = {}) {
+  const payload = await apiGet(`${BASE}/overview${queryString(params)}`, options);
   return payload?.overview && typeof payload.overview === 'object' ? payload.overview : payload || {};
 }
 
-export async function fetchAnalyticsMeta() {
-  const payload = await apiGet(`${BASE}/meta`);
+export async function fetchAnalyticsMeta(options = {}) {
+  const payload = await apiGet(`${BASE}/meta`, options);
   return payload?.meta && typeof payload.meta === 'object' ? payload.meta : payload || {};
 }
 
-export async function fetchAccounts(params = {}) {
-  const payload = await apiGet(`${BASE}/accounts${queryString(params)}`);
+export async function fetchAccounts(params = {}, options = {}) {
+  const payload = await apiGet(`${BASE}/accounts${queryString(params)}`, options);
   return {
     rows: Array.isArray(payload?.rows) ? payload.rows : [],
     total: finiteNumber(payload?.total),
@@ -25,8 +26,8 @@ export async function fetchAccounts(params = {}) {
   };
 }
 
-export async function fetchAccount(orgId) {
-  const payload = await apiGet(`${BASE}/accounts/${encodeURIComponent(orgId)}`);
+export async function fetchAccount(orgId, options = {}) {
+  const payload = await apiGet(`${BASE}/accounts/${encodeURIComponent(orgId)}`, options);
   return payload?.account && typeof payload.account === 'object' ? payload.account : payload || {};
 }
 
@@ -40,8 +41,8 @@ export async function fetchPostsDaily(orgId, days = 30) {
   return [];
 }
 
-export async function fetchTickets(orgId) {
-  const payload = await apiGet(`${BASE}/accounts/${encodeURIComponent(orgId)}/tickets?limit=10&offset=0`);
+export async function fetchTickets(orgId, options = {}) {
+  const payload = await apiGet(`${BASE}/accounts/${encodeURIComponent(orgId)}/tickets?limit=10&offset=0`, options);
   return {
     rows: Array.isArray(payload?.rows) ? payload.rows : Array.isArray(payload?.tickets) ? payload.tickets : [],
     total: finiteNumber(payload?.total),
@@ -56,46 +57,49 @@ export async function fetchAccountFailures(orgId, params = {}) {
     days: params.days ?? 30,
     limit: params.limit ?? 50,
     offset: params.offset ?? 0,
+    ...(params.knownTotal !== undefined ? { knownTotal: params.knownTotal } : {}),
   };
   const payload = await apiGet(
     `${BASE}/accounts/${encodeURIComponent(orgId)}/failures${queryString(request)}`,
+    { signal: params.signal },
   );
   return normalizeFailureResponse(payload, request);
 }
 
-export async function fetchAccountFeedFailures(
-  orgId,
-  { days = 30, limit = 50, offset = 0 } = {},
-) {
+export async function fetchAccountFeedFailures(orgId, params = {}) {
+  const { days = 30, limit = 50, offset = 0, signal } = params;
   return apiGet(
     `${BASE}/accounts/${encodeURIComponent(orgId)}/feed-failures${queryString({
       days,
       limit,
       offset,
     })}`,
+    { signal },
   );
 }
 
 export async function fetchAllAccountFailures(orgId, params = {}) {
   const days = params.days ?? 30;
-  const pageLimit = Math.min(200, Math.max(1, finiteNumber(params.limit, 200)));
+  const pageLimit = Math.min(1_000, Math.max(1, finiteNumber(params.limit, 200)));
   const maxRows = Math.min(10_000, Math.max(pageLimit, finiteNumber(params.maxRows, 5_000)));
   const first = await fetchAccountFailures(orgId, {
     days,
     limit: pageLimit,
     offset: 0,
+    signal: params.signal,
   });
-  const rows = [...first.rows];
-
-  while (rows.length < first.total && rows.length < maxRows) {
-    const page = await fetchAccountFailures(orgId, {
+  const rows = await loadRemainingPages({
+    first,
+    pageLimit,
+    maxRows,
+    fetchPage: ({ offset, limit }) => fetchAccountFailures(orgId, {
       days,
-      limit: Math.min(pageLimit, maxRows - rows.length),
-      offset: rows.length,
-    });
-    if (page.rows.length === 0) break;
-    rows.push(...page.rows);
-  }
+      limit,
+      offset,
+      knownTotal: first.total,
+      signal: params.signal,
+    }),
+  });
 
   return {
     ...first,
@@ -109,19 +113,21 @@ export async function fetchAllAccountFailures(orgId, params = {}) {
 
 export async function fetchGlobalFailures(params = {}) {
   const days = params.days ?? 30;
-  const pageLimit = Math.min(200, Math.max(1, finiteNumber(params.limit, 200)));
+  const pageLimit = Math.min(1_000, Math.max(1, finiteNumber(params.limit, 200)));
   const maxRows = Math.min(10_000, Math.max(pageLimit, finiteNumber(params.maxRows, 5_000)));
-  const first = await fetchGlobalFailurePage({ days, limit: pageLimit, offset: 0 });
-  const rows = [...first.rows];
-  while (rows.length < first.total && rows.length < maxRows) {
-    const page = await fetchGlobalFailurePage({
-      days,
-      limit: Math.min(pageLimit, maxRows - rows.length),
-      offset: rows.length,
-    });
-    if (page.rows.length === 0) break;
-    rows.push(...page.rows);
-  }
+  const first = await fetchGlobalFailurePage(
+    { days, limit: pageLimit, offset: 0 },
+    { signal: params.signal },
+  );
+  const rows = await loadRemainingPages({
+    first,
+    pageLimit,
+    maxRows,
+    fetchPage: ({ offset, limit }) => fetchGlobalFailurePage(
+      { days, limit, offset, knownTotal: first.total },
+      { signal: params.signal },
+    ),
+  });
   return {
     ...first,
     rows,
@@ -147,27 +153,23 @@ export async function fetchAccountPosts(orgId, params = {}) {
 
 async function fetchPostCollection(path, params, source) {
   const days = clampWindowDays(params.days);
-  const pageLimit = Math.min(200, Math.max(1, finiteNumber(params.limit, 200)));
+  const pageLimit = Math.min(1_000, Math.max(1, finiteNumber(params.limit, 200)));
   const maxRows = Math.min(10_000, Math.max(pageLimit, finiteNumber(params.maxRows, 5_000)));
   const first = await fetchPostPage(
     path,
     { days, limit: pageLimit, offset: 0 },
     { signal: params.signal },
   );
-  const rows = [...first.rows];
-  while (rows.length < first.total && rows.length < maxRows) {
-    const page = await fetchPostPage(
+  const rows = await loadRemainingPages({
+    first,
+    pageLimit,
+    maxRows,
+    fetchPage: ({ offset, limit }) => fetchPostPage(
       path,
-      {
-        days,
-        limit: Math.min(pageLimit, maxRows - rows.length),
-        offset: rows.length,
-      },
+      { days, limit, offset, knownTotal: first.total },
       { signal: params.signal },
-    );
-    if (page.rows.length === 0) break;
-    rows.push(...page.rows);
-  }
+    ),
+  });
   return {
     ...first,
     rows,
@@ -187,14 +189,106 @@ export function saveCsMeta(orgId, meta) {
   return apiPut(`${BASE}/accounts/${encodeURIComponent(orgId)}/cs`, meta);
 }
 
-async function fetchGlobalFailurePage(request) {
-  const payload = await apiGet(`${BASE}/failures${queryString(request)}`);
+async function fetchGlobalFailurePage(request, options = {}) {
+  const payload = await apiGet(`${BASE}/failures${queryString(request)}`, options);
   return normalizeFailureResponse(payload, request);
 }
 
 async function fetchPostPage(path, request, options = {}) {
   const payload = await apiGet(`${path}${queryString(request)}`, options);
   return normalizePostResponse(payload, request);
+}
+
+async function loadRemainingPages({ first, pageLimit, maxRows, fetchPage }) {
+  const targetRows = Math.min(Math.max(0, finiteNumber(first.total)), maxRows);
+  const firstRows = [...first.rows].slice(0, targetRows);
+  if (firstRows.length >= targetRows) return firstRows;
+  // Honor the server's applied cap so the UI remains compatible while the
+  // backend deployment rolls out (and with any future server-side cap change).
+  let effectivePageLimit = Math.max(1, finiteNumber(first.limit, pageLimit));
+  const chunks = [{ offset: 0, rows: firstRows }];
+
+  const initialPages = [];
+  for (let offset = firstRows.length; offset < targetRows; offset += effectivePageLimit) {
+    initialPages.push({ offset, limit: Math.min(effectivePageLimit, targetRows - offset) });
+  }
+  await fetchChunks(initialPages);
+
+  let state = materializeChunks(chunks, targetRows);
+  while (state.missing.length > 0) {
+    const gapPages = state.missing.map(({ start, end }) => ({
+      offset: start,
+      limit: Math.min(effectivePageLimit, end - start),
+    }));
+    const previousFilled = state.filledCount;
+    await fetchChunks(gapPages);
+    state = materializeChunks(chunks, targetRows);
+    if (state.filledCount <= previousFilled) break;
+  }
+  return state.rows;
+
+  async function fetchChunks(pages) {
+    const responses = await mapWithConcurrency(pages, PAGE_CONCURRENCY, async (page) => ({
+      ...page,
+      response: await fetchPage(page),
+    }));
+    for (const page of responses) {
+      const appliedLimit = Math.max(1, finiteNumber(page.response.limit, page.limit));
+      if (appliedLimit < page.limit) {
+        effectivePageLimit = Math.min(effectivePageLimit, appliedLimit);
+      }
+      if (page.response.rows.length > 0) {
+        chunks.push({ offset: page.offset, rows: page.response.rows });
+      }
+    }
+  }
+}
+
+function materializeChunks(chunks, targetRows) {
+  const slots = new Array(targetRows);
+  const filled = new Array(targetRows).fill(false);
+  for (const chunk of chunks) {
+    for (let index = 0; index < chunk.rows.length; index += 1) {
+      const position = chunk.offset + index;
+      if (position < 0 || position >= targetRows) continue;
+      slots[position] = chunk.rows[index];
+      filled[position] = true;
+    }
+  }
+
+  const missing = [];
+  for (let index = 0; index < targetRows;) {
+    if (filled[index]) {
+      index += 1;
+      continue;
+    }
+    const start = index;
+    while (index < targetRows && !filled[index]) index += 1;
+    missing.push({ start, end: index });
+  }
+  return {
+    rows: slots.filter((_row, index) => filled[index]),
+    filledCount: filled.filter(Boolean).length,
+    missing,
+  };
+}
+
+async function mapWithConcurrency(items, concurrency, mapper) {
+  if (items.length === 0) return [];
+  const results = new Array(items.length);
+  let nextIndex = 0;
+  const workers = Array.from(
+    { length: Math.min(Math.max(1, concurrency), items.length) },
+    async () => {
+      while (nextIndex < items.length) {
+        const index = nextIndex;
+        nextIndex += 1;
+        results[index] = await mapper(items[index], index);
+      }
+    },
+  );
+  await Promise.all(workers);
+  return results;
 }
 
 function queryString(params) {

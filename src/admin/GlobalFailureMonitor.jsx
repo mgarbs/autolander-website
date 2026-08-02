@@ -29,7 +29,7 @@ const EMPTY_FAILURES = {
   source: '',
 };
 const MAX_VISIBLE_EVENTS = 150;
-const PAGE_LIMIT = 200;
+const PAGE_LIMIT = 1_000;
 const FULL_MAX_ROWS = 5_000;
 // Renamed from al_admin_collapse_error-monitor so the old default-closed
 // preference does not keep the monitor hidden now that it opens by default.
@@ -56,6 +56,7 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
   const [selectedUserId, setSelectedUserId] = useState('');
   const [copyStatus, setCopyStatus] = useState({ state: 'idle', message: '' });
   const requestSeq = useRef(0);
+  const abortRef = useRef(null);
   const loadedRef = useRef({ days: 0, full: false });
   const copyStatusId = useId();
   const sectionId = useId();
@@ -74,21 +75,28 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
   const loadFailures = useCallback(async ({ clear = false, full = open } = {}) => {
     const seq = requestSeq.current + 1;
     requestSeq.current = seq;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
     setLoading(true);
     setError('');
     if (clear) setFailures(EMPTY_FAILURES);
     try {
+      const requestLimit = full ? PAGE_LIMIT : 1;
       const next = await fetchGlobalFailures({
         days: windowDays,
-        limit: PAGE_LIMIT,
-        // Collapsed, only the header count is on screen — one page already carries the total.
-        maxRows: full ? FULL_MAX_ROWS : PAGE_LIMIT,
+        limit: requestLimit,
+        // Collapsed, only the exact header count is on screen, so hydrate one
+        // representative row instead of downloading hidden diagnostics.
+        maxRows: full ? FULL_MAX_ROWS : requestLimit,
+        signal: controller.signal,
       });
       if (requestSeq.current !== seq) return;
       loadedRef.current = { days: windowDays, full };
       setFailures(next);
     } catch (err) {
       if (requestSeq.current !== seq) return;
+      if (err?.name === 'AbortError') return;
       if (err instanceof ApiError && err.status === 401) {
         onUnauthorized?.();
         setError('Your admin session expired.');
@@ -96,7 +104,10 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
         setError('Could not load the all-customer failure monitor.');
       }
     } finally {
-      if (requestSeq.current === seq) setLoading(false);
+      if (requestSeq.current === seq) {
+        abortRef.current = null;
+        setLoading(false);
+      }
     }
   }, [onUnauthorized, open, windowDays]);
 
@@ -109,8 +120,15 @@ export default function GlobalFailureMonitor({ onUnauthorized }) {
     return () => {
       window.clearTimeout(timeoutId);
       requestSeq.current += 1;
+      abortRef.current?.abort();
     };
   }, [loadFailures, open, windowDays]);
+
+  useEffect(() => () => {
+    requestSeq.current += 1;
+    abortRef.current?.abort();
+    abortRef.current = null;
+  }, []);
 
   const rows = useMemo(
     () => (Array.isArray(failures?.rows) ? failures.rows : []),

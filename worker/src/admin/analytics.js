@@ -29,6 +29,7 @@ export async function handleAnalyticsProxy(request, url, env, suffix) {
         ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,
+      signal: method === 'GET' ? request.signal : undefined,
     });
   } catch (err) {
     return {

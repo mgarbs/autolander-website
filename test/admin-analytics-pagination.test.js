@@ -4,13 +4,16 @@ import {
   fetchAccountFeedFailures,
   fetchAccountPosts,
   fetchAllAccountFailures,
+  fetchGlobalFailures,
 } from '../src/admin/lib/analytics.js';
 
 test('requests account feed failures with an encoded account and preserves unavailable responses', async () => {
   const originalFetch = globalThis.fetch;
   let request;
-  globalThis.fetch = async (url) => {
+  let requestSignal;
+  globalThis.fetch = async (url, options) => {
     request = new URL(String(url), 'https://admin.example.test');
+    requestSignal = options?.signal;
     return {
       ok: true,
       status: 200,
@@ -19,10 +22,12 @@ test('requests account feed failures with an encoded account and preserves unava
   };
 
   try {
+    const controller = new AbortController();
     const response = await fetchAccountFeedFailures('org/42', {
       days: 7,
       limit: 25,
       offset: 5,
+      signal: controller.signal,
     });
     assert.deepEqual(response, { available: false });
     assert.equal(request.pathname, '/admin-api/analytics/accounts/org%2F42/feed-failures');
@@ -30,6 +35,7 @@ test('requests account feed failures with an encoded account and preserves unava
       Object.fromEntries(request.searchParams),
       { days: '7', limit: '25', offset: '5' },
     );
+    assert.equal(requestSignal, controller.signal);
   } finally {
     globalThis.fetch = originalFetch;
   }
@@ -43,6 +49,7 @@ test('loads every account failure page up to the explicit safety cap', async () 
     requests.push({
       offset: Number(parsed.searchParams.get('offset')),
       limit: Number(parsed.searchParams.get('limit')),
+      knownTotal: parsed.searchParams.get('knownTotal'),
     });
     const offset = Number(parsed.searchParams.get('offset'));
     const limit = Number(parsed.searchParams.get('limit'));
@@ -78,9 +85,9 @@ test('loads every account failure page up to the explicit safety cap', async () 
     ]);
     assert.equal(complete.truncated, false);
     assert.deepEqual(requests, [
-      { offset: 0, limit: 2 },
-      { offset: 2, limit: 2 },
-      { offset: 4, limit: 2 },
+      { offset: 0, limit: 2, knownTotal: null },
+      { offset: 2, limit: 2, knownTotal: '5' },
+      { offset: 4, limit: 1, knownTotal: '5' },
     ]);
 
     requests.length = 0;
@@ -93,8 +100,8 @@ test('loads every account failure page up to the explicit safety cap', async () 
     assert.equal(capped.total, 5);
     assert.equal(capped.truncated, true);
     assert.deepEqual(requests, [
-      { offset: 0, limit: 2 },
-      { offset: 2, limit: 1 },
+      { offset: 0, limit: 2, knownTotal: null },
+      { offset: 2, limit: 1, knownTotal: '5' },
     ]);
   } finally {
     globalThis.fetch = originalFetch;
@@ -108,7 +115,12 @@ test('loads bounded post-receipt pages from the encoded account endpoint', async
     const parsed = new URL(String(url), 'https://admin.example.test');
     const offset = Number(parsed.searchParams.get('offset'));
     const limit = Number(parsed.searchParams.get('limit'));
-    requests.push({ pathname: parsed.pathname, offset, limit });
+    requests.push({
+      pathname: parsed.pathname,
+      offset,
+      limit,
+      knownTotal: parsed.searchParams.get('knownTotal'),
+    });
     const allRows = Array.from({ length: 4 }, (_, index) => ({
       id: `post-${index + 1}`,
       occurredAt: `2026-07-${String(28 - index).padStart(2, '0')}T12:00:00Z`,
@@ -138,10 +150,181 @@ test('loads bounded post-receipt pages from the encoded account endpoint', async
     assert.equal(result.truncated, true);
     assert.equal(result.source, 'account_post_deliveries');
     assert.deepEqual(requests, [
-      { pathname: '/admin-api/analytics/accounts/org%2F42/posts', offset: 0, limit: 2 },
-      { pathname: '/admin-api/analytics/accounts/org%2F42/posts', offset: 2, limit: 1 },
+      {
+        pathname: '/admin-api/analytics/accounts/org%2F42/posts',
+        offset: 0,
+        limit: 2,
+        knownTotal: null,
+      },
+      {
+        pathname: '/admin-api/analytics/accounts/org%2F42/posts',
+        offset: 2,
+        limit: 1,
+        knownTotal: '4',
+      },
     ]);
   } finally {
     globalThis.fetch = originalFetch;
   }
 });
+
+test('honors the server-applied page cap during a rolling backend deployment', async () => {
+  const originalFetch = globalThis.fetch;
+  const requests = [];
+  globalThis.fetch = async (url) => {
+    const parsed = new URL(String(url), 'https://admin.example.test');
+    const offset = Number(parsed.searchParams.get('offset'));
+    const requestedLimit = Number(parsed.searchParams.get('limit'));
+    const appliedLimit = Math.min(requestedLimit, 200);
+    requests.push({ offset, requestedLimit });
+    const allRows = Array.from({ length: 600 }, (_, index) => ({
+      id: `failure-${index}`,
+      occurredAt: `2026-07-31T${String(index % 24).padStart(2, '0')}:00:00Z`,
+      code: 'POST_FAILED',
+    }));
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        rows: allRows.slice(offset, offset + appliedLimit),
+        total: allRows.length,
+        limit: appliedLimit,
+        offset,
+      }),
+    };
+  };
+
+  try {
+    const result = await fetchGlobalFailures({ limit: 1_000, maxRows: 600 });
+    assert.equal(result.rows.length, 600);
+    assert.deepEqual(result.rows.map((row) => row.id), (
+      Array.from({ length: 600 }, (_, index) => `failure-${index}`)
+    ));
+    assert.deepEqual(requests, [
+      { offset: 0, requestedLimit: 1_000 },
+      { offset: 200, requestedLimit: 200 },
+      { offset: 400, requestedLimit: 200 },
+    ]);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('fills gaps when later rollout instances apply a smaller page cap', async () => {
+  const originalFetch = globalThis.fetch;
+  const requests = [];
+  globalThis.fetch = async (url) => {
+    const parsed = new URL(String(url), 'https://admin.example.test');
+    const offset = Number(parsed.searchParams.get('offset'));
+    const requestedLimit = Number(parsed.searchParams.get('limit'));
+    const appliedLimit = offset === 0 ? requestedLimit : Math.min(requestedLimit, 2);
+    requests.push({ offset, requestedLimit, appliedLimit });
+    const allRows = Array.from({ length: 12 }, (_, index) => ({
+      id: `failure-${index}`,
+      occurredAt: `2026-07-31T${String(index % 24).padStart(2, '0')}:00:00Z`,
+      code: 'POST_FAILED',
+    }));
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        rows: allRows.slice(offset, offset + appliedLimit),
+        total: allRows.length,
+        limit: appliedLimit,
+        offset,
+      }),
+    };
+  };
+
+  try {
+    const result = await fetchAllAccountFailures('org-42', { limit: 5, maxRows: 12 });
+    assert.deepEqual(
+      result.rows.map((row) => row.id),
+      Array.from({ length: 12 }, (_, index) => `failure-${index}`),
+    );
+    assert.equal(result.truncated, false);
+    assert.deepEqual(requests.map((request) => request.offset), [0, 5, 10, 7, 9]);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('loads remaining detail pages with concurrency capped at four and preserves order', async () => {
+  const originalFetch = globalThis.fetch;
+  const pending = new Map();
+  const startedOffsets = [];
+  let active = 0;
+  let maxActive = 0;
+
+  function responseFor(offset, limit) {
+    const allRows = Array.from({ length: 12 }, (_, index) => ({
+      id: `failure-${index}`,
+      occurredAt: `2026-07-${String(31 - index).padStart(2, '0')}T12:00:00Z`,
+      code: 'POST_FAILED',
+    }));
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        rows: allRows.slice(offset, offset + limit),
+        total: allRows.length,
+        limit,
+        offset,
+      }),
+    };
+  }
+
+  globalThis.fetch = async (url) => {
+    const parsed = new URL(String(url), 'https://admin.example.test');
+    const offset = Number(parsed.searchParams.get('offset'));
+    const limit = Number(parsed.searchParams.get('limit'));
+    if (offset === 0) return responseFor(offset, limit);
+
+    startedOffsets.push(offset);
+    active += 1;
+    maxActive = Math.max(maxActive, active);
+    return new Promise((resolve) => {
+      pending.set(offset, () => {
+        pending.delete(offset);
+        active -= 1;
+        resolve(responseFor(offset, limit));
+      });
+    });
+  };
+
+  try {
+    const resultPromise = fetchAllAccountFailures('org-42', {
+      days: 30,
+      limit: 2,
+      maxRows: 12,
+    });
+
+    await waitFor(() => pending.size === 4);
+    assert.deepEqual(startedOffsets, [2, 4, 6, 8]);
+    assert.equal(maxActive, 4);
+
+    pending.get(2)();
+    await waitFor(() => pending.has(10));
+    assert.deepEqual(startedOffsets, [2, 4, 6, 8, 10]);
+    assert.equal(maxActive, 4);
+
+    for (const release of [...pending.values()]) release();
+    const result = await resultPromise;
+    assert.deepEqual(
+      result.rows.map((row) => row.id),
+      Array.from({ length: 12 }, (_, index) => `failure-${index}`),
+    );
+    assert.equal(result.truncated, false);
+  } finally {
+    for (const release of [...pending.values()]) release();
+    globalThis.fetch = originalFetch;
+  }
+});
+
+async function waitFor(predicate, attempts = 100) {
+  for (let index = 0; index < attempts; index += 1) {
+    if (predicate()) return;
+    await new Promise((resolve) => globalThis.setTimeout(resolve, 0));
+  }
+  throw new Error('Timed out waiting for pagination work.');
+}

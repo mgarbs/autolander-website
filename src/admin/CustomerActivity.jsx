@@ -20,7 +20,7 @@ import {
 } from './lib/analytics.js';
 
 const EMPTY_PAGE = { rows: [], total: 0, limit: 25, offset: 0 };
-const EMPTY_FAILURES = { rows: [], total: 0, limit: 200, offset: 0, available: false, summary: {} };
+const EMPTY_FAILURES = { rows: [], total: 0, limit: 1_000, offset: 0, available: false, summary: {} };
 const EMPTY_FEED_FAILURES = {
   rows: [],
   available: false,
@@ -90,6 +90,12 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   const detailSeq = useRef(0);
   const failuresSeq = useRef(0);
   const feedFailuresSeq = useRef(0);
+  const overviewAbortRef = useRef(null);
+  const accountsAbortRef = useRef(null);
+  const detailAbortRef = useRef(null);
+  const failuresAbortRef = useRef(null);
+  const feedFailuresAbortRef = useRef(null);
+  const metaLoadedRef = useRef(false);
 
   const handleError = useCallback((err, fallback) => {
     if (err instanceof ApiError && err.status === 401) {
@@ -105,41 +111,63 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     return fallback;
   }, [onUnauthorized]);
 
-  const loadOverview = useCallback(async ({ silent = false } = {}) => {
+  const loadOverview = useCallback(async ({ silent = false, fresh = false } = {}) => {
+    overviewAbortRef.current?.abort();
+    const controller = new AbortController();
+    overviewAbortRef.current = controller;
     if (!silent) setOverviewLoading(true);
     setOverviewError('');
     try {
       const [nextOverview, nextMeta] = await Promise.all([
-        fetchOverview(),
-        fetchAnalyticsMeta(),
+        fetchOverview(fresh ? { fresh: 1 } : {}, { signal: controller.signal }),
+        metaLoadedRef.current
+          ? Promise.resolve(null)
+          : fetchAnalyticsMeta({ signal: controller.signal }),
       ]);
       setOverview(nextOverview);
-      setAnalyticsMeta(nextMeta);
+      if (nextMeta) {
+        metaLoadedRef.current = true;
+        setAnalyticsMeta(nextMeta);
+      }
       setOpsUnavailable(false);
     } catch (err) {
+      if (err?.name === 'AbortError') return;
       const message = handleError(err, 'Could not load customer-activity totals.');
       if (message) setOverviewError(message);
     } finally {
-      setOverviewLoading(false);
+      if (overviewAbortRef.current === controller) {
+        overviewAbortRef.current = null;
+        setOverviewLoading(false);
+      }
     }
   }, [handleError]);
 
-  const loadAccounts = useCallback(async ({ silent = false } = {}) => {
+  const loadAccounts = useCallback(async ({ silent = false, fresh = false } = {}) => {
     const seq = accountsSeq.current + 1;
     accountsSeq.current = seq;
+    accountsAbortRef.current?.abort();
+    const controller = new AbortController();
+    accountsAbortRef.current = controller;
     if (!silent) setPageLoading(true);
     setPageError('');
     try {
-      const response = await fetchAccounts(accountRequest);
+      const response = await fetchAccounts(
+        fresh ? { ...accountRequest, fresh: 1 } : accountRequest,
+        { signal: controller.signal },
+      );
       if (accountsSeq.current !== seq) return;
       setPage(response);
       setOpsUnavailable(false);
     } catch (err) {
       if (accountsSeq.current !== seq) return;
+      if (err?.name === 'AbortError') return;
       const message = handleError(err, 'Could not load customer accounts.');
       if (message) setPageError(message);
     } finally {
-      if (accountsSeq.current === seq) setPageLoading(false);
+      if (accountsSeq.current === seq) {
+        accountsAbortRef.current = null;
+        setPageLoading(false);
+      }
     }
   }, [accountRequest, handleError]);
 
@@ -153,6 +181,15 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   ) => {
     const seq = detailSeq.current + 1;
     detailSeq.current = seq;
+    detailAbortRef.current?.abort();
+    failuresAbortRef.current?.abort();
+    feedFailuresAbortRef.current?.abort();
+    const detailController = new AbortController();
+    const failuresController = new AbortController();
+    const feedFailuresController = new AbortController();
+    detailAbortRef.current = detailController;
+    failuresAbortRef.current = failuresController;
+    feedFailuresAbortRef.current = feedFailuresController;
     const failureRequestSeq = failuresSeq.current + 1;
     failuresSeq.current = failureRequestSeq;
     const feedFailureRequestSeq = feedFailuresSeq.current + 1;
@@ -168,14 +205,15 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     }));
 
     const detailPromise = Promise.allSettled([
-      fetchAccount(orgId),
-      fetchTickets(orgId),
+      fetchAccount(orgId, { signal: detailController.signal }),
+      fetchTickets(orgId, { signal: detailController.signal }),
     ]);
     const failuresPromise = Promise.allSettled([
       fetchAllAccountFailures(orgId, {
         days: failureWindowDays,
-        limit: 200,
+        limit: 1_000,
         maxRows: 5_000,
+        signal: failuresController.signal,
       }),
     ]).then(([result]) => result);
     const feedFailuresPromise = Promise.allSettled([
@@ -183,6 +221,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
         days: feedFailureWindowDays,
         limit: 200,
         offset: 0,
+        signal: feedFailuresController.signal,
       }),
     ]).then(([result]) => result);
 
@@ -208,6 +247,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       setOpsUnavailable(false);
     }
     setDetailLoading(false);
+    if (detailAbortRef.current === detailController) detailAbortRef.current = null;
 
     const failuresResult = await failuresPromise;
     if (detailSeq.current !== seq) return;
@@ -224,6 +264,7 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
         setDetail((current) => ({ ...current, failuresError: message }));
       }
       setFailuresLoading(false);
+      if (failuresAbortRef.current === failuresController) failuresAbortRef.current = null;
     }
 
     const feedFailuresResult = await feedFailuresPromise;
@@ -244,11 +285,14 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
         setDetail((current) => ({ ...current, feedFailuresError: message }));
       }
       setFeedFailuresLoading(false);
+      if (feedFailuresAbortRef.current === feedFailuresController) {
+        feedFailuresAbortRef.current = null;
+      }
     }
   }, [failureDays, feedFailureDays, handleError]);
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => setDebouncedSearch(search.trim()), 300);
+    const timeoutId = window.setTimeout(() => setDebouncedSearch(search.trim()), 100);
     return () => window.clearTimeout(timeoutId);
   }, [search]);
 
@@ -265,9 +309,8 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
   useEffect(() => {
     const tick = () => {
       if (document.hidden) return;
-      loadOverview({ silent: true });
-      loadAccounts({ silent: true });
-      if (expandedOrgId) loadDetail(expandedOrgId, { silent: true });
+      loadOverview({ silent: true, fresh: true });
+      loadAccounts({ silent: true, fresh: true });
     };
     const intervalId = window.setInterval(tick, 45000);
     const handleVisibility = () => {
@@ -278,7 +321,15 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       window.clearInterval(intervalId);
       document.removeEventListener('visibilitychange', handleVisibility);
     };
-  }, [expandedOrgId, loadAccounts, loadDetail, loadOverview]);
+  }, [loadAccounts, loadOverview]);
+
+  useEffect(() => () => {
+    overviewAbortRef.current?.abort();
+    accountsAbortRef.current?.abort();
+    detailAbortRef.current?.abort();
+    failuresAbortRef.current?.abort();
+    feedFailuresAbortRef.current?.abort();
+  }, []);
 
   function setFilter(name, value) {
     setFilters((current) => ({ ...current, [name]: value, offset: 0 }));
@@ -306,6 +357,9 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
       detailSeq.current += 1;
       failuresSeq.current += 1;
       feedFailuresSeq.current += 1;
+      detailAbortRef.current?.abort();
+      failuresAbortRef.current?.abort();
+      feedFailuresAbortRef.current?.abort();
       setExpandedOrgId('');
       setDetail(EMPTY_DETAIL);
       setDetailLoading(false);
@@ -329,6 +383,9 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     setFailuresLoading(true);
     const seq = failuresSeq.current + 1;
     failuresSeq.current = seq;
+    failuresAbortRef.current?.abort();
+    const controller = new AbortController();
+    failuresAbortRef.current = controller;
     setDetail((current) => ({
       ...current,
       failures: {
@@ -340,17 +397,19 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     try {
       const failures = await fetchAllAccountFailures(
         expandedOrgId,
-        { days, limit: 200, maxRows: 5_000 },
+        { days, limit: 1_000, maxRows: 5_000, signal: controller.signal },
       );
       if (failuresSeq.current === seq) {
         setDetail((current) => ({ ...current, failures, failuresError: '' }));
       }
     } catch (err) {
+      if (err?.name === 'AbortError') return;
       if (failuresSeq.current === seq) {
         const message = handleError(err, 'Could not load failure diagnostics.');
         setDetail((current) => ({ ...current, failuresError: message }));
       }
     } finally {
+      if (failuresAbortRef.current === controller) failuresAbortRef.current = null;
       if (failuresSeq.current === seq) setFailuresLoading(false);
     }
   }
@@ -361,6 +420,9 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     setFeedFailuresLoading(true);
     const seq = feedFailuresSeq.current + 1;
     feedFailuresSeq.current = seq;
+    feedFailuresAbortRef.current?.abort();
+    const controller = new AbortController();
+    feedFailuresAbortRef.current = controller;
     setDetail((current) => ({
       ...current,
       feedFailures: {
@@ -372,17 +434,19 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     try {
       const feedFailures = await fetchAccountFeedFailures(
         expandedOrgId,
-        { days, limit: 200, offset: 0 },
+        { days, limit: 200, offset: 0, signal: controller.signal },
       );
       if (feedFailuresSeq.current === seq) {
         setDetail((current) => ({ ...current, feedFailures, feedFailuresError: '' }));
       }
     } catch (err) {
+      if (err?.name === 'AbortError') return;
       if (feedFailuresSeq.current === seq) {
         const message = handleError(err, 'Could not load feed failure diagnostics.');
         setDetail((current) => ({ ...current, feedFailuresError: message }));
       }
     } finally {
+      if (feedFailuresAbortRef.current === controller) feedFailuresAbortRef.current = null;
       if (feedFailuresSeq.current === seq) setFeedFailuresLoading(false);
     }
   }
@@ -448,8 +512,8 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
     setRefreshing(true);
     try {
       await Promise.all([
-        loadOverview({ silent: true }),
-        loadAccounts({ silent: true }),
+        loadOverview({ silent: true, fresh: true }),
+        loadAccounts({ silent: true, fresh: true }),
         expandedOrgId ? loadDetail(expandedOrgId, { silent: true }) : Promise.resolve(),
       ]);
     } finally {
@@ -502,7 +566,10 @@ export default function CustomerActivity({ embedded = false, onUnauthorized }) {
                 }
                 setFilters((current) => ({ ...current, offset: 0 }));
               }}
-              onCandidateSelect={(_orgId, candidate) => setSelectedSearchCandidate(candidate)}
+              onCandidateSelect={(orgId, candidate) => {
+                setSelectedSearchCandidate(candidate);
+                setDebouncedSearch(orgId);
+              }}
               onFilter={setFilter}
               onPreset={applyPreset}
               onClear={clearFilters}

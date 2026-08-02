@@ -79,12 +79,12 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
   }
 
   if (path === '/admin/ops/unlinked' && request.method === 'GET') {
-    const result = await handleOpsUnlinked(url, env);
+    const result = await handleOpsUnlinked(request, url, env);
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
   if (path === '/admin/ops/candidates' && request.method === 'GET') {
-    const result = await handleOpsCandidates(url, env);
+    const result = await handleOpsCandidates(request, url, env);
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
@@ -94,7 +94,7 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
   }
 
   if (path === '/admin/support-adjustments/candidates' && request.method === 'GET') {
-    const result = await handleSupportAdjustmentCandidates(url, env);
+    const result = await handleSupportAdjustmentCandidates(request, url, env);
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
