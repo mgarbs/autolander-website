@@ -41,7 +41,7 @@ const PLANS = [
     name: 'Pro',
     monthly: 79,
     annual: 59,
-    posts: '20 Posts / Day',
+    posts: '15 Posts / Day',
     popular: true,
     features: [
       'Everything in Growth',

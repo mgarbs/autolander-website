@@ -25,7 +25,7 @@ export const PAGES = [
     bylineUpdated: true,
     tldr:
       'AutoLander has four published monthly options: Starter is $39 for 5 posts/day, Growth is $59 for '
-      + '10 posts/day, Pro is $79 for 20 posts/day, and the Dealer Plan starts at $117 for a three-seat team. '
+      + '10 posts/day, Pro is $79 for 15 posts/day, and the Dealer Plan starts at $117 for a three-seat team. '
       + 'Start with 5 free posts and no credit card; annual billing is optional at a lower monthly equivalent.',
     softwareDesc: SOFTWARE_DESC,
     breadcrumbs: [
@@ -47,7 +47,7 @@ export const PAGES = [
         q: 'How much does a Facebook Marketplace auto poster cost?',
         a: [
           'AutoLander’s individual monthly plans are Starter at $39 for 5 posts/day, Growth at $59 for '
-          + '10 posts/day, and Pro at $79 for 20 posts/day. The Dealer Plan starts at $117/mo for three '
+          + '10 posts/day, and Pro at $79 for 15 posts/day. The Dealer Plan starts at $117/mo for three '
           + 'Starter seats and can mix Starter, Growth and Pro seats for the team. Annual billing is optional '
           + 'and lowers the monthly equivalent.',
           'Across the wider market, a Facebook Marketplace auto poster typically costs anywhere from about '
@@ -74,7 +74,7 @@ export const PAGES = [
           },
           {
             title: 'Pro — $79/mo',
-            body: 'For power users posting up to 20 vehicles per day. Adds concierge setup, dedicated support '
+            body: 'For power users posting up to 15 vehicles per day. Adds concierge setup, dedicated support '
               + 'and 150 welcome AI Studio credits.',
           },
           {
@@ -185,7 +185,7 @@ export const PAGES = [
         'No annual contract is required. Monthly billing is available, or you can choose annual billing for a '
         + 'lower monthly equivalent. Pricing is published rather than hidden behind a sales quote.'],
       ['What is included in each plan?',
-        'Starter ($39/mo) supports 5 posts/day, Growth ($59/mo) supports 10, and Pro ($79/mo) supports 20, '
+        'Starter ($39/mo) supports 5 posts/day, Growth ($59/mo) supports 10, and Pro ($79/mo) supports 15, '
         + 'with increasing AI and support allowances. The Dealer Plan starts at three seats, allows any tier mix, '
         + 'and adds the live manager dashboard, team presence and attribution analytics.'],
     ],
