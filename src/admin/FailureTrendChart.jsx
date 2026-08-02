@@ -8,6 +8,11 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import {
+  DARK_CHART_TOOLTIP_CONTENT_STYLE,
+  DARK_CHART_TOOLTIP_ITEM_STYLE,
+  DARK_CHART_TOOLTIP_LABEL_STYLE,
+} from './lib/chart-tooltip.js';
 import { humanizeFailureValue } from './lib/failure-diagnostics.js';
 
 const COLORS = ['#ef4444', '#f97316', '#eab308', '#a855f7', '#3b82f6', '#14b8a6', '#64748b'];
@@ -61,11 +66,11 @@ export function FailureTrendChart({ timeline, selection, onSelect }) {
               ]}
               labelFormatter={(_, payload) => payload?.[0]?.payload?.longLabel || payload?.[0]?.payload?.label || ''}
               contentStyle={{
-                background: '#09090b',
+                ...DARK_CHART_TOOLTIP_CONTENT_STYLE,
                 border: '1px solid rgba(255,255,255,.12)',
-                borderRadius: 12,
-                fontSize: 11,
               }}
+              labelStyle={DARK_CHART_TOOLTIP_LABEL_STYLE}
+              itemStyle={DARK_CHART_TOOLTIP_ITEM_STYLE}
             />
             {types.map((type, typeIndex) => (
               <Bar
