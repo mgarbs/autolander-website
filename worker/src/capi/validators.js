@@ -2,7 +2,6 @@ const ALLOWED_EVENTS = new Set([
   'PageView',
   'ViewContent',
   'Lead',
-  'InitiateCheckout',
   'Schedule',
   'CompleteRegistration',
   'Purchase',
@@ -12,7 +11,6 @@ const ALLOWED_EVENTS = new Set([
 ]);
 
 const ALLOWED_CUSTOM_EVENTS = new Set([
-  'AppDownload',
   'ApplicationOpened',
   'ChatOpened',
   'EngagedVisit',

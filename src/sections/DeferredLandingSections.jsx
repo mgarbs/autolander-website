@@ -430,7 +430,7 @@ export default function DeferredLandingSections({
 
                   {showsPlanCta && (
                     <button
-                      onClick={() => openDownload({ contentName: plan.name, value: isAnnual ? plan.annual : plan.monthly })}
+                      onClick={() => openDownload({ contentName: plan.name })}
                       className="hidden w-full rounded-2xl bg-white py-4 text-sm font-black uppercase italic tracking-tighter text-blue-600 transition-all hover:bg-slate-100 md:block"
                     >
                       Claim Limited-Time Offer

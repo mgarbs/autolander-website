@@ -18,6 +18,10 @@ import {
 import { looksLikeBot } from '../security/bot-filter.js';
 import { buildFbc, cleanFbclid, isValidFbc } from '../capi/validators.js';
 import { getPaySummary, openPaySession, openSelfServeSession } from './pay-proxy.js';
+import {
+  canonicalMetaExternalId,
+  isProductionMetaRequest,
+} from '../../../shared/meta-signal.js';
 
 const ROLE_CHOICES = ['Owner', 'Manager', 'Sales Rep'];
 const VEHICLE_COUNT_CHOICES = ['1-50', '51-150', '151+'];
@@ -228,7 +232,8 @@ async function handleApply(request, env, corsHeaders, ctx) {
   );
   const visitorFbc = isValidFbc(visitor?.fbc) ? visitor.fbc : '';
   const fbc = attribution.fbc || visitorFbc || buildFbc(fbclid, clickTimestamp);
-  const eventId = clean(applyState?.eventId, 80) || `lead_${(await sha256Hex(`lead:${submissionId}`)).slice(0, 32)}`;
+  const eventId = `lead_${(await sha256Hex(`lead:${submissionId}`)).slice(0, 32)}`;
+  const metaExternalId = canonicalMetaExternalId(env.META_PIXEL_ID, attribution.vid);
   const sourceUrl = clean(page.current_page, 500) || clean(request.headers.get('Referer'), 500);
   const landingPageUrl = clean(page.landing_page, 500) || sourceUrl;
   const referrer = clean(page.referrer, 240);
@@ -337,6 +342,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
     eventId,
     sourceUrl,
     contactId,
+    externalId: metaExternalId,
     attribution: {
       ...attribution,
       utms: mergedUtms,
@@ -353,8 +359,15 @@ async function handleApply(request, env, corsHeaders, ctx) {
     metaTestEventCode,
   });
 
-  const conversionToken = newConversionToken();
-  await rememberConversionToken(env, conversionToken, { eventId, eventName: 'Lead' }).catch(() => {});
+  const productionMetaRequest = isProductionMetaRequest(request);
+  const conversionToken = productionMetaRequest && metaExternalId ? newConversionToken() : '';
+  if (conversionToken) {
+    await rememberConversionToken(env, conversionToken, {
+      eventId,
+      eventName: 'Lead',
+      externalId: metaExternalId,
+    }).catch(() => {});
+  }
 
   const responsePayload = {
     ok: true,
@@ -445,7 +458,19 @@ async function ghlRequest(env, config, path, init) {
   };
 }
 
-async function recordLeadEvent({ request, env, ctx, lead, eventId, sourceUrl, contactId, attribution, metaTestEventCode }) {
+async function recordLeadEvent({
+  request,
+  env,
+  ctx,
+  lead,
+  eventId,
+  sourceUrl,
+  contactId,
+  externalId,
+  attribution,
+  metaTestEventCode,
+}) {
+  if (!isProductionMetaRequest(request)) return;
   const today = isoDay(new Date());
   const alreadySeen = await wasEventSeen(env, eventId).catch(() => false);
   if (alreadySeen) return;
@@ -495,14 +520,12 @@ async function recordLeadEvent({ request, env, ctx, lead, eventId, sourceUrl, co
     fbc: attribution.fbc,
     fbclid: attribution.fbclid,
     clickTimestamp: attribution.ts || attribution.firstTouch?.ts,
-    vid: lead.vid,
     ip: attribution.ip || request.headers.get('CF-Connecting-IP') || '',
     ua: lead.userAgent || request.headers.get('User-Agent') || '',
     country: attribution.country,
     region: attribution.region,
     city: attribution.city,
-    pixelId: env.META_PIXEL_ID,
-    externalId: contactId,
+    externalId,
   });
 
   const capiEvent = buildEvent({
@@ -541,13 +564,11 @@ async function buildUserData({
   fbc,
   fbclid,
   clickTimestamp,
-  vid,
   ip,
   ua,
   country,
   region,
   city,
-  pixelId,
   externalId,
 }) {
   const userData = {};
@@ -565,10 +586,7 @@ async function buildUserData({
   if (fbp) userData.fbp = fbp;
   if (fbc) userData.fbc = fbc;
   else if (fbclid) userData.fbc = buildFbc(fbclid, clickTimestamp);
-  const stableExternalId = externalId || vid;
-  if (stableExternalId) {
-    userData.external_id = await hashLowercase(pixelId ? `${pixelId}:${stableExternalId}` : stableExternalId);
-  }
+  if (externalId) userData.external_id = await hashLowercase(externalId);
   if (ip) userData.client_ip_address = ip;
   if (ua) userData.client_user_agent = ua;
   return userData;

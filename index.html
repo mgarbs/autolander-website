@@ -130,10 +130,9 @@
         ]
       }
     </script>
-    <!-- Meta Pixel: injected at build time by vite.config.js (htmlTransformPlugin) from
-         VITE_META_PIXEL_ID — init only. PageView and all events are fired by src/lib/tracker.js
-         with a shared event_id so the browser Pixel and server CAPI dedupe into one. Preview
-         builds inject nothing (no Pixel on preview). -->
+    <!-- Meta Pixel: its lazy loader is injected at build time from VITE_META_PIXEL_ID.
+         The loader and src/lib/tracker.js run only on the two canonical HTTPS origins;
+         tracking uses the same external_id as CAPI and shared event IDs for deduplication. -->
     <title>AutoLander | Facebook Marketplace Software for Car Dealers</title>
     <style>
       /* Critical fallback so first paint isn't a white flash before JS loads */
@@ -142,7 +141,6 @@
     </style>
   </head>
   <body>
-    <!-- <noscript> Meta Pixel fallback is injected at build time by vite.config.js -->
     <script>
       (() => {
         const staleAppHashRoutes = new Set(['#/login', '#/sign-in', '#/signin', '#/auth', '#/signup']);

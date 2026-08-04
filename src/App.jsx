@@ -112,19 +112,6 @@ function setSessionFlag(key) {
   }
 }
 
-function checkoutEventParams(contentName, value) {
-  const params = {
-    content_name: contentName,
-    currency: 'USD',
-  };
-
-  if (typeof value === 'number') {
-    params.value = value;
-  }
-
-  return params;
-}
-
 const FadeIn = ({ children }) => <div>{children}</div>;
 
 const DemoApplicationFallback = ({ onClose }) => (
@@ -403,12 +390,17 @@ export default function App() {
     await navigator.clipboard?.writeText(referralCode).catch(() => {});
   };
 
-  const openDownload = async ({ contentName = download.label, value } = {}) => {
+  const openDownload = async ({ contentName = download.label } = {}) => {
     if (!showDownloadButtons) return;
     const eventId = newEventId();
     await copyReferralCode();
-    track('InitiateCheckout', checkoutEventParams(contentName, value), { eventId });
-    trackCustom('AppDownload', { os: download.os }, { eventId });
+    trackCustom('OutboundClick', {
+      content_name: contentName,
+      content_category: 'desktop_app',
+      action: 'download_installer',
+      destination: 'github_release',
+      os: download.os,
+    }, { eventId });
     window.open(withFbEventId(download.url, eventId), "_blank");
   };
 
@@ -416,15 +408,25 @@ export default function App() {
     if (!showDownloadButtons) return;
     const eventId = newEventId();
     await copyReferralCode();
-    track('InitiateCheckout', checkoutEventParams(contentName), { eventId });
-    trackCustom('AppDownload', { os }, { eventId });
+    trackCustom('OutboundClick', {
+      content_name: contentName,
+      content_category: 'desktop_app',
+      action: 'download_installer',
+      destination: 'github_release',
+      os,
+    }, { eventId });
     window.open(withFbEventId(DOWNLOADS[os], eventId), "_blank");
   };
 
   const openInstalledApp = async () => {
     const eventId = newEventId();
     await copyReferralCode();
-    track('InitiateCheckout', checkoutEventParams('installed_app_signup'), { eventId });
+    trackCustom('OutboundClick', {
+      content_name: 'installed_app_signup',
+      content_category: 'desktop_app',
+      action: 'open_installed_app',
+      destination: 'autolander_protocol',
+    }, { eventId });
     window.location.href = withFbEventId(referralDeepLink, eventId);
   };
 
@@ -480,7 +482,7 @@ export default function App() {
             {showDownloadButtons && (
               <button
                 type="button"
-                onClick={() => openDownload({ contentName: 'nav_download', value: 39 })}
+                onClick={() => openDownload({ contentName: 'nav_download' })}
                 className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap"
               >
                 Download
@@ -564,7 +566,7 @@ export default function App() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                 {showDownloadButtons && (
                   <button
-                    onClick={() => openDownload({ contentName: 'referral_offer', value: 125 })}
+                    onClick={() => openDownload({ contentName: 'referral_offer' })}
                     className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-blue-600 text-white font-black text-lg transition-all flex items-center justify-center space-x-3 uppercase italic hover:bg-blue-500 active:scale-95"
                   >
                     <span>Download + Claim Offer</span>
