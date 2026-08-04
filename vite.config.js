@@ -20,14 +20,10 @@ function htmlTransformPlugin(pixelId, isPreview) {
 
       if (!pixelId) return html
 
-      const pixelIdJs = String(pixelId)
-        .replace(/\\/g, '\\\\')
-        .replace(/'/g, "\\'")
-        .replace(/\r/g, '\\r')
-        .replace(/\n/g, '\\n')
-      const pixelIdParam = encodeURIComponent(pixelId)
       const script = `    <!-- Meta Pixel Code -->
     <script>
+      (function(){
+      if(window.location.origin!=='https://autolander.ai'&&window.location.origin!=='https://www.autolander.ai')return;
       !function(f,b,e,v,n,t,s)
       {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -36,7 +32,6 @@ function htmlTransformPlugin(pixelId, isPreview) {
       t=b.createElement(e);t.async=!0;t.src=v;
       s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '${pixelIdJs}');
       (function(){
         var loaded=false,timer=0;
         function cleanup(){
@@ -66,13 +61,11 @@ function htmlTransformPlugin(pixelId, isPreview) {
         if(document.readyState==='complete') schedule();
         else window.addEventListener('load',schedule,{once:true});
       })();
+      })();
     </script>
     <!-- End Meta Pixel Code -->`
-      const noscript = `    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${pixelIdParam}&ev=PageView&noscript=1" /></noscript>`
-
       return html
         .replace('    <title>', `${script}\n    <title>`)
-        .replace('  <body>', `  <body>\n${noscript}`)
     },
   }
 }

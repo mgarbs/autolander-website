@@ -43,7 +43,7 @@ async function track(t, body) {
   });
 
   const response = await handleCapi(
-    new Request('https://worker.example/capi/track', {
+    new Request('https://autolander.ai/capi/track', {
       method: 'POST',
       headers: BROWSER_HEADERS,
       body: JSON.stringify(body),

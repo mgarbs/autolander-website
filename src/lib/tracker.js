@@ -1,18 +1,27 @@
 import { getAttributionPayload, getVisitorId } from './identity.js';
+import {
+  canonicalMetaExternalId,
+  isProductionMetaUrl,
+} from '../../shared/meta-signal.js';
 
 export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID || '';
 const CAPI_URL = (import.meta.env.VITE_CAPI_URL || import.meta.env.VITE_CHAT_API_URL || '').replace(/\/+$/, '');
-
-// Preview builds (preview.autolander.ai) must never emit pixel or CAPI events,
-// so internal review traffic doesn't pollute live Meta attribution. MODE is set
-// by `vite build --mode preview` and is always inlined, unlike a custom env var.
-const TRACKING_DISABLED =
-  import.meta.env.MODE === 'preview' || import.meta.env.VITE_DEPLOY_TARGET === 'preview';
-
 const isBrowser = typeof window !== 'undefined';
 
+// Preview builds (preview.autolander.ai) must never emit pixel or CAPI events,
+// and the runtime hostname gate also protects localhost or a production bundle
+// served from any non-production host. Only the canonical website hosts may
+// initialize the production Pixel or call the production CAPI endpoint.
+const TRACKING_DISABLED =
+  import.meta.env.MODE === 'preview'
+  || import.meta.env.VITE_DEPLOY_TARGET === 'preview'
+  || !isBrowser
+  || !isProductionMetaUrl(window.location.href);
+
+let pixelInitialized = false;
+
 export const isPixelEnabled = () =>
-  Boolean(META_PIXEL_ID) && isBrowser && typeof window.fbq === 'function';
+  !TRACKING_DISABLED && Boolean(META_PIXEL_ID) && typeof window.fbq === 'function';
 
 export function newEventId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
@@ -22,6 +31,11 @@ export function newEventId() {
 function firePixel(method, event, params, eventId) {
   if (TRACKING_DISABLED || !isPixelEnabled()) return;
   try {
+    if (!pixelInitialized) {
+      const externalId = canonicalMetaExternalId(META_PIXEL_ID, getVisitorId());
+      window.fbq('init', META_PIXEL_ID, externalId ? { external_id: externalId } : undefined);
+      pixelInitialized = true;
+    }
     window.fbq(method, event, params, eventId ? { eventID: eventId } : undefined);
   } catch {
     /* Pixel must never break user flows */

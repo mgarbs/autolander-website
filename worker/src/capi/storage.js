@@ -49,17 +49,23 @@ export async function markEventSeen(env, eventId) {
 // on read) stops a shared or forwarded thank-you URL from minting a fake event.
 const BOOKING_TOKEN_TTL_SECONDS = 30 * 60;
 
-export async function rememberConversionToken(env, token, { eventId = '', eventName = 'Lead' } = {}) {
+export async function rememberConversionToken(
+  env,
+  token,
+  { eventId = '', eventName = 'Lead', externalId = '' } = {},
+) {
   if (!token) return;
   await tracking(env).put(
     `booktok:${token}`,
-    JSON.stringify({ e: eventId, n: eventName }),
+    JSON.stringify({ e: eventId, n: eventName, x: externalId }),
     { expirationTtl: BOOKING_TOKEN_TTL_SECONDS },
   );
 }
 
-// Single-use: returns { ok: true, eventId } the first time a valid token is
-// presented (then deletes it), or null for an unknown/used/expired token.
+// Single-use: returns the verified conversion identity the first time a valid token is
+// presented (then deletes it), or null for an unknown/used/expired token. KV's
+// get/delete pair is best-effort under concurrency; the mandatory shared event ID
+// makes simultaneous redemption replay-safe at Meta's deduplication boundary.
 // Tolerates the legacy '1' value from before tokens carried an eventID.
 export async function consumeConversionToken(env, token) {
   if (!token) return null;
@@ -69,14 +75,16 @@ export async function consumeConversionToken(env, token) {
   await tracking(env).delete(key);
   let eventId = '';
   let eventName = 'Lead';
+  let externalId = '';
   try {
     const parsed = JSON.parse(raw) || {};
     eventId = parsed.e || '';
     eventName = parsed.n || eventName;
+    externalId = parsed.x || '';
   } catch {
     eventId = '';
   }
-  return { ok: true, eventId, eventName };
+  return { ok: true, eventId, eventName, externalId };
 }
 
 // Backward-compatible aliases for older booking code paths and any in-flight

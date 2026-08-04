@@ -24,6 +24,11 @@ import {
   isValidVid,
 } from './validators.js';
 import { looksLikeBot } from '../security/bot-filter.js';
+import {
+  canonicalMetaExternalId,
+  isCanonicalMetaExternalId,
+  isProductionMetaRequest,
+} from '../../../shared/meta-signal.js';
 
 const TRACK_DAILY_IP_LIMIT = 240;
 const TRACK_HOURLY_IP_LIMIT = 30;
@@ -172,7 +177,6 @@ function sourceCategory({ utms, fbclid, page }) {
 function trafficIntent({ eventName, page }) {
   if (eventName === 'Schedule') return 'booked_demo';
   if (eventName === 'Lead') return 'lead';
-  if (eventName === 'InitiateCheckout') return 'trial_or_checkout';
   const path = (page?.current_path || page?.landing_path || '').toLowerCase();
   if (path.includes('thank-you')) return 'converted';
   if (path.includes('pricing')) return 'pricing_research';
@@ -246,6 +250,13 @@ export async function handleCapi(request, env, corsHeaders, ctx) {
 }
 
 async function handleTrack(request, env, corsHeaders, ctx) {
+  if (!request.headers.get('Origin')) {
+    return jsonResponse({ ok: false, reason: 'origin_required' }, 403, corsHeaders);
+  }
+  if (!isProductionMetaRequest(request)) {
+    return jsonResponse({ ok: true, skipped: 'non_production_meta_origin' }, 200, corsHeaders);
+  }
+
   const limit = await enforceTrackRateLimit(request, env);
   if (!limit.ok) {
     return jsonResponse({ ok: false, reason: limit.reason }, limit.status || 429, corsHeaders);
@@ -258,19 +269,12 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   }
 
   // This endpoint is intentionally open (no auth) so the site can report soft
-  // signals (PageView, ViewContent, InitiateCheckout, engagement). The
+  // signals (PageView, ViewContent, truthful outbound clicks, engagement). The
   // high-value conversions the ad campaign optimizes on must NOT be injectable
   // here. Lead/Schedule come only from verified backend paths plus the
   // single-use thank-you pixel gate. Refuse them outright.
   if (isInjectionProtectedEvent(eventName)) {
     return jsonResponse({ ok: false, reason: 'event_not_allowed_here' }, 403, corsHeaders);
-  }
-
-  // Real browser traffic always carries an Origin on this cross-site POST. The
-  // global gate only validates Origin when it is present, so a scripted client
-  // that simply omits the header would otherwise sail through — require it here.
-  if (!request.headers.get('Origin')) {
-    return jsonResponse({ ok: false, reason: 'origin_required' }, 403, corsHeaders);
   }
 
   if (looksLikeBot(request).bot) {
@@ -501,6 +505,10 @@ async function handleTrack(request, env, corsHeaders, ctx) {
 }
 
 async function handleCalendly(request, env, corsHeaders, ctx) {
+  if (!isProductionMetaRequest(request, { requireOrigin: false })) {
+    return jsonResponse({ ok: true, skipped: 'non_production_meta_host' }, 200, corsHeaders);
+  }
+
   if (!env.CALENDLY_SIGNING_KEY) {
     console.warn('[capi/calendly] CALENDLY_SIGNING_KEY is not configured — refusing webhook');
     return jsonResponse({ ok: false, reason: 'calendly_not_configured' }, 503, corsHeaders);
@@ -671,6 +679,9 @@ async function handleConfirm(request, env, corsHeaders) {
   if (!request.headers.get('Origin')) {
     return jsonResponse({ ok: false, reason: 'origin_required' }, 403, corsHeaders);
   }
+  if (!isProductionMetaRequest(request)) {
+    return jsonResponse({ ok: false, reason: 'non_production_meta_origin' }, 403, corsHeaders);
+  }
   const body = await safeJson(request);
   const token = clean(body.bt, 64);
   if (!/^[a-f0-9]{32}$/.test(token)) {
@@ -680,8 +691,18 @@ async function handleConfirm(request, env, corsHeaders) {
   if (!redeemed) {
     return jsonResponse({ ok: false, reason: 'unrecognized_token' }, 403, corsHeaders);
   }
+  const eventId = redeemed.eventId || '';
+  const eventName = redeemed.eventName || 'Lead';
+  const externalId = redeemed.externalId || '';
+  if (
+    eventName === 'Lead'
+    && (!/^lead_[a-f0-9]{32}$/.test(eventId)
+      || !isCanonicalMetaExternalId(externalId, env.META_PIXEL_ID))
+  ) {
+    return jsonResponse({ ok: false, reason: 'incomplete_lead_identity' }, 409, corsHeaders);
+  }
   return jsonResponse(
-    { ok: true, eventId: redeemed.eventId || '', eventName: redeemed.eventName || 'Lead' },
+    { ok: true, eventId, eventName, externalId },
     200,
     corsHeaders,
   );
@@ -729,10 +750,8 @@ async function buildUserData({
     userData.fbc = buildFbc(fbclid, clickTimestamp);
   }
 
-  if (vid) {
-    const salted = pixelId ? `${pixelId}:${vid}` : vid;
-    userData.external_id = await hashLowercase(salted);
-  }
+  const externalId = canonicalMetaExternalId(pixelId, vid);
+  if (externalId) userData.external_id = await hashLowercase(externalId);
   if (ip) userData.client_ip_address = ip;
   if (ua) userData.client_user_agent = ua;
 

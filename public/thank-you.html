@@ -27,29 +27,47 @@
     <!-- Meta Pixel Code -->
     <script>
       (function () {
-        // Never fire the production pixel on preview/staging hosts (*.pages.dev).
-        if (/\.pages\.dev$/i.test(location.hostname)) return;
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '2087440198847151');
-      fbq('track', 'PageView');
+        // Production Meta is a positive allowlist. Localhost, preview.autolander.ai,
+        // Pages previews, workers.dev, and every other host initialize nothing.
+        if (location.origin !== 'https://autolander.ai' && location.origin !== 'https://www.autolander.ai') return;
 
-      // VERIFIED-APPLICATION GATE for the 'Lead' conversion.
-      // The ad campaign optimizes on Lead, so it must fire ONLY after the backend
-      // has accepted the application and routed it into GHL. A bare /thank-you
-      // visit, refresh, shared link, crawler, or scanner gets PageView only.
-      (function gateLeadConversion() {
+        var PIXEL_ID = '2087440198847151';
         var WORKER = 'https://autolander.ai';
+        var pixelInitialized = false;
+
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+
+        function initPixel(externalId) {
+          if (pixelInitialized) return;
+          if (externalId) fbq('init', PIXEL_ID, { external_id: externalId });
+          else fbq('init', PIXEL_ID);
+          fbq('track', 'PageView');
+          pixelInitialized = true;
+        }
+
+        function externalIdFromVisitorCookie() {
+          var match = document.cookie.match(/(?:^|;\s*)al_vid=([^;]+)/);
+          var vid = match ? decodeURIComponent(match[1]).toLowerCase() : '';
+          return /^v_[a-z0-9]{12,40}$/.test(vid) ? PIXEL_ID + ':' + vid : '';
+        }
+
+        // VERIFIED-APPLICATION GATE for the Lead conversion. The browser event is
+        // allowed only when the server returns the deterministic Lead ID and the
+        // exact external identity used by its matching CAPI event.
+        var browserExternalId = externalIdFromVisitorCookie();
         var bt = '';
         try { bt = new URLSearchParams(window.location.search).get('bt') || ''; } catch (e) {}
-        if (!/^[a-f0-9]{32}$/.test(bt)) return; // no proof of a real application -> fire nothing
-
+        if (!/^[a-f0-9]{32}$/.test(bt)) {
+          initPixel(browserExternalId);
+          return;
+        }
         fetch(WORKER + '/capi/confirm', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -59,17 +77,23 @@
         })
           .then(function (r) { return r.ok ? r.json() : null; })
           .then(function (data) {
-            if (!data || !data.ok) return; // token rejected -> not a genuine application
-            // Use the shared eventID the server returns so this browser Lead
-            // dedupes with the Worker CAPI Lead. Fall back to a per-visitor id
-            // only if the token predates event IDs.
-            var eventId = data.eventId;
-            if (!eventId) {
-              var match = document.cookie.match(/(?:^|;\s*)al_vid=([^;]+)/);
-              var vid = match ? decodeURIComponent(match[1]) : '';
-              var day = new Date().toISOString().slice(0, 10);
-              eventId = 'lead_' + (vid || bt) + '_' + day;
+            if (!data || !data.ok || data.eventName !== 'Lead') {
+              initPixel(browserExternalId);
+              return;
             }
+            var eventId = data.eventId || '';
+            var externalId = (data.externalId || '').toLowerCase();
+            var validEventId = /^lead_[a-f0-9]{32}$/.test(eventId);
+            var validExternalId = new RegExp('^' + PIXEL_ID + ':v_[a-z0-9]{12,40}$').test(externalId);
+            if (!validEventId || !validExternalId) {
+              initPixel(browserExternalId);
+              return;
+            }
+
+            // A redeemed backend proof is authoritative. This keeps both Lead
+            // legs identical even if the long-lived visitor cookie rotated
+            // between application submission and the thank-you redirect.
+            initPixel(externalId);
             fbq('track', 'Lead', {
               content_name: 'demo_application_submitted',
               content_category: 'demo',
@@ -78,11 +102,9 @@
             // Drop the token from the address bar so a refresh or copy can't replay it.
             try { window.history.replaceState({}, document.title, window.location.pathname); } catch (e) {}
           })
-          .catch(function () { /* tracking must never break the thank-you page */ });
-      })();
+          .catch(function () { initPixel(browserExternalId); });
       })();
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2087440198847151&ev=PageView&noscript=1" alt="" /></noscript>
     <!-- End Meta Pixel Code -->
 
     <style>
