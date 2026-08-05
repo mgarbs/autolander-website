@@ -367,6 +367,32 @@ function billingCurrency(item) {
   return text(item?.price?.currency, 20).toLowerCase();
 }
 
+async function readOpenBillingInvoices(key, subscriptionId) {
+  const read = await stripeRequest(
+    key,
+    `/invoices?subscription=${encodeURIComponent(subscriptionId)}&status=open&limit=10`,
+  );
+  if (!read.ok) {
+    return {
+      error: stripeError(read, 'Stripe could not retrieve this subscription\'s unpaid bills.'),
+      openInvoices: [],
+    };
+  }
+
+  const invoices = Array.isArray(read.body?.data) ? read.body.data : [];
+  return {
+    error: null,
+    openInvoices: [...invoices]
+      .sort((left, right) => Number(right?.created || 0) - Number(left?.created || 0))
+      .map((invoice) => ({
+        id: idOf(invoice),
+        totalCents: Number.isInteger(invoice?.total) ? invoice.total : Number(invoice?.total || 0),
+        createdAt: Number.isInteger(invoice?.created) ? invoice.created : null,
+        createdIso: iso(invoice?.created),
+      })),
+  };
+}
+
 function unsupportedBillingStatus(message) {
   return result(200, { ok: true, mode: 'unsupported', message });
 }
@@ -406,6 +432,11 @@ export async function handleBillingStatus(_request, url, env) {
   }
 
   const now = Math.floor(Date.now() / 1000);
+  const isFutureTrialBridge = (
+    subscription?.status === 'trialing'
+    && Number.isInteger(subscription.trial_end)
+    && subscription.trial_end > now
+  );
   if (subscription?.status === 'past_due' || subscription?.status === 'unpaid') {
     if (items.length !== 1) {
       return unsupportedBillingStatus('Only a simple subscription with one current monthly item can be adjusted here.');
@@ -414,38 +445,42 @@ export async function handleBillingStatus(_request, url, env) {
     const reason = unsupportedSubscriptionReason({ ...subscription, status: 'active' }, activeItem);
     if (reason) return unsupportedBillingStatus(reason);
 
-    const invoicesRead = await stripeRequest(
-      key,
-      `/invoices?subscription=${encodeURIComponent(subscriptionId)}&status=open&limit=10`,
-    );
-    if (!invoicesRead.ok) return stripeError(invoicesRead, 'Stripe could not retrieve this subscription\'s unpaid bills.');
-
-    const invoices = Array.isArray(invoicesRead.body?.data) ? invoicesRead.body.data : [];
-    if (invoices.length === 0) {
+    const invoicesRead = await readOpenBillingInvoices(key, subscriptionId);
+    if (invoicesRead.error) return invoicesRead.error;
+    if (invoicesRead.openInvoices.length === 0) {
       return unsupportedBillingStatus('Their unpaid bill was just settled or written off — refresh to see the latest.');
     }
-
-    const openInvoices = [...invoices]
-      .sort((left, right) => Number(right?.created || 0) - Number(left?.created || 0))
-      .map((invoice) => ({
-        id: idOf(invoice),
-        totalCents: Number.isInteger(invoice?.total) ? invoice.total : Number(invoice?.total || 0),
-        createdAt: Number.isInteger(invoice?.created) ? invoice.created : null,
-        createdIso: iso(invoice?.created),
-      }));
 
     return result(200, {
       ok: true,
       mode: 'past_due',
       amountCents: billingAmount(activeItem),
       currency: billingCurrency(activeItem),
-      openInvoices,
+      openInvoices: invoicesRead.openInvoices,
       minDate: nextUtcDateOnly(now),
       maxDate: utcDateOnly(addUtcMonths(now, 1)),
     });
   }
 
-  if (Number.isInteger(subscription?.trial_end) && subscription.trial_end > now) {
+  if (isFutureTrialBridge) {
+    const invoicesRead = await readOpenBillingInvoices(key, subscriptionId);
+    if (invoicesRead.error) return invoicesRead.error;
+    if (invoicesRead.openInvoices.length > 0) {
+      const activeItem = items[0] || item;
+      return result(200, {
+        ok: true,
+        mode: 'past_due',
+        amountCents: billingAmount(activeItem),
+        currency: billingCurrency(activeItem),
+        openInvoices: invoicesRead.openInvoices,
+        minDate: nextUtcDateOnly(now),
+        maxDate: utcDateOnly(addUtcMonths(now, 1)),
+        resumeTargetDate: utcDateOnly(subscription.trial_end),
+      });
+    }
+  }
+
+  if (isFutureTrialBridge) {
     return result(200, {
       ok: true,
       mode: 'trial_bridge',

@@ -170,13 +170,53 @@ test('past-due subscription with a future trial is unsupported by the existing t
   assert.equal(urls.length, 1);
 });
 
-test('future trial end is reported as an already scheduled bridge', async () => {
+test('future trial end with an open invoice is reported as a resumable past-due move', async () => {
+  const trialEnd = Date.UTC(2026, 7, 15, 12, 30, 0) / 1000;
+  const invoiceCreated = Date.UTC(2026, 7, 1, 12, 0, 0) / 1000;
+  const originalNow = Date.now;
+  Date.now = () => FIXED_NOW * 1000;
+
+  try {
+    const { response, urls } = await readStatus(simpleSubscription({
+      status: 'trialing',
+      trial_start: FIXED_NOW - 60,
+      trial_end: trialEnd,
+    }), [{ id: 'in_resume', total: 7900, created: invoiceCreated }]);
+
+    assert.deepEqual(response, {
+      status: 200,
+      body: {
+        ok: true,
+        mode: 'past_due',
+        amountCents: 7900,
+        currency: 'usd',
+        openInvoices: [{
+          id: 'in_resume',
+          totalCents: 7900,
+          createdAt: invoiceCreated,
+          createdIso: '2026-08-01T12:00:00.000Z',
+        }],
+        minDate: '2026-08-06',
+        maxDate: '2026-09-05',
+        resumeTargetDate: '2026-08-15',
+      },
+    });
+    assert.deepEqual(urls, [
+      `https://api.stripe.com/v1/subscriptions/${SUBSCRIPTION_ID}`,
+      `https://api.stripe.com/v1/invoices?subscription=${SUBSCRIPTION_ID}&status=open&limit=10`,
+    ]);
+  } finally {
+    Date.now = originalNow;
+  }
+});
+
+test('future trial end without open invoices is reported as an already scheduled bridge', async () => {
   const trialEnd = Date.UTC(2026, 7, 15, 12, 30, 0) / 1000;
   const originalNow = Date.now;
   Date.now = () => FIXED_NOW * 1000;
 
   try {
-    const { response } = await readStatus(simpleSubscription({
+    const { response, urls } = await readStatus(simpleSubscription({
       status: 'trialing',
       trial_start: FIXED_NOW - 60,
       trial_end: trialEnd,
@@ -193,6 +233,35 @@ test('future trial end is reported as an already scheduled bridge', async () => 
         currency: 'usd',
       },
     });
+    assert.deepEqual(urls, [
+      `https://api.stripe.com/v1/subscriptions/${SUBSCRIPTION_ID}`,
+      `https://api.stripe.com/v1/invoices?subscription=${SUBSCRIPTION_ID}&status=open&limit=10`,
+    ]);
+  } finally {
+    Date.now = originalNow;
+  }
+});
+
+test('active subscription with a future trial end is unsupported rather than reported as a bridge', async () => {
+  const trialEnd = Date.UTC(2026, 7, 15, 12, 30, 0) / 1000;
+  const originalNow = Date.now;
+  Date.now = () => FIXED_NOW * 1000;
+
+  try {
+    const { response, urls } = await readStatus(simpleSubscription({
+      trial_start: FIXED_NOW - 60,
+      trial_end: trialEnd,
+    }));
+
+    assert.deepEqual(response, {
+      status: 200,
+      body: {
+        ok: true,
+        mode: 'unsupported',
+        message: 'This subscription is in or has a trial configuration and cannot be adjusted here.',
+      },
+    });
+    assert.deepEqual(urls, [`https://api.stripe.com/v1/subscriptions/${SUBSCRIPTION_ID}`]);
   } finally {
     Date.now = originalNow;
   }
