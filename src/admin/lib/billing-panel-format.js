@@ -52,25 +52,56 @@ export function formatBillingAmount(amountCents, currency = 'usd') {
   }
 }
 
+export function buildPastDueNoticeCopy({
+  unpaidInvoiceCount = 1,
+  unpaidAmountCents,
+  unpaidTotalCents = unpaidAmountCents,
+  oldestInvoiceDate,
+  currency = 'usd',
+}) {
+  const invoiceDate = formatBillingDate(oldestInvoiceDate, { includeYear: false });
+
+  if (unpaidInvoiceCount > 1) {
+    const unpaidTotal = formatBillingAmount(unpaidTotalCents, currency);
+    return `They have ${unpaidInvoiceCount} unpaid bills totaling ${unpaidTotal} — the oldest from ${invoiceDate}. Stripe is retrying their card. Posting is paused until this is fixed.`;
+  }
+
+  const unpaidAmount = formatBillingAmount(unpaidAmountCents, currency);
+  return `Their ${unpaidAmount} charge on ${invoiceDate} didn't go through — the bill is unpaid and Stripe is retrying their card. Posting is paused until this is fixed.`;
+}
+
+export function buildBillingResumeCopy(resumeTargetDate) {
+  if (!resumeTargetDate) return '';
+  return `Finishing a previously started move to ${formatBillingDate(resumeTargetDate)} — the unpaid bill still needs to be forgiven.`;
+}
+
 export function buildBillingConfirmCopy({
   mode,
   nextBillingDate,
   amountCents,
   unpaidAmountCents = amountCents,
+  unpaidInvoiceCount = 1,
+  unpaidTotalCents = unpaidAmountCents,
   currency = 'usd',
 }) {
   const date = formatBillingDate(nextBillingDate);
   const recurringDate = formatBillingDate(nextBillingDate, { includeYear: false });
   const charge = formatBillingAmount(amountCents, currency);
   const day = billingDayOrdinal(nextBillingDate);
+  const clamp = billingDayClampCopy(nextBillingDate);
 
   if (mode === 'schedulable') {
-    return `Move the next charge to ${date}? · Nothing is charged until then · ${charge} on ${recurringDate}, then the ${day} of every month · They keep full access the whole time.`;
+    return `Move the next charge to ${date}? · Nothing is charged until then · ${charge} on ${recurringDate}, then the ${day} of every month${clamp} · They keep full access the whole time.`;
   }
 
   if (mode === 'past_due') {
+    if (unpaidInvoiceCount > 1) {
+      const unpaidTotal = formatBillingAmount(unpaidTotalCents, currency);
+      return `Forgive ${unpaidInvoiceCount} unpaid bills totaling ${unpaidTotal} and move billing to ${date}? · The unpaid bills are canceled — they owe nothing today · ${charge} on ${recurringDate}, then the ${day} of every month${clamp} · Posting turns back on right away.`;
+    }
+
     const unpaid = formatBillingAmount(unpaidAmountCents, currency);
-    return `Forgive the unpaid ${unpaid} bill and move billing to ${date}? · The unpaid bill is canceled — they owe nothing today · ${charge} on ${recurringDate}, then the ${day} of every month · Posting turns back on right away.`;
+    return `Forgive the unpaid ${unpaid} bill and move billing to ${date}? · The unpaid bill is canceled — they owe nothing today · ${charge} on ${recurringDate}, then the ${day} of every month${clamp} · Posting turns back on right away.`;
   }
 
   return '';
@@ -79,16 +110,33 @@ export function buildBillingConfirmCopy({
 export function buildBillingSuccessCopy({ mode, nextBillingDate }) {
   const date = formatBillingDate(nextBillingDate);
   const day = billingDayOrdinal(nextBillingDate);
+  const clamp = billingDayClampCopy(nextBillingDate);
 
   if (mode === 'schedulable') {
-    return `Done. Next charge: ${date} — monthly on the ${day} from then on.`;
+    return `Done. Next charge: ${date} — monthly on the ${day}${clamp} from then on.`;
   }
 
   if (mode === 'past_due') {
-    return `Done. Unpaid bill forgiven. Next charge: ${date} — monthly on the ${day}. Posting is back on.`;
+    return `Done. Unpaid bill forgiven. Next charge: ${date} — monthly on the ${day}${clamp}. Posting is back on.`;
   }
 
   return '';
+}
+
+export function buildBillingBridgeCopy({ trialEnd, amountCents, currency = 'usd' }) {
+  const date = formatBillingDate(trialEnd);
+  const amount = formatBillingAmount(amountCents, currency);
+  const day = billingDayOrdinal(trialEnd);
+  const clamp = billingDayClampCopy(trialEnd);
+
+  return `A billing-date move is already scheduled: no charge until ${date}, then ${amount} monthly on the ${day}${clamp}.`;
+}
+
+function billingDayClampCopy(value) {
+  const day = billingDay(value);
+  return day !== null && day >= 29
+    ? ' (or the last day of shorter months)'
+    : '';
 }
 
 function billingDate(value) {

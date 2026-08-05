@@ -7,9 +7,11 @@ import {
   scheduleNextBillingDate,
 } from './lib/support-adjustments.js';
 import {
-  billingDayOrdinal,
+  buildBillingBridgeCopy,
   buildBillingConfirmCopy,
+  buildBillingResumeCopy,
   buildBillingSuccessCopy,
+  buildPastDueNoticeCopy,
   formatBillingAmount,
   formatBillingDate,
 } from './lib/billing-panel-format.js';
@@ -46,6 +48,9 @@ export default function BillingPanel({
       const result = await fetchBillingStatus(stripeSubscriptionId);
       if (sequence !== requestSequence.current) return false;
       setBillingStatus(result);
+      if (result?.mode === 'past_due' && text(result.resumeTargetDate)) {
+        setNextBillingDate(text(result.resumeTargetDate));
+      }
       return true;
     } catch (error) {
       if (sequence !== requestSequence.current) return false;
@@ -226,24 +231,38 @@ function BillingState({
   }
 
   if (mode === 'past_due') {
-    const unpaidInvoice = billingStatus.openInvoices?.[0];
+    const openInvoices = Array.isArray(billingStatus.openInvoices)
+      ? billingStatus.openInvoices
+      : [];
+    const unpaidInvoice = openInvoices[0];
+    const unpaidInvoiceCount = openInvoices.length;
     const unpaidAmountCents = unpaidInvoice?.totalCents ?? billingStatus.amountCents;
-    const unpaidAmount = formatBillingAmount(unpaidAmountCents, billingStatus.currency);
-    const invoiceDate = formatBillingDate(
-      unpaidInvoice?.createdIso || unpaidInvoice?.createdAt,
-      { includeYear: false },
-    );
+    const unpaidTotalCents = openInvoices.reduce((total, invoice) => {
+      const invoiceTotal = Number(invoice?.totalCents);
+      return total + (Number.isFinite(invoiceTotal) ? invoiceTotal : 0);
+    }, 0);
+    const oldestUnpaidInvoice = openInvoices[openInvoices.length - 1] || unpaidInvoice;
+    const oldestInvoiceDate = oldestUnpaidInvoice?.createdIso || oldestUnpaidInvoice?.createdAt;
+    const resumeTargetDate = text(billingStatus.resumeTargetDate);
 
     return (
       <div className="min-w-0 space-y-4">
         <p className="rounded-xl border border-amber-400/20 bg-amber-400/10 px-3 py-3 text-sm font-bold leading-relaxed text-amber-100">
-          Their {unpaidAmount} charge on {invoiceDate} didn&apos;t go through — the bill is unpaid and Stripe is retrying their card. Posting is paused until this is fixed.
+          {buildPastDueNoticeCopy({
+            unpaidInvoiceCount,
+            unpaidAmountCents,
+            unpaidTotalCents,
+            oldestInvoiceDate,
+            currency: billingStatus.currency,
+          })}
         </p>
         <BillingAction
           billingStatus={billingStatus}
           buttonLabel="Forgive & move billing date"
           confirming={confirming}
           confirmButtonLabel="Yes — forgive & move"
+          dateHelperText={buildBillingResumeCopy(resumeTargetDate)}
+          dateInputLocked={Boolean(resumeTargetDate)}
           label="Forgive the unpaid bill and charge on"
           loading={loading}
           nextBillingDate={nextBillingDate}
@@ -253,6 +272,8 @@ function BillingState({
           onSubmit={onSubmit}
           submitting={submitting}
           unpaidAmountCents={unpaidAmountCents}
+          unpaidInvoiceCount={unpaidInvoiceCount}
+          unpaidTotalCents={unpaidTotalCents}
         />
       </div>
     );
@@ -262,7 +283,11 @@ function BillingState({
     const trialEnd = billingStatus.trialEndIso || billingStatus.trialEnd;
     return (
       <p className="text-sm font-bold leading-relaxed text-slate-200">
-        A billing-date move is already scheduled: no charge until {formatBillingDate(trialEnd)}, then {amount} monthly on the {billingDayOrdinal(trialEnd)}.
+        {buildBillingBridgeCopy({
+          trialEnd,
+          amountCents: billingStatus.amountCents,
+          currency: billingStatus.currency,
+        })}
       </p>
     );
   }
@@ -279,6 +304,8 @@ function BillingAction({
   buttonLabel,
   confirming,
   confirmButtonLabel,
+  dateHelperText,
+  dateInputLocked = false,
   label,
   loading,
   nextBillingDate,
@@ -288,6 +315,8 @@ function BillingAction({
   onSubmit,
   submitting,
   unpaidAmountCents,
+  unpaidInvoiceCount,
+  unpaidTotalCents,
 }) {
   const busy = loading || submitting;
 
@@ -300,6 +329,8 @@ function BillingAction({
             nextBillingDate,
             amountCents: billingStatus.amountCents,
             unpaidAmountCents,
+            unpaidInvoiceCount,
+            unpaidTotalCents,
             currency: billingStatus.currency,
           })}
         </p>
@@ -337,10 +368,16 @@ function BillingAction({
           min={billingStatus.minDate}
           max={billingStatus.maxDate}
           value={nextBillingDate}
-          disabled={busy}
+          disabled={busy || dateInputLocked}
+          readOnly={dateInputLocked}
           onChange={(event) => onChangeDate(event.target.value)}
           className="h-10 w-full rounded-xl border border-white/10 bg-black/40 px-3 text-sm font-bold text-white outline-none focus:border-blue-500/60 disabled:cursor-not-allowed disabled:opacity-50"
         />
+        {dateHelperText && (
+          <span className="block text-[11px] font-semibold leading-relaxed text-amber-200/80">
+            {dateHelperText}
+          </span>
+        )}
       </label>
       <button
         type="button"
