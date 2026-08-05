@@ -9,8 +9,14 @@ import {
   handleSupportAdjustmentCandidates,
   handleSupportCreditGrant,
   handleSupportDiscount,
+  proxySupportAdjustments,
 } from './support-adjustments.js';
-import { handleBillingDateSchedule } from './billing-cycle.js';
+import {
+  handleBillingDateSchedule,
+  handleBillingStatus,
+  normalizeSubscriptionId,
+  parseDateOnly,
+} from './billing-cycle.js';
 import { handleGhlOpportunitySearch } from './ghl-linking.js';
 import {
   handleBillingLinkDetail,
@@ -108,8 +114,13 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
+  if (path === '/admin/support-adjustments/billing-status' && request.method === 'GET') {
+    const result = await handleBillingStatus(request, url, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
   if (path === '/admin/support-adjustments/billing-date' && request.method === 'POST') {
-    const result = await handleBillingDateSchedule(request, env);
+    const result = await handleBillingDateRequest(request, env);
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
@@ -169,6 +180,38 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
   }
 
   return jsonResponse({ ok: false, reason: 'not_found' }, 404, corsHeaders);
+}
+
+export async function handleBillingDateRequest(request, env) {
+  const scheduleRequest = request.clone();
+  const body = await safeJson(request);
+  if (body?.mode !== 'forgive_past_due') {
+    return handleBillingDateSchedule(scheduleRequest, env);
+  }
+
+  const rawOrgId = typeof body.orgId === 'string' ? body.orgId.trim() : '';
+  const subscriptionId = normalizeSubscriptionId(body.subscriptionId);
+  const nextBillingDate = parseDateOnly(body.nextBillingDate);
+  if (!rawOrgId || rawOrgId.length > 200 || !subscriptionId || !nextBillingDate) {
+    return {
+      status: 400,
+      body: {
+        ok: false,
+        reason: 'invalid_billing_date_request',
+        message: 'orgId, subscriptionId, and a valid next billing date are required.',
+      },
+    };
+  }
+
+  return proxySupportAdjustments(env, '/billing-anchor', {
+    method: 'POST',
+    body: {
+      orgId: rawOrgId,
+      subscriptionId,
+      nextBillingDate: nextBillingDate.value,
+      note: body.note,
+    },
+  });
 }
 
 function paramDays(url) {

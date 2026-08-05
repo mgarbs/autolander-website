@@ -12,7 +12,7 @@ function notConfigured() {
   return { status: 503, body: { ok: false, reason: 'ops_not_configured' } };
 }
 
-async function proxySupportAdjustments(
+export async function proxySupportAdjustments(
   env,
   path,
   { search = '', method = 'GET', body, signal } = {},
