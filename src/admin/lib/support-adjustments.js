@@ -27,6 +27,21 @@ export async function scheduleNextBillingDate(input) {
   return apiPost('/admin/support-adjustments/billing-date', input);
 }
 
+export async function fetchBillingStatus(subscriptionId) {
+  return apiGet(
+    `/admin/support-adjustments/billing-status?subscriptionId=${encodeURIComponent(subscriptionId)}`,
+  );
+}
+
+export async function forgivePastDueAndReschedule({ orgId, subscriptionId, nextBillingDate }) {
+  return apiPost('/admin/support-adjustments/billing-date', {
+    mode: 'forgive_past_due',
+    orgId,
+    subscriptionId,
+    nextBillingDate,
+  });
+}
+
 export function normalizeCandidates(payload) {
   const rows = firstArray(payload, ['candidates', 'results', 'orgs', 'rows']);
   return rows.map(normalizeCandidate).filter((row) => row.orgId);
@@ -205,7 +220,7 @@ export function friendlyAdjustmentError(err) {
     CLOUD_UNREACHABLE: 'The cloud API is unreachable right now.',
     ORG_NOT_FOUND: 'That account could not be found.',
     SUBSCRIPTION_NOT_FOUND: 'That account does not have a linked Stripe subscription.',
-    BAD_STATUS: 'That subscription is not active enough to discount.',
+    BAD_STATUS: 'Their subscription isn\'t in a state this tool can adjust — handle it in Stripe.',
     UNSUPPORTED_INTERVAL: 'Only monthly subscriptions can receive a next-month percent discount here.',
     DISCOUNT_EXISTS: 'That subscription already has a discount. Remove it in Stripe before adding another one.',
     PRORATION_PRESENT: 'The upcoming invoice has proration lines, so the support UI will not discount it.',
@@ -222,6 +237,13 @@ export function friendlyAdjustmentError(err) {
     SCHEDULE_VERIFICATION_FAILED: 'Stripe returned an unexpected schedule, so the billing-date change was not kept.',
     SCHEDULE_ROLLBACK_FAILED: 'Stripe could not safely roll back a temporary schedule. Review the subscription in Stripe immediately.',
     STRIPE_ERROR: 'Stripe could not complete the billing-date adjustment.',
+    GROUP_BILLED: 'This dealership is billed through its dealer group — it has no card subscription of its own.',
+    SUB_MISMATCH: 'This customer\'s Stripe subscription doesn\'t match our records — handle it in Stripe.',
+    NO_OPEN_INVOICE: 'Their unpaid bill was just settled or written off — refresh billing and look again.',
+    INVOICE_ALREADY_PAID: 'Their unpaid bill was just settled or written off — refresh billing and look again.',
+    TARGET_OUT_OF_RANGE: 'Pick a date in the next month.',
+    SCHEDULE_PRESENT: 'This subscription already has a Stripe schedule. Manage its billing date in Stripe so the existing schedule is preserved.',
+    TRIAL_PRESENT: 'This subscription is in or has a trial configuration and cannot be adjusted here.',
   };
   return map[reason] || err?.message || 'The adjustment could not be completed.';
 }

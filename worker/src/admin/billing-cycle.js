@@ -45,7 +45,7 @@ function activeDiscounts(value) {
   return nonEmptyArray(value) || Boolean(value && !Array.isArray(value));
 }
 
-function parseDateOnly(value) {
+export function parseDateOnly(value) {
   const raw = text(value, 20);
   const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if (!match) return null;
@@ -109,7 +109,21 @@ function iso(timestamp) {
   return Number.isInteger(timestamp) ? new Date(timestamp * 1000).toISOString() : null;
 }
 
-function normalizeSubscriptionId(value) {
+function utcDateOnly(timestamp) {
+  return Number.isInteger(timestamp) ? new Date(timestamp * 1000).toISOString().slice(0, 10) : null;
+}
+
+function nextUtcDateOnly(timestamp) {
+  if (!Number.isInteger(timestamp)) return null;
+  const source = new Date(timestamp * 1000);
+  return new Date(Date.UTC(
+    source.getUTCFullYear(),
+    source.getUTCMonth(),
+    source.getUTCDate() + 1,
+  )).toISOString().slice(0, 10);
+}
+
+export function normalizeSubscriptionId(value) {
   const id = text(value, MAX_SUBSCRIPTION_ID_LENGTH);
   return /^sub_[A-Za-z0-9]+$/.test(id) ? id : '';
 }
@@ -341,6 +355,163 @@ async function releaseSchedule(key, scheduleId, idempotencyKey) {
     idempotencyKey,
   });
   return response.ok;
+}
+
+function billingAmount(item) {
+  const unitAmount = Number(item?.price?.unit_amount);
+  const quantity = Number(item?.quantity || 1);
+  return Number.isFinite(unitAmount) && Number.isFinite(quantity) ? unitAmount * quantity : 0;
+}
+
+function billingCurrency(item) {
+  return text(item?.price?.currency, 20).toLowerCase();
+}
+
+async function readOpenBillingInvoices(key, subscriptionId) {
+  const read = await stripeRequest(
+    key,
+    `/invoices?subscription=${encodeURIComponent(subscriptionId)}&status=open&limit=10`,
+  );
+  if (!read.ok) {
+    return {
+      error: stripeError(read, 'Stripe could not retrieve this subscription\'s unpaid bills.'),
+      openInvoices: [],
+    };
+  }
+
+  const invoices = Array.isArray(read.body?.data) ? read.body.data : [];
+  return {
+    error: null,
+    openInvoices: [...invoices]
+      .sort((left, right) => Number(right?.created || 0) - Number(left?.created || 0))
+      .map((invoice) => ({
+        id: idOf(invoice),
+        totalCents: Number.isInteger(invoice?.total) ? invoice.total : Number(invoice?.total || 0),
+        createdAt: Number.isInteger(invoice?.created) ? invoice.created : null,
+        createdIso: iso(invoice?.created),
+      })),
+  };
+}
+
+function unsupportedBillingStatus(message) {
+  return result(200, { ok: true, mode: 'unsupported', message });
+}
+
+export async function handleBillingStatus(_request, url, env) {
+  const subscriptionId = normalizeSubscriptionId(url?.searchParams?.get('subscriptionId'));
+  if (!subscriptionId) {
+    return result(400, errorBody(
+      'invalid_billing_status_request',
+      'A valid subscriptionId is required.',
+    ));
+  }
+
+  const key = stripeKey(env);
+  if (!key) {
+    return result(503, errorBody('stripe_not_configured', 'Stripe is not configured for billing-date adjustments.'));
+  }
+
+  const read = await stripeRequest(key, `/subscriptions/${encodeURIComponent(subscriptionId)}`);
+  if (!read.ok) return stripeError(read, 'Stripe could not retrieve this subscription.');
+
+  const subscription = read.body;
+  const period = periodEndOf(subscription);
+  const items = Array.isArray(subscription?.items?.data)
+    ? subscription.items.data.filter((item) => !item?.deleted)
+    : [];
+  const hasSimpleCurrentItem = Boolean(
+    items.length === 1
+    && period.primary === items[0]
+    && period.start
+    && period.end
+  );
+  const item = hasSimpleCurrentItem ? period.primary : items[0] || period.primary;
+
+  if (subscription?.status === 'canceled') {
+    return unsupportedBillingStatus('This subscription is canceled.');
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  const isFutureTrialBridge = (
+    subscription?.status === 'trialing'
+    && Number.isInteger(subscription.trial_end)
+    && subscription.trial_end > now
+  );
+  if (subscription?.status === 'past_due' || subscription?.status === 'unpaid') {
+    if (items.length !== 1) {
+      return unsupportedBillingStatus('Only a simple subscription with one current monthly item can be adjusted here.');
+    }
+    const activeItem = items[0];
+    const reason = unsupportedSubscriptionReason({ ...subscription, status: 'active' }, activeItem);
+    if (reason) return unsupportedBillingStatus(reason);
+
+    const invoicesRead = await readOpenBillingInvoices(key, subscriptionId);
+    if (invoicesRead.error) return invoicesRead.error;
+    if (invoicesRead.openInvoices.length === 0) {
+      return unsupportedBillingStatus('Their unpaid bill was just settled or written off — refresh to see the latest.');
+    }
+
+    return result(200, {
+      ok: true,
+      mode: 'past_due',
+      amountCents: billingAmount(activeItem),
+      currency: billingCurrency(activeItem),
+      openInvoices: invoicesRead.openInvoices,
+      minDate: nextUtcDateOnly(now),
+      maxDate: utcDateOnly(addUtcMonths(now, 1)),
+    });
+  }
+
+  if (isFutureTrialBridge) {
+    const invoicesRead = await readOpenBillingInvoices(key, subscriptionId);
+    if (invoicesRead.error) return invoicesRead.error;
+    if (invoicesRead.openInvoices.length > 0) {
+      const activeItem = items[0] || item;
+      return result(200, {
+        ok: true,
+        mode: 'past_due',
+        amountCents: billingAmount(activeItem),
+        currency: billingCurrency(activeItem),
+        openInvoices: invoicesRead.openInvoices,
+        minDate: nextUtcDateOnly(now),
+        maxDate: utcDateOnly(addUtcMonths(now, 1)),
+        resumeTargetDate: utcDateOnly(subscription.trial_end),
+      });
+    }
+  }
+
+  if (isFutureTrialBridge) {
+    return result(200, {
+      ok: true,
+      mode: 'trial_bridge',
+      trialEnd: subscription.trial_end,
+      trialEndIso: iso(subscription.trial_end),
+      amountCents: billingAmount(item),
+      currency: billingCurrency(item),
+    });
+  }
+
+  if (subscription?.status === 'active') {
+    if (!hasSimpleCurrentItem) {
+      return unsupportedBillingStatus('Only a simple subscription with one current monthly item can be adjusted here.');
+    }
+    const reason = unsupportedSubscriptionReason(subscription, period.primary);
+    if (reason) return unsupportedBillingStatus(reason);
+
+    return result(200, {
+      ok: true,
+      mode: 'schedulable',
+      amountCents: billingAmount(period.primary),
+      currency: billingCurrency(period.primary),
+      interval: 'month',
+      currentPeriodEnd: period.end,
+      currentPeriodEndIso: iso(period.end),
+      minDate: nextUtcDateOnly(period.end),
+      maxDate: utcDateOnly(addUtcMonths(period.end, 1)),
+    });
+  }
+
+  return unsupportedBillingStatus(unsupportedSubscriptionReason(subscription, item));
 }
 
 export async function handleBillingDateSchedule(request, env) {

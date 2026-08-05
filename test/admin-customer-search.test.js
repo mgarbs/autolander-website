@@ -4,6 +4,7 @@ import {
   candidateContacts,
   candidatePeople,
   dialablePhone,
+  friendlyAdjustmentError,
   normalizeCandidate,
   searchSupportCandidates,
 } from '../src/admin/lib/support-adjustments.js';
@@ -74,4 +75,21 @@ test('phone links retain a leading plus and strip display punctuation', () => {
 
 test('one-character customer queries do not call the candidates endpoint', async () => {
   assert.deepEqual(await searchSupportCandidates(' a '), []);
+});
+
+test('billing adjustment reasons use operator-friendly messages', () => {
+  const messages = {
+    group_billed: 'This dealership is billed through its dealer group — it has no card subscription of its own.',
+    sub_mismatch: 'This customer\'s Stripe subscription doesn\'t match our records — handle it in Stripe.',
+    no_open_invoice: 'Their unpaid bill was just settled or written off — refresh billing and look again.',
+    invoice_already_paid: 'Their unpaid bill was just settled or written off — refresh billing and look again.',
+    target_out_of_range: 'Pick a date in the next month.',
+    bad_status: 'Their subscription isn\'t in a state this tool can adjust — handle it in Stripe.',
+    schedule_present: 'This subscription already has a Stripe schedule. Manage its billing date in Stripe so the existing schedule is preserved.',
+    trial_present: 'This subscription is in or has a trial configuration and cannot be adjusted here.',
+  };
+
+  for (const [reason, message] of Object.entries(messages)) {
+    assert.equal(friendlyAdjustmentError({ reason }), message);
+  }
 });

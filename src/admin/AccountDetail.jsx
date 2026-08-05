@@ -19,6 +19,7 @@ import {
   healthColor,
   healthState,
 } from './lib/analytics-format.js';
+import BillingPanel from './BillingPanel.jsx';
 import VersionBadge from './VersionBadge.jsx';
 
 export default function AccountDetail({
@@ -142,6 +143,13 @@ export default function AccountDetail({
         </div>
       </div>
       {csMessage && <p className={`text-[10px] font-bold ${csMessage.startsWith('Could') ? 'text-red-300' : 'text-emerald-300'}`}>{csMessage}</p>}
+
+      <BillingPanel
+        orgId={orgId}
+        subscription={detail?.subscription}
+        groupId={detail?.org?.groupId}
+        onChanged={onRefresh}
+      />
 
       <section className="min-w-0 space-y-3">
         <SectionTitle icon={Users}>Users and posting activity</SectionTitle>
