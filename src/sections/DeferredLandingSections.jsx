@@ -161,7 +161,6 @@ const PRICING = [
   ];
 
 export default function DeferredLandingSections({
-  featuresSectionRef,
   isAnnual,
   setIsAnnual,
   studioView,
@@ -228,7 +227,7 @@ export default function DeferredLandingSections({
       </section>
 
       {/* Features Grid */}
-      <section id="features" ref={featuresSectionRef} className="relative pb-24 pt-24 lg:pb-32 lg:pt-40">
+      <section id="features" className="relative pb-24 pt-24 lg:pb-32 lg:pt-40">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16 lg:mb-24">
             <FadeIn>

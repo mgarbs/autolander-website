@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { newEventId, track, trackCustom } from './lib/meta-pixel.js';
+import { newEventId, trackCustom } from './lib/meta-pixel.js';
 import Hero from './sections/Hero.jsx';
 import TrustStrip from './sections/TrustStrip.jsx';
 import ExecutionGap from './sections/ExecutionGap.jsx';
@@ -40,7 +40,6 @@ const DOWNLOADS = {
   linux: `${RELEASE_BASE_URL}/AutoLander-Linux.AppImage`,
 };
 const REFERRAL_CODE_PATTERN = /^[a-z0-9]{4,64}$/;
-const FEATURES_VIEW_STORAGE_KEY = 'autolander_meta_view_content_features';
 const STALE_APP_HASH_ROUTES = new Set([
   '#/login',
   '#/sign-in',
@@ -96,22 +95,6 @@ function withFbEventId(url, eventId) {
   }
 }
 
-function hasSessionFlag(key) {
-  try {
-    return window.sessionStorage.getItem(key) === '1';
-  } catch {
-    return false;
-  }
-}
-
-function setSessionFlag(key) {
-  try {
-    window.sessionStorage.setItem(key, '1');
-  } catch {
-    /* Session storage can be unavailable in restricted browser contexts. */
-  }
-}
-
 const FadeIn = ({ children }) => <div>{children}</div>;
 
 const DemoApplicationFallback = ({ onClose }) => (
@@ -138,7 +121,6 @@ export default function App() {
   const [shouldMountChat, setShouldMountChat] = useState(false);
   const [shouldMountDeferredSections, setShouldMountDeferredSections] = useState(false);
   const [pendingDeferredSection, setPendingDeferredSection] = useState('');
-  const featuresSectionRef = useRef(null);
   const lastNavScrollYRef = useRef(0);
   const isMonthlyBilling = !isAnnual;
 
@@ -320,30 +302,6 @@ export default function App() {
       cleanupIntentListeners();
     };
   }, []);
-
-  useEffect(() => {
-    const section = featuresSectionRef.current;
-    if (!section || typeof IntersectionObserver === 'undefined' || hasSessionFlag(FEATURES_VIEW_STORAGE_KEY)) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-
-        setSessionFlag(FEATURES_VIEW_STORAGE_KEY);
-        track('ViewContent', {
-          content_name: 'features',
-          content_category: 'landing',
-        });
-        observer.disconnect();
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, [shouldMountDeferredSections]);
 
   const openDeferredSection = useCallback((sectionId) => (event) => {
     event.preventDefault();
@@ -594,7 +552,6 @@ export default function App() {
       {shouldMountDeferredSections && (
         <Suspense fallback={null}>
           <DeferredLandingSections
-            featuresSectionRef={featuresSectionRef}
             isAnnual={isAnnual}
             setIsAnnual={setIsAnnual}
             studioView={studioView}

@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { handleBooking } from '../worker/src/booking/router.js';
 import { handleCapi } from '../worker/src/capi/router.js';
+import worker from '../worker/src/index.js';
 import { hashLowercase, sha256Hex } from '../worker/src/capi/hash.js';
 import { rememberConversionToken } from '../worker/src/capi/storage.js';
 import { isAllowedEvent } from '../worker/src/capi/validators.js';
@@ -136,6 +137,18 @@ test('production Meta host and external-ID policies are positive allowlists', ()
   assert.equal(externalId, `${PIXEL_ID}:${VISITOR_ID}`);
   assert.equal(isCanonicalMetaExternalId(externalId, PIXEL_ID), true);
   assert.equal(isCanonicalMetaExternalId(`${PIXEL_ID}:contact_123`, PIXEL_ID), false);
+});
+
+test('www permanently redirects to the canonical production host', async () => {
+  for (const [source, destination] of [
+    ['https://www.autolander.ai/', 'https://autolander.ai/'],
+    ['https://www.autolander.ai/features?utm_source=meta', 'https://autolander.ai/features?utm_source=meta'],
+    ['https://www.autolander.ai/capi/track', 'https://autolander.ai/capi/track'],
+  ]) {
+    const response = await worker.fetch(new Request(source), {}, {});
+    assert.equal(response.status, 308);
+    assert.equal(response.headers.get('location'), destination);
+  }
 });
 
 test('verified Lead uses one deterministic ID and one external identity end to end', async (t) => {
@@ -377,13 +390,15 @@ test('preview and localhost applications cannot mint or send a production Lead',
   assert.equal(graphRequests(requests).length, 0);
 });
 
-test('download clicks are truthful OutboundClick events, not checkouts or completed downloads', async () => {
-  const [appSource, thankYouSource, trackerSource, viteSource, envSource] = await Promise.all([
+test('download clicks and landing content emit only truthful Meta signals', async () => {
+  const [appSource, deferredSource, thankYouSource, trackerSource, viteSource, envSource, wranglerSource] = await Promise.all([
     readFile(new URL('../src/App.jsx', import.meta.url), 'utf8'),
+    readFile(new URL('../src/sections/DeferredLandingSections.jsx', import.meta.url), 'utf8'),
     readFile(new URL('../public/thank-you.html', import.meta.url), 'utf8'),
     readFile(new URL('../src/lib/tracker.js', import.meta.url), 'utf8'),
     readFile(new URL('../vite.config.js', import.meta.url), 'utf8'),
     readFile(new URL('../.env', import.meta.url), 'utf8'),
+    readFile(new URL('../worker/wrangler.toml', import.meta.url), 'utf8'),
   ]);
 
   assert.equal(isAllowedEvent('AppDownload'), false);
@@ -394,6 +409,10 @@ test('download clicks are truthful OutboundClick events, not checkouts or comple
   assert.equal((appSource.match(/trackCustom\('OutboundClick'/g) || []).length, 3);
   assert.match(appSource, /action: 'download_installer'/);
   assert.match(appSource, /action: 'open_installed_app'/);
+  assert.doesNotMatch(appSource, /ViewContent|FEATURES_VIEW_STORAGE_KEY|featuresSectionRef|IntersectionObserver/);
+  assert.doesNotMatch(deferredSource, /featuresSectionRef/);
+  assert.match(deferredSource, /<section id="features"/);
+  assert.match(wranglerSource, /pattern = "www\.autolander\.ai\/\*"/);
 
   assert.match(thankYouSource, /\^lead_\[a-f0-9\]\{32\}\$/);
   assert.match(thankYouSource, /data\.eventName !== 'Lead'/);

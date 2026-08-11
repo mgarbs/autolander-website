@@ -44,6 +44,14 @@ const SUPPORT_SUBJECT = 'AutoLander support request';
 
 export default {
   async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    if (url.hostname.toLowerCase() === 'www.autolander.ai') {
+      url.protocol = 'https:';
+      url.hostname = 'autolander.ai';
+      url.port = '';
+      return Response.redirect(url.toString(), 308);
+    }
+
     const corsHeaders = getCorsHeaders(request, env);
 
     try {
@@ -53,8 +61,6 @@ export default {
         headers: corsHeaders,
       });
     }
-
-    const url = new URL(request.url);
 
     const originCheck = isAllowedOrigin(request, env);
     if (!originCheck.ok) {
