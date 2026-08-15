@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { hasFirstAndLastName } from '../src/lib/demo-application.js';
 import { handleBooking } from '../worker/src/booking/router.js';
 
 function applicationRequest(vehicleCount) {
@@ -28,6 +29,12 @@ const env = {
   GHL_LOCATION_ID: 'test-location',
   GHL_WORKFLOW_ID: 'test-workflow',
 };
+
+test('demo application requires first and last name tokens', () => {
+  assert.equal(hasFirstAndLastName('Jamie'), false);
+  assert.equal(hasFirstAndLastName('Jamie Dealer'), true);
+  assert.equal(hasFirstAndLastName('  Jamie   Dealer  '), true);
+});
 
 test('demo application rejects a missing vehicle inventory count', async () => {
   const response = await handleBooking(applicationRequest(''), env, {}, {});

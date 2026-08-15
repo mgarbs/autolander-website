@@ -4,8 +4,7 @@ import test from 'node:test';
 import { handleBooking } from '../worker/src/booking/router.js';
 import { handleCapi } from '../worker/src/capi/router.js';
 import { hashLowercase, sha256Hex } from '../worker/src/capi/hash.js';
-import { rememberConversionToken } from '../worker/src/capi/storage.js';
-import { isAllowedEvent } from '../worker/src/capi/validators.js';
+import { isAllowedEvent, normalizePostalCode } from '../worker/src/capi/validators.js';
 import {
   canonicalMetaExternalId,
   isCanonicalMetaExternalId,
@@ -55,8 +54,9 @@ function applicationRequest({
   requestUrl = 'https://autolander.ai/api/apply',
   submissionId = 'sub_meta_signal_quality_123',
   visitorId = VISITOR_ID,
+  cf = { country: 'US', region: 'GA', city: 'Atlanta', postalCode: '30301' },
 } = {}) {
-  return new Request(requestUrl, {
+  const request = new Request(requestUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -81,6 +81,8 @@ function applicationRequest({
       },
     }),
   });
+  Object.defineProperty(request, 'cf', { value: cf });
+  return request;
 }
 
 function installNetworkMock(t) {
@@ -102,6 +104,15 @@ function installNetworkMock(t) {
 function graphRequests(requests) {
   return requests.filter(({ href }) => href.includes('graph.facebook.com'));
 }
+
+test('postal codes are normalized for Meta user data', () => {
+  assert.equal(normalizePostalCode('30301-1234'), '30301');
+  assert.equal(normalizePostalCode(' 30301 '), '30301');
+  assert.equal(normalizePostalCode('SW1A 1AA', 'GB'), 'sw1a1aa');
+  assert.equal(normalizePostalCode('ABC', 'us'), '');
+  assert.equal(normalizePostalCode(''), '');
+  assert.equal(normalizePostalCode(undefined), '');
+});
 
 test('production Meta host and external-ID policies are positive allowlists', () => {
   assert.equal(isProductionMetaHostname('autolander.ai'), true);
@@ -160,6 +171,10 @@ test('verified Lead uses one deterministic ID and one external identity end to e
   assert.equal(metaEvent.event_name, 'Lead');
   assert.equal(metaEvent.event_id, expectedEventId);
   assert.equal(metaEvent.user_data.external_id, await hashLowercase(expectedExternalId));
+  assert.equal(metaEvent.user_data.zp, await sha256Hex('30301'));
+  assert.equal(metaEvent.user_data.ct, await hashLowercase('atlanta'));
+  assert.equal(metaEvent.user_data.st, await hashLowercase('ga'));
+  assert.equal(metaEvent.user_data.country, await hashLowercase('us'));
   assert.deepEqual(
     {
       content_name: metaEvent.custom_data.content_name,
@@ -173,11 +188,16 @@ test('verified Lead uses one deterministic ID and one external identity end to e
     },
   );
 
+  const advancedMatchingKeys = ['em', 'ph', 'fn', 'ln', 'ct', 'st', 'zp', 'country'];
+  const expectedAm = Object.fromEntries(
+    advancedMatchingKeys.map((key) => [key, metaEvent.user_data[key]]),
+  );
   const tokenRecord = JSON.parse(await tracking.get(`booktok:${payload.bt}`));
   assert.deepEqual(tokenRecord, {
     e: expectedEventId,
     n: 'Lead',
     x: expectedExternalId,
+    a: expectedAm,
   });
 
   const duplicate = await handleBooking(applicationRequest({ submissionId }), env, {}, {});
@@ -201,12 +221,29 @@ test('verified Lead uses one deterministic ID and one external identity end to e
     {},
   );
   assert.equal(confirmed.status, 200);
-  assert.deepEqual(await confirmed.json(), {
+  const confirmedText = await confirmed.text();
+  const confirmedPayload = JSON.parse(confirmedText);
+  assert.deepEqual(confirmedPayload, {
     ok: true,
     eventId: expectedEventId,
     eventName: 'Lead',
     externalId: expectedExternalId,
+    am: expectedAm,
   });
+  for (const key of advancedMatchingKeys) {
+    assert.equal(confirmedPayload.am[key], metaEvent.user_data[key], key);
+  }
+  const confirmedTextLower = confirmedText.toLowerCase();
+  for (const plaintext of [
+    'jamie@example.com',
+    '(212) 555-0123',
+    '2125550123',
+    '+12125550123',
+    'jamie',
+    'dealer',
+  ]) {
+    assert.equal(confirmedTextLower.includes(plaintext), false, plaintext);
+  }
 
   const reused = await handleCapi(
     new Request('https://autolander.ai/capi/confirm', {
@@ -249,7 +286,10 @@ test('incomplete Lead tokens fail closed and preview cannot consume a valid toke
   const validToken = 'b'.repeat(32);
   const eventId = `lead_${'c'.repeat(32)}`;
   const externalId = canonicalMetaExternalId(PIXEL_ID, VISITOR_ID);
-  await rememberConversionToken(env, validToken, { eventId, eventName: 'Lead', externalId });
+  await tracking.put(
+    `booktok:${validToken}`,
+    JSON.stringify({ e: eventId, n: 'Lead', x: externalId }),
+  );
 
   const preview = await handleCapi(
     new Request('https://autolander.ai/capi/confirm', {
@@ -281,6 +321,13 @@ test('incomplete Lead tokens fail closed and preview cannot consume a valid toke
     {},
   );
   assert.equal(production.status, 200);
+  assert.deepEqual(await production.json(), {
+    ok: true,
+    eventId,
+    eventName: 'Lead',
+    externalId,
+    am: {},
+  });
 });
 
 test('localhost and preview browser signals never call the production Meta endpoint', async (t) => {
@@ -398,6 +445,10 @@ test('download clicks are truthful OutboundClick events, not checkouts or comple
   assert.match(thankYouSource, /\^lead_\[a-f0-9\]\{32\}\$/);
   assert.match(thankYouSource, /data\.eventName !== 'Lead'/);
   assert.match(thankYouSource, /external_id: externalId/);
+  assert.match(thankYouSource, /data\.am/);
+  assert.match(thankYouSource, /\^\[a-f0-9\]\{64\}\$/);
+  assert.match(thankYouSource, /fbq\('track', 'Lead'/);
+  assert.match(thankYouSource, /\{ eventID: eventId \}/);
   assert.doesNotMatch(thankYouSource, /browserExternalId !== externalId/);
   assert.match(thankYouSource, /location\.origin !== 'https:\/\/autolander\.ai'/);
   assert.match(thankYouSource, /location\.origin !== 'https:\/\/www\.autolander\.ai'/);

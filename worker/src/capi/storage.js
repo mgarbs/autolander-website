@@ -1,3 +1,5 @@
+import { sanitizeAdvancedMatching } from './validators.js';
+
 const VISITOR_TTL_SECONDS = 90 * 24 * 60 * 60;
 const EVENT_DEDUPE_TTL_SECONDS = 24 * 60 * 60;
 const COUNTER_TTL_SECONDS = 100 * 24 * 60 * 60;
@@ -52,12 +54,12 @@ const BOOKING_TOKEN_TTL_SECONDS = 30 * 60;
 export async function rememberConversionToken(
   env,
   token,
-  { eventId = '', eventName = 'Lead', externalId = '' } = {},
+  { eventId = '', eventName = 'Lead', externalId = '', am = {} } = {},
 ) {
   if (!token) return;
   await tracking(env).put(
     `booktok:${token}`,
-    JSON.stringify({ e: eventId, n: eventName, x: externalId }),
+    JSON.stringify({ e: eventId, n: eventName, x: externalId, a: sanitizeAdvancedMatching(am) }),
     { expirationTtl: BOOKING_TOKEN_TTL_SECONDS },
   );
 }
@@ -76,15 +78,17 @@ export async function consumeConversionToken(env, token) {
   let eventId = '';
   let eventName = 'Lead';
   let externalId = '';
+  let am = {};
   try {
     const parsed = JSON.parse(raw) || {};
     eventId = parsed.e || '';
     eventName = parsed.n || eventName;
     externalId = parsed.x || '';
+    am = sanitizeAdvancedMatching(parsed.a);
   } catch {
     eventId = '';
   }
-  return { ok: true, eventId, eventName, externalId };
+  return { ok: true, eventId, eventName, externalId, am };
 }
 
 // Backward-compatible aliases for older booking code paths and any in-flight

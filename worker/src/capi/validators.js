@@ -23,6 +23,8 @@ const VID_PATTERN = /^v_[a-z0-9]{12,40}$/i;
 const FBP_PATTERN = /^fb\.\d+\.\d+\.\d+$/;
 const FBC_PATTERN = /^fb\.\d+\.\d+\.[A-Za-z0-9_.-]+$/;
 const EVENT_ID_PATTERN = /^[A-Za-z0-9_-]{6,128}$/;
+const ADVANCED_MATCHING_KEYS = ['em', 'ph', 'fn', 'ln', 'ct', 'st', 'zp', 'country'];
+const SHA256_HEX_PATTERN = /^[a-f0-9]{64}$/;
 
 export function isAllowedEvent(name) {
   return typeof name === 'string' && (ALLOWED_EVENTS.has(name) || ALLOWED_CUSTOM_EVENTS.has(name));
@@ -70,6 +72,32 @@ export function isValidEventId(value) {
 export function clean(value, max = 200) {
   if (typeof value !== 'string') return '';
   return value.replace(/\s+/g, ' ').trim().slice(0, max);
+}
+
+export function normalizePostalCode(raw, country = '') {
+  if (typeof raw !== 'string') return '';
+  const normalized = raw
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, '')
+    .replace(/[^a-z0-9]/g, '')
+    .slice(0, 10);
+  if (!normalized) return '';
+
+  const isUs = typeof country === 'string' && country.trim().toLowerCase() === 'us';
+  if (isUs) return /^\d{5}/.test(normalized) ? normalized.slice(0, 5) : '';
+  if (/^\d{5}(\d{4})?$/.test(normalized)) return normalized.slice(0, 5);
+  return normalized;
+}
+
+export function sanitizeAdvancedMatching(raw) {
+  if (!raw || typeof raw !== 'object') return {};
+  const out = {};
+  for (const key of ADVANCED_MATCHING_KEYS) {
+    const value = raw[key];
+    if (typeof value === 'string' && SHA256_HEX_PATTERN.test(value)) out[key] = value;
+  }
+  return out;
 }
 
 export function cleanFbclid(value) {
