@@ -9,7 +9,11 @@ import {
   Warehouse,
   X,
 } from 'lucide-react';
-import { newSubmissionId, submitApplication } from '../lib/demo-application.js';
+import {
+  hasFirstAndLastName,
+  newSubmissionId,
+  submitApplication,
+} from '../lib/demo-application.js';
 import { formatPhoneInput, isValidEmail, isValidPhone } from '../lib/contact.js';
 
 const ROLES = ['Owner', 'Manager', 'Sales Rep'];
@@ -58,8 +62,8 @@ export default function DemoApplication({ onClose }) {
     event.preventDefault();
     const inventoryUrl = normalizeWebsite(form.inventoryUrl);
 
-    if (!form.fullName.trim()) {
-      setFormError('Enter your full name.');
+    if (!hasFirstAndLastName(form.fullName)) {
+      setFormError('Enter your first and last name.');
       return;
     }
     if (!isValidEmail(form.email)) {
@@ -106,7 +110,7 @@ export default function DemoApplication({ onClose }) {
       }
 
       if (res.reason === 'missing_full_name') {
-        setFormError('Enter your full name.');
+        setFormError('Enter your first and last name.');
       } else if (res.reason === 'invalid_email') {
         setFormError('That email does not look right. Re-enter it and try again.');
         setInvalid((v) => ({ ...v, email: true }));
@@ -166,7 +170,7 @@ export default function DemoApplication({ onClose }) {
             <input
               required
               type="text"
-              placeholder="Full name"
+              placeholder="First and last name"
               autoComplete="name"
               value={form.fullName}
               onChange={(event) => update('fullName', event.target.value)}

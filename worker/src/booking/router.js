@@ -16,7 +16,15 @@ import {
   wasEventSeen,
 } from '../capi/storage.js';
 import { looksLikeBot } from '../security/bot-filter.js';
-import { buildFbc, cleanFbclid, isValidFbc } from '../capi/validators.js';
+import {
+  buildFbc,
+  cleanFbclid,
+  isValidFbc,
+  normalizeCityForMeta,
+  normalizePostalCode,
+  normalizeStateForMeta,
+  sanitizeAdvancedMatching,
+} from '../capi/validators.js';
 import { getPaySummary, openPaySession, openSelfServeSession } from './pay-proxy.js';
 import {
   canonicalMetaExternalId,
@@ -223,6 +231,12 @@ async function handleApply(request, env, corsHeaders, ctx) {
 
   const attribution = sanitizeAttribution(body.attribution);
   const visitor = attribution.vid ? await lookupVisitor(env, attribution.vid).catch(() => null) : null;
+  const country = clean(request.cf?.country, 4).toLowerCase();
+  const region = clean(request.cf?.region, 48).toLowerCase();
+  const regionCode = clean(request.cf?.regionCode, 8);
+  const city = clean(request.cf?.city, 48).toLowerCase();
+  const postalCode = normalizePostalCode(request.cf?.postalCode, country)
+    || normalizePostalCode(visitor?.postalCode, visitor?.country);
   const mergedUtms = mergeUtms(visitor?.utms, attribution.utms);
   const page = { ...(visitor?.page || {}), ...(attribution.page || {}) };
   const fbp = attribution.fbp || visitor?.fbp || '';
@@ -334,6 +348,41 @@ async function handleApply(request, env, corsHeaders, ctx) {
     }, applyState);
   }
 
+  const leadAttribution = {
+    ...attribution,
+    utms: mergedUtms,
+    page,
+    fbp,
+    fbc,
+    fbclid,
+    ts: clickTimestamp,
+    ip: request.headers.get('CF-Connecting-IP') || '',
+    country,
+    region,
+    regionCode,
+    city,
+    postalCode,
+  };
+  const userData = await buildUserData({
+    email: lead.email,
+    phone: lead.phone,
+    firstName: lead.firstName,
+    lastName: lead.lastName,
+    fbp: leadAttribution.fbp,
+    fbc: leadAttribution.fbc,
+    fbclid: leadAttribution.fbclid,
+    clickTimestamp: leadAttribution.ts || leadAttribution.firstTouch?.ts,
+    ip: leadAttribution.ip || request.headers.get('CF-Connecting-IP') || '',
+    ua: lead.userAgent || request.headers.get('User-Agent') || '',
+    country: leadAttribution.country,
+    region: leadAttribution.region,
+    regionCode: leadAttribution.regionCode || visitor?.regionCode,
+    city: leadAttribution.city,
+    postalCode: leadAttribution.postalCode,
+    externalId: metaExternalId,
+  });
+  const am = pickAdvancedMatching(userData);
+
   await recordLeadEvent({
     request,
     env,
@@ -342,20 +391,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
     eventId,
     sourceUrl,
     contactId,
-    externalId: metaExternalId,
-    attribution: {
-      ...attribution,
-      utms: mergedUtms,
-      page,
-      fbp,
-      fbc,
-      fbclid,
-      ts: clickTimestamp,
-      ip: request.headers.get('CF-Connecting-IP') || '',
-      country: clean(request.cf?.country, 4).toLowerCase(),
-      region: clean(request.cf?.region, 48).toLowerCase(),
-      city: clean(request.cf?.city, 48).toLowerCase(),
-    },
+    userData,
     metaTestEventCode,
   });
 
@@ -366,6 +402,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
       eventId,
       eventName: 'Lead',
       externalId: metaExternalId,
+      am,
     }).catch(() => {});
   }
 
@@ -466,8 +503,7 @@ async function recordLeadEvent({
   eventId,
   sourceUrl,
   contactId,
-  externalId,
-  attribution,
+  userData,
   metaTestEventCode,
 }) {
   if (!isProductionMetaRequest(request)) return;
@@ -511,23 +547,6 @@ async function recordLeadEvent({
 
   if (env.SEND_WORKER_LEAD_CAPI === 'false') return;
 
-  const userData = await buildUserData({
-    email: lead.email,
-    phone: lead.phone,
-    firstName: lead.firstName,
-    lastName: lead.lastName,
-    fbp: attribution.fbp,
-    fbc: attribution.fbc,
-    fbclid: attribution.fbclid,
-    clickTimestamp: attribution.ts || attribution.firstTouch?.ts,
-    ip: attribution.ip || request.headers.get('CF-Connecting-IP') || '',
-    ua: lead.userAgent || request.headers.get('User-Agent') || '',
-    country: attribution.country,
-    region: attribution.region,
-    city: attribution.city,
-    externalId,
-  });
-
   const capiEvent = buildEvent({
     name: 'Lead',
     eventId,
@@ -568,7 +587,9 @@ async function buildUserData({
   ua,
   country,
   region,
+  regionCode,
   city,
+  postalCode,
   externalId,
 }) {
   const userData = {};
@@ -581,8 +602,11 @@ async function buildUserData({
   const lnHash = await hashName(lastName);
   if (lnHash) userData.ln = lnHash;
   if (country) userData.country = await hashLowercase(country);
-  if (region) userData.st = await hashLowercase(region);
-  if (city) userData.ct = await hashLowercase(city);
+  const normalizedState = normalizeStateForMeta({ region, regionCode, country });
+  if (normalizedState) userData.st = await hashLowercase(normalizedState);
+  const normalizedCity = normalizeCityForMeta(city);
+  if (normalizedCity) userData.ct = await hashLowercase(normalizedCity);
+  if (postalCode) userData.zp = await hashLowercase(postalCode);
   if (fbp) userData.fbp = fbp;
   if (fbc) userData.fbc = fbc;
   else if (fbclid) userData.fbc = buildFbc(fbclid, clickTimestamp);
@@ -590,6 +614,10 @@ async function buildUserData({
   if (ip) userData.client_ip_address = ip;
   if (ua) userData.client_user_agent = ua;
   return userData;
+}
+
+function pickAdvancedMatching(userData) {
+  return sanitizeAdvancedMatching(userData);
 }
 
 function buildCustomFields(env, lead) {

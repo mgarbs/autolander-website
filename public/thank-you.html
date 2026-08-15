@@ -44,9 +44,14 @@
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
 
-        function initPixel(externalId) {
+        function initPixel(externalIdOrAdvancedMatching) {
           if (pixelInitialized) return;
-          if (externalId) fbq('init', PIXEL_ID, { external_id: externalId });
+          if (externalIdOrAdvancedMatching) {
+            var initData = typeof externalIdOrAdvancedMatching === 'string'
+              ? { external_id: externalIdOrAdvancedMatching }
+              : externalIdOrAdvancedMatching;
+            fbq('init', PIXEL_ID, initData);
+          }
           else fbq('init', PIXEL_ID);
           fbq('track', 'PageView');
           pixelInitialized = true;
@@ -93,7 +98,18 @@
             // A redeemed backend proof is authoritative. This keeps both Lead
             // legs identical even if the long-lived visitor cookie rotated
             // between application submission and the thank-you redirect.
-            initPixel(externalId);
+            var initData = { external_id: externalId };
+            var advancedMatchingKeys = ['em', 'ph', 'fn', 'ln', 'ct', 'st', 'zp', 'country'];
+            var am = data.am;
+            if (am && typeof am === 'object' && !Array.isArray(am)) {
+              advancedMatchingKeys.forEach(function (key) {
+                var value = am[key];
+                if (typeof value === 'string' && /^[a-f0-9]{64}$/.test(value)) {
+                  initData[key] = value;
+                }
+              });
+            }
+            initPixel(initData);
             fbq('track', 'Lead', {
               content_name: 'demo_application_submitted',
               content_category: 'demo',

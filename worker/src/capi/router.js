@@ -22,6 +22,10 @@ import {
   isValidFbc,
   isValidFbp,
   isValidVid,
+  normalizeCityForMeta,
+  normalizePostalCode,
+  normalizeStateForMeta,
+  sanitizeAdvancedMatching,
 } from './validators.js';
 import { looksLikeBot } from '../security/bot-filter.js';
 import {
@@ -302,7 +306,9 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   const ip = request.headers.get('CF-Connecting-IP') || '';
   const ua = request.headers.get('User-Agent') || '';
   const country = clean(request.cf?.country, 4).toLowerCase();
+  const postalCode = normalizePostalCode(request.cf?.postalCode, country);
   const region = clean(request.cf?.region, 48).toLowerCase();
+  const regionCode = clean(request.cf?.regionCode, 8);
   const city = clean(request.cf?.city, 48).toLowerCase();
   const colo = clean(request.cf?.colo, 16).toUpperCase();
   const asn = clean(String(request.cf?.asn || ''), 24);
@@ -329,7 +335,9 @@ async function handleTrack(request, env, corsHeaders, ctx) {
       ip,
       ua,
       country,
+      postalCode,
       region,
+      regionCode,
       city,
       colo,
       asn,
@@ -472,7 +480,9 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     ip,
     ua,
     country,
+    postalCode,
     region,
+    regionCode,
     city,
     pixelId: env.META_PIXEL_ID,
   });
@@ -598,7 +608,9 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
     ip,
     ua,
     country,
+    postalCode: normalizePostalCode(visitor?.postalCode, visitor?.country),
     region,
+    regionCode: visitor?.regionCode,
     city,
     pixelId: env.META_PIXEL_ID,
   });
@@ -694,6 +706,7 @@ async function handleConfirm(request, env, corsHeaders) {
   const eventId = redeemed.eventId || '';
   const eventName = redeemed.eventName || 'Lead';
   const externalId = redeemed.externalId || '';
+  const am = sanitizeAdvancedMatching(redeemed.am);
   if (
     eventName === 'Lead'
     && (!/^lead_[a-f0-9]{32}$/.test(eventId)
@@ -702,7 +715,7 @@ async function handleConfirm(request, env, corsHeaders) {
     return jsonResponse({ ok: false, reason: 'incomplete_lead_identity' }, 409, corsHeaders);
   }
   return jsonResponse(
-    { ok: true, eventId, eventName, externalId },
+    { ok: true, eventId, eventName, externalId, am },
     200,
     corsHeaders,
   );
@@ -721,7 +734,9 @@ async function buildUserData({
   ip,
   ua,
   country,
+  postalCode,
   region,
+  regionCode,
   city,
   pixelId,
 }) {
@@ -740,8 +755,11 @@ async function buildUserData({
   if (lnHash) userData.ln = lnHash;
 
   if (country) userData.country = await hashLowercase(country);
-  if (region) userData.st = await hashLowercase(region);
-  if (city) userData.ct = await hashLowercase(city);
+  const normalizedState = normalizeStateForMeta({ region, regionCode, country });
+  if (normalizedState) userData.st = await hashLowercase(normalizedState);
+  const normalizedCity = normalizeCityForMeta(city);
+  if (normalizedCity) userData.ct = await hashLowercase(normalizedCity);
+  if (postalCode) userData.zp = await hashLowercase(postalCode);
 
   if (fbp) userData.fbp = fbp;
   if (fbc) {
