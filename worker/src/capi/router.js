@@ -22,7 +22,9 @@ import {
   isValidFbc,
   isValidFbp,
   isValidVid,
+  normalizeCityForMeta,
   normalizePostalCode,
+  normalizeStateForMeta,
   sanitizeAdvancedMatching,
 } from './validators.js';
 import { looksLikeBot } from '../security/bot-filter.js';
@@ -306,6 +308,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   const country = clean(request.cf?.country, 4).toLowerCase();
   const postalCode = normalizePostalCode(request.cf?.postalCode, country);
   const region = clean(request.cf?.region, 48).toLowerCase();
+  const regionCode = clean(request.cf?.regionCode, 8);
   const city = clean(request.cf?.city, 48).toLowerCase();
   const colo = clean(request.cf?.colo, 16).toUpperCase();
   const asn = clean(String(request.cf?.asn || ''), 24);
@@ -334,6 +337,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
       country,
       postalCode,
       region,
+      regionCode,
       city,
       colo,
       asn,
@@ -478,6 +482,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     country,
     postalCode,
     region,
+    regionCode,
     city,
     pixelId: env.META_PIXEL_ID,
   });
@@ -605,6 +610,7 @@ async function handleCalendly(request, env, corsHeaders, ctx) {
     country,
     postalCode: normalizePostalCode(visitor?.postalCode, visitor?.country),
     region,
+    regionCode: visitor?.regionCode,
     city,
     pixelId: env.META_PIXEL_ID,
   });
@@ -730,6 +736,7 @@ async function buildUserData({
   country,
   postalCode,
   region,
+  regionCode,
   city,
   pixelId,
 }) {
@@ -748,8 +755,10 @@ async function buildUserData({
   if (lnHash) userData.ln = lnHash;
 
   if (country) userData.country = await hashLowercase(country);
-  if (region) userData.st = await hashLowercase(region);
-  if (city) userData.ct = await hashLowercase(city);
+  const normalizedState = normalizeStateForMeta({ region, regionCode, country });
+  if (normalizedState) userData.st = await hashLowercase(normalizedState);
+  const normalizedCity = normalizeCityForMeta(city);
+  if (normalizedCity) userData.ct = await hashLowercase(normalizedCity);
   if (postalCode) userData.zp = await hashLowercase(postalCode);
 
   if (fbp) userData.fbp = fbp;

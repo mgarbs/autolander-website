@@ -90,6 +90,22 @@ export function normalizePostalCode(raw, country = '') {
   return normalized;
 }
 
+export function normalizeCityForMeta(raw) {
+  if (typeof raw !== 'string') return '';
+  return raw
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+    .slice(0, 64);
+}
+
+export function normalizeStateForMeta({ region, regionCode } = {}) {
+  const code = typeof regionCode === 'string' ? regionCode.trim() : '';
+  if (/^[a-z]{2}$/i.test(code)) return code.toLowerCase();
+  return normalizeCityForMeta(region);
+}
+
 export function sanitizeAdvancedMatching(raw) {
   if (!raw || typeof raw !== 'object') return {};
   const out = {};

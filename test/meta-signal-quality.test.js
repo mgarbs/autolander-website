@@ -4,7 +4,12 @@ import test from 'node:test';
 import { handleBooking } from '../worker/src/booking/router.js';
 import { handleCapi } from '../worker/src/capi/router.js';
 import { hashLowercase, sha256Hex } from '../worker/src/capi/hash.js';
-import { isAllowedEvent, normalizePostalCode } from '../worker/src/capi/validators.js';
+import {
+  isAllowedEvent,
+  normalizeCityForMeta,
+  normalizePostalCode,
+  normalizeStateForMeta,
+} from '../worker/src/capi/validators.js';
 import {
   canonicalMetaExternalId,
   isCanonicalMetaExternalId,
@@ -54,7 +59,13 @@ function applicationRequest({
   requestUrl = 'https://autolander.ai/api/apply',
   submissionId = 'sub_meta_signal_quality_123',
   visitorId = VISITOR_ID,
-  cf = { country: 'US', region: 'GA', city: 'Atlanta', postalCode: '30301' },
+  cf = {
+    country: 'US',
+    region: 'Georgia',
+    regionCode: 'GA',
+    city: 'Los Angeles',
+    postalCode: '30301',
+  },
 } = {}) {
   const request = new Request(requestUrl, {
     method: 'POST',
@@ -114,6 +125,21 @@ test('postal codes are normalized for Meta user data', () => {
   assert.equal(normalizePostalCode(undefined), '');
 });
 
+test('cities and states are normalized for Meta user data', () => {
+  assert.equal(normalizeCityForMeta('Los Angeles'), 'losangeles');
+  assert.equal(normalizeCityForMeta('St. Paul'), 'stpaul');
+  assert.equal(normalizeCityForMeta('São Paulo'), 'saopaulo');
+  assert.equal(normalizeCityForMeta(123), '');
+  assert.equal(normalizeCityForMeta('A'.repeat(65)), 'a'.repeat(64));
+
+  assert.equal(
+    normalizeStateForMeta({ region: 'Georgia', regionCode: 'GA', country: 'us' }),
+    'ga',
+  );
+  assert.equal(normalizeStateForMeta({ region: 'Georgia', country: 'us' }), 'georgia');
+  assert.equal(normalizeStateForMeta({ region: 'Île-de-France', country: 'fr' }), 'iledefrance');
+});
+
 test('production Meta host and external-ID policies are positive allowlists', () => {
   assert.equal(isProductionMetaHostname('autolander.ai'), true);
   assert.equal(isProductionMetaHostname('WWW.AUTOLANDER.AI'), true);
@@ -168,12 +194,14 @@ test('verified Lead uses one deterministic ID and one external identity end to e
   const metaCalls = graphRequests(requests);
   assert.equal(metaCalls.length, 1);
   const metaEvent = JSON.parse(metaCalls[0].init.body).data[0];
+  const expectedCt = await sha256Hex('losangeles');
+  const expectedSt = await sha256Hex('ga');
   assert.equal(metaEvent.event_name, 'Lead');
   assert.equal(metaEvent.event_id, expectedEventId);
   assert.equal(metaEvent.user_data.external_id, await hashLowercase(expectedExternalId));
   assert.equal(metaEvent.user_data.zp, await sha256Hex('30301'));
-  assert.equal(metaEvent.user_data.ct, await hashLowercase('atlanta'));
-  assert.equal(metaEvent.user_data.st, await hashLowercase('ga'));
+  assert.equal(metaEvent.user_data.ct, expectedCt);
+  assert.equal(metaEvent.user_data.st, expectedSt);
   assert.equal(metaEvent.user_data.country, await hashLowercase('us'));
   assert.deepEqual(
     {
@@ -230,6 +258,8 @@ test('verified Lead uses one deterministic ID and one external identity end to e
     externalId: expectedExternalId,
     am: expectedAm,
   });
+  assert.equal(confirmedPayload.am.ct, expectedCt);
+  assert.equal(confirmedPayload.am.st, expectedSt);
   for (const key of advancedMatchingKeys) {
     assert.equal(confirmedPayload.am[key], metaEvent.user_data[key], key);
   }
@@ -259,6 +289,32 @@ test('verified Lead uses one deterministic ID and one external identity end to e
     {},
   );
   assert.equal(reused.status, 403);
+});
+
+test('verified Lead falls back to the normalized region when regionCode is missing', async (t) => {
+  const tracking = new MemoryKv();
+  const env = metaEnv(tracking);
+  const requests = installNetworkMock(t);
+  const response = await handleBooking(
+    applicationRequest({
+      submissionId: 'sub_meta_state_fallback_123',
+      cf: {
+        country: 'US',
+        region: 'Georgia',
+        city: 'Los Angeles',
+        postalCode: '30301',
+      },
+    }),
+    env,
+    {},
+    {},
+  );
+
+  assert.equal(response.status, 200);
+  const metaCalls = graphRequests(requests);
+  assert.equal(metaCalls.length, 1);
+  const metaEvent = JSON.parse(metaCalls[0].init.body).data[0];
+  assert.equal(metaEvent.user_data.st, await sha256Hex('georgia'));
 });
 
 test('incomplete Lead tokens fail closed and preview cannot consume a valid token', async () => {

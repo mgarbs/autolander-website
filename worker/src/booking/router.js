@@ -20,7 +20,9 @@ import {
   buildFbc,
   cleanFbclid,
   isValidFbc,
+  normalizeCityForMeta,
   normalizePostalCode,
+  normalizeStateForMeta,
   sanitizeAdvancedMatching,
 } from '../capi/validators.js';
 import { getPaySummary, openPaySession, openSelfServeSession } from './pay-proxy.js';
@@ -231,6 +233,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const visitor = attribution.vid ? await lookupVisitor(env, attribution.vid).catch(() => null) : null;
   const country = clean(request.cf?.country, 4).toLowerCase();
   const region = clean(request.cf?.region, 48).toLowerCase();
+  const regionCode = clean(request.cf?.regionCode, 8);
   const city = clean(request.cf?.city, 48).toLowerCase();
   const postalCode = normalizePostalCode(request.cf?.postalCode, country)
     || normalizePostalCode(visitor?.postalCode, visitor?.country);
@@ -356,6 +359,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
     ip: request.headers.get('CF-Connecting-IP') || '',
     country,
     region,
+    regionCode,
     city,
     postalCode,
   };
@@ -372,6 +376,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
     ua: lead.userAgent || request.headers.get('User-Agent') || '',
     country: leadAttribution.country,
     region: leadAttribution.region,
+    regionCode: leadAttribution.regionCode || visitor?.regionCode,
     city: leadAttribution.city,
     postalCode: leadAttribution.postalCode,
     externalId: metaExternalId,
@@ -582,6 +587,7 @@ async function buildUserData({
   ua,
   country,
   region,
+  regionCode,
   city,
   postalCode,
   externalId,
@@ -596,8 +602,10 @@ async function buildUserData({
   const lnHash = await hashName(lastName);
   if (lnHash) userData.ln = lnHash;
   if (country) userData.country = await hashLowercase(country);
-  if (region) userData.st = await hashLowercase(region);
-  if (city) userData.ct = await hashLowercase(city);
+  const normalizedState = normalizeStateForMeta({ region, regionCode, country });
+  if (normalizedState) userData.st = await hashLowercase(normalizedState);
+  const normalizedCity = normalizeCityForMeta(city);
+  if (normalizedCity) userData.ct = await hashLowercase(normalizedCity);
   if (postalCode) userData.zp = await hashLowercase(postalCode);
   if (fbp) userData.fbp = fbp;
   if (fbc) userData.fbc = fbc;
