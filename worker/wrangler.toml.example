@@ -68,12 +68,13 @@ preview_id = "replace_with_preview_kv_namespace_id"
 #   ADMIN_PASSWORD
 #   ADMIN_SESSION_SECRET
 #   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions;
-#                                 billing-date adjustments additionally need Subscription + Subscription Schedule write
-#                                 permissions and Coupon read access.
+#                                 billing-date adjustments additionally need Customer, Subscription, Invoice, Invoice Item, Coupon, and
+#                                 Subscription Schedule read access plus Coupon and Subscription Schedule write access. The Worker pins these calls to the same
+#                                 Stripe API version as the cloud SDK.
 #   STRIPE_BILLING_ADMIN_KEY       optional dedicated restricted Stripe key for billing-date adjustments;
 #                                 preferred when STRIPE_SECRET_KEY lacks the required Billing scopes.
-#   BILLING_DATE_GRACE_COUPON_ID  optional valid Stripe 100%-off, one-time coupon for a billing-date bridge;
-#                                 defaults to FREE_MONTH_100 when unset.
+#   BILLING_DATE_GRACE_COUPON_ID  optional existing valid Stripe 100%-off, one-time coupon for a billing-date bridge;
+#                                 when unset, the Worker safely creates/uses the managed FREE_MONTH_100 coupon.
 #   OPS_ADMIN_TOKEN               shared bearer token for the AutoLander cloud /api/ops/billing/* AND
 #                                 /api/billing-links* endpoints; must match the cloud's OPS_ADMIN_TOKEN.
 #                                 Powers the admin "Account Linking" panel, support adjustments,

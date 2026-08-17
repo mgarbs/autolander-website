@@ -97,7 +97,9 @@ test('billing-date dispatch without a mode reaches the existing Stripe schedule 
 
     assert.deepEqual(urls, ['https://api.stripe.com/v1/subscriptions/sub_active123']);
     assert.equal(result.status, 404);
-    assert.equal(result.body.reason, 'stripe_error');
+    assert.equal(result.body.reason, 'billing_date_subscription_read_failed');
+    assert.equal(result.body.message, 'not found in test');
+    assert.equal(result.body.stage, 'subscription read');
   } finally {
     globalThis.fetch = originalFetch;
   }

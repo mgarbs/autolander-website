@@ -279,8 +279,10 @@ function BillingState({
     );
   }
 
-  if (mode === 'trial_bridge') {
-    const trialEnd = billingStatus.trialEndIso || billingStatus.trialEnd;
+  if (mode === 'trial_bridge' || mode === 'scheduled_bridge') {
+    const trialEnd = mode === 'scheduled_bridge'
+      ? billingStatus.scheduledBillingIso || billingStatus.scheduledBillingAt
+      : billingStatus.trialEndIso || billingStatus.trialEnd;
     return (
       <p className="text-sm font-bold leading-relaxed text-slate-200">
         {buildBillingBridgeCopy({
