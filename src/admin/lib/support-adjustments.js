@@ -23,8 +23,24 @@ export async function issueSupportDiscount(input) {
   return apiPost('/admin/support-adjustments/discount', input);
 }
 
+export function createBillingDateOperationId() {
+  if (typeof globalThis.crypto?.randomUUID === 'function') {
+    return globalThis.crypto.randomUUID();
+  }
+  if (typeof globalThis.crypto?.getRandomValues === 'function') {
+    const bytes = new Uint8Array(16);
+    globalThis.crypto.getRandomValues(bytes);
+    return Array.from(bytes, (value) => value.toString(16).padStart(2, '0')).join('');
+  }
+  return '';
+}
+
 export async function scheduleNextBillingDate(input) {
-  return apiPost('/admin/support-adjustments/billing-date', input);
+  const operationId = String(input?.operationId || '').trim() || createBillingDateOperationId();
+  return apiPost('/admin/support-adjustments/billing-date', {
+    ...input,
+    ...(operationId ? { operationId } : {}),
+  });
 }
 
 export async function fetchBillingStatus(subscriptionId) {
@@ -232,9 +248,24 @@ export function friendlyAdjustmentError(err) {
     BILLING_DATE_TOO_FAR: 'Choose a date no more than one monthly period after the current Stripe renewal date.',
     BILLING_DATE_COUPON_INVALID: 'The billing-date grace coupon is not configured as a valid 100% one-time Stripe coupon.',
     BILLING_DATE_COUPON_INELIGIBLE: 'The billing-date grace coupon does not apply to this subscription product.',
+    BILLING_DATE_COUPON_MISSING: 'The configured billing-date grace coupon does not exist in Stripe.',
+    BILLING_DATE_COUPON_READ_FAILED: 'Stripe could not read the billing-date grace coupon.',
+    BILLING_DATE_COUPON_SETUP_FAILED: 'Stripe could not create the managed billing-date grace coupon.',
+    BILLING_DATE_SUBSCRIPTION_READ_FAILED: 'Stripe could not load this subscription for the billing-date change.',
+    BILLING_DATE_INVOICE_ITEMS_READ_FAILED: 'Stripe could not check this customer for pending invoice items.',
+    BILLING_DATE_PENDING_INVOICE_ITEMS: 'This customer has pending Stripe invoice items. Resolve them in Stripe before moving the billing date.',
+    BILLING_DATE_CUSTOMER_READ_FAILED: 'Stripe could not check this customer’s invoice balance.',
+    BILLING_DATE_CUSTOMER_BALANCE: 'This customer has an owed Stripe balance. Resolve it in Stripe before moving the billing date.',
+    BILLING_DATE_SCHEDULE_CREATE_FAILED: 'Stripe could not create the billing-date schedule.',
+    BILLING_DATE_SCHEDULE_READ_FAILED: 'Stripe could not read the existing billing-date schedule.',
+    BILLING_DATE_SCHEDULE_UPDATE_FAILED: 'Stripe could not configure the billing-date schedule.',
+    BILLING_DATE_OPERATION_ID_UNAVAILABLE: 'A secure billing-date operation ID could not be generated. Retry from a supported browser.',
+    SCHEDULE_CREATE_OUTCOME_UNKNOWN: 'Stripe may have created a schedule, but its state must be reviewed in Stripe before retrying.',
+    SCHEDULE_UPDATE_OUTCOME_UNKNOWN: 'Stripe may still be updating the schedule. Review it in Stripe before retrying.',
+    STRIPE_PERMISSIONS_MISSING: 'The Stripe billing key is missing a required Customer, Subscription, Invoice, Invoice Item, Coupon, or Subscription Schedule permission.',
     UNSUPPORTED_SUBSCRIPTION: 'This subscription has billing settings that must be adjusted directly in Stripe.',
     UNSUPPORTED_SCHEDULE: 'Stripe returned a schedule that cannot be safely adjusted here.',
-    SCHEDULE_VERIFICATION_FAILED: 'Stripe returned an unexpected schedule, so the billing-date change was not kept.',
+    SCHEDULE_VERIFICATION_FAILED: 'Stripe returned an unexpected schedule. Review the subscription in Stripe before retrying.',
     SCHEDULE_ROLLBACK_FAILED: 'Stripe could not safely roll back a temporary schedule. Review the subscription in Stripe immediately.',
     STRIPE_ERROR: 'Stripe could not complete the billing-date adjustment.',
     GROUP_BILLED: 'This dealership is billed through its dealer group — it has no card subscription of its own.',
@@ -245,6 +276,29 @@ export function friendlyAdjustmentError(err) {
     SCHEDULE_PRESENT: 'This subscription already has a Stripe schedule. Manage its billing date in Stripe so the existing schedule is preserved.',
     TRIAL_PRESENT: 'This subscription is in or has a trial configuration and cannot be adjusted here.',
   };
+  const diagnosticReasons = new Set([
+    'STRIPE_ERROR',
+    'STRIPE_PERMISSIONS_MISSING',
+    'BILLING_DATE_COUPON_MISSING',
+    'BILLING_DATE_COUPON_READ_FAILED',
+    'BILLING_DATE_COUPON_SETUP_FAILED',
+    'BILLING_DATE_SUBSCRIPTION_READ_FAILED',
+    'BILLING_DATE_INVOICE_ITEMS_READ_FAILED',
+    'BILLING_DATE_PENDING_INVOICE_ITEMS',
+    'BILLING_DATE_CUSTOMER_READ_FAILED',
+    'BILLING_DATE_CUSTOMER_BALANCE',
+    'BILLING_DATE_SCHEDULE_CREATE_FAILED',
+    'BILLING_DATE_SCHEDULE_READ_FAILED',
+    'BILLING_DATE_SCHEDULE_UPDATE_FAILED',
+    'SCHEDULE_CREATE_OUTCOME_UNKNOWN',
+    'SCHEDULE_UPDATE_OUTCOME_UNKNOWN',
+    'SCHEDULE_VERIFICATION_FAILED',
+    'SCHEDULE_ROLLBACK_FAILED',
+  ]);
+  const diagnostic = typeof err?.serverMessage === 'string' ? err.serverMessage.trim() : '';
+  if (diagnosticReasons.has(reason) && diagnostic && diagnostic.toUpperCase() !== reason) {
+    return diagnostic;
+  }
   return map[reason] || err?.message || 'The adjustment could not be completed.';
 }
 
