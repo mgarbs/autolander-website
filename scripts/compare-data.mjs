@@ -14,8 +14,8 @@
 export const SITE = {
   origin: 'https://autolander.ai',
   brand: 'AutoLander',
-  updated: '2026-07-11',
-  updatedHuman: 'July 11, 2026',
+  updated: '2026-08-20',
+  updatedHuman: 'August 20, 2026',
   lowPrice: 39,
   ctaUrl: 'https://autolander.ai/#pricing',
 };

@@ -183,6 +183,10 @@ export function siteFooter() {
       <a href="${NAV.integHub.path}">Integrations</a>
       <a href="${NAV.inventory.path}">Inventory sync</a>
       <a href="${NAV.automation.path}">Automation</a>
+      <a href="${NAV.mktgHub.path}">Dealership marketing</a>
+      <a href="${NAV.aiChat.path}">AI chat for dealers</a>
+      <a href="${NAV.photoEditor.path}">AI car photo editor</a>
+      <a href="${NAV.rvDealers.path}">RV dealer software</a>
       <a href="${NAV.sellGuide.path}">How to sell cars</a>
       <a href="${NAV.guide.path}">Guide</a>
       <a href="${SITE.origin}/">AutoLander home</a>
@@ -265,6 +269,16 @@ export function renderSection(s) {
       <div class="shot-imgs">
         <img src="${esc(s.before)}" srcset="${srcset(s.before)}" sizes="${sizes}" width="1100" height="733" loading="lazy" decoding="async" alt="${esc(s.beforeAlt || 'Before')}" />
         <img src="${esc(s.after)}" srcset="${srcset(s.after)}" sizes="${sizes}" width="1100" height="733" loading="lazy" decoding="async" alt="${esc(s.afterAlt || 'After')}" />
+      </div>
+      <figcaption>${esc(s.caption)}</figcaption>
+    </figure>`;
+    }
+    case 'image': {
+      // Single showcase image, same -550.webp srcset convention as 'figure'.
+      const srcset1 = `${esc(s.src.replace(/\.webp$/, '-550.webp'))} 550w, ${esc(s.src)} 1100w`;
+      return `    <figure class="shot shot-single">
+      <div class="shot-imgs">
+        <img src="${esc(s.src)}" srcset="${srcset1}" sizes="(max-width:720px) 92vw, 680px" width="1100" height="733" loading="lazy" decoding="async" alt="${esc(s.alt)}" />
       </div>
       <figcaption>${esc(s.caption)}</figcaption>
     </figure>`;
@@ -360,5 +374,6 @@ background:rgba(59,130,246,.16);color:var(--blue2);font-weight:900;display:flex;
 .callout p{margin:0;color:#e6eefc;font-size:14.5px}
 .table-section{margin-top:36px}
 .feature-card h3,.step-h{letter-spacing:-.01em}
+.shot-single .shot-imgs{grid-template-columns:1fr;max-width:680px;margin:0 auto}
 @media(max-width:640px){.feature-grid{grid-template-columns:1fr}}
 `;
