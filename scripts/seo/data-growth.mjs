@@ -74,11 +74,11 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/toyota-tundra-before.webp',
-        after: '/studio/toyota-tundra-after.webp',
-        beforeAlt: 'Raw dealership feed photo of a 2025 Toyota Tundra TRD Pro before AutoLander',
-        afterAlt: 'The same 2025 Toyota Tundra composited in front of the dealership storefront by AutoLander’s AI Photo Studio',
-        caption: 'Merchandising is marketing: AutoLander’s AI Photo Studio turns a raw feed photo (left) into a branded storefront shot (right) — the dealership’s own building behind every listing.',
+        before: '/studio/jeep-wagoneer-before.webp',
+        after: '/studio/jeep-wagoneer-after.webp',
+        beforeAlt: 'Jeep Wagoneer feed photo boxed in a third-party promo frame, before AutoLander',
+        afterAlt: 'The same Jeep Wagoneer re-shot by AutoLander’s AI Photo Studio in a clean golden-hour scene',
+        caption: 'Merchandising is marketing: the same Wagoneer, freed from a cluttered promo frame (left) and staged in a clean golden-hour scene (right) by AutoLander’s AI Photo Studio.',
       },
       {
         type: 'bullets',

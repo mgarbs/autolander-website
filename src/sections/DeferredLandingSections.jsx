@@ -750,6 +750,9 @@ export function LandingFooter() {
               <a href="/facebook-autoposter/" className="block py-1 hover:text-blue-500 transition-colors">Autoposter</a>
               <a href="/facebook-marketplace-inventory-sync/" className="block py-1 hover:text-blue-500 transition-colors">Inventory Sync</a>
               <a href="/bulk-post-cars-to-facebook-marketplace/" className="block py-1 hover:text-blue-500 transition-colors">Bulk Posting</a>
+              <a href="/ai-chat-for-car-dealers/" className="block py-1 hover:text-blue-500 transition-colors">AI Chat</a>
+              <a href="/ai-car-photo-editor/" className="block py-1 hover:text-blue-500 transition-colors">AI Photo Editor</a>
+              <a href="/rv-dealer-software/" className="block py-1 hover:text-blue-500 transition-colors">RV Dealers</a>
               <a href="/safest-facebook-marketplace-auto-poster/" className="block py-1 hover:text-blue-500 transition-colors">Account Safety</a>
               <a href="/facebook-marketplace-auto-poster-pricing/" className="block py-1 hover:text-blue-500 transition-colors">Pricing</a>
             </nav>
@@ -775,6 +778,8 @@ export function LandingFooter() {
               <a href="/facebook-ai-tools/" className="block py-1 hover:text-blue-500 transition-colors">AI Tools</a>
               <a href="/facebook-listing-software/" className="block py-1 hover:text-blue-500 transition-colors">Facebook Listing</a>
               <a href="/facebook-marketplace-for-car-dealers/" className="block py-1 hover:text-blue-500 transition-colors">For Car Dealers</a>
+              <a href="/guide/car-dealership-marketing/" className="block py-1 hover:text-blue-500 transition-colors">Marketing Playbook</a>
+              <a href="/guide/ai-for-car-dealerships/" className="block py-1 hover:text-blue-500 transition-colors">AI for Dealerships</a>
             </nav>
 
             {/* Company */}

@@ -176,11 +176,17 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/toyota-tundra-before.webp',
-        after: '/studio/toyota-tundra-after.webp',
-        beforeAlt: 'CarGurus feed photo of a 2025 Toyota Tundra TRD Pro before AutoLander',
-        afterAlt: 'The same 2025 Toyota Tundra in front of the dealership’s own storefront, composited by AutoLander',
-        caption: 'The branded-backdrop option: the dealer’s actual storefront composited behind a real feed photo of the Tundra.',
+        before: '/studio/jeep-renegade-before.webp',
+        after: '/studio/jeep-renegade-after.webp',
+        beforeAlt: 'Jeep Renegade feed photo boxed in a third-party promo frame, before AutoLander',
+        afterAlt: 'The same blue Jeep Renegade staged in a golden-hour lot scene by AutoLander’s AI car photo editor',
+        caption: 'From boxed-in feed photo to golden-hour hero shot: the Renegade’s bright blue paint and black wheels stay exactly as photographed.',
+      },
+      {
+        type: 'image',
+        src: '/studio/toyota-tundra-after.webp',
+        alt: 'A 2025 Toyota Tundra TRD Pro composited in front of the dealership’s own storefront by AutoLander’s AI Photo Studio',
+        caption: 'The branded-backdrop option: the dealer’s actual storefront composited behind every unit — each listing photo doubles as an ad for the store.',
       },
       {
         type: 'steps',

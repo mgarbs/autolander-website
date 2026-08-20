@@ -63,7 +63,10 @@ function label(file) {
   return relative(ROOT, file).split(sep).join('/');
 }
 
-const documents = [join(ROOT, 'index.html'), ...walk(PUBLIC).filter((file) => extname(file) === '.html')]
+// Search-engine ownership-verification token files (e.g. google<token>.html) are bare
+// single-line files by spec — exclude them from the page audit.
+const isVerificationToken = (file) => /[\\/]google[0-9a-f]{16}\.html$/i.test(file);
+const documents = [join(ROOT, 'index.html'), ...walk(PUBLIC).filter((file) => extname(file) === '.html' && !isVerificationToken(file))]
   .map((file) => ({ file, url: fileUrl(file), html: readFileSync(file, 'utf8') }));
 
 function isIndexable(html) {
