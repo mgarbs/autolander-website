@@ -89,7 +89,7 @@ test('never relabels delivery receipts as metered new posts', () => {
   assert.equal(meteredTimeline.summary.meteredPosts, 2);
 });
 
-test('uses daily 7/30-day buckets and clamps unsupported windows to 30 days', () => {
+test('uses daily 7/30/90-day buckets and clamps larger windows to 90 days', () => {
   const rows = [
     receipt('today', '2026-07-26T10:00:00.000Z', 'org-a', 'user-a'),
     receipt('week', '2026-07-20T10:00:00.000Z', 'org-a', 'user-a'),
@@ -99,10 +99,14 @@ test('uses daily 7/30-day buckets and clamps unsupported windows to 30 days', ()
   const seven = buildPostTimeline(rows, { days: 7, now: NOW });
   assert.equal(seven.buckets.length, 7);
   assert.equal(seven.total, 2);
-  const capped = buildPostTimeline(rows, { days: 90, now: NOW });
-  assert.equal(capped.days, 30);
-  assert.equal(capped.buckets.length, 30);
-  assert.equal(capped.total, 3);
+  const ninety = buildPostTimeline(rows, { days: 90, now: NOW });
+  assert.equal(ninety.days, 90);
+  assert.equal(ninety.buckets.length, 90);
+  assert.equal(ninety.total, 4);
+  const capped = buildPostTimeline(rows, { days: 999, now: NOW });
+  assert.equal(capped.days, 90);
+  assert.equal(capped.buckets.length, 90);
+  assert.equal(capped.total, 4);
 });
 
 test('filters receipts by customer and user without cross-matching', () => {

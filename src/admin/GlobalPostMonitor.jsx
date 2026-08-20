@@ -20,7 +20,7 @@ import {
   filterPosts,
 } from './lib/post-analytics.js';
 
-const WINDOWS = [1, 7, 30];
+const WINDOWS = [1, 7, 30, 90];
 const EMPTY_POSTS = {
   rows: [],
   total: 0,

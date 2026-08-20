@@ -5,6 +5,7 @@ import {
   fetchAccountPosts,
   fetchAllAccountFailures,
   fetchGlobalFailures,
+  fetchGlobalPosts,
 } from '../src/admin/lib/analytics.js';
 
 test('requests account feed failures with an encoded account and preserves unavailable responses', async () => {
@@ -117,6 +118,7 @@ test('loads bounded post-receipt pages from the encoded account endpoint', async
     const limit = Number(parsed.searchParams.get('limit'));
     requests.push({
       pathname: parsed.pathname,
+      days: parsed.searchParams.get('days'),
       offset,
       limit,
       knownTotal: parsed.searchParams.get('knownTotal'),
@@ -141,7 +143,7 @@ test('loads bounded post-receipt pages from the encoded account endpoint', async
 
   try {
     const result = await fetchAccountPosts('org/42', {
-      days: 7,
+      days: 90,
       limit: 2,
       maxRows: 3,
     });
@@ -152,17 +154,47 @@ test('loads bounded post-receipt pages from the encoded account endpoint', async
     assert.deepEqual(requests, [
       {
         pathname: '/admin-api/analytics/accounts/org%2F42/posts',
+        days: '90',
         offset: 0,
         limit: 2,
         knownTotal: null,
       },
       {
         pathname: '/admin-api/analytics/accounts/org%2F42/posts',
+        days: '90',
         offset: 2,
         limit: 1,
         knownTotal: '4',
       },
     ]);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('sends the 90-day window to the aggregated post endpoint', async () => {
+  const originalFetch = globalThis.fetch;
+  let request;
+  globalThis.fetch = async (url) => {
+    request = new URL(String(url), 'https://admin.example.test');
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({
+        rows: [],
+        total: 0,
+        limit: Number(request.searchParams.get('limit')),
+        offset: 0,
+      }),
+    };
+  };
+
+  try {
+    const result = await fetchGlobalPosts({ days: 90, limit: 200, maxRows: 200 });
+    assert.equal(result.source, 'global_post_deliveries');
+    assert.equal(result.summary.windowDays, 90);
+    assert.equal(request.pathname, '/admin-api/analytics/posts');
+    assert.equal(request.searchParams.get('days'), '90');
   } finally {
     globalThis.fetch = originalFetch;
   }

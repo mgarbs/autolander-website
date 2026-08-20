@@ -307,7 +307,7 @@ function finiteNumber(value, fallback = 0) {
 }
 
 function clampWindowDays(value) {
-  return Math.min(30, Math.max(1, finiteNumber(value, 30)));
+  return Math.min(90, Math.max(1, finiteNumber(value, 30)));
 }
 
 function text(value) {

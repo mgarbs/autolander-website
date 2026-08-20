@@ -140,7 +140,7 @@ export function normalizePost(row, index = 0) {
   };
 }
 
-/** Build an exact UTC 24-hour, 7-day, or 30-day receipt timeline. */
+/** Build an exact UTC 24-hour, 7-day, 30-day, or 90-day receipt timeline. */
 export function buildPostTimeline(rows, options = {}) {
   const posts = Array.isArray(rows) ? rows : [];
   const days = clampDays(options.days);
@@ -333,7 +333,8 @@ function clampDays(value) {
   if (!Number.isFinite(parsed)) return 30;
   if (parsed <= 1) return 1;
   if (parsed <= 7) return 7;
-  return 30;
+  if (parsed <= 30) return 30;
+  return 90;
 }
 
 function validDateMs(value, fallback) {
