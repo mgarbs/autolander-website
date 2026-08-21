@@ -65,7 +65,7 @@ export const PAGES = [
         steps: [
           { title: 'Get every unit on Facebook Marketplace, every day', body: 'It is the largest pool of local used-car buyers and listing is free. Posting a full inventory by hand takes hours, which is why most stores list a fraction of their units — a [Facebook Marketplace auto poster](/facebook-marketplace-auto-poster/) keeps the whole lot live without hiring for it.' },
           { title: 'Fix the photos before you spend a dollar on ads', body: 'Buyers scroll past dark, cluttered lot shots. Clean, consistent, showroom-grade photos raise clicks on the same car at the same price — an [AI car photo editor](/ai-car-photo-editor/) does it automatically from your existing feed photos.' },
-          { title: 'Answer in seconds, not hours', body: 'Marketplace buyers message five dealers at once and buy from the one who answers. If nobody covers the inbox nights and weekends, [AI chat for car dealers](/ai-chat-for-car-dealers/) replies instantly, answers vehicle questions and books the appointment.' },
+          { title: 'Answer in seconds, not hours', body: 'Marketplace buyers message five dealers at once and buy from the one who answers. AutoLander routes every buyer message to your team with the listing’s synced data at hand — the [speed-to-lead playbook](/guide/car-sales-leads/) keeps the reply under a minute.' },
           { title: 'Own your Google Business Profile', body: 'Claim it, fill every field, add lot photos, and ask every happy buyer for a review the day they take delivery. Reviews are the single cheapest trust signal in car retail.' },
           { title: 'Make your website prove the car', body: 'Fast pages, real photos, a price, a payment estimator and a one-tap way to text the store. Every extra form field costs you leads.' },
           { title: 'Spend paid dollars only on aged units and retargeting', body: 'Ads work when they have a specific job: move the 60-day-old truck, re-catch the shopper who viewed a VDP. Broad "brand awareness" spend is where dealership ad budgets go to die.' },
@@ -115,7 +115,7 @@ export const PAGES = [
     ],
     cta: {
       heading: 'Run the whole playbook from one app',
-      sub: 'AutoLander posts your inventory to Facebook Marketplace, makes the photos showroom-grade, answers buyers 24/7 and shows you which posts sold cars.',
+      sub: 'AutoLander posts your inventory to Facebook Marketplace, makes the photos showroom-grade, routes buyer messages to your team and shows you which posts sold cars.',
     },
     relatedHeading: 'The dealer growth library',
     schema: {
@@ -156,7 +156,7 @@ export const PAGES = [
         items: [
           '1. List every single unit on Facebook Marketplace, every day — most stores list a fraction of the lot because manual posting is slow; an [auto poster](/facebook-marketplace-auto-poster/) fixes the volume problem overnight.',
           '2. Re-shoot your worst 10 listings with clean backgrounds — or run them through an [AI car photo editor](/ai-car-photo-editor/) and keep the same photos you already have.',
-          '3. Reply to every Marketplace message within one minute — use [AI chat](/ai-chat-for-car-dealers/) for nights, weekends and lunch rushes.',
+          '3. Reply to every Marketplace message within one minute — instant routing to a named owner per shift covers nights, weekends and lunch rushes.',
           '4. Remove sold units the hour they sell — nothing torches trust like a buyer messaging about a car that left Tuesday; [inventory sync](/facebook-marketplace-inventory-sync/) does it automatically.',
           '5. Ask for a Google review at delivery, in person, phone in hand — the ask-at-the-moment rate embarrasses every follow-up email.',
           '6. Fill out every field on your Google Business Profile and add 20 real photos of the lot, the office and the team.',
@@ -229,7 +229,7 @@ export const PAGES = [
     ],
     cta: {
       heading: 'Ideas 1–4, automated tonight',
-      sub: 'AutoLander lists the whole lot on Marketplace, upgrades every photo, answers buyers instantly and pulls sold units — the top of this list, running by itself.',
+      sub: 'AutoLander lists the whole lot on Marketplace, upgrades every photo, routes buyer messages to your team and pulls sold units — the top of this list, running by itself.',
     },
   },
 
@@ -284,7 +284,7 @@ export const PAGES = [
           { title: 'Coverage: every unit live, every day', body: 'Leads scale with listings shoppers can find. A [Facebook Marketplace auto poster](/facebook-marketplace-auto-poster/) keeps the full lot posted within your account’s limits — no Sunday-night posting marathons.' },
           { title: 'Merchandising: photos that stop the scroll', body: 'Same car, same price, better photo = more messages. An [AI car photo editor](/ai-car-photo-editor/) makes every listing look showroom-grade automatically.' },
           { title: 'Price honestly and visibly', body: 'Price-filtered search is how buyers browse. A fair, visible price generates messages; "$1" games and hidden prices generate silence.' },
-          { title: 'Answer in seconds — at 9pm, at Sunday lunch', body: 'Marketplace buyers message several stores at once and buy where the conversation starts. [AI chat for car dealers](/ai-chat-for-car-dealers/) replies instantly from your own inventory data, asks the qualifying questions and hands hot buyers to your team.' },
+          { title: 'Answer in seconds — at 9pm, at Sunday lunch', body: 'Marketplace buyers message several stores at once and buy where the conversation starts. AutoLander routes every message to your team the moment it lands, with the unit’s real price and specs in front of whoever answers — name an owner per shift and measure minutes-to-first-reply.' },
           { title: 'Capture and book in the same thread', body: 'Get a name and phone number early, offer two appointment windows, confirm by text. A lead that leaves the thread without a next step is a lead you donated to the next dealer.' },
         ],
       },
@@ -294,7 +294,7 @@ export const PAGES = [
           h2: 'Do',
           items: [
             'Measure speed-to-first-reply in seconds, per hour of the week',
-            'Route after-hours messages to [AI chat](/ai-chat-for-car-dealers/) instead of a morning pile-up',
+            'Route after-hours messages to a named owner’s phone instead of a morning pile-up',
             'Keep sold units off the channels with [inventory sync](/facebook-marketplace-inventory-sync/)',
             'Work your owned list monthly — equity alerts, lease endings, service-to-sales',
             'Track every lead to sold/lost with a reason',
@@ -323,15 +323,15 @@ export const PAGES = [
       ['How do car dealerships get more leads without buying them?',
         'List the entire inventory where local buyers already search (Facebook Marketplace first — it is free), make photos showroom-grade, show real prices, and answer every message within a minute at any hour. Those four moves generate exclusive, car-specific leads instead of shared vendor names.'],
       ['What is a good response time for car sales leads?',
-        'Under one minute. Marketplace and web shoppers message multiple dealers in one sitting, and the first real answer usually wins the appointment. That response window is why dealers put [AI chat](/ai-chat-for-car-dealers/) on the inbox for nights, weekends and busy floors.'],
+        'Under one minute. Marketplace and web shoppers message multiple dealers in one sitting, and the first real answer usually wins the appointment. Hitting that window is process, not heroics: instant message routing, a named inbox owner per shift, and listings accurate enough that anyone can answer — see the [honest guide to AI chat for car dealers](/ai-chat-for-car-dealers/).'],
       ['Is there an app for managing car sales leads?',
-        'AutoLander’s desktop app manages the Marketplace side end-to-end: it posts every unit, keeps prices and availability current, answers buyer messages instantly with AI, captures contact info and books appointments — then hands qualified buyers to your team.'],
+        'AutoLander’s desktop app manages the Marketplace side end-to-end: it posts every unit, keeps prices and availability current, removes sold cars, and routes buyer messages to your team — with post-to-sale attribution to show which listings became deliveries.'],
       ['Are Facebook Marketplace leads any good for car dealers?',
         'They are among the highest-intent free leads in used-car retail: local shoppers who selected a specific vehicle at your price and started a conversation. Quality problems usually trace to slow replies or stale listings, not the channel.'],
     ],
     cta: {
       heading: 'Exclusive leads from your own inventory',
-      sub: 'AutoLander posts every unit, answers buyers in seconds around the clock, and books the appointment — leads no other store is also working.',
+      sub: 'AutoLander posts every unit, keeps it accurate, and routes every buyer message to your team in seconds — leads no other store is also working.',
     },
   },
 
@@ -373,7 +373,7 @@ export const PAGES = [
           { title: 'Facebook page — the trust check', body: 'Delivery photos with happy buyers (with permission), new arrivals, team faces, reviews reposted. Two to four posts a week beats a daily firehose you abandon by March.' },
           { title: 'Reels / Shorts — the reach lever', body: 'Short walkarounds of interesting units. AutoLander can generate an AI walkaround video per vehicle, so motion content exists without a videographer.' },
           { title: 'Google Business Profile posts — the search bonus', body: 'Cross-post arrivals and offers. Buyers see them at the exact "dealer near me" moment.' },
-          { title: 'Marketplace inbox — where deals start', body: 'Social attention converts in chat. Cover it around the clock with [AI chat for car dealers](/ai-chat-for-car-dealers/), so a Sunday-night message becomes a Monday appointment.' },
+          { title: 'Marketplace inbox — where deals start', body: 'Social attention converts in chat. AutoLander routes every buyer message to your team the moment it lands, so a Sunday-night message becomes a Monday appointment.' },
           { title: 'Photos everywhere — the constant', body: 'Consistent, showroom-grade vehicle photos raise performance on every surface at once — the job of the [AI car photo editor](/ai-car-photo-editor/).' },
         ],
       },
@@ -381,7 +381,7 @@ export const PAGES = [
         type: 'steps',
         h2: 'A weekly cadence a small store can actually keep',
         steps: [
-          { title: 'Daily (automated)', body: 'Inventory posted and refreshed on Marketplace, sold units removed, messages answered instantly — all software, zero staff time.' },
+          { title: 'Daily (automated)', body: 'Inventory posted and refreshed on Marketplace, sold units removed, buyer messages routed to your team — the upkeep is software, the conversations are yours.' },
           { title: 'Monday', body: 'Post the weekend’s deliveries on the page: buyer, car, first name, big smile (with permission).' },
           { title: 'Wednesday', body: 'One Reel: 30-second walkaround of the most interesting unit in stock.' },
           { title: 'Friday', body: 'New-arrivals roundup on the page and Google Business Profile — three units, three lines, link to inventory.' },
@@ -416,7 +416,7 @@ export const PAGES = [
     ],
     cta: {
       heading: 'The selling half of social, automated',
-      sub: 'AutoLander keeps Marketplace complete, current and answered around the clock — you keep the page human.',
+      sub: 'AutoLander keeps Marketplace complete, current and routed to your team — you keep the conversations human.',
     },
   },
 
@@ -456,7 +456,7 @@ export const PAGES = [
           { title: '1. Coverage — every unit, everywhere buyers look', body: 'A car nobody sees is a car nobody buys. Full daily [Facebook Marketplace coverage](/bulk-post-cars-to-facebook-marketplace/) is the cheapest at-bats in used-car retail.' },
           { title: '2. Merchandising — photos do the selling', body: 'Showroom-grade photos lift clicks and messages on identical cars at identical prices. The [AI car photo editor](/ai-car-photo-editor/) upgrades the whole lot automatically.' },
           { title: '3. Price into the filters', body: 'Buyers search with price caps. A visible, defensible price puts you in the result set; games keep you out of it.' },
-          { title: '4. Speed — first real answer wins', body: 'The store that responds in seconds gets the test drive. [AI chat](/ai-chat-for-car-dealers/) makes "in seconds" true at 11pm too.' },
+          { title: '4. Speed — first real answer wins', body: 'The store that responds in seconds gets the test drive. AutoLander routes every message to your team instantly — the [speed-to-lead playbook](/guide/car-sales-leads/) does the rest.' },
           { title: '5. Plug the leaks', body: 'Sold cars still listed, stale prices, dead links — every one burns a real buyer. [Inventory sync](/facebook-marketplace-inventory-sync/) keeps channels truthful automatically.' },
           { title: '6. Attribution — feed what works', body: 'Track which listings and channels produced delivered units, then shift effort there. AutoLander’s post-to-sale attribution closes that loop for Marketplace.' },
         ],
@@ -467,7 +467,7 @@ export const PAGES = [
         steps: [
           { title: 'Week 1 — Coverage', body: 'Get 100% of retail-ready inventory listed on Marketplace with prices. Automate the posting so it stays at 100% without anyone’s Saturday.' },
           { title: 'Week 2 — Merchandising', body: 'Run every listing photo through the AI studio; rewrite the ten worst descriptions to answer condition, history and why-this-price.' },
-          { title: 'Week 3 — Speed', body: 'Turn on 24/7 AI chat, set escalation to your closers’ phones, and start measuring minutes-to-first-reply like you measure gross.' },
+          { title: 'Week 3 — Speed', body: 'Put the Marketplace inbox on your closers’ phones with instant routing, name an owner per shift, and start measuring minutes-to-first-reply like you measure gross.' },
           { title: 'Week 4 — Truth & measure', body: 'Automate sold-unit removal and price sync; pull the first post-to-sale report; put next month’s energy behind whatever the report says sold cars.' },
         ],
       },
@@ -495,11 +495,11 @@ export const PAGES = [
       ['What is a good closing ratio on internet leads?',
         'Ratios vary too much by market and pricing to quote a universal number honestly — what matters is your trend: appointments per 100 leads and deliveries per 100 appointments, measured monthly. Speed of first response is usually the cheapest ratio-mover in the stack.'],
       ['Does AI really help sell more cars?',
-        'AI moves three of the six levers directly: photos (AI studio), speed (24/7 AI chat) and coverage (automated posting). What actually works and what is hype is covered in [AI for car dealerships](/guide/ai-for-car-dealerships/).'],
+        'AI moves two of the six levers directly: photos (the AI studio) and coverage (automated posting) — and software-routed messages help your team win the speed lever. What actually works and what is hype is covered in [AI for car dealerships](/guide/ai-for-car-dealerships/).'],
     ],
     cta: {
       heading: 'Four levers, one app, live this week',
-      sub: 'Coverage, photos, 24/7 answers and sold-unit truth — AutoLander runs them while your floor sells.',
+      sub: 'Coverage, photos, instant message routing and sold-unit truth — AutoLander runs them while your floor sells.',
     },
   },
 
@@ -515,9 +515,10 @@ export const PAGES = [
     bylineUpdated: true,
     tldr:
       'The AI that pays for itself at a car dealership today does jobs the store already knows it needs done: '
-      + 'turning lot photos into showroom images, answering buyer messages instantly around the clock, and '
-      + 'writing accurate listing descriptions for every VIN. AI that promises to "transform" the store '
-      + 'without naming the job it does usually transforms the software budget instead.',
+      + 'turning lot photos into showroom images, writing accurate listing descriptions for every VIN, and '
+      + 'generating walkaround videos from photos. Inbox chatbots are the category to treat carefully — demand '
+      + 'inventory-true answers and instant human handoff. AI that promises to "transform" the store without '
+      + 'naming the job it does usually transforms the software budget instead.',
     breadcrumbs: [{ name: 'Home', url: home }, hubCrumb, { name: 'AI for dealerships', url: SITE.origin + NAV.aiDealers.path }],
     sections: [
       {
@@ -540,7 +541,7 @@ export const PAGES = [
         alCol: 3,
         rows: [
           ['AI vehicle photos', 'Replaces cluttered lot backgrounds with showroom or branded-storefront scenes; keeps the actual car untouched', 'Immediate — better photos lift clicks on every listing', 'AI Photo Studio in AutoLander'],
-          ['AI chat on the sales inbox', 'Answers buyer messages in seconds 24/7 from real inventory data, qualifies, books appointments, escalates to humans', 'Immediate — after-hours messages become appointments instead of morning backlog', 'AI chat for car dealers in AutoLander'],
+          ['AI chat on the sales inbox', 'Standalone tools converse with buyers automatically; quality varies wildly', 'Only safe with inventory-true answers and instant human handoff — vet hard', 'Standalone tools — AutoLander routes messages to humans instead'],
           ['AI listing descriptions', 'Writes an accurate, VIN-specific description for every unit', 'High — hours of copy work disappear; listings stop sounding identical', 'Built into AutoLander listings'],
           ['AI walkaround video', 'Generates a short video per vehicle from photos', 'Solid — motion content without a videographer', 'Optional per-vehicle in AutoLander'],
           ['AI pricing / appraisal tools', 'Suggests prices from market comps', 'Useful as an input; dangerous as an autopilot — local knowledge still prices the car', 'Standalone tools'],
@@ -571,13 +572,13 @@ export const PAGES = [
         type: 'qa',
         q: 'How does AI chat work for a car dealership?',
         a: [
-          'Buyer messages — mostly from Facebook Marketplace listings — get an instant, accurate reply drawn '
-          + 'from your actual inventory data: the real mileage, the real price, the real features of that unit. '
-          + 'The AI asks qualifying questions, captures a name and number, offers appointment times, and hands '
-          + 'the thread to a human the moment it should — a hot buyer, a trade-in negotiation, an upset customer.',
-          'The honest constraints matter: it should answer from data, not improvise; escalate rather than '
-          + 'guess; and run through your own store’s Facebook session rather than some shared cloud account. '
-          + 'That is how [AutoLander’s AI chat](/ai-chat-for-car-dealers/) is built.',
+          'In the standalone tools that offer it, buyer messages get an automated reply drawn — ideally — from '
+          + 'the store’s actual inventory data, with qualifying questions and a handoff to a human when the '
+          + 'conversation gets serious. The category’s failure modes are just as established: improvised '
+          + 'prices, missed escalations, and bots that keep chatting when a buyer needs a person.',
+          'AutoLander takes the other route: no automated replies. It keeps every listing’s data accurate and '
+          + 'routes buyer messages to your team so a human answers fast with the right facts — the trade-offs '
+          + 'are laid out in the [honest guide to AI chat for car dealers](/ai-chat-for-car-dealers/).',
         ],
       },
       {
@@ -603,7 +604,7 @@ export const PAGES = [
     ],
     faq: [
       ['What is the best AI tool for a car dealership?',
-        'The one that completes a job you are currently losing money on. For most independents that is AI photo enhancement and 24/7 AI chat on the Marketplace inbox — both ship inside AutoLander, alongside AI-written listings. See the [Facebook AI tools guide](/facebook-ai-tools/) for the full breakdown.'],
+        'The one that completes a job you are currently losing money on. For most independents that is AI photo enhancement and AI-written listings — both ship inside AutoLander, alongside automated posting and message routing. See the [Facebook AI tools guide](/facebook-ai-tools/) for the full breakdown.'],
       ['Will AI replace car salespeople?',
         'No — it replaces the parts of the job salespeople already hate: retyping listings, editing photos, and answering "is it available?" at midnight. The test drive, the trade walk and the close stay human; good AI just makes sure a human gets the chance.'],
       ['How much does AI for a car dealership cost?',
@@ -611,11 +612,11 @@ export const PAGES = [
       ['Is AI-generated car photography misleading to buyers?',
         'Not when it composites instead of repaints. The vehicle itself — paint, wheels, trim, visible wear — must stay exactly as photographed; only the background scene changes. That is the standard AutoLander’s studio enforces, and it keeps listings honest.'],
       ['Can AI respond to Facebook Marketplace messages for my dealership?',
-        'Yes. AutoLander’s [AI chat for car dealers](/ai-chat-for-car-dealers/) answers Marketplace buyers in seconds from your real inventory data, qualifies them, books appointments and escalates to your team — running through your own store’s session, not a shared bot farm.'],
+        'Standalone chatbots exist that attempt it — vet them hard on inventory truth and human handoff. AutoLander deliberately does not auto-reply: it routes buyer messages to your team with accurate listing data at hand, so the fast answer is also a human one. See the [honest guide to AI chat for car dealers](/ai-chat-for-car-dealers/).'],
     ],
     cta: {
       heading: 'Hire AI for the jobs, keep humans for the close',
-      sub: 'AI photos, AI listings, and a 24/7 AI-answered inbox — one desktop app, on your own inventory.',
+      sub: 'AI photos, AI listings, and buyer messages routed to your team — one desktop app, on your own inventory.',
     },
     schema: {
       itemList: [

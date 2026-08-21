@@ -36,7 +36,7 @@ export const NAV = {
   socialMedia:{ key: 'socialMedia',path: '/guide/social-media-for-car-dealers/',       anchor: 'Social media for car dealers' },
   sellMore:   { key: 'sellMore',   path: '/guide/how-to-sell-more-cars/',              anchor: 'How to sell more cars' },
   aiDealers:  { key: 'aiDealers',  path: '/guide/ai-for-car-dealerships/',             anchor: 'AI for car dealerships: what actually works' },
-  aiChat:     { key: 'aiChat',     path: '/ai-chat-for-car-dealers/',                  anchor: 'AI chat for car dealers — 24/7 Marketplace inbox' },
+  aiChat:     { key: 'aiChat',     path: '/ai-chat-for-car-dealers/',                  anchor: 'AI chat for car dealers — the honest guide' },
   photoEditor:{ key: 'photoEditor',path: '/ai-car-photo-editor/',                      anchor: 'AI car photo editor for dealers' },
   rvDealers:  { key: 'rvDealers',  path: '/rv-dealer-software/',                       anchor: 'RV dealer software for Facebook Marketplace' },
 };
