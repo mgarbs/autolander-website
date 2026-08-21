@@ -39,6 +39,7 @@ export const NAV = {
   aiChat:     { key: 'aiChat',     path: '/ai-chat-for-car-dealers/',                  anchor: 'AI chat for car dealers — the honest guide' },
   photoEditor:{ key: 'photoEditor',path: '/ai-car-photo-editor/',                      anchor: 'AI car photo editor for dealers' },
   rvDealers:  { key: 'rvDealers',  path: '/rv-dealer-software/',                       anchor: 'RV dealer software for Facebook Marketplace' },
+  report2026: { key: 'report2026', path: '/facebook-marketplace-used-car-report-2026/', anchor: 'Facebook Marketplace Used-Car Report 2026 (original data)' },
 };
 
 // Integration spokes. `system` = how AutoLander connects (honest):
@@ -67,7 +68,7 @@ export function relatedFor(pageKey, opts = {}) {
   const N = NAV;
   switch (pageKey) {
     case 'category':
-      return [L(N.aiTools), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.dealers), L(N.sellGuide), L(N.fbListing), L(N.inventory), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide), L(N.mktgHub), L(N.rvDealers)];
+      return [L(N.aiTools), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.dealers), L(N.sellGuide), L(N.fbListing), L(N.inventory), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide), L(N.mktgHub), L(N.rvDealers), L(N.report2026)];
     case 'inventory':
       return [L(N.listingSw), L(N.bulk), L(N.integHub), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
     case 'bulk':
@@ -101,7 +102,7 @@ export function relatedFor(pageKey, opts = {}) {
     // ---- Dealer-growth silo. Hub <-> spokes are bidirectional; every informational spoke
     // descends to at least one money page; money pages link up, across and to pricing. ----
     case 'mktgHub':
-      return [L(N.mktgIdeas), L(N.salesLeads), L(N.socialMedia), L(N.sellMore), L(N.aiDealers), L(N.aiChat), L(N.photoEditor), L(N.category), L(N.dealers)];
+      return [L(N.report2026), L(N.mktgIdeas), L(N.salesLeads), L(N.socialMedia), L(N.sellMore), L(N.aiDealers), L(N.aiChat), L(N.photoEditor), L(N.category), L(N.dealers)];
     case 'mktgIdeas':
       return [L(N.mktgHub), L(N.socialMedia), L(N.salesLeads), L(N.sellMore), L(N.photoEditor), L(N.category), L(N.dealers)];
     case 'salesLeads':
@@ -118,6 +119,8 @@ export function relatedFor(pageKey, opts = {}) {
       return [L(N.aiDealers), L(N.aiTools), L(N.category), L(N.listingSw), L(N.mktgHub), L(N.bulk), L(N.pricing)];
     case 'rvDealers':
       return [L(N.category), L(N.inventory), L(N.bulk), L(N.dealers), L(N.safety), L(N.pricing), L(N.compareHub)];
+    case 'report2026':
+      return [L(N.mktgHub), L(N.category), L(N.dealers), L(N.salesLeads), L(N.sellMore), L(N.photoEditor), L(N.inventory)];
     default:
       return [L(N.category), L(N.compareHub), L(N.integHub), L(N.guide), L(N.sellGuide), L(N.mktgHub)];
   }

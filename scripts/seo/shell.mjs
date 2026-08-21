@@ -184,6 +184,7 @@ export function siteFooter() {
       <a href="${NAV.inventory.path}">Inventory sync</a>
       <a href="${NAV.automation.path}">Automation</a>
       <a href="${NAV.mktgHub.path}">Dealership marketing</a>
+      <a href="${NAV.report2026.path}">2026 Marketplace Report</a>
       <a href="${NAV.aiChat.path}">AI chat for dealers</a>
       <a href="${NAV.photoEditor.path}">AI car photo editor</a>
       <a href="${NAV.rvDealers.path}">RV dealer software</a>

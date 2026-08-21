@@ -35,10 +35,11 @@ import { PAGES as ASSISTANT } from './seo/data-assistant.mjs';
 import { PAGES as AUTOPOSTER } from './seo/data-autoposter.mjs';
 import { PAGES as GROWTH } from './seo/data-growth.mjs';
 import { PAGES as GROWTHMONEY } from './seo/data-growth-money.mjs';
+import { PAGES as REPORT } from './seo/data-report.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 
-const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY];
+const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT];
 
 function write(path, contents) {
   mkdirSync(dirname(path), { recursive: true });
@@ -66,7 +67,7 @@ const expected = [
   NAV.listingSw.path, NAV.fbListing.path, NAV.dealers.path,
   NAV.aiTools.path, NAV.automation.path, NAV.assistant.path, NAV.autoposter.path,
   NAV.mktgHub.path, NAV.mktgIdeas.path, NAV.salesLeads.path, NAV.socialMedia.path,
-  NAV.sellMore.path, NAV.aiDealers.path, NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path,
+  NAV.sellMore.path, NAV.aiDealers.path, NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path, NAV.report2026.path,
   ...INTEGRATIONS.map((s) => integrationPath(s.slug)),
 ];
 const missing = expected.filter((p) => !renderedPaths.has(p));
@@ -121,6 +122,7 @@ function sitemapXml() {
     { loc: SITE.origin + NAV.aiChat.path, pri: '0.9', freq: 'weekly' },
     { loc: SITE.origin + NAV.photoEditor.path, pri: '0.9', freq: 'weekly' },
     { loc: SITE.origin + NAV.rvDealers.path, pri: '0.8', freq: 'weekly' },
+    { loc: SITE.origin + NAV.report2026.path, pri: '0.9', freq: 'monthly' },
     ...competitorSlugs.map((s) => ({ loc: `${SITE.origin}/compare/${s}/`, pri: '0.7', freq: 'monthly' })),
     ...INTEGRATIONS.map((s) => ({ loc: integrationUrl(s.slug), pri: '0.7', freq: 'monthly' })),
   ];
