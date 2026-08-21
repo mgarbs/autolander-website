@@ -16,7 +16,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { renderPage, SEO_STYLES, SITE } from './seo/shell.mjs';
+import { renderPage, renderMarkdown, SEO_STYLES, SITE } from './seo/shell.mjs';
 import { NAV, INTEGRATIONS, integrationPath, integrationUrl } from './seo/registry.mjs';
 import { COMPETITORS, GUIDE } from './compare-data.mjs';
 
@@ -36,10 +36,11 @@ import { PAGES as AUTOPOSTER } from './seo/data-autoposter.mjs';
 import { PAGES as GROWTH } from './seo/data-growth.mjs';
 import { PAGES as GROWTHMONEY } from './seo/data-growth-money.mjs';
 import { PAGES as REPORT } from './seo/data-report.mjs';
+import { PAGES as ABOUT } from './seo/data-about.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 
-const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT];
+const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT];
 
 function write(path, contents) {
   mkdirSync(dirname(path), { recursive: true });
@@ -61,6 +62,152 @@ for (const page of ALL) {
   renderedPaths.add(urlPath);
 }
 
+// ---------- machine-readable copies of the report data ----------
+// Derived from the report page's OWN table sections, so the CSV/JSON can never drift from the
+// published figures. These files back the Dataset node's DataDownload distributions — if you
+// rename a table id here, update `dataset.distribution` in data-report.mjs too.
+function buildReportData() {
+  const page = REPORT[0];
+  const tables = (page.sections || []).filter((s) => s.type === 'table');
+  if (!tables.length) { console.warn('!! report page has no table sections — skipping data export'); return; }
+
+  const meta = {
+    name: page.dataset?.name || page.h1,
+    url: SITE.origin + NAV.report2026.path,
+    publisher: 'AutoLander LLC',
+    author: 'Michael Garber',
+    datePublished: page.dataset?.datePublished || SITE.updated,
+    dateModified: SITE.updated,
+    temporalCoverage: page.dataset?.temporalCoverage,
+    spatialCoverage: 'United States',
+    license: page.dataset?.license,
+    measurementTechnique: page.dataset?.measurementTechnique,
+    sample: page.dataset?.size,
+    citation: 'AutoLander, "The Facebook Marketplace Used-Car Report 2026," autolander.ai, August 2026.',
+  };
+
+  // ---- JSON: nested, one object per table, rows keyed by column header ----
+  const json = {
+    ...meta,
+    tables: tables.map((t) => ({
+      id: t.id,
+      title: t.h2,
+      caption: t.caption,
+      note: t.note,
+      columns: t.head,
+      rows: t.rows.map((r) => Object.fromEntries(r.map((cell, i) => [t.head[i], cell]))),
+    })),
+  };
+  write(resolve(PUBLIC_DIR, 'data', 'marketplace-report-2026.json'), JSON.stringify(json, null, 2) + '\n');
+
+  // ---- CSV: long format so every table shares one schema regardless of column count ----
+  const q = (v) => `"${String(v).replaceAll('"', '""')}"`;
+  const lines = ['table_id,table_title,row,field,value'];
+  for (const t of tables) {
+    for (const r of t.rows) {
+      for (let i = 1; i < r.length; i += 1) {
+        lines.push([t.id, t.h2, r[0], t.head[i], r[i]].map(q).join(','));
+      }
+    }
+  }
+  lines.push('');
+  lines.push(`# Source: ${meta.url}`);
+  lines.push(`# Cite as: ${meta.citation}`);
+  lines.push(`# Licence: ${meta.license}`);
+  write(resolve(PUBLIC_DIR, 'data', 'marketplace-report-2026.csv'), lines.join('\n') + '\n');
+}
+buildReportData();
+
+// ---------- Markdown twins + llms.txt ----------
+// Answer engines parse Markdown far more reliably than HTML. Every silo page gets a .md twin at
+// <path>.md, and /llms.txt is the curated index that points at them. Both are generated from the
+// same page objects that produce the HTML, so they cannot drift out of sync with the site.
+const mdPathFor = (urlPath) => (urlPath === '/' ? '/index' : urlPath.replace(/\/$/, '')) + '.md';
+
+function buildMarkdownTwins() {
+  const twins = [];
+  for (const page of ALL) {
+    const nav = page.key ? NAV[page.key] : null;
+    const urlPath = page.path || (nav && nav.path);
+    if (!urlPath) continue;
+    const rel = mdPathFor(urlPath);
+    write(resolve(PUBLIC_DIR, rel.replace(/^\//, '')), renderMarkdown(page));
+    twins.push({ urlPath, md: rel, title: page.h1 || page.title, description: page.description });
+  }
+  return twins;
+}
+
+function buildLlmsTxt(twins) {
+  const byPath = new Map(twins.map((t) => [t.urlPath, t]));
+  const entry = (urlPath, overrideTitle) => {
+    const t = byPath.get(urlPath);
+    if (!t) return null;
+    const title = overrideTitle || t.title;
+    return `- [${title}](${SITE.origin}${t.md}): ${t.description}`;
+  };
+  const group = (heading, paths) => {
+    const rows = paths.map((p) => entry(p)).filter(Boolean);
+    return rows.length ? `## ${heading}\n\n${rows.join('\n')}\n` : '';
+  };
+
+  const header = `# AutoLander
+
+> Facebook Marketplace software for U.S. car dealerships. Dealers connect an inventory feed and
+> AutoLander posts vehicles to Facebook Marketplace, keeps asking prices in step with the feed,
+> removes sold units, and runs AI photo editing on listing images. Built by AutoLander LLC.
+> Plans from $${SITE.lowPrice}/mo.
+
+AutoLander publishes original first-party research on the dealer side of Facebook Marketplace,
+computed directly from anonymized aggregate platform data — never surveys or estimates. Datasets
+are released under CC BY 4.0 with attribution.
+
+Every link below points at a Markdown copy of the page; drop the .md for the HTML version.
+Contact: sales@autolander.ai · (919) 280-0967
+`;
+
+  const body = [
+    group('Original research', [NAV.report2026.path]),
+    `## Data
+
+- [Marketplace Report 2026 — full dataset (CSV)](${SITE.origin}/data/marketplace-report-2026.csv): All four report tables in long format, CC BY 4.0.
+- [Marketplace Report 2026 — full dataset (JSON)](${SITE.origin}/data/marketplace-report-2026.json): The same figures with methodology, sample sizes and units attached.
+`,
+    group('About the publisher', [NAV.about.path]),
+    group('Product', [
+      NAV.category.path, NAV.listingSw.path, NAV.dealers.path, NAV.inventory.path,
+      NAV.bulk.path, NAV.automation.path, NAV.safety.path, NAV.pricing.path,
+      NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path,
+    ]),
+    group('Guides', [
+      NAV.mktgHub.path, NAV.mktgIdeas.path, NAV.salesLeads.path, NAV.socialMedia.path,
+      NAV.sellMore.path, NAV.aiDealers.path, NAV.aiTools.path,
+    ]),
+    group('Integrations', [NAV.integHub.path, ...INTEGRATIONS.map((s) => integrationPath(s.slug))]),
+    // The /compare/ cluster and the two long-form guides come from build-compare-pages.mjs and are
+    // hand-authored HTML, so they have no Markdown twin — linked here as HTML so the index is
+    // still complete. Give them .md twins if that generator ever moves onto page objects.
+    `## Comparisons
+
+- [Best Facebook Marketplace auto-posting tools for car dealers (2026)](${SITE.origin}/compare/): Buyer's guide comparing every major Facebook Marketplace posting tool for dealers on workflow, session architecture, AI photo/video and price.
+${Object.values(COMPETITORS).map((c) => `- [AutoLander vs ${c.name}](${SITE.origin}/compare/${c.slug}/): Head-to-head comparison. ${c.name}: ${c.oneLiner}`).join('\n')}
+`,
+    `## Buyer guides
+
+- [Facebook Marketplace automation: the honest version](${SITE.origin}/guide/facebook-marketplace-automation/): What Meta's terms actually say about automating Marketplace, the four architectures people use, and the account risks each carries.
+- [How to sell cars on Facebook Marketplace](${SITE.origin}/guide/how-to-sell-cars-on-facebook-marketplace/): Step-by-step guide to listing, pricing, photographing and closing a vehicle sale on Facebook Marketplace.
+`,
+  ].filter(Boolean).join('\n');
+
+  write(resolve(PUBLIC_DIR, 'llms.txt'), `${header}\n${body}`);
+
+  // llms-full.txt: every page's Markdown concatenated, for a model that wants the whole corpus
+  // in one fetch rather than crawling 45 URLs.
+  const full = ALL.map((page) => renderMarkdown(page)).join('\n\n---\n\n');
+  write(resolve(PUBLIC_DIR, 'llms-full.txt'), `${header}\n\n---\n\n${full}`);
+}
+
+buildLlmsTxt(buildMarkdownTwins());
+
 // ---------- completeness check (warns if a registry page wasn't produced) ----------
 const expected = [
   NAV.category.path, NAV.integHub.path, NAV.inventory.path, NAV.bulk.path, NAV.safety.path, NAV.pricing.path,
@@ -68,6 +215,7 @@ const expected = [
   NAV.aiTools.path, NAV.automation.path, NAV.assistant.path, NAV.autoposter.path,
   NAV.mktgHub.path, NAV.mktgIdeas.path, NAV.salesLeads.path, NAV.socialMedia.path,
   NAV.sellMore.path, NAV.aiDealers.path, NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path, NAV.report2026.path,
+  NAV.about.path,
   ...INTEGRATIONS.map((s) => integrationPath(s.slug)),
 ];
 const missing = expected.filter((p) => !renderedPaths.has(p));
@@ -123,6 +271,7 @@ function sitemapXml() {
     { loc: SITE.origin + NAV.photoEditor.path, pri: '0.9', freq: 'weekly' },
     { loc: SITE.origin + NAV.rvDealers.path, pri: '0.8', freq: 'weekly' },
     { loc: SITE.origin + NAV.report2026.path, pri: '0.9', freq: 'monthly' },
+    { loc: SITE.origin + NAV.about.path, pri: '0.6', freq: 'monthly' },
     ...competitorSlugs.map((s) => ({ loc: `${SITE.origin}/compare/${s}/`, pri: '0.7', freq: 'monthly' })),
     ...INTEGRATIONS.map((s) => ({ loc: integrationUrl(s.slug), pri: '0.7', freq: 'monthly' })),
   ];

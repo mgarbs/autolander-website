@@ -16,6 +16,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { orgLd, ORG_ID, ogImageFor } from './seo/shell.mjs';
 import {
   SITE, DIMENSIONS, AUTOLANDER, AUTOLANDER_WINS_GLOBAL, SESSION_FAQ,
   COMPETITORS, HUB, HUB_ORDER, INSIGHTS, EXTRA_FAQ, GUIDE,
@@ -52,22 +53,82 @@ const questionsToAsk = (c) => {
   return base;
 };
 
-const orgLd = {
-  '@context': 'https://schema.org', '@type': 'Organization', name: 'AutoLander',
-  legalName: 'AutoLander LLC', url: SITE.origin + '/', logo: SITE.origin + '/autolander-logo.png',
-  email: 'sales@autolander.ai',
+// The Organization + Person nodes are shared with the SEO silo (scripts/seo/shell.mjs) so every
+// page on the site resolves AutoLander to ONE @id — that single entity is what an answer engine
+// attaches reputation to. Never re-declare a local stub here.
+// (imported at the top of the file)
+
+// SoftwareApplication for the products being compared. NOTE: Google requires a genuine
+// aggregateRating/review for the SoftwareApplication *rich result* — which is why none is emitted
+// below and never should be until verified review data exists. The node itself is still worth
+// emitting without one: it tells an answer engine these are software products in a named category
+// at a stated price, which is exactly what a "X vs Y" prompt needs. Rich-result eligibility and
+// entity understanding are different things.
+const osForMethod = (methodText = '') => {
+  const t = String(methodText).toLowerCase();
+  if (t.includes('extension')) return 'Chrome';
+  if (t.includes('cloud') || t.includes('web') || t.includes('saas')) return 'Web browser';
+  if (t.includes('desktop')) return 'Windows, macOS, Linux';
+  return null;
 };
+
+const softwareAppLd = ({ name, url, description, operatingSystem, price }) => ({
+  '@context': 'https://schema.org', '@type': 'SoftwareApplication',
+  '@id': url + '#software',
+  name,
+  url,
+  applicationCategory: 'BusinessApplication',
+  applicationSubCategory: 'Facebook Marketplace listing software for car dealers',
+  ...(operatingSystem ? { operatingSystem } : {}),
+  ...(description ? { description } : {}),
+  ...(price ? {
+    offers: {
+      '@type': 'Offer', price: String(price), priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock', url: SITE.origin + '/#pricing',
+    },
+  } : {}),
+});
+
+const autolanderAppLd = () => softwareAppLd({
+  name: 'AutoLander',
+  url: SITE.origin + '/',
+  description: 'Native desktop app that posts dealer vehicle inventory to Facebook Marketplace, '
+    + 'syncs prices from the inventory feed, removes sold units and runs AI photo editing.',
+  operatingSystem: 'Windows, macOS, Linux',
+  price: SITE.lowPrice,
+});
+
+const competitorAppLd = (c) => softwareAppLd({
+  name: c.name,
+  url: c.url,
+  // Pricing stays as the competitor's own prose — we do not convert it into a numeric Offer,
+  // because a made-up price on a competitor's entity is a factual claim we cannot stand behind.
+  description: `${c.oneLiner} Pricing: ${c.pricingShort}.`,
+  operatingSystem: osForMethod(c.cells?.method?.[1]),
+});
+
+// What the comparison actually covers — gives a model the axes, not just the prose.
+const comparisonItemListLd = (c, canonical) => ({
+  '@context': 'https://schema.org', '@type': 'ItemList',
+  '@id': canonical + '#comparison',
+  name: `AutoLander vs ${c.name} — comparison criteria`,
+  itemListElement: DIMENSIONS.map(([key, label], i) => ({
+    '@type': 'ListItem', position: i + 1, name: label,
+  })),
+});
+// author/publisher reference the shared entity by @id rather than repeating inline stubs —
+// three disconnected Organization nodes on one page give an answer engine three weak signals
+// instead of one strong one.
 const articleLd = (title, canonical) => ({
   '@context': 'https://schema.org', '@type': 'Article',
+  '@id': canonical + '#article',
   headline: title,
   datePublished: SITE.updated, dateModified: SITE.updated,
-  author: { '@type': 'Organization', name: 'AutoLander', url: SITE.origin + '/' },
-  publisher: {
-    '@type': 'Organization', name: 'AutoLander',
-    logo: { '@type': 'ImageObject', url: SITE.origin + '/autolander-logo.png' },
-  },
+  author: { '@id': ORG_ID },
+  publisher: { '@id': ORG_ID },
   mainEntityOfPage: canonical,
   image: SITE.origin + '/og-image.jpg',
+  inLanguage: 'en-US',
 });
 const faqLd = (faq) => ({
   '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -125,11 +186,13 @@ function head({ title, description, canonical, jsonLdBlocks, ogTitle, ogDescript
   <meta property="og:title" content="${esc(ogT)}" />
   <meta property="og:description" content="${esc(ogD)}" />
   <meta property="og:url" content="${esc(canonical)}" />
-  <meta property="og:image" content="${SITE.origin}/og-image.jpg" />
+  <meta property="og:image" content="${esc(ogImageFor(new URL(canonical).pathname))}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${esc(ogT)}" />
   <meta name="twitter:description" content="${esc(ogD)}" />
-  <meta name="twitter:image" content="${SITE.origin}/og-image.jpg" />
+  <meta name="twitter:image" content="${esc(ogImageFor(new URL(canonical).pathname))}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -270,7 +333,9 @@ function renderVersus(competitor) {
   const faq = [...c.faq, EXTRA_FAQ[c.slug], reviewsFaq, SESSION_FAQ].filter(Boolean);
   const jsonLdBlocks = [
     jsonld(articleLd(title, canonical)),
-    // SoftwareApplication is intentionally omitted until genuine review or aggregate-rating data exists.
+    jsonld(autolanderAppLd()),
+    jsonld(competitorAppLd(c)),
+    jsonld(comparisonItemListLd(c, canonical)),
     jsonld(faqLd(faq)),
     jsonld(breadcrumbLd([
       { name: 'Home', url: SITE.origin + '/' },

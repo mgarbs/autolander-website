@@ -19,6 +19,44 @@ export const PAGES = [
     eyebrow: 'Original research',
     h1: 'The Facebook Marketplace Used-Car Report 2026',
     bylineUpdated: true,
+    // Named byline + Article node: an anonymous corporate byline is the weakest E-E-A-T signal
+    // available on a page whose entire value is credibility. Journalists also won't cite an
+    // unattributed study.
+    author: true,
+    article: { datePublished: '2026-08-20' },
+    // Dataset node: the strongest available signal that this page carries original measured data
+    // rather than commentary. Every value below is a real figure from the on-page tables — never
+    // add a variableMeasured that isn't actually published here.
+    dataset: {
+      name: 'The Facebook Marketplace Used-Car Report 2026',
+      description:
+        'Anonymized aggregate data on dealer vehicle listings posted to Facebook Marketplace through '
+        + 'the AutoLander platform: asking prices, price bands, mileage, model year, most-listed '
+        + 'models, post-publication price changes and posting volume by day of week. Sample: 196 U.S. '
+        + 'dealerships, 10,823 priced listings, 17,778 posts over a trailing 90 days.',
+      datePublished: '2026-08-20',
+      temporalCoverage: '2026-05-23/2026-08-21',
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+      measurementTechnique:
+        'Direct SELECT-only aggregation over anonymized production records. Medians computed as true '
+        + 'percentiles, not averages. No estimation, extrapolation or survey data.',
+      size: '10,823 priced dealer listings; 17,778 posts over 90 days; 196 dealerships',
+      variableMeasured: [
+        { name: 'Median asking price', value: '28295', unitText: 'USD', description: 'Median asking price of a dealer unit posted to Facebook Marketplace (n = 10,823)' },
+        { name: 'Interquartile asking price range', value: '19199-42000', unitText: 'USD', description: 'Middle 50% of dealer asking prices' },
+        { name: 'Share priced $30,000 and above', value: '45.4', unitText: 'PERCENT', description: 'Share of posted dealer units with an asking price of $30,000 or more' },
+        { name: 'Median mileage', value: '50534', unitText: 'SMI', description: 'Median odometer reading of posted units with known mileage' },
+        { name: 'Median model year', value: '2023', description: 'Median model year of posted dealer units' },
+        { name: 'Post-publication price change rate', value: '22.6', unitText: 'PERCENT', description: 'Share of listings whose price differed from the price they were posted at (n = 10,798)' },
+        { name: 'Peak posting day share', value: '17.5', unitText: 'PERCENT', description: 'Share of new dealer listings posted on Thursday, the busiest day (n = 17,778 over 90 days)' },
+        { name: 'Dealerships in sample', value: '196', description: 'U.S. dealership rooftops contributing anonymized data' },
+        { name: 'Most-listed model', value: 'Ford F-150', description: 'Most frequently posted vehicle model, 370 listings' },
+      ],
+      distribution: [
+        { format: 'text/csv', url: SITE.origin + '/data/marketplace-report-2026.csv', name: 'Full dataset (CSV)' },
+        { format: 'application/json', url: SITE.origin + '/data/marketplace-report-2026.json', name: 'Full dataset (JSON)' },
+      ],
+    },
     tldr:
       'AutoLander analyzed anonymized data from 196 U.S. dealerships using its platform — 74,000+ synced '
       + 'vehicles and 10,823 priced dealer listings posted to Facebook Marketplace, including 17,700+ '
@@ -47,7 +85,9 @@ export const PAGES = [
       },
       {
         type: 'table',
+        id: 'headline-numbers',
         h2: 'Headline numbers',
+        caption: 'Headline metrics for dealer vehicle listings on Facebook Marketplace, computed August 21, 2026.',
         head: ['Metric', 'Value', 'Base'],
         rows: [
           ['Median asking price, dealer units posted to Marketplace', '$28,295', '10,823 priced listings'],
@@ -63,6 +103,7 @@ export const PAGES = [
       },
       {
         type: 'qa',
+        id: 'median-asking-price',
         q: 'What does a dealer car on Facebook Marketplace actually cost?',
         a: [
           'More than the platform’s garage-sale reputation suggests. The median asking price across 10,823 '
@@ -74,7 +115,9 @@ export const PAGES = [
       },
       {
         type: 'table',
+        id: 'price-bands',
         h2: 'Price bands: where dealer Marketplace inventory sits',
+        caption: 'Distribution of dealer asking prices on Facebook Marketplace by price band (n = 10,823).',
         head: ['Asking price', 'Share of posted units', 'Count'],
         rows: [
           ['Under $10,000', '6.6%', '714'],
@@ -86,6 +129,7 @@ export const PAGES = [
       },
       {
         type: 'qa',
+        id: 'most-listed-vehicles',
         q: 'What are the most-listed vehicles on Facebook Marketplace?',
         a: [
           'Trucks — by a wide margin. The five most-posted models by dealers on the platform are the Ford '
@@ -96,7 +140,9 @@ export const PAGES = [
       },
       {
         type: 'table',
+        id: 'top-models',
         h2: 'Top 10 most-listed models (dealer listings)',
+        caption: 'The ten most frequently posted vehicle models by dealers on Facebook Marketplace.',
         head: ['Rank', 'Vehicle', 'Listings'],
         rows: [
           ['1', 'Ford F-150', '370'],
@@ -114,6 +160,7 @@ export const PAGES = [
       },
       {
         type: 'qa',
+        id: 'price-changes',
         q: 'How often do dealers change the price after a listing goes live?',
         a: [
           'Constantly: 22.6% of posted listings — 2,443 of 10,798 with comparable data — carried a '
@@ -125,6 +172,7 @@ export const PAGES = [
       },
       {
         type: 'qa',
+        id: 'posting-timing',
         q: 'When do dealers post to Facebook Marketplace?',
         a: [
           'Midweek. Thursday is the single biggest day for new dealer listings (17.5% of the last 90 days’ '
@@ -136,7 +184,9 @@ export const PAGES = [
       },
       {
         type: 'table',
+        id: 'posting-by-day',
         h2: 'New dealer listings by day of week (last 90 days)',
+        caption: 'New dealer listings on Facebook Marketplace by day of week (n = 17,778, trailing 90 days).',
         head: ['Day', 'Posts', 'Share'],
         rows: [
           ['Monday', '2,919', '16.4%'],
@@ -151,6 +201,7 @@ export const PAGES = [
       },
       {
         type: 'qa',
+        id: 'ai-adoption',
         q: 'How much AI is in dealer listings now?',
         a: [
           'A meaningful and growing amount on the photo side: dealerships on the platform have run 94,000+ '
@@ -161,14 +212,35 @@ export const PAGES = [
         ],
       },
       {
+        // Machine-readable copies. A study only becomes a source other people reuse once the
+        // numbers can be taken without scraping the table — and reuse is what compounds into
+        // citations. These files are wired as DataDownload distributions on the Dataset node.
+        type: 'downloads',
+        id: 'download-the-data',
+        h2: 'Download the data',
+        intro:
+          'Every figure on this page is published in machine-readable form under a '
+          + '[CC BY 4.0 licence](https://creativecommons.org/licenses/by/4.0/) — free to reuse, '
+          + 'including commercially, with attribution.',
+        files: [
+          { label: 'CSV', url: '/data/marketplace-report-2026.csv', desc: 'All four tables, one row per metric — opens in Excel, Sheets or pandas.' },
+          { label: 'JSON', url: '/data/marketplace-report-2026.json', desc: 'The same figures with methodology, sample sizes and units attached.' },
+        ],
+        note:
+          'Attribution line: AutoLander, "The Facebook Marketplace Used-Car Report 2026," '
+          + 'autolander.ai, August 2026.',
+      },
+      {
         type: 'callout',
         title: 'How to cite this report',
         body: 'Cite as: AutoLander, "The Facebook Marketplace Used-Car Report 2026," autolander.ai, August '
           + '2026 — with a link to this page. Journalists and bloggers may reproduce individual statistics '
-          + 'and tables with attribution. For questions about the data, contact sales@autolander.ai.',
+          + 'and tables with attribution, under CC BY 4.0. Machine-readable CSV and JSON copies are in the '
+          + '"Download the data" section above. For questions about the data, contact sales@autolander.ai.',
       },
       {
         type: 'qa',
+        id: 'methodology',
         q: 'Methodology',
         a: [
           'Source: anonymized, aggregate production data from the AutoLander platform, computed August 21, '

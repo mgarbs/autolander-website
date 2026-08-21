@@ -36,9 +36,30 @@
 //  {type:'twocol', left:{h2,items}, right:{h2,items}}  do/don't or wins/strengths
 //  {type:'html', html}                                 trusted prebuilt HTML (orchestrator only)
 
+import { readFileSync, existsSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import { SITE, NAV, relatedFor } from './registry.mjs';
 
 export { SITE, NAV };
+
+// ---------- per-page OG cards ----------
+// build-og-cards.mjs writes public/og/manifest.json mapping url path -> card. Read it once at
+// module load: a page with a card points og:image at it, everything else falls back to the shared
+// image. The fallback is what makes the card generator optional — the site can never reference a
+// card that was never rendered.
+const OG_MANIFEST_PATH = resolve(
+  dirname(fileURLToPath(import.meta.url)), '..', '..', 'public', 'og', 'manifest.json',
+);
+let OG_MANIFEST = {};
+try {
+  if (existsSync(OG_MANIFEST_PATH)) OG_MANIFEST = JSON.parse(readFileSync(OG_MANIFEST_PATH, 'utf8'));
+} catch (err) {
+  console.warn('!! could not read og/manifest.json, falling back to /og-image.jpg —', err.message);
+}
+export const ogImageFor = (urlPath) =>
+  SITE.origin + (OG_MANIFEST[urlPath] || '/og-image.jpg');
 
 export const esc = (s) => String(s)
   .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
@@ -64,11 +85,158 @@ export const stripmd = (s) => String(s).replace(/\[([^\]]+)\]\((?:\/[^)]*|https:
 const updatedHuman = () => SITE.updatedHuman || SITE.updated;
 
 // ---------- schema.org builders ----------
+// PROFILES is the sameAs array: the off-site profiles that let an answer engine resolve
+// "AutoLander" to ONE real company instead of treating every mention as an unrelated string.
+// This is the single place to add them. ONLY add a URL after the profile is claimed, live and
+// public — a sameAs pointing at a 404 is worse than no sameAs at all.
+//
+// PENDING (add here the moment each is claimed and live):
+//   LinkedIn company page · Crunchbase · G2 · Capterra · GetApp · Software Advice
+//   Trustpilot · YouTube channel · X · Facebook page · Wikidata entity
+export const PROFILES = [
+  'https://github.com/mgarbs/autolander-releases',
+];
+
+export const ORG_ID = SITE.origin + '/#organization';
+export const PERSON_ID = SITE.origin + '/about/#michael-garber';
+
 export const orgLd = {
-  '@context': 'https://schema.org', '@type': 'Organization', name: 'AutoLander',
-  legalName: 'AutoLander LLC', url: SITE.origin + '/', logo: SITE.origin + '/autolander-logo.png',
+  '@context': 'https://schema.org', '@type': 'Organization',
+  '@id': ORG_ID,
+  name: 'AutoLander',
+  legalName: 'AutoLander LLC',
+  url: SITE.origin + '/',
+  logo: SITE.origin + '/autolander-logo.png',
+  image: SITE.origin + '/og-image.jpg',
   email: 'sales@autolander.ai',
+  telephone: '+1-919-280-0967',
+  description: 'Facebook Marketplace software for car dealerships. AutoLander syncs dealer '
+    + 'inventory feeds, posts vehicles to Facebook Marketplace, keeps prices current, removes '
+    + 'sold units and runs AI photo editing on listing images.',
+  areaServed: { '@type': 'Country', name: 'United States' },
+  knowsAbout: [
+    'Facebook Marketplace',
+    'Automotive retail',
+    'Car dealership marketing',
+    'Vehicle inventory feeds',
+    'Dealer management systems',
+    'Used car pricing',
+  ],
+  contactPoint: [{
+    '@type': 'ContactPoint',
+    contactType: 'sales',
+    email: 'sales@autolander.ai',
+    telephone: '+1-919-280-0967',
+    areaServed: 'US',
+    availableLanguage: 'English',
+  }],
+  ...(PROFILES.length ? { sameAs: PROFILES } : {}),
 };
+
+// Named author for original research and guides. An anonymous corporate byline is the weakest
+// possible E-E-A-T signal on a page whose whole value is credibility — answer engines and
+// journalists both weight named, credentialed attribution.
+export const AUTHOR = {
+  name: 'Michael Garber',
+  jobTitle: 'Founder',
+  url: SITE.origin + '/about/',
+  email: 'michael@autolander.ai',
+};
+
+export const personLd = {
+  '@context': 'https://schema.org', '@type': 'Person',
+  '@id': PERSON_ID,
+  name: AUTHOR.name,
+  jobTitle: AUTHOR.jobTitle,
+  url: AUTHOR.url,
+  email: AUTHOR.email,
+  worksFor: { '@id': ORG_ID },
+  knowsAbout: [
+    'Facebook Marketplace for car dealers',
+    'Automotive inventory syndication',
+    'Dealer management system feeds',
+    'Used vehicle merchandising',
+  ],
+};
+
+// Article node — makes a page read as dated, attributed research rather than marketing copy.
+export const articleLd = ({ title, canonical, description, datePublished, image }) => ({
+  '@context': 'https://schema.org', '@type': 'Article',
+  '@id': canonical + '#article',
+  headline: title,
+  description,
+  url: canonical,
+  mainEntityOfPage: canonical,
+  author: { '@id': PERSON_ID },
+  creator: { '@id': PERSON_ID },
+  publisher: { '@id': ORG_ID },
+  datePublished: datePublished || SITE.updated,
+  dateModified: SITE.updated,
+  image: image || SITE.origin + '/og-image.jpg',
+  inLanguage: 'en-US',
+  isAccessibleForFree: true,
+});
+
+// Dataset node — the strongest available signal that a page carries original measured data.
+// `distribution` points at the machine-readable copies so an analyst or a model can take the
+// numbers without scraping the table.
+export const datasetLd = ({
+  name, canonical, description, variableMeasured, temporalCoverage,
+  datePublished, distribution = [], license, measurementTechnique, size,
+}) => ({
+  '@context': 'https://schema.org', '@type': 'Dataset',
+  '@id': canonical + '#dataset',
+  name,
+  description,
+  url: canonical,
+  identifier: canonical,
+  creator: { '@id': ORG_ID },
+  publisher: { '@id': ORG_ID },
+  author: { '@id': PERSON_ID },
+  datePublished: datePublished || SITE.updated,
+  dateModified: SITE.updated,
+  inLanguage: 'en-US',
+  isAccessibleForFree: true,
+  spatialCoverage: { '@type': 'Place', name: 'United States' },
+  ...(license ? { license } : {}),
+  ...(measurementTechnique ? { measurementTechnique } : {}),
+  ...(temporalCoverage ? { temporalCoverage } : {}),
+  ...(size ? { size } : {}),
+  ...(variableMeasured ? {
+    variableMeasured: variableMeasured.map((v) => (typeof v === 'string' ? v : {
+      '@type': 'PropertyValue',
+      name: v.name,
+      ...(v.value !== undefined ? { value: v.value } : {}),
+      ...(v.unitText ? { unitText: v.unitText } : {}),
+      ...(v.description ? { description: v.description } : {}),
+    })),
+  } : {}),
+  ...(distribution.length ? {
+    distribution: distribution.map((d) => ({
+      '@type': 'DataDownload',
+      encodingFormat: d.format,
+      contentUrl: d.url,
+      ...(d.name ? { name: d.name } : {}),
+    })),
+  } : {}),
+});
+
+// HowTo node — for pages that are literally a step-by-step procedure. Built from the same
+// {type:'steps'} section the page already renders, so the markup can never drift from the copy.
+export const howToLd = ({ name, canonical, description, steps, totalTime }) => ({
+  '@context': 'https://schema.org', '@type': 'HowTo',
+  '@id': canonical + '#howto',
+  name,
+  description,
+  ...(totalTime ? { totalTime } : {}),
+  step: steps.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: stripmd(s.body),
+    url: `${canonical}#step-${i + 1}`,
+  })),
+});
 export const faqLd = (faq) => ({
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: faq.map(([q, a]) => ({
@@ -87,13 +255,16 @@ export const itemListLd = (items) => ({
     '@type': 'ListItem', position: i + 1, name: t.name, url: t.url,
   })),
 });
-export const webPageLd = (title, canonical, desc) => ({
+export const webPageLd = (title, canonical, desc, image) => ({
   '@context': 'https://schema.org', '@type': 'WebPage',
   name: title, url: canonical, description: desc,
   isPartOf: { '@type': 'WebSite', name: 'AutoLander', url: SITE.origin + '/' },
+  publisher: { '@id': ORG_ID },
   primaryImageOfPage: {
     '@type': 'ImageObject',
-    url: SITE.origin + '/og-image.jpg',
+    url: image || SITE.origin + '/og-image.jpg',
+    width: 1200,
+    height: 630,
   },
   dateModified: SITE.updated,
 });
@@ -103,7 +274,8 @@ const liList = (arr) => arr.map((x) => `<li>${fmt(x)}</li>`).join('\n        ');
 const paras = (a) => (Array.isArray(a) ? a : [a]).map((p) => `<p>${fmt(p)}</p>`).join('\n      ');
 
 // ---------- document head ----------
-export function head({ title, description, canonical, jsonLdBlocks, ogType = 'website' }) {
+export function head({ title, description, canonical, jsonLdBlocks, ogType = 'website', ogImage }) {
+  const cardUrl = ogImage || SITE.origin + '/og-image.jpg';
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -123,6 +295,9 @@ export function head({ title, description, canonical, jsonLdBlocks, ogType = 'we
   <meta name="description" content="${esc(description)}" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <link rel="canonical" href="${esc(canonical)}" />
+  <!-- Markdown twin: answer engines parse it far more reliably than HTML. Generated from the
+       same page object as this document by renderMarkdown(), so it can never drift. -->
+  <link rel="alternate" type="text/markdown" href="${esc(canonical.replace(/\/$/, '') + '.md')}" title="Markdown version" />
   <link rel="icon" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <meta property="og:type" content="${esc(ogType)}" />
@@ -130,11 +305,13 @@ export function head({ title, description, canonical, jsonLdBlocks, ogType = 'we
   <meta property="og:title" content="${esc(title)}" />
   <meta property="og:description" content="${esc(description)}" />
   <meta property="og:url" content="${esc(canonical)}" />
-  <meta property="og:image" content="${SITE.origin}/og-image.jpg" />
+  <meta property="og:image" content="${esc(cardUrl)}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${esc(title)}" />
   <meta name="twitter:description" content="${esc(description)}" />
-  <meta name="twitter:image" content="${SITE.origin}/og-image.jpg" />
+  <meta name="twitter:image" content="${esc(cardUrl)}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -192,6 +369,7 @@ export function siteFooter() {
       <a href="${NAV.guide.path}">Guide</a>
       <a href="${SITE.origin}/">AutoLander home</a>
       <a href="${SITE.origin}/#pricing">Pricing</a>
+      <a href="${NAV.about.path}">About</a>
       <a href="/privacy.html">Privacy</a>
       <a href="/terms.html">Terms</a>
     </nav>
@@ -213,8 +391,19 @@ export function renderSection(s) {
   switch (s.type) {
     case 'prose':
       return `    <section class="prose-block">\n      ${paras(s.paras)}\n    </section>`;
-    case 'qa':
-      return `    <section class="qa">\n      <h2>${esc(s.q)}</h2>\n      ${paras(s.a)}\n    </section>`;
+    case 'qa': {
+      const qaId = s.id ? ` id="${esc(s.id)}"` : '';
+      return `    <section class="qa"${qaId}>\n      <h2>${esc(s.q)}</h2>\n      ${paras(s.a)}\n    </section>`;
+    }
+    case 'downloads':
+      // Machine-readable copies of the page's data. A downloadable table is what turns a study
+      // into a source other people reuse — and reuse is what compounds into citations.
+      return `    <section class="downloads"${s.id ? ` id="${esc(s.id)}"` : ''}>
+      <h2>${esc(s.h2)}</h2>${s.intro ? `\n      <p class="sec-intro">${fmt(s.intro)}</p>` : ''}
+      <ul class="download-list">
+        ${s.files.map((f) => `<li><a href="${esc(f.url)}" download><span class="dl-fmt">${esc(f.label)}</span><span class="dl-desc">${esc(f.desc)}</span></a></li>`).join('\n        ')}
+      </ul>${s.note ? `\n      <p class="legend">${fmt(s.note)}</p>` : ''}
+    </section>`;
     case 'bullets':
       return `    <section class="card${s.variant === 'win' ? ' win' : ''}">
       <h2>${esc(s.h2)}</h2>${s.intro ? `\n      <p>${esc(s.intro)}</p>` : ''}
@@ -233,7 +422,7 @@ export function renderSection(s) {
       return `    <section class="steps-wrap">
       <h2>${esc(s.h2)}</h2>${s.intro ? `\n      <p class="sec-intro">${esc(s.intro)}</p>` : ''}
       <ol class="steps">
-        ${s.steps.map((st) => `<li><span class="step-h">${esc(st.title)}</span><span class="step-b">${fmt(st.body)}</span></li>`).join('\n        ')}
+        ${s.steps.map((st, i) => `<li id="step-${i + 1}"><span class="step-h">${esc(st.title)}</span><span class="step-b">${fmt(st.body)}</span></li>`).join('\n        ')}
       </ol>
     </section>`;
     case 'table': {
@@ -245,10 +434,14 @@ export function renderSection(s) {
         const close = i === 0 ? 'th' : 'td';
         return `<${tag}${cls}>${esc(cellVal)}</${close}>`;
       }).join('')}</tr>`).join('\n');
-      return `    <section class="table-section">
+      // s.id gives the table a stable deep-link target. An answer engine citing one figure
+      // wants to link the claim, not the page — …/#top-models beats …/ every time.
+      const secId = s.id ? ` id="${esc(s.id)}"` : '';
+      const cap = s.caption ? `\n          <caption>${esc(s.caption)}</caption>` : '';
+      return `    <section class="table-section"${secId}>
       <h2>${esc(s.h2)}</h2>${s.intro ? `\n      <p class="sec-intro">${esc(s.intro)}</p>` : ''}
       <div class="table-wrap">
-        <table class="cmp">
+        <table class="cmp">${cap}
           <thead><tr>${thead}</tr></thead>
           <tbody>\n${rows}\n          </tbody>
         </table>
@@ -316,26 +509,69 @@ export function renderPage(page) {
   const nav = page.key ? NAV[page.key] : null;
   const path = page.path || (nav && nav.path);
   const canonical = SITE.origin + path;
+  const ogImage = ogImageFor(path);
   const jsonLdBlocks = [];
-  jsonLdBlocks.push(jsonld(webPageLd(page.title, canonical, page.description)));
+  jsonLdBlocks.push(jsonld(webPageLd(page.title, canonical, page.description, ogImage)));
   // Google requires a genuine aggregateRating or review for SoftwareApplication rich results.
   // AutoLander does not currently publish verified review data, so do not emit that type until it does.
   if (page.schema?.itemList) jsonLdBlocks.push(jsonld(itemListLd(page.schema.itemList)));
+
+  // Article: emitted for authored, dated content (research + guides). Carries the named author,
+  // which is the E-E-A-T signal answer engines weight most heavily on this kind of page.
+  if (page.article) {
+    jsonLdBlocks.push(jsonld(articleLd({
+      title: page.article.headline || page.h1 || page.title,
+      canonical,
+      description: page.description,
+      datePublished: page.article.datePublished,
+      image: page.article.image || ogImage,
+    })));
+  }
+
+  // Dataset: emitted only for pages that publish original measured data.
+  if (page.dataset) {
+    jsonLdBlocks.push(jsonld(datasetLd({ ...page.dataset, canonical })));
+  }
+
+  // HowTo: built from the page's own {type:'steps'} section so the markup can never drift
+  // from the rendered copy. Point `howTo.fromSection` at the section's h2.
+  if (page.howTo) {
+    const src = (page.sections || []).find(
+      (s) => s.type === 'steps' && (!page.howTo.fromSection || s.h2 === page.howTo.fromSection),
+    );
+    if (src) {
+      jsonLdBlocks.push(jsonld(howToLd({
+        name: page.howTo.name || page.h1 || page.title,
+        canonical,
+        description: page.howTo.description || page.description,
+        totalTime: page.howTo.totalTime,
+        steps: src.steps,
+      })));
+    } else {
+      console.warn(`!! howTo declared but no matching steps section on ${path}`);
+    }
+  }
+
   if (page.faq && page.faq.length) jsonLdBlocks.push(jsonld(faqLd(page.faq)));
   if (page.breadcrumbs) jsonLdBlocks.push(jsonld(breadcrumbLd(page.breadcrumbs)));
   jsonLdBlocks.push(jsonld(orgLd));
+  // The Person node is referenced by @id from every Article/Dataset, so it has to be resolvable
+  // on any page that emits one.
+  if (page.article || page.dataset || page.author) jsonLdBlocks.push(jsonld(personLd));
 
   const related = page.related || (page.key ? relatedFor(page.key) : []);
   const sectionsHtml = (page.sections || []).map(renderSection).join('\n\n');
 
   return [
-    head({ title: page.title, description: page.description, canonical, jsonLdBlocks, ogType: page.ogType }),
+    head({ title: page.title, description: page.description, canonical, jsonLdBlocks, ogType: page.ogType, ogImage }),
     siteHeader(page.breadcrumbs.map(({ name, url }) => ({ name, url }))),
     `  <main class="wrap">
     <article>
     ${page.eyebrow ? `<p class="eyebrow">${esc(page.eyebrow)}</p>` : ''}
     <h1>${esc(page.h1)}</h1>
-    ${page.bylineUpdated ? `<p class="byline">By the <a href="${SITE.origin}/">AutoLander</a> team &middot; Updated <time datetime="${SITE.updated}">${esc(updatedHuman())}</time></p>` : ''}
+    ${page.bylineUpdated ? `<p class="byline">${page.author
+      ? `By <a href="${AUTHOR.url}" rel="author">${esc(AUTHOR.name)}</a>, ${esc(AUTHOR.jobTitle)}, <a href="${SITE.origin}/">AutoLander</a>`
+      : `By the <a href="${SITE.origin}/">AutoLander</a> team`} &middot; Updated <time datetime="${SITE.updated}">${esc(updatedHuman())}</time></p>` : ''}
     ${page.tldr ? `<div class="tldr"><p class="tldr-label">Short answer</p><p>${fmt(page.tldr)}</p></div>` : ''}
 
 ${sectionsHtml}
@@ -348,6 +584,111 @@ ${page.faq && page.faq.length ? faqSection(page.faq, page.faqHeading) : ''}
   </main>`,
     siteFooter(),
   ].join('\n');
+}
+
+// ---------- Markdown twin ----------
+// Renders the SAME page object as clean Markdown. Answer engines parse Markdown far more reliably
+// than HTML, and Claude in particular favours it — so every page worth citing gets a .md twin
+// linked from llms.txt. Generated from the page object, never hand-maintained, so it cannot drift.
+export function renderMarkdown(page) {
+  const nav = page.key ? NAV[page.key] : null;
+  const path = page.path || (nav && nav.path);
+  const canonical = SITE.origin + path;
+  const out = [];
+
+  out.push(`# ${page.h1 || page.title}`);
+  out.push('');
+  out.push(`> ${page.description}`);
+  out.push('');
+  const by = page.author ? `${AUTHOR.name}, ${AUTHOR.jobTitle}, AutoLander` : 'The AutoLander team';
+  out.push(`Source: ${canonical}  `);
+  out.push(`Author: ${by}  `);
+  out.push(`Updated: ${updatedHuman()}`);
+  out.push('');
+  if (page.tldr) {
+    out.push('**Short answer:** ' + stripmd(page.tldr));
+    out.push('');
+  }
+
+  for (const s of page.sections || []) {
+    switch (s.type) {
+      case 'prose':
+        (Array.isArray(s.paras) ? s.paras : [s.paras]).forEach((p) => { out.push(stripmd(p)); out.push(''); });
+        break;
+      case 'qa':
+        out.push(`## ${s.q}`); out.push('');
+        (Array.isArray(s.a) ? s.a : [s.a]).forEach((p) => { out.push(stripmd(p)); out.push(''); });
+        break;
+      case 'bullets':
+        out.push(`## ${s.h2}`); out.push('');
+        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
+        s.items.forEach((i) => out.push(`- ${stripmd(i)}`));
+        out.push('');
+        break;
+      case 'features':
+        out.push(`## ${s.h2}`); out.push('');
+        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
+        s.cards.forEach((c) => { out.push(`### ${c.title}`); out.push(''); out.push(stripmd(c.body)); out.push(''); });
+        break;
+      case 'steps':
+        out.push(`## ${s.h2}`); out.push('');
+        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
+        s.steps.forEach((st, i) => { out.push(`${i + 1}. **${st.title}** — ${stripmd(st.body)}`); });
+        out.push('');
+        break;
+      case 'table':
+        out.push(`## ${s.h2}`); out.push('');
+        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
+        out.push(`| ${s.head.join(' | ')} |`);
+        out.push(`| ${s.head.map(() => '---').join(' | ')} |`);
+        s.rows.forEach((r) => out.push(`| ${r.map((c) => String(c).replaceAll('|', '\\|')).join(' | ')} |`));
+        out.push('');
+        if (s.note) { out.push(`_${stripmd(s.note)}_`); out.push(''); }
+        break;
+      case 'downloads':
+        out.push(`## ${s.h2}`); out.push('');
+        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
+        s.files.forEach((f) => out.push(`- [${f.label}](${SITE.origin}${f.url}) — ${f.desc}`));
+        out.push('');
+        if (s.note) { out.push(stripmd(s.note)); out.push(''); }
+        break;
+      case 'callout':
+        if (s.title) { out.push(`## ${s.title}`); out.push(''); }
+        out.push(stripmd(s.body)); out.push('');
+        break;
+      case 'twocol':
+        out.push(`## ${s.left.h2}`); out.push('');
+        s.left.items.forEach((i) => out.push(`- ${stripmd(i)}`)); out.push('');
+        out.push(`## ${s.right.h2}`); out.push('');
+        s.right.items.forEach((i) => out.push(`- ${stripmd(i)}`)); out.push('');
+        break;
+      case 'figure':
+        out.push(`_${stripmd(s.caption)}_`); out.push('');
+        break;
+      case 'image':
+        out.push(`_${stripmd(s.caption)}_`); out.push('');
+        break;
+      default:
+        break;
+    }
+  }
+
+  if (page.faq && page.faq.length) {
+    out.push(`## ${page.faqHeading || 'Frequently asked questions'}`); out.push('');
+    page.faq.forEach(([q, a]) => { out.push(`### ${q}`); out.push(''); out.push(stripmd(a)); out.push(''); });
+  }
+
+  const related = page.related || (page.key ? relatedFor(page.key) : []);
+  if (related.length) {
+    out.push('## Related'); out.push('');
+    related.forEach((l) => out.push(`- [${l.text}](${l.href.startsWith('http') ? l.href : SITE.origin + l.href})`));
+    out.push('');
+  }
+
+  out.push('---');
+  out.push(`AutoLander — Facebook Marketplace software for car dealers. ${SITE.origin}/`);
+  out.push('');
+  return out.join('\n');
 }
 
 // ---------- supplemental stylesheet (new components; base comes from /compare/styles.css) ----------
@@ -376,5 +717,13 @@ background:rgba(59,130,246,.16);color:var(--blue2);font-weight:900;display:flex;
 .table-section{margin-top:36px}
 .feature-card h3,.step-h{letter-spacing:-.01em}
 .shot-single .shot-imgs{grid-template-columns:1fr;max-width:680px;margin:0 auto}
+.cmp caption{caption-side:top;text-align:left;padding:0 0 10px;color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.01em}
+.downloads{margin-top:36px}
+.download-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:10px}
+.download-list a{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;background:var(--panel);
+border:1px solid var(--line);border-radius:14px;padding:14px 18px;text-decoration:none}
+.download-list a:hover{border-color:var(--blue2)}
+.dl-fmt{font-weight:800;color:var(--blue2);font-size:14.5px}
+.dl-desc{color:var(--muted);font-size:14px}
 @media(max-width:640px){.feature-grid{grid-template-columns:1fr}}
 `;

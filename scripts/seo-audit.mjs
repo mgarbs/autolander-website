@@ -109,8 +109,16 @@ function inspectSchema(value, file) {
     problems.push(`${label(file)}: primaryImageOfPage must be an ImageObject, not a URL string`);
   }
   const types = Array.isArray(value['@type']) ? value['@type'] : [value['@type']];
-  if (types.includes('SoftwareApplication') && !value.aggregateRating && !value.review) {
-    problems.push(`${label(file)}: SoftwareApplication is emitted without a genuine aggregateRating or review`);
+  // The risk this guards is a FABRICATED rating, not a missing one. Google requires an
+  // aggregateRating/review for the SoftwareApplication *rich result*, but emitting the type
+  // without one is valid schema and is what lets an answer engine understand "AutoLander" and a
+  // competitor as software products in a named category — exactly what an "X vs Y" prompt needs.
+  // So: allow the node, and fail loudly the moment a rating appears that isn't backed by real
+  // published review data. Flip REVIEWS_ARE_VERIFIED only when genuine reviews exist on-site.
+  const REVIEWS_ARE_VERIFIED = false;
+  if (types.includes('SoftwareApplication') && !REVIEWS_ARE_VERIFIED
+      && (value.aggregateRating || value.review)) {
+    problems.push(`${label(file)}: SoftwareApplication carries an aggregateRating/review but no verified review data exists — remove it or set REVIEWS_ARE_VERIFIED once real reviews are published`);
   }
   for (const child of Object.values(value)) {
     if (Array.isArray(child)) child.forEach((item) => inspectSchema(item, file));

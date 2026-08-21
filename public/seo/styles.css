@@ -23,4 +23,12 @@ background:rgba(59,130,246,.16);color:var(--blue2);font-weight:900;display:flex;
 .table-section{margin-top:36px}
 .feature-card h3,.step-h{letter-spacing:-.01em}
 .shot-single .shot-imgs{grid-template-columns:1fr;max-width:680px;margin:0 auto}
+.cmp caption{caption-side:top;text-align:left;padding:0 0 10px;color:var(--muted);font-size:13px;font-weight:600;letter-spacing:.01em}
+.downloads{margin-top:36px}
+.download-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:10px}
+.download-list a{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;background:var(--panel);
+border:1px solid var(--line);border-radius:14px;padding:14px 18px;text-decoration:none}
+.download-list a:hover{border-color:var(--blue2)}
+.dl-fmt{font-weight:800;color:var(--blue2);font-size:14.5px}
+.dl-desc{color:var(--muted);font-size:14px}
 @media(max-width:640px){.feature-grid{grid-template-columns:1fr}}

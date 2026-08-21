@@ -1,0 +1,79 @@
+# AutoLander
+
+> Facebook Marketplace software for U.S. car dealerships. Dealers connect an inventory feed and
+> AutoLander posts vehicles to Facebook Marketplace, keeps asking prices in step with the feed,
+> removes sold units, and runs AI photo editing on listing images. Built by AutoLander LLC.
+> Plans from $39/mo.
+
+AutoLander publishes original first-party research on the dealer side of Facebook Marketplace,
+computed directly from anonymized aggregate platform data — never surveys or estimates. Datasets
+are released under CC BY 4.0 with attribution.
+
+Every link below points at a Markdown copy of the page; drop the .md for the HTML version.
+Contact: sales@autolander.ai · (919) 280-0967
+
+## Original research
+
+- [The Facebook Marketplace Used-Car Report 2026](https://autolander.ai/facebook-marketplace-used-car-report-2026.md): Original data from 196 dealerships and 10,800+ dealer listings on Facebook Marketplace: median prices, mileage, top models and posting patterns.
+
+## Data
+
+- [Marketplace Report 2026 — full dataset (CSV)](https://autolander.ai/data/marketplace-report-2026.csv): All four report tables in long format, CC BY 4.0.
+- [Marketplace Report 2026 — full dataset (JSON)](https://autolander.ai/data/marketplace-report-2026.json): The same figures with methodology, sample sizes and units attached.
+
+## About the publisher
+
+- [About AutoLander](https://autolander.ai/about.md): Who builds AutoLander, what the platform does, and how the figures in our published research are produced — sourcing, method and media contact.
+
+## Product
+
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster.md): Facebook Marketplace auto poster for dealers: manage a whole-lot posting queue, control pacing, sync inventory and remove sold units. From $39/mo.
+- [Facebook Marketplace listing tool & software for car dealers](https://autolander.ai/facebook-marketplace-listing-software.md): Facebook Marketplace listing software for dealers: turn inventory data into complete listings, improve photos, review fields and keep records current.
+- [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers.md): Facebook Marketplace for car dealers: learn the rules, list your inventory and automate repetitive posting. From $39/mo with 5 free posts.
+- [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync.md): Keep Facebook Marketplace matched to your live lot: auto-post new arrivals, update prices and remove sold units. From $39/mo with 5 free posts.
+- [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace.md): Load car inventory into a Facebook Marketplace posting queue and auto-remove sold units. Meta eligibility and listing limits apply. Plans from $39/mo.
+- [Facebook Marketplace automation for car dealers](https://autolander.ai/facebook-marketplace-automation.md): Facebook Marketplace automation for car dealers: auto-post inventory, update prices, remove sold cars and enhance photos. From $39/mo, 5 free posts.
+- [The safest way to use a Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster.md): Compare Facebook Marketplace auto-poster safety models, account risks and warning signs. Learn why no automation tool can guarantee against bans.
+- [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing.md): AutoLander pricing: Starter $39, Growth $59, Pro $79 and Dealer plans from $117 monthly. Start with 5 free posts and no credit card.
+- [AI chat for car dealers: the honest guide](https://autolander.ai/ai-chat-for-car-dealers.md): AI chat for car dealers, honestly: what inbox AI can and cannot do, the traps to avoid, and how AutoLander helps your team answer buyers faster.
+- [AI car photo editor: showroom photos from the shots you already have](https://autolander.ai/ai-car-photo-editor.md): AI car photo editor for dealers: turn lot and feed photos into showroom-grade listing images — real cars, never repainted. From $39/mo.
+- [RV dealer software for Facebook Marketplace](https://autolander.ai/rv-dealer-software.md): RV dealer software that posts travel trailers, fifth wheels and motorhomes to Facebook Marketplace in the right category. From $39/mo.
+
+## Guides
+
+- [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing.md): Car dealership marketing in 2026: where buyers actually shop, which channels are worth paying for, and a 7-step playbook you can run without an agency.
+- [27 car dealership marketing ideas that actually sell cars](https://autolander.ai/guide/car-dealership-marketing-ideas.md): 27 car dealership marketing ideas ranked by cost and effort — free Marketplace plays, photo upgrades, local moves and retention that move metal.
+- [How to get car sales leads (without buying them)](https://autolander.ai/guide/car-sales-leads.md): How to get car sales leads that close: rank sources by intent, turn Facebook Marketplace into a lead engine, and answer buyers in seconds.
+- [Social media for car dealers: post where buyers actually shop](https://autolander.ai/guide/social-media-for-car-dealers.md): Social media for car dealers that sells cars: why Marketplace is the channel that transacts, what belongs on your page, and a weekly cadence.
+- [How to sell more cars: the six levers that actually move units](https://autolander.ai/guide/how-to-sell-more-cars.md): How to sell more cars without more ad spend: six levers — coverage, photos, price, speed, leaks, attribution — plus a 30-day plan for dealers.
+- [AI for car dealerships: what actually works in 2026](https://autolander.ai/guide/ai-for-car-dealerships.md): AI for car dealerships without the hype: the three uses that pay today — AI photos, 24/7 inbox chat, listing copy — and what AI still cannot do.
+- [Facebook AI tools for car dealers](https://autolander.ai/facebook-ai-tools.md): Facebook AI tools for car dealers: enhance photos, write listings, auto-post inventory and route buyer messages. From $39/mo with 5 free posts.
+
+## Integrations
+
+- [Facebook Marketplace integrations & DMS feeds](https://autolander.ai/integrations.md): Connect dealer inventory feeds to Facebook Marketplace with AutoLander. Supports CarGurus, Cars.com and custom DMS exports. From $39/mo.
+- [Post your CarGurus inventory to Facebook Marketplace](https://autolander.ai/integrations/cargurus-facebook-marketplace.md): CarGurus to Facebook Marketplace: connect your supported inventory feed, manage eligible listings and remove sold cars. From $39/mo with 5 free posts.
+- [Post your Cars.com inventory to Facebook Marketplace](https://autolander.ai/integrations/cars-com-facebook-marketplace.md): Cars.com to Facebook Marketplace: connect your supported inventory feed, manage eligible listings and remove sold cars. From $39/mo with 5 free posts.
+- [vAuto to Facebook Marketplace via custom feed/export](https://autolander.ai/integrations/vauto-facebook-marketplace.md): vAuto to Facebook Marketplace via custom feed/export. Prepare listings, enhance photos and remove sold cars. From $39/mo with 5 free posts.
+- [DealerCenter to Facebook Marketplace via custom feed/export](https://autolander.ai/integrations/dealercenter-facebook-marketplace.md): DealerCenter to Facebook Marketplace via custom feed/export. Prepare listings, enhance photos and remove sold cars. From $39/mo with 5 free posts.
+- [Dealer.com to Facebook Marketplace via custom feed/export](https://autolander.ai/integrations/dealer-com-facebook-marketplace.md): Dealer.com to Facebook Marketplace via custom feed/export. Prepare listings, enhance photos and remove sold cars. From $39/mo with 5 free posts.
+- [HomeNet to Facebook Marketplace via custom feed/export](https://autolander.ai/integrations/homenet-facebook-marketplace.md): HomeNet to Facebook Marketplace via custom feed/export. Prepare listings, enhance photos and remove sold cars. From $39/mo with 5 free posts.
+- [Frazer to Facebook Marketplace via custom feed/export](https://autolander.ai/integrations/frazer-facebook-marketplace.md): Frazer to Facebook Marketplace via custom feed/export. Prepare listings, enhance photos and remove sold cars. From $39/mo with 5 free posts.
+- [CDK Global to Facebook Marketplace via custom feed/export](https://autolander.ai/integrations/cdk-facebook-marketplace.md): CDK Global to Facebook Marketplace via custom feed/export. Prepare listings, enhance photos and remove sold cars. From $39/mo with 5 free posts.
+- [Tekion to Facebook Marketplace via custom feed/export](https://autolander.ai/integrations/tekion-facebook-marketplace.md): Tekion to Facebook Marketplace via custom feed/export. Prepare listings, enhance photos and remove sold cars. From $39/mo with 5 free posts.
+
+## Comparisons
+
+- [Best Facebook Marketplace auto-posting tools for car dealers (2026)](https://autolander.ai/compare/): Buyer's guide comparing every major Facebook Marketplace posting tool for dealers on workflow, session architecture, AI photo/video and price.
+- [AutoLander vs AutoBook.io](https://autolander.ai/compare/autobook/): Head-to-head comparison. AutoBook.io: A Chrome extension that automates Facebook Marketplace posting from your browser, billed pay-as-you-go.
+- [AutoLander vs Shiftly](https://autolander.ai/compare/shiftly/): Head-to-head comparison. Shiftly: A Chrome extension ("Shiftly Auto Lister") plus a dealer dashboard, aimed at dealer groups, with custom-quote pricing.
+- [AutoLander vs RelayAuto](https://autolander.ai/compare/relayauto/): Head-to-head comparison. RelayAuto: A cloud platform that runs your Marketplace operation end-to-end — posting, AI lead replies and appointment booking — 24/7 from its own servers.
+- [AutoLander vs Sell With Drift](https://autolander.ai/compare/drift/): Head-to-head comparison. Sell With Drift: A cloud platform that posts inventory to Facebook Marketplace with AI studio backgrounds and DMS sync; it advertises a 99.9% account-safety rate.
+- [AutoLander vs CARVID](https://autolander.ai/compare/carvid/): Head-to-head comparison. CARVID: A cloud platform that syndicates listings to ~9 platforms (not just Marketplace) and pushes leads into your CRM, at a flat $249/mo.
+- [AutoLander vs Glo3D](https://autolander.ai/compare/glo3d/): Head-to-head comparison. Glo3D: A vehicle-photography suite (360° spin, AI backgrounds) that also offers scheduled Facebook posting with human support.
+- [AutoLander vs AutoLister Pro](https://autolander.ai/compare/autolisterpro/): Head-to-head comparison. AutoLister Pro: A Chrome extension that auto-fills Facebook Marketplace listings for cars, RVs, boats and ATVs from your inventory feed, posting through your real account.
+
+## Buyer guides
+
+- [Facebook Marketplace automation: the honest version](https://autolander.ai/guide/facebook-marketplace-automation/): What Meta's terms actually say about automating Marketplace, the four architectures people use, and the account risks each carries.
+- [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/): Step-by-step guide to listing, pricing, photographing and closing a vehicle sale on Facebook Marketplace.

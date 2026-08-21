@@ -11,7 +11,9 @@
     "lint": "eslint .",
     "seo:audit": "node scripts/seo-audit.mjs",
     "seo:indexnow": "node scripts/submit-indexnow.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "seo:pages": "node scripts/build-compare-pages.mjs && node scripts/build-seo-pages.mjs",
+    "seo:og": "node scripts/build-og-cards.mjs"
   },
   "dependencies": {
     "autoprefixer": "^10.4.27",

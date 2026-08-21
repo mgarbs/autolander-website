@@ -40,6 +40,9 @@ export const NAV = {
   photoEditor:{ key: 'photoEditor',path: '/ai-car-photo-editor/',                      anchor: 'AI car photo editor for dealers' },
   rvDealers:  { key: 'rvDealers',  path: '/rv-dealer-software/',                       anchor: 'RV dealer software for Facebook Marketplace' },
   report2026: { key: 'report2026', path: '/facebook-marketplace-used-car-report-2026/', anchor: 'Facebook Marketplace Used-Car Report 2026 (original data)' },
+  // Author + publisher entity page. The Person @id referenced by every Article/Dataset node
+  // resolves here, so this page must exist for the attribution graph to hold together.
+  about:      { key: 'about',      path: '/about/',                                    anchor: 'About AutoLander — who we are and how our data is produced' },
 };
 
 // Integration spokes. `system` = how AutoLander connects (honest):
