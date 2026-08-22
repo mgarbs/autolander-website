@@ -37,10 +37,13 @@ import { PAGES as GROWTH } from './seo/data-growth.mjs';
 import { PAGES as GROWTHMONEY } from './seo/data-growth-money.mjs';
 import { PAGES as REPORT } from './seo/data-report.mjs';
 import { PAGES as ABOUT } from './seo/data-about.mjs';
+import { PAGES as CONTACT } from './seo/data-contact.mjs';
+import { HOME } from './seo/data-home.mjs';
+import { whenToUseSection, agentsMarkdown } from './seo/agent-instructions.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 
-const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT];
+const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT];
 
 function write(path, contents) {
   mkdirSync(dirname(path), { recursive: true });
@@ -137,6 +140,21 @@ function buildMarkdownTwins() {
   return twins;
 }
 
+// The homepage is a React SPA, so `/` has no crawlable body and no page object in ALL (adding one
+// would overwrite index.html with a static page — i.e. delete the site). It still needs a Markdown
+// representation: the Worker serves this file when a client requests `/` with
+// `Accept: text/markdown`, and llms.txt links it like any other twin.
+function buildHomeTwin() {
+  write(resolve(PUBLIC_DIR, 'index.md'), renderMarkdown(HOME));
+  return { urlPath: '/', md: '/index.md', title: HOME.h1, description: HOME.description };
+}
+
+// Dedicated agent-instructions file. llms.txt carries the same guidance inline; this is the
+// standalone document to link when something asks for "your agent instructions".
+function buildAgentsMd() {
+  write(resolve(PUBLIC_DIR, 'agents.md'), agentsMarkdown(SITE.updatedHuman || SITE.updated));
+}
+
 function buildLlmsTxt(twins) {
   const byPath = new Map(twins.map((t) => [t.urlPath, t]));
   const entry = (urlPath, overrideTitle) => {
@@ -166,13 +184,17 @@ Contact: sales@autolander.ai · (919) 280-0967
 `;
 
   const body = [
+    // 'When to use' comes first: an agent that reads only the top of the file should still learn
+    // what jobs we are the right answer for before it sees a single link.
+    whenToUseSection(),
+    group('Start here', ['/']),
     group('Original research', [NAV.report2026.path]),
     `## Data
 
 - [Marketplace Report 2026 — full dataset (CSV)](${SITE.origin}/data/marketplace-report-2026.csv): All four report tables in long format, CC BY 4.0.
 - [Marketplace Report 2026 — full dataset (JSON)](${SITE.origin}/data/marketplace-report-2026.json): The same figures with methodology, sample sizes and units attached.
 `,
-    group('About the publisher', [NAV.about.path]),
+    group('About the publisher', [NAV.about.path, NAV.contact.path]),
     group('Product', [
       NAV.category.path, NAV.listingSw.path, NAV.dealers.path, NAV.inventory.path,
       NAV.bulk.path, NAV.automation.path, NAV.safety.path, NAV.pricing.path,
@@ -206,7 +228,8 @@ ${Object.values(COMPETITORS).map((c) => `- [AutoLander vs ${c.name}](${SITE.orig
   write(resolve(PUBLIC_DIR, 'llms-full.txt'), `${header}\n\n---\n\n${full}`);
 }
 
-buildLlmsTxt(buildMarkdownTwins());
+buildAgentsMd();
+buildLlmsTxt([buildHomeTwin(), ...buildMarkdownTwins()]);
 
 // ---------- completeness check (warns if a registry page wasn't produced) ----------
 const expected = [
@@ -215,7 +238,7 @@ const expected = [
   NAV.aiTools.path, NAV.automation.path, NAV.assistant.path, NAV.autoposter.path,
   NAV.mktgHub.path, NAV.mktgIdeas.path, NAV.salesLeads.path, NAV.socialMedia.path,
   NAV.sellMore.path, NAV.aiDealers.path, NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path, NAV.report2026.path,
-  NAV.about.path,
+  NAV.about.path, NAV.contact.path,
   ...INTEGRATIONS.map((s) => integrationPath(s.slug)),
 ];
 const missing = expected.filter((p) => !renderedPaths.has(p));
@@ -272,6 +295,7 @@ function sitemapXml() {
     { loc: SITE.origin + NAV.rvDealers.path, pri: '0.8', freq: 'weekly' },
     { loc: SITE.origin + NAV.report2026.path, pri: '0.9', freq: 'monthly' },
     { loc: SITE.origin + NAV.about.path, pri: '0.6', freq: 'monthly' },
+    { loc: SITE.origin + NAV.contact.path, pri: '0.6', freq: 'monthly' },
     ...competitorSlugs.map((s) => ({ loc: `${SITE.origin}/compare/${s}/`, pri: '0.7', freq: 'monthly' })),
     ...INTEGRATIONS.map((s) => ({ loc: integrationUrl(s.slug), pri: '0.7', freq: 'monthly' })),
   ];

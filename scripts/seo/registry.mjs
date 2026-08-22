@@ -43,6 +43,11 @@ export const NAV = {
   // Author + publisher entity page. The Person @id referenced by every Article/Dataset node
   // resolves here, so this page must exist for the attribution graph to hold together.
   about:      { key: 'about',      path: '/about/',                                    anchor: 'About AutoLander — who we are and how our data is produced' },
+  // Trust anchor. AI agents check /about, /contact and /privacy before recommending a vendor,
+  // and a mailto: in a footer does not read as a real contact channel to a crawler that cannot
+  // click it. This page states the legal entity, postal address, phone and email in crawlable
+  // text and mirrors the `address` + `contactPoint` on the Organization node.
+  contact:    { key: 'contact',    path: '/contact/',                                  anchor: 'Contact AutoLander — sales, support and media' },
 };
 
 // Integration spokes. `system` = how AutoLander connects (honest):

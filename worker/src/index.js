@@ -1,6 +1,7 @@
 import { AUTOLANDER_KNOWLEDGE } from './autolander-knowledge.js';
 import { sha256Hex } from './capi/hash.js';
 import { saveSupportRequest } from './support/storage.js';
+import { handleSiteRequest, isApiPath } from './agent/site.js';
 
 const DEFAULT_ALLOWED_ORIGINS = [
   'https://autolander.ai',
@@ -50,6 +51,31 @@ export default {
       url.hostname = 'autolander.ai';
       url.port = '';
       return Response.redirect(url.toString(), 308);
+    }
+
+    // Public-site requests (everything that is not one of this Worker's API endpoints).
+    // The zone route is autolander.ai/*, so the Worker now sees ordinary page traffic; it must
+    // pass it straight through to GitHub Pages, only stepping in for Accept-negotiated Markdown
+    // and agent-recoverable 404s. See worker/src/agent/site.js.
+    //
+    // This runs BEFORE the CORS/allowed-origin gate below on purpose: that gate answers 403 to
+    // any request carrying an unknown Origin, which is correct for a JSON API and catastrophic
+    // for a web page. It also fails OPEN — any error and we serve exactly what the origin serves,
+    // so a bug in the agent layer can never take the marketing site down.
+    //
+    // Gated to the apex host on purpose. This Worker is ALSO reachable on
+    // autolander-chatbot.<account>.workers.dev (preview builds call it there, see .env.preview),
+    // and there is no static origin behind that hostname — a passthrough fetch() would resolve
+    // straight back into this Worker and loop until Cloudflare killed the subrequest chain.
+    if (url.hostname.toLowerCase() === 'autolander.ai' && !isApiPath(url.pathname)) {
+      try {
+        return await handleSiteRequest(request, url);
+      } catch (err) {
+        try {
+          console.error('[worker] agent-layer fallthrough', url.pathname, err?.stack || err);
+        } catch { /* ignore */ }
+        return fetch(request);
+      }
     }
 
     const corsHeaders = getCorsHeaders(request, env);

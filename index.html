@@ -106,6 +106,14 @@
             "email": "sales@autolander.ai",
             "telephone": "+1-919-280-0967",
             "description": "Facebook Marketplace software for car dealerships. AutoLander syncs dealer inventory feeds, posts vehicles to Facebook Marketplace, keeps prices current, removes sold units and runs AI photo editing on listing images.",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "5830 Memorial Hwy, Apt 1322",
+              "addressLocality": "Tampa",
+              "addressRegion": "FL",
+              "postalCode": "33615",
+              "addressCountry": "US"
+            },
             "areaServed": { "@type": "Country", "name": "United States" },
             "knowsAbout": [
               "Facebook Marketplace",
@@ -115,14 +123,34 @@
               "Dealer management systems",
               "Used car pricing"
             ],
-            "contactPoint": [{
-              "@type": "ContactPoint",
-              "contactType": "sales",
-              "email": "sales@autolander.ai",
-              "telephone": "+1-919-280-0967",
-              "areaServed": "US",
-              "availableLanguage": "English"
-            }],
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "contactType": "sales",
+                "email": "sales@autolander.ai",
+                "telephone": "+1-919-280-0967",
+                "areaServed": "US",
+                "availableLanguage": "English",
+                "url": "https://autolander.ai/contact/"
+              },
+              {
+                "@type": "ContactPoint",
+                "contactType": "customer support",
+                "email": "support@autolander.ai",
+                "telephone": "+1-919-280-0967",
+                "areaServed": "US",
+                "availableLanguage": "English",
+                "url": "https://autolander.ai/contact/"
+              },
+              {
+                "@type": "ContactPoint",
+                "contactType": "media",
+                "email": "sales@autolander.ai",
+                "areaServed": "US",
+                "availableLanguage": "English",
+                "url": "https://autolander.ai/contact/"
+              }
+            ],
             "founder": { "@id": "https://autolander.ai/about/#michael-garber" },
             "sameAs": ["https://github.com/mgarbs/autolander-releases"]
           },
@@ -168,6 +196,13 @@
       /* Critical fallback so first paint isn't a white flash before JS loads */
       html, body { background: #050505; color: #f8fafc; margin: 0; -webkit-font-smoothing: antialiased; }
       #root { min-height: 100vh; }
+      /* The live hero (Hero.jsx, useShouldShowPostingEngine) renders the queue panel only at
+         >=1024px; below that the column is an empty reserved 360px box until the visitor scrolls.
+         Match that exactly, or the static shell would paint the panel on a phone and React would
+         then take it away. Written by hand rather than as `hidden lg:block` because `lg:block` is
+         not used anywhere in the app and so is not in the Tailwind bundle. */
+      .al-static-panel { display: none; }
+      @media (min-width: 1024px) { .al-static-panel { display: block; } }
     </style>
   </head>
   <body>
@@ -179,24 +214,171 @@
         }
       })();
     </script>
-    <div id="root"></div>
-    <noscript>
-      <main style="max-width:760px;margin:0 auto;padding:48px 24px;font:16px/1.65 Inter,Arial,sans-serif">
-        <h1>Facebook Marketplace software for car dealers</h1>
-        <p>AutoLander is a native desktop app that helps dealerships and sales reps prepare and post vehicle inventory to Facebook Marketplace, keep prices current, remove sold vehicles, and track which listings lead to sales.</p>
-        <p>Plans start at $39 per month with five free posts and no credit card. JavaScript is required to book a live demo on this page.</p>
-        <nav aria-label="AutoLander dealer resources">
-          <a href="/facebook-marketplace-auto-poster/">Facebook Marketplace auto poster</a> &middot;
-          <a href="/facebook-marketplace-automation/">Marketplace automation</a> &middot;
-          <a href="/facebook-marketplace-listing-software/">Listing software</a> &middot;
-          <a href="/facebook-marketplace-auto-poster-pricing/">Pricing</a> &middot;
-          <a href="/guide/how-to-sell-cars-on-facebook-marketplace/">How to sell cars on Marketplace</a> &middot;
-          <a href="/integrations/">Inventory integrations</a> &middot;
-          <a href="/compare/">Compare tools</a> &middot;
-          <a href="/facebook-marketplace-used-car-report-2026/">Facebook Marketplace Used-Car Report 2026</a> &middot;
+    <!--
+      STATIC HOME SHELL - the crawlable body of "/".
+      ======================================================================
+      The homepage is a React SPA, so before this block the root div shipped EMPTY: zero
+      characters of text for any client that does not run JavaScript. AI crawlers and answer
+      engines do not, and they ignore noscript too, so "/" read as a blank page to them.
+
+      This is not hidden SEO filler. It is a static replica of the FIRST SCREEN the app renders
+      (src/sections/Hero.jsx, inside the hero section in src/App.jsx) using the same Tailwind
+      classes, followed by a short product summary. So:
+        - non-JS clients get a real H1 and ~1.5k characters of copy;
+        - humans see a hero rather than a black screen while the bundle loads, then React
+          replaces this subtree with the identical live hero. LCP improves, nothing moves.
+      Every class here is copied verbatim from Hero.jsx / StaticUi.jsx / App.jsx, so the CSS is
+      already in the bundle and the two renderings cannot diverge.
+
+      RULES:
+        1. createRoot clears the root element on mount, so this MUST live inside it. Anything
+           outside would survive hydration and paint twice.
+        2. Keep the copy in step with Hero.jsx and scripts/seo/data-home.mjs (HOME_FACTS);
+           test/agent-readiness.test.js fails if the three drift apart.
+        3. scripts/spa-fallback.mjs strips everything between the AL_STATIC_HOME markers out of
+           404.html, /admin and /pay - a payment deep link must never flash the marketing hero.
+        4. No angle-bracketed tag names in this comment: crude text extractors treat a literal
+           tag name in a comment as a real tag and swallow the page.
+    -->
+    <div id="root">
+      <!--AL_STATIC_HOME_START--><div id="al-static-home">
+      <section class="relative z-10 overflow-hidden pt-28 lg:pt-36 pb-16 lg:pb-24">
+        <div class="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:min-h-[600px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+          <div class="min-w-0 max-w-2xl">
+            <span class="flex max-w-full items-start gap-2.5 font-mono text-[11px] font-semibold uppercase leading-relaxed tracking-[0.28em] text-blue-300/90">
+              <span class="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-[2px] bg-blue-400 shadow-[0_0_12px_2px_rgba(96,165,250,0.65)]"></span>
+              <span class="min-w-0">Facebook Marketplace Automation &mdash; For Car Dealers &amp; Sales Reps</span>
+            </span>
+            <h1 class="mt-6 font-display text-[clamp(2rem,8.4vw,2.5rem)] font-extrabold uppercase italic leading-[0.9] tracking-[-0.01em] text-white sm:text-balance sm:text-6xl lg:text-[4rem] 2xl:text-7xl">
+              Sell <span class="inline-block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent pr-[0.14em]">more cars</span><br class="sm:hidden" />
+              on <span class="inline-block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent pr-[0.14em]">Facebook</span><br class="sm:hidden" />
+              <span class="inline-block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent pr-[0.14em]">Marketplace&mdash;</span><br class="sm:hidden" />without posting<br class="sm:hidden" />
+              them <span class="inline-block bg-gradient-to-b from-blue-300 to-blue-600 bg-clip-text text-transparent pr-[0.14em]">one by one.</span>
+            </h1>
+            <p class="mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">
+              AutoLander is Facebook Marketplace auto posting software for car dealers and sales reps. It
+              creates listings from your inventory in minutes, keeps prices current, flags sold units,
+              and tracks which posts generate buyer conversations.
+            </p>
+            <div class="mt-9 flex flex-col gap-4 sm:flex-row">
+              <button type="button" class="group flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 px-9 py-5 font-display text-lg font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 active:scale-95 sm:w-auto">
+                Book Demo
+              </button>
+            </div>
+            <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-slate-400">
+              <span>5 free posts in your demo</span>
+              <span>No credit card required</span>
+              <span>Plans from $39/month</span>
+            </div>
+          </div>
+
+          <div class="w-full min-h-[360px] lg:min-h-0">
+            <div class="relative al-static-panel">
+              <div class="absolute -inset-6 -z-10 rounded-[2.5rem] bg-blue-600/20 blur-[80px]" aria-hidden="true"></div>
+              <div class="rounded-3xl border border-white/10 bg-[#0b0d12]/90 p-4 shadow-2xl shadow-blue-950/50 backdrop-blur-xl sm:p-5">
+                <div class="flex items-center justify-between border-b border-white/5 pb-3">
+                  <div class="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    <span class="relative flex h-2 w-2"><span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span></span>
+                    Inventory Queue &mdash; Ready
+                  </div>
+                </div>
+                <div class="flex items-end justify-between py-4">
+                  <div>
+                    <div class="font-display text-4xl font-extrabold italic tracking-tight text-white sm:text-5xl">312</div>
+                    <div class="mt-2 font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400">Inventory units loaded</div>
+                  </div>
+                  <div class="text-right font-mono text-[10px] uppercase leading-relaxed tracking-widest text-emerald-400">
+                    Feed synced<br /><span class="text-slate-400">Limits still apply</span>
+                  </div>
+                </div>
+                <div class="space-y-2.5">
+                  <div class="flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5">
+                    <img src="/preview/listing-truck-240.webp" srcset="/preview/listing-truck-160.webp 160w, /preview/listing-truck-240.webp 240w" sizes="(min-width: 640px) 80px, 64px" alt="" width="120" height="90" decoding="async" class="h-12 w-16 shrink-0 rounded-lg object-cover sm:h-14 sm:w-20" />
+                    <div class="min-w-0 flex-1">
+                      <p class="truncate text-sm font-bold text-white">Crew-Cab Pickup</p>
+                      <p class="truncate font-mono text-[10px] uppercase tracking-wider text-slate-400">2023 &middot; 18,420 mi &middot; $38,900</p>
+                    </div>
+                    <span class="flex shrink-0 items-center gap-1.5 rounded-full bg-blue-500/15 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-blue-300"><span class="h-1.5 w-1.5 rounded-full bg-blue-400"></span> Posting</span>
+                  </div>
+                  <div class="flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5">
+                    <img src="/preview/listing-suv-240.webp" srcset="/preview/listing-suv-160.webp 160w, /preview/listing-suv-240.webp 240w" sizes="(min-width: 640px) 80px, 64px" alt="" width="120" height="90" decoding="async" class="h-12 w-16 shrink-0 rounded-lg object-cover sm:h-14 sm:w-20" />
+                    <div class="min-w-0 flex-1">
+                      <p class="truncate text-sm font-bold text-white">Midsize SUV</p>
+                      <p class="truncate font-mono text-[10px] uppercase tracking-wider text-slate-400">2024 &middot; 9,310 mi &middot; $31,250</p>
+                    </div>
+                    <span class="shrink-0 rounded-full bg-white/5 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-slate-400">Queued</span>
+                  </div>
+                  <div class="flex items-center gap-3 rounded-2xl border border-white/5 bg-white/[0.03] p-2.5">
+                    <img src="/preview/listing-sedan-240.webp" srcset="/preview/listing-sedan-160.webp 160w, /preview/listing-sedan-240.webp 240w" sizes="(min-width: 640px) 80px, 64px" alt="" width="120" height="90" decoding="async" class="h-12 w-16 shrink-0 rounded-lg object-cover sm:h-14 sm:w-20" />
+                    <div class="min-w-0 flex-1">
+                      <p class="truncate text-sm font-bold text-white">Sport Sedan</p>
+                      <p class="truncate font-mono text-[10px] uppercase tracking-wider text-slate-400">2023 &middot; 12,480 mi &middot; $27,600</p>
+                    </div>
+                    <span class="shrink-0 rounded-full bg-white/5 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-slate-400">Queued</span>
+                  </div>
+                </div>
+                <div class="relative mt-3 h-9"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Below the fold pre-hydration; React replaces it with the live sections. Nothing here is
+           hidden from a human — it is the same product summary the page states further down. -->
+      <section class="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:pb-24">
+        <h2 class="font-display text-3xl font-extrabold uppercase italic tracking-tight text-white">Facebook Marketplace software for car dealers</h2>
+        <p class="mt-6 max-w-3xl text-lg font-medium leading-relaxed text-slate-300">
+          AutoLander is a native desktop application, paired with a cloud service, that car dealerships and
+          independent sales reps use to merchandise inventory on Facebook Marketplace. Connect the inventory
+          source you already run &mdash; CarGurus, Cars.com, a DMS export from vAuto, DealerCenter, Frazer, CDK,
+          Tekion or HomeNet, an SFTP or CSV drop, or your own dealer website &mdash; and AutoLander builds a
+          posting queue from it, prepares each listing with photos, mileage, price and description, and posts
+          through your own logged-in Facebook session at a pace you control.
+        </p>
+        <p class="mt-4 max-w-3xl text-lg font-medium leading-relaxed text-slate-300">
+          It then keeps Marketplace matched to the lot: asking prices stay in step with the feed, new arrivals
+          are queued automatically, and sold units are pulled down so buyers stop messaging about cars that are
+          already gone. AI photo editing turns the shots you already have into showroom-grade listing images
+          without repainting the vehicle, RV and camper inventory is posted into the correct Marketplace
+          category, and buyer messages are routed to your team so a human answers them faster.
+        </p>
+        <p class="mt-4 max-w-3xl text-lg font-medium leading-relaxed text-slate-300">
+          Plans start at $39 per month &mdash; Starter $39, Growth $59, Pro $79, and dealer and multi-rooftop
+          plans from $117. Every demo includes 5 free posts and requires no credit card. AutoLander works
+          inside Meta&rsquo;s eligibility rules and listing limits rather than around them, and it does not
+          auto-reply to buyers on your behalf. Built and operated by AutoLander LLC, Tampa, Florida &mdash;
+          sales@autolander.ai, (919) 280-0967.
+        </p>
+        <nav aria-label="AutoLander dealer resources" class="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-slate-400">
+          <a href="/facebook-marketplace-auto-poster/">Facebook Marketplace auto poster</a>
+          <a href="/facebook-marketplace-automation/">Marketplace automation</a>
+          <a href="/facebook-marketplace-listing-software/">Listing software</a>
+          <a href="/facebook-marketplace-inventory-sync/">Inventory sync</a>
+          <a href="/bulk-post-cars-to-facebook-marketplace/">Bulk posting</a>
+          <a href="/ai-car-photo-editor/">AI car photo editor</a>
+          <a href="/rv-dealer-software/">RV dealer software</a>
+          <a href="/facebook-marketplace-auto-poster-pricing/">Pricing</a>
+          <a href="/integrations/">Inventory integrations</a>
+          <a href="/compare/">Compare tools</a>
+          <a href="/guide/how-to-sell-cars-on-facebook-marketplace/">How to sell cars on Marketplace</a>
+          <a href="/facebook-marketplace-used-car-report-2026/">Marketplace Used-Car Report 2026</a>
           <a href="/about/">About AutoLander</a>
+          <a href="/contact/">Contact</a>
         </nav>
-      </main>
+      </section>
+      </div><!--AL_STATIC_HOME_END-->
+    </div>
+    <!-- The static home shell above is now the no-JS body: it is always in the DOM, carries the
+         page H1 and the resource links, and is what a crawler reads. All this needs to add is the
+         one thing that genuinely requires JavaScript. Deliberately NO h1 here - a second h1 in the
+         source would give the page two competing headings. -->
+    <noscript>
+      <p style="max-width:760px;margin:0 auto;padding:24px;font:16px/1.65 Inter,Arial,sans-serif;color:#94a3b8">
+        JavaScript is required to book a live demo on this page. To reach us without it, email
+        <a href="mailto:sales@autolander.ai" style="color:#60a5fa">sales@autolander.ai</a>, call
+        (919) 280-0967, or see the <a href="/contact/" style="color:#60a5fa">contact page</a>.
+      </p>
     </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>

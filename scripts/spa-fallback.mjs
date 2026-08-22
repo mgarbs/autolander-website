@@ -31,7 +31,25 @@ function inlineAppStyles(htmlPath) {
 
 inlineAppStyles(indexPath);
 const appShell = readFileSync(indexPath, 'utf8');
-const noindexShell = appShell
+
+// index.html carries a static replica of the homepage hero inside #root (see the comment there):
+// it gives "/" a crawlable body and paints something other than black while the bundle loads.
+// These derived shells are NOT the homepage — 404.html backs /pay/:token and /ref/* deep links,
+// and /admin + /pay render their own apps — so a marketing hero would flash on a payment link
+// before the real UI mounts. Strip it back to the empty #root those routes expect.
+const STATIC_HOME_BLOCK = /<!--AL_STATIC_HOME_START-->[\s\S]*?<!--AL_STATIC_HOME_END-->/;
+function stripStaticHome(html) {
+  if (!STATIC_HOME_BLOCK.test(html)) {
+    throw new Error(
+      'spa-fallback: the AL_STATIC_HOME_START/END markers are missing from dist/index.html. If the '
+      + 'static home block was renamed or removed, update STATIC_HOME_BLOCK — otherwise '
+      + '/pay/:token and /admin would ship with the marketing hero in their shell.',
+    );
+  }
+  return html.replace(STATIC_HOME_BLOCK, '');
+}
+
+const noindexShell = stripStaticHome(appShell)
   .replace(/\s*<link rel="canonical" href="https:\/\/autolander\.ai\/" \/>/, '')
   .replace('    <meta name="description"', '    <meta name="robots" content="noindex, nofollow, noarchive" />\n    <meta name="description"');
 

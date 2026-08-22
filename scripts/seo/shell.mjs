@@ -113,6 +113,17 @@ export const orgLd = {
   description: 'Facebook Marketplace software for car dealerships. AutoLander syncs dealer '
     + 'inventory feeds, posts vehicles to Facebook Marketplace, keeps prices current, removes '
     + 'sold units and runs AI photo editing on listing images.',
+  // Postal address. An Organization node without one reads as an unverifiable brand name:
+  // contactPoint alone tells an answer engine how to reach us, not that we exist somewhere.
+  // Keep in step with /contact/ — the page and the schema must never disagree.
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '5830 Memorial Hwy, Apt 1322',
+    addressLocality: 'Tampa',
+    addressRegion: 'FL',
+    postalCode: '33615',
+    addressCountry: 'US',
+  },
   areaServed: { '@type': 'Country', name: 'United States' },
   knowsAbout: [
     'Facebook Marketplace',
@@ -122,14 +133,34 @@ export const orgLd = {
     'Dealer management systems',
     'Used car pricing',
   ],
-  contactPoint: [{
-    '@type': 'ContactPoint',
-    contactType: 'sales',
-    email: 'sales@autolander.ai',
-    telephone: '+1-919-280-0967',
-    areaServed: 'US',
-    availableLanguage: 'English',
-  }],
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'sales',
+      email: 'sales@autolander.ai',
+      telephone: '+1-919-280-0967',
+      areaServed: 'US',
+      availableLanguage: 'English',
+      url: SITE.origin + '/contact/',
+    },
+    {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: 'support@autolander.ai',
+      telephone: '+1-919-280-0967',
+      areaServed: 'US',
+      availableLanguage: 'English',
+      url: SITE.origin + '/contact/',
+    },
+    {
+      '@type': 'ContactPoint',
+      contactType: 'media',
+      email: 'sales@autolander.ai',
+      areaServed: 'US',
+      availableLanguage: 'English',
+      url: SITE.origin + '/contact/',
+    },
+  ],
   ...(PROFILES.length ? { sameAs: PROFILES } : {}),
 };
 
@@ -370,6 +401,7 @@ export function siteFooter() {
       <a href="${SITE.origin}/">AutoLander home</a>
       <a href="${SITE.origin}/#pricing">Pricing</a>
       <a href="${NAV.about.path}">About</a>
+      <a href="${NAV.contact.path}">Contact</a>
       <a href="/privacy.html">Privacy</a>
       <a href="/terms.html">Terms</a>
     </nav>

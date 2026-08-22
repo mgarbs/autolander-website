@@ -12,6 +12,15 @@ routes = [
   { pattern = "autolander.ai/health", zone_name = "autolander.ai" },
   { pattern = "autolander.ai/admin-api/*", zone_name = "autolander.ai" },
   { pattern = "www.autolander.ai/*", zone_name = "autolander.ai" },
+  # Whole-zone route: required by the agent layer (worker/src/agent/site.js). Accept-negotiated
+  # Markdown and the agent-recoverable 404 body both need to see ordinary page requests, and the
+  # 404 case by definition arrives on a path no narrower pattern can predict.
+  #
+  # Everything that is not one of the API paths above is a passthrough to GitHub Pages, and the
+  # agent layer bails to a bare fetch() before doing any work for assets, fonts, images and data
+  # files. Zone traffic is ~3-7k requests/day against the 100k/day Workers free allowance, so
+  # fronting the zone costs well under 10% of quota.
+  { pattern = "autolander.ai/*", zone_name = "autolander.ai" },
 ]
 
 [vars]
