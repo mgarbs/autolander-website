@@ -1,6 +1,6 @@
 # Facebook AI tools for car dealers
 
-> Facebook AI tools for car dealers: enhance photos, write listings, auto-post inventory and route buyer messages. From $39/mo with 5 free posts.
+> Facebook AI tools for car dealers: enhance photos, write listings, auto-post inventory and remove sold buyer messages. From $39/mo with 5 free posts.
 
 Source: https://autolander.ai/facebook-ai-tools/  
 Author: The AutoLander team  
@@ -34,7 +34,7 @@ AutoLander builds listings from your inventory and moves eligible vehicles throu
 
 ### AI Marketplace assistant
 
-While the desktop app is running, it helps keep listings current, remove sold units and route buyer messages — your Facebook Marketplace assistant.
+While the desktop app is running, it helps keep listings current, hold prices in step with the feed and remove sold units — your Facebook Marketplace assistant.
 
 ### AI walkaround video
 
@@ -66,7 +66,7 @@ AI tools can make listing preparation much faster, but they do not change Meta�
 
 ### What is the best AI tool for Facebook Marketplace?
 
-It depends on whether you need photo preparation, descriptions, a listing queue, inventory reconciliation, message routing, or all of them. AutoLander bundles those dealer workflows in one desktop app. Compare its fit with single-purpose and competing tools in our 2026 comparison.
+It depends on whether you need photo preparation, descriptions, a listing queue, inventory reconciliation, automatic sold-unit removal, or all of them. AutoLander bundles those dealer workflows in one desktop app. Compare its fit with single-purpose and competing tools in our 2026 comparison.
 
 ### Are there free Facebook AI tools for car dealers?
 

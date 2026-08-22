@@ -36,7 +36,7 @@ Cross-post arrivals and offers. Buyers see them at the exact "dealer near me" mo
 
 ### Marketplace inbox — where deals start
 
-Social attention converts in chat. AutoLander routes every buyer message to your team the moment it lands, so a Sunday-night message becomes a Monday appointment.
+Social attention converts in chat, and that inbox stays yours. AutoLander’s job is upstream: the car a Sunday-night message is about is still for sale and still priced correctly, so the reply turns into a Monday appointment.
 
 ### Photos everywhere — the constant
 
@@ -44,7 +44,7 @@ Consistent, showroom-grade vehicle photos raise performance on every surface at 
 
 ## A weekly cadence a small store can actually keep
 
-1. **Daily (automated)** — Inventory posted and refreshed on Marketplace, sold units removed, buyer messages routed to your team — the upkeep is software, the conversations are yours.
+1. **Daily (automated)** — Inventory posted and refreshed on Marketplace, prices resynced, sold units removed — the upkeep is software, the conversations are yours.
 2. **Monday** — Post the weekend’s deliveries on the page: buyer, car, first name, big smile (with permission).
 3. **Wednesday** — One Reel: 30-second walkaround of the most interesting unit in stock.
 4. **Friday** — New-arrivals roundup on the page and Google Business Profile — three units, three lines, link to inventory.

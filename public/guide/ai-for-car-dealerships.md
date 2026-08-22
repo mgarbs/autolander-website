@@ -19,7 +19,7 @@ The useful evaluation question is never "should we use AI" — it is "which job 
 | Use case | What the AI does | Payback reality | Where it fits |
 | --- | --- | --- | --- |
 | AI vehicle photos | Replaces cluttered lot backgrounds with showroom or branded-storefront scenes; keeps the actual car untouched | Immediate — better photos lift clicks on every listing | AI Photo Studio in AutoLander |
-| AI chat on the sales inbox | Standalone tools converse with buyers automatically; quality varies wildly | Only safe with inventory-true answers and instant human handoff — vet hard | Standalone tools — AutoLander routes messages to humans instead |
+| AI chat on the sales inbox | Standalone tools converse with buyers automatically; quality varies wildly | Only safe with inventory-true answers and instant human handoff — vet hard | Standalone tools only — AutoLander has no inbox feature; your people answer |
 | AI listing descriptions | Writes an accurate, VIN-specific description for every unit | High — hours of copy work disappear; listings stop sounding identical | Built into AutoLander listings |
 | AI walkaround video | Generates a short video per vehicle from photos | Solid — motion content without a videographer | Optional per-vehicle in AutoLander |
 | AI pricing / appraisal tools | Suggests prices from market comps | Useful as an input; dangerous as an autopilot — local knowledge still prices the car | Standalone tools |
@@ -37,7 +37,7 @@ _Compositing, not repainting: the Expedition’s paint, trim and wheels are unto
 
 In the standalone tools that offer it, buyer messages get an automated reply drawn — ideally — from the store’s actual inventory data, with qualifying questions and a handoff to a human when the conversation gets serious. The category’s failure modes are just as established: improvised prices, missed escalations, and bots that keep chatting when a buyer needs a person.
 
-AutoLander takes the other route: no automated replies. It keeps every listing’s data accurate and routes buyer messages to your team so a human answers fast with the right facts — the trade-offs are laid out in the honest guide to AI chat for car dealers.
+AutoLander takes the other route: it stays out of the inbox entirely — no automated replies, and no message handling of any kind. It keeps every listing’s data accurate so the human who answers has the right facts — the trade-offs are laid out in the honest guide to AI chat for car dealers.
 
 ## How to evaluate any dealership AI vendor
 
@@ -56,7 +56,7 @@ AI cannot make a bad price good, cannot conjure Marketplace eligibility your acc
 
 ### What is the best AI tool for a car dealership?
 
-The one that completes a job you are currently losing money on. For most independents that is AI photo enhancement and AI-written listings — both ship inside AutoLander, alongside automated posting and message routing. See the Facebook AI tools guide for the full breakdown.
+The one that completes a job you are currently losing money on. For most independents that is AI photo enhancement and AI-written listings — both ship inside AutoLander, alongside automated posting and sold-unit removal. See the Facebook AI tools guide for the full breakdown.
 
 ### Will AI replace car salespeople?
 
@@ -72,7 +72,7 @@ Not when it composites instead of repaints. The vehicle itself — paint, wheels
 
 ### Can AI respond to Facebook Marketplace messages for my dealership?
 
-Standalone chatbots exist that attempt it — vet them hard on inventory truth and human handoff. AutoLander deliberately does not auto-reply: it routes buyer messages to your team with accurate listing data at hand, so the fast answer is also a human one. See the honest guide to AI chat for car dealers.
+Standalone chatbots exist that attempt it — vet them hard on inventory truth and human handoff. AutoLander deliberately does not: it has no autoresponder and no message-handling feature at all. Your team answers in Messenger, working from listing data AutoLander keeps accurate. See the honest guide to AI chat for car dealers.
 
 ## Related
 

@@ -1,8 +1,10 @@
 // Dealer-growth silo — MONEY pages (2026-08-20): AI chat (HONEST GUIDE — see below), AI car photo
 // editor, RV dealer software. Commercial intent → homepage funnel. Product claims stay honest:
-// >>> AutoLander has NO AI autoresponder (Michael, 2026-08-20). NEVER claim AI replies to buyers,
-// >>> books appointments in chat, or "answers 24/7". Truthful framing: listings stay accurate via
-// >>> sync, sold units come down, and buyer messages are ROUTED to the team — HUMANS reply.
+// >>> AutoLander has NO AI autoresponder (Michael, 2026-08-20) AND NO message handling at all
+// >>> (Michael, 2026-08-22). NEVER claim AI replies to buyers, books appointments in chat,
+// >>> "answers 24/7", or ROUTES / forwards / surfaces buyer messages. AutoLander does not touch
+// >>> the Marketplace inbox. Truthful framing: listings stay accurate via sync, sold units come
+// >>> down, coverage is complete — the dealer's own team reads and answers every message.
 // The photo studio composites (never repaints) the vehicle; RV positioning is the Marketplace
 // sales layer, not a DMS. No fabricated stats, prices from SITE.
 // Follows the page-object contract in scripts/seo/shell.mjs. Static, NO pixel.
@@ -17,7 +19,9 @@ export const PAGES = [
   // ------------------------------------------- HONEST GUIDE: /ai-chat-for-car-dealers/
   // Target queries ("ai chat for car dealers", "ai chatbot for car dealerships") are served with
   // an evaluative category guide. AutoLander is positioned by what it actually does (accurate
-  // synced listings + message routing + sold-unit removal) — never as an auto-responder.
+  // synced listings + sold-unit removal + whole-lot coverage) — never as an auto-responder.
+  // >>> AND never as a message router: AutoLander does NOT read, forward, surface or route
+  // >>> Marketplace messages (Michael, 2026-08-22). The inbox is 100% the dealer's own.
   {
     key: 'aiChat',
     title: 'AI Chat for Car Dealers: The Honest Guide | AutoLander',
@@ -30,9 +34,9 @@ export const PAGES = [
     tldr:
       'AI chat for car dealers is software that converses with buyers on a dealership’s behalf, most '
       + 'visibly on Facebook Marketplace. Done badly it invents prices and burns trust; done well it '
-      + 'demands live inventory data and instant human handoff. AutoLander does not send automated '
-      + 'replies — it keeps every listing’s data accurate and routes buyer messages straight to your '
-      + 'team, so a human answers fast with the right facts.',
+      + 'demands live inventory data and instant human handoff. AutoLander does neither: it sends no '
+      + 'automated replies and does not handle your messages at all. It keeps every listing’s data '
+      + 'accurate so the human who answers has the right facts.',
     breadcrumbs: [
       { name: 'Home', url: home },
       aiToolsCrumb,
@@ -76,7 +80,7 @@ export const PAGES = [
           ['Accuracy on price & specs', 'Only as good as its data feed — improvisation is the failure mode', 'Human answers, with the listing’s synced data in front of them'],
           ['Trust when the buyer shows up', 'Buyers dislike learning they negotiated with a bot', 'The person they messaged is the person they meet'],
           ['Negotiation & trade-ins', 'Needs immediate escalation to be safe', 'Already with the right person from message one'],
-          ['After-hours coverage', 'Covers the clock — if guardrails hold', 'Instant routing puts the message on your team’s phones the moment it lands'],
+          ['After-hours coverage', 'Covers the clock — if guardrails hold', 'Whoever is on call answers from Messenger — against a listing still accurate at 11pm'],
           ['Accountability', 'Depends on vendor logging', 'Your team, your words, your inbox'],
         ],
         note: 'AutoLander does not send automated replies. It makes the human answer fast and accurate instead.',
@@ -84,18 +88,18 @@ export const PAGES = [
       {
         type: 'callout',
         title: 'Where AutoLander stands',
-        body: 'AutoLander is not an autoresponder and does not reply to buyers for you. What it does: keeps '
-          + 'every Marketplace listing’s price, mileage, photos and availability accurate through '
-          + '[inventory sync](/facebook-marketplace-inventory-sync/), removes sold units before dead-end '
-          + 'conversations start, and routes buyer messages so your team answers fast with the facts at '
-          + 'hand — the [Facebook Marketplace assistant](/facebook-marketplace-assistant/) covers the upkeep.',
+        body: 'AutoLander is not an autoresponder, does not reply to buyers for you, and does not touch your '
+          + 'Marketplace inbox at all. What it does: keeps every listing’s price, mileage, photos and '
+          + 'availability accurate through [inventory sync](/facebook-marketplace-inventory-sync/), and removes '
+          + 'sold units before dead-end conversations start — so when your team answers, the facts are already '
+          + 'right. The [Facebook Marketplace assistant](/facebook-marketplace-assistant/) covers that upkeep.',
       },
       {
         type: 'features',
         h2: 'How AutoLander makes your team the fastest answer in town',
         cards: [
           { title: 'Synced listing truth', body: 'Price and details stay current automatically, so whoever answers has the right numbers — no tab-hopping, no guessing. See [inventory sync](/facebook-marketplace-inventory-sync/).' },
-          { title: 'Message routing', body: 'Buyer messages are routed to your team instead of sitting unseen in a Marketplace tab — the job of the [Marketplace assistant](/facebook-marketplace-assistant/).' },
+          { title: 'Your inbox stays yours', body: 'AutoLander never reads, answers or forwards a Marketplace message. Your team works Messenger exactly as they do now — no bot in the middle, nothing sitting behind a vendor.' },
           { title: 'No ghost conversations', body: 'Sold units come off Marketplace automatically, so buyers never message about a car that left Tuesday.' },
           { title: 'Whole-lot coverage', body: 'More listings, more conversations: the [auto poster](/facebook-marketplace-auto-poster/) keeps the full inventory live within your account’s limits.' },
           { title: 'Photos that start the chat', body: 'Showroom-grade images from the [AI car photo editor](/ai-car-photo-editor/) earn more clicks, which is where every conversation begins.' },
@@ -115,17 +119,17 @@ export const PAGES = [
     ],
     faq: [
       ['Does AutoLander automatically reply to Facebook Marketplace messages?',
-        'No. AutoLander does not send automated replies to buyers. It keeps every listing’s data accurate, removes sold units, and routes buyer messages to your team — so a human answers quickly with the right information.'],
+        'No — and it does not handle your messages at all. AutoLander has no autoresponder and no inbox feature. It keeps every listing’s data accurate and removes sold units, so when your team answers in Messenger they answer quickly and with the right information.'],
       ['What is the best AI chatbot for car dealerships?',
         'Judge any candidate on three questions: does it answer from your live inventory data (not a script), does it hand off to a human the moment a conversation needs judgment, and does it run through your own accounts? Many tools fail at least one. The broader landscape is covered in [AI for car dealerships](/guide/ai-for-car-dealerships/).'],
       ['Do AI chatbots make up prices?',
         'Poorly built ones do — improvised numbers are the category’s classic failure. Any conversational AI you allow near buyers must be constrained to your actual inventory data and escalate negotiations to people.'],
       ['How do dealers cover the Marketplace inbox at night and on weekends?',
-        'With routing and process: messages forwarded to a phone, a named owner per shift, and listings whose data is accurate enough that anyone can answer confidently. AutoLander handles the routing and the data accuracy; see [how to get more car sales leads](/guide/car-sales-leads/) for the speed-to-lead playbook.'],
+        'With process: Messenger notifications on a phone, a named owner per shift, and listings whose data is accurate enough that anyone can answer confidently. AutoLander’s part is that last piece — accurate listings and sold units already removed; see [how to get more car sales leads](/guide/car-sales-leads/) for the speed-to-lead playbook.'],
     ],
     cta: {
       heading: 'Make your team the fastest answer in town',
-      sub: 'Accurate listings, routed messages, no ghost conversations — AutoLander does the upkeep, your people do the talking.',
+      sub: 'Accurate listings, no ghost conversations, no bot in your inbox — AutoLander does the upkeep, your people do the talking.',
     },
   },
 
@@ -259,7 +263,7 @@ export const PAGES = [
     tldr:
       'AutoLander is RV dealer software for the selling side: it syncs your RV inventory, posts every unit '
       + 'to Facebook Marketplace as an RV/Camper listing (not a mislabeled car), upgrades the photos with an '
-      + 'AI studio, routes buyer messages to your team, and removes sold units automatically. It is the '
+      + 'AI studio, keeps asking prices in step with your feed, and removes sold units automatically. It is the '
       + 'Marketplace sales layer that works alongside your DMS — travel trailers, fifth wheels, motorhomes '
       + 'and toy haulers included.',
     breadcrumbs: [
@@ -293,7 +297,7 @@ export const PAGES = [
           { title: 'RVs listed as RVs', body: 'Travel trailers, fifth wheels, Class A/B/C motorhomes and toy haulers post to Marketplace as RV/Camper listings — the category RV shoppers actually browse.' },
           { title: 'Inventory sync from your RV platform', body: 'Point AutoLander at your website or inventory feed and the lot stays in sync — new arrivals post, price changes follow, sold units come down. See [inventory sync](/facebook-marketplace-inventory-sync/).' },
           { title: 'AI photos on 30-foot subjects', body: 'The [AI Photo Studio](/ai-car-photo-editor/) handles RVs like the Catalina above — clean backgrounds that make a big unit read clearly in a small thumbnail.' },
-          { title: 'No buyer message left unseen', body: 'RV shoppers browse on weekend evenings. Messages are routed to your team with the unit’s synced specs and price at hand, so whoever answers has the facts.' },
+          { title: 'Seasonal pricing that keeps up', body: 'RV asking prices move with the season. Yours follow the feed automatically, so a spring listing is never still showing last autumn’s number.' },
           { title: 'Whole-lot coverage', body: 'Post the full inventory within your account’s limits — [bulk posting](/bulk-post-cars-to-facebook-marketplace/) without the seasonal data-entry marathon.' },
           { title: 'No ghost listings', body: 'The unit that delivered Saturday is off Marketplace before Monday’s calls — automatic sold detection keeps your listings honest.' },
         ],
@@ -305,7 +309,7 @@ export const PAGES = [
           { title: 'Connect the inventory', body: 'Your website or feed is the source of truth — AutoLander reads it and builds Marketplace-ready listings, specs and photos included.' },
           { title: 'Set the look', body: 'Optionally run every unit through the AI studio for consistent, showroom-grade photos across the whole lot.' },
           { title: 'Post and maintain automatically', body: 'Units go live in the RV/Camper category and stay current — prices sync, sold units come down, new arrivals queue up.' },
-          { title: 'Your team works the inbox', body: 'Buyer messages route straight to your people with accurate listing data in front of them — fast answers, real appointments.' },
+          { title: 'Your team works the inbox', body: 'Buyers message you in Messenger exactly as they do now — AutoLander stays out of it. Its contribution is that the specs and price they are asking about are already correct.' },
         ],
       },
       {
@@ -318,7 +322,7 @@ export const PAGES = [
     ],
     faq: [
       ['Can RV dealers post inventory on Facebook Marketplace?',
-        'Yes — RVs and campers have their own Marketplace category, and eligible dealer accounts can list there. The practical challenge is volume and upkeep across a whole lot, which is the job AutoLander automates: posting, price sync, message routing and sold-unit removal.'],
+        'Yes — RVs and campers have their own Marketplace category, and eligible dealer accounts can list there. The practical challenge is volume and upkeep across a whole lot, which is the job AutoLander automates: posting, price sync and sold-unit removal.'],
       ['Does AutoLander support travel trailers, fifth wheels and motorhomes?',
         'All of them — units post as RV/Camper listings with RV-appropriate details rather than being shoehorned into car listings, which is where generic car-posting tools fall down.'],
       ['Where is the best place to sell RVs online?',
@@ -330,7 +334,7 @@ export const PAGES = [
     ],
     cta: {
       heading: 'Put the whole RV lot in front of local buyers',
-      sub: 'Right category, showroom photos, routed messages, automatic sold-unit removal — from $39/mo.',
+      sub: 'Right category, showroom photos, synced prices, automatic sold-unit removal — from $39/mo.',
     },
   },
 ];

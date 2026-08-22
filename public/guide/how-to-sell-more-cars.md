@@ -30,7 +30,7 @@ Buyers search with price caps. A visible, defensible price puts you in the resul
 
 ### 4. Speed — first real answer wins
 
-The store that responds in seconds gets the test drive. AutoLander routes every message to your team instantly — the speed-to-lead playbook does the rest.
+The store that responds in seconds gets the test drive. AutoLander makes sure that answer is right — synced price, real specs, sold units already gone — and the speed-to-lead playbook does the rest.
 
 ### 5. Plug the leaks
 
@@ -44,7 +44,7 @@ Track which listings and channels produced delivered units, then shift effort th
 
 1. **Week 1 — Coverage** — Get 100% of retail-ready inventory listed on Marketplace with prices. Automate the posting so it stays at 100% without anyone’s Saturday.
 2. **Week 2 — Merchandising** — Run every listing photo through the AI studio; rewrite the ten worst descriptions to answer condition, history and why-this-price.
-3. **Week 3 — Speed** — Put the Marketplace inbox on your closers’ phones with instant routing, name an owner per shift, and start measuring minutes-to-first-reply like you measure gross.
+3. **Week 3 — Speed** — Put the Marketplace inbox on your closers’ phones, name an owner per shift, and start measuring minutes-to-first-reply like you measure gross.
 4. **Week 4 — Truth & measure** — Automate sold-unit removal and price sync; pull the first post-to-sale report; put next month’s energy behind whatever the report says sold cars.
 
 _Lever #2: identical Sonata, identical price — the right-hand photo is the one that gets the message._
@@ -69,7 +69,7 @@ Ratios vary too much by market and pricing to quote a universal number honestly 
 
 ### Does AI really help sell more cars?
 
-AI moves two of the six levers directly: photos (the AI studio) and coverage (automated posting) — and software-routed messages help your team win the speed lever. What actually works and what is hype is covered in AI for car dealerships.
+AI moves two of the six levers directly: photos (the AI studio) and coverage (automated posting) — and accurate, always-synced listings help your team win the speed lever. What actually works and what is hype is covered in AI for car dealerships.
 
 ## Related
 

@@ -34,8 +34,9 @@ export const USE_WHEN = [
 // Jobs to send somewhere else. Being explicit here is the point: it is what makes the section above
 // trustworthy rather than marketing copy.
 export const USE_INSTEAD = [
-  'You want an AI that answers buyers and closes deals unattended. AutoLander routes Marketplace '
-  + 'messages to the dealer’s team and a human writes the reply — it does not autoreply.',
+  'You want an AI that answers buyers, manages the Marketplace inbox, or closes deals unattended. '
+  + 'AutoLander does none of that: it has no autoresponder and no message-handling feature at all. '
+  + 'The dealer’s own team reads and answers every buyer message in Messenger.',
   'You want a guarantee that a Facebook account will never be restricted. No tool can promise that, '
   + 'and any vendor who does is overselling. The honest version: ' + url(NAV.safety.path),
   'You want to bypass Meta eligibility rules or listing limits. AutoLander works inside them.',

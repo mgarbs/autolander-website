@@ -6,7 +6,7 @@ Source: https://autolander.ai/ai-chat-for-car-dealers/
 Author: The AutoLander team  
 Updated: August 20, 2026
 
-**Short answer:** AI chat for car dealers is software that converses with buyers on a dealership’s behalf, most visibly on Facebook Marketplace. Done badly it invents prices and burns trust; done well it demands live inventory data and instant human handoff. AutoLander does not send automated replies — it keeps every listing’s data accurate and routes buyer messages straight to your team, so a human answers fast with the right facts.
+**Short answer:** AI chat for car dealers is software that converses with buyers on a dealership’s behalf, most visibly on Facebook Marketplace. Done badly it invents prices and burns trust; done well it demands live inventory data and instant human handoff. AutoLander does neither: it sends no automated replies and does not handle your messages at all. It keeps every listing’s data accurate so the human who answers has the right facts.
 
 ## What is AI chat for car dealers?
 
@@ -32,14 +32,14 @@ The goal is a fast, accurate first answer. There are two ways to get one.
 | Accuracy on price & specs | Only as good as its data feed — improvisation is the failure mode | Human answers, with the listing’s synced data in front of them |
 | Trust when the buyer shows up | Buyers dislike learning they negotiated with a bot | The person they messaged is the person they meet |
 | Negotiation & trade-ins | Needs immediate escalation to be safe | Already with the right person from message one |
-| After-hours coverage | Covers the clock — if guardrails hold | Instant routing puts the message on your team’s phones the moment it lands |
+| After-hours coverage | Covers the clock — if guardrails hold | Whoever is on call answers from Messenger — against a listing still accurate at 11pm |
 | Accountability | Depends on vendor logging | Your team, your words, your inbox |
 
 _AutoLander does not send automated replies. It makes the human answer fast and accurate instead._
 
 ## Where AutoLander stands
 
-AutoLander is not an autoresponder and does not reply to buyers for you. What it does: keeps every Marketplace listing’s price, mileage, photos and availability accurate through inventory sync, removes sold units before dead-end conversations start, and routes buyer messages so your team answers fast with the facts at hand — the Facebook Marketplace assistant covers the upkeep.
+AutoLander is not an autoresponder, does not reply to buyers for you, and does not touch your Marketplace inbox at all. What it does: keeps every listing’s price, mileage, photos and availability accurate through inventory sync, and removes sold units before dead-end conversations start — so when your team answers, the facts are already right. The Facebook Marketplace assistant covers that upkeep.
 
 ## How AutoLander makes your team the fastest answer in town
 
@@ -47,9 +47,9 @@ AutoLander is not an autoresponder and does not reply to buyers for you. What it
 
 Price and details stay current automatically, so whoever answers has the right numbers — no tab-hopping, no guessing. See inventory sync.
 
-### Message routing
+### Your inbox stays yours
 
-Buyer messages are routed to your team instead of sitting unseen in a Marketplace tab — the job of the Marketplace assistant.
+AutoLander never reads, answers or forwards a Marketplace message. Your team works Messenger exactly as they do now — no bot in the middle, nothing sitting behind a vendor.
 
 ### No ghost conversations
 
@@ -75,7 +75,7 @@ Under a minute during working hours, and as fast as your process allows outside 
 
 ### Does AutoLander automatically reply to Facebook Marketplace messages?
 
-No. AutoLander does not send automated replies to buyers. It keeps every listing’s data accurate, removes sold units, and routes buyer messages to your team — so a human answers quickly with the right information.
+No — and it does not handle your messages at all. AutoLander has no autoresponder and no inbox feature. It keeps every listing’s data accurate and removes sold units, so when your team answers in Messenger they answer quickly and with the right information.
 
 ### What is the best AI chatbot for car dealerships?
 
@@ -87,7 +87,7 @@ Poorly built ones do — improvised numbers are the category’s classic failure
 
 ### How do dealers cover the Marketplace inbox at night and on weekends?
 
-With routing and process: messages forwarded to a phone, a named owner per shift, and listings whose data is accurate enough that anyone can answer confidently. AutoLander handles the routing and the data accuracy; see how to get more car sales leads for the speed-to-lead playbook.
+With process: Messenger notifications on a phone, a named owner per shift, and listings whose data is accurate enough that anyone can answer confidently. AutoLander’s part is that last piece — accurate listings and sold units already removed; see how to get more car sales leads for the speed-to-lead playbook.
 
 ## Related
 

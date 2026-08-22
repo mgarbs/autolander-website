@@ -120,8 +120,8 @@ export const PAGES = [
         q: 'What is a car dealer advertising tool for Facebook Marketplace?',
         a: [
           'A car dealer advertising tool for Facebook Marketplace turns live inventory data into consistent '
-          + 'vehicle listings, keeps price and availability aligned, improves listing presentation, routes buyer '
-          + 'inquiries and measures appointments or sales. The useful distinction is whether the product only '
+          + 'vehicle listings, keeps price and availability aligned, improves listing presentation and measures '
+          + 'appointments or sales. The useful distinction is whether the product only '
           + 'creates posts or manages the full inventory lifecycle.',
           'AutoLander combines feed sync, listing preparation, AI photo tools, sold-unit removal and post-to-sale '
           + 'attribution. Dealers should still verify that their intended posting method is eligible for the '

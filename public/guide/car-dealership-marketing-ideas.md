@@ -14,7 +14,7 @@ Zero budget, high intent. If you only do one group, do this one.
 
 - 1. List every single unit on Facebook Marketplace, every day — most stores list a fraction of the lot because manual posting is slow; an auto poster fixes the volume problem overnight.
 - 2. Re-shoot your worst 10 listings with clean backgrounds — or run them through an AI car photo editor and keep the same photos you already have.
-- 3. Reply to every Marketplace message within one minute — instant routing to a named owner per shift covers nights, weekends and lunch rushes.
+- 3. Reply to every Marketplace message within one minute — Messenger alerts on a phone and a named owner per shift cover nights, weekends and lunch rushes.
 - 4. Remove sold units the hour they sell — nothing torches trust like a buyer messaging about a car that left Tuesday; inventory sync does it automatically.
 - 5. Ask for a Google review at delivery, in person, phone in hand — the ask-at-the-moment rate embarrasses every follow-up email.
 - 6. Fill out every field on your Google Business Profile and add 20 real photos of the lot, the office and the team.

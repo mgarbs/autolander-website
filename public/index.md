@@ -18,7 +18,7 @@ Posting a lot to Facebook Marketplace by hand is the bottleneck: a hundred-car l
 - Keeps asking prices in step with the feed, so a price drop on the lot reaches Marketplace.
 - Removes sold units, so buyers stop messaging about cars that are already gone.
 - Enhances listing photos with AI — real cars, never repainted or fabricated.
-- Routes buyer messages from the Marketplace inbox to your team and tracks which posts led to sales.
+- Tracks which posts led to buyer conversations and sales, so you can see what the channel actually returns.
 - Supports cars, trucks and RV / camper inventory, posting each into the correct Marketplace category.
 
 ## How it works
@@ -46,7 +46,7 @@ Published pricing, monthly, no setup fee. Every plan starts with 5 free posts an
 
 ## What AutoLander does not do
 
-AutoLander does not auto-reply to buyers on your behalf — it routes Marketplace messages to your team, and a human writes the reply. It does not override Meta eligibility rules, listing limits or terms, and no automation tool can guarantee an account will never be actioned. It does not invent vehicle facts: unknown mileage stays blank rather than being guessed, and AI photo editing never repaints a car a colour it is not.
+AutoLander does not message buyers on your behalf and does not manage your Marketplace inbox — your team reads and answers every conversation in Messenger. It does not override Meta eligibility rules, listing limits or terms, and no automation tool can guarantee an account will never be actioned. It does not invent vehicle facts: unknown mileage stays blank rather than being guessed, and AI photo editing never repaints a car a colour it is not.
 
 ## Frequently asked questions
 
@@ -68,7 +68,7 @@ Meta sets the rules, and they change. AutoLander posts through the dealer’s ow
 
 ### Does AutoLander reply to buyers automatically?
 
-No. AutoLander surfaces and routes Marketplace messages to your team so they get answered faster, but a human writes the reply. Any vendor claiming a hands-off AI that closes car deals for you is overselling.
+No — and it does not handle your messages at all. AutoLander has no autoresponder and no inbox feature: your team reads and answers buyers in Messenger themselves. What AutoLander does is keep the listing they are answering about accurate, and pull sold units down so nobody wastes a reply on a car that is gone. Any vendor claiming a hands-off AI that closes car deals for you is overselling.
 
 ### What platforms does AutoLander run on?
 

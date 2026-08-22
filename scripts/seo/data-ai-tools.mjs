@@ -18,7 +18,7 @@ export const PAGES = [
     key: 'aiTools',
     title: 'Facebook AI Tools for Car Dealers (2026 Guide) | AutoLander',
     description:
-      'Facebook AI tools for car dealers: enhance photos, write listings, auto-post inventory and route '
+      'Facebook AI tools for car dealers: enhance photos, write listings, auto-post inventory and remove sold '
       + 'buyer messages. From $39/mo with 5 free posts.',
     ogType: 'website',
     eyebrow: 'For car dealers & sales reps',
@@ -66,7 +66,7 @@ export const PAGES = [
           { title: 'AI Photo Studio', body: 'AI replaces messy lot backgrounds with clean showroom backdrops and orders the shots buyers respond to — the photo half of [Facebook Marketplace listing software](/facebook-marketplace-listing-software/).' },
           { title: 'AI-written listings', body: 'AI writes a clear, accurate, VIN-specific description for every vehicle, so each [Facebook listing](/facebook-listing-software/) reads professionally without copy-paste.' },
           { title: 'AI-assisted posting', body: 'AutoLander builds listings from your inventory and moves eligible vehicles through a configurable queue — the workflow behind the [Facebook Marketplace auto poster](/facebook-marketplace-auto-poster/) and [Facebook autoposter](/facebook-autoposter/).' },
-          { title: 'AI Marketplace assistant', body: 'While the desktop app is running, it helps keep listings current, remove sold units and route buyer messages — your [Facebook Marketplace assistant](/facebook-marketplace-assistant/).' },
+          { title: 'AI Marketplace assistant', body: 'While the desktop app is running, it helps keep listings current, hold prices in step with the feed and remove sold units — your [Facebook Marketplace assistant](/facebook-marketplace-assistant/).' },
           { title: 'AI walkaround video', body: 'AI generates a short walkaround video per vehicle, which Marketplace and buyers favor over static photos.' },
           { title: 'Full Marketplace automation', body: 'Put it together and it is end-to-end [Facebook Marketplace automation](/facebook-marketplace-automation/): sync, post, refresh, remove — hands-off.' },
         ],
@@ -107,7 +107,7 @@ export const PAGES = [
     ],
     faq: [
       ['What is the best AI tool for Facebook Marketplace?',
-        'It depends on whether you need photo preparation, descriptions, a listing queue, inventory reconciliation, message routing, or all of them. AutoLander bundles those dealer workflows in one desktop app. Compare its fit with single-purpose and competing tools in our [2026 comparison](/compare/).'],
+        'It depends on whether you need photo preparation, descriptions, a listing queue, inventory reconciliation, automatic sold-unit removal, or all of them. AutoLander bundles those dealer workflows in one desktop app. Compare its fit with single-purpose and competing tools in our [2026 comparison](/compare/).'],
       ['Are there free Facebook AI tools for car dealers?',
         'Most capable AI tools are paid because they do ongoing work — generating photos, writing copy, posting and syncing. AutoLander gives you 5 free posts with no credit card to try the AI before paying, then plans start at $39/mo. See [pricing](/facebook-marketplace-auto-poster-pricing/).'],
       ['Can AI post my car listings to Facebook Marketplace automatically?',

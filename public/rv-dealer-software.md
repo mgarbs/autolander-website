@@ -6,7 +6,7 @@ Source: https://autolander.ai/rv-dealer-software/
 Author: The AutoLander team  
 Updated: August 20, 2026
 
-**Short answer:** AutoLander is RV dealer software for the selling side: it syncs your RV inventory, posts every unit to Facebook Marketplace as an RV/Camper listing (not a mislabeled car), upgrades the photos with an AI studio, routes buyer messages to your team, and removes sold units automatically. It is the Marketplace sales layer that works alongside your DMS — travel trailers, fifth wheels, motorhomes and toy haulers included.
+**Short answer:** AutoLander is RV dealer software for the selling side: it syncs your RV inventory, posts every unit to Facebook Marketplace as an RV/Camper listing (not a mislabeled car), upgrades the photos with an AI studio, keeps asking prices in step with your feed, and removes sold units automatically. It is the Marketplace sales layer that works alongside your DMS — travel trailers, fifth wheels, motorhomes and toy haulers included.
 
 ## What does RV dealer software need to do on Facebook Marketplace?
 
@@ -30,9 +30,9 @@ Point AutoLander at your website or inventory feed and the lot stays in sync —
 
 The AI Photo Studio handles RVs like the Catalina above — clean backgrounds that make a big unit read clearly in a small thumbnail.
 
-### No buyer message left unseen
+### Seasonal pricing that keeps up
 
-RV shoppers browse on weekend evenings. Messages are routed to your team with the unit’s synced specs and price at hand, so whoever answers has the facts.
+RV asking prices move with the season. Yours follow the feed automatically, so a spring listing is never still showing last autumn’s number.
 
 ### Whole-lot coverage
 
@@ -47,7 +47,7 @@ The unit that delivered Saturday is off Marketplace before Monday’s calls — 
 1. **Connect the inventory** — Your website or feed is the source of truth — AutoLander reads it and builds Marketplace-ready listings, specs and photos included.
 2. **Set the look** — Optionally run every unit through the AI studio for consistent, showroom-grade photos across the whole lot.
 3. **Post and maintain automatically** — Units go live in the RV/Camper category and stay current — prices sync, sold units come down, new arrivals queue up.
-4. **Your team works the inbox** — Buyer messages route straight to your people with accurate listing data in front of them — fast answers, real appointments.
+4. **Your team works the inbox** — Buyers message you in Messenger exactly as they do now — AutoLander stays out of it. Its contribution is that the specs and price they are asking about are already correct.
 
 ## What AutoLander is not
 
@@ -57,7 +57,7 @@ It is not a DMS and does not replace your F&I, service or accounting stack — i
 
 ### Can RV dealers post inventory on Facebook Marketplace?
 
-Yes — RVs and campers have their own Marketplace category, and eligible dealer accounts can list there. The practical challenge is volume and upkeep across a whole lot, which is the job AutoLander automates: posting, price sync, message routing and sold-unit removal.
+Yes — RVs and campers have their own Marketplace category, and eligible dealer accounts can list there. The practical challenge is volume and upkeep across a whole lot, which is the job AutoLander automates: posting, price sync and sold-unit removal.
 
 ### Does AutoLander support travel trailers, fifth wheels and motorhomes?
 
