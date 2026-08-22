@@ -146,6 +146,43 @@ test('every Organization node carries address AND contactPoint', () => {
   }
 });
 
+// ---------------------------------------------------------------- Cloudflare email obfuscation
+
+test('our own addresses are exempted from Cloudflare email obfuscation', () => {
+  // Scrape Shield rewrites bare addresses in HTML into "[email protected]" plus a decoder script.
+  // Measured live before the fix: 15 rewrites on /contact/, 3 on /about/, 1 on the homepage —
+  // so an agent verifying the business read "[email protected]" instead of a contact address.
+  const files = [pub('contact/index.html'), pub('about/index.html'), resolve(ROOT, 'index.html')];
+  for (const file of files) {
+    const html = read(file);
+    const bodyStart = html.indexOf('<body');
+    const body = bodyStart === -1 ? html : html.slice(bodyStart);
+    // Strip <script> blocks: Cloudflare already skips them, and the JSON-LD in <head> must stay
+    // untouched — an HTML comment inside application/ld+json is invalid JSON.
+    const visible = body.replace(/<script[\s\S]*?<\/script>/gi, '');
+
+    const wrapped = [...visible.matchAll(/<!--email_off-->[\s\S]*?<!--\/email_off-->/g)].join('');
+    const allAddrs = visible.match(/\b[A-Za-z0-9._%+-]+@autolander\.ai\b/g) || [];
+    const wrappedAddrs = wrapped.match(/\b[A-Za-z0-9._%+-]+@autolander\.ai\b/g) || [];
+    assert.ok(allAddrs.length > 0, `${file} should state at least one address`);
+    assert.equal(
+      wrappedAddrs.length, allAddrs.length,
+      `${file}: ${allAddrs.length - wrappedAddrs.length} address(es) NOT wrapped in <!--email_off-->`,
+    );
+  }
+});
+
+test('email_off comments never leak into JSON-LD', () => {
+  for (const file of [pub('contact/index.html'), pub('about/index.html'), resolve(ROOT, 'index.html')]) {
+    const blocks = [...read(file).matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)];
+    assert.ok(blocks.length > 0, `${file} has no JSON-LD`);
+    for (const [, json] of blocks) {
+      assert.ok(!json.includes('email_off'), `${file}: email_off inside JSON-LD would break the JSON`);
+      JSON.parse(json.replace(/\\u003c/g, '<')); // throws if the structured data is malformed
+    }
+  }
+});
+
 // ---------------------------------------------------------------- agent instruction files
 
 test('llms.txt carries when-to-use guidance, not just a link index', () => {

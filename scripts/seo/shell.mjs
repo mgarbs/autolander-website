@@ -97,6 +97,26 @@ export const PROFILES = [
   'https://github.com/mgarbs/autolander-releases',
 ];
 
+// ---------- Cloudflare email-obfuscation opt-out ----------
+// autolander.ai is proxied by Cloudflare with Scrape Shield's Email Obfuscation on, which rewrites
+// every mailto: and every bare address in an HTML response into
+// `<a class="__cf_email__" data-cfemail="…">[email&#160;protected]</a>` plus a decoder script.
+// That is fine against spam harvesters and terrible for us: an AI agent checking whether this is a
+// real business reads /contact/ and finds "[email protected]" fifteen times instead of a contact
+// address. (Measured live: 15 rewrites on /contact/, 3 on /about/.)
+//
+// `<!--email_off-->…<!--/email_off-->` is Cloudflare's documented per-section opt-out, so we keep
+// the feature on everywhere else and exempt only the addresses we actively want machines to read.
+// This is not a new exposure: the same addresses are already in plain text in the .md twins,
+// llms.txt and the JSON-LD, none of which Cloudflare touches.
+//
+// NEVER run this over a <script> block — wrapping an address inside application/ld+json would
+// inject an HTML comment into JSON and break the structured data. renderPage applies it to the
+// document BODY only.
+const EMAIL_RE = /\b[A-Za-z0-9._%+-]+@autolander\.ai\b/g;
+export const emailSafe = (html) =>
+  String(html).replace(EMAIL_RE, (addr) => `<!--email_off-->${addr}<!--/email_off-->`);
+
 export const ORG_ID = SITE.origin + '/#organization';
 export const PERSON_ID = SITE.origin + '/about/#michael-garber';
 
@@ -594,8 +614,10 @@ export function renderPage(page) {
   const related = page.related || (page.key ? relatedFor(page.key) : []);
   const sectionsHtml = (page.sections || []).map(renderSection).join('\n\n');
 
-  return [
-    head({ title: page.title, description: page.description, canonical, jsonLdBlocks, ogType: page.ogType, ogImage }),
+  // emailSafe wraps our own addresses so Cloudflare does not rewrite them into "[email protected]"
+  // (see the comment on emailSafe). Applied to the document BODY only: head() carries the JSON-LD,
+  // and an HTML comment inside application/ld+json would be invalid JSON.
+  const body = [
     siteHeader(page.breadcrumbs.map(({ name, url }) => ({ name, url }))),
     `  <main class="wrap">
     <article>
@@ -615,6 +637,11 @@ ${page.faq && page.faq.length ? faqSection(page.faq, page.faqHeading) : ''}
     </article>
   </main>`,
     siteFooter(),
+  ].join('\n');
+
+  return [
+    head({ title: page.title, description: page.description, canonical, jsonLdBlocks, ogType: page.ogType, ogImage }),
+    emailSafe(body),
   ].join('\n');
 }
 
