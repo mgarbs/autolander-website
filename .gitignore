@@ -58,3 +58,7 @@ dist-ssr
 
 # Claude Code per-machine settings (local only)
 .claude/settings.local.json
+
+# Avalanche article tooling (regenerable / local-only)
+dist-preview/
+.last-publish.json

@@ -27,6 +27,7 @@ import {
 } from './billing-links.js';
 import { readDimensionForDay, readRecentEvents } from '../capi/storage.js';
 import { deleteSupportRequest, readSupportRequests } from '../support/storage.js';
+import { handleContentList, handleContentPublish } from './content.js';
 
 const DEFAULT_DAYS = 30;
 const MAX_DAYS = 90;
@@ -163,6 +164,17 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
+  // Content Publisher (Avalanche article drip) — list + one-click publish.
+  if (path === '/admin/content' && request.method === 'GET') {
+    const result = await handleContentList(env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/content/publish' && request.method === 'POST') {
+    const result = await handleContentPublish(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
   if (path === '/admin/events/recent') {
     const limit = Math.min(Number(url.searchParams.get('limit') || 50), 100);
     return jsonResponse({ ok: true, events: await readRecentEvents(env, limit) }, 200, corsHeaders);
@@ -241,6 +253,7 @@ function buildSetup(env) {
     hasTrackingKv: Boolean(env.TRACKING),
     hasStripeSubscriptionLinks: Boolean(env.STRIPE_SECRET_KEY || env.STRIPE_RESTRICTED_KEY),
     hasOpsLinking: Boolean(env.OPS_ADMIN_TOKEN),
+    hasContentPublish: Boolean(env.GITHUB_TOKEN),
     testEventCode: env.META_TEST_EVENT_CODE || null,
     metaInsightsReady: hasMetaInsightsConfig(env),
     urlParamTemplate: META_URL_PARAM_TEMPLATE,

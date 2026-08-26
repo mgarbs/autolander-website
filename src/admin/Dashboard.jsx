@@ -6,6 +6,7 @@ import SupportAdjustments from './SupportAdjustments.jsx';
 import BillingLinks from './BillingLinks.jsx';
 import OpsLinking from './OpsLinking.jsx';
 import CustomerActivity from './CustomerActivity.jsx';
+import ContentPublisher from './ContentPublisher.jsx';
 
 const ADMIN_SECTIONS = [
   {
@@ -36,6 +37,12 @@ const ADMIN_SECTIONS = [
     slug: 'payment-links',
     title: 'Payment Links',
     subtitle: 'Centralized billing links — autolander.ai/pay/{token}',
+    defaultOpen: false,
+  },
+  {
+    slug: 'content-publisher',
+    title: 'Content Publisher',
+    subtitle: 'Drip-publish the prepared SEO article library, one click per article',
     defaultOpen: false,
   },
 ];
@@ -237,6 +244,14 @@ export default function Dashboard({ onLogout }) {
           onToggle={() => toggleSection('payment-links')}
         >
           <BillingLinks embedded />
+        </CollapsibleSection>
+
+        <CollapsibleSection
+          {...ADMIN_SECTIONS[5]}
+          open={openSections['content-publisher']}
+          onToggle={() => toggleSection('content-publisher')}
+        >
+          <ContentPublisher onUnauthorized={onLogout} />
         </CollapsibleSection>
       </main>
     </div>

@@ -1,0 +1,77 @@
+# Publish one Avalanche article end-to-end. Dispatched by the /admin Content Publisher
+# (Worker POST /admin/content/publish) or manually from the Actions tab.
+#
+# Why this workflow also builds + deploys Pages: the commit below is pushed with the
+# default GITHUB_TOKEN, and GitHub deliberately does NOT fire push-triggered workflows
+# (deploy.yml) for commits made with that token — so this workflow finishes the job
+# itself with the same build/deploy steps. IndexNow is pinged only after the deploy,
+# and only for the URLs this publish actually changed.
+#
+# run-name carries the slug so the admin UI can label in-flight runs.
+
+name: Publish article
+
+run-name: 'publish: ${{ inputs.slug }}'
+
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Article slug (see scripts/seo/articles/publish-state.json)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Same group as deploy.yml so a publish never deploys Pages concurrently with a normal
+# main-push deploy. cancel-in-progress stays false here: a queued publish waits its turn.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - name: Flip publish state + regenerate silo
+        run: node scripts/publish-article.mjs "${{ inputs.slug }}"
+
+      - name: Commit the published article
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public scripts/seo/articles/publish-state.json
+          if git diff --cached --quiet; then
+            echo "nothing to commit (already published) — continuing to deploy"
+          else
+            git commit -m "publish: ${{ inputs.slug }}"
+            git pull --rebase origin main
+            git push origin main
+          fi
+
+      - name: Build site
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Ping IndexNow with the changed URLs
+        run: node scripts/submit-indexnow.mjs --changed

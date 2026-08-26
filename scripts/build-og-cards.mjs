@@ -41,6 +41,11 @@ import { PAGES as GROWTH } from './seo/data-growth.mjs';
 import { PAGES as GROWTHMONEY } from './seo/data-growth-money.mjs';
 import { PAGES as REPORT } from './seo/data-report.mjs';
 import { PAGES as ABOUT } from './seo/data-about.mjs';
+import { articlePath } from './seo/articles/article-system.mjs';
+import { ARTICLES as ART_MKT_A } from './seo/articles/data-articles-marketplace-a.mjs';
+import { ARTICLES as ART_MKT_B } from './seo/articles/data-articles-marketplace-b.mjs';
+import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs';
+import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PUBLIC_DIR = resolve(ROOT, 'public');
@@ -73,6 +78,12 @@ function collectTargets() {
   }
   targets.push({ path: '/guide/facebook-marketplace-automation/', eyebrow: 'Guide', title: 'Facebook Marketplace automation: the honest version' });
   targets.push({ path: '/guide/how-to-sell-cars-on-facebook-marketplace/', eyebrow: 'Guide', title: 'How to sell cars on Facebook Marketplace' });
+
+  // Avalanche articles — cards are pre-rendered for ALL 30 (drafts included) so a later
+  // publish never needs Playwright; an unreferenced card in public/og/ is harmless.
+  for (const a of [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH]) {
+    targets.push({ path: articlePath(a.slug), eyebrow: a.eyebrow || 'Dealer guide', title: a.h1 || a.title });
+  }
 
   // Registry sanity: an integration spoke with no card is a silent gap, so name it.
   for (const s of INTEGRATIONS) {

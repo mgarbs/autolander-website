@@ -17,8 +17,16 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { renderPage, renderMarkdown, SEO_STYLES, SITE } from './seo/shell.mjs';
-import { NAV, INTEGRATIONS, integrationPath, integrationUrl } from './seo/registry.mjs';
+import { NAV, INTEGRATIONS, integrationPath, integrationUrl, relatedFor } from './seo/registry.mjs';
 import { COMPETITORS, GUIDE } from './compare-data.mjs';
+import {
+  buildArticlePage, hubAugmentLinks, contentStatusJson, articleSitemapEntries,
+  loadPublishState, isPublished, articlePath,
+} from './seo/articles/article-system.mjs';
+import { ARTICLES as ART_MKT_A } from './seo/articles/data-articles-marketplace-a.mjs';
+import { ARTICLES as ART_MKT_B } from './seo/articles/data-articles-marketplace-b.mjs';
+import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs';
+import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
 
 import { PAGES as CATEGORY } from './seo/data-category.mjs';
 import { PAGES as PRICING } from './seo/data-pricing.mjs';
@@ -43,7 +51,35 @@ import { whenToUseSection, agentsMarkdown } from './seo/agent-instructions.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 
-const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT];
+// ---------- Avalanche article layer (drip-published; see seo/articles/article-system.mjs) ----------
+// publish-state.json is the gate: draft articles are rendered NOWHERE (no HTML, no sitemap,
+// no llms.txt, no hub links). Publishing an article and rebuilding is what reveals it — and
+// also re-renders every hub/sibling so earlier pages pick up links to the newly live spoke.
+const ARTICLE_CONTENT = [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH];
+const PUBLISH_STATE = loadPublishState();
+{
+  const known = new Set(Object.keys(PUBLISH_STATE));
+  const dupes = ARTICLE_CONTENT.filter((c, i) => ARTICLE_CONTENT.findIndex((x) => x.slug === c.slug) !== i);
+  if (dupes.length) throw new Error(`duplicate article slugs: ${dupes.map((d) => d.slug).join(', ')}`);
+  const unknown = ARTICLE_CONTENT.filter((c) => !known.has(c.slug));
+  if (unknown.length) throw new Error(`article slugs missing from publish-state.json: ${unknown.map((d) => d.slug).join(', ')}`);
+}
+const PUBLISHED_ARTICLES = ARTICLE_CONTENT.filter((c) => isPublished(PUBLISH_STATE, c.slug));
+const ARTICLE_PAGES = PUBLISHED_ARTICLES.map((c) => buildArticlePage(c, ARTICLE_CONTENT, PUBLISH_STATE));
+
+const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...ARTICLE_PAGES];
+
+// Hub pages grow "Keep exploring" links to their silo's PUBLISHED articles. With zero
+// published articles this is a no-op and every existing page renders byte-identical.
+{
+  const augment = hubAugmentLinks(ARTICLE_CONTENT, PUBLISH_STATE);
+  for (const page of ALL) {
+    const extra = page.key ? augment.get(page.key) : null;
+    if (extra && extra.length) {
+      page.related = [...(page.related || relatedFor(page.key)), ...extra];
+    }
+  }
+}
 
 function write(path, contents) {
   mkdirSync(dirname(path), { recursive: true });
@@ -120,6 +156,29 @@ function buildReportData() {
   write(resolve(PUBLIC_DIR, 'data', 'marketplace-report-2026.csv'), lines.join('\n') + '\n');
 }
 buildReportData();
+
+// ---------- content publisher status (read by the /admin Content Publisher) ----------
+write(
+  resolve(PUBLIC_DIR, 'data', 'content-status.json'),
+  JSON.stringify(contentStatusJson(ARTICLE_CONTENT, PUBLISH_STATE), null, 2) + '\n',
+);
+
+// ---------- draft preview (LOCAL ONLY — never into public/) ----------
+// ARTICLE_DRAFT_PREVIEW=1 renders draft articles into dist-preview/ so Michael can read
+// them in a browser before publishing. dist-preview/ is gitignored; nothing here can leak.
+if (process.env.ARTICLE_DRAFT_PREVIEW === '1' || process.argv.includes('--draft-preview')) {
+  const previewDate = new Date().toISOString().slice(0, 10);
+  const PREVIEW_DIR = resolve(PUBLIC_DIR, '..', 'dist-preview');
+  // Preview pretends every article is published so sibling links render fully.
+  const pretendState = Object.fromEntries(Object.entries(PUBLISH_STATE).map(([slug, st]) => [
+    slug, st.status === 'published' ? st : { status: 'published', publishedAt: previewDate },
+  ]));
+  for (const c of ARTICLE_CONTENT) {
+    const page = buildArticlePage(c, ARTICLE_CONTENT, pretendState, { previewDate });
+    write(resolve(PREVIEW_DIR, articlePath(c.slug).replace(/^\/|\/$/g, ''), 'index.html'), renderPage(page));
+  }
+  console.log(`\n[preview] ${ARTICLE_CONTENT.length} article previews -> dist-preview/ (open dist-preview/guide/<slug>/index.html)`);
+}
 
 // ---------- Markdown twins + llms.txt ----------
 // Answer engines parse Markdown far more reliably than HTML. Every silo page gets a .md twin at
@@ -204,6 +263,8 @@ Contact: sales@autolander.ai · (919) 280-0967
       NAV.mktgHub.path, NAV.mktgIdeas.path, NAV.salesLeads.path, NAV.socialMedia.path,
       NAV.sellMore.path, NAV.aiDealers.path, NAV.aiTools.path,
     ]),
+    // Drip-published long-tail library — only articles that are actually live.
+    group('Deep-dive dealer guides', PUBLISHED_ARTICLES.map((c) => articlePath(c.slug))),
     group('Integrations', [NAV.integHub.path, ...INTEGRATIONS.map((s) => integrationPath(s.slug))]),
     // The /compare/ cluster and the two long-form guides come from build-compare-pages.mjs and are
     // hand-authored HTML, so they have no Markdown twin — linked here as HTML so the index is
@@ -298,16 +359,19 @@ function sitemapXml() {
     { loc: SITE.origin + NAV.contact.path, pri: '0.6', freq: 'monthly' },
     ...competitorSlugs.map((s) => ({ loc: `${SITE.origin}/compare/${s}/`, pri: '0.7', freq: 'monthly' })),
     ...INTEGRATIONS.map((s) => ({ loc: integrationUrl(s.slug), pri: '0.7', freq: 'monthly' })),
+    // Published Avalanche articles only; lastmod = the article's real publish date.
+    ...articleSitemapEntries(ARTICLE_CONTENT, PUBLISH_STATE),
   ];
   const body = urls.map((u) =>
-    `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${SITE.updated}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`).join('\n');
+    `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod || SITE.updated}</lastmod>\n    <changefreq>${u.freq}</changefreq>\n    <priority>${u.pri}</priority>\n  </url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
 
 write(resolve(PUBLIC_DIR, 'robots.txt'), robotsTxt());
 write(resolve(PUBLIC_DIR, 'sitemap.xml'), sitemapXml());
 
-console.log(`\nDone. ${renderedPaths.size} new SEO pages + unified sitemap.xml + robots.txt.`);
+console.log(`\nDone. ${renderedPaths.size} SEO pages + unified sitemap.xml + robots.txt.`);
+console.log(`Articles: ${PUBLISHED_ARTICLES.length}/${ARTICLE_CONTENT.length} published (drafts stay invisible until published via the admin Content Publisher).`);
 if (missing.length) {
   console.log(`(sitemap lists all URLs; ${missing.length} page file(s) still pending content.)`);
 }

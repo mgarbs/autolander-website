@@ -69,6 +69,10 @@ preview_id = "273697d477e84296a0152a690e95884c"
 #   CALENDLY_SIGNING_KEY          legacy only, required if the legacy Calendly webhook is enabled
 #   ADMIN_PASSWORD                you choose
 #   ADMIN_SESSION_SECRET          random 32+ bytes for cookie HMAC
+#   GITHUB_TOKEN                  fine-grained PAT for mgarbs/autolander-website (Actions read+write,
+#                                 Contents read+write) — powers the admin Content Publisher one-click
+#                                 publish (dispatches publish-article.yml + reads run status).
+#                                 Without it the Content panel is read-only.
 #   STRIPE_SECRET_KEY             live Stripe secret/restricted key able to create Checkout Sessions;
 #                                 billing-date adjustments additionally need Customer, Subscription, Invoice, Invoice Item, Coupon, and
 #                                 Subscription Schedule read access plus Coupon and Subscription Schedule write access. The Worker pins these calls to the same

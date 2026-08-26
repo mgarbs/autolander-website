@@ -1,0 +1,577 @@
+{
+  "generatedAt": "2026-08-26",
+  "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
+  "articles": [
+    {
+      "slug": "post-a-car-on-facebook-marketplace-dealer",
+      "path": "/guide/post-a-car-on-facebook-marketplace-dealer/",
+      "url": "https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/",
+      "title": "How to Post a Car on Facebook Marketplace as a Dealer (2026)",
+      "h1": "How to post a car on Facebook Marketplace as a dealer",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "how to post a car on facebook marketplace as a dealer",
+      "secondaryKeywords": [
+        "can a dealership post cars on facebook marketplace",
+        "how to list a car on facebook marketplace",
+        "what to include in a vehicle listing",
+        "how long does it take to post a car"
+      ],
+      "description": "How to post a car on Facebook Marketplace as a dealer: every field — category, photos, price, mileage, description — plus the per-unit time math.",
+      "suggestedOrder": 1,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "how-to-take-pictures-of-a-car-to-sell",
+      "path": "/guide/how-to-take-pictures-of-a-car-to-sell/",
+      "url": "https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/",
+      "title": "How to Take Pictures of a Car to Sell (Dealer Shot List)",
+      "h1": "How to take pictures of a car to sell",
+      "silo": "photos",
+      "siloLabel": "Photos & merchandising",
+      "primaryKeyword": "how to take pictures of a car to sell",
+      "secondaryKeywords": [
+        "best way to photograph a car",
+        "car photos with a phone",
+        "what pictures to take when selling a car"
+      ],
+      "description": "How to take pictures of a car to sell: prep, light, background, a dealer-grade shot list, and the phone settings that make any car look worth the asking price.",
+      "suggestedOrder": 2,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "free-places-to-advertise-used-cars",
+      "path": "/guide/free-places-to-advertise-used-cars/",
+      "url": "https://autolander.ai/guide/free-places-to-advertise-used-cars/",
+      "title": "Advertise Cars for Free: Where Dealers Can Really List",
+      "h1": "Where can dealers advertise cars for free?",
+      "silo": "growth",
+      "siloLabel": "Dealer growth",
+      "primaryKeyword": "advertise cars for free",
+      "secondaryKeywords": [
+        "free car listing sites",
+        "where can dealers list cars for free",
+        "list cars online free"
+      ],
+      "description": "Advertise cars for free: the channels that cost dealers nothing, the free-ish ones like Craigslist, and what each is actually worth to a used car lot.",
+      "suggestedOrder": 3,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "best-time-to-post-cars-on-facebook-marketplace",
+      "path": "/guide/best-time-to-post-cars-on-facebook-marketplace/",
+      "url": "https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/",
+      "title": "Best Time to Post on Facebook Marketplace: 2026 Car Data",
+      "h1": "The best time to post cars on Facebook Marketplace, by the data",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "best time to post on facebook marketplace",
+      "secondaryKeywords": [
+        "best day to list a car on facebook marketplace",
+        "should I post car listings on weekends",
+        "when do car buyers browse marketplace"
+      ],
+      "description": "The best time to post on Facebook Marketplace, from 17,778 real dealer posts: Thursday is the crowded day, Sunday the open lane — and what matters more.",
+      "suggestedOrder": 4,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "remove-background-from-car-photo",
+      "path": "/guide/remove-background-from-car-photo/",
+      "url": "https://autolander.ai/guide/remove-background-from-car-photo/",
+      "title": "Remove Background from Car Photo: What Actually Works",
+      "h1": "How to remove the background from a car photo (without it looking fake)",
+      "silo": "photos",
+      "siloLabel": "Photos & merchandising",
+      "primaryKeyword": "remove background from car photo",
+      "secondaryKeywords": [
+        "car background replacement",
+        "free background remover for car photos",
+        "car photo editing for dealers"
+      ],
+      "description": "How to remove the background from a car photo — why generic removers fail on wheels, glass, and shadows, when a free tool is fine, and what dealers use instead.",
+      "suggestedOrder": 5,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "used-car-dealer-advertising-on-a-budget",
+      "path": "/guide/used-car-dealer-advertising-on-a-budget/",
+      "url": "https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/",
+      "title": "Used Car Dealership Advertising on a Budget (2026)",
+      "h1": "Used car dealership advertising on a budget",
+      "silo": "growth",
+      "siloLabel": "Dealer growth",
+      "primaryKeyword": "used car dealership advertising",
+      "secondaryKeywords": [
+        "car dealership advertising ideas",
+        "low budget car dealer advertising",
+        "how much do dealerships spend on advertising"
+      ],
+      "description": "Used car dealership advertising on a budget: what to run at $0, where the first paid dollars go, and why free coverage beats ad spend for small stores.",
+      "suggestedOrder": 6,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "facebook-marketplace-car-listing-limits",
+      "path": "/guide/facebook-marketplace-car-listing-limits/",
+      "url": "https://autolander.ai/guide/facebook-marketplace-car-listing-limits/",
+      "title": "Facebook Marketplace Car Listing Limits: What Dealers See",
+      "h1": "Facebook Marketplace car listing limits: the honest answer",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "facebook marketplace car listing limits",
+      "secondaryKeywords": [
+        "how many cars can you post on facebook marketplace",
+        "facebook marketplace posting limits per day",
+        "what happens if you hit the listing limit"
+      ],
+      "description": "Facebook Marketplace car listing limits explained honestly: what Meta publishes (nothing), what dealers actually observe, and a pacing playbook that scales.",
+      "suggestedOrder": 7,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "car-photography-tips-for-dealerships",
+      "path": "/guide/car-photography-tips-for-dealerships/",
+      "url": "https://autolander.ai/guide/car-photography-tips-for-dealerships/",
+      "title": "Car Dealership Photography Tips: A Process Any Porter Can Run",
+      "h1": "Car dealership photography tips: a process any porter can run",
+      "silo": "photos",
+      "siloLabel": "Photos & merchandising",
+      "primaryKeyword": "car dealership photography tips",
+      "secondaryKeywords": [
+        "how to photograph cars for a dealership",
+        "vehicle photography checklist",
+        "dealership photo process"
+      ],
+      "description": "Car dealership photography tips that scale: the per-unit process any porter can run — time of day, lot spot, shot list, phone settings — and where AI fits.",
+      "suggestedOrder": 8,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "how-to-price-used-cars-competitively",
+      "path": "/guide/how-to-price-used-cars-competitively/",
+      "url": "https://autolander.ai/guide/how-to-price-used-cars-competitively/",
+      "title": "How to Price Used Cars: The Price-to-Market Playbook",
+      "h1": "How to price used cars competitively",
+      "silo": "growth",
+      "siloLabel": "Dealer growth",
+      "primaryKeyword": "how to price used cars",
+      "secondaryKeywords": [
+        "used car pricing strategy",
+        "price to market used cars",
+        "when to drop the price on a used car"
+      ],
+      "description": "How to price used cars with price-to-market discipline: live comps, the four Marketplace price bands from 10,823 dealer listings, and when to drop the price.",
+      "suggestedOrder": 9,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "facebook-marketplace-car-listing-removed",
+      "path": "/guide/facebook-marketplace-car-listing-removed/",
+      "url": "https://autolander.ai/guide/facebook-marketplace-car-listing-removed/",
+      "title": "Facebook Marketplace Car Listing Removed? Causes & Fixes",
+      "h1": "Your Facebook Marketplace car listing was removed — now what?",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "facebook marketplace car listing removed",
+      "secondaryKeywords": [
+        "why was my car listing removed on facebook marketplace",
+        "facebook commerce policy vehicles",
+        "how to appeal a removed listing"
+      ],
+      "description": "Facebook Marketplace car listing removed? The real causes — commerce policy, duplicates, price flags — how to appeal it, and how to stop the next one.",
+      "suggestedOrder": 10,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "how-many-photos-should-a-car-listing-have",
+      "path": "/guide/how-many-photos-should-a-car-listing-have/",
+      "url": "https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/",
+      "title": "How Many Photos Should a Car Listing Have? Coverage Guide",
+      "h1": "How many photos should a car listing have?",
+      "silo": "photos",
+      "siloLabel": "Photos & merchandising",
+      "primaryKeyword": "how many photos should a car listing have",
+      "secondaryKeywords": [
+        "minimum photos for a car listing",
+        "photo order car listing",
+        "best first photo for a car listing"
+      ],
+      "description": "How many photos should a car listing have? Coverage beats count — the shots that answer buyer objections, the first photo that wins the click, and order.",
+      "suggestedOrder": 11,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "google-business-profile-for-car-dealers",
+      "path": "/guide/google-business-profile-for-car-dealers/",
+      "url": "https://autolander.ai/guide/google-business-profile-for-car-dealers/",
+      "title": "Google Business Profile for Car Dealerships: Full Setup",
+      "h1": "Google Business Profile for car dealerships, field by field",
+      "silo": "growth",
+      "siloLabel": "Dealer growth",
+      "primaryKeyword": "google business profile for car dealership",
+      "secondaryKeywords": [
+        "how to get more dealership reviews",
+        "google business profile photos dealership",
+        "dealership not showing on google maps"
+      ],
+      "description": "Google Business Profile for car dealership trust: every field that matters, the photos to add, a delivery-day review script, and Google Maps troubleshooting.",
+      "suggestedOrder": 12,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "renew-facebook-marketplace-car-listings",
+      "path": "/guide/renew-facebook-marketplace-car-listings/",
+      "url": "https://autolander.ai/guide/renew-facebook-marketplace-car-listings/",
+      "title": "How to Renew a Facebook Marketplace Listing (Dealer Guide)",
+      "h1": "How to renew Facebook Marketplace listings — at dealer scale",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "how to renew facebook marketplace listing",
+      "secondaryKeywords": [
+        "what does renew do on facebook marketplace",
+        "how often can you renew a listing",
+        "renew vs delete and repost"
+      ],
+      "description": "How to renew a Facebook Marketplace listing, what renewing actually does, when delete-and-repost wins, and a cadence that works for a 30–60 unit lot.",
+      "suggestedOrder": 13,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "best-angles-for-car-listing-photos",
+      "path": "/guide/best-angles-for-car-listing-photos/",
+      "url": "https://autolander.ai/guide/best-angles-for-car-listing-photos/",
+      "title": "Car Photography Angles: The Shot List That Sells the Car",
+      "h1": "The best car photography angles, shot by shot",
+      "silo": "photos",
+      "siloLabel": "Photos & merchandising",
+      "primaryKeyword": "car photography angles",
+      "secondaryKeywords": [
+        "best angles to photograph a car",
+        "three quarter front angle",
+        "interior shots for car listings"
+      ],
+      "description": "Car photography angles explained — why the three-quarter front is the hero, the full angle-by-angle shot list, what each frame answers, and mistakes to avoid.",
+      "suggestedOrder": 14,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "respond-to-facebook-marketplace-messages-dealer",
+      "path": "/guide/respond-to-facebook-marketplace-messages-dealer/",
+      "url": "https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/",
+      "title": "How to Respond to Facebook Marketplace Messages (Dealer)",
+      "h1": "How to respond to Facebook Marketplace messages as a dealer",
+      "silo": "growth",
+      "siloLabel": "Dealer growth",
+      "primaryKeyword": "how to respond to facebook marketplace messages",
+      "secondaryKeywords": [
+        "facebook marketplace message templates for sellers",
+        "is this available reply",
+        "marketplace buyers who stop responding"
+      ],
+      "description": "How to respond to Facebook Marketplace messages as a dealer: the \"Is this available?\" reply, six buyer-message templates, and the path to an appointment.",
+      "suggestedOrder": 15,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "facebook-marketplace-car-description-template",
+      "path": "/guide/facebook-marketplace-car-description-template/",
+      "url": "https://autolander.ai/guide/facebook-marketplace-car-description-template/",
+      "title": "Facebook Marketplace Car Description: Template + Examples",
+      "h1": "The Facebook Marketplace car description that sells",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "facebook marketplace car description",
+      "secondaryKeywords": [
+        "what to write when selling a car on facebook",
+        "car listing description example",
+        "vehicle description template"
+      ],
+      "description": "A Facebook Marketplace car description template that sells: the three facts buyers scan first, two fill-in templates, and the do/don’t list dealers use.",
+      "suggestedOrder": 16,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "dark-cluttered-car-photos-cost-sales",
+      "path": "/guide/dark-cluttered-car-photos-cost-sales/",
+      "url": "https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/",
+      "title": "Bad Car Listing Photos: 5 Failures That Cost You Clicks",
+      "h1": "Bad car listing photos: the five failures that cost sales",
+      "silo": "photos",
+      "siloLabel": "Photos & merchandising",
+      "primaryKeyword": "bad car listing photos",
+      "secondaryKeywords": [
+        "why isn’t my car listing getting clicks",
+        "dark car photos",
+        "cluttered background car photos"
+      ],
+      "description": "Bad car listing photos fail a half-second scroll test. The five failures — dark shots, clutter, promo frames, bad crops, missing angles — and the fix for each.",
+      "suggestedOrder": 17,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "car-sales-follow-up-templates",
+      "path": "/guide/car-sales-follow-up-templates/",
+      "url": "https://autolander.ai/guide/car-sales-follow-up-templates/",
+      "title": "Car Sales Follow Up Templates That Get Replies",
+      "h1": "Car sales follow-up templates that get replies",
+      "silo": "growth",
+      "siloLabel": "Dealer growth",
+      "primaryKeyword": "car sales follow up templates",
+      "secondaryKeywords": [
+        "car sales text message templates",
+        "how to follow up with car leads",
+        "internet lead follow up"
+      ],
+      "description": "Car sales follow up templates a real salesperson sends — first touch, day 2, day 5, price drop, anniversary — plus the cadence table that gets replies.",
+      "suggestedOrder": 18,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "mark-car-sold-on-facebook-marketplace",
+      "path": "/guide/mark-car-sold-on-facebook-marketplace/",
+      "url": "https://autolander.ai/guide/mark-car-sold-on-facebook-marketplace/",
+      "title": "How to Mark a Car as Sold on Facebook Marketplace",
+      "h1": "How to mark a car as sold on Facebook Marketplace",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "how to mark a car as sold on facebook marketplace",
+      "secondaryKeywords": [
+        "mark as sold vs delete listing",
+        "should I delete sold car listings",
+        "ghost listings car dealer"
+      ],
+      "description": "How to mark a car as sold on Facebook Marketplace, mark-sold vs delete tradeoffs, why ghost listings cost dealers real buyers — and the removal routine.",
+      "suggestedOrder": 19,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "car-walkaround-video-for-dealers",
+      "path": "/guide/car-walkaround-video-for-dealers/",
+      "url": "https://autolander.ai/guide/car-walkaround-video-for-dealers/",
+      "title": "Car Walkaround Video: A 60-Second Script for Dealers",
+      "h1": "Car walkaround video: the 60-second dealer script",
+      "silo": "photos",
+      "siloLabel": "Photos & merchandising",
+      "primaryKeyword": "car walkaround video",
+      "secondaryKeywords": [
+        "vehicle walkaround video tips",
+        "do videos help sell cars",
+        "video for car listings"
+      ],
+      "description": "Car walkaround video for dealers: a 60-second script anyone can follow, phone technique that looks steady, where video surfaces on listings, and an AI fallback.",
+      "suggestedOrder": 20,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "sell-cars-online-small-dealership",
+      "path": "/guide/sell-cars-online-small-dealership/",
+      "url": "https://autolander.ai/guide/sell-cars-online-small-dealership/",
+      "title": "How to Sell Cars Online as a Small Dealership (2026)",
+      "h1": "How to sell cars online as a small dealership",
+      "silo": "growth",
+      "siloLabel": "Dealer growth",
+      "primaryKeyword": "how to sell cars online",
+      "secondaryKeywords": [
+        "sell cars online small dealership",
+        "online car sales process",
+        "selling cars online without a big website"
+      ],
+      "description": "How to sell cars online as a small dealership: list where buyers look, photos that compete, one owner for replies, and a simple path to the handshake.",
+      "suggestedOrder": 21,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "facebook-marketplace-listing-not-showing-up",
+      "path": "/guide/facebook-marketplace-listing-not-showing-up/",
+      "url": "https://autolander.ai/guide/facebook-marketplace-listing-not-showing-up/",
+      "title": "Facebook Marketplace Listing Not Showing Up? Fix It Fast",
+      "h1": "Facebook Marketplace listing not showing up? Triage it in order",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "facebook marketplace listing not showing up",
+      "secondaryKeywords": [
+        "facebook marketplace listing not showing in search",
+        "why can’t buyers see my listing",
+        "facebook marketplace listing pending review"
+      ],
+      "description": "Facebook Marketplace listing not showing up? Triage it in order: pending review, quiet deranking, removal, or buyer filters — and when to renew or repost.",
+      "suggestedOrder": 22,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "car-photo-backdrop-vs-ai-background",
+      "path": "/guide/car-photo-backdrop-vs-ai-background/",
+      "url": "https://autolander.ai/guide/car-photo-backdrop-vs-ai-background/",
+      "title": "Car Photography Backdrop vs AI Background: Real Tradeoffs",
+      "h1": "Car photography backdrop vs AI background replacement",
+      "silo": "photos",
+      "siloLabel": "Photos & merchandising",
+      "primaryKeyword": "car photography backdrop",
+      "secondaryKeywords": [
+        "car photo booth for dealerships",
+        "dealership photo booth cost",
+        "ai background replacement for car photos"
+      ],
+      "description": "Car photography backdrop, photo booth, staging spot, or AI background replacement? The real costs and tradeoffs of each way to get clean car listing photos.",
+      "suggestedOrder": 23,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "buy-here-pay-here-marketing",
+      "path": "/guide/buy-here-pay-here-marketing/",
+      "url": "https://autolander.ai/guide/buy-here-pay-here-marketing/",
+      "title": "Buy Here Pay Here Marketing: What Actually Works",
+      "h1": "Buy here pay here marketing that actually works",
+      "silo": "growth",
+      "siloLabel": "Dealer growth",
+      "primaryKeyword": "buy here pay here marketing",
+      "secondaryKeywords": [
+        "bhph marketing ideas",
+        "how to get buy here pay here customers",
+        "bhph advertising rules"
+      ],
+      "description": "Buy here pay here marketing that works: honest Marketplace listings, a referral engine, service-drive plays, and the compliance line you never cross.",
+      "suggestedOrder": 24,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "facebook-marketplace-vs-craigslist-for-selling-cars",
+      "path": "/guide/facebook-marketplace-vs-craigslist-for-selling-cars/",
+      "url": "https://autolander.ai/guide/facebook-marketplace-vs-craigslist-for-selling-cars/",
+      "title": "Facebook Marketplace vs Craigslist for Selling Cars (2026)",
+      "h1": "Facebook Marketplace vs Craigslist for selling cars",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "facebook marketplace vs craigslist cars",
+      "secondaryKeywords": [
+        "is craigslist still good for selling cars",
+        "where to sell used cars online",
+        "facebook marketplace vs offerup for cars"
+      ],
+      "description": "Facebook Marketplace vs Craigslist for cars: audience, listing fees, messaging, scams, and dealer workflow compared — and which channel to work first.",
+      "suggestedOrder": 25,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "used-car-merchandising-checklist",
+      "path": "/guide/used-car-merchandising-checklist/",
+      "url": "https://autolander.ai/guide/used-car-merchandising-checklist/",
+      "title": "Used Car Merchandising: The One Checklist That Converts",
+      "h1": "Used car merchandising: one checklist, five levers",
+      "silo": "photos",
+      "siloLabel": "Photos & merchandising",
+      "primaryKeyword": "used car merchandising",
+      "secondaryKeywords": [
+        "vehicle merchandising best practices",
+        "online vehicle merchandising",
+        "what makes a car listing convert"
+      ],
+      "description": "Used car merchandising is five levers on one checklist — price, photos, description, freshness, response speed — and the weakest lever caps every listing.",
+      "suggestedOrder": 26,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "aged-inventory-used-car-dealers",
+      "path": "/guide/aged-inventory-used-car-dealers/",
+      "url": "https://autolander.ai/guide/aged-inventory-used-car-dealers/",
+      "title": "Aged Inventory at a Car Dealership: The 30/45/60 Playbook",
+      "h1": "Aged inventory: the 30/45/60-day playbook",
+      "silo": "growth",
+      "siloLabel": "Dealer growth",
+      "primaryKeyword": "aged inventory car dealership",
+      "secondaryKeywords": [
+        "how to move aged inventory",
+        "60 day old used car strategy",
+        "aged unit marketing ideas"
+      ],
+      "description": "Aged inventory car dealership playbook: why units age, the 30/45/60-day triage — reprice, reshoot, renew — and when paying to boost finally makes sense.",
+      "suggestedOrder": 27,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "sell-rvs-on-facebook-marketplace",
+      "path": "/guide/sell-rvs-on-facebook-marketplace/",
+      "url": "https://autolander.ai/guide/sell-rvs-on-facebook-marketplace/",
+      "title": "Selling RVs on Facebook Marketplace: A Dealer Guide",
+      "h1": "Selling RVs on Facebook Marketplace: what actually works",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "selling rv on facebook marketplace",
+      "secondaryKeywords": [
+        "can you sell campers on facebook marketplace",
+        "rv dealer facebook marketplace",
+        "travel trailer listing tips"
+      ],
+      "description": "Selling an RV on Facebook Marketplace: the vehicle type that gets campers found, the interior photos that carry the listing, and honest seasonality advice.",
+      "suggestedOrder": 28,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "how-long-to-sell-a-car-on-facebook-marketplace",
+      "path": "/guide/how-long-to-sell-a-car-on-facebook-marketplace/",
+      "url": "https://autolander.ai/guide/how-long-to-sell-a-car-on-facebook-marketplace/",
+      "title": "How Long Does It Take to Sell a Car on Facebook Marketplace",
+      "h1": "How long does it take to sell a car on Facebook Marketplace?",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "how long does it take to sell a car on facebook marketplace",
+      "secondaryKeywords": [
+        "why isn’t my car selling on facebook marketplace",
+        "when should I drop the price",
+        "days on market used car"
+      ],
+      "description": "How long does it take to sell a car on Facebook Marketplace? It depends on four variables you control. The signals, the real stats, a week-by-week plan.",
+      "suggestedOrder": 29,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "boost-facebook-marketplace-car-listing",
+      "path": "/guide/boost-facebook-marketplace-car-listing/",
+      "url": "https://autolander.ai/guide/boost-facebook-marketplace-car-listing/",
+      "title": "Boost a Facebook Marketplace Listing? When It’s Worth It",
+      "h1": "Should you boost a Facebook Marketplace car listing?",
+      "silo": "marketplace",
+      "siloLabel": "Marketplace operations",
+      "primaryKeyword": "boost facebook marketplace listing",
+      "secondaryKeywords": [
+        "is boosting a marketplace listing worth it",
+        "boost listing cost",
+        "should car dealers boost listings"
+      ],
+      "description": "What it means to boost a Facebook Marketplace listing, what it costs, and when a car dealer should pay — after the free fundamentals, never instead of them.",
+      "suggestedOrder": 30,
+      "status": "draft",
+      "publishedAt": null
+    }
+  ]
+}
