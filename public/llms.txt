@@ -96,6 +96,10 @@ Full agent instructions, including the response-format contract: https://autolan
 - [AI for car dealerships: what actually works in 2026](https://autolander.ai/guide/ai-for-car-dealerships.md): AI for car dealerships without the hype: the three uses that pay today — AI photos, 24/7 inbox chat, listing copy — and what AI still cannot do.
 - [Facebook AI tools for car dealers](https://autolander.ai/facebook-ai-tools.md): Facebook AI tools for car dealers: enhance photos, write listings, auto-post inventory and remove sold buyer messages. From $39/mo with 5 free posts.
 
+## Deep-dive dealer guides
+
+- [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer.md): How to post a car on Facebook Marketplace as a dealer: every field — category, photos, price, mileage, description — plus the per-unit time math.
+
 ## Integrations
 
 - [Facebook Marketplace integrations & DMS feeds](https://autolander.ai/integrations.md): Connect dealer inventory feeds to Facebook Marketplace with AutoLander. Supports CarGurus, Cars.com and custom DMS exports. From $39/mo.

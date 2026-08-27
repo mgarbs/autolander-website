@@ -137,6 +137,7 @@ Yes. When a car is marked sold or drops out of the feed, AutoLander removes the 
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [AI chat for car dealers — the honest guide](https://autolander.ai/ai-chat-for-car-dealers/)
+- [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

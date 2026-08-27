@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26",
+  "generatedAt": "2026-08-27",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -19,8 +19,8 @@
       ],
       "description": "How to post a car on Facebook Marketplace as a dealer: every field — category, photos, price, mileage, description — plus the per-unit time math.",
       "suggestedOrder": 1,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-08-27"
     },
     {
       "slug": "how-to-take-pictures-of-a-car-to-sell",
