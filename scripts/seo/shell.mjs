@@ -84,6 +84,11 @@ export const stripmd = (s) => String(s).replace(/\[([^\]]+)\]\((?:\/[^)]*|https:
 
 const updatedHuman = () => SITE.updatedHuman || SITE.updated;
 
+// Per-page date formatting (drip articles carry their own publish/update date; evergreen
+// pages keep the site-wide stamp). UTC-pinned so 'YYYY-MM-DD' never renders off-by-one.
+export const humanDate = (iso) => new Date(`${iso}T00:00:00Z`)
+  .toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' });
+
 // ---------- schema.org builders ----------
 // PROFILES is the sameAs array: the off-site profiles that let an answer engine resolve
 // "AutoLander" to ONE real company instead of treating every mention as an unrelated string.
@@ -211,7 +216,7 @@ export const personLd = {
 };
 
 // Article node — makes a page read as dated, attributed research rather than marketing copy.
-export const articleLd = ({ title, canonical, description, datePublished, image }) => ({
+export const articleLd = ({ title, canonical, description, datePublished, dateModified, image }) => ({
   '@context': 'https://schema.org', '@type': 'Article',
   '@id': canonical + '#article',
   headline: title,
@@ -222,7 +227,10 @@ export const articleLd = ({ title, canonical, description, datePublished, image 
   creator: { '@id': PERSON_ID },
   publisher: { '@id': ORG_ID },
   datePublished: datePublished || SITE.updated,
-  dateModified: SITE.updated,
+  // Never let a page claim it was modified before it was published: an explicit
+  // dateModified wins; otherwise the site stamp, floored to datePublished.
+  dateModified: dateModified
+    || ((datePublished && SITE.updated < datePublished) ? datePublished : SITE.updated),
   image: image || SITE.origin + '/og-image.jpg',
   inLanguage: 'en-US',
   isAccessibleForFree: true,
@@ -306,7 +314,7 @@ export const itemListLd = (items) => ({
     '@type': 'ListItem', position: i + 1, name: t.name, url: t.url,
   })),
 });
-export const webPageLd = (title, canonical, desc, image) => ({
+export const webPageLd = (title, canonical, desc, image, updated) => ({
   '@context': 'https://schema.org', '@type': 'WebPage',
   name: title, url: canonical, description: desc,
   isPartOf: { '@type': 'WebSite', name: 'AutoLander', url: SITE.origin + '/' },
@@ -317,7 +325,7 @@ export const webPageLd = (title, canonical, desc, image) => ({
     width: 1200,
     height: 630,
   },
-  dateModified: SITE.updated,
+  dateModified: updated || SITE.updated,
 });
 
 // ---------- helpers ----------
@@ -563,7 +571,7 @@ export function renderPage(page) {
   const canonical = SITE.origin + path;
   const ogImage = ogImageFor(path);
   const jsonLdBlocks = [];
-  jsonLdBlocks.push(jsonld(webPageLd(page.title, canonical, page.description, ogImage)));
+  jsonLdBlocks.push(jsonld(webPageLd(page.title, canonical, page.description, ogImage, page.updated)));
   // Google requires a genuine aggregateRating or review for SoftwareApplication rich results.
   // AutoLander does not currently publish verified review data, so do not emit that type until it does.
   if (page.schema?.itemList) jsonLdBlocks.push(jsonld(itemListLd(page.schema.itemList)));
@@ -576,6 +584,7 @@ export function renderPage(page) {
       canonical,
       description: page.description,
       datePublished: page.article.datePublished,
+      dateModified: page.article.dateModified || page.updated,
       image: page.article.image || ogImage,
     })));
   }
@@ -625,7 +634,7 @@ export function renderPage(page) {
     <h1>${esc(page.h1)}</h1>
     ${page.bylineUpdated ? `<p class="byline">${page.author
       ? `By <a href="${AUTHOR.url}" rel="author">${esc(AUTHOR.name)}</a>, ${esc(AUTHOR.jobTitle)}, <a href="${SITE.origin}/">AutoLander</a>`
-      : `By the <a href="${SITE.origin}/">AutoLander</a> team`} &middot; Updated <time datetime="${SITE.updated}">${esc(updatedHuman())}</time></p>` : ''}
+      : `By the <a href="${SITE.origin}/">AutoLander</a> team`} &middot; Updated <time datetime="${page.updated || SITE.updated}">${esc(page.updated ? humanDate(page.updated) : updatedHuman())}</time></p>` : ''}
     ${page.tldr ? `<div class="tldr"><p class="tldr-label">Short answer</p><p>${fmt(page.tldr)}</p></div>` : ''}
 
 ${sectionsHtml}
@@ -662,7 +671,7 @@ export function renderMarkdown(page) {
   const by = page.author ? `${AUTHOR.name}, ${AUTHOR.jobTitle}, AutoLander` : 'The AutoLander team';
   out.push(`Source: ${canonical}  `);
   out.push(`Author: ${by}  `);
-  out.push(`Updated: ${updatedHuman()}`);
+  out.push(`Updated: ${page.updated ? humanDate(page.updated) : updatedHuman()}`);
   out.push('');
   if (page.tldr) {
     out.push('**Short answer:** ' + stripmd(page.tldr));

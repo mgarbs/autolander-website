@@ -144,6 +144,10 @@ export function buildArticlePage(content, articles, state, { previewDate } = {})
     tldr: content.tldr,
     bylineUpdated: true,
     author: true,
+    // Articles carry their OWN date everywhere a date is user- or crawler-visible:
+    // byline, WebPage/Article dateModified, and the .md twin. Site-wide SITE.updated
+    // stays for evergreen pages only.
+    updated: published || previewDate || SITE.updated,
     article: { datePublished: published || previewDate || SITE.updated },
     breadcrumbs: [
       { name: 'Home', url: SITE.origin + '/' },

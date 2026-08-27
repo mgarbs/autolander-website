@@ -3646,7 +3646,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/  
 Author: Michael Garber, Founder, AutoLander  
-Updated: August 20, 2026
+Updated: August 27, 2026
 
 **Short answer:** To post a car on Facebook Marketplace as a dealer, open Marketplace from an established personal profile, create a Vehicle for sale listing, and complete every field: vehicle type, photos, price, mileage, year, make, model, description, and location. A single unit takes roughly ten to fifteen minutes done well; a full lot is hours of daily work, which is why most dealerships end up automating the posting.
 
