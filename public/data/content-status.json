@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-27",
+  "generatedAt": "2026-08-28",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -38,8 +38,8 @@
       ],
       "description": "How to take pictures of a car to sell: prep, light, background, a dealer-grade shot list, and the phone settings that make any car look worth the asking price.",
       "suggestedOrder": 2,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-08-28"
     },
     {
       "slug": "free-places-to-advertise-used-cars",

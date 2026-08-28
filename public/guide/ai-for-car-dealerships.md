@@ -83,6 +83,7 @@ Standalone chatbots exist that attempt it — vet them hard on inventory truth a
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace automation](https://autolander.ai/facebook-marketplace-automation/)
+- [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
