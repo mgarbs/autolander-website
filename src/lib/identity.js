@@ -144,13 +144,13 @@ export function getFirstTouch() {
 export function getFbCookies() {
   if (!isBrowser) return { fbp: '', fbc: '' };
   const fbp = readCookie('_fbp');
+  const fbclid = readFbclidFromUrl();
   let fbc = readCookie('_fbc');
-  if (!fbc) {
-    const fbclid = readFbclidFromUrl();
-    if (fbclid) {
-      fbc = `fb.1.${Date.now()}.${fbclid}`;
-      writeCookie('_fbc', fbc, ATTR_TTL_SECONDS);
-    }
+  // A fresh Meta click must replace attribution from an older click. Keep the
+  // stored cookie on later pages where fbclid is no longer present.
+  if (fbclid && (!fbc || !fbc.endsWith(`.${fbclid}`))) {
+    fbc = `fb.1.${Date.now()}.${fbclid}`;
+    writeCookie('_fbc', fbc, ATTR_TTL_SECONDS);
   }
   return { fbp, fbc };
 }

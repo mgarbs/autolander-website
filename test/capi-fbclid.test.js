@@ -34,6 +34,51 @@ const BROWSER_HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126.0.0.0 Safari/537.36',
 };
 
+function installBrowserCookieHarness(t, href, initialCookies = {}) {
+  const jar = new Map(
+    Object.entries(initialCookies).map(([name, value]) => [name, encodeURIComponent(value)]),
+  );
+  const originalDescriptors = new Map(
+    ['window', 'document'].map((name) => [name, Object.getOwnPropertyDescriptor(globalThis, name)]),
+  );
+  const documentMock = { referrer: '', title: '', documentElement: {} };
+
+  Object.defineProperty(documentMock, 'cookie', {
+    configurable: true,
+    get() {
+      return [...jar.entries()].map(([name, value]) => `${name}=${value}`).join('; ');
+    },
+    set(serialized) {
+      const pair = String(serialized).split(';', 1)[0];
+      const separator = pair.indexOf('=');
+      if (separator > 0) jar.set(pair.slice(0, separator), pair.slice(separator + 1));
+    },
+  });
+
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: { location: new URL(href) },
+  });
+  Object.defineProperty(globalThis, 'document', {
+    configurable: true,
+    value: documentMock,
+  });
+
+  t.after(() => {
+    for (const [name, descriptor] of originalDescriptors) {
+      if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+      else delete globalThis[name];
+    }
+  });
+
+  return {
+    read(name) {
+      const value = jar.get(name);
+      return value ? decodeURIComponent(value) : '';
+    },
+  };
+}
+
 async function track(t, body) {
   const tracking = new MemoryKv();
   const metaRequests = [];
@@ -119,4 +164,64 @@ test('_fbc cookie input passes through untouched and over-1200-character fbc is 
   });
 
   assert.equal(metaBody.data[0].user_data.fbc, cookieFbc);
+});
+
+test('/capi/track omits fbc when neither a stored cookie nor fbclid is available', async (t) => {
+  const { metaBody } = await track(t, {
+    event: 'PageView',
+    eventId: 'evt_no_fbc_1',
+    fbc: '',
+    fbclid: '',
+    sourceUrl: 'https://autolander.ai/',
+    vid: 'v_cdefghijklmnopqrstuvwx',
+  });
+
+  assert.equal(Object.hasOwn(metaBody.data[0].user_data, 'fbc'), false);
+});
+
+test('a new URL fbclid replaces a stale _fbc cookie byte-exact', async (t) => {
+  const now = 1_800_000_002_345;
+  const fbclid = 'New_MiXeD-Click.ID';
+  const cookies = installBrowserCookieHarness(
+    t,
+    `https://autolander.ai/?fbclid=${encodeURIComponent(fbclid)}`,
+    {
+      _fbp: 'fb.1.1700000000000.123456789',
+      _fbc: 'fb.1.1700000000000.Old_Click-ID',
+    },
+  );
+  t.mock.method(Date, 'now', () => now);
+  const identity = await import(`../src/lib/identity.js?new-click=${Math.random()}`);
+
+  assert.deepEqual(identity.getFbCookies(), {
+    fbp: 'fb.1.1700000000000.123456789',
+    fbc: `fb.1.${now}.${fbclid}`,
+  });
+  assert.equal(cookies.read('_fbc'), `fb.1.${now}.${fbclid}`);
+});
+
+test('the same current fbclid keeps its original _fbc creation time', async (t) => {
+  const fbclid = 'Same_MiXeD-Click.ID';
+  const storedFbc = `fb.1.1700000000000.${fbclid}`;
+  const cookies = installBrowserCookieHarness(
+    t,
+    `https://autolander.ai/?fbclid=${encodeURIComponent(fbclid)}`,
+    { _fbc: storedFbc },
+  );
+  t.mock.method(Date, 'now', () => 1_800_000_002_345);
+  const identity = await import(`../src/lib/identity.js?same-click=${Math.random()}`);
+
+  assert.equal(identity.getFbCookies().fbc, storedFbc);
+  assert.equal(cookies.read('_fbc'), storedFbc);
+});
+
+test('a stored _fbc remains available after fbclid leaves the URL', async (t) => {
+  const storedFbc = 'fb.1.1700000000000.Stored_Click-ID';
+  const cookies = installBrowserCookieHarness(t, 'https://autolander.ai/features', {
+    _fbc: storedFbc,
+  });
+  const identity = await import(`../src/lib/identity.js?stored-click=${Math.random()}`);
+
+  assert.equal(identity.getFbCookies().fbc, storedFbc);
+  assert.equal(cookies.read('_fbc'), storedFbc);
 });
