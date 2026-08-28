@@ -118,9 +118,10 @@ export function sanitizeAdvancedMatching(raw) {
 
 export function cleanFbclid(value) {
   if (typeof value !== 'string') return '';
-  const trimmed = value.trim();
-  if (trimmed.length > 1000 || /\s/.test(trimmed)) return '';
-  return trimmed;
+  // fbclid is opaque. Never mutate it: reject malformed input rather than
+  // trimming, lowercasing, or truncating a value before it reaches Meta.
+  if (value.length > 1000 || /\s/.test(value)) return '';
+  return value;
 }
 
 export function buildFbc(fbclid, timestampSeconds) {

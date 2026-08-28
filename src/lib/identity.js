@@ -88,7 +88,12 @@ function readAttributionFromUrl() {
 
 function readFbclidFromUrl() {
   if (!isBrowser) return '';
-  return new URLSearchParams(window.location.search).get('fbclid') || '';
+  const value = new URLSearchParams(window.location.search).get('fbclid') || '';
+  // fbclid is an opaque Meta identifier: never normalize, trim, lowercase, or
+  // truncate it. Reject malformed input so we either forward the exact click ID
+  // or omit it entirely.
+  if (value.length > 1000 || /\s/.test(value)) return '';
+  return value;
 }
 
 function safeUrl(value) {
@@ -206,7 +211,7 @@ export function getAttributionPayload() {
     vid: getVisitorId(),
     sid: getSessionId(),
     fbp,
-    fbc,
+    ...(fbc ? { fbc } : {}),
     fbclid,
     utms,
     firstTouch,

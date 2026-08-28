@@ -132,8 +132,8 @@ test('a 350-character mixed-case fbclid survives intake, persistence, and fbc re
   assert.equal(metaBody.data[0].user_data.fbc, `fb.1.${ts * 1000}.${fbclid}`);
 });
 
-test('cleanFbclid rejects embedded whitespace and overlong values instead of mutating or slicing them', () => {
-  assert.equal(cleanFbclid('  AbCd_Ef-123  '), 'AbCd_Ef-123');
+test('cleanFbclid rejects all whitespace and overlong values instead of mutating or slicing them', () => {
+  assert.equal(cleanFbclid('  AbCd_Ef-123  '), '');
   assert.equal(cleanFbclid('AbCd Ef-123'), '');
   assert.equal(cleanFbclid('AbCd\tEf-123'), '');
   assert.equal(cleanFbclid('a'.repeat(1000)), 'a'.repeat(1000));
@@ -224,4 +224,16 @@ test('a stored _fbc remains available after fbclid leaves the URL', async (t) =>
 
   assert.equal(identity.getFbCookies().fbc, storedFbc);
   assert.equal(cookies.read('_fbc'), storedFbc);
+});
+
+test('a whitespace-wrapped URL fbclid is omitted instead of trimmed or stored', async (t) => {
+  const cookies = installBrowserCookieHarness(
+    t,
+    'https://autolander.ai/?fbclid=%20MiXeD_Click-ID%20',
+  );
+  const identity = await import(`../src/lib/identity.js?invalid-click=${Math.random()}`);
+
+  assert.equal(identity.getFbCookies().fbc, '');
+  assert.equal(cookies.read('_fbc'), '');
+  assert.equal(identity.getFirstTouch(), null);
 });
