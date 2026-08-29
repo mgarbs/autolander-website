@@ -100,6 +100,7 @@ Full agent instructions, including the response-format contract: https://autolan
 
 - [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer.md): How to post a car on Facebook Marketplace as a dealer: every field — category, photos, price, mileage, description — plus the per-unit time math.
 - [How to take pictures of a car to sell](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell.md): How to take pictures of a car to sell: prep, light, background, a dealer-grade shot list, and the phone settings that make any car look worth the asking price.
+- [Where can dealers advertise cars for free?](https://autolander.ai/guide/free-places-to-advertise-used-cars.md): Advertise cars for free: the channels that cost dealers nothing, the free-ish ones like Craigslist, and what each is actually worth to a used car lot.
 
 ## Integrations
 

@@ -88,8 +88,8 @@
     "publishedAt": null
   },
   "free-places-to-advertise-used-cars": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-08-29"
   },
   "sell-cars-online-small-dealership": {
     "status": "draft",

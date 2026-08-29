@@ -90,6 +90,7 @@ We keep a working list of 27 dealership marketing ideas ranked by cost and effor
 - [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
