@@ -139,12 +139,14 @@ test('handleContentPublish: no token -> 503, bad slug -> 400, dispatch 204 -> 20
 
 test('handleContentList: surfaces articles and flags canPublish by token presence', async () => {
   const statusPayload = { generatedAt: '2026-08-27', articles: [{ slug: 'a', status: 'draft' }] };
-  await withFetch(async (url) => {
-    if (String(url).includes('raw.githubusercontent.com')) {
+  const stub = async (url) => {
+    const u = String(url);
+    if (u.includes('raw.githubusercontent.com') || u.includes('/contents/')) {
       return new Response(JSON.stringify(statusPayload), { status: 200 });
     }
     return new Response(JSON.stringify({ workflow_runs: [{ id: 1, display_title: 'publish: a', status: 'in_progress', conclusion: null, created_at: 'x', html_url: 'y' }] }), { status: 200 });
-  }, async () => {
+  };
+  await withFetch(stub, async () => {
     const noToken = await handleContentList({});
     assert.equal(noToken.status, 200);
     assert.equal(noToken.body.canPublish, false);
@@ -153,6 +155,7 @@ test('handleContentList: surfaces articles and flags canPublish by token presenc
 
     const withToken = await handleContentList({ GITHUB_TOKEN: 't' });
     assert.equal(withToken.body.canPublish, true);
+    assert.equal(withToken.body.articles.length, 1);
     assert.equal(withToken.body.runs.length, 1);
     assert.equal(withToken.body.runs[0].status, 'in_progress');
   });
@@ -161,5 +164,42 @@ test('handleContentList: surfaces articles and flags canPublish by token presenc
     const fail = await handleContentList({});
     assert.equal(fail.status, 502);
     assert.equal(fail.body.reason, 'status_fetch_failed');
+  });
+});
+
+// The publish-then-stale-read bug: raw.githubusercontent.com serves max-age=300, so for
+// ~5 minutes after a publish commit it still reported the article as a draft and the panel
+// offered "Publish" again. With a token the read must go through the uncached contents API.
+test('handleContentList: with a token, status is read from the contents API, not cached raw', async () => {
+  const fresh = { articles: [{ slug: 'a', status: 'published', publishedAt: '2026-08-29' }] };
+  const staleRaw = { articles: [{ slug: 'a', status: 'draft', publishedAt: null }] };
+  const seen = [];
+
+  await withFetch(async (url, init) => {
+    const u = String(url);
+    seen.push(u);
+    if (u.startsWith('https://api.github.com/') && u.includes('/contents/public/data/content-status.json')) {
+      assert.ok(u.includes('?ref=main'), 'contents read must pin ref=main');
+      assert.equal(init.headers.Accept, 'application/vnd.github.raw');
+      return new Response(JSON.stringify(fresh), { status: 200 });
+    }
+    if (u.includes('raw.githubusercontent.com')) return new Response(JSON.stringify(staleRaw), { status: 200 });
+    return new Response(JSON.stringify({ workflow_runs: [] }), { status: 200 });
+  }, async () => {
+    const res = await handleContentList({ GITHUB_TOKEN: 't' });
+    assert.equal(res.body.articles[0].status, 'published');
+    assert.ok(!seen.some((u) => u.includes('raw.githubusercontent.com')), 'must not fall back to raw when the API answers');
+  });
+
+  // API failure still degrades to raw rather than blanking the panel.
+  await withFetch(async (url) => {
+    const u = String(url);
+    if (u.startsWith('https://api.github.com/') && u.includes('/contents/')) return new Response('rate limited', { status: 403 });
+    if (u.includes('raw.githubusercontent.com')) return new Response(JSON.stringify(staleRaw), { status: 200 });
+    return new Response(JSON.stringify({ workflow_runs: [] }), { status: 200 });
+  }, async () => {
+    const res = await handleContentList({ GITHUB_TOKEN: 't' });
+    assert.equal(res.status, 200);
+    assert.equal(res.body.articles[0].status, 'draft');
   });
 });

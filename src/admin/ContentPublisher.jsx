@@ -8,11 +8,15 @@ import { ApiError, apiGet, apiPost } from './lib/api.js';
 // While a run is in flight the row shows "publishing…" and the list polls until the
 // status JSON on main flips to published.
 
-const POLL_MS = 20_000;
+const POLL_MS = 15_000;
+// How long a finished run keeps a row in the "publishing" state while the status read
+// catches up. Bounded so a genuinely reverted article can't pin the panel polling forever.
+const SETTLE_WINDOW_MS = 15 * 60 * 1000;
 
 function chip(status) {
   if (status === 'published') return 'bg-emerald-500/15 text-emerald-300 border-emerald-400/30';
   if (status === 'publishing') return 'bg-amber-500/15 text-amber-300 border-amber-400/30 animate-pulse';
+  if (status === 'failed') return 'bg-red-500/15 text-red-300 border-red-400/30';
   return 'bg-white/[0.06] text-slate-400 border-white/10';
 }
 
@@ -26,6 +30,7 @@ export default function ContentPublisher({ onUnauthorized }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [loadedAt, setLoadedAt] = useState(0); // wall clock stamped when data arrives, not during render
   const [confirmSlug, setConfirmSlug] = useState('');
   const [dispatched, setDispatched] = useState({}); // slug -> true (optimistic until runs/status catch up)
   const [notice, setNotice] = useState('');
@@ -36,6 +41,7 @@ export default function ContentPublisher({ onUnauthorized }) {
     try {
       const resp = await apiGet('/admin/content');
       setData(resp);
+      setLoadedAt(Date.now());
       setError('');
       // Drop optimistic flags once the backend reflects them.
       setDispatched((cur) => {
@@ -63,12 +69,34 @@ export default function ContentPublisher({ onUnauthorized }) {
     return () => window.clearTimeout(timeoutId);
   }, [load]);
 
+  const articles = useMemo(() => data?.articles || [], [data]);
+
+  // One place decides what each row is doing. The case that matters: a run that COMPLETED
+  // SUCCESSFULLY while the status file still reads draft. The article IS live — only the
+  // status read is catching up. Offering "Publish" in that window made a successful publish
+  // look like it had failed and reset, so it stays "publishing" and keeps polling until the
+  // row flips to live on its own.
+  const effective = useMemo(() => {
+    const map = new Map();
+    for (const a of articles) {
+      const run = runFor(data?.runs, a.slug);
+      if (a.status === 'published') { map.set(a.slug, { state: 'published', run }); continue; }
+      const running = run?.status === 'queued' || run?.status === 'in_progress';
+      const recent = run?.createdAt && loadedAt
+        && (loadedAt - new Date(run.createdAt).getTime() < SETTLE_WINDOW_MS);
+      const settling = Boolean(recent && run.status === 'completed' && run.conclusion === 'success');
+      if (dispatched[a.slug] || running || settling) { map.set(a.slug, { state: 'publishing', run }); continue; }
+      if (run?.conclusion === 'failure') { map.set(a.slug, { state: 'failed', run }); continue; }
+      map.set(a.slug, { state: 'draft', run });
+    }
+    return map;
+  }, [articles, data, dispatched, loadedAt]);
+
   // Poll while anything is in flight so rows flip to Live on their own.
-  const anyInFlight = useMemo(() => {
-    if (!data) return false;
-    if (Object.keys(dispatched).length) return true;
-    return (data.runs || []).some((r) => r.status === 'queued' || r.status === 'in_progress');
-  }, [data, dispatched]);
+  const anyInFlight = useMemo(
+    () => [...effective.values()].some((v) => v.state === 'publishing'),
+    [effective],
+  );
 
   useEffect(() => {
     if (!anyInFlight) return undefined;
@@ -97,7 +125,6 @@ export default function ContentPublisher({ onUnauthorized }) {
     }
   }, [onUnauthorized]);
 
-  const articles = useMemo(() => data?.articles || [], [data]);
   const liveCount = articles.filter((a) => a.status === 'published').length;
   const silos = useMemo(() => {
     const bySilo = new Map();
@@ -148,16 +175,13 @@ export default function ContentPublisher({ onUnauthorized }) {
           </p>
           <ul className="divide-y divide-white/5">
             {list.map((a) => {
-              const run = runFor(data?.runs, a.slug);
-              const inFlight = a.status !== 'published'
-                && (dispatched[a.slug] || run?.status === 'queued' || run?.status === 'in_progress');
-              const failed = a.status !== 'published' && !inFlight && run?.conclusion === 'failure';
-              const status = a.status === 'published' ? 'published' : inFlight ? 'publishing' : 'draft';
+              const { state: status, run } = effective.get(a.slug) || { state: 'draft' };
+              const failed = status === 'failed';
               return (
                 <li key={a.slug} className="flex flex-wrap items-center gap-3 px-4 py-3">
                   <span className="w-6 shrink-0 text-right text-[10px] font-black text-slate-600">{a.suggestedOrder}</span>
                   <span className={`shrink-0 rounded-full border px-2 py-0.5 text-[9px] font-black uppercase tracking-widest ${chip(status)}`}>
-                    {status === 'published' ? `live ${a.publishedAt || ''}` : status}
+                    {status === 'published' ? `live ${a.publishedAt || ''}` : status === 'publishing' ? 'publishing…' : status}
                   </span>
                   <span className="min-w-0 flex-1">
                     {a.status === 'published' ? (
@@ -176,7 +200,7 @@ export default function ContentPublisher({ onUnauthorized }) {
                       last run failed ↗
                     </a>
                   )}
-                  {a.status !== 'published' && !inFlight && data?.canPublish && (
+                  {(status === 'draft' || status === 'failed') && data?.canPublish && (
                     confirmSlug === a.slug ? (
                       <span className="flex shrink-0 items-center gap-2">
                         <button
