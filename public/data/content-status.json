@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-29",
+  "generatedAt": "2026-08-30",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -133,8 +133,8 @@
       ],
       "description": "Facebook Marketplace car listing limits explained honestly: what Meta publishes (nothing), what dealers actually observe, and a pacing playbook that scales.",
       "suggestedOrder": 7,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-08-30"
     },
     {
       "slug": "car-photography-tips-for-dealerships",

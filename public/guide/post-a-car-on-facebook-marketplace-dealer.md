@@ -83,6 +83,7 @@ One accountable person — typically the internet manager — posting from an es
 - [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
+- [Facebook Marketplace car listing limits for dealers](https://autolander.ai/guide/facebook-marketplace-car-listing-limits/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
