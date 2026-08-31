@@ -84,6 +84,7 @@ Standalone chatbots exist that attempt it — vet them hard on inventory truth a
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace automation](https://autolander.ai/facebook-marketplace-automation/)
 - [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
+- [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

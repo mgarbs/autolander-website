@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-30",
+  "generatedAt": "2026-08-31",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -95,8 +95,8 @@
       ],
       "description": "How to remove the background from a car photo — why generic removers fail on wheels, glass, and shadows, when a free tool is fine, and what dealers use instead.",
       "suggestedOrder": 5,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-08-31"
     },
     {
       "slug": "used-car-dealer-advertising-on-a-budget",

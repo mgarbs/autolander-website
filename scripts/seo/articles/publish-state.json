@@ -76,8 +76,8 @@
     "publishedAt": null
   },
   "remove-background-from-car-photo": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-08-31"
   },
   "used-car-merchandising-checklist": {
     "status": "draft",
