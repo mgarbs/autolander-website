@@ -83,6 +83,7 @@ Staleness. Prices that no longer match the website, listings that expired unnoti
 - [Car dealership marketing ideas that sell cars](https://autolander.ai/guide/car-dealership-marketing-ideas/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

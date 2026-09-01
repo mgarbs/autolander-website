@@ -103,6 +103,7 @@ Full agent instructions, including the response-format contract: https://autolan
 - [The best time to post cars on Facebook Marketplace, by the data](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace.md): The best time to post on Facebook Marketplace, from 17,778 real dealer posts: Thursday is the crowded day, Sunday the open lane — and what matters more.
 - [How to take pictures of a car to sell](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell.md): How to take pictures of a car to sell: prep, light, background, a dealer-grade shot list, and the phone settings that make any car look worth the asking price.
 - [How to remove the background from a car photo (without it looking fake)](https://autolander.ai/guide/remove-background-from-car-photo.md): How to remove the background from a car photo — why generic removers fail on wheels, glass, and shadows, when a free tool is fine, and what dealers use instead.
+- [Used car dealership advertising on a budget](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget.md): Used car dealership advertising on a budget: what to run at $0, where the first paid dollars go, and why free coverage beats ad spend for small stores.
 - [Where can dealers advertise cars for free?](https://autolander.ai/guide/free-places-to-advertise-used-cars.md): Advertise cars for free: the channels that cost dealers nothing, the free-ish ones like Craigslist, and what each is actually worth to a used car lot.
 
 ## Integrations

@@ -84,8 +84,8 @@
     "publishedAt": null
   },
   "used-car-dealer-advertising-on-a-budget": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-09-01"
   },
   "free-places-to-advertise-used-cars": {
     "status": "published",
