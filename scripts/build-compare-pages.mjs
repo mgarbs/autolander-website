@@ -163,14 +163,20 @@ function head({ title, description, canonical, jsonLdBlocks, ogTitle, ogDescript
   return `<!doctype html>
 <html lang="en">
 <head>
+  <script defer src="/al-attribution-v1.js"></script>
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-30H80LZMCH"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    if (location.hostname === 'autolander.ai' || location.hostname === 'www.autolander.ai') {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){window.dataLayer.push(arguments);};
+      window.gtag('js', new Date());
 
-    gtag('config', 'G-30H80LZMCH');
+      window.gtag('config', 'G-30H80LZMCH');
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-30H80LZMCH';
+      document.head.appendChild(script);
+    }
   </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />

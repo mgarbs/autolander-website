@@ -1,4 +1,9 @@
 import { getAttributionPayload } from './identity.js';
+import {
+  mergeOrganicAttribution,
+  readOrganicAttribution,
+  trackGoogleLead,
+} from './organic-attribution.js';
 
 const RUNTIME_ENV = import.meta.env || {};
 const CAPI_URL = (RUNTIME_ENV.VITE_CAPI_URL || RUNTIME_ENV.VITE_CHAT_API_URL || '').replace(/\/+$/, '');
@@ -36,7 +41,9 @@ export async function submitApplication({
   submissionId,
   company,
 }) {
+  const organicAttribution = readOrganicAttribution();
   const attribution = getAttributionPayload();
+  const analyticsAttribution = mergeOrganicAttribution(attribution, organicAttribution);
   const res = await fetch(`${CAPI_URL}/api/apply`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -55,8 +62,12 @@ export async function submitApplication({
       company,
       userAgent: navigator.userAgent || '',
       attribution,
+      organic_attribution: organicAttribution || {},
+      landing_page: organicAttribution?.landing_page || '',
+      referrer_url: organicAttribution?.referrer_url || '',
     }),
   });
   const data = await res.json().catch(() => ({ ok: false, reason: 'bad_response' }));
+  if (res.ok && data.ok && !data.duplicate) trackGoogleLead(analyticsAttribution, organicAttribution);
   return { httpOk: res.ok, ...data };
 }

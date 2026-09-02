@@ -164,12 +164,17 @@ export function candidateContacts(candidate) {
     displayName: text(candidate?.contactName),
     email: text(candidate?.email),
     phone: text(candidate?.phone),
+    referralCode: '',
     username: '',
     firstName: '',
     lastName: '',
     id: '',
     role: '',
   }];
+}
+
+export function displayReferralCode(person) {
+  return text(person?.referralCode) || 'Not assigned';
 }
 
 export function dialablePhone(value) {
@@ -315,6 +320,7 @@ export function normalizePeople(value) {
           displayName: '',
           email: text(person),
           phone: '',
+          referralCode: '',
           role: '',
         };
       }
@@ -339,6 +345,14 @@ export function normalizePeople(value) {
           profile?.phone,
           profile?.phoneNumber,
           profile?.mobile,
+        ),
+        referralCode: text(
+          person.referralCode
+          ?? person.referral_code
+          ?? person.inviteCode
+          ?? person.invite_code
+          ?? profile?.referralCode
+          ?? profile?.referral_code,
         ),
         role: text(person.role),
       };

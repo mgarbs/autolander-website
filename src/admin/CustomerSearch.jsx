@@ -4,6 +4,7 @@ import {
   candidateContacts,
   candidateLabel,
   dialablePhone,
+  displayReferralCode,
   searchSupportCandidates,
 } from './lib/support-adjustments.js';
 
@@ -210,10 +211,21 @@ export default function CustomerSearch({
                       {contacts.map((contact, contactIndex) => (
                         <span
                           key={contact.id || contact.email || contact.username || contact.phone || contactIndex}
-                          className="block min-w-0 truncate text-[10px] text-slate-400"
+                          className="block min-w-0 text-[10px] text-slate-400"
                         >
-                          <span className="font-bold text-slate-200">{contactName(contact)}</span>
-                          {contactDetails(contact) && <span> · {contactDetails(contact)}</span>}
+                          <span className="block min-w-0 truncate">
+                            <span className="font-bold text-slate-200">{contactName(contact)}</span>
+                            {contactDetails(contact) && <span> · {contactDetails(contact)}</span>}
+                          </span>
+                          <span className="mt-0.5 block min-w-0 truncate text-[9px] font-bold uppercase tracking-wider text-slate-500">
+                            Referral code:{' '}
+                            <span
+                              className={contact.referralCode ? 'font-mono text-blue-200' : 'text-slate-600'}
+                              title={contact.referralCode || 'No referral code'}
+                            >
+                              {displayReferralCode(contact)}
+                            </span>
+                          </span>
                         </span>
                       ))}
                     </span>

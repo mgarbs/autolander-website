@@ -4,6 +4,7 @@ import {
   candidateContacts,
   candidatePeople,
   dialablePhone,
+  displayReferralCode,
   friendlyAdjustmentError,
   normalizeCandidate,
   searchSupportCandidates,
@@ -21,6 +22,7 @@ test('candidate normalization preserves searchable identity and phone aliases', 
       username: 'averys',
       email: 'avery@example.com',
       mobile_phone: '(212) 555-0123',
+      referral_code: 'a1b2c3d4',
     }],
   });
 
@@ -34,6 +36,7 @@ test('candidate normalization preserves searchable identity and phone aliases', 
     displayName: 'Avery Stone',
     email: 'avery@example.com',
     phone: '(212) 555-0123',
+    referralCode: 'a1b2c3d4',
     role: '',
   });
   assert.match(candidatePeople(candidate), /Avery Stone/);
@@ -59,12 +62,35 @@ test('candidate contact falls back to account-level customer fields', () => {
     displayName: 'Jordan Dealer',
     email: 'jordan@example.com',
     phone: '+1 646 555 0100',
+    referralCode: '',
     username: '',
     firstName: '',
     lastName: '',
     id: '',
     role: '',
   }]);
+});
+
+test('candidate normalization preserves referral-code aliases for every user', () => {
+  const candidate = normalizeCandidate({
+    id: 'org-referrals',
+    users: [
+      { id: 'admin-1', email: 'one@example.com', referralCode: 'deadbeef' },
+      { id: 'admin-2', email: 'two@example.com', invite_code: 'facefeed' },
+      { id: 'admin-3', email: 'three@example.com' },
+    ],
+  });
+
+  assert.deepEqual(
+    candidate.admins.map(({ email, referralCode }) => ({ email, referralCode })),
+    [
+      { email: 'one@example.com', referralCode: 'deadbeef' },
+      { email: 'two@example.com', referralCode: 'facefeed' },
+      { email: 'three@example.com', referralCode: '' },
+    ],
+  );
+  assert.equal(displayReferralCode(candidate.admins[0]), 'deadbeef');
+  assert.equal(displayReferralCode(candidate.admins[2]), 'Not assigned');
 });
 
 test('phone links retain a leading plus and strip display punctuation', () => {

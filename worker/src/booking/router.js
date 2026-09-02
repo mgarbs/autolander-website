@@ -77,8 +77,10 @@ const CUSTOM_FIELD_KEYS = [
   'fbc',
   'fbp',
   'landingPageUrl',
+  'landing_page',
   'consentSourceUrl',
   'referrer',
+  'referrer_url',
   'clientIpAddress',
   'userAgent',
   'consentTimestamp',
@@ -212,6 +214,8 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const consentTimestamp = normalizeIso(body.consentTimestamp);
   const submissionTimestamp = new Date().toISOString();
   const userAgent = clean(body.userAgent, 500) || clean(request.headers.get('User-Agent'), 500);
+  const organicLandingPage = clean(body.landing_page, 500);
+  const organicReferrerUrl = clean(body.referrer_url, 1200);
   const metaTestEventCode = qaTestEventCode(new URL(request.url), body, env);
 
   if (!fullName) return json({ ok: false, reason: 'missing_full_name' }, 400, corsHeaders);
@@ -230,6 +234,7 @@ async function handleApply(request, env, corsHeaders, ctx) {
   }
 
   const attribution = sanitizeAttribution(body.attribution);
+  const organicUtms = cleanUtms(body.organic_attribution);
   const visitor = attribution.vid ? await lookupVisitor(env, attribution.vid).catch(() => null) : null;
   const country = clean(request.cf?.country, 4).toLowerCase();
   const region = clean(request.cf?.region, 48).toLowerCase();
@@ -238,6 +243,9 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const postalCode = normalizePostalCode(request.cf?.postalCode, country)
     || normalizePostalCode(visitor?.postalCode, visitor?.country);
   const mergedUtms = mergeUtms(visitor?.utms, attribution.utms);
+  // Keep the established attribution/CAPI payload untouched. Organic inference is
+  // a GHL-only fallback, and the existing URL/cookie values always win per field.
+  const ghlUtms = mergeUtms(organicUtms, mergedUtms);
   const page = { ...(visitor?.page || {}), ...(attribution.page || {}) };
   const fbp = attribution.fbp || visitor?.fbp || '';
   const fbclid = cleanFbclid(attribution.fbclid || visitor?.fbclid);
@@ -274,10 +282,13 @@ async function handleApply(request, env, corsHeaders, ctx) {
     fbc,
     fbclid,
     landingPageUrl,
+    landing_page: organicLandingPage,
     referrer,
+    referrer_url: organicReferrerUrl,
     clientIpAddress,
     eventId,
     utms: mergedUtms,
+    ghlUtms,
   };
 
   let contactId = clean(applyState?.contactId, 120);
@@ -628,13 +639,15 @@ function buildCustomFields(env, lead) {
     inventoryUrl: lead.inventoryUrl,
     vehicleCount: lead.vehicleCount,
     smsConsent: lead.smsConsent ? 'true' : 'false',
-    ...lead.utms,
+    ...lead.ghlUtms,
     fbclid: lead.fbclid,
     fbc: lead.fbc,
     fbp: lead.fbp,
     landingPageUrl: lead.landingPageUrl,
+    landing_page: lead.landing_page,
     consentSourceUrl: lead.landingPageUrl,
     referrer: lead.referrer,
+    referrer_url: lead.referrer_url,
     clientIpAddress: lead.clientIpAddress,
     userAgent: lead.userAgent,
     consentTimestamp: lead.consentTimestamp,
@@ -698,7 +711,7 @@ async function rememberApplySubmissionProgress(env, submissionId, patch, current
 }
 
 function buildApplicationNoteBody(lead) {
-  const utms = lead.utms || {};
+  const utms = lead.ghlUtms || lead.utms || {};
   const lines = [
     'AutoLander demo application received',
     '',
@@ -725,6 +738,8 @@ function buildApplicationNoteBody(lead) {
     noteLine('Visitor ID', lead.vid),
     noteLine('Landing page', lead.landingPageUrl),
     noteLine('Referrer', lead.referrer),
+    noteLine('First-touch landing page', lead.landing_page),
+    noteLine('First-touch referrer URL', lead.referrer_url),
     noteLine('Submission timestamp', lead.submissionTimestamp),
     '',
     'Attribution',
