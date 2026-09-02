@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01",
+  "generatedAt": "2026-09-02",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -152,8 +152,8 @@
       ],
       "description": "Car dealership photography tips that scale: the per-unit process any porter can run — time of day, lot spot, shot list, phone settings — and where AI fits.",
       "suggestedOrder": 8,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-02"
     },
     {
       "slug": "how-to-price-used-cars-competitively",

@@ -81,6 +81,7 @@ Volume stores run a fixed routine — one photo spot, one shot list, one porter 
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
+- [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
