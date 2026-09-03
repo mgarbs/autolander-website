@@ -106,6 +106,7 @@ Full agent instructions, including the response-format contract: https://autolan
 - [How to remove the background from a car photo (without it looking fake)](https://autolander.ai/guide/remove-background-from-car-photo.md): How to remove the background from a car photo — why generic removers fail on wheels, glass, and shadows, when a free tool is fine, and what dealers use instead.
 - [Used car dealership advertising on a budget](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget.md): Used car dealership advertising on a budget: what to run at $0, where the first paid dollars go, and why free coverage beats ad spend for small stores.
 - [Where can dealers advertise cars for free?](https://autolander.ai/guide/free-places-to-advertise-used-cars.md): Advertise cars for free: the channels that cost dealers nothing, the free-ish ones like Craigslist, and what each is actually worth to a used car lot.
+- [How to price used cars competitively](https://autolander.ai/guide/how-to-price-used-cars-competitively.md): How to price used cars with price-to-market discipline: live comps, the four Marketplace price bands from 10,823 dealer listings, and when to drop the price.
 
 ## Integrations
 

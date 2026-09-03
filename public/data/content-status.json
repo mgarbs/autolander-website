@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02",
+  "generatedAt": "2026-09-03",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -171,8 +171,8 @@
       ],
       "description": "How to price used cars with price-to-market discipline: live comps, the four Marketplace price bands from 10,823 dealer listings, and when to drop the price.",
       "suggestedOrder": 9,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-03"
     },
     {
       "slug": "facebook-marketplace-car-listing-removed",
