@@ -1,51 +1,60 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script defer src="/al-attribution-v1.js"></script>
     <!-- Google tag (gtag.js): queue immediately, load the remote script after the first screen settles. -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      if (location.hostname === 'autolander.ai' || location.hostname === 'www.autolander.ai') {
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function(){window.dataLayer.push(arguments);};
+        window.gtag('js', new Date());
 
-      gtag('config', 'G-30H80LZMCH');
-      (() => {
-        let loaded = false;
-        let timer = 0;
-        const src = 'https://www.googletagmanager.com/gtag/js?id=G-30H80LZMCH';
-        const cleanup = () => {
-          window.removeEventListener('pointerdown', load);
-          window.removeEventListener('keydown', load);
-          window.removeEventListener('scroll', load);
-          window.removeEventListener('load', scheduleAfterLoad);
-          document.removeEventListener('visibilitychange', onVisibilityChange);
-          if (timer) window.clearTimeout(timer);
-        };
-        const scheduleAfterLoad = () => {
-          if (loaded) return;
-          timer = window.setTimeout(load, 14000);
-        };
-        const onVisibilityChange = () => {
-          if (document.visibilityState === 'hidden') load();
-        };
-        function load() {
-          if (loaded) return;
-          loaded = true;
-          cleanup();
-          const script = document.createElement('script');
-          script.async = true;
-          script.src = src;
-          document.head.appendChild(script);
-        }
-        window.addEventListener('pointerdown', load, { once: true, passive: true });
-        window.addEventListener('keydown', load, { once: true });
-        window.addEventListener('scroll', load, { once: true, passive: true });
-        document.addEventListener('visibilitychange', onVisibilityChange);
-        if (document.readyState === 'complete') {
-          scheduleAfterLoad();
-        } else {
-          window.addEventListener('load', scheduleAfterLoad, { once: true });
-        }
-      })();
+        window.gtag('config', 'G-30H80LZMCH');
+        (() => {
+          let loaded = false;
+          let timer = 0;
+          let idle = 0;
+          const src = 'https://www.googletagmanager.com/gtag/js?id=G-30H80LZMCH';
+          const cleanup = () => {
+            window.removeEventListener('pointerdown', load);
+            window.removeEventListener('keydown', load);
+            window.removeEventListener('scroll', load);
+            window.removeEventListener('load', scheduleAfterLoad);
+            document.removeEventListener('visibilitychange', onVisibilityChange);
+            if (timer) window.clearTimeout(timer);
+            if (idle && 'cancelIdleCallback' in window) window.cancelIdleCallback(idle);
+          };
+          const scheduleAfterLoad = () => {
+            if (loaded) return;
+            if ('requestIdleCallback' in window) {
+              idle = window.requestIdleCallback(load, { timeout: 4000 });
+            } else {
+              timer = window.setTimeout(load, 2000);
+            }
+          };
+          const onVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') load();
+          };
+          function load() {
+            if (loaded) return;
+            loaded = true;
+            cleanup();
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = src;
+            document.head.appendChild(script);
+          }
+          window.addEventListener('pointerdown', load, { once: true, passive: true });
+          window.addEventListener('keydown', load, { once: true });
+          window.addEventListener('scroll', load, { once: true, passive: true });
+          document.addEventListener('visibilitychange', onVisibilityChange);
+          if (document.readyState === 'complete') {
+            scheduleAfterLoad();
+          } else {
+            window.addEventListener('load', scheduleAfterLoad, { once: true });
+          }
+        })();
+      }
     </script>
     <meta charset="UTF-8" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
