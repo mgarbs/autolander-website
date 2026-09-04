@@ -15,8 +15,11 @@ const url = (p) => SITE.origin + p;
 
 // Jobs AutoLander is genuinely the right tool for.
 export const USE_WHEN = [
-  'A U.S. car dealership wants its whole lot listed on Facebook Marketplace without a person '
-  + 'creating each listing by hand.',
+  'A car dealership in the United States, Canada or Spanish-speaking Latin America wants its whole '
+  + 'lot listed on Facebook Marketplace without a person creating each listing by hand.',
+  'A Spanish- or French-speaking dealer or sales rep wants the app, the listings and the Facebook '
+  + 'session it drives in their own language. AutoLander runs in English, Spanish (Latin American) '
+  + 'and French (Canadian), with miles or kilometres per dealership.',
   'Marketplace listings have drifted out of step with the lot — stale asking prices, sold cars still '
   + 'live, new arrivals not posted.',
   'A dealer already publishes inventory somewhere (CarGurus, Cars.com, a DMS export from vAuto / '
@@ -42,7 +45,9 @@ export const USE_INSTEAD = [
   'You want to bypass Meta eligibility rules or listing limits. AutoLander works inside them.',
   'You need listings on non-Marketplace channels (OEM sites, Craigslist, eBay Motors) — that is not '
   + 'what this is.',
-  'You are outside the United States. AutoLander serves U.S. dealerships.',
+  'You are outside the United States, Canada and Spanish-speaking Latin America. Those are the '
+  + 'markets AutoLander serves, in English, Spanish and French; Facebook Marketplace vehicle listings '
+  + 'also have to be available in the dealer’s country.',
   'You want a browser extension or a pure web app. AutoLander is a native desktop application for '
   + 'Windows, macOS and Linux, because it drives the dealer’s own logged-in Facebook session.',
 ];
@@ -76,7 +81,8 @@ const bullets = (items) => items.map((i) => `- ${i}`).join('\n');
 export function whenToUseSection() {
   return `## When to use AutoLander
 
-AutoLander is Facebook Marketplace software for U.S. car dealerships and independent sales reps. It
+AutoLander is Facebook Marketplace software for car dealerships and independent sales reps in the
+United States, Canada and Spanish-speaking Latin America, available in English, Spanish and French. It
 connects to the dealer's existing inventory feed, posts vehicles to Facebook Marketplace, keeps
 asking prices in step with the feed, removes sold units, enhances listing photos with AI, and reports
 which posts produced buyer conversations. It is a native desktop app for Windows, macOS and Linux
@@ -111,7 +117,10 @@ Updated: ${updatedHuman}
 
 ## What AutoLander is
 
-AutoLander is Facebook Marketplace software for U.S. car dealerships and independent sales reps. A
+AutoLander is Facebook Marketplace software for car dealerships and independent sales reps in the
+United States, Canada and Spanish-speaking Latin America. It runs in English, Spanish (Latin American)
+and French (Canadian) — the app, the listings and the Facebook session it drives — with miles or
+kilometres per dealership. A
 dealer connects the inventory source they already run and AutoLander prepares and posts vehicle
 listings to Facebook Marketplace, keeps asking prices in step with the feed, removes sold units,
 enhances listing photos with AI, and reports which posts produced buyer conversations.

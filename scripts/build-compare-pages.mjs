@@ -72,7 +72,7 @@ const osForMethod = (methodText = '') => {
   return null;
 };
 
-const softwareAppLd = ({ name, url, description, operatingSystem, price }) => ({
+const softwareAppLd = ({ name, url, description, operatingSystem, price, inLanguage }) => ({
   '@context': 'https://schema.org', '@type': 'SoftwareApplication',
   '@id': url + '#software',
   name,
@@ -80,6 +80,7 @@ const softwareAppLd = ({ name, url, description, operatingSystem, price }) => ({
   applicationCategory: 'BusinessApplication',
   applicationSubCategory: 'Facebook Marketplace listing software for car dealers',
   ...(operatingSystem ? { operatingSystem } : {}),
+  ...(inLanguage ? { inLanguage } : {}),
   ...(description ? { description } : {}),
   ...(price ? {
     offers: {
@@ -95,6 +96,7 @@ const autolanderAppLd = () => softwareAppLd({
   description: 'Native desktop app that posts dealer vehicle inventory to Facebook Marketplace, '
     + 'syncs prices from the inventory feed, removes sold units and runs AI photo editing.',
   operatingSystem: 'Windows, macOS, Linux',
+  inLanguage: ['en', 'es', 'fr'],
   price: SITE.lowPrice,
 });
 

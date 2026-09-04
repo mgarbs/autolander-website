@@ -157,7 +157,14 @@ export const orgLd = {
     postalCode: '33615',
     addressCountry: 'US',
   },
-  areaServed: { '@type': 'Country', name: 'United States' },
+  // Markets served (Michael, 2026-09-04): the U.S., Canada, and Spanish-speaking Latin America. The
+  // product runs in en / es (es_LA) / fr (fr_CA) with miles or kilometres per dealership (v3.79.0).
+  areaServed: [
+    { '@type': 'Country', name: 'United States' },
+    { '@type': 'Country', name: 'Canada' },
+    { '@type': 'Place', name: 'Latin America (Spanish-speaking)' },
+  ],
+  knowsLanguage: ['en', 'es', 'fr'],
   knowsAbout: [
     'Facebook Marketplace',
     'Automotive retail',
@@ -172,7 +179,7 @@ export const orgLd = {
       contactType: 'sales',
       email: 'sales@autolander.ai',
       telephone: '+1-919-280-0967',
-      areaServed: 'US',
+      areaServed: ['US', 'CA', 'Latin America'],
       availableLanguage: 'English',
       url: SITE.origin + '/contact/',
     },
@@ -181,7 +188,7 @@ export const orgLd = {
       contactType: 'customer support',
       email: 'support@autolander.ai',
       telephone: '+1-919-280-0967',
-      areaServed: 'US',
+      areaServed: ['US', 'CA', 'Latin America'],
       availableLanguage: 'English',
       url: SITE.origin + '/contact/',
     },
@@ -189,7 +196,7 @@ export const orgLd = {
       '@type': 'ContactPoint',
       contactType: 'media',
       email: 'sales@autolander.ai',
-      areaServed: 'US',
+      areaServed: ['US', 'CA', 'Latin America'],
       availableLanguage: 'English',
       url: SITE.origin + '/contact/',
     },

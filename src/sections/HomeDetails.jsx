@@ -17,7 +17,7 @@ import { Eyebrow } from './StaticUi.jsx';
 
 const HOME_DETAIL_FAQ = [
   ['What is AutoLander?',
-    'AutoLander is Facebook Marketplace software for U.S. car dealerships and sales reps. It connects to a dealer inventory feed, posts vehicles to Facebook Marketplace, keeps prices current, removes sold units, enhances listing photos with AI and tracks which posts led to buyer conversations. It is built and operated by AutoLander LLC in Tampa, Florida.'],
+    'AutoLander is Facebook Marketplace software for car dealerships and sales reps in the United States, Canada and Spanish-speaking Latin America, available in English, Spanish and French. It connects to a dealer inventory feed, posts vehicles to Facebook Marketplace, keeps prices current, removes sold units, enhances listing photos with AI and tracks which posts led to buyer conversations. It is built and operated by AutoLander LLC in Tampa, Florida.'],
   ['How much does AutoLander cost?',
     'Plans start at $39/month (Starter, 5 posts a day), $59/month (Growth, 10 a day) and $79/month (Pro, 15 a day), with Dealer and multi-rooftop plans from $117/month. Every demo includes 5 free posts and does not require a credit card. Pricing is published — no quote needed.'],
   ['What inventory feeds does AutoLander support?',
@@ -143,12 +143,13 @@ export default function HomeDetails({ openDemoBooking, onWarmDemo }) {
             <summary className={SUMMARY}>Who it is for <Chev /></summary>
             <div className={BODY}>
               <ul className="space-y-2 list-disc pl-5">
-                <li>Franchise and independent used-car dealerships in the United States that want whole-lot Marketplace coverage without a dedicated poster.</li>
+                <li>Franchise and independent used-car dealerships in the United States, Canada and Spanish-speaking Latin America that want whole-lot Marketplace coverage without a dedicated poster.</li>
+                <li>Spanish- and French-speaking dealers and reps: the app, the listings and the Facebook session it drives run in English, Spanish or French, with miles or kilometres per dealership.</li>
                 <li>Dealer groups running several rooftops that need per-store inventory kept separate.</li>
                 <li>Individual sales reps posting their own units who want the same automation at a single-seat price.</li>
                 <li>RV and camper dealers, who need inventory posted into the RV/Camper category rather than as cars.</li>
               </ul>
-              <p className="mt-4">Not a fit if you need multi-platform syndication, an inbox auto-reply, or service outside the U.S.</p>
+              <p className="mt-4">Not a fit if you need multi-platform syndication, an inbox auto-reply, or a market outside the United States, Canada and Spanish-speaking Latin America.</p>
             </div>
           </details>
 

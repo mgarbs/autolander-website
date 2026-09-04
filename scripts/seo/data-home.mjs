@@ -99,7 +99,8 @@ export const HOME = {
       type: 'bullets',
       h2: 'Who it is for',
       items: [
-        'Franchise and independent used-car dealerships in the United States that want whole-lot Marketplace coverage without a dedicated poster.',
+        'Franchise and independent used-car dealerships in the United States, Canada and Spanish-speaking Latin America that want whole-lot Marketplace coverage without a dedicated poster.',
+        'Spanish- and French-speaking dealers and reps: the app, the listings and the Facebook session it drives run in English, Spanish (Latin American) or French (Canadian), with miles or kilometres per dealership.',
         'Dealer groups running several rooftops that need per-store inventory kept separate.',
         'Individual sales reps posting their own units who want the same automation at a single-seat price.',
         'RV and camper dealers, who need inventory posted into the RV/Camper category rather than as cars.',
@@ -133,7 +134,8 @@ export const HOME = {
   faq: [
     [
       'What is AutoLander?',
-      'AutoLander is Facebook Marketplace software for U.S. car dealerships and sales reps. It '
+      'AutoLander is Facebook Marketplace software for car dealerships and sales reps in the United '
+      + 'States, Canada and Spanish-speaking Latin America, available in English, Spanish and French. It '
       + 'connects to a dealer inventory feed, posts vehicles to Facebook Marketplace, keeps prices '
       + 'current, removes sold units, enhances listing photos with AI and tracks which posts led to '
       + 'buyer conversations. It is built and operated by AutoLander LLC.',

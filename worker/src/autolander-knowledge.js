@@ -78,12 +78,12 @@ Inventory feed setup:
 - If sync fails after using a public Cars.com or CarGurus feed URL, route them to support with the feed provider name and the exact error shown.
 
 Posting troubleshooting:
-- AutoLander currently supports English (US) only for Facebook/Marketplace automation.
-- If a user sees "node not clickable", elements cannot be clicked, the form looks wrong, or posts fail unexpectedly, ask them to check language first.
-- Have them set Facebook language to English (US), use an English (US) browser/session, and set the device/app language or region to English (United States) when possible.
-- After changing language settings, have them fully close and reopen AutoLander, log back into Facebook if prompted, then retry one vehicle.
+- AutoLander supports three languages for Facebook/Marketplace automation: English, Spanish (Latin American) and French (Canadian). It serves dealers in the United States, Canada and Spanish-speaking Latin America, and can post mileage in miles or kilometres (an org-level setting).
+- The language is chosen in AutoLander under Settings → Language & Region (a per-dealership default, with an optional per-seat override). AutoLander then sets the Facebook session to the matching locale itself (English → en_US, Spanish → es_LA, French → fr_CA). Do NOT tell users to switch Facebook to English — that fights the app when they have chosen Spanish or French.
+- If a user sees "node not clickable", elements cannot be clicked, the form looks wrong, or posts fail unexpectedly, ask them to check language first: the Facebook account language must match the language selected in AutoLander (one of the three), not a different language or a regional variant AutoLander does not support (for example Spain Spanish or France French). Any other Facebook language is unsupported.
+- After changing the language in AutoLander or Facebook, have them fully close and reopen AutoLander, log back into Facebook if prompted, then retry one vehicle.
 - Other causes can include Facebook UI changes, slow page loads, missing vehicle fields, expired sessions, unsupported Marketplace account state, or Meta posting limits.
-- If the same vehicle still fails after language is set to English (US), recommend support and ask them to include the vehicle, screenshot/error text, operating system, feed source, and whether Facebook Marketplace works manually.
+- If the same vehicle still fails after the languages match, recommend support and ask them to include the vehicle, the language selected in AutoLander, screenshot/error text, operating system, feed source, and whether Facebook Marketplace works manually.
 
 macOS launch troubleshooting:
 - macOS may block AutoLander because the app was downloaded outside the App Store or is still quarantined.

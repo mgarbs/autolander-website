@@ -21,7 +21,8 @@ export const PAGES = [
     bylineUpdated: true,
     author: true,
     tldr:
-      'AutoLander is Facebook Marketplace software for U.S. car dealerships, built and operated by '
+      'AutoLander is Facebook Marketplace software for car dealerships in the United States, Canada and '
+      + 'Spanish-speaking Latin America, available in English, Spanish and French, built and operated by '
       + 'AutoLander LLC. Dealers connect an inventory feed; the platform posts vehicles to Marketplace, '
       + 'keeps prices current, removes sold units and runs AI photo editing on listing images. Our '
       + 'published research is written by founder Michael Garber and computed directly from anonymized, '

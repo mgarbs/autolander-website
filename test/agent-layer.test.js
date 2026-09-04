@@ -12,6 +12,7 @@ import test from 'node:test';
 
 import {
   handleSiteRequest,
+  htmlForMarkdownTwin,
   isApiPath,
   isDocumentPath,
   isSpaFallbackPath,
@@ -89,6 +90,60 @@ test('wantsHtmlDocument distinguishes a browser from an agent', () => {
   assert.equal(wantsHtmlDocument('*/*'), false);
   assert.equal(wantsHtmlDocument(null), false);
   assert.equal(wantsHtmlDocument('text/markdown'), false);
+});
+
+// ---------------------------------------------------------------- canonical on the Markdown twins
+//
+// A twin fetched at its own URL is a crawlable duplicate of the HTML page. Without a canonical
+// pointer, a search engine may index /about.md as a separate document and split the page's
+// signals; with the HTTP-header form of rel="canonical" it consolidates to the HTML. The bytes
+// and cacheability are untouched, so answer engines fetching the twin see exactly what they did.
+
+test('htmlForMarkdownTwin maps a twin back to its HTML page and nothing else', () => {
+  assert.equal(htmlForMarkdownTwin('/index.md'), '/');
+  assert.equal(htmlForMarkdownTwin('/about.md'), '/about/');
+  assert.equal(htmlForMarkdownTwin('/guide/car-sales-leads.md'), '/guide/car-sales-leads/');
+  assert.equal(htmlForMarkdownTwin('/agents.md'), null, 'agents.md is a standalone document');
+  assert.equal(htmlForMarkdownTwin('/about/'), null);
+  assert.equal(htmlForMarkdownTwin('/llms.txt'), null);
+  assert.equal(htmlForMarkdownTwin(''), null);
+});
+
+test('a directly requested twin carries Link rel=canonical to the HTML page, bytes untouched', async () => {
+  const origin = makeOrigin({ '/about.md': { body: '# About\n', type: 'text/markdown; charset=utf-8' } });
+  const res = await call('/about.md', { Accept: '*/*' }, origin);
+  assert.equal(res.status, 200);
+  assert.equal(await res.text(), '# About\n', 'body passes through unchanged');
+  assert.equal(res.headers.get('Content-Type'), 'text/markdown; charset=utf-8');
+  assert.match(res.headers.get('Link'), /<https:\/\/autolander\.ai\/about\/>; rel="canonical"/);
+  assert.deepEqual(origin.seen, ['/about.md'], 'exactly one origin fetch, no HTML probe');
+});
+
+test('/index.md is canonical to the homepage; /agents.md gets no canonical', async () => {
+  const origin = makeOrigin({
+    '/index.md': MD_HOME,
+    '/agents.md': { body: '# Agents\n', type: 'text/markdown; charset=utf-8' },
+  });
+  const home = await call('/index.md', { Accept: '*/*' }, origin);
+  assert.match(home.headers.get('Link'), /<https:\/\/autolander\.ai\/>; rel="canonical"/);
+  const agents = await call('/agents.md', { Accept: '*/*' }, origin);
+  assert.equal(agents.headers.get('Link'), null, 'a standalone document must not point elsewhere');
+});
+
+test('a missing twin passes the origin 404 through without inventing a canonical', async () => {
+  const origin = makeOrigin({});
+  const res = await call('/nope.md', { Accept: '*/*' }, origin);
+  assert.equal(res.status, 404);
+  assert.equal(res.headers.get('Link'), null);
+});
+
+test('the negotiated Markdown representation declares its own URL as canonical', async () => {
+  const origin = makeOrigin({ '/': HTML_HOME, '/index.md': MD_HOME });
+  const res = await call('/', { Accept: 'text/markdown' }, origin);
+  assert.equal(res.status, 200);
+  assert.equal(res.headers.get('Content-Location'), '/index.md');
+  assert.match(res.headers.get('Link'), /<https:\/\/autolander\.ai\/>; rel="canonical"/);
+  assert.match(res.headers.get('Vary'), /Accept/);
 });
 
 // ---------------------------------------------------------------- path classification

@@ -163,6 +163,17 @@ listing photos. Built by AutoLander LLC.
 `;
 }
 
+// Inverse of markdownTwinFor(): the HTML page a directly-requested twin is a copy of.
+// "/index.md" -> "/", "/about.md" -> "/about/", "/guide/x.md" -> "/guide/x/". Returns null for
+// anything that is not a twin: /agents.md is a standalone document with no HTML page, and every
+// other .md on the site is generated as a twin by scripts/build-seo-pages.mjs.
+export function htmlForMarkdownTwin(pathname) {
+  if (!pathname || !pathname.endsWith('.md')) return null;
+  if (pathname === '/agents.md') return null;
+  if (pathname === '/index.md') return '/';
+  return `${pathname.slice(0, -'.md'.length)}/`;
+}
+
 function markdownResponse(body, status, extraHeaders = {}) {
   return new Response(body, {
     status,
@@ -188,6 +199,21 @@ export async function handleSiteRequest(request, url, fetchImpl = fetch) {
 
   // Only GET/HEAD can be negotiated. Everything else is a plain passthrough.
   if (request.method !== 'GET' && request.method !== 'HEAD') return fetchImpl(request);
+
+  // 0. A Markdown twin fetched DIRECTLY by its own URL (/about.md, /index.md). It is the same
+  //    content as the HTML page, so tell search engines which URL is canonical — the HTTP-header
+  //    form of rel="canonical" is exactly the mechanism Google documents for non-HTML copies (PDFs
+  //    and the like). Without it the twin is a crawlable, indexable duplicate with no pointer home.
+  //    The header only steers indexing; the bytes and the cacheability are untouched, so answer
+  //    engines that fetch the twin at query time see exactly what they saw before.
+  const canonicalHtml = htmlForMarkdownTwin(pathname);
+  if (canonicalHtml) {
+    const response = await fetchImpl(request);
+    if (response.status !== 200) return response;
+    const out = new Response(response.body, response);
+    out.headers.append('Link', `<${url.origin}${canonicalHtml}>; rel="canonical"`);
+    return out;
+  }
 
   // Assets and data files: leave the bytes path completely alone.
   if (!isDocumentPath(pathname)) return fetchImpl(request);
@@ -215,6 +241,10 @@ export async function handleSiteRequest(request, url, fetchImpl = fetch) {
         // Tell the agent which URL the representation came from, per acceptmarkdown.com guidance
         // that the Markdown variant stays discoverable.
         out.headers.set('Content-Location', twin);
+        // The negotiated representation lives at the page's own URL, which IS the canonical.
+        // Saying so explicitly stops a crawler reading Content-Location as "the real copy is
+        // the .md file".
+        out.headers.append('Link', `<${url.origin}${pathname}>; rel="canonical"`);
         return out;
       }
       // No twin for this page: fall through and serve HTML, still with Vary: Accept so the

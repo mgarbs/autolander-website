@@ -52,8 +52,9 @@ export const PAGES = [
       {
         type: 'prose',
         paras: [
-          'AutoLander is Facebook Marketplace software for U.S. car dealerships and independent sales '
-          + 'reps, built and operated by AutoLander LLC. Whether you are evaluating the platform, '
+          'AutoLander is Facebook Marketplace software for car dealerships and independent sales reps in '
+          + 'the United States, Canada and Spanish-speaking Latin America, built and operated by AutoLander '
+          + 'LLC. Whether you are evaluating the platform, '
           + 'already running it on your lot, writing about the used-car market, or building an agent '
           + 'that needs to reach a human here, the routes below all reach the same small team.',
           'We are a small company and we answer our own email. There is no ticket queue to get lost '

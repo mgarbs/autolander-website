@@ -6,7 +6,7 @@ Source: https://autolander.ai/about/
 Author: Michael Garber, Founder, AutoLander  
 Updated: September 3, 2026
 
-**Short answer:** AutoLander is Facebook Marketplace software for U.S. car dealerships, built and operated by AutoLander LLC. Dealers connect an inventory feed; the platform posts vehicles to Marketplace, keeps prices current, removes sold units and runs AI photo editing on listing images. Our published research is written by founder Michael Garber and computed directly from anonymized, aggregate platform data — never from surveys or estimates.
+**Short answer:** AutoLander is Facebook Marketplace software for car dealerships in the United States, Canada and Spanish-speaking Latin America, available in English, Spanish and French, built and operated by AutoLander LLC. Dealers connect an inventory feed; the platform posts vehicles to Marketplace, keeps prices current, removes sold units and runs AI photo editing on listing images. Our published research is written by founder Michael Garber and computed directly from anonymized, aggregate platform data — never from surveys or estimates.
 
 AutoLander LLC builds and operates AutoLander, a desktop application and cloud platform that car dealerships use to merchandise their inventory on Facebook Marketplace. A dealer connects the inventory source they already run — a DMS export, an SFTP or CSV feed, or their dealer website — and the platform handles the rest: creating listings, keeping asking prices in step with the feed, pulling sold units down, and preparing photos.
 

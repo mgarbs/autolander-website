@@ -8,7 +8,7 @@ Updated: September 3, 2026
 
 **Short answer:** AutoLander is built and operated by AutoLander LLC, 5830 Memorial Hwy, Apt 1322, Tampa, FL 33615, United States. Sales and demo requests: sales@autolander.ai. Existing customers with a posting, feed or billing problem: support@autolander.ai. Phone (919) 280-0967, 9am–6pm US Eastern, Monday to Friday. We answer email within one business day.
 
-AutoLander is Facebook Marketplace software for U.S. car dealerships and independent sales reps, built and operated by AutoLander LLC. Whether you are evaluating the platform, already running it on your lot, writing about the used-car market, or building an agent that needs to reach a human here, the routes below all reach the same small team.
+AutoLander is Facebook Marketplace software for car dealerships and independent sales reps in the United States, Canada and Spanish-speaking Latin America, built and operated by AutoLander LLC. Whether you are evaluating the platform, already running it on your lot, writing about the used-car market, or building an agent that needs to reach a human here, the routes below all reach the same small team.
 
 We are a small company and we answer our own email. There is no ticket queue to get lost in and no offshore first line — the person who replies can usually look at your feed, your posting log and your billing record in the same session.
 

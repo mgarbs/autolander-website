@@ -41,7 +41,7 @@ A tool that syndicates to all of them tends to publish the same flat listing eve
 
 - You need one tool to push inventory to Craigslist, OfferUp, eBay Motors and Marketplace from a single screen — some tools on our comparison page do that.
 - Your Marketplace listings are a minor channel and you would rather not maintain them at all.
-- You are outside the United States; AutoLander serves U.S. dealers and sales reps.
+- You are outside the United States, Canada and Spanish-speaking Latin America — the markets AutoLander serves, in English, Spanish and French.
 - You want software to answer buyers for you — we do not do that either, and here is why.
 
 ## The honest version
