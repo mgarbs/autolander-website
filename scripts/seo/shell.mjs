@@ -95,10 +95,18 @@ export const humanDate = (iso) => new Date(`${iso}T00:00:00Z`)
 // This is the single place to add them. ONLY add a URL after the profile is claimed, live and
 // public — a sameAs pointing at a 404 is worse than no sameAs at all.
 //
+// Verified live 2026-09-04 (each opened and read in a real browser session before being added):
+//   LinkedIn  — public vanity URL, Tampa, 2–10 employees (NOT the /admin/dashboard/ URL Crunchbase exposes)
+//   Facebook  — the company Page, 388 followers, "Software Company"
+//   G2        — claimed product listing in Car Dealer Software (0 reviews yet — drive them; see #28)
+//   Crunchbase — organization profile, links back to autolander.ai
 // PENDING (add here the moment each is claimed and live):
-//   LinkedIn company page · Crunchbase · G2 · Capterra · GetApp · Software Advice
-//   Trustpilot · YouTube channel · X · Facebook page · Wikidata entity
+//   Capterra · GetApp · Software Advice · Trustpilot · YouTube channel · X · Product Hunt · Wikidata entity
 export const PROFILES = [
+  'https://www.linkedin.com/company/autolander/',
+  'https://www.facebook.com/autolander',
+  'https://www.g2.com/products/autolander/reviews',
+  'https://www.crunchbase.com/organization/autolander',
   'https://github.com/mgarbs/autolander-releases',
 ];
 
