@@ -1,10 +1,10 @@
 # Facebook listing tool & software for car dealers
 
-> Facebook listing software for car dealers that auto-posts inventory to Marketplace, enhances photos and removes sold cars. From $39/mo, 5 free posts.
+> Facebook listing software for a sales rep listing their own units: post from your own profile, keep prices current and sold cars gone, no dealer-group contract. From $39/mo.
 
 Source: https://autolander.ai/facebook-listing-software/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** For a car dealer, "Facebook listing" means getting your vehicles in front of buyers on Facebook — and the place buyers actually browse is Facebook Marketplace. AutoLander is Facebook listing software (a native desktop app) that automatically lists your inventory on Marketplace, enhances every photo, keeps listings current and removes sold units — with post-to-sale attribution. Plans from $39/mo with 5 free posts.
 

@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/integrations/vauto-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander does not have a one-click native vAuto integration. Instead it connects through a dealer-authorized custom feed/export, AutoLander reads that output, and it prepares and syncs eligible vehicles on Facebook Marketplace — with AI photos, walkaround video and automatic sold-removal. Plans from $39/mo.
 

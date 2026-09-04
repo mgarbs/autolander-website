@@ -40,7 +40,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { SITE, NAV, relatedFor } from './registry.mjs';
+import { SITE, NAV, relatedFor, pillarFor, SECTION_LABEL } from './registry.mjs';
 
 export { SITE, NAV };
 
@@ -216,7 +216,15 @@ export const personLd = {
 };
 
 // Article node — makes a page read as dated, attributed research rather than marketing copy.
-export const articleLd = ({ title, canonical, description, datePublished, dateModified, image }) => ({
+//
+// `pillar` (from PILLAR_OF in registry.mjs) emits isPartOf → the parent pillar's WebPage @id. That
+// is the machine-readable half of the silo: the internal links say a cluster page belongs to a
+// pillar, and this says the same thing in a form a retrieval system can traverse without
+// inferring topology from anchor text. A page that IS its own pillar gets no isPartOf — a node
+// declaring itself part of itself is noise.
+export const articleLd = ({
+  title, canonical, description, datePublished, dateModified, image, pillar,
+}) => ({
   '@context': 'https://schema.org', '@type': 'Article',
   '@id': canonical + '#article',
   headline: title,
@@ -226,6 +234,14 @@ export const articleLd = ({ title, canonical, description, datePublished, dateMo
   author: { '@id': PERSON_ID },
   creator: { '@id': PERSON_ID },
   publisher: { '@id': ORG_ID },
+  ...(pillar && pillar.url !== canonical ? {
+    isPartOf: {
+      '@type': 'WebPage',
+      '@id': pillar.url + '#webpage',
+      name: pillar.name,
+      url: pillar.url,
+    },
+  } : {}),
   datePublished: datePublished || SITE.updated,
   // Never let a page claim it was modified before it was published: an explicit
   // dateModified wins; otherwise the site stamp, floored to datePublished.
@@ -314,27 +330,60 @@ export const itemListLd = (items) => ({
     '@type': 'ListItem', position: i + 1, name: t.name, url: t.url,
   })),
 });
-export const webPageLd = (title, canonical, desc, image, updated) => ({
-  '@context': 'https://schema.org', '@type': 'WebPage',
-  name: title, url: canonical, description: desc,
-  isPartOf: { '@type': 'WebSite', name: 'AutoLander', url: SITE.origin + '/' },
-  publisher: { '@id': ORG_ID },
-  primaryImageOfPage: {
-    '@type': 'ImageObject',
-    url: image || SITE.origin + '/og-image.jpg',
-    width: 1200,
-    height: 630,
-  },
-  dateModified: updated || SITE.updated,
-});
+// WebPage node. Carries a stable @id (`<canonical>#webpage`) so other nodes — notably a cluster
+// page's Article.isPartOf — can reference THIS page by @id instead of duplicating its properties.
+//
+// `speakable` marks the two regions that are genuinely answer-shaped: the "Short answer" TLDR and
+// the FAQ answer bodies. Both are already written as self-contained sentences (they have to be —
+// they are what the .md twin and the FAQPage node expose), which is the contract
+// SpeakableSpecification asks for. Emitted only when the page actually renders one of them, so a
+// page with neither never claims a speakable region that does not exist.
+export const webPageLd = (title, canonical, desc, image, updated, opts = {}) => {
+  const speakable = [
+    ...(opts.hasTldr ? ['.tldr'] : []),
+    ...(opts.hasFaq ? ['.faq-a'] : []),
+  ];
+  return {
+    '@context': 'https://schema.org', '@type': 'WebPage',
+    '@id': canonical + '#webpage',
+    name: title, url: canonical, description: desc,
+    isPartOf: { '@type': 'WebSite', '@id': SITE.origin + '/#website', name: 'AutoLander', url: SITE.origin + '/' },
+    publisher: { '@id': ORG_ID },
+    primaryImageOfPage: {
+      '@type': 'ImageObject',
+      url: image || SITE.origin + '/og-image.jpg',
+      width: 1200,
+      height: 630,
+    },
+    ...(speakable.length ? {
+      speakable: { '@type': 'SpeakableSpecification', cssSelector: speakable },
+    } : {}),
+    dateModified: updated || SITE.updated,
+  };
+};
 
 // ---------- helpers ----------
 const liList = (arr) => arr.map((x) => `<li>${fmt(x)}</li>`).join('\n        ');
 const paras = (a) => (Array.isArray(a) ? a : [a]).map((p) => `<p>${fmt(p)}</p>`).join('\n      ');
 
 // ---------- document head ----------
-export function head({ title, description, canonical, jsonLdBlocks, ogType = 'website', ogImage }) {
+export function head({
+  title, description, canonical, jsonLdBlocks, ogType = 'website', ogImage, articleMeta,
+}) {
   const cardUrl = ogImage || SITE.origin + '/og-image.jpg';
+  // og:image:type must describe the file og:image actually points at. The OG cards are .png and
+  // the shared fallback is .jpg, so derive it rather than hard-coding one and lying about the other.
+  const cardType = /\.png($|\?)/i.test(cardUrl) ? 'image/png' : 'image/jpeg';
+  // article:* is only valid on og:type=article. Facebook, LinkedIn and several answer engines read
+  // published/modified time from here rather than from JSON-LD, so an Article page that omits them
+  // is dateless to those consumers even though its schema is complete.
+  const articleTags = ogType === 'article' && articleMeta ? `
+  <meta property="article:author" content="${esc(articleMeta.author)}" />
+  <meta property="article:publisher" content="${esc(SITE.origin)}/" />${articleMeta.section ? `
+  <meta property="article:section" content="${esc(articleMeta.section)}" />` : ''}${articleMeta.published ? `
+  <meta property="article:published_time" content="${esc(articleMeta.published)}" />` : ''}${articleMeta.modified ? `
+  <meta property="article:modified_time" content="${esc(articleMeta.modified)}" />` : ''}${(articleMeta.tags || []).map((t) => `
+  <meta property="article:tag" content="${esc(t)}" />`).join('')}` : '';
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -371,12 +420,16 @@ export function head({ title, description, canonical, jsonLdBlocks, ogType = 'we
   <meta property="og:description" content="${esc(description)}" />
   <meta property="og:url" content="${esc(canonical)}" />
   <meta property="og:image" content="${esc(cardUrl)}" />
+  <meta property="og:image:type" content="${cardType}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="${esc(title)}" />
+  <meta property="og:locale" content="en_US" />${articleTags}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${esc(title)}" />
   <meta name="twitter:description" content="${esc(description)}" />
   <meta name="twitter:image" content="${esc(cardUrl)}" />
+  <meta name="twitter:image:alt" content="${esc(title)}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -576,23 +629,40 @@ export function renderPage(page) {
   const path = page.path || (nav && nav.path);
   const canonical = SITE.origin + path;
   const ogImage = ogImageFor(path);
+  const pillar = pillarFor(page);
   const jsonLdBlocks = [];
-  jsonLdBlocks.push(jsonld(webPageLd(page.title, canonical, page.description, ogImage, page.updated)));
+  jsonLdBlocks.push(jsonld(webPageLd(page.title, canonical, page.description, ogImage, page.updated, {
+    hasTldr: Boolean(page.tldr),
+    hasFaq: Boolean(page.faq && page.faq.length),
+  })));
   // Google requires a genuine aggregateRating or review for SoftwareApplication rich results.
   // AutoLander does not currently publish verified review data, so do not emit that type until it does.
   if (page.schema?.itemList) jsonLdBlocks.push(jsonld(itemListLd(page.schema.itemList)));
 
   // Article: emitted for authored, dated content (research + guides). Carries the named author,
   // which is the E-E-A-T signal answer engines weight most heavily on this kind of page.
+  let articleMeta = null;
   if (page.article) {
+    const datePublished = page.article.datePublished || SITE.updated;
+    const dateModified = page.article.dateModified || page.updated || SITE.updated;
     jsonLdBlocks.push(jsonld(articleLd({
       title: page.article.headline || page.h1 || page.title,
       canonical,
       description: page.description,
-      datePublished: page.article.datePublished,
-      dateModified: page.article.dateModified || page.updated,
+      datePublished,
+      dateModified,
       image: page.article.image || ogImage,
+      pillar,
     })));
+    // Mirrored onto the OpenGraph layer (article:*). Same source values as the JSON-LD above so
+    // the two can never disagree about when a page was published or who wrote it.
+    articleMeta = {
+      author: AUTHOR.url,
+      section: pillar ? pillar.section : SECTION_LABEL[page.key] || null,
+      published: `${datePublished}T00:00:00Z`,
+      modified: `${dateModified < datePublished ? datePublished : dateModified}T00:00:00Z`,
+      tags: page.article.tags || [],
+    };
   }
 
   // Dataset: emitted only for pages that publish original measured data.
@@ -655,7 +725,17 @@ ${page.faq && page.faq.length ? faqSection(page.faq, page.faqHeading) : ''}
   ].join('\n');
 
   return [
-    head({ title: page.title, description: page.description, canonical, jsonLdBlocks, ogType: page.ogType, ogImage }),
+    head({
+      title: page.title,
+      description: page.description,
+      canonical,
+      jsonLdBlocks,
+      // A page that emits an Article node is an article to OpenGraph too; article:* is only
+      // valid under og:type=article, so the two must agree.
+      ogType: page.article ? 'article' : (page.ogType || 'website'),
+      ogImage,
+      articleMeta,
+    }),
     emailSafe(body),
   ].join('\n');
 }

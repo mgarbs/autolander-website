@@ -78,6 +78,7 @@ Full agent instructions, including the response-format contract: https://autolan
 - [Facebook Marketplace listing tool & software for car dealers](https://autolander.ai/facebook-marketplace-listing-software.md): Facebook Marketplace listing software for dealers: turn inventory data into complete listings, improve photos, review fields and keep records current.
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers.md): Facebook Marketplace for car dealers: learn the rules, list your inventory and automate repetitive posting. From $39/mo with 5 free posts.
 - [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync.md): Keep Facebook Marketplace matched to your live lot: auto-post new arrivals, update prices and remove sold units. From $39/mo with 5 free posts.
+- [Dealer inventory management: getting cars from the DMS to buyers](https://autolander.ai/dealer-inventory-management.md): Dealer inventory management is two jobs: the DMS holds the record, distribution gets it in front of buyers. How the second job breaks, and how to keep every channel current.
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace.md): Load car inventory into a Facebook Marketplace posting queue and auto-remove sold units. Meta eligibility and listing limits apply. Plans from $39/mo.
 - [Facebook Marketplace automation for car dealers](https://autolander.ai/facebook-marketplace-automation.md): Facebook Marketplace automation for car dealers: auto-post inventory, update prices, remove sold cars and enhance photos. From $39/mo, 5 free posts.
 - [The safest way to use a Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster.md): Compare Facebook Marketplace auto-poster safety models, account risks and warning signs. Learn why no automation tool can guarantee against bans.
@@ -85,6 +86,11 @@ Full agent instructions, including the response-format contract: https://autolan
 - [AI chat for car dealers: the honest guide](https://autolander.ai/ai-chat-for-car-dealers.md): AI chat for car dealers, honestly: what inbox AI can and cannot do, the traps to avoid, and how AutoLander helps your team answer buyers faster.
 - [AI car photo editor: showroom photos from the shots you already have](https://autolander.ai/ai-car-photo-editor.md): AI car photo editor for dealers: turn lot and feed photos into showroom-grade listing images — real cars, never repainted. From $39/mo.
 - [RV dealer software for Facebook Marketplace](https://autolander.ai/rv-dealer-software.md): RV dealer software that posts travel trailers, fifth wheels and motorhomes to Facebook Marketplace in the right category. From $39/mo.
+
+## Why we work the way we do
+
+- [Why AutoLander posts to Facebook Marketplace only](https://autolander.ai/why-facebook-marketplace-only.md): AutoLander posts to Facebook Marketplace and nowhere else — on purpose. The trade-off, who it is wrong for, and why one channel done right beats five done shallow.
+- [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers.md): AutoLander has no autoresponder and never touches your Marketplace inbox. The reasoning, the risk we refuse to sell you, and what we do instead.
 
 ## Guides
 
@@ -95,6 +101,10 @@ Full agent instructions, including the response-format contract: https://autolan
 - [How to sell more cars: the six levers that actually move units](https://autolander.ai/guide/how-to-sell-more-cars.md): How to sell more cars without more ad spend: six levers — coverage, photos, price, speed, leaks, attribution — plus a 30-day plan for dealers.
 - [AI for car dealerships: what actually works in 2026](https://autolander.ai/guide/ai-for-car-dealerships.md): AI for car dealerships without the hype: the three uses that pay today — AI photos, 24/7 inbox chat, listing copy — and what AI still cannot do.
 - [Facebook AI tools for car dealers](https://autolander.ai/facebook-ai-tools.md): Facebook AI tools for car dealers: enhance photos, write listings, auto-post inventory and remove sold buyer messages. From $39/mo with 5 free posts.
+- [How to sell RVs on Facebook Marketplace as a dealer](https://autolander.ai/guide/how-to-sell-rvs-on-facebook-marketplace.md): How RV dealers sell travel trailers, fifth wheels and motorhomes on Facebook Marketplace: the RV/Camper category, the fields that matter, seasonal pricing and keeping a whole lot current.
+- [RV photos that sell on Facebook Marketplace](https://autolander.ai/guide/rv-photos-for-facebook-marketplace.md): How to photograph a travel trailer, fifth wheel or motorhome so it reads in a Marketplace thumbnail: the shot list, the lead photo, and what an AI studio can and cannot fix.
+- [Questions to ask any AI chat vendor before you connect your inbox](https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor.md): Twelve questions that separate a useful dealership AI chat tool from a liability: where the availability answer comes from, what it does with a price, how fast a human takes over.
+- [Marketplace response time: why the first reply wins the appointment](https://autolander.ai/guide/marketplace-response-time-for-car-dealers.md): On Facebook Marketplace the first accurate reply usually gets the appointment. Why speed depends on the listing being right, how to set a reply standard, and what to automate — and not.
 
 ## Deep-dive dealer guides
 

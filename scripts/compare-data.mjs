@@ -14,8 +14,8 @@
 export const SITE = {
   origin: 'https://autolander.ai',
   brand: 'AutoLander',
-  updated: '2026-08-20',
-  updatedHuman: 'August 20, 2026',
+  updated: '2026-09-03',
+  updatedHuman: 'September 3, 2026',
   lowPrice: 39,
   ctaUrl: 'https://autolander.ai/#pricing',
 };
@@ -395,6 +395,25 @@ export const COMPETITORS = {
 // Order competitors appear in the hub ranking (after AutoLander at #1).
 export const HUB_ORDER = ['carvid', 'drift', 'relayauto', 'autolisterpro', 'shiftly', 'autobook', 'glo3d'];
 
+// Tools that appear in category search results and AI answers but have NOT been reviewed
+// head-to-head (2026-09-03). The hub names them so it is the complete answer to "what are my
+// options" — the page format retrieval systems reach for at the discovery stage — without
+// claiming anything we have not verified. `note` is deliberately limited to what the vendor's
+// own public positioning states; no pricing, features or ratings are asserted. Promote a tool
+// to COMPETITORS (with a full cells/strengths/wins/faq entry) once it has been reviewed.
+// Names are rendered as plain text, never hyperlinked: a wrong domain would be a factual claim
+// about someone else's business.
+export const OTHER_TOOLS = [
+  { name: 'Owini Vehicle Poster', note: 'Appears in AI answers and category results for Marketplace vehicle posting. Not yet reviewed head-to-head here.' },
+  { name: 'ZenLite Pro', note: 'Appears in category search results for Marketplace listing tools. Its site renders client-side, so confirm features directly with the vendor. Not yet reviewed here.' },
+  { name: 'ZenDealer', note: 'Appears in category search results for dealer Marketplace tools. Not yet reviewed here.' },
+  { name: 'Lazy Poster', note: 'Appears in category search results for Marketplace auto posting. Not yet reviewed here.' },
+  { name: 'LocalShift', note: 'Appears in category search results for dealer Marketplace tools. Not yet reviewed here.' },
+  { name: 'Marketplace QuickPost', note: 'Referenced in dealer forums and category listings for Marketplace bulk posting. Not yet reviewed here.' },
+  { name: 'WizPoster', note: 'Referenced in dealer forums and category listings for Marketplace auto posting. Not yet reviewed here.' },
+  { name: 'Selly Automotive', note: 'A dealer CRM that surfaces in AI answers for "used car dealer software" — a different category from a dedicated Marketplace poster. Not reviewed here.' },
+];
+
 // Unique, first-hand "experienced take" per page. This is the content Google's AI
 // optimization guide weights most ("expert or experienced takes that go beyond common
 // knowledge") and what separates these from commodity, templated comparison pages.
@@ -471,7 +490,7 @@ export const GUIDE = {
 };
 
 export const HUB = {
-  title: 'Facebook Marketplace Auto-Posting Tools (2026)',
+  title: 'Best Facebook Marketplace Posting Tools for Car Dealers (2026)',
   metaDescription:
     'Compare Facebook Marketplace auto-posting tools for car dealers by pricing, AI photos, inventory '
     + 'sync, session architecture, credential controls and more.',

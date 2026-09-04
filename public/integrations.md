@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/integrations/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander connects your inventory to Facebook Marketplace in one of two honest ways: it reads a directly supported feed source (CarGurus or Cars.com), or it ingests a custom feed/export from your DMS or website platform (vAuto, DealerCenter, Dealer.com, HomeNet, Frazer, CDK Global, Tekion). Either way, AutoLander loads the inventory, manages a queue of eligible Marketplace listings, refreshes prices and reconciles sold units — with AI photos, walkaround video and post-to-sale attribution. Meta account eligibility and listing limits still apply. Plans from $39/mo.
 
@@ -111,7 +111,17 @@ AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and
 
 ## Related
 
+- [CarGurus to Facebook Marketplace](https://autolander.ai/integrations/cargurus-facebook-marketplace/)
+- [Cars.com to Facebook Marketplace](https://autolander.ai/integrations/cars-com-facebook-marketplace/)
+- [vAuto to Facebook Marketplace](https://autolander.ai/integrations/vauto-facebook-marketplace/)
+- [DealerCenter to Facebook Marketplace](https://autolander.ai/integrations/dealercenter-facebook-marketplace/)
+- [Dealer.com to Facebook Marketplace](https://autolander.ai/integrations/dealer-com-facebook-marketplace/)
+- [HomeNet to Facebook Marketplace](https://autolander.ai/integrations/homenet-facebook-marketplace/)
+- [Frazer to Facebook Marketplace](https://autolander.ai/integrations/frazer-facebook-marketplace/)
+- [CDK to Facebook Marketplace](https://autolander.ai/integrations/cdk-facebook-marketplace/)
+- [Tekion to Facebook Marketplace](https://autolander.ai/integrations/tekion-facebook-marketplace/)
 - [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [Dealer inventory management: getting cars from the DMS to buyers](https://autolander.ai/dealer-inventory-management/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
 - [Facebook Marketplace listing software & tools](https://autolander.ai/facebook-marketplace-listing-software/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)

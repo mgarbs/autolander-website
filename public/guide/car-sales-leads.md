@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/guide/car-sales-leads/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** The strongest car sales leads are people already messaging about a specific vehicle — which makes your own inventory listings the best lead generation channel a dealership has. Put every unit on Facebook Marketplace with real photos and prices, answer within a minute at any hour, capture a phone number early, and book the appointment in the same conversation. Bought third-party leads are shared, cold and slow by comparison.
 

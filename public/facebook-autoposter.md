@@ -1,10 +1,10 @@
 # Facebook autoposter for car dealers
 
-> Facebook autoposter for car dealers: automatically post inventory to Marketplace, enhance photos and remove sold cars. From $39/mo, 5 free posts.
+> A Facebook autoposter for car dealers, explained by what runs while nobody is watching: the schedule, the daily pace, price sync and sold-car removal. From $39/mo, 5 free posts.
 
 Source: https://autolander.ai/facebook-autoposter/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** A Facebook autoposter is software that automatically posts your listings to Facebook for you. For a car dealer, that means posting your inventory to Facebook Marketplace — where local buyers shop — instead of creating each listing by hand. AutoLander is a native desktop app that loads your lot into a managed workflow, enhances every photo and removes sold units, from $39/mo with 5 free posts.
 

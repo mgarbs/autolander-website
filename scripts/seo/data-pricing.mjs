@@ -156,6 +156,43 @@ export const PAGES = [
         ],
       },
       {
+        type: 'qa',
+        q: 'How long does it take to post my whole lot?',
+        a: [
+          'Honestly: longer than the hero on our homepage makes it look, and we would rather you know before you '
+          + 'buy. Each seat has a daily posting allowance — Starter 5, Growth 10, Pro 15 — and a Dealer Plan '
+          + 'stacks seats, so the time to first-cover a lot is simply units divided by the daily total. A '
+          + 'single Starter seat clears a 60-unit lot in about 12 working days; a three-seat Dealer Plan on '
+          + 'Pro clears 300 units in about a week.',
+          'Two things soften that. First, the allowance is a per-day pace, not a one-time cap: once the lot is '
+          + 'covered, the daily budget goes to new arrivals, price changes and re-posts, which is the steady state '
+          + 'that matters. Second, Meta’s own listing limits apply to every seller on Marketplace regardless of '
+          + 'tool — our [listing limits guide](/guide/facebook-marketplace-car-listing-limits/) explains them — '
+          + 'so a slower, steadier pace is also the one that keeps an account healthy. AutoLander’s daily allowances '
+          + 'describe workflow capacity, never permission to exceed what your account shows.',
+        ],
+      },
+      {
+        type: 'table',
+        h2: 'Days to cover your lot, by plan',
+        intro:
+          'Working days to post every unit once, assuming every unit is eligible and the account’s own Marketplace '
+          + 'limits allow the pace. After first coverage the same daily budget maintains the lot.',
+        alCol: 0,
+        head: ['Lot size', 'Starter (5/day)', 'Growth (10/day)', 'Pro (15/day)', 'Dealer Plan, 3 Pro seats (45/day)'],
+        rows: [
+          ['30 units', '6 days', '3 days', '2 days', '1 day'],
+          ['60 units', '12 days', '6 days', '4 days', '2 days'],
+          ['100 units', '20 days', '10 days', '7 days', '3 days'],
+          ['150 units', '30 days', '15 days', '10 days', '4 days'],
+          ['300 units', '60 days', '30 days', '20 days', '7 days'],
+        ],
+        note:
+          'Days are rounded up. A Dealer Plan can mix Starter, Growth and Pro seats; the daily total is the sum of the '
+          + 'seats. Meta eligibility and listing limits apply on top of every figure here and can make the real '
+          + 'pace slower — never faster.',
+      },
+      {
         type: 'callout',
         title: 'A note on honesty',
         body: 'AutoLander’s pricing above (Starter $39, Growth $59, Pro $79, Dealer Plan from $117 monthly, '
@@ -184,6 +221,11 @@ export const PAGES = [
       ['Is there a contract or commitment?',
         'No annual contract is required. Monthly billing is available, or you can choose annual billing for a '
         + 'lower monthly equivalent. Pricing is published rather than hidden behind a sales quote.'],
+      ['How long does it take to post my whole lot with AutoLander?',
+        'Divide your units by the daily allowance of your seats: Starter posts 5 a day, Growth 10, Pro 15, and a '
+        + 'Dealer Plan adds seats together. A 60-unit lot takes about 12 working days on one Starter seat, or about '
+        + '2 days on three Pro seats. Meta’s own listing limits apply on top and can slow that pace; after first '
+        + 'coverage the same daily budget maintains new arrivals, price changes and re-posts.'],
       ['What is included in each plan?',
         'Starter ($39/mo) supports 5 posts/day, Growth ($59/mo) supports 10, and Pro ($79/mo) supports 15, '
         + 'with increasing AI and support allowances. The Dealer Plan starts at three seats, allows any tier mix, '

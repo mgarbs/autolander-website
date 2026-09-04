@@ -48,6 +48,19 @@ export const NAV = {
   // click it. This page states the legal entity, postal address, phone and email in crawlable
   // text and mirrors the `address` + `contactPoint` on the Organization node.
   contact:    { key: 'contact',    path: '/contact/',                                  anchor: 'Contact AutoLander — sales, support and media' },
+  // ---- Discovery + cluster pages (2026-09-03, from the GrindstoneSEO diagnostic). ----
+  // Two positioning pages turn deliberate scope choices (Marketplace-only, no buyer auto-reply)
+  // from feature-matrix absences into stated principles; the inventory page takes the one
+  // classical-demand cluster the site can win ("dealer inventory management", KD 3–6) from the
+  // merchandising angle, never as a DMS; the four guides give /rv-dealer-software/ and
+  // /ai-chat-for-car-dealers/ the cluster support they had none of.
+  whyMarketplaceOnly: { key: 'whyMarketplaceOnly', path: '/why-facebook-marketplace-only/',        anchor: 'Why AutoLander posts to Facebook Marketplace only' },
+  whyNoAutoReply:     { key: 'whyNoAutoReply',     path: '/why-we-dont-answer-your-buyers/',        anchor: 'Why AutoLander does not answer your buyers for you' },
+  inventoryDist:      { key: 'inventoryDist',      path: '/dealer-inventory-management/',           anchor: 'Dealer inventory management: getting cars from the DMS to buyers' },
+  rvSellGuide:        { key: 'rvSellGuide',        path: '/guide/how-to-sell-rvs-on-facebook-marketplace/', anchor: 'How to sell RVs on Facebook Marketplace as a dealer' },
+  rvPhotos:           { key: 'rvPhotos',           path: '/guide/rv-photos-for-facebook-marketplace/',      anchor: 'RV photos that sell on Facebook Marketplace' },
+  aiChatVendor:       { key: 'aiChatVendor',       path: '/guide/questions-to-ask-an-ai-chat-vendor/',      anchor: 'Questions to ask any AI chat vendor before you connect your inbox' },
+  responseTime:       { key: 'responseTime',       path: '/guide/marketplace-response-time-for-car-dealers/', anchor: 'Marketplace response time: why the first reply wins the appointment' },
 };
 
 // Integration spokes. `system` = how AutoLander connects (honest):
@@ -76,9 +89,9 @@ export function relatedFor(pageKey, opts = {}) {
   const N = NAV;
   switch (pageKey) {
     case 'category':
-      return [L(N.aiTools), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.dealers), L(N.sellGuide), L(N.fbListing), L(N.inventory), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide), L(N.mktgHub), L(N.rvDealers), L(N.report2026)];
+      return [L(N.aiTools), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.dealers), L(N.sellGuide), L(N.fbListing), L(N.inventory), L(N.inventoryDist), L(N.bulk), L(N.integHub), L(N.safety), L(N.pricing), L(N.compareHub), L(N.guide), L(N.whyMarketplaceOnly), L(N.mktgHub), L(N.rvDealers), L(N.report2026)];
     case 'inventory':
-      return [L(N.listingSw), L(N.bulk), L(N.integHub), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
+      return [L(N.inventoryDist), L(N.listingSw), L(N.bulk), L(N.integHub), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
     case 'bulk':
       return [L(N.listingSw), L(N.dealers), L(N.inventory), L(N.integHub), L(N.category), L(N.safety), L(N.compareHub), L(N.pricing)];
     case 'safety':
@@ -86,14 +99,32 @@ export function relatedFor(pageKey, opts = {}) {
     case 'pricing':
       return [L(N.compareHub), L(N.category), L(N.listingSw), L(N.bulk), L(N.inventory), L(N.safety)];
     case 'integHub':
-      return [L(N.inventory), L(N.bulk), L(N.listingSw), L(N.dealers), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide)];
+      // Hub → every spoke, explicitly. The spokes already link up to the hub (siblingSpokes +
+      // relatedFor('integrationSpoke')); without this the nine integration pages sat at 3–4
+      // inbound links each and returned nothing on `site:` sampling.
+      return [
+        ...INTEGRATIONS.map((s) => ({ href: integrationPath(s.slug), text: s.anchor })),
+        L(N.inventory), L(N.inventoryDist), L(N.bulk), L(N.listingSw), L(N.dealers), L(N.category), L(N.compareHub), L(N.pricing), L(N.guide),
+      ];
+    case 'compareHub':
+      // Same principle for the comparison cluster: the hub names every head-to-head page.
+      return [
+        { href: '/compare/carvid/', text: 'AutoLander vs CARVID' },
+        { href: '/compare/drift/', text: 'AutoLander vs Sell With Drift' },
+        { href: '/compare/relayauto/', text: 'AutoLander vs RelayAuto' },
+        { href: '/compare/autolisterpro/', text: 'AutoLander vs AutoLister Pro' },
+        { href: '/compare/shiftly/', text: 'AutoLander vs Shiftly' },
+        { href: '/compare/autobook/', text: 'AutoLander vs AutoBook.io' },
+        { href: '/compare/glo3d/', text: 'AutoLander vs Glo3D' },
+        L(N.category), L(N.pricing), L(N.safety), L(N.guide), L(N.whyMarketplaceOnly), L(N.whyNoAutoReply),
+      ];
     // ---- new high-value commercial cluster (listing/posting software, fb listing, dealers use-case) ----
     case 'listingSw':
       return [L(N.category), L(N.dealers), L(N.fbListing), L(N.bulk), L(N.inventory), L(N.compareHub), L(N.pricing)];
     case 'fbListing':
       return [L(N.listingSw), L(N.category), L(N.dealers), L(N.inventory), L(N.compareHub), L(N.pricing), L(N.guide)];
     case 'dealers':
-      return [L(N.sellGuide), L(N.category), L(N.listingSw), L(N.bulk), L(N.inventory), L(N.safety), L(N.compareHub), L(N.pricing), L(N.mktgHub), L(N.aiChat)];
+      return [L(N.sellGuide), L(N.category), L(N.whyMarketplaceOnly), L(N.whyNoAutoReply), L(N.listingSw), L(N.bulk), L(N.inventory), L(N.inventoryDist), L(N.safety), L(N.compareHub), L(N.pricing), L(N.mktgHub), L(N.aiChat)];
     // ---- educational hub (aiTools) pushes DOWN to every commercial page; commercial pages link up + across ----
     case 'aiTools':
       return [L(N.category), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.fbListing), L(N.dealers), L(N.bulk), L(N.inventory), L(N.compareHub), L(N.photoEditor), L(N.aiChat), L(N.aiDealers)];
@@ -122,13 +153,34 @@ export function relatedFor(pageKey, opts = {}) {
     case 'aiDealers':
       return [L(N.aiChat), L(N.photoEditor), L(N.aiTools), L(N.assistant), L(N.mktgHub), L(N.category), L(N.automation)];
     case 'aiChat':
-      return [L(N.aiDealers), L(N.salesLeads), L(N.assistant), L(N.category), L(N.dealers), L(N.pricing), L(N.mktgHub)];
+      return [L(N.whyNoAutoReply), L(N.aiChatVendor), L(N.responseTime), L(N.aiDealers), L(N.salesLeads), L(N.assistant), L(N.category), L(N.dealers), L(N.pricing), L(N.mktgHub)];
     case 'photoEditor':
       return [L(N.aiDealers), L(N.aiTools), L(N.category), L(N.listingSw), L(N.mktgHub), L(N.bulk), L(N.pricing)];
     case 'rvDealers':
-      return [L(N.category), L(N.inventory), L(N.bulk), L(N.dealers), L(N.safety), L(N.pricing), L(N.compareHub)];
+      return [L(N.rvSellGuide), L(N.rvPhotos), L(N.category), L(N.inventory), L(N.bulk), L(N.photoEditor), L(N.dealers), L(N.safety), L(N.pricing), L(N.compareHub)];
     case 'report2026':
       return [L(N.mktgHub), L(N.category), L(N.dealers), L(N.salesLeads), L(N.sellMore), L(N.photoEditor), L(N.inventory)];
+    // ---- Positioning pages: each descends to the money page it defends and across to its twin. ----
+    case 'whyMarketplaceOnly':
+      return [L(N.whyNoAutoReply), L(N.category), L(N.dealers), L(N.bulk), L(N.inventory), L(N.safety), L(N.compareHub), L(N.pricing)];
+    case 'whyNoAutoReply':
+      return [L(N.aiChat), L(N.whyMarketplaceOnly), L(N.responseTime), L(N.aiChatVendor), L(N.category), L(N.dealers), L(N.safety), L(N.pricing)];
+    // ---- Inventory-distribution page: the merchandising wedge; up to category, across to the feed pages. ----
+    case 'inventoryDist':
+      return [L(N.inventory), L(N.integHub), L(N.category), L(N.bulk), L(N.listingSw), L(N.dealers), L(N.report2026), L(N.pricing)];
+    // ---- RV cluster: siblings + pillar + the money pages an RV dealer needs. ----
+    case 'rvSellGuide':
+      return [L(N.rvDealers), L(N.rvPhotos), L(N.category), L(N.inventory), L(N.safety), L(N.sellGuide), L(N.pricing)];
+    case 'rvPhotos':
+      return [L(N.rvDealers), L(N.rvSellGuide), L(N.photoEditor), L(N.category), L(N.listingSw), L(N.pricing)];
+    // ---- AI-chat cluster: siblings + pillar + the positioning page that states the principle. ----
+    case 'aiChatVendor':
+      return [L(N.aiChat), L(N.whyNoAutoReply), L(N.responseTime), L(N.aiDealers), L(N.salesLeads), L(N.category), L(N.pricing)];
+    case 'responseTime':
+      return [L(N.aiChat), L(N.whyNoAutoReply), L(N.aiChatVendor), L(N.salesLeads), L(N.sellMore), L(N.category), L(N.dealers)];
+    // ---- The policy guide meshes with its category siblings ("Related guides"). ----
+    case 'guide':
+      return [L(N.safety), L(N.sellGuide), L(N.whyMarketplaceOnly), L(N.whyNoAutoReply), L(N.category), L(N.automation), L(N.compareHub), L(N.pricing)];
     default:
       return [L(N.category), L(N.compareHub), L(N.integHub), L(N.guide), L(N.sellGuide), L(N.mktgHub)];
   }
@@ -143,6 +195,68 @@ export function siblingSpokes(slug, n = 3) {
     if (s.slug !== slug) out.push({ href: integrationPath(s.slug), text: `${s.anchor}` });
   }
   return out;
+}
+
+// ---- Pillar topology (2026-09-03). The link graph above already encodes which page belongs to
+// which silo, but only implicitly, through anchor placement. PILLAR_OF states it once, explicitly,
+// so two machine-readable surfaces can be derived from it without re-deriving the topology:
+//   • Article.isPartOf → the parent pillar's WebPage @id (schema/JSON-LD),
+//   • article:section on the OpenGraph layer.
+// A key absent from this map is its own pillar (category, listingSw, dealers, mktgHub, photoEditor,
+// rvDealers, aiChat, compareHub, integHub, report2026, about, contact).
+export const PILLAR_OF = {
+  // money silo → the auto-poster category page
+  bulk: 'category', autoposter: 'category', automation: 'category', safety: 'category',
+  pricing: 'category', guide: 'category', aiTools: 'category',
+  // listing-software silo
+  fbListing: 'listingSw', assistant: 'listingSw', inventory: 'listingSw',
+  // dealer use-case silo
+  sellGuide: 'dealers',
+  // dealer-growth silo
+  mktgIdeas: 'mktgHub', salesLeads: 'mktgHub', socialMedia: 'mktgHub', sellMore: 'mktgHub',
+  aiDealers: 'mktgHub',
+  // 2026-09-03 discovery + cluster pages
+  whyMarketplaceOnly: 'dealers', whyNoAutoReply: 'aiChat', inventoryDist: 'category',
+  rvSellGuide: 'rvDealers', rvPhotos: 'rvDealers',
+  aiChatVendor: 'aiChat', responseTime: 'aiChat',
+};
+
+// Short human labels for article:section (the pillar anchors above are full sentences).
+export const SECTION_LABEL = {
+  category: 'Facebook Marketplace auto posting',
+  listingSw: 'Facebook Marketplace listing software',
+  dealers: 'Facebook Marketplace for car dealers',
+  mktgHub: 'Car dealership marketing',
+  photoEditor: 'Car photography & merchandising',
+  integHub: 'Integrations',
+  compareHub: 'Comparisons',
+  rvDealers: 'RV dealer software',
+  aiChat: 'AI chat for car dealers',
+  aiTools: 'Facebook AI tools',
+  report2026: 'Original research',
+  home: 'AutoLander',
+};
+
+// Resolve a page object to its pillar {key, url, name, section}. Explicit PILLAR_OF wins; otherwise
+// the visible breadcrumb parent (every page on the site renders one, and it is exactly the
+// "belongs to" relationship a reader sees), unless that parent is Home — a top-level page's
+// pillar is itself, and a node declaring itself part of itself is noise, so return null.
+export function pillarFor(page) {
+  const explicit = page.key && PILLAR_OF[page.key];
+  if (explicit && NAV[explicit]) {
+    const n = NAV[explicit];
+    return { key: explicit, url: SITE.origin + n.path, name: n.anchor, section: SECTION_LABEL[explicit] || n.anchor };
+  }
+  const bc = page.breadcrumbs || [];
+  const parent = bc.length >= 2 ? bc[bc.length - 2] : null;
+  if (!parent || !parent.url || parent.url === SITE.origin + '/') return null;
+  const navKey = Object.keys(NAV).find((k) => SITE.origin + NAV[k].path === parent.url);
+  return {
+    key: navKey || null,
+    url: parent.url,
+    name: parent.name,
+    section: (navKey && SECTION_LABEL[navKey]) || parent.name,
+  };
 }
 
 // Sitemap is assembled in ONE place — scripts/build-seo-pages.mjs (the single sitemap/robots writer).

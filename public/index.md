@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander is a native desktop application that car dealerships and independent sales reps use to merchandise inventory on Facebook Marketplace. Connect the inventory source you already run — a DMS export, an SFTP or CSV feed, or your dealer website — and AutoLander prepares and posts listings, keeps asking prices in step with the feed, removes sold units, enhances listing photos with AI, and reports which posts produced buyer conversations. Plans start at $39/month; every demo includes 5 free posts and requires no credit card.
 

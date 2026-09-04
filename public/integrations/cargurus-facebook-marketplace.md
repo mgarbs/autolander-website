@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/integrations/cargurus-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Yes — CarGurus is a directly supported feed source. AutoLander reads your CarGurus inventory feed, builds a configurable queue of eligible Marketplace listings, refreshes prices, and reconciles sold units. It also upgrades listing assets with an AI Photo Studio, walkaround video and post-to-sale attribution. Plans from $39/mo.
 

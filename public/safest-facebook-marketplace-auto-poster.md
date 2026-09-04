@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/safest-facebook-marketplace-auto-poster/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** No Facebook Marketplace auto poster can guarantee account safety or listing approval. Meta’s Terms prohibit accessing or collecting data from its products through automated means without prior permission, and Marketplace eligibility, features and limits can change by account or market. AutoLander is a native desktop app with local session storage and a configurable posting queue, but that architecture does not create Meta permission or override Meta’s rules. Review the current dealer posting guide before using any tool.
 

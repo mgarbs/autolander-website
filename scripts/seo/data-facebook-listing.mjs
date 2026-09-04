@@ -20,9 +20,11 @@ export const PAGES = [
   {
     key: 'fbListing',
     title: 'Facebook Listing Software for Car Dealers | AutoLander',
+    // Differentiated 2026-09-03: this page owns the single-rep "list my cars on Facebook" intent —
+    // one seat, own profile, own units — as distinct from the whole-lot listing-software pillar.
     description:
-      'Facebook listing software for car dealers that auto-posts inventory to Marketplace, enhances photos and '
-      + 'removes sold cars. From $39/mo, 5 free posts.',
+      'Facebook listing software for a sales rep listing their own units: post from your own profile, '
+      + 'keep prices current and sold cars gone, no dealer-group contract. From $39/mo.',
     ogType: 'website',
     eyebrow: 'For car dealers & sales reps',
     h1: 'Facebook listing tool & software for car dealers',

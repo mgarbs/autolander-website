@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/contact/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander is built and operated by AutoLander LLC, 5830 Memorial Hwy, Apt 1322, Tampa, FL 33615, United States. Sales and demo requests: sales@autolander.ai. Existing customers with a posting, feed or billing problem: support@autolander.ai. Phone (919) 280-0967, 9am–6pm US Eastern, Monday to Friday. We answer email within one business day.
 

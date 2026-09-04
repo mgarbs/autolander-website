@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/facebook-marketplace-for-car-dealers/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Facebook Marketplace can introduce vehicles to local shoppers, but Meta says it is intended for consumers and that businesses listing there may be blocked or have listings removed. Dealers must confirm permission, account eligibility and current monthly limits before posting. AutoLander is a native desktop app that prepares and manages inventory listings, enhances photos, removes sold units and tracks which listings sold cars. It cannot override Meta’s rules or account limits. Plans start at $39/mo with 5 free posts.
 
@@ -129,9 +129,12 @@ Yes. When a car is marked sold or drops out of the feed, AutoLander removes the 
 
 - [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Why AutoLander posts to Facebook Marketplace only](https://autolander.ai/why-facebook-marketplace-only/)
+- [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers/)
 - [Facebook Marketplace listing software & tools](https://autolander.ai/facebook-marketplace-listing-software/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
 - [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [Dealer inventory management: getting cars from the DMS to buyers](https://autolander.ai/dealer-inventory-management/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [Best Facebook Marketplace auto-posting tools (2026 comparison)](https://autolander.ai/compare/)
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)

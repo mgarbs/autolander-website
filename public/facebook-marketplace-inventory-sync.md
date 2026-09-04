@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/facebook-marketplace-inventory-sync/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Facebook Marketplace inventory sync keeps your Marketplace listings automatically matched to your live lot — instead of editing posts by hand. AutoLander pulls vehicles, photos and prices from your CarGurus, Cars.com or custom feed, posts new arrivals as new VINs appear, updates a listing when its feed price changes, and removes a listing on the next reconciliation after the feed marks the car sold. Plans from $39/mo with 5 free posts.
 
@@ -103,6 +103,7 @@ Inventory sync keeps eligible listings accurate over time. AutoLander first load
 
 ## Related
 
+- [Dealer inventory management: getting cars from the DMS to buyers](https://autolander.ai/dealer-inventory-management/)
 - [Facebook Marketplace listing software & tools](https://autolander.ai/facebook-marketplace-listing-software/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
 - [Facebook Marketplace integrations & DMS feeds](https://autolander.ai/integrations/)

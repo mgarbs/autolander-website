@@ -49,3 +49,4 @@ User-agent: meta-externalagent
 Allow: /
 
 Sitemap: https://autolander.ai/sitemap.xml
+Sitemap: https://autolander.ai/image-sitemap.xml

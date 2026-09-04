@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/ai-chat-for-car-dealers/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AI chat for car dealers is software that converses with buyers on a dealership’s behalf, most visibly on Facebook Marketplace. Done badly it invents prices and burns trust; done well it demands live inventory data and instant human handoff. AutoLander does neither: it sends no automated replies and does not handle your messages at all. It keeps every listing’s data accurate so the human who answers has the right facts.
 
@@ -91,6 +91,9 @@ With process: Messenger notifications on a phone, a named owner per shift, and l
 
 ## Related
 
+- [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers/)
+- [Questions to ask any AI chat vendor before you connect your inbox](https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/)
+- [Marketplace response time: why the first reply wins the appointment](https://autolander.ai/guide/marketplace-response-time-for-car-dealers/)
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [How to get more car sales leads](https://autolander.ai/guide/car-sales-leads/)
 - [Facebook Marketplace assistant](https://autolander.ai/facebook-marketplace-assistant/)

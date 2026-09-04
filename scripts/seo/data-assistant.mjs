@@ -19,9 +19,11 @@ export const PAGES = [
   {
     key: 'assistant',
     title: 'Facebook Marketplace Assistant for Car Dealers | AutoLander',
+    // Differentiated 2026-09-03: this page owns the "what does the assistant do FOR me" intent —
+    // the AI description, photo and queue help — and states what it will never do (the inbox).
     description:
-      'Facebook Marketplace assistant for dealers: auto-post inventory, enhance photos, write descriptions, '
-      + 'sync prices and remove sold units. From $39/mo.',
+      'What a Facebook Marketplace assistant should handle for a dealer — descriptions, photos, the '
+      + 'posting queue — and the one thing AutoLander’s never will: your buyer messages. From $39/mo.',
     ogType: 'website',
     eyebrow: 'For car dealers & sales reps',
     h1: 'Facebook Marketplace assistant for car dealers',

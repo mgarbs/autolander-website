@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/guide/car-dealership-marketing/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Car dealership marketing is the work of putting your actual inventory in front of people who are ready to buy a car, making each vehicle look worth the money, and answering interested buyers fast. In 2026 the highest-intent free channel for used inventory is Facebook Marketplace, followed by Google (your Business Profile and reviews) and your own website. Paid channels work only after those three are handled.
 

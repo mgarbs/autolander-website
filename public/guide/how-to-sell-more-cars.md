@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/guide/how-to-sell-more-cars/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Dealerships sell more cars by pulling six levers, in order: get every unit in front of more in-market buyers (coverage), make each unit look worth the money (photos and description), price into the search filters, answer first (speed), stop advertising sold cars (leaks), and put budget only where attribution says cars actually came from. None of the six requires more ad spend.
 

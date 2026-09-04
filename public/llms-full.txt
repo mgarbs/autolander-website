@@ -21,7 +21,7 @@ Contact: sales@autolander.ai · (919) 280-0967
 
 Source: https://autolander.ai/facebook-marketplace-auto-poster/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** A Facebook Marketplace auto poster is the execution layer for dealership posting: it takes eligible vehicles from your inventory, puts them into a controlled queue and works through that queue without a salesperson reopening Marketplace for every VIN. AutoLander runs the queue from your own computer, provides pacing controls, refreshes price changes and removes sold units. It can manage a whole-lot workflow, while actual publishing remains subject to Meta’s eligibility and listing limits. Plans start at $39/mo with 5 free posts.
 
@@ -131,12 +131,14 @@ Meta’s Terms prohibit automated access without prior permission, while Marketp
 - [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
 - [Facebook listing software & tool](https://autolander.ai/facebook-listing-software/)
 - [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [Dealer inventory management: getting cars from the DMS to buyers](https://autolander.ai/dealer-inventory-management/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
 - [Facebook Marketplace integrations & DMS feeds](https://autolander.ai/integrations/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
 - [Best Facebook Marketplace auto-posting tools (2026 comparison)](https://autolander.ai/compare/)
 - [Guide: Facebook Marketplace automation (the honest version)](https://autolander.ai/guide/facebook-marketplace-automation/)
+- [Why AutoLander posts to Facebook Marketplace only](https://autolander.ai/why-facebook-marketplace-only/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [RV dealer software for Facebook Marketplace](https://autolander.ai/rv-dealer-software/)
 - [Facebook Marketplace Used-Car Report 2026 (original data)](https://autolander.ai/facebook-marketplace-used-car-report-2026/)
@@ -153,7 +155,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/facebook-marketplace-auto-poster-pricing/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander has four published monthly options: Starter is $39 for 5 posts/day, Growth is $59 for 10 posts/day, Pro is $79 for 15 posts/day, and the Dealer Plan starts at $117 for a three-seat team. Start with 5 free posts and no credit card; annual billing is optional at a lower monthly equivalent.
 
@@ -230,6 +232,26 @@ Yes. Every plan starts with 5 free posts and no credit card, so you can post rea
 
 If you want a guided walkthrough on your own inventory first, book a demo using the button below. A demo is the fastest way to see automatic posting, the AI-enhanced photos and the team dashboard running on cars from your actual lot.
 
+## How long does it take to post my whole lot?
+
+Honestly: longer than the hero on our homepage makes it look, and we would rather you know before you buy. Each seat has a daily posting allowance — Starter 5, Growth 10, Pro 15 — and a Dealer Plan stacks seats, so the time to first-cover a lot is simply units divided by the daily total. A single Starter seat clears a 60-unit lot in about 12 working days; a three-seat Dealer Plan on Pro clears 300 units in about a week.
+
+Two things soften that. First, the allowance is a per-day pace, not a one-time cap: once the lot is covered, the daily budget goes to new arrivals, price changes and re-posts, which is the steady state that matters. Second, Meta’s own listing limits apply to every seller on Marketplace regardless of tool — our listing limits guide explains them — so a slower, steadier pace is also the one that keeps an account healthy. AutoLander’s daily allowances describe workflow capacity, never permission to exceed what your account shows.
+
+## Days to cover your lot, by plan
+
+Working days to post every unit once, assuming every unit is eligible and the account’s own Marketplace limits allow the pace. After first coverage the same daily budget maintains the lot.
+
+| Lot size | Starter (5/day) | Growth (10/day) | Pro (15/day) | Dealer Plan, 3 Pro seats (45/day) |
+| --- | --- | --- | --- | --- |
+| 30 units | 6 days | 3 days | 2 days | 1 day |
+| 60 units | 12 days | 6 days | 4 days | 2 days |
+| 100 units | 20 days | 10 days | 7 days | 3 days |
+| 150 units | 30 days | 15 days | 10 days | 4 days |
+| 300 units | 60 days | 30 days | 20 days | 7 days |
+
+_Days are rounded up. A Dealer Plan can mix Starter, Growth and Pro seats; the daily total is the sum of the seats. Meta eligibility and listing limits apply on top of every figure here and can make the real pace slower — never faster._
+
 ## A note on honesty
 
 AutoLander’s pricing above (Starter $39, Growth $59, Pro $79, Dealer Plan from $117 monthly, 5 free posts, no card) is our own published pricing. Competitor prices are listed as publicly advertised or reported and can change at any time — always verify on each vendor’s site. Meta account eligibility, listing limits and terms apply regardless of the plan you buy, and no vendor can guarantee Meta approval or access. Daily plan allowances describe AutoLander workflow capacity, not permission to exceed the limits shown by Meta.
@@ -256,6 +278,10 @@ There is no permanently cheapest option because plans and usage charges change. 
 
 No annual contract is required. Monthly billing is available, or you can choose annual billing for a lower monthly equivalent. Pricing is published rather than hidden behind a sales quote.
 
+### How long does it take to post my whole lot with AutoLander?
+
+Divide your units by the daily allowance of your seats: Starter posts 5 a day, Growth 10, Pro 15, and a Dealer Plan adds seats together. A 60-unit lot takes about 12 working days on one Starter seat, or about 2 days on three Pro seats. Meta’s own listing limits apply on top and can slow that pace; after first coverage the same daily budget maintains new arrivals, price changes and re-posts.
+
 ### What is included in each plan?
 
 Starter ($39/mo) supports 5 posts/day, Growth ($59/mo) supports 10, and Pro ($79/mo) supports 15, with increasing AI and support allowances. The Dealer Plan starts at three seats, allows any tier mix, and adds the live manager dashboard, team presence and attribution analytics.
@@ -281,7 +307,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/facebook-marketplace-inventory-sync/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Facebook Marketplace inventory sync keeps your Marketplace listings automatically matched to your live lot — instead of editing posts by hand. AutoLander pulls vehicles, photos and prices from your CarGurus, Cars.com or custom feed, posts new arrivals as new VINs appear, updates a listing when its feed price changes, and removes a listing on the next reconciliation after the feed marks the car sold. Plans from $39/mo with 5 free posts.
 
@@ -380,6 +406,7 @@ Inventory sync keeps eligible listings accurate over time. AutoLander first load
 
 ## Related
 
+- [Dealer inventory management: getting cars from the DMS to buyers](https://autolander.ai/dealer-inventory-management/)
 - [Facebook Marketplace listing software & tools](https://autolander.ai/facebook-marketplace-listing-software/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
 - [Facebook Marketplace integrations & DMS feeds](https://autolander.ai/integrations/)
@@ -400,7 +427,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/bulk-post-cars-to-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** To bulk post cars to Facebook Marketplace, load your whole inventory from a feed and let AutoLander build a configurable queue of eligible vehicles. AutoLander runs on your own computer, keeps feed data current and removes sold units. Meta’s Help Center currently says sellers may create up to 5 new Vehicles listings per calendar month and 20 new listings total per calendar month; the limits shown in your account control, and AutoLander cannot override them. Plans start at $39/mo.
 
@@ -520,7 +547,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/safest-facebook-marketplace-auto-poster/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** No Facebook Marketplace auto poster can guarantee account safety or listing approval. Meta’s Terms prohibit accessing or collecting data from its products through automated means without prior permission, and Marketplace eligibility, features and limits can change by account or market. AutoLander is a native desktop app with local session storage and a configurable posting queue, but that architecture does not create Meta permission or override Meta’s rules. Review the current dealer posting guide before using any tool.
 
@@ -618,7 +645,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander connects your inventory to Facebook Marketplace in one of two honest ways: it reads a directly supported feed source (CarGurus or Cars.com), or it ingests a custom feed/export from your DMS or website platform (vAuto, DealerCenter, Dealer.com, HomeNet, Frazer, CDK Global, Tekion). Either way, AutoLander loads the inventory, manages a queue of eligible Marketplace listings, refreshes prices and reconciles sold units — with AI photos, walkaround video and post-to-sale attribution. Meta account eligibility and listing limits still apply. Plans from $39/mo.
 
@@ -725,7 +752,17 @@ AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and
 
 ## Related
 
+- [CarGurus to Facebook Marketplace](https://autolander.ai/integrations/cargurus-facebook-marketplace/)
+- [Cars.com to Facebook Marketplace](https://autolander.ai/integrations/cars-com-facebook-marketplace/)
+- [vAuto to Facebook Marketplace](https://autolander.ai/integrations/vauto-facebook-marketplace/)
+- [DealerCenter to Facebook Marketplace](https://autolander.ai/integrations/dealercenter-facebook-marketplace/)
+- [Dealer.com to Facebook Marketplace](https://autolander.ai/integrations/dealer-com-facebook-marketplace/)
+- [HomeNet to Facebook Marketplace](https://autolander.ai/integrations/homenet-facebook-marketplace/)
+- [Frazer to Facebook Marketplace](https://autolander.ai/integrations/frazer-facebook-marketplace/)
+- [CDK to Facebook Marketplace](https://autolander.ai/integrations/cdk-facebook-marketplace/)
+- [Tekion to Facebook Marketplace](https://autolander.ai/integrations/tekion-facebook-marketplace/)
 - [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [Dealer inventory management: getting cars from the DMS to buyers](https://autolander.ai/dealer-inventory-management/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
 - [Facebook Marketplace listing software & tools](https://autolander.ai/facebook-marketplace-listing-software/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
@@ -746,7 +783,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/cargurus-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Yes — CarGurus is a directly supported feed source. AutoLander reads your CarGurus inventory feed, builds a configurable queue of eligible Marketplace listings, refreshes prices, and reconciles sold units. It also upgrades listing assets with an AI Photo Studio, walkaround video and post-to-sale attribution. Plans from $39/mo.
 
@@ -852,7 +889,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/cars-com-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Yes — Cars.com is a directly supported feed source. AutoLander reads your Cars.com inventory feed, builds a configurable queue of eligible Marketplace listings, refreshes prices, and reconciles sold units. It also upgrades listing assets with an AI Photo Studio, walkaround video and post-to-sale attribution. Plans from $39/mo.
 
@@ -958,7 +995,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/vauto-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander does not have a one-click native vAuto integration. Instead it connects through a dealer-authorized custom feed/export, AutoLander reads that output, and it prepares and syncs eligible vehicles on Facebook Marketplace — with AI photos, walkaround video and automatic sold-removal. Plans from $39/mo.
 
@@ -1064,7 +1101,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/dealercenter-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander does not have a one-click native DealerCenter integration. Instead it connects through a dealer-authorized custom feed/export, AutoLander reads that output, and it prepares and syncs eligible vehicles on Facebook Marketplace — with AI photos, walkaround video and automatic sold-removal. Plans from $39/mo.
 
@@ -1170,7 +1207,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/dealer-com-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander does not have a one-click native Dealer.com integration. Instead it connects through a dealer-authorized custom feed/export, AutoLander reads that output, and it prepares and syncs eligible vehicles on Facebook Marketplace — with AI photos, walkaround video and automatic sold-removal. Plans from $39/mo.
 
@@ -1276,7 +1313,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/homenet-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander does not have a one-click native HomeNet integration. Instead it connects through a dealer-authorized custom feed/export, AutoLander reads that output, and it prepares and syncs eligible vehicles on Facebook Marketplace — with AI photos, walkaround video and automatic sold-removal. Plans from $39/mo.
 
@@ -1382,7 +1419,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/frazer-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander does not have a one-click native Frazer integration. Instead it connects through a dealer-authorized custom feed/export, AutoLander reads that output, and it prepares and syncs eligible vehicles on Facebook Marketplace — with AI photos, walkaround video and automatic sold-removal. Plans from $39/mo.
 
@@ -1488,7 +1525,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/cdk-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander does not have a one-click native CDK Global integration. Instead it connects through a dealer-authorized custom feed/export, AutoLander reads that output, and it prepares and syncs eligible vehicles on Facebook Marketplace — with AI photos, walkaround video and automatic sold-removal. Plans from $39/mo.
 
@@ -1594,7 +1631,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/integrations/tekion-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander does not have a one-click native Tekion integration. Instead it connects through a dealer-authorized custom feed/export, AutoLander reads that output, and it prepares and syncs eligible vehicles on Facebook Marketplace — with AI photos, walkaround video and automatic sold-removal. Plans from $39/mo.
 
@@ -1700,7 +1737,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/facebook-marketplace-listing-software/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Facebook Marketplace listing software is the creation and quality-control layer: it turns an inventory record into the year, make, model, trim, mileage, price, photos and description a shopper sees. AutoLander helps a dealer select eligible vehicles, review source fields, prepare stronger creative and keep approved listings aligned with inventory changes. A Marketplace listing and a Meta vehicle-catalog record are different outputs; AutoLander focuses on the Marketplace-side workflow. Plans start at $39/mo with 5 free posts.
 
@@ -1829,11 +1866,11 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 # Facebook listing tool & software for car dealers
 
-> Facebook listing software for car dealers that auto-posts inventory to Marketplace, enhances photos and removes sold cars. From $39/mo, 5 free posts.
+> Facebook listing software for a sales rep listing their own units: post from your own profile, keep prices current and sold cars gone, no dealer-group contract. From $39/mo.
 
 Source: https://autolander.ai/facebook-listing-software/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** For a car dealer, "Facebook listing" means getting your vehicles in front of buyers on Facebook — and the place buyers actually browse is Facebook Marketplace. AutoLander is Facebook listing software (a native desktop app) that automatically lists your inventory on Marketplace, enhances every photo, keeps listings current and removes sold units — with post-to-sale attribution. Plans from $39/mo with 5 free posts.
 
@@ -1943,7 +1980,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/facebook-marketplace-for-car-dealers/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Facebook Marketplace can introduce vehicles to local shoppers, but Meta says it is intended for consumers and that businesses listing there may be blocked or have listings removed. Dealers must confirm permission, account eligibility and current monthly limits before posting. AutoLander is a native desktop app that prepares and manages inventory listings, enhances photos, removes sold units and tracks which listings sold cars. It cannot override Meta’s rules or account limits. Plans start at $39/mo with 5 free posts.
 
@@ -2068,9 +2105,12 @@ Yes. When a car is marked sold or drops out of the feed, AutoLander removes the 
 
 - [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Why AutoLander posts to Facebook Marketplace only](https://autolander.ai/why-facebook-marketplace-only/)
+- [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers/)
 - [Facebook Marketplace listing software & tools](https://autolander.ai/facebook-marketplace-listing-software/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
 - [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [Dealer inventory management: getting cars from the DMS to buyers](https://autolander.ai/dealer-inventory-management/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [Best Facebook Marketplace auto-posting tools (2026 comparison)](https://autolander.ai/compare/)
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
@@ -2092,7 +2132,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/facebook-ai-tools/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Facebook AI tools are software that uses AI to do the work of selling on Facebook Marketplace for you — enhancing photos, writing listings, managing eligible vehicles in a queue, and assisting with buyer messages. AutoLander bundles all four in one native desktop app built for car dealers, from $39/mo with 5 free posts and no credit card.
 
@@ -2200,7 +2240,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/facebook-marketplace-automation/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Facebook Marketplace automation is software that runs your Marketplace listings for you — posting your whole inventory, refreshing prices, and removing sold units automatically instead of by hand. AutoLander is a native desktop app with a configurable posting queue, and enhances every photo with an AI Photo Studio. Plans from $39/mo with 5 free posts.
 
@@ -2275,11 +2315,11 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 # Facebook Marketplace assistant for car dealers
 
-> Facebook Marketplace assistant for dealers: auto-post inventory, enhance photos, write descriptions, sync prices and remove sold units. From $39/mo.
+> What a Facebook Marketplace assistant should handle for a dealer — descriptions, photos, the posting queue — and the one thing AutoLander’s never will: your buyer messages. From $39/mo.
 
 Source: https://autolander.ai/facebook-marketplace-assistant/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** A Facebook Marketplace assistant is software that acts like a tireless team member for your Marketplace listings — posting your inventory, keeping it current and enhancing every photo. AutoLander handles the listing busywork; it does not go near your inbox, impersonate a salesperson or message buyers. Plans start at $39/mo with 5 free posts.
 
@@ -2377,11 +2417,11 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 # Facebook autoposter for car dealers
 
-> Facebook autoposter for car dealers: automatically post inventory to Marketplace, enhance photos and remove sold cars. From $39/mo, 5 free posts.
+> A Facebook autoposter for car dealers, explained by what runs while nobody is watching: the schedule, the daily pace, price sync and sold-car removal. From $39/mo, 5 free posts.
 
 Source: https://autolander.ai/facebook-autoposter/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** A Facebook autoposter is software that automatically posts your listings to Facebook for you. For a car dealer, that means posting your inventory to Facebook Marketplace — where local buyers shop — instead of creating each listing by hand. AutoLander is a native desktop app that loads your lot into a managed workflow, enhances every photo and removes sold units, from $39/mo with 5 free posts.
 
@@ -2455,7 +2495,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/guide/car-dealership-marketing/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Car dealership marketing is the work of putting your actual inventory in front of people who are ready to buy a car, making each vehicle look worth the money, and answering interested buyers fast. In 2026 the highest-intent free channel for used inventory is Facebook Marketplace, followed by Google (your Business Profile and reviews) and your own website. Paid channels work only after those three are handled.
 
@@ -2557,7 +2597,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/guide/car-dealership-marketing-ideas/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** The dealership marketing ideas that reliably sell cars are unglamorous: list every unit on Facebook Marketplace daily, upgrade the photos, answer messages in seconds, farm reviews, and remarket to your own customer list. Below are 27 ideas grouped by what they cost — start with the free ones; they outperform most paid ones.
 
@@ -2651,7 +2691,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/guide/car-sales-leads/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** The strongest car sales leads are people already messaging about a specific vehicle — which makes your own inventory listings the best lead generation channel a dealership has. Put every unit on Facebook Marketplace with real photos and prices, answer within a minute at any hour, capture a phone number early, and book the appointment in the same conversation. Bought third-party leads are shared, cold and slow by comparison.
 
@@ -2740,7 +2780,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/guide/social-media-for-car-dealers/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** For car dealers, social media splits into two different jobs: Facebook Marketplace is where local buyers search inventory and transactions start — it deserves daily, full-inventory coverage. Your Facebook page, Reels and Google posts are the trust layer buyers check before they visit. Most stores over-invest in engagement content and under-invest in the channel that actually sells cars.
 
@@ -2832,7 +2872,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/guide/how-to-sell-more-cars/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Dealerships sell more cars by pulling six levers, in order: get every unit in front of more in-market buyers (coverage), make each unit look worth the money (photos and description), price into the search filters, answer first (speed), stop advertising sold cars (leaks), and put budget only where attribution says cars actually came from. None of the six requires more ad spend.
 
@@ -2921,7 +2961,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/guide/ai-for-car-dealerships/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** The AI that pays for itself at a car dealership today does jobs the store already knows it needs done: turning lot photos into showroom images, writing accurate listing descriptions for every VIN, and generating walkaround videos from photos. Inbox chatbots are the category to treat carefully — demand inventory-true answers and instant human handoff. AI that promises to "transform" the store without naming the job it does usually transforms the software budget instead.
 
@@ -3016,7 +3056,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/ai-chat-for-car-dealers/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AI chat for car dealers is software that converses with buyers on a dealership’s behalf, most visibly on Facebook Marketplace. Done badly it invents prices and burns trust; done well it demands live inventory data and instant human handoff. AutoLander does neither: it sends no automated replies and does not handle your messages at all. It keeps every listing’s data accurate so the human who answers has the right facts.
 
@@ -3103,6 +3143,9 @@ With process: Messenger notifications on a phone, a named owner per shift, and l
 
 ## Related
 
+- [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers/)
+- [Questions to ask any AI chat vendor before you connect your inbox](https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/)
+- [Marketplace response time: why the first reply wins the appointment](https://autolander.ai/guide/marketplace-response-time-for-car-dealers/)
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [How to get more car sales leads](https://autolander.ai/guide/car-sales-leads/)
 - [Facebook Marketplace assistant](https://autolander.ai/facebook-marketplace-assistant/)
@@ -3123,7 +3166,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/ai-car-photo-editor/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** An AI car photo editor takes the vehicle photos a dealership already has — phone shots on a crowded lot, watermarked feed images — and replaces the background with a clean showroom, outdoor scene, or the dealer’s own storefront. AutoLander’s AI Photo Studio composites rather than repaints: the car’s real paint, wheels, trim and flaws stay exactly as photographed, so listings look professional and stay honest. It runs automatically on your whole inventory.
 
@@ -3229,7 +3272,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/rv-dealer-software/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander is RV dealer software for the selling side: it syncs your RV inventory, posts every unit to Facebook Marketplace as an RV/Camper listing (not a mislabeled car), upgrades the photos with an AI studio, keeps asking prices in step with your feed, and removes sold units automatically. It is the Marketplace sales layer that works alongside your DMS — travel trailers, fifth wheels, motorhomes and toy haulers included.
 
@@ -3302,9 +3345,12 @@ Same simple model as for car dealers: plans from $39/mo with 5 free posts and no
 
 ## Related
 
+- [How to sell RVs on Facebook Marketplace as a dealer](https://autolander.ai/guide/how-to-sell-rvs-on-facebook-marketplace/)
+- [RV photos that sell on Facebook Marketplace](https://autolander.ai/guide/rv-photos-for-facebook-marketplace/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
+- [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
@@ -3322,7 +3368,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/facebook-marketplace-used-car-report-2026/  
 Author: Michael Garber, Founder, AutoLander  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander analyzed anonymized data from 196 U.S. dealerships using its platform — 74,000+ synced vehicles and 10,823 priced dealer listings posted to Facebook Marketplace, including 17,700+ posts in the last 90 days. Headline findings: the median asking price of a dealer unit posted to Marketplace is $28,295; 45% of posted units are priced above $30,000; the five most-listed vehicles are all pickups and 4x4s, led by the Ford F-150; 22.6% of listings change price after going live; and Thursday is the biggest day for new dealer listings — 3.3× busier than Sunday.
 
@@ -3468,7 +3514,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/about/  
 Author: Michael Garber, Founder, AutoLander  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander is Facebook Marketplace software for U.S. car dealerships, built and operated by AutoLander LLC. Dealers connect an inventory feed; the platform posts vehicles to Marketplace, keeps prices current, removes sold units and runs AI photo editing on listing images. Our published research is written by founder Michael Garber and computed directly from anonymized, aggregate platform data — never from surveys or estimates.
 
@@ -3547,7 +3593,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 
 Source: https://autolander.ai/contact/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander is built and operated by AutoLander LLC, 5830 Memorial Hwy, Apt 1322, Tampa, FL 33615, United States. Sales and demo requests: sales@autolander.ai. Existing customers with a posting, feed or billing problem: support@autolander.ai. Phone (919) 280-0967, 9am–6pm US Eastern, Monday to Friday. We answer email within one business day.
 
@@ -3647,6 +3693,600 @@ AutoLander LLC, a United States limited liability company founded by Michael Gar
 - [Best Facebook Marketplace auto-posting tools (2026 comparison)](https://autolander.ai/compare/)
 - [Facebook Marketplace integrations & DMS feeds](https://autolander.ai/integrations/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# Why AutoLander posts to Facebook Marketplace only
+
+> AutoLander posts to Facebook Marketplace and nowhere else — on purpose. The trade-off, who it is wrong for, and why one channel done right beats five done shallow.
+
+Source: https://autolander.ai/why-facebook-marketplace-only/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 3, 2026
+
+**Short answer:** AutoLander does not post to Craigslist, OfferUp, eBay Motors or any channel other than Facebook Marketplace. That is a decision, not a gap. Marketplace is the one free channel where a dealer’s local buyers already are, where the listing format is vehicle-native, and where keeping a whole lot accurate — prices, sold units, photos — is a daily job worth doing perfectly. Doing that one job well is harder than doing five channels shallowly, and the dealers who get the most from Marketplace are the ones whose listings are never stale.
+
+## Does AutoLander post to Craigslist, OfferUp or eBay Motors?
+
+No. AutoLander posts dealer inventory to Facebook Marketplace and only to Facebook Marketplace. If a comparison table lists "multi-platform posting" and shows a dash in the AutoLander column, the dash is accurate. This page explains why it is there.
+
+Several tools in this category advertise syndication to five or more channels. Some do it well. We looked at building it, priced what it would cost in engineering and — more importantly — in listing quality, and decided the product is better for a dealer if it does one channel completely than several partially.
+
+## What "one channel, done completely" actually means
+
+A Marketplace listing is not a one-time post. It is a record that has to stay true for as long as the car is on the lot, and disappear the day it is not. Every one of these is a job AutoLander does for the whole inventory, every day:
+
+- Posts eligible vehicles into the correct Marketplace category — a car as a car, a travel trailer as an RV/Camper — with year, make, model, mileage, price and description filled from the feed. See the auto poster page for how the queue works.
+- Pushes every price change from the feed to the live listing, so a Tuesday markdown is on Marketplace Tuesday, not whenever someone remembers.
+- Pulls sold units down automatically as the inventory feed marks them sold, so buyers stop messaging about cars that are gone.
+- Re-queues new arrivals without anyone opening Marketplace, and works the whole lot inside the account’s listing limits rather than around them — the safety page covers what those limits are.
+- Runs AI photo editing built around Marketplace’s thumbnail sizes and feed layout, because the first photo is what gets the tap.
+
+## Why not just add the other channels too?
+
+Because every additional channel has its own listing format, its own category rules, its own limits and its own way of going stale — and each one halves the attention the product can give the channel that actually produces a dealer’s conversations. Craigslist vehicle posts are paid in most metros and expire on a schedule. OfferUp is phone-first with a different photo pipeline. eBay Motors is a national auction-and-fixed-price format with fees and a listing lifecycle that has nothing in common with a local Marketplace post.
+
+A tool that syndicates to all of them tends to publish the same flat listing everywhere and refresh it rarely. That is fine for a one-off private sale. For a dealer with sixty to three hundred units that turn every month, a listing that was true on posting day and wrong by Friday is a liability on every channel it was pushed to. We would rather be the tool that keeps one channel perfectly current than the tool that keeps five approximately current.
+
+## AutoLander is the right fit if
+
+- Facebook Marketplace is where your local buyers message you, and you want the whole lot on it, kept accurate.
+- Stale listings — old prices, sold cars still up — are a real cost to your team’s time and reputation.
+- You want published pricing from $39/mo rather than a syndication platform priced for a dealer group.
+- You post from your own logged-in session on your own machine and want to keep it that way.
+
+## AutoLander is the wrong fit if
+
+- You need one tool to push inventory to Craigslist, OfferUp, eBay Motors and Marketplace from a single screen — some tools on our comparison page do that.
+- Your Marketplace listings are a minor channel and you would rather not maintain them at all.
+- You are outside the United States; AutoLander serves U.S. dealers and sales reps.
+- You want software to answer buyers for you — we do not do that either, and here is why.
+
+## The honest version
+
+Scope is a promise about where the effort goes. Ours goes into the Marketplace listing being right every day it is live. If a dealer needs breadth over depth, we will say so on a demo call and point at a tool that has it. That has cost us some sales and kept the product sharp.
+
+## Frequently asked questions
+
+### Does AutoLander support multi-platform posting?
+
+No. AutoLander posts to Facebook Marketplace only. It does not syndicate to Craigslist, OfferUp, eBay Motors, Autotrader or any other channel, and there is no plan to add them. The product is built to keep one channel completely current for a whole dealer lot.
+
+### Is Facebook Marketplace enough on its own for a dealership?
+
+For local, free, buyer-initiated conversations it is the strongest single channel most dealers have, and the one most often under-maintained. It is not a replacement for paid portals or the dealer website. AutoLander is the Marketplace layer; it runs alongside whatever else you use.
+
+### Why does keeping listings current matter so much?
+
+A Marketplace listing with the wrong price or a sold car still live costs the team a reply and the buyer their trust. Across a lot that turns monthly, that happens constantly unless something is watching the feed every day. That daily upkeep, not the first post, is where AutoLander spends its effort.
+
+### Can I use AutoLander alongside a multi-channel syndication tool?
+
+Yes. Many dealers run a syndication or DMS-driven distribution product for other portals and use AutoLander specifically for Facebook Marketplace, because the two jobs are different. Nothing in AutoLander conflicts with another tool posting elsewhere.
+
+## Related
+
+- [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
+- [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
+- [Best Facebook Marketplace auto-posting tools (2026 comparison)](https://autolander.ai/compare/)
+- [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# Why AutoLander does not answer your buyers for you
+
+> AutoLander has no autoresponder and never touches your Marketplace inbox. The reasoning, the risk we refuse to sell you, and what we do instead.
+
+Source: https://autolander.ai/why-we-dont-answer-your-buyers/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 3, 2026
+
+**Short answer:** AutoLander does not reply to buyers, does not read your Marketplace messages, and does not route, forward or summarize them. Your team answers every conversation in Messenger, exactly as it does now. We made that choice because an automated reply that quotes a wrong price, misses a trade-in, or keeps chatting when a buyer needs a person does more damage than the after-hours coverage is worth — and because the thing that actually makes a fast reply useful is the listing being right. That part we do.
+
+## Does AutoLander reply to Facebook Marketplace messages?
+
+No. AutoLander has no autoresponder, no AI chat, and no inbox feature of any kind. It does not read incoming messages, does not send replies, does not forward or route conversations to a CRM, and does not surface them in its own interface. When a buyer messages you about a listing, that message arrives in Messenger and a person on your team answers it — the same as it works today.
+
+If a feature comparison shows "AI auto-reply" with a dash next to AutoLander, that is correct. Several competitors on our comparison page do offer it. This page is about why we do not.
+
+## What an automated reply gets wrong, and what it costs
+
+The pitch for inbox automation is coverage: buyers message at 9pm and on Sunday, and the store that answers first often gets the appointment. That is true. Here is the part the pitch leaves out:
+
+- It answers "is it available?" from whatever data it has — and if the feed marked the unit sold an hour ago, it just confirmed a car that is gone. The buyer drives in. That is a lost customer and a review.
+- It quotes a price. If the number came from a listing that was not updated when the lot repriced, the store now has to honor it or explain it. Neither is a good first impression.
+- It keeps chatting. A buyer who is angry, confused, or asking about financing, a trade-in or a title issue needs a person within one message. Most bots need three.
+- It speaks in the store’s name with no one watching. Every reply is a promise the dealership made, whether or not anyone at the dealership saw it.
+- It runs on the same personal account the listings run on. If Meta decides the reply pattern looks automated, the restriction does not stop at the inbox — it can reach the listings and any ad assets the profile administers. See the account safety page.
+
+## What does AutoLander do instead?
+
+It makes the human reply fast and right by making the listing right. Every question a buyer asks in the first message — is it available, what is the price, what is the mileage, can I see more photos — is a question about the listing. AutoLander keeps the answer to each one true: the inventory feed drives the price, sold units come down the day they sell, mileage is the odometer or blank rather than a guess, and the photos are the studio-processed shots rather than the lot snapshot.
+
+When the listing is right, the reply is short. "Yes, it is here — come by any time before six." That is a message a salesperson sends in eight seconds from a phone, and it converts better than any paragraph a bot writes, because the buyer can tell there is a person on the other end.
+
+## If you do want inbox AI, how to buy it without getting hurt
+
+We are not against the category. Some dealers run it well. If you evaluate one, these are the questions that separate a useful product from a liability — we keep the full list on the AI chat for car dealers guide.
+
+1. **Ask where the availability answer comes from** — If it is not reading your live inventory feed — the same one your website reads — it will eventually confirm a sold car. Ask for the sync interval in minutes.
+2. **Ask what it does with a price question** — The safe answer is "it never quotes a price the listing does not show, and it never negotiates." Anything else is a promise your F&I office did not make.
+3. **Ask how fast a human gets the conversation** — One message of frustration, confusion, or any finance, trade or title question should hand off immediately. Ask to see the handoff, not the slide about it.
+4. **Ask which account it runs on and what Meta permission it uses** — If it operates through the same personal profile that holds your listings, a restriction hits everything at once. Ask the vendor to name the exact Meta product and permission.
+
+## The honest version
+
+AutoLander’s job ends when the listing is live and correct. The conversation is yours. We think that is the right line for a dealership’s reputation, and we would rather lose a deal to a vendor who promises a bot than sell you one that quotes the wrong price on a car you already sold.
+
+## Frequently asked questions
+
+### Does AutoLander have an AI autoresponder for Facebook Marketplace?
+
+No. AutoLander does not reply to buyers, does not read or route Marketplace messages, and has no inbox feature. Your team answers every conversation in Messenger. This is a deliberate product decision, not a feature that is coming later.
+
+### Why not offer auto-reply as an option dealers can switch on?
+
+Because the failure modes — confirming a sold car, quoting a stale price, chatting past an angry buyer — land on the dealership’s reputation and the dealership’s Facebook account, not on ours. We are not willing to sell that risk as a convenience.
+
+### How does AutoLander help my team respond faster, then?
+
+By making the listing the buyer is asking about correct: current price from the feed, sold units removed automatically, real mileage or none, and clean photos. When the facts are right, the human reply is one sentence, and one sentence from a real salesperson beats a paragraph from a bot.
+
+### Will AutoLander ever route messages to my CRM?
+
+No. AutoLander does not touch the inbox in any direction — it does not read, forward, summarize or route messages. Lead delivery to a CRM is a job for a tool that is designed and permitted to handle conversations; AutoLander is designed to handle listings.
+
+### What if I want inbox AI anyway?
+
+Buy it from a vendor who reads your live feed, never quotes a price the listing does not show, hands off to a person within one message, and can name the Meta permission it runs under. AutoLander will keep the listings accurate alongside it; the two do not conflict.
+
+## Related
+
+- [AI chat for car dealers — the honest guide](https://autolander.ai/ai-chat-for-car-dealers/)
+- [Why AutoLander posts to Facebook Marketplace only](https://autolander.ai/why-facebook-marketplace-only/)
+- [Marketplace response time: why the first reply wins the appointment](https://autolander.ai/guide/marketplace-response-time-for-car-dealers/)
+- [Questions to ask any AI chat vendor before you connect your inbox](https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
+- [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# Dealer inventory management: getting cars from the DMS to buyers
+
+> Dealer inventory management is two jobs: the DMS holds the record, distribution gets it in front of buyers. How the second job breaks, and how to keep every channel current.
+
+Source: https://autolander.ai/dealer-inventory-management/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 3, 2026
+
+**Short answer:** Dealer inventory management has two halves. The system of record — a DMS or inventory platform like vAuto, DealerCenter, CDK, Tekion, Frazer or HomeNet — holds the truth about every unit: cost, price, mileage, photos, status. Distribution is the second half: getting that truth in front of buyers on the website, the portals and Facebook Marketplace, and keeping it true as prices move and cars sell. The DMS half is a solved problem. The distribution half breaks quietly, one stale listing at a time, and Marketplace is where it breaks most because nothing built into the DMS keeps it current. AutoLander is that missing leg: it reads the inventory you already manage and keeps Marketplace matched to it.
+
+## What is dealer inventory management?
+
+At a car dealership, inventory management is everything that happens to a unit between acquisition and delivery: stocking it in, recording cost and reconditioning, setting and adjusting the price, photographing it, describing it, publishing it wherever buyers look, and retiring it the day it sells. Most of that lives in a dealer management system or an inventory platform, and most dealers already run one well.
+
+The part that is not solved by the DMS is the last mile. A DMS is a system of record — it is very good at knowing what is true about a car. It is not a system of distribution. Getting the record onto the dealer website is usually handled by the website provider; getting it onto paid portals is handled by syndication feeds. Getting it onto Facebook Marketplace, and keeping it right there, is handled by a person with a phone — or by nothing.
+
+## Two jobs, two kinds of software
+
+It helps to name which job a tool does. AutoLander does the second one, for one channel. It is not a DMS, does not replace one, and reads from the one you have.
+
+|  | System of record (DMS / IMS) | Distribution (merchandising) |
+| --- | --- | --- |
+| The job | Know what is true about every unit | Put that truth in front of buyers and keep it true |
+| Examples | vAuto, DealerCenter, CDK, Tekion, Frazer, HomeNet, Dealertrack | Website provider feeds, portal syndication, AutoLander for Facebook Marketplace |
+| Owns | Cost, price, mileage, photos, status, deal | Listings, price sync, sold-unit removal, photo presentation |
+| Fails when | Data is entered wrong | Data is right in the DMS and wrong on the channel |
+| Who notices | Accounting, the desk | The buyer — usually by messaging about a sold car |
+
+_Vendors listed as examples are named for orientation only; AutoLander connects to several of them via a feed or export and has no other relationship with any of them. See integrations._
+
+## Where distribution breaks
+
+Every one of these is a case where the DMS was right and the buyer saw something else. They are the reason "inventory management" is a distribution problem as much as a record-keeping one:
+
+- The price moved in the DMS on Tuesday. The website updated overnight. Marketplace still shows Monday’s number on Friday, because the person who posted it is off and nobody else knows which listings are theirs.
+- The unit sold Saturday. The DMS knows. The Marketplace listing is live until someone remembers, and three buyers message about it on Sunday.
+- A new arrival stocked in with eight photos and a price. It reaches the website automatically. It never reaches Marketplace at all, because posting it is a fifteen-minute manual job and there are forty of them.
+- The salesperson who posted a third of the lot left. Their listings are now on an account nobody at the store can reach, showing prices nobody at the store controls.
+- Twelve listings carry the lot photo with the dumpster in frame, because the studio shots are in the DMS and the phone that posted them had the originals.
+
+## Keeping the Marketplace leg current
+
+The fix is the same one the website provider already applies to the website: treat the DMS as the source, and have software reconcile the channel against it on a schedule. This is what AutoLander does for Facebook Marketplace.
+
+1. **Point it at the source you already run** — A CarGurus or Cars.com feed, a DMS export from vAuto, DealerCenter, CDK, Tekion, Frazer or HomeNet, an SFTP or CSV drop, or the dealer website itself. No re-keying, no second system of record.
+2. **Let it build the queue** — Eligible units become Marketplace listings with year, make, model, mileage, price, photos and description filled from the feed. The auto poster works the queue at a pace you set, inside the account’s limits.
+3. **Reconcile on a schedule** — The feed is re-read; price changes push to the live listing, sold units come down, new arrivals queue. The inventory sync page covers the cadence and what "sold" means to the feed.
+4. **Present it properly** — Studio-grade photos from the AI photo editor, the right category for the unit, and no invented facts: unknown mileage stays blank rather than guessed.
+
+## Does a dealer need Marketplace-specific inventory software?
+
+Only if Marketplace matters to the store. For a dealer who posts two cars a month from a personal profile, no. For a dealer who wants the whole lot on the channel where local buyers message first — and wants it to stay accurate without a salesperson’s afternoon every day — yes, because nothing in the DMS or the website stack does that job.
+
+The test is simple: pick five listings on your Marketplace right now and check them against the DMS. If the prices match and none of them sold last week, you do not need this. If they do not, the problem is distribution, and it will not fix itself.
+
+## What AutoLander is not
+
+It is not a DMS, an IMS, a pricing tool or a CRM, and it does not replace any of them. It reads the inventory you already manage and keeps one channel — Facebook Marketplace — matched to it. It also does not message buyers or touch your inbox; here is why.
+
+## Frequently asked questions
+
+### What is the difference between a DMS and dealer inventory management software?
+
+A DMS is the dealership’s system of record — deals, accounting, inventory, service. Inventory management software usually means the merchandising layer on top: pricing, photos, descriptions and getting units published. Distribution — keeping each channel current — is the piece most often left to a person. AutoLander covers distribution for Facebook Marketplace only.
+
+### Does AutoLander replace vAuto, DealerCenter, CDK or Tekion?
+
+No. AutoLander connects to inventory from those systems through a feed or export and posts it to Facebook Marketplace. The DMS stays the source of truth for every field; AutoLander reads it and never writes back.
+
+### How do I keep Facebook Marketplace listings in sync with my inventory?
+
+Treat the DMS or feed as the source and have software reconcile Marketplace against it on a schedule: price changes pushed to the live listing, sold units removed, new arrivals queued. That is the job AutoLander does; it re-reads the feed and keeps the channel matched to the lot.
+
+### Which inventory sources does AutoLander read?
+
+CarGurus and Cars.com directly; vAuto, DealerCenter, Dealer.com, HomeNet, Frazer, CDK and Tekion via a custom feed or export; SFTP and CSV drops; and most dealer websites. Details for each are on the integrations page.
+
+### What does dealer inventory management software cost?
+
+DMS and IMS pricing is set by those vendors and usually quoted. AutoLander, which handles only the Marketplace distribution leg, publishes its pricing: Starter $39, Growth $59, Pro $79 and Dealer plans from $117 per month, with 5 free posts and no credit card to start.
+
+## Related
+
+- [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [Facebook Marketplace integrations & DMS feeds](https://autolander.ai/integrations/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
+- [Facebook Marketplace listing software & tools](https://autolander.ai/facebook-marketplace-listing-software/)
+- [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [Facebook Marketplace Used-Car Report 2026 (original data)](https://autolander.ai/facebook-marketplace-used-car-report-2026/)
+- [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# How to sell RVs on Facebook Marketplace as a dealer
+
+> How RV dealers sell travel trailers, fifth wheels and motorhomes on Facebook Marketplace: the RV/Camper category, the fields that matter, seasonal pricing and keeping a whole lot current.
+
+Source: https://autolander.ai/guide/how-to-sell-rvs-on-facebook-marketplace/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 3, 2026
+
+**Short answer:** To sell RVs on Facebook Marketplace as a dealer, list every unit in the RV/Camper category — not as a car — with the RV type, length, sleeping capacity, year, make, model and a real price, led by a clean exterior photo. Buyers filter by type and price and message directly, so the listing that is accurate and answered first usually gets the visit. The hard part is not the first listing; it is keeping thirty to two hundred units current through seasonal repricing and sales, which is the job RV-aware software like AutoLander automates.
+
+## Can RV dealers sell on Facebook Marketplace?
+
+Yes. Marketplace has a dedicated RV/Camper vehicle category, and eligible dealer accounts list there every day. For most RV dealers it is the strongest free source of local, ready-to-buy traffic they have — buyers browse by RV type, price and distance, and message the seller directly from the listing.
+
+The two things that go wrong are avoidable. The first is posting an RV as a car or a general item, which puts a travel trailer in front of people shopping for sedans and hides it from the people actually looking for one. The second is treating a listing as done once it is posted: RV prices move with the season and units sell, and a lot of stale listings costs a dealer more replies and more trust than no listings at all.
+
+## Listing an RV on Marketplace, field by field
+
+The RV/Camper flow asks for different fields than the car flow. Fill every one of them.
+
+1. **Choose Vehicle for sale, then RV/Camper** — This is the field that decides who sees the unit. Travel trailers, fifth wheels, Class A/B/C motorhomes, toy haulers and pop-ups all belong here — never under cars or general items.
+2. **Pick the RV type** — Buyers filter on it. A fifth wheel listed as a travel trailer is a unit the fifth-wheel shopper never finds.
+3. **Enter year, make, model and length** — Length is the first thing a buyer with a tow vehicle or a storage spot checks. Sleeping capacity and slide-outs belong in the description if the fields do not ask.
+4. **Set the real price** — Post the advertised price, and change it the day the lot changes it. Placeholder prices fall outside the filters buyers actually use and read as low quality.
+5. **Lead with the right photo** — A clean three-quarter exterior on a plain background, then the awning side, the interior from the door, the kitchen, the bedroom, the bath and the hitch or cab. The RV photos guide covers what makes a thirty-foot subject read in a thumbnail.
+6. **Write a description that names the store** — Floorplan, length, dry weight, slides, generator, awning, any recent service, and the dealership name, city and hours. Buyers message the profile that posted; make sure it is one somebody checks.
+
+## Why RV lots go stale faster than car lots
+
+- Seasonal repricing. RV asking prices move with the calendar in a way car prices do not; a spring listing showing last autumn’s number is a common sight and an easy one for a buyer to spot.
+- Fewer units, longer descriptions. An RV listing carries more fields worth getting right, so each manual edit takes longer and gets postponed longer.
+- One profile, one person. The listings usually live on a single salesperson’s account. When that person is off, the whole lot’s prices are frozen.
+- Sold units linger. A fifth wheel that delivered Saturday is still live Monday, and the three buyers who messaged about it are now three people who think the store does not answer.
+
+## How does an RV dealer keep a whole lot current on Marketplace?
+
+The same way the website is kept current: treat the inventory feed as the source and let software reconcile Marketplace against it. AutoLander was built with RV feeds as first-class citizens. It reads your inventory source, posts each unit into the RV/Camper category with RV-appropriate details, pushes price changes from the feed, removes sold units automatically, and queues new arrivals — all from your own logged-in session, within the account’s listing limits. The RV dealer software page covers the workflow; the inventory sync page covers the feed cadence.
+
+What it does not do is talk to buyers. Messages arrive in Messenger and your team answers them, as now. AutoLander’s contribution is that the length, price and availability the buyer is asking about are already right.
+
+## Meta’s rules still apply
+
+Marketplace eligibility, category rules and listing limits are Meta’s, and they change. No tool — including AutoLander — can guarantee an account will never be actioned. The policy and safety guide is the honest version of what that means for a dealer.
+
+## Frequently asked questions
+
+### Which Marketplace category should an RV dealer use?
+
+RV/Camper, under Vehicle for sale. It has the RV-specific fields and it is the category RV shoppers browse and filter. Posting an RV as a car or a general item hides it from the buyers who want it.
+
+### Can I list travel trailers, fifth wheels and motorhomes the same way?
+
+Yes — all of them go in RV/Camper, distinguished by the RV type field. Pick the exact type, because buyers filter on it and a mislabeled unit is invisible to the right shopper.
+
+### How often should RV prices on Marketplace be updated?
+
+The day the lot reprices. Seasonal moves are the norm in RV retail, and a listing showing a stale number is the first thing a returning buyer notices. Software that reads the feed on a schedule removes the dependence on someone remembering.
+
+### Does AutoLander post RVs as RVs?
+
+Yes. Units from an RV feed post into the RV/Camper category with RV-appropriate details, not as mislabeled cars. Price sync, sold-unit removal and new-arrival queueing work the same as for car inventory.
+
+### Does AutoLander answer Marketplace messages for RV dealers?
+
+No. AutoLander never touches the inbox — no auto-replies, no message routing. Your team answers buyers in Messenger; AutoLander keeps the listing they are asking about accurate.
+
+## Related
+
+- [RV dealer software for Facebook Marketplace](https://autolander.ai/rv-dealer-software/)
+- [RV photos that sell on Facebook Marketplace](https://autolander.ai/guide/rv-photos-for-facebook-marketplace/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
+- [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
+- [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# RV photos that sell on Facebook Marketplace
+
+> How to photograph a travel trailer, fifth wheel or motorhome so it reads in a Marketplace thumbnail: the shot list, the lead photo, and what an AI studio can and cannot fix.
+
+Source: https://autolander.ai/guide/rv-photos-for-facebook-marketplace/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 3, 2026
+
+**Short answer:** An RV photo has to do something a car photo does not: make a thirty-foot subject read clearly in a thumbnail the size of a thumb. That means a lead shot from a three-quarter angle with the whole unit in frame and nothing behind it, followed by a fixed shot list — awning side, interior from the door, kitchen, bedroom, bath, hitch or cab, and the data plate. A clean background is worth more on an RV than on any car, which is why AI background replacement earns its keep here; it cannot fix a crooked horizon, a slide-out left closed, or an interior shot with the lights off.
+
+## What makes RV photos different from car photos?
+
+Scale and context. A sedan fills a frame from ten feet away and reads as a sedan at any size. A travel trailer photographed from ten feet is a wall of white fiberglass; from fifty feet, with the whole unit in frame, it is a small shape competing with everything behind it — other units, the fence, the sky, the lot. In a Marketplace thumbnail, the background wins that fight unless it is removed.
+
+The second difference is that RV buyers shop the inside as hard as the outside. A car listing can get by on exteriors; an RV listing without the kitchen, the bed and the bath is a listing buyers scroll past, because the floorplan is the purchase.
+
+## The RV shot list
+
+Shoot every unit the same way. Consistency across the lot reads as a dealership; variety reads as a classified.
+
+1. **Lead: front three-quarter, whole unit, plain background** — Stand far enough back to get the entire unit with a margin, at the corner that shows the front cap and the entry side. This is the thumbnail. If the background is busy, this is the frame the AI studio fixes first.
+2. **Awning side, awning out** — The living side of the unit is the one buyers picture themselves next to. Extend the awning, open the slides.
+3. **Interior from the entry door** — Lights on, blinds open, slides out. This single frame tells a buyer the floorplan faster than any description.
+4. **Kitchen, bedroom, bath** — One frame each, wide, from the doorway or the far wall. Counters clear, bed made, shower door open.
+5. **Hitch or cab, and the data plate** — Fifth-wheel pin or trailer coupler; for motorhomes, the driver’s seat and dash. The data plate with model and dry weight saves a dozen questions.
+6. **Odometer or hour meter, where there is one** — Motorhomes and generators. Photograph the real number; never guess mileage in the listing, and leave it blank if it is unknown.
+
+## What an AI photo studio fixes on an RV, and what it does not
+
+AutoLander’s AI photo editor classifies every frame and replaces the background on full-exterior shots only, leaving interiors and closeups alone. On RVs that is exactly the right division of labour:
+
+- Fixes: the busy lot behind the lead shot. A thirty-foot unit on a clean studio background is the difference between a thumbnail that reads and one that does not.
+- Fixes: inconsistency across the lot. Fifty units shot on fifty days in fifty kinds of weather come out looking like one dealership.
+- Does not fix: a crooked horizon, a closed slide-out, an awning left in, or an interior shot taken with the lights off. Shoot it right; the studio makes it consistent.
+- Does not fix — and will not attempt: the colour of the unit. AutoLander never repaints a vehicle; the photo shows the RV the buyer will see on the lot.
+
+## How many photos should an RV listing have?
+
+Enough to answer the floorplan question without a message: the six-to-eight frames above is the floor, and a full walk-through of twelve to fifteen is common for a higher-value unit. The order matters more than the count. Lead with the exterior that reads in a thumbnail, put the interior-from-the-door second, and keep the data plate and odometer at the end for the buyer who is already serious.
+
+On a whole lot, the question is not how many photos per unit but whether every unit has the same set. That is a process problem, and it is why RV dealers using RV dealer software tend to shoot to a checklist and let the software handle presentation and posting.
+
+## Frequently asked questions
+
+### What is the best lead photo for an RV listing?
+
+A front three-quarter shot with the entire unit in frame, a margin around it, and a plain background. It is the frame that becomes the Marketplace thumbnail, and on an RV the background decides whether the unit reads at that size.
+
+### Should RV listings include interior photos?
+
+Always. RV buyers shop the floorplan. The interior from the entry door, the kitchen, the bedroom and the bath are the frames that stop a scroll; a listing without them gets skipped for one that has them.
+
+### Does AI background replacement work on RVs?
+
+Yes. AutoLander’s studio handles large subjects like travel trailers and motorhomes, replacing the background on full-exterior shots while leaving interiors untouched, and never changes the unit’s colour.
+
+### Do I need a professional photographer for RV listings?
+
+No. A phone, a consistent shot list, slides out, lights on and a clean background — or an AI studio that supplies one — produce listings that read as a dealership. What a professional adds is consistency, and a checklist gets most of that.
+
+## Related
+
+- [RV dealer software for Facebook Marketplace](https://autolander.ai/rv-dealer-software/)
+- [How to sell RVs on Facebook Marketplace as a dealer](https://autolander.ai/guide/how-to-sell-rvs-on-facebook-marketplace/)
+- [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Facebook Marketplace listing software & tools](https://autolander.ai/facebook-marketplace-listing-software/)
+- [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# Questions to ask any AI chat vendor before you connect your inbox
+
+> Twelve questions that separate a useful dealership AI chat tool from a liability: where the availability answer comes from, what it does with a price, how fast a human takes over.
+
+Source: https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 3, 2026
+
+**Short answer:** Before connecting any AI chat tool to a dealership inbox, get straight answers to a short list of questions: where it reads availability and price from and how often; whether it will ever quote a number the listing does not show; how many messages pass before a frustrated or finance-question buyer reaches a person; which Facebook account it operates through and under what Meta permission; and what it logs. A vendor who answers all of them plainly is selling a tool. One who answers with a demo video is selling a risk. AutoLander is not an AI chat product and does not touch the inbox; this guide exists because dealers ask us what to look for.
+
+## Why does it matter which questions you ask?
+
+Because every AI chat demo looks the same. The bot answers "is it available?" instantly, books a test drive, and the dealer principal nods. What the demo cannot show is the Sunday night when the unit sold Saturday and the feed has not caught up, or the buyer who asks about a trade-in with a lien and gets three cheerful non-answers before anyone at the store sees the thread.
+
+The questions below are the ones that surface those cases. They are not gotchas; a good vendor has answered every one of them before. AutoLander does not sell inbox AI — here is why — but dealers evaluating it ask us what to look for, so this is the list.
+
+## The twelve questions
+
+Ask them in this order. The first four are the ones that decide whether the tool is safe to run at all.
+
+1. **Where does the availability answer come from, and how often is it refreshed?** — The only safe source is the same live inventory feed the website reads. Ask for the sync interval in minutes. "Nightly" means the bot will confirm sold cars for up to a day.
+2. **Will it ever state a price the listing does not show?** — The right answer is a flat no — no rounding, no "around", no negotiating. A price the bot invents is a price the store has to honour or explain.
+3. **How many messages before a human gets the conversation?** — One message of frustration, confusion, or any finance, trade-in, title or credit question should hand off immediately, with the full thread. Ask to see the handoff happen, not a slide describing it.
+4. **Which Facebook account does it operate through, and under what Meta permission?** — If it runs on the same personal profile that holds the listings, a restriction hits the listings and any ad assets that profile administers. Ask the vendor to name the exact Meta product and permission.
+5. **What does it say when it does not know?** — The acceptable answer is that it says so and hands off. Any tool that fills silence with a plausible guess will eventually guess a mileage, a warranty term or a fee.
+6. **Can I read every conversation it has had, in full, after the fact?** — Every reply it sends is a statement the dealership made. If you cannot audit them, you cannot know what was promised.
+7. **What happens to the conversation when the tool is turned off or the subscription ends?** — Threads, contacts and history should be exportable and should remain in Messenger. Ask what is deleted and when.
+8. **Does it identify itself as automated?** — Buyers who discover they were talking to a bot after the fact do not come back. The honest tools disclose; ask how.
+9. **How does it handle a buyer who messages about two different cars?** — This is the case that breaks naive implementations. Ask for the transcript.
+10. **What is the escalation path outside business hours?** — If the answer is "it keeps chatting until morning", the after-hours coverage the vendor is selling is coverage by a script with no supervision.
+11. **What does it cost per rooftop, per seat, per conversation — and what is not in that number?** — Setup, integration to the feed, CRM delivery and overage are the usual extras. Get the total for your volume in writing.
+12. **Can you show me a dealer who turned it off, and why?** — Every vendor has one. The reason is the most useful thing you will learn in the evaluation.
+
+## Answers that mean "safe to run"
+
+- Reads the live feed on a stated interval measured in minutes.
+- Never states a price the listing does not show; never negotiates.
+- Hands off to a person within one message on frustration or any finance/trade/title question.
+- Runs under a named Meta permission, on an account separate from the listings, or explains exactly why not.
+- Full transcript audit; disclosure to the buyer; clean export on cancellation.
+
+## Answers that mean "walk away"
+
+- "It learns your inventory" with no feed connection or interval.
+- "It can offer a small discount to close" — a price your desk did not set.
+- "It handles objections" with no visible handoff.
+- "It just uses your Facebook login" with no permission named.
+- "We do not store transcripts" — you cannot audit what was promised.
+
+## What does AutoLander do if it does not answer buyers?
+
+It makes the listing the buyer is asking about correct, which is what makes a fast human reply possible. Price from the feed, sold units removed automatically, real mileage or none, studio photos. When the facts are right, the reply is one sentence from a salesperson’s phone. The AI chat for car dealers guide covers the category honestly; the response time guide covers why that one sentence, sent quickly, wins.
+
+## Frequently asked questions
+
+### What is the most important question to ask an AI chat vendor?
+
+Where the availability answer comes from and how often it refreshes. A bot reading anything other than the live inventory feed, on an interval measured in minutes, will eventually confirm a car that already sold.
+
+### Should an AI chat tool ever quote a price?
+
+Only the price the listing shows, verbatim, and it should never negotiate. Anything else is a number the dealership did not set and will have to honour or explain.
+
+### How fast should a human take over the conversation?
+
+Within one message of frustration, confusion, or any finance, trade-in, title or credit question — with the full thread attached. Ask to see the handoff live rather than described.
+
+### Does AutoLander offer AI chat?
+
+No. AutoLander does not reply to buyers, read messages or route them anywhere; the inbox is entirely the dealer’s. It keeps listings accurate so the human reply is fast and correct. This guide exists because dealers ask what to look for in a tool that does handle chat.
+
+### Can I run an AI chat tool alongside AutoLander?
+
+Yes. AutoLander handles listing accuracy and never touches the inbox, so a chat tool that meets the tests above runs alongside it without conflict — and benefits from the listing it is answering about being right.
+
+## Related
+
+- [AI chat for car dealers — the honest guide](https://autolander.ai/ai-chat-for-car-dealers/)
+- [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers/)
+- [Marketplace response time: why the first reply wins the appointment](https://autolander.ai/guide/marketplace-response-time-for-car-dealers/)
+- [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
+- [How to get more car sales leads](https://autolander.ai/guide/car-sales-leads/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# Marketplace response time: why the first reply wins the appointment
+
+> On Facebook Marketplace the first accurate reply usually gets the appointment. Why speed depends on the listing being right, how to set a reply standard, and what to automate — and not.
+
+Source: https://autolander.ai/guide/marketplace-response-time-for-car-dealers/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 3, 2026
+
+**Short answer:** A Marketplace buyer messages several listings at once and goes to see the one that answers first with a straight answer. Response time is therefore a sales metric, not a courtesy — but speed only works if the reply is right. The fastest way to a fast, correct reply is not a bot; it is a listing whose price and availability are already true, so the human answer is one sentence. Set a reply standard your team can actually meet, put the listings on a schedule that keeps them accurate, and automate the listing — not the conversation.
+
+## Why does response time matter so much on Facebook Marketplace?
+
+Because of how buyers use it. A shopper looking for a used truck under a price opens the filter, taps six or eight listings, and sends "is this still available?" to most of them in a row. The sellers who reply within a few minutes are the ones the buyer is still thinking about; the ones who reply the next morning are answering a question the buyer has already had answered elsewhere.
+
+That is the whole mechanism. It is not that buyers are impatient; it is that they are running a parallel search, and the first accurate reply collapses it. On a channel where the listing is free and the buyer is local, the reply is the sale.
+
+## Speed only counts if the reply is right
+
+A fast wrong answer is worse than a slow right one, because it ends the conversation with a reason not to come back:
+
+- "Yes, it is available" on a unit that delivered Saturday. The buyer drives in. That is a lost customer and, often, a public review.
+- "$18,900" on a listing the lot repriced to $17,500 on Tuesday. Now the store either honours a number it did not mean or explains why the ad was wrong.
+- "It has 42,000 miles" from a listing where mileage was guessed, when the odometer says 68,000. The buyer sees it on the walk-around.
+- A prompt reply that says nothing — "Let me check and get back to you" — is a reply that loses to any competitor who actually knew.
+
+## A response standard a real team can keep
+
+Speed is a process, not a personality. These are the pieces of one that works at a store with three to fifteen people on the floor.
+
+1. **Make the listing the source of truth** — If the price and availability on Marketplace are always the lot’s price and availability, the first reply is "Yes — come by before six." That requires the listings to be reconciled against the inventory feed on a schedule, which is the part software should do.
+2. **Decide who owns the inbox, by hour** — One named person per shift, including evenings and weekends, with Messenger notifications on. Rotate it; do not leave it to "whoever posted it".
+3. **Set a reply target you can meet** — Minutes during floor hours, a stated window outside them. Publish it in the listing description. A buyer who knows to expect a reply by 9am does not go elsewhere at 9pm.
+4. **Keep a three-line reply for the common first message** — Availability, a next step, a name. "Yes, it is here. Want to see it today or tomorrow? — Marcus." Eight seconds from a phone.
+5. **Hand off finance, trade and title questions immediately** — The floor person answers "is it available"; the desk answers "what would you give me for mine". A wrong answer to the second question costs more than a slow one.
+
+## Should a dealer automate Marketplace replies to get faster?
+
+Automate the listing, not the conversation. A bot is fast, but every failure mode above — confirming a sold car, quoting a stale price, guessing a mileage — is a failure of listing accuracy that a bot delivers faster and with more confidence. Fix the data and the human reply becomes fast on its own.
+
+That is the division AutoLander is built around. It keeps the listing right — price from the feed, sold units down, real photos — and never touches the inbox; here is why. If a store does want inbox AI, the vendor questions guide is how to buy it without getting hurt.
+
+## A measurement that is honest
+
+Track two numbers per week: median minutes to first reply during floor hours, and the count of messages received about units that were already sold. The first tells you whether the process is working; the second tells you whether the listings are. When the second number is zero, the first number gets easy.
+
+## Frequently asked questions
+
+### How fast should a car dealer reply to a Facebook Marketplace message?
+
+During floor hours, within minutes — buyers message several listings at once and visit the first one that answers accurately. Outside floor hours, state a window in the listing and keep it. Speed matters because the buyer is running a parallel search, not because they are impatient.
+
+### Is a fast reply enough on its own?
+
+No. A fast reply that confirms a sold car or quotes a stale price ends the conversation with a reason not to come back. The reply has to be right, and that depends on the listing being right.
+
+### Should I use a bot to answer Marketplace messages faster?
+
+Automate the listing rather than the conversation. Most bot failures are listing-accuracy failures delivered faster. With accurate listings the human reply is one sentence, and a real person’s sentence converts better than a bot’s paragraph.
+
+### How does AutoLander improve response time if it never replies?
+
+By making the listing accurate — current price from the feed, sold units removed automatically, real mileage or none, clean photos — so the first reply is short and correct. AutoLander never reads or sends messages; the inbox is the dealer’s.
+
+## Related
+
+- [AI chat for car dealers — the honest guide](https://autolander.ai/ai-chat-for-car-dealers/)
+- [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers/)
+- [Questions to ask any AI chat vendor before you connect your inbox](https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/)
+- [How to get more car sales leads](https://autolander.ai/guide/car-sales-leads/)
+- [How to sell more cars](https://autolander.ai/guide/how-to-sell-more-cars/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

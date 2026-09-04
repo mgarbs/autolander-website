@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/guide/ai-for-car-dealerships/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** The AI that pays for itself at a car dealership today does jobs the store already knows it needs done: turning lot photos into showroom images, writing accurate listing descriptions for every VIN, and generating walkaround videos from photos. Inbox chatbots are the category to treat carefully — demand inventory-true answers and instant human handoff. AI that promises to "transform" the store without naming the job it does usually transforms the software budget instead.
 

@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { orgLd, ORG_ID, ogImageFor } from './seo/shell.mjs';
 import {
   SITE, DIMENSIONS, AUTOLANDER, AUTOLANDER_WINS_GLOBAL, SESSION_FAQ,
-  COMPETITORS, HUB, HUB_ORDER, INSIGHTS, EXTRA_FAQ, GUIDE,
+  COMPETITORS, HUB, HUB_ORDER, INSIGHTS, EXTRA_FAQ, GUIDE, OTHER_TOOLS,
 } from './compare-data.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
@@ -119,7 +119,12 @@ const comparisonItemListLd = (c, canonical) => ({
 // author/publisher reference the shared entity by @id rather than repeating inline stubs —
 // three disconnected Organization nodes on one page give an answer engine three weak signals
 // instead of one strong one.
-const articleLd = (title, canonical) => ({
+// `pillar` = {url, name} of the page this one belongs to (a head-to-head page → the /compare/ hub;
+// the guide → the auto-poster category page). Emits Article.isPartOf so the silo is stated in
+// schema, not just implied by breadcrumbs. The hub itself passes none — it is its own pillar.
+const COMPARE_HUB_PILLAR = { url: `${SITE.origin}/compare/`, name: 'Best Facebook Marketplace auto-posting tools (2026 comparison)' };
+const CATEGORY_PILLAR = { url: `${SITE.origin}/facebook-marketplace-auto-poster/`, name: 'Facebook Marketplace auto poster for car dealers' };
+const articleLd = (title, canonical, pillar) => ({
   '@context': 'https://schema.org', '@type': 'Article',
   '@id': canonical + '#article',
   headline: title,
@@ -127,8 +132,23 @@ const articleLd = (title, canonical) => ({
   author: { '@id': ORG_ID },
   publisher: { '@id': ORG_ID },
   mainEntityOfPage: canonical,
-  image: SITE.origin + '/og-image.jpg',
+  ...(pillar && pillar.url !== canonical ? {
+    isPartOf: { '@type': 'WebPage', '@id': pillar.url + '#webpage', name: pillar.name, url: pillar.url },
+  } : {}),
+  image: ogImageFor(new URL(canonical).pathname),
   inLanguage: 'en-US',
+});
+// Every compare-cluster page renders a "Short answer" box (.tldr) and a FAQ (.faq-a); both are
+// self-contained answer text, which is exactly what SpeakableSpecification is for.
+const webPageLd = (title, canonical, description) => ({
+  '@context': 'https://schema.org', '@type': 'WebPage',
+  '@id': canonical + '#webpage',
+  name: title, url: canonical, description,
+  isPartOf: { '@type': 'WebSite', '@id': SITE.origin + '/#website', name: 'AutoLander', url: SITE.origin + '/' },
+  publisher: { '@id': ORG_ID },
+  primaryImageOfPage: { '@type': 'ImageObject', url: ogImageFor(new URL(canonical).pathname), width: 1200, height: 630 },
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['.tldr', '.faq-a'] },
+  dateModified: SITE.updated,
 });
 const faqLd = (faq) => ({
   '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -157,9 +177,21 @@ const liList = (arr) => arr.map((x) => `<li>${esc(x)}</li>`).join('\n        ');
 // ---------- shared shell ----------
 // ogTitle/ogDescription let a page enrich its <title>/<meta description> for SEO while keeping the
 // social share preview (og:/twitter:) byte-identical. Default to title/description when not given.
-function head({ title, description, canonical, jsonLdBlocks, ogTitle, ogDescription }) {
+function head({ title, description, canonical, jsonLdBlocks, ogTitle, ogDescription, articleMeta }) {
   const ogT = ogTitle ?? title;
   const ogD = ogDescription ?? description;
+  const cardUrl = ogImageFor(new URL(canonical).pathname);
+  const cardType = /\.png($|\?)/i.test(cardUrl) ? 'image/png' : 'image/jpeg';
+  // Every page in this cluster is og:type=article, so article:* is always valid here. Mirrors the
+  // Article node's dates and the Organization author (these pages are team-authored, not bylined).
+  const m = articleMeta || {};
+  const articleTags = `
+  <meta property="article:author" content="${esc(SITE.origin)}/about/" />
+  <meta property="article:publisher" content="${esc(SITE.origin)}/" />${m.section ? `
+  <meta property="article:section" content="${esc(m.section)}" />` : ''}
+  <meta property="article:published_time" content="${esc(m.published || SITE.updated)}T00:00:00Z" />
+  <meta property="article:modified_time" content="${esc(m.modified || SITE.updated)}T00:00:00Z" />${(m.tags || []).map((t) => `
+  <meta property="article:tag" content="${esc(t)}" />`).join('')}`;
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -192,13 +224,17 @@ function head({ title, description, canonical, jsonLdBlocks, ogTitle, ogDescript
   <meta property="og:title" content="${esc(ogT)}" />
   <meta property="og:description" content="${esc(ogD)}" />
   <meta property="og:url" content="${esc(canonical)}" />
-  <meta property="og:image" content="${esc(ogImageFor(new URL(canonical).pathname))}" />
+  <meta property="og:image" content="${esc(cardUrl)}" />
+  <meta property="og:image:type" content="${cardType}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="${esc(ogT)}" />
+  <meta property="og:locale" content="en_US" />${articleTags}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${esc(ogT)}" />
   <meta name="twitter:description" content="${esc(ogD)}" />
-  <meta name="twitter:image" content="${esc(ogImageFor(new URL(canonical).pathname))}" />
+  <meta name="twitter:image" content="${esc(cardUrl)}" />
+  <meta name="twitter:image:alt" content="${esc(ogT)}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -338,7 +374,8 @@ function renderVersus(competitor) {
   ];
   const faq = [...c.faq, EXTRA_FAQ[c.slug], reviewsFaq, SESSION_FAQ].filter(Boolean);
   const jsonLdBlocks = [
-    jsonld(articleLd(title, canonical)),
+    jsonld(webPageLd(title, canonical, description)),
+    jsonld(articleLd(title, canonical, COMPARE_HUB_PILLAR)),
     jsonld(autolanderAppLd()),
     jsonld(competitorAppLd(c)),
     jsonld(comparisonItemListLd(c, canonical)),
@@ -376,7 +413,10 @@ ${siblingLinks}
     </nav>`;
 
   return [
-    head({ title, description, canonical, jsonLdBlocks, ogTitle, ogDescription }),
+    head({
+      title, description, canonical, jsonLdBlocks, ogTitle, ogDescription,
+      articleMeta: { section: 'Comparisons', tags: [c.name, 'Facebook Marketplace', 'car dealer software'] },
+    }),
     siteHeader(`AutoLander vs ${c.name}`),
     `  <main class="wrap">
     <article>
@@ -412,6 +452,20 @@ ${comparisonTable(c)}
     </div>
 
 ${sessionSection(c)}
+
+    <section class="alternative">
+      <h2>Looking for a ${esc(c.name)} alternative?</h2>
+      <p>If you arrived here searching for a ${esc(c.name)} alternative, here is plainly what one has to do.
+      A dealer leaving ${esc(c.name)} is usually looking for one of three things: a different <strong>session architecture</strong>
+      (${esc(sessionKind(c) === 'extension' ? 'a native app instead of a browser extension that needs sensitive permissions' : 'a session that stays on your own machine instead of a vendor-operated cloud login')}),
+      <strong>automatic upkeep</strong> (price sync and sold-unit removal driven by the inventory feed, not
+      a person), or <strong>published pricing</strong> (${esc(c.pricingShort)} versus self-serve plans from
+      $${SITE.lowPrice}/mo). AutoLander is built around all three. It is <em>not</em> the right alternative if you
+      need multi-platform syndication or an inbox auto-reply &mdash; we do neither, on purpose:
+      <a href="/why-facebook-marketplace-only/">why Marketplace only</a> &middot;
+      <a href="/why-we-dont-answer-your-buyers/">why we don&#39;t answer your buyers</a>.
+      The full field is on the <a href="/compare/">best Marketplace posting tools</a> page.</p>
+    </section>
 
     <section class="take">
       <h2>Our take</h2>
@@ -453,14 +507,24 @@ function renderHub() {
     ...HUB_ORDER.map((slug) => COMPETITORS[slug]),
   ];
 
+  // The ItemList is the complete field: the ranked tools (with URLs) followed by the
+  // not-yet-reviewed ones (name only — no URL, because none has been verified).
   const itemListLd = {
     '@context': 'https://schema.org', '@type': 'ItemList',
-    itemListElement: ranked.map((t, i) => ({
-      '@type': 'ListItem', position: i + 1, name: t.name,
-      url: t.isAL ? SITE.origin + '/' : `${SITE.origin}/compare/${t.slug}/`,
-    })),
+    name: HUB.title,
+    numberOfItems: ranked.length + OTHER_TOOLS.length,
+    itemListElement: [
+      ...ranked.map((t, i) => ({
+        '@type': 'ListItem', position: i + 1, name: t.name,
+        url: t.isAL ? SITE.origin + '/' : `${SITE.origin}/compare/${t.slug}/`,
+      })),
+      ...OTHER_TOOLS.map((t, i) => ({
+        '@type': 'ListItem', position: ranked.length + i + 1, name: t.name,
+      })),
+    ],
   };
   const jsonLdBlocks = [
+    jsonld(webPageLd(HUB.title, canonical, HUB.metaDescription)),
     jsonld(articleLd(HUB.title, canonical)),
     jsonld(itemListLd),
     jsonld(definedTermSetLd()),
@@ -508,7 +572,10 @@ function renderHub() {
       </details>`).join('');
 
   return [
-    head({ title, description: HUB.metaDescription, canonical, jsonLdBlocks }),
+    head({
+      title, description: HUB.metaDescription, canonical, jsonLdBlocks,
+      articleMeta: { section: 'Comparisons', tags: ['Facebook Marketplace', 'auto poster', 'car dealer software', 'buyer’s guide'] },
+    }),
     siteHeader('Best Marketplace tools'),
     `  <main class="wrap">
     <article>
@@ -555,6 +622,17 @@ ${glanceRows}
     <p class="legend"><span class="ic ic-yes">&#10003;</span> has it / advantage &nbsp;
       <span class="ic ic-mid">&bull;</span> partial or neutral fact &nbsp;
       <span class="ic ic-no">&ndash;</span> not advertised</p>
+
+    <section class="card others">
+      <h2>Other tools dealers ask about</h2>
+      <p>These names come up in category searches and AI answers for Marketplace posting tools but have not
+      been reviewed head-to-head above. They are listed so this page is the complete field, not a curated
+      subset; nothing about their features or pricing is asserted here &mdash; verify each directly. A tool
+      moves into the ranking once it has been evaluated on the same criteria.</p>
+      <ul>
+${OTHER_TOOLS.map((t) => `        <li><strong>${esc(t.name)}</strong> &mdash; ${esc(t.note)}</li>`).join('\n')}
+      </ul>
+    </section>
 
     <figure class="shot">
       <div class="shot-imgs">
@@ -655,7 +733,8 @@ function renderGuide() {
   const canonical = `${SITE.origin}/${GUIDE.path}/`;
   const faq = [...GUIDE.faq, SESSION_FAQ];
   const jsonLdBlocks = [
-    jsonld(articleLd(GUIDE.title, canonical)),
+    jsonld(webPageLd(GUIDE.title, canonical, GUIDE.metaDescription)),
+    jsonld(articleLd(GUIDE.title, canonical, CATEGORY_PILLAR)),
     jsonld(faqLd(faq)),
     jsonld(breadcrumbLd([
       { name: 'Home', url: SITE.origin + '/' },
@@ -672,7 +751,10 @@ function renderGuide() {
       </details>`).join('');
 
   return [
-    head({ title: GUIDE.title, description: GUIDE.metaDescription, canonical, jsonLdBlocks }),
+    head({
+      title: GUIDE.title, description: GUIDE.metaDescription, canonical, jsonLdBlocks,
+      articleMeta: { section: 'Facebook Marketplace auto posting', tags: ['Facebook Marketplace', 'automation', 'Meta policy', 'account safety'] },
+    }),
     `  <header class="topbar">
     <a class="brand" href="${SITE.origin}/"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
     <nav class="crumbs" aria-label="Breadcrumb">

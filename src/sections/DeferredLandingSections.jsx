@@ -780,6 +780,9 @@ export function LandingFooter() {
               <a href="/facebook-marketplace-for-car-dealers/" className="block py-1 hover:text-blue-500 transition-colors">For Car Dealers</a>
               <a href="/guide/car-dealership-marketing/" className="block py-1 hover:text-blue-500 transition-colors">Marketing Playbook</a>
               <a href="/guide/ai-for-car-dealerships/" className="block py-1 hover:text-blue-500 transition-colors">AI for Dealerships</a>
+              <a href="/dealer-inventory-management/" className="block py-1 hover:text-blue-500 transition-colors">Inventory Management</a>
+              <a href="/why-facebook-marketplace-only/" className="block py-1 hover:text-blue-500 transition-colors">Why Marketplace Only</a>
+              <a href="/why-we-dont-answer-your-buyers/" className="block py-1 hover:text-blue-500 transition-colors">Why No Auto-Reply</a>
             </nav>
 
             {/* Company */}

@@ -1,10 +1,10 @@
 # Facebook Marketplace assistant for car dealers
 
-> Facebook Marketplace assistant for dealers: auto-post inventory, enhance photos, write descriptions, sync prices and remove sold units. From $39/mo.
+> What a Facebook Marketplace assistant should handle for a dealer — descriptions, photos, the posting queue — and the one thing AutoLander’s never will: your buyer messages. From $39/mo.
 
 Source: https://autolander.ai/facebook-marketplace-assistant/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** A Facebook Marketplace assistant is software that acts like a tireless team member for your Marketplace listings — posting your inventory, keeping it current and enhancing every photo. AutoLander handles the listing busywork; it does not go near your inbox, impersonate a salesperson or message buyers. Plans start at $39/mo with 5 free posts.
 

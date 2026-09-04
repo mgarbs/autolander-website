@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/facebook-marketplace-automation/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Facebook Marketplace automation is software that runs your Marketplace listings for you — posting your whole inventory, refreshing prices, and removing sold units automatically instead of by hand. AutoLander is a native desktop app with a configurable posting queue, and enhances every photo with an AI Photo Studio. Plans from $39/mo with 5 free posts.
 

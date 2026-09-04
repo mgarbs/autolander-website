@@ -4,6 +4,7 @@ import Hero from './sections/Hero.jsx';
 import TrustStrip from './sections/TrustStrip.jsx';
 import ExecutionGap from './sections/ExecutionGap.jsx';
 import ComparisonSection from './sections/ComparisonSection.jsx';
+import HomeDetails from './sections/HomeDetails.jsx';
 import MobileCtaBar from './sections/MobileCtaBar.jsx';
 import { CarFront, Gift, Download, Copy } from 'lucide-react';
 const ChatAssistant = lazy(() => import('./components/ChatAssistant.jsx'));
@@ -548,6 +549,9 @@ export default function App() {
       <TrustStrip />
       <ExecutionGap />
       <ComparisonSection />
+      {/* Collapsed product detail + FAQ + full resource map. Eager (not lazy) on purpose: it is the
+          hydrated twin of the crawlable block in index.html, so it must be in the DOM on mount. */}
+      <HomeDetails openDemoBooking={openDemoBooking} onWarmDemo={warmDemoApplication} />
 
       {shouldMountDeferredSections && (
         <Suspense fallback={null}>

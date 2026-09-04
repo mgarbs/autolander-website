@@ -1,0 +1,6 @@
+Contact: mailto:support@autolander.ai
+Contact: https://autolander.ai/contact/
+Expires: 2027-09-03T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://autolander.ai/.well-known/security.txt
+Policy: https://autolander.ai/privacy.html

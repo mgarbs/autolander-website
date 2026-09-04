@@ -79,8 +79,8 @@
     <meta property="og:title" content="AutoLander | Facebook Marketplace Software for Car Dealers" />
     <meta property="og:description" content="Prepare dealership inventory, manage eligible Marketplace listings, reconcile sold cars and track sales. Plans from $39/mo." />
     <meta property="og:image" content="https://autolander.ai/og/home.png" />
-    <meta property="og:image:secure_url" content="https://autolander.ai/og-image.jpg" />
-    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:secure_url" content="https://autolander.ai/og/home.png" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="AutoLander helps car dealers automatically post inventory to Facebook Marketplace." />
@@ -193,6 +193,31 @@
               "priceCurrency": "USD",
               "availability": "https://schema.org/InStock"
             }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://autolander.ai/#webpage",
+            "url": "https://autolander.ai/",
+            "name": "AutoLander | Facebook Marketplace Software for Car Dealers",
+            "description": "Facebook Marketplace software for car dealers that auto-posts inventory, updates prices, removes sold cars and tracks sales. From $39/mo.",
+            "isPartOf": { "@id": "https://autolander.ai/#website" },
+            "about": { "@id": "https://autolander.ai/#product" },
+            "publisher": { "@id": "https://autolander.ai/#organization" },
+            "primaryImageOfPage": { "@type": "ImageObject", "url": "https://autolander.ai/og/home.png", "width": 1200, "height": 630 },
+            "speakable": { "@type": "SpeakableSpecification", "cssSelector": [".al-faq-a"] },
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://autolander.ai/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "What is AutoLander?", "acceptedAnswer": { "@type": "Answer", "text": "AutoLander is Facebook Marketplace software for U.S. car dealerships and sales reps. It connects to a dealer inventory feed, posts vehicles to Facebook Marketplace, keeps prices current, removes sold units, enhances listing photos with AI and tracks which posts led to buyer conversations. It is built and operated by AutoLander LLC in Tampa, Florida." } },
+              { "@type": "Question", "name": "How much does AutoLander cost?", "acceptedAnswer": { "@type": "Answer", "text": "Plans start at $39/month (Starter, 5 posts a day), $59/month (Growth, 10 a day) and $79/month (Pro, 15 a day), with Dealer and multi-rooftop plans from $117/month. Every demo includes 5 free posts and does not require a credit card. Pricing is published — no quote needed." } },
+              { "@type": "Question", "name": "What inventory feeds does AutoLander support?", "acceptedAnswer": { "@type": "Answer", "text": "CarGurus and Cars.com are supported directly. vAuto, DealerCenter, Dealer.com, HomeNet, Frazer, CDK and Tekion are ingested via a custom feed or export, most dealer websites can be read directly, and SFTP and CSV drops are supported." } },
+              { "@type": "Question", "name": "Is automated posting to Facebook Marketplace allowed?", "acceptedAnswer": { "@type": "Answer", "text": "Meta sets the rules, and they change. AutoLander posts through the dealer’s own logged-in session at a controlled pace rather than through an unofficial API, and it does not override eligibility rules or listing limits. No tool — including this one — can guarantee an account will never be actioned." } },
+              { "@type": "Question", "name": "Does AutoLander reply to buyers automatically?", "acceptedAnswer": { "@type": "Answer", "text": "No, and it does not handle your messages at all. AutoLander has no autoresponder and no inbox feature: your team reads and answers buyers in Messenger. What AutoLander does is keep the listing they are asking about accurate, and pull sold units down so nobody wastes a reply on a car that is gone." } },
+              { "@type": "Question", "name": "What platforms does AutoLander run on?", "acceptedAnswer": { "@type": "Answer", "text": "AutoLander is a native desktop application for Windows, macOS and Linux, paired with a cloud service that stores inventory and handles billing. The desktop app drives the Facebook session, which is why it runs on your machine rather than in a browser tab." } }
+            ]
           }
         ]
       }
@@ -376,6 +401,137 @@
           <a href="/contact/">Contact</a>
         </nav>
       </section>
+
+      <!--AL_STATIC_HOME_DETAILS_START-->
+      <!-- Pre-hydration twin of src/sections/HomeDetails.jsx: the same five collapsed rows, the same
+           copy, the same link map. React replaces this subtree with the live component on mount, so
+           a human who opens a row reads exactly what a crawler read here. Headings are h2/h3 only.
+           KEEP IN STEP with HomeDetails.jsx (HOME_DETAIL_FAQ + HOME_LINK_GROUPS). -->
+      <section id="details" aria-labelledby="details-heading" class="relative z-10 border-y border-white/5 bg-[#070707] py-16 lg:py-24">
+        <div class="mx-auto max-w-4xl px-6">
+          <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-blue-300/90">The short version, if you want it</p>
+          <h2 id="details-heading" class="mt-4 font-display text-2xl font-black uppercase italic tracking-tight text-white sm:text-3xl">What AutoLander does, exactly</h2>
+          <p class="mt-3 max-w-2xl text-slate-400 font-medium leading-relaxed">Everything below is closed on purpose. Open what you need.</p>
+          <div class="mt-8 space-y-3">
+            <details class="group rounded-2xl border border-white/5 bg-white/[0.02]">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-sm font-black uppercase italic tracking-tight text-white sm:px-6">How it works, in three steps</summary>
+              <div class="px-5 pb-5 text-[15px] font-medium leading-relaxed text-slate-400 sm:px-6">
+                <ol class="space-y-3 list-decimal pl-5">
+                  <li><strong class="text-slate-200">Connect your inventory.</strong> Point AutoLander at the source you already run: CarGurus, Cars.com, a DMS export from vAuto, DealerCenter, Frazer, CDK, Tekion or HomeNet, an SFTP/CSV drop, or your dealer website. No new system of record and no re-keying.</li>
+                  <li><strong class="text-slate-200">Review and post.</strong> AutoLander builds a posting queue from the feed, prepares each listing with photos, mileage, price and description, and posts through your own logged-in Facebook session at a pace you control. Meta eligibility rules and listing limits still apply &mdash; AutoLander does not override them.</li>
+                  <li><strong class="text-slate-200">Keep it current.</strong> The feed is re-checked on a schedule. New arrivals are queued, price changes are pushed, and sold units are pulled down, so what a buyer sees on Marketplace matches the lot.</li>
+                </ol>
+              </div>
+            </details>
+            <details class="group rounded-2xl border border-white/5 bg-white/[0.02]">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-sm font-black uppercase italic tracking-tight text-white sm:px-6">What it does &mdash; and what it deliberately does not</summary>
+              <div class="px-5 pb-5 text-[15px] font-medium leading-relaxed text-slate-400 sm:px-6">
+                <h3 class="text-slate-200 font-bold text-[15px]">Does</h3>
+                <ul class="mt-2 space-y-2 list-disc pl-5">
+                  <li>Posts vehicles from your inventory feed to Facebook Marketplace with photos, mileage, price and description filled in.</li>
+                  <li>Keeps asking prices in step with the feed, so a price drop on the lot reaches Marketplace.</li>
+                  <li>Removes sold units, so buyers stop messaging about cars that are already gone.</li>
+                  <li>Enhances listing photos with AI &mdash; real cars, never repainted or fabricated.</li>
+                  <li>Tracks which posts led to buyer conversations and sales.</li>
+                  <li>Supports cars, trucks and RV / camper inventory, posting each into the correct Marketplace category.</li>
+                </ul>
+                <h3 class="mt-5 text-slate-200 font-bold text-[15px]">Does not</h3>
+                <ul class="mt-2 space-y-2 list-disc pl-5">
+                  <li>Message buyers or manage your Marketplace inbox &mdash; your team reads and answers every conversation in Messenger. <a href="/why-we-dont-answer-your-buyers/" class="text-blue-400">Why.</a></li>
+                  <li>Post anywhere other than Facebook Marketplace &mdash; no Craigslist, OfferUp or eBay Motors. <a href="/why-facebook-marketplace-only/" class="text-blue-400">Why.</a></li>
+                  <li>Override Meta eligibility rules, listing limits or terms; no automation tool can guarantee an account will never be actioned.</li>
+                  <li>Invent vehicle facts: unknown mileage stays blank rather than guessed, and AI photo editing never repaints a car a colour it is not.</li>
+                </ul>
+              </div>
+            </details>
+            <details class="group rounded-2xl border border-white/5 bg-white/[0.02]">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-sm font-black uppercase italic tracking-tight text-white sm:px-6">Who it is for</summary>
+              <div class="px-5 pb-5 text-[15px] font-medium leading-relaxed text-slate-400 sm:px-6">
+                <ul class="space-y-2 list-disc pl-5">
+                  <li>Franchise and independent used-car dealerships in the United States that want whole-lot Marketplace coverage without a dedicated poster.</li>
+                  <li>Dealer groups running several rooftops that need per-store inventory kept separate.</li>
+                  <li>Individual sales reps posting their own units who want the same automation at a single-seat price.</li>
+                  <li>RV and camper dealers, who need inventory posted into the RV/Camper category rather than as cars.</li>
+                </ul>
+                <p class="mt-4">Not a fit if you need multi-platform syndication, an inbox auto-reply, or service outside the U.S.</p>
+              </div>
+            </details>
+            <details class="group rounded-2xl border border-white/5 bg-white/[0.02]">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-sm font-black uppercase italic tracking-tight text-white sm:px-6">Questions dealers ask first</summary>
+              <div class="px-5 pb-5 text-[15px] font-medium leading-relaxed text-slate-400 sm:px-6">
+                <dl class="space-y-4">
+                  <div><dt class="font-bold text-slate-200">What is AutoLander?</dt><dd class="mt-1 al-faq-a">AutoLander is Facebook Marketplace software for U.S. car dealerships and sales reps. It connects to a dealer inventory feed, posts vehicles to Facebook Marketplace, keeps prices current, removes sold units, enhances listing photos with AI and tracks which posts led to buyer conversations. It is built and operated by AutoLander LLC in Tampa, Florida.</dd></div>
+                  <div><dt class="font-bold text-slate-200">How much does AutoLander cost?</dt><dd class="mt-1 al-faq-a">Plans start at $39/month (Starter, 5 posts a day), $59/month (Growth, 10 a day) and $79/month (Pro, 15 a day), with Dealer and multi-rooftop plans from $117/month. Every demo includes 5 free posts and does not require a credit card. Pricing is published &mdash; no quote needed.</dd></div>
+                  <div><dt class="font-bold text-slate-200">What inventory feeds does AutoLander support?</dt><dd class="mt-1 al-faq-a">CarGurus and Cars.com are supported directly. vAuto, DealerCenter, Dealer.com, HomeNet, Frazer, CDK and Tekion are ingested via a custom feed or export, most dealer websites can be read directly, and SFTP and CSV drops are supported.</dd></div>
+                  <div><dt class="font-bold text-slate-200">Is automated posting to Facebook Marketplace allowed?</dt><dd class="mt-1 al-faq-a">Meta sets the rules, and they change. AutoLander posts through the dealer&rsquo;s own logged-in session at a controlled pace rather than through an unofficial API, and it does not override eligibility rules or listing limits. No tool &mdash; including this one &mdash; can guarantee an account will never be actioned.</dd></div>
+                  <div><dt class="font-bold text-slate-200">Does AutoLander reply to buyers automatically?</dt><dd class="mt-1 al-faq-a">No, and it does not handle your messages at all. AutoLander has no autoresponder and no inbox feature: your team reads and answers buyers in Messenger. What AutoLander does is keep the listing they are asking about accurate, and pull sold units down so nobody wastes a reply on a car that is gone.</dd></div>
+                  <div><dt class="font-bold text-slate-200">What platforms does AutoLander run on?</dt><dd class="mt-1 al-faq-a">AutoLander is a native desktop application for Windows, macOS and Linux, paired with a cloud service that stores inventory and handles billing. The desktop app drives the Facebook session, which is why it runs on your machine rather than in a browser tab.</dd></div>
+                </dl>
+              </div>
+            </details>
+            <details class="group rounded-2xl border border-white/5 bg-white/[0.02]">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-sm font-black uppercase italic tracking-tight text-white sm:px-6">Every AutoLander page, by topic</summary>
+              <div class="px-5 pb-5 text-[15px] font-medium leading-relaxed text-slate-400 sm:px-6">
+                <div class="grid gap-6 sm:grid-cols-2">
+                  <nav aria-label="Product"><p class="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-500">Product</p><ul class="space-y-1 text-[13px] font-semibold">
+                    <li><a href="/facebook-marketplace-auto-poster/">Facebook Marketplace auto poster</a></li>
+                    <li><a href="/facebook-marketplace-listing-software/">Listing software</a></li>
+                    <li><a href="/facebook-marketplace-automation/">Marketplace automation</a></li>
+                    <li><a href="/facebook-marketplace-inventory-sync/">Inventory sync</a></li>
+                    <li><a href="/bulk-post-cars-to-facebook-marketplace/">Bulk posting</a></li>
+                    <li><a href="/facebook-marketplace-assistant/">Marketplace assistant</a></li>
+                    <li><a href="/facebook-autoposter/">Autoposter</a></li>
+                    <li><a href="/facebook-listing-software/">Facebook listing software</a></li>
+                    <li><a href="/ai-car-photo-editor/">AI car photo editor</a></li>
+                    <li><a href="/rv-dealer-software/">RV dealer software</a></li>
+                    <li><a href="/safest-facebook-marketplace-auto-poster/">Account safety</a></li>
+                    <li><a href="/facebook-marketplace-auto-poster-pricing/">Pricing</a></li>
+                  </ul></nav>
+                  <nav aria-label="Integrations"><p class="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-500">Integrations</p><ul class="space-y-1 text-[13px] font-semibold">
+                    <li><a href="/integrations/">All integrations</a></li>
+                    <li><a href="/integrations/cargurus-facebook-marketplace/">CarGurus</a></li>
+                    <li><a href="/integrations/cars-com-facebook-marketplace/">Cars.com</a></li>
+                    <li><a href="/integrations/vauto-facebook-marketplace/">vAuto</a></li>
+                    <li><a href="/integrations/dealercenter-facebook-marketplace/">DealerCenter</a></li>
+                    <li><a href="/integrations/dealer-com-facebook-marketplace/">Dealer.com</a></li>
+                    <li><a href="/integrations/homenet-facebook-marketplace/">HomeNet</a></li>
+                    <li><a href="/integrations/frazer-facebook-marketplace/">Frazer</a></li>
+                    <li><a href="/integrations/cdk-facebook-marketplace/">CDK</a></li>
+                    <li><a href="/integrations/tekion-facebook-marketplace/">Tekion</a></li>
+                    <li><a href="/dealer-inventory-management/">Dealer inventory management</a></li>
+                  </ul></nav>
+                  <nav aria-label="Compare"><p class="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-500">Compare</p><ul class="space-y-1 text-[13px] font-semibold">
+                    <li><a href="/compare/">Best Marketplace posting tools (2026)</a></li>
+                    <li><a href="/compare/carvid/">vs CARVID</a></li>
+                    <li><a href="/compare/shiftly/">vs Shiftly</a></li>
+                    <li><a href="/compare/autolisterpro/">vs AutoLister Pro</a></li>
+                    <li><a href="/compare/relayauto/">vs RelayAuto</a></li>
+                    <li><a href="/compare/drift/">vs Sell With Drift</a></li>
+                    <li><a href="/compare/autobook/">vs AutoBook.io</a></li>
+                    <li><a href="/compare/glo3d/">vs Glo3D</a></li>
+                    <li><a href="/why-facebook-marketplace-only/">Why Marketplace only</a></li>
+                    <li><a href="/why-we-dont-answer-your-buyers/">Why we don&rsquo;t answer your buyers</a></li>
+                  </ul></nav>
+                  <nav aria-label="Guides"><p class="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-500">Guides</p><ul class="space-y-1 text-[13px] font-semibold">
+                    <li><a href="/guide/how-to-sell-cars-on-facebook-marketplace/">How to sell cars on Marketplace</a></li>
+                    <li><a href="/guide/facebook-marketplace-automation/">Automation policy &amp; safety</a></li>
+                    <li><a href="/facebook-marketplace-for-car-dealers/">Marketplace for car dealers</a></li>
+                    <li><a href="/guide/car-dealership-marketing/">Dealership marketing playbook</a></li>
+                    <li><a href="/guide/car-sales-leads/">Car sales leads</a></li>
+                    <li><a href="/guide/ai-for-car-dealerships/">AI for dealerships</a></li>
+                    <li><a href="/ai-chat-for-car-dealers/">AI chat for car dealers</a></li>
+                    <li><a href="/guide/how-to-sell-rvs-on-facebook-marketplace/">How to sell RVs on Marketplace</a></li>
+                    <li><a href="/facebook-marketplace-used-car-report-2026/">Used-Car Report 2026 (original data)</a></li>
+                    <li><a href="/about/">About AutoLander</a></li>
+                    <li><a href="/contact/">Contact</a></li>
+                  </ul></nav>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+      <!--AL_STATIC_HOME_DETAILS_END-->
       </div><!--AL_STATIC_HOME_END-->
     </div>
     <!-- The static home shell above is now the no-JS body: it is always in the DOM, carries the

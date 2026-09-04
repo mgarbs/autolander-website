@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 ## What AutoLander is
 

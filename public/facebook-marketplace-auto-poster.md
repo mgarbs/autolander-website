@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/facebook-marketplace-auto-poster/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** A Facebook Marketplace auto poster is the execution layer for dealership posting: it takes eligible vehicles from your inventory, puts them into a controlled queue and works through that queue without a salesperson reopening Marketplace for every VIN. AutoLander runs the queue from your own computer, provides pacing controls, refreshes price changes and removes sold units. It can manage a whole-lot workflow, while actual publishing remains subject to Meta’s eligibility and listing limits. Plans start at $39/mo with 5 free posts.
 
@@ -114,12 +114,14 @@ Meta’s Terms prohibit automated access without prior permission, while Marketp
 - [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
 - [Facebook listing software & tool](https://autolander.ai/facebook-listing-software/)
 - [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [Dealer inventory management: getting cars from the DMS to buyers](https://autolander.ai/dealer-inventory-management/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
 - [Facebook Marketplace integrations & DMS feeds](https://autolander.ai/integrations/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
 - [Best Facebook Marketplace auto-posting tools (2026 comparison)](https://autolander.ai/compare/)
 - [Guide: Facebook Marketplace automation (the honest version)](https://autolander.ai/guide/facebook-marketplace-automation/)
+- [Why AutoLander posts to Facebook Marketplace only](https://autolander.ai/why-facebook-marketplace-only/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [RV dealer software for Facebook Marketplace](https://autolander.ai/rv-dealer-software/)
 - [Facebook Marketplace Used-Car Report 2026 (original data)](https://autolander.ai/facebook-marketplace-used-car-report-2026/)

@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/facebook-ai-tools/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** Facebook AI tools are software that uses AI to do the work of selling on Facebook Marketplace for you — enhancing photos, writing listings, managing eligible vehicles in a queue, and assisting with buyer messages. AutoLander bundles all four in one native desktop app built for car dealers, from $39/mo with 5 free posts and no credit card.
 

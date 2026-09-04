@@ -16,7 +16,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { renderPage, renderMarkdown, SEO_STYLES, SITE } from './seo/shell.mjs';
+import { renderPage, renderMarkdown, SEO_STYLES, SITE, ogImageFor } from './seo/shell.mjs';
 import { NAV, INTEGRATIONS, integrationPath, integrationUrl, relatedFor } from './seo/registry.mjs';
 import { COMPETITORS, GUIDE } from './compare-data.mjs';
 import {
@@ -46,6 +46,11 @@ import { PAGES as GROWTHMONEY } from './seo/data-growth-money.mjs';
 import { PAGES as REPORT } from './seo/data-report.mjs';
 import { PAGES as ABOUT } from './seo/data-about.mjs';
 import { PAGES as CONTACT } from './seo/data-contact.mjs';
+// 2026-09-03 discovery + cluster pages (see registry.mjs NAV for the rationale)
+import { PAGES as POSITIONING } from './seo/data-positioning.mjs';
+import { PAGES as INVDIST } from './seo/data-inventory-distribution.mjs';
+import { PAGES as RVCLUSTER } from './seo/data-rv-cluster.mjs';
+import { PAGES as AICHATCLUSTER } from './seo/data-aichat-cluster.mjs';
 import { HOME } from './seo/data-home.mjs';
 import { whenToUseSection, agentsMarkdown } from './seo/agent-instructions.mjs';
 
@@ -67,7 +72,7 @@ const PUBLISH_STATE = loadPublishState();
 const PUBLISHED_ARTICLES = ARTICLE_CONTENT.filter((c) => isPublished(PUBLISH_STATE, c.slug));
 const ARTICLE_PAGES = PUBLISHED_ARTICLES.map((c) => buildArticlePage(c, ARTICLE_CONTENT, PUBLISH_STATE));
 
-const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...ARTICLE_PAGES];
+const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...POSITIONING, ...INVDIST, ...RVCLUSTER, ...AICHATCLUSTER, ...ARTICLE_PAGES];
 
 // Hub pages grow "Keep exploring" links to their silo's PUBLISHED articles. With zero
 // published articles this is a no-op and every existing page renders byte-identical.
@@ -256,12 +261,18 @@ Contact: sales@autolander.ai · (919) 280-0967
     group('About the publisher', [NAV.about.path, NAV.contact.path]),
     group('Product', [
       NAV.category.path, NAV.listingSw.path, NAV.dealers.path, NAV.inventory.path,
+      NAV.inventoryDist.path,
       NAV.bulk.path, NAV.automation.path, NAV.safety.path, NAV.pricing.path,
       NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path,
     ]),
+    // Two deliberate scope decisions, stated as principles. An agent deciding whether to
+    // recommend AutoLander should read these before a competitor's feature matrix does the
+    // explaining for us.
+    group('Why we work the way we do', [NAV.whyMarketplaceOnly.path, NAV.whyNoAutoReply.path]),
     group('Guides', [
       NAV.mktgHub.path, NAV.mktgIdeas.path, NAV.salesLeads.path, NAV.socialMedia.path,
       NAV.sellMore.path, NAV.aiDealers.path, NAV.aiTools.path,
+      NAV.rvSellGuide.path, NAV.rvPhotos.path, NAV.aiChatVendor.path, NAV.responseTime.path,
     ]),
     // Drip-published long-tail library — only articles that are actually live.
     group('Deep-dive dealer guides', PUBLISHED_ARTICLES.map((c) => articlePath(c.slug))),
@@ -300,6 +311,8 @@ const expected = [
   NAV.mktgHub.path, NAV.mktgIdeas.path, NAV.salesLeads.path, NAV.socialMedia.path,
   NAV.sellMore.path, NAV.aiDealers.path, NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path, NAV.report2026.path,
   NAV.about.path, NAV.contact.path,
+  NAV.whyMarketplaceOnly.path, NAV.whyNoAutoReply.path, NAV.inventoryDist.path,
+  NAV.rvSellGuide.path, NAV.rvPhotos.path, NAV.aiChatVendor.path, NAV.responseTime.path,
   ...INTEGRATIONS.map((s) => integrationPath(s.slug)),
 ];
 const missing = expected.filter((p) => !renderedPaths.has(p));
@@ -319,7 +332,52 @@ Allow: /
 ${blocks}
 
 Sitemap: ${SITE.origin}/sitemap.xml
+Sitemap: ${SITE.origin}/image-sitemap.xml
 `;
+}
+
+// ---------- image sitemap ----------
+// The product's core value is listing photography, yet nothing told an image crawler where the
+// studio before/after pairs live. Built from the same page objects as the HTML — every
+// {type:'figure'} and {type:'image'} section, plus each page's OG card — so it can never reference
+// an image the page does not actually show. Relative /studio/… paths are made absolute.
+function imageSitemapXml() {
+  const abs = (src) => (/^https?:/i.test(src) ? src : SITE.origin + src);
+  const escXml = (s) => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+  const entries = [];
+  for (const page of ALL) {
+    const nav = page.key ? NAV[page.key] : null;
+    const urlPath = page.path || (nav && nav.path);
+    if (!urlPath) continue;
+    const images = [];
+    for (const s of page.sections || []) {
+      if (s.type === 'figure') {
+        if (s.before) images.push({ loc: abs(s.before), title: s.beforeAlt || s.caption || page.h1 });
+        if (s.after) images.push({ loc: abs(s.after), title: s.afterAlt || s.caption || page.h1 });
+      } else if (s.type === 'image' && s.src) {
+        images.push({ loc: abs(s.src), title: s.alt || s.caption || page.h1 });
+      }
+    }
+    images.push({ loc: ogImageFor(urlPath), title: page.title });
+    if (images.length) entries.push({ loc: SITE.origin + urlPath, images });
+  }
+  // Homepage: its OG card + the hero preview thumbnails index.html ships.
+  entries.unshift({
+    loc: SITE.origin + '/',
+    images: [
+      { loc: ogImageFor('/'), title: HOME.title },
+      { loc: SITE.origin + '/studio/chevrolet-malibu-before.webp', title: 'Raw dealership lot photo before AutoLander’s AI Photo Studio' },
+      { loc: SITE.origin + '/studio/chevrolet-malibu-after.webp', title: 'The same vehicle as a showroom-grade Facebook Marketplace listing photo after AutoLander' },
+    ],
+  });
+  const body = entries.map((e) => `  <url>
+    <loc>${escXml(e.loc)}</loc>
+${e.images.map((im) => `    <image:image>
+      <image:loc>${escXml(im.loc)}</image:loc>
+      <image:title>${escXml(im.title)}</image:title>
+    </image:image>`).join('\n')}
+  </url>`).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${body}\n</urlset>\n`;
 }
 
 // ---------- unified sitemap.xml (compare cluster + guide + new silo) ----------
@@ -357,6 +415,14 @@ function sitemapXml() {
     { loc: SITE.origin + NAV.report2026.path, pri: '0.9', freq: 'monthly' },
     { loc: SITE.origin + NAV.about.path, pri: '0.6', freq: 'monthly' },
     { loc: SITE.origin + NAV.contact.path, pri: '0.6', freq: 'monthly' },
+    // 2026-09-03 discovery + cluster pages
+    { loc: SITE.origin + NAV.whyMarketplaceOnly.path, pri: '0.8', freq: 'monthly', lastmod: '2026-09-03' },
+    { loc: SITE.origin + NAV.whyNoAutoReply.path, pri: '0.8', freq: 'monthly', lastmod: '2026-09-03' },
+    { loc: SITE.origin + NAV.inventoryDist.path, pri: '0.9', freq: 'weekly', lastmod: '2026-09-03' },
+    { loc: SITE.origin + NAV.rvSellGuide.path, pri: '0.8', freq: 'monthly', lastmod: '2026-09-03' },
+    { loc: SITE.origin + NAV.rvPhotos.path, pri: '0.7', freq: 'monthly', lastmod: '2026-09-03' },
+    { loc: SITE.origin + NAV.aiChatVendor.path, pri: '0.8', freq: 'monthly', lastmod: '2026-09-03' },
+    { loc: SITE.origin + NAV.responseTime.path, pri: '0.8', freq: 'monthly', lastmod: '2026-09-03' },
     ...competitorSlugs.map((s) => ({ loc: `${SITE.origin}/compare/${s}/`, pri: '0.7', freq: 'monthly' })),
     ...INTEGRATIONS.map((s) => ({ loc: integrationUrl(s.slug), pri: '0.7', freq: 'monthly' })),
     // Published Avalanche articles only; lastmod = the article's real publish date.
@@ -369,6 +435,7 @@ function sitemapXml() {
 
 write(resolve(PUBLIC_DIR, 'robots.txt'), robotsTxt());
 write(resolve(PUBLIC_DIR, 'sitemap.xml'), sitemapXml());
+write(resolve(PUBLIC_DIR, 'image-sitemap.xml'), imageSitemapXml());
 
 console.log(`\nDone. ${renderedPaths.size} SEO pages + unified sitemap.xml + robots.txt.`);
 console.log(`Articles: ${PUBLISHED_ARTICLES.length}/${ARTICLE_CONTENT.length} published (drafts stay invisible until published via the admin Content Publisher).`);

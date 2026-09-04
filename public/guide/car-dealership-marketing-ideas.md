@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/guide/car-dealership-marketing-ideas/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** The dealership marketing ideas that reliably sell cars are unglamorous: list every unit on Facebook Marketplace daily, upgrade the photos, answer messages in seconds, farm reviews, and remarket to your own customer list. Below are 27 ideas grouped by what they cost — start with the free ones; they outperform most paid ones.
 

@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/rv-dealer-software/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** AutoLander is RV dealer software for the selling side: it syncs your RV inventory, posts every unit to Facebook Marketplace as an RV/Camper listing (not a mislabeled car), upgrades the photos with an AI studio, keeps asking prices in step with your feed, and removes sold units automatically. It is the Marketplace sales layer that works alongside your DMS — travel trailers, fifth wheels, motorhomes and toy haulers included.
 
@@ -77,9 +77,12 @@ Same simple model as for car dealers: plans from $39/mo with 5 free posts and no
 
 ## Related
 
+- [How to sell RVs on Facebook Marketplace as a dealer](https://autolander.ai/guide/how-to-sell-rvs-on-facebook-marketplace/)
+- [RV photos that sell on Facebook Marketplace](https://autolander.ai/guide/rv-photos-for-facebook-marketplace/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
 - [Bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/)
+- [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)

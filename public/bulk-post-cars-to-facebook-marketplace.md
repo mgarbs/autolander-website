@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/bulk-post-cars-to-facebook-marketplace/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** To bulk post cars to Facebook Marketplace, load your whole inventory from a feed and let AutoLander build a configurable queue of eligible vehicles. AutoLander runs on your own computer, keeps feed data current and removes sold units. Meta’s Help Center currently says sellers may create up to 5 new Vehicles listings per calendar month and 20 new listings total per calendar month; the limits shown in your account control, and AutoLander cannot override them. Plans start at $39/mo.
 

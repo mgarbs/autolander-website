@@ -17,9 +17,11 @@ export const PAGES = [
   {
     key: 'autoposter',
     title: 'Facebook Autoposter for Car Dealers | AutoLander',
+    // Differentiated 2026-09-03: this page owns the hands-off "set it and it runs" intent — schedule,
+    // pacing, daily allowance, what happens while nobody is watching — not the queue mechanics.
     description:
-      'Facebook autoposter for car dealers: automatically post inventory to Marketplace, enhance photos and '
-      + 'remove sold cars. From $39/mo, 5 free posts.',
+      'A Facebook autoposter for car dealers, explained by what runs while nobody is watching: the '
+      + 'schedule, the daily pace, price sync and sold-car removal. From $39/mo, 5 free posts.',
     ogType: 'website',
     eyebrow: 'For car dealers & sales reps',
     h1: 'Facebook autoposter for car dealers',

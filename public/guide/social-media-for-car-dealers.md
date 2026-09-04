@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/guide/social-media-for-car-dealers/  
 Author: The AutoLander team  
-Updated: August 20, 2026
+Updated: September 3, 2026
 
 **Short answer:** For car dealers, social media splits into two different jobs: Facebook Marketplace is where local buyers search inventory and transactions start — it deserves daily, full-inventory coverage. Your Facebook page, Reels and Google posts are the trust layer buyers check before they visit. Most stores over-invest in engagement content and under-invest in the channel that actually sells cars.
 
