@@ -99,6 +99,22 @@ Our how to sell cars on Facebook Marketplace guide covers the full listing, foll
 
 Meta’s terms prohibit unauthorized automated access, and Marketplace eligibility, listing limits and business inventory options can change. AutoLander keeps the session on the dealer’s own machine, but that architecture is not Meta approval and cannot guarantee uninterrupted access. Read the honest automation guide and see the safest auto poster page before you start.
 
+## What dealers say
+
+> "I think this is the best listing software I’ve ever used."
+> — Jim, Cox Chevrolet
+
+> "I love it. Averaging about 2–3 deals a week from it."
+> — Jullian, Sales rep, Lexus of Montgomery
+
+> "I’ve sold 3 in a week from AutoLander. It’s doing great. I had 15 people message me yesterday."
+> — Zac, Sales rep, Westgate
+
+> "I like how it picked up on the price changes, which I also did. Not only is it more accurate, but it may push those listings to the top of the feed again."
+> — Jim, Cox Chevrolet
+
+_Quotes are from customer messages to the AutoLander team, September 2026, reproduced word for word with first names and dealerships only. Results are what those customers reported, not a promise._
+
 ## Frequently asked questions
 
 ### Is it against Facebook’s rules for dealers to use Marketplace?

@@ -81,6 +81,22 @@ Yes. AutoLander can support one salesperson posting an eligible set of vehicles 
 
 Marketplace eligibility, commercial-seller rules, vehicle-category availability and listing limits can vary by account and market. Meta’s Help Center currently documents monthly new-listing limits that include five vehicle listings and 20 listings total. Meta’s Terms also prohibit automated access without prior permission, and no vendor can promise approval or uninterrupted access. AutoLander’s local session and queue controls do not create Meta permission or endorsement. Check the rules shown in your account and read the policy and safety guide before posting.
 
+## What dealers say
+
+> "I think this is the best listing software I’ve ever used."
+> — Jim, Cox Chevrolet
+
+> "I love it. Averaging about 2–3 deals a week from it."
+> — Jullian, Sales rep, Lexus of Montgomery
+
+> "I’ve sold 3 in a week from AutoLander. It’s doing great. I had 15 people message me yesterday."
+> — Zac, Sales rep, Westgate
+
+> "I like how it picked up on the price changes, which I also did. Not only is it more accurate, but it may push those listings to the top of the feed again."
+> — Jim, Cox Chevrolet
+
+_Quotes are from customer messages to the AutoLander team, September 2026, reproduced word for word with first names and dealerships only. Results are what those customers reported, not a promise._
+
 ## Facebook Marketplace auto-poster questions
 
 ### What is the best Facebook Marketplace auto poster for car dealers?

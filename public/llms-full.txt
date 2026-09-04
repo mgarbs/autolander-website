@@ -98,6 +98,22 @@ Yes. AutoLander can support one salesperson posting an eligible set of vehicles 
 
 Marketplace eligibility, commercial-seller rules, vehicle-category availability and listing limits can vary by account and market. Meta’s Help Center currently documents monthly new-listing limits that include five vehicle listings and 20 listings total. Meta’s Terms also prohibit automated access without prior permission, and no vendor can promise approval or uninterrupted access. AutoLander’s local session and queue controls do not create Meta permission or endorsement. Check the rules shown in your account and read the policy and safety guide before posting.
 
+## What dealers say
+
+> "I think this is the best listing software I’ve ever used."
+> — Jim, Cox Chevrolet
+
+> "I love it. Averaging about 2–3 deals a week from it."
+> — Jullian, Sales rep, Lexus of Montgomery
+
+> "I’ve sold 3 in a week from AutoLander. It’s doing great. I had 15 people message me yesterday."
+> — Zac, Sales rep, Westgate
+
+> "I like how it picked up on the price changes, which I also did. Not only is it more accurate, but it may push those listings to the top of the feed again."
+> — Jim, Cox Chevrolet
+
+_Quotes are from customer messages to the AutoLander team, September 2026, reproduced word for word with first names and dealerships only. Results are what those customers reported, not a promise._
+
 ## Facebook Marketplace auto-poster questions
 
 ### What is the best Facebook Marketplace auto poster for car dealers?
@@ -255,6 +271,19 @@ _Days are rounded up. A Dealer Plan can mix Starter, Growth and Pro seats; the d
 ## A note on honesty
 
 AutoLander’s pricing above (Starter $39, Growth $59, Pro $79, Dealer Plan from $117 monthly, 5 free posts, no card) is our own published pricing. Competitor prices are listed as publicly advertised or reported and can change at any time — always verify on each vendor’s site. Meta account eligibility, listing limits and terms apply regardless of the plan you buy, and no vendor can guarantee Meta approval or access. Daily plan allowances describe AutoLander workflow capacity, not permission to exceed the limits shown by Meta.
+
+## What customers on these plans say
+
+> "I think this is the best listing software I’ve ever used."
+> — Jim, Cox Chevrolet
+
+> "I love it. Averaging about 2–3 deals a week from it."
+> — Jullian, Sales rep, Lexus of Montgomery
+
+> "I’ve sold 3 in a week from AutoLander. It’s doing great. I had 15 people message me yesterday."
+> — Zac, Sales rep, Westgate
+
+_Quotes are from customer messages to the AutoLander team, September 2026, reproduced word for word with first names and dealerships only. Results are what those customers reported, not a promise._
 
 ## Frequently asked questions
 
@@ -2074,6 +2103,22 @@ Our how to sell cars on Facebook Marketplace guide covers the full listing, foll
 ## Be clear-eyed about the rules
 
 Meta’s terms prohibit unauthorized automated access, and Marketplace eligibility, listing limits and business inventory options can change. AutoLander keeps the session on the dealer’s own machine, but that architecture is not Meta approval and cannot guarantee uninterrupted access. Read the honest automation guide and see the safest auto poster page before you start.
+
+## What dealers say
+
+> "I think this is the best listing software I’ve ever used."
+> — Jim, Cox Chevrolet
+
+> "I love it. Averaging about 2–3 deals a week from it."
+> — Jullian, Sales rep, Lexus of Montgomery
+
+> "I’ve sold 3 in a week from AutoLander. It’s doing great. I had 15 people message me yesterday."
+> — Zac, Sales rep, Westgate
+
+> "I like how it picked up on the price changes, which I also did. Not only is it more accurate, but it may push those listings to the top of the feed again."
+> — Jim, Cox Chevrolet
+
+_Quotes are from customer messages to the AutoLander team, September 2026, reproduced word for word with first names and dealerships only. Results are what those customers reported, not a promise._
 
 ## Frequently asked questions
 

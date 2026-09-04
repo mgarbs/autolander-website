@@ -15,6 +15,7 @@
 // silently drifting.
 
 import { SITE, NAV } from './registry.mjs';
+import { testimonialsSection } from './data-testimonials.mjs';
 
 const home = SITE.origin + '/';
 
@@ -106,6 +107,7 @@ export const HOME = {
         'RV and camper dealers, who need inventory posted into the RV/Camper category rather than as cars.',
       ],
     },
+    testimonialsSection({ pick: 4 }),
     {
       type: 'bullets',
       h2: 'Pricing',

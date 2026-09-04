@@ -7,6 +7,7 @@
 // Follows the page-object contract in scripts/seo/shell.mjs.
 
 import { SITE, NAV } from './registry.mjs';
+import { testimonialsSection } from './data-testimonials.mjs';
 
 const canonical = SITE.origin + NAV.dealers.path;
 
@@ -161,6 +162,7 @@ export const PAGES = [
           + '[honest automation guide](/guide/facebook-marketplace-automation/) and see the '
           + '[safest auto poster](/safest-facebook-marketplace-auto-poster/) page before you start.',
       },
+      testimonialsSection({ pick: 4 }),
     ],
     faq: [
       ['Is it against Facebook’s rules for dealers to use Marketplace?',

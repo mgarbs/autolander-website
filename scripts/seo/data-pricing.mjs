@@ -7,6 +7,7 @@
 // Follows the page-object contract (see scripts/seo/shell.mjs). All fields are PLAIN TEXT.
 
 import { SITE, NAV } from './registry.mjs';
+import { testimonialsSection } from './data-testimonials.mjs';
 
 const SOFTWARE_DESC =
   'AutoLander is a Facebook Marketplace auto poster for car dealers with published, self-serve '
@@ -202,6 +203,7 @@ export const PAGES = [
           + 'terms apply regardless of the plan you buy, and no vendor can guarantee Meta approval or access. Daily '
           + 'plan allowances describe AutoLander workflow capacity, not permission to exceed the limits shown by Meta.',
       },
+      testimonialsSection({ pick: 3, h2: 'What customers on these plans say' }),
     ],
     faq: [
       ['How much does a Facebook Marketplace auto poster cost?',

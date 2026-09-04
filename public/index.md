@@ -35,6 +35,22 @@ Posting a lot to Facebook Marketplace by hand is the bottleneck: a hundred-car l
 - Individual sales reps posting their own units who want the same automation at a single-seat price.
 - RV and camper dealers, who need inventory posted into the RV/Camper category rather than as cars.
 
+## What dealers say
+
+> "I think this is the best listing software I’ve ever used."
+> — Jim, Cox Chevrolet
+
+> "I love it. Averaging about 2–3 deals a week from it."
+> — Jullian, Sales rep, Lexus of Montgomery
+
+> "I’ve sold 3 in a week from AutoLander. It’s doing great. I had 15 people message me yesterday."
+> — Zac, Sales rep, Westgate
+
+> "I like how it picked up on the price changes, which I also did. Not only is it more accurate, but it may push those listings to the top of the feed again."
+> — Jim, Cox Chevrolet
+
+_Quotes are from customer messages to the AutoLander team, September 2026, reproduced word for word with first names and dealerships only. Results are what those customers reported, not a promise._
+
 ## Pricing
 
 Published pricing, monthly, no setup fee. Every plan starts with 5 free posts and no credit card.

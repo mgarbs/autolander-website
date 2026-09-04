@@ -30,6 +30,17 @@ const HOME_DETAIL_FAQ = [
     'AutoLander is a native desktop application for Windows, macOS and Linux, paired with a cloud service that stores inventory and handles billing. The desktop app drives the Facebook session, which is why it runs on your machine rather than in a browser tab.'],
 ];
 
+// Customer quotes: verbatim from customer messages to the team (Sept 2026), first name + a role only
+// where the message itself makes the role evident. Same list as scripts/seo/data-testimonials.mjs
+// (the SEO pages and /index.md); the static block in index.html mirrors it. No Review/AggregateRating
+// schema on purpose: Google excludes self-collected testimonials from rich results.
+const HOME_TESTIMONIALS = [
+  ['I think this is the best listing software I’ve ever used.', 'Jim', 'Cox Chevrolet'],
+  ['I love it. Averaging about 2–3 deals a week from it.', 'Jullian', 'Sales rep, Lexus of Montgomery'],
+  ['I’ve sold 3 in a week from AutoLander. It’s doing great. I had 15 people message me yesterday.', 'Zac', 'Sales rep, Westgate'],
+  ['I like how it picked up on the price changes, which I also did. Not only is it more accurate, but it may push those listings to the top of the feed again.', 'Jim', 'Cox Chevrolet'],
+];
+
 // Every page on the site, grouped. This is the crawlable link map the footer used to carry only
 // inside its lazy chunk; here it is in the eager DOM (collapsed) so the homepage actually
 // distributes authority to the pages it links.
@@ -150,6 +161,21 @@ export default function HomeDetails({ openDemoBooking, onWarmDemo }) {
                 <li>RV and camper dealers, who need inventory posted into the RV/Camper category rather than as cars.</li>
               </ul>
               <p className="mt-4">Not a fit if you need multi-platform syndication, an inbox auto-reply, or a market outside the United States, Canada and Spanish-speaking Latin America.</p>
+            </div>
+          </details>
+
+          <details className={ROW}>
+            <summary className={SUMMARY}>What dealers say <Chev /></summary>
+            <div className={BODY}>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {HOME_TESTIMONIALS.map(([text, who, role]) => (
+                  <figure key={text} className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+                    <blockquote className="text-slate-200">“{text}”</blockquote>
+                    <figcaption className="mt-3 text-[12px] font-bold uppercase tracking-wider text-slate-500">{who} <span className="font-medium normal-case tracking-normal text-slate-500">· {role}</span></figcaption>
+                  </figure>
+                ))}
+              </div>
+              <p className="mt-4 text-[13px] text-slate-500">Quotes are from customer messages to the AutoLander team, September 2026, word for word, first names and dealerships only. Results are what those customers reported, not a promise.</p>
             </div>
           </details>
 

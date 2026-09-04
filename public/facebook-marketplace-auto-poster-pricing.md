@@ -105,6 +105,19 @@ _Days are rounded up. A Dealer Plan can mix Starter, Growth and Pro seats; the d
 
 AutoLander’s pricing above (Starter $39, Growth $59, Pro $79, Dealer Plan from $117 monthly, 5 free posts, no card) is our own published pricing. Competitor prices are listed as publicly advertised or reported and can change at any time — always verify on each vendor’s site. Meta account eligibility, listing limits and terms apply regardless of the plan you buy, and no vendor can guarantee Meta approval or access. Daily plan allowances describe AutoLander workflow capacity, not permission to exceed the limits shown by Meta.
 
+## What customers on these plans say
+
+> "I think this is the best listing software I’ve ever used."
+> — Jim, Cox Chevrolet
+
+> "I love it. Averaging about 2–3 deals a week from it."
+> — Jullian, Sales rep, Lexus of Montgomery
+
+> "I’ve sold 3 in a week from AutoLander. It’s doing great. I had 15 people message me yesterday."
+> — Zac, Sales rep, Westgate
+
+_Quotes are from customer messages to the AutoLander team, September 2026, reproduced word for word with first names and dealerships only. Results are what those customers reported, not a promise._
+
 ## Frequently asked questions
 
 ### How much does a Facebook Marketplace auto poster cost?

@@ -590,6 +590,16 @@ export function renderSection(s) {
     }
     case 'callout':
       return `    <aside class="callout">${s.title ? `<h3>${esc(s.title)}</h3>` : ''}<p>${fmt(s.body)}</p></aside>`;
+    case 'quotes':
+      // Customer testimonials. Deliberately NOT marked up as Review/AggregateRating: Google treats
+      // reviews a business collects about itself as self-serving and excludes them from rich
+      // results, and these are messages, not star ratings. Visible, attributed, honest — nothing more.
+      return `    <section class="quotes"${s.id ? ` id="${esc(s.id)}"` : ''}>
+      <h2>${esc(s.h2)}</h2>${s.intro ? `\n      <p class="sec-intro">${esc(s.intro)}</p>` : ''}
+      <div class="quote-grid">
+        ${s.quotes.map((q) => `<figure class="quote"><blockquote><p>${esc(q.text)}</p></blockquote><figcaption>${esc(q.who)}${q.role ? `<span class="quote-role">${esc(q.role)}</span>` : ''}</figcaption></figure>`).join('\n        ')}
+      </div>${s.note ? `\n      <p class="legend">${esc(s.note)}</p>` : ''}
+    </section>`;
     case 'twocol':
       return `    <div class="two-col">
       <section class="card win"><h2>${esc(s.left.h2)}</h2><ul>${s.left.items.map((x) => `<li>${fmt(x)}</li>`).join('')}</ul></section>
@@ -831,6 +841,12 @@ export function renderMarkdown(page) {
         if (s.title) { out.push(`## ${s.title}`); out.push(''); }
         out.push(stripmd(s.body)); out.push('');
         break;
+      case 'quotes':
+        out.push(`## ${s.h2}`); out.push('');
+        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
+        s.quotes.forEach((q) => { out.push(`> "${stripmd(q.text)}"`); out.push(`> — ${q.who}${q.role ? `, ${q.role}` : ''}`); out.push(''); });
+        if (s.note) { out.push(`_${stripmd(s.note)}_`); out.push(''); }
+        break;
       case 'twocol':
         out.push(`## ${s.left.h2}`); out.push('');
         s.left.items.forEach((i) => out.push(`- ${stripmd(i)}`)); out.push('');
@@ -889,6 +905,17 @@ background:rgba(59,130,246,.16);color:var(--blue2);font-weight:900;display:flex;
 .callout{margin:22px 0;background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.28);border-radius:14px;padding:16px 20px}
 .callout h3{margin:0 0 6px;font-size:15px;color:var(--blue2)}
 .callout p{margin:0;color:#e6eefc;font-size:14.5px}
+/* customer quotes (type:'quotes') — plain, attributed, no rating UI on purpose */
+.quotes{margin:26px 0}
+.quotes h2{margin:0 0 12px}
+.quote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.quote{margin:0;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px 18px}
+.quote blockquote{margin:0;font-size:15px;line-height:1.55;color:#e6eefc}
+.quote blockquote p{margin:0}
+.quote blockquote p::before{content:"\\201C"}
+.quote blockquote p::after{content:"\\201D"}
+.quote figcaption{margin-top:10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#93a4c3}
+.quote-role{display:block;margin-top:2px;font-weight:500;letter-spacing:0;text-transform:none;color:#7f8fab}
 .table-section{margin-top:36px}
 .feature-card h3,.step-h{letter-spacing:-.01em}
 .shot-single .shot-imgs{grid-template-columns:1fr;max-width:680px;margin:0 auto}

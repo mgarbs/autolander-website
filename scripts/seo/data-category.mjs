@@ -6,6 +6,7 @@
 // This file is the REFERENCE implementation of the page-object contract (see scripts/seo/shell.mjs).
 
 import { SITE, NAV } from './registry.mjs';
+import { testimonialsSection } from './data-testimonials.mjs';
 
 const canonical = SITE.origin + NAV.category.path;
 
@@ -135,6 +136,7 @@ export const PAGES = [
           + 'Check the rules shown in your account and read the [policy and safety guide]'
           + '(/guide/facebook-marketplace-automation/) before posting.',
       },
+      testimonialsSection({ pick: 4 }),
     ],
     faq: [
       ['What is the best Facebook Marketplace auto poster for car dealers?',
