@@ -107,6 +107,9 @@ export const PROFILES = [
   'https://www.facebook.com/autolander',
   'https://www.g2.com/products/autolander/reviews',
   'https://www.crunchbase.com/organization/autolander',
+  // Capterra — provider-verified listing (Gartner Digital Markets), read live 2026-09-04. GetApp and
+  // Software Advice had not syndicated it yet that day; add them here once their pages exist.
+  'https://www.capterra.com/p/10048212/AutoLander/',
   'https://github.com/mgarbs/autolander-releases',
   // Wikidata entity created 2026-09-04 (Q141277412): the authoritative record that disambiguates
   // "AutoLander" from Autoland (aviation) and mozilla/autolander for every downstream knowledge graph.
