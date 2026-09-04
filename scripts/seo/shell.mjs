@@ -108,6 +108,9 @@ export const PROFILES = [
   'https://www.g2.com/products/autolander/reviews',
   'https://www.crunchbase.com/organization/autolander',
   'https://github.com/mgarbs/autolander-releases',
+  // Wikidata entity created 2026-09-04 (Q141277412): the authoritative record that disambiguates
+  // "AutoLander" from Autoland (aviation) and mozilla/autolander for every downstream knowledge graph.
+  'https://www.wikidata.org/wiki/Q141277412',
 ];
 
 // ---------- Cloudflare email-obfuscation opt-out ----------
@@ -180,7 +183,7 @@ export const orgLd = {
       email: 'sales@autolander.ai',
       telephone: '+1-919-280-0967',
       areaServed: ['US', 'CA', 'Latin America'],
-      availableLanguage: 'English',
+      availableLanguage: ['English', 'Spanish', 'French'],
       url: SITE.origin + '/contact/',
     },
     {
@@ -189,7 +192,7 @@ export const orgLd = {
       email: 'support@autolander.ai',
       telephone: '+1-919-280-0967',
       areaServed: ['US', 'CA', 'Latin America'],
-      availableLanguage: 'English',
+      availableLanguage: ['English', 'Spanish', 'French'],
       url: SITE.origin + '/contact/',
     },
     {
@@ -197,7 +200,7 @@ export const orgLd = {
       contactType: 'media',
       email: 'sales@autolander.ai',
       areaServed: ['US', 'CA', 'Latin America'],
-      availableLanguage: 'English',
+      availableLanguage: ['English', 'Spanish', 'French'],
       url: SITE.origin + '/contact/',
     },
   ],
