@@ -260,15 +260,15 @@ export const COMPETITORS = {
     name: 'CARVID',
     url: 'https://www.carvidapp.com/',
     host: 'carvidapp.com',
-    oneLiner: 'A cloud platform that syndicates listings to ~9 platforms (not just Marketplace) and pushes leads into your CRM, at a flat $249/mo.',
+    oneLiner: 'A Chrome-extension poster (CARVID also offers a desktop app) that runs in the dealer’s own browser session, syndicates listings to ~9 platforms and pushes leads into your CRM, from $249/mo.',
     bestFor: 'A dealer who wants multi-platform syndication beyond Marketplace and CRM/ADF lead delivery.',
     pricingShort: '$249/mo, no contract',
     cells: {
-      method: ['mid', 'Cloud platform'],
-      session: ['mid', 'Runs on CARVID servers'],
+      method: ['mid', 'Chrome extension (desktop app also offered)'],
+      session: ['yes', 'Your own browser session, on your computer'],
       feeds: ['yes', 'Yes — HomeNet / vAuto / Frazer / DealerCenter'],
       descriptions: ['yes', 'Yes — AI'],
-      photoStudio: ['mid', 'Watermark removal (not background replace)'],
+      photoStudio: ['mid', 'Background removal (cutout), not showroom backdrops'],
       video: ['yes', 'Yes — video walkaround'],
       photoOrder: ['mid', 'Phone-number overlays'],
       soldRemoval: ['yes', 'Yes — auto-updates when sold'],
@@ -284,19 +284,21 @@ export const COMPETITORS = {
       'Posts to ~9 platforms, not just Facebook Marketplace.',
       'CRM/ADF lead delivery plus an auto-reply messenger bot.',
       'Broad DMS integrations (HomeNet, vAuto, Frazer, DealerCenter).',
-      'Video walkaround and automatic watermark removal.',
+      'Video walkaround and automatic photo background removal.',
+      'Runs in the dealer’s own browser session on the dealer’s computer; CARVID does not hold the Facebook password.',
     ],
     wins: [
-      'AI Photo Studio replaces backgrounds with showroom backdrops (CARVID focuses on watermark removal, not background replacement).',
-      'Plans from $39/mo vs CARVID\'s flat $249/mo — friendlier for individual reps and smaller lots.',
-      'Native desktop app — your Facebook session stays on your computer.',
+      'AI Photo Studio replaces the background with a showroom backdrop; CARVID removes the background (a cutout) and does not replace it.',
+      'Plans from $39/mo vs CARVID\'s plans from $249/mo — friendlier for individual reps and smaller lots.',
+      'A purpose-built desktop app that drives its own dedicated browser profile through the browser’s real input pipeline, rather than a Chrome extension injecting into the page you are looking at. Both run on your computer; how they drive the session is the difference that matters (see the hub’s extension-vs-desktop section).',
       'Front-view-first photo ordering plus AI walkaround video.',
     ],
     verdict: 'CARVID is the pick if you want to syndicate to many platforms beyond Marketplace and push leads straight into a CRM. AutoLander is the better fit if your focus is winning Facebook Marketplace specifically, you want showroom-grade photo backgrounds and walkaround video, and you want to start at a lower price.',
     faq: [
       ['CARVID vs AutoLander — what is the difference?', 'CARVID syndicates listings across roughly nine platforms and delivers leads into your CRM for $249/mo. AutoLander focuses on dominating Facebook Marketplace with an AI Photo Studio (showroom backgrounds), walkaround video, automatic sold-removal and post-to-sale attribution, with plans from $39/mo.'],
       ['Is CARVID more expensive than AutoLander?', 'CARVID is a flat $249/mo. AutoLander starts at $39/mo (Starter) up to $79/mo (Pro), which is generally friendlier for individual sales reps and smaller lots.'],
-      ['Does CARVID replace photo backgrounds like a studio?', 'CARVID advertises watermark removal and phone-number overlays. AutoLander\'s AI Photo Studio replaces the background entirely with showroom-style backdrops on exterior shots.'],
+      ['Does CARVID replace photo backgrounds like a studio?', 'CARVID advertises automatic background removal (a clean cutout) and phone-number overlays. AutoLander\'s AI Photo Studio goes a step further and replaces the background entirely with showroom-style backdrops on exterior shots.'],
+      ['Is CARVID a cloud tool or does it run on my computer?', 'On your computer. CARVID is a Chrome extension (it also offers a desktop app) that posts through the dealer\'s own browser session and local IP, and CARVID does not store the Facebook password. AutoLander also runs on your machine, but as a purpose-built desktop app driving its own browser profile rather than an extension injecting into a page. See the extension-vs-desktop section on the comparison hub for why that distinction matters.'],
     ],
   },
 
@@ -433,7 +435,7 @@ export const INSIGHTS = {
   autolisterpro:
     'AutoLister Pro\'s multi-vehicle-type support (RVs, boats, ATVs alongside cars) is a genuine edge if your lot isn\'t just cars — most tools here are car-only. The trade-off is the usual extension story: it\'s fast and cheap to start, but it\'s a browser extension that auto-fills the Marketplace form for you (you still click confirm), and it leans on banner overlays rather than true photo enhancement. If you want hands-off posting plus studio-grade photos and automatic sold-removal, a native posting app pulls ahead.',
   hub:
-    'After comparing these tools feature-by-feature, the split is really about three questions: how much do you want automated for you, how good do the photos need to look, and where is your Facebook session allowed to run. Cloud tools (Drift, RelayAuto, CARVID) maximize hands-off convenience; extensions (AutoBook, Shiftly) are cheap to start but fragile at scale; a native app like AutoLander keeps the session on your own machine and folds studio-grade photos, video and attribution into one flow. Match the tool to which of those three you care about most.',
+    'After comparing these tools feature-by-feature, the split is really about three questions: how much do you want automated for you, how good do the photos need to look, and where is your Facebook session allowed to run. Cloud tools (Drift, RelayAuto) maximize hands-off convenience; extensions (AutoBook, Shiftly, CARVID) run in your own browser and are cheap to start but fragile at scale; a native app like AutoLander drives its own dedicated browser profile on your machine and folds studio-grade photos, video and attribution into one flow. Match the tool to which of those three you care about most.',
 };
 
 // One extra, genuinely-unique long-tail FAQ per competitor. Adds semantic depth and
@@ -442,7 +444,7 @@ export const INSIGHTS = {
 export const EXTRA_FAQ = {
   autobook: [
     'What is the best AutoBook.io alternative for a car dealership?',
-    'Dealers who outgrow a pay-as-you-go browser extension most often move to a feed-driven native app like AutoLander: it syncs your whole inventory from CarGurus or Cars.com, keeps listings accurate, removes sold units, and adds AI photos and walkaround video. CARVID and Sell With Drift are cloud alternatives worth a look.',
+    'Dealers who outgrow a pay-as-you-go browser extension most often move to a feed-driven native app like AutoLander: it syncs your whole inventory from CarGurus or Cars.com, keeps listings accurate, removes sold units, and adds AI photos and walkaround video. Sell With Drift is a cloud alternative worth a look; CARVID is another extension-based one.',
   ],
   shiftly: [
     'Does Shiftly work for a single salesperson, or only for dealerships?',
@@ -524,7 +526,7 @@ export const HUB = {
   faq: [
     ['What is the best Facebook Marketplace posting tool for car dealers?', 'There is no universal best. Compare feed compatibility, listing review controls, creative tools, sold-unit reconciliation, attribution, session architecture, Meta permission and total cost. AutoLander combines those workflow features in a native desktop app from $39/mo; verify each alternative’s live feature and pricing pages before choosing.'],
     ['What is the cheapest Facebook Marketplace tool for dealers?', 'AutoLander currently publishes a $39/mo Starter plan with 5 free posts. Competitor plans, betas, usage charges and custom quotes can change, so compare each vendor’s live price, setup costs, allowances, contract terms and support on the day you buy.'],
-    ['Which Facebook Marketplace tools are browser extensions?', 'AutoBook.io, Shiftly\'s "Shiftly Auto Lister" and AutoLister Pro are Chrome extensions. RelayAuto, Sell With Drift, CARVID and Glo3D are cloud-operated. AutoLander is a native desktop app.'],
+    ['Which Facebook Marketplace tools are browser extensions?', 'AutoBook.io, Shiftly\'s "Shiftly Auto Lister", AutoLister Pro and CARVID are Chrome extensions that run in the dealer\'s own browser (CARVID also offers a desktop app). RelayAuto, Sell With Drift and Glo3D are cloud-operated. AutoLander is a native desktop app that drives its own dedicated browser profile. Two tools can both "run on your computer" and still drive the Facebook session very differently; the extension-vs-desktop section above explains the difference.'],
     ['How do these tools affect my Facebook account safety?', 'No architecture guarantees safety or Meta approval. Browser extensions, cloud services and native desktop apps use different permissions and session-storage models. Ask where credentials and cookies are stored, how access is revoked, whether Meta has granted permission for the exact workflow, and how the product respects the limits shown in the account.'],
   ],
 };
