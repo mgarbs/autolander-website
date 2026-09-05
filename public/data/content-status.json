@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-04",
+  "generatedAt": "2026-09-05",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -209,8 +209,8 @@
       ],
       "description": "How many photos should a car listing have? Coverage beats count — the shots that answer buyer objections, the first photo that wins the click, and order.",
       "suggestedOrder": 11,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-05"
     },
     {
       "slug": "google-business-profile-for-car-dealers",

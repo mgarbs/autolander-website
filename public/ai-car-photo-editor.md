@@ -97,6 +97,7 @@ Yes — travel trailers, fifth wheels and motorhomes get the same studio treatme
 - [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
 - [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
 - [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
+- [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

@@ -87,6 +87,7 @@ Editing the scene is normal merchandising — dealers have staged cars in front 
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
+- [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
 - [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
 
 ---

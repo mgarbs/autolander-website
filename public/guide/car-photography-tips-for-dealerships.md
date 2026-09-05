@@ -83,6 +83,7 @@ About fifteen minutes once the routine is muscle memory: two or three minutes st
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
+- [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
 - [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
 - [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
 
