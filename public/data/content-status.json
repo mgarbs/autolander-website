@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-06",
+  "generatedAt": "2026-09-07",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -247,8 +247,8 @@
       ],
       "description": "How to renew a Facebook Marketplace listing, what renewing actually does, when delete-and-repost wins, and a cadence that works for a 30–60 unit lot.",
       "suggestedOrder": 13,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-07"
     },
     {
       "slug": "best-angles-for-car-listing-photos",

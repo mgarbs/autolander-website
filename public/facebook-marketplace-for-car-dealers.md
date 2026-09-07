@@ -160,6 +160,7 @@ Yes. When a car is marked sold or drops out of the feed, AutoLander removes the 
 - [Best time to post cars on Facebook Marketplace (2026 data)](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/)
 - [Facebook Marketplace car listing limits for dealers](https://autolander.ai/guide/facebook-marketplace-car-listing-limits/)
 - [Why Facebook Marketplace removes car listings (and how to fix it)](https://autolander.ai/guide/facebook-marketplace-car-listing-removed/)
+- [How to renew Facebook Marketplace car listings at lot scale](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
