@@ -1,4 +1,4 @@
-import { getAttributionPayload, getVisitorId } from './identity.js';
+import { getAttributionPayload, getFbCookies, getVisitorId } from './identity.js';
 import {
   canonicalMetaExternalId,
   isProductionMetaUrl,
@@ -86,6 +86,7 @@ export function trackCustom(event, params = {}, opts = {}) {
 export function pageView() {
   if (!isBrowser) return;
   getVisitorId();
+  getFbCookies();
   track('PageView', {});
   installEngagementTracking();
 }
@@ -117,23 +118,4 @@ function installEngagementTracking() {
       trackCustom('EngagedVisit', { engagement_seconds: 15, page_path: path });
     }, 15000);
   }
-
-  const scrollMarks = [50, 90];
-  const onScroll = () => {
-    const doc = document.documentElement;
-    const maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
-    const percent = Math.min(100, Math.round((window.scrollY / maxScroll) * 100));
-    for (const mark of scrollMarks) {
-      const key = `al_scroll:${path}:${mark}`;
-      if (percent >= mark && !sessionFlag(key)) {
-        setSessionFlag(key);
-        trackCustom('ScrollDepth', { percent: mark, page_path: path });
-      }
-    }
-    if (scrollMarks.every((mark) => sessionFlag(`al_scroll:${path}:${mark}`))) {
-      window.removeEventListener('scroll', onScroll);
-    }
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
 }

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { newEventId, trackCustom } from './lib/meta-pixel.js';
+import { openSignupHandoff } from './lib/signup-handoff.js';
 import Hero from './sections/Hero.jsx';
 import TrustStrip from './sections/TrustStrip.jsx';
 import ExecutionGap from './sections/ExecutionGap.jsx';
@@ -82,18 +83,6 @@ function isMobileUserAgent() {
 function canShowDownloadButtons() {
   if (typeof window === 'undefined') return false;
   return window.matchMedia('(min-width: 768px)').matches && !isMobileUserAgent();
-}
-
-function withFbEventId(url, eventId) {
-  if (!eventId) return url;
-
-  try {
-    const nextUrl = new URL(url);
-    nextUrl.searchParams.set('fb_event_id', eventId);
-    return nextUrl.toString();
-  } catch {
-    return `${url}${url.includes('?') ? '&' : '?'}fb_event_id=${encodeURIComponent(eventId)}`;
-  }
 }
 
 const FadeIn = ({ children }) => <div>{children}</div>;
@@ -341,7 +330,6 @@ export default function App() {
 
   const referralCode = getReferralCodeFromPath();
   const hasReferral = Boolean(referralCode);
-  const referralDeepLink = hasReferral ? `autolander://signup?ref=${encodeURIComponent(referralCode)}` : 'autolander://signup';
   const download = getDownload();
 
   const copyReferralCode = async () => {
@@ -352,41 +340,44 @@ export default function App() {
   const openDownload = async ({ contentName = download.label } = {}) => {
     if (!showDownloadButtons) return;
     const eventId = newEventId();
-    await copyReferralCode();
+    void copyReferralCode();
     trackCustom('OutboundClick', {
-      content_name: contentName,
+      content_name: 'download',
+      content_label: contentName,
       content_category: 'desktop_app',
       action: 'download_installer',
       destination: 'github_release',
       os: download.os,
     }, { eventId });
-    window.open(withFbEventId(download.url, eventId), "_blank");
+    openSignupHandoff({ os: download.os, referralCode, eventId });
   };
 
   const openSpecificDownload = async (os, contentName = 'referral_download') => {
     if (!showDownloadButtons) return;
     const eventId = newEventId();
-    await copyReferralCode();
+    void copyReferralCode();
     trackCustom('OutboundClick', {
-      content_name: contentName,
+      content_name: 'download',
+      content_label: contentName,
       content_category: 'desktop_app',
       action: 'download_installer',
       destination: 'github_release',
       os,
     }, { eventId });
-    window.open(withFbEventId(DOWNLOADS[os], eventId), "_blank");
+    openSignupHandoff({ os, referralCode, eventId });
   };
 
   const openInstalledApp = async () => {
     const eventId = newEventId();
-    await copyReferralCode();
+    void copyReferralCode();
     trackCustom('OutboundClick', {
-      content_name: 'installed_app_signup',
+      content_name: 'download',
+      content_label: 'installed_app_signup',
       content_category: 'desktop_app',
       action: 'open_installed_app',
       destination: 'autolander_protocol',
     }, { eventId });
-    window.location.href = withFbEventId(referralDeepLink, eventId);
+    openSignupHandoff({ os: download.os, referralCode, eventId, openApp: true });
   };
 
   const trackChatOpen = () => {

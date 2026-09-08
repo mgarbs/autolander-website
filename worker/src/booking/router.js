@@ -26,6 +26,7 @@ import {
   sanitizeAdvancedMatching,
 } from '../capi/validators.js';
 import { getPaySummary, openPaySession, openSelfServeSession } from './pay-proxy.js';
+import { issueAttributionToken } from '../attribution/router.js';
 import {
   canonicalMetaExternalId,
   isProductionMetaRequest,
@@ -214,8 +215,10 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const consentTimestamp = normalizeIso(body.consentTimestamp);
   const submissionTimestamp = new Date().toISOString();
   const userAgent = clean(body.userAgent, 500) || clean(request.headers.get('User-Agent'), 500);
-  const organicLandingPage = clean(body.landing_page, 500);
-  const organicReferrerUrl = clean(body.referrer_url, 1200);
+  const organicLandingPage = clean(body.organic_attribution?.landing_page, 500)
+    || clean(body.landing_page, 500);
+  const organicReferrerUrl = clean(body.organic_attribution?.referrer_url, 1200)
+    || clean(body.referrer_url, 1200);
   const metaTestEventCode = qaTestEventCode(new URL(request.url), body, env);
 
   if (!fullName) return json({ ok: false, reason: 'missing_full_name' }, 400, corsHeaders);
@@ -245,7 +248,9 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const mergedUtms = mergeUtms(visitor?.utms, attribution.utms);
   // Keep the established attribution/CAPI payload untouched. Organic inference is
   // a GHL-only fallback, and the existing URL/cookie values always win per field.
-  const ghlUtms = mergeUtms(organicUtms, mergedUtms);
+  const ghlUtms = mergeUtms(organicUtms, mergeUtms(attribution.firstTouch, mergedUtms));
+  ghlUtms.utm_source ||= 'direct';
+  ghlUtms.utm_medium ||= 'none';
   const page = { ...(visitor?.page || {}), ...(attribution.page || {}) };
   const fbp = attribution.fbp || visitor?.fbp || '';
   const fbclid = cleanFbclid(attribution.fbclid || visitor?.fbclid);
@@ -256,9 +261,14 @@ async function handleApply(request, env, corsHeaders, ctx) {
   const fbc = attribution.fbc || visitorFbc || buildFbc(fbclid, clickTimestamp);
   const eventId = `lead_${(await sha256Hex(`lead:${submissionId}`)).slice(0, 32)}`;
   const metaExternalId = canonicalMetaExternalId(env.META_PIXEL_ID, attribution.vid);
-  const sourceUrl = clean(page.current_page, 500) || clean(request.headers.get('Referer'), 500);
+  const sourceUrl = clean(body.current_page, 500) || clean(page.current_page, 500)
+    || clean(request.headers.get('Referer'), 500);
   const landingPageUrl = clean(page.landing_page, 500) || sourceUrl;
   const referrer = clean(page.referrer, 240);
+  const firstLandingPage = organicLandingPage || clean(attribution.firstTouch?.landing_page, 500)
+    || landingPageUrl;
+  const firstReferrerUrl = organicReferrerUrl || clean(attribution.firstTouch?.referrer, 1200)
+    || referrer || clean(body.current_referrer, 1200) || clean(request.headers.get('Referer'), 1200);
   const clientIpAddress = clean(request.headers.get('CF-Connecting-IP'), 80);
 
   const lead = {
@@ -282,9 +292,9 @@ async function handleApply(request, env, corsHeaders, ctx) {
     fbc,
     fbclid,
     landingPageUrl,
-    landing_page: organicLandingPage,
+    landing_page: firstLandingPage,
     referrer,
-    referrer_url: organicReferrerUrl,
+    referrer_url: firstReferrerUrl,
     clientIpAddress,
     eventId,
     utms: mergedUtms,
@@ -427,6 +437,18 @@ async function handleApply(request, env, corsHeaders, ctx) {
     eventId,
     noteId,
   };
+  const signupAttribution = await issueAttributionToken(env, request, {
+    attribution: {
+      ...leadAttribution,
+      page: { ...leadAttribution.page, landing_page: firstLandingPage, current_page: sourceUrl },
+    },
+    organic_attribution: body.organic_attribution,
+  }, {
+    ghl_contact_id: contactId,
+    ghl_email_sha256: await sha256Hex(lead.email.toLowerCase()),
+    ghl_phone_sha256: await sha256Hex(lead.phone.replace(/\D/g, '')),
+  }).catch(() => null);
+  if (signupAttribution?.token) responsePayload.attribution_token = signupAttribution.token;
   await rememberApplySubmission(env, submissionId, responsePayload).catch(() => {});
 
   return json(responsePayload, 200, corsHeaders);
@@ -839,6 +861,8 @@ function qaTestEventCode(url, body, env) {
 function sanitizeAttribution(raw) {
   const attr = raw && typeof raw === 'object' ? raw : {};
   const firstTouch = cleanUtms(attr.firstTouch);
+  firstTouch.landing_page = clean(attr.firstTouch?.landing_page, 500);
+  firstTouch.referrer = clean(attr.firstTouch?.referrer, 1200);
   const ts = attributionTimestampSeconds(attr.firstTouch?.ts ?? attr.ts);
   if (ts) firstTouch.ts = ts;
   return {
