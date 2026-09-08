@@ -64,8 +64,8 @@
     "publishedAt": null
   },
   "best-angles-for-car-listing-photos": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-09-08"
   },
   "car-walkaround-video-for-dealers": {
     "status": "draft",
