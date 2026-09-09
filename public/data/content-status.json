@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08",
+  "generatedAt": "2026-09-09",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -285,8 +285,8 @@
       ],
       "description": "How to respond to Facebook Marketplace messages as a dealer: the \"Is this available?\" reply, six buyer-message templates, and the path to an appointment.",
       "suggestedOrder": 15,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-09"
     },
     {
       "slug": "facebook-marketplace-car-description-template",

@@ -91,6 +91,7 @@ When the free tier runs without heroics — every unit listed and current, revie
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 - [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
 - [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
 - [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
 
 ---

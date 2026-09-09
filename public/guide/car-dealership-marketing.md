@@ -94,6 +94,7 @@ We keep a working list of 27 dealership marketing ideas ranked by cost and effor
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
 - [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
 - [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
