@@ -54,6 +54,8 @@ id = "27aed049b50043b19164a2bb9c51c143"
 preview_id = "273697d477e84296a0152a690e95884c"
 
 # Secrets to set via `wrangler secret put <NAME>`:
+#   ATTRIBUTION_SIGNING_SECRET    random 32+ byte secret for site-to-app signup codes;
+#                                 cloud verifies through /api/attribution/verify (secret stays here).
 #   OPENAI_API_KEY                used by chat and admin AI summary
 #   META_PIXEL_ID                 numeric Pixel ID (e.g. 2087440198847151)
 #   META_CAPI_ACCESS_TOKEN        Conversions API access token

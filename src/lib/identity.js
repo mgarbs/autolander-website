@@ -148,7 +148,14 @@ export function getFirstTouch() {
 
 export function getFbCookies() {
   if (!isBrowser) return { fbp: '', fbc: '' };
-  const fbp = readCookie('_fbp');
+  let fbp = readCookie('_fbp');
+  // The first server PageView cannot wait for fbevents.js to set its cookie.
+  // Seed the same first-party ID that the Pixel will read when it initializes.
+  if (!/^fb\.\d+\.\d+\.\d+$/.test(fbp)) {
+    const random = crypto.getRandomValues(new Uint32Array(1))[0];
+    fbp = `fb.1.${Date.now()}.${random}`;
+    writeCookie('_fbp', fbp, ATTR_TTL_SECONDS);
+  }
   const fbclid = readFbclidFromUrl();
   let fbc = readCookie('_fbc');
   // A fresh Meta click must replace attribution from an older click. Keep the

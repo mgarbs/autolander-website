@@ -31,7 +31,7 @@ const API_PREFIXES = ['/api/', '/capi/', '/admin-api/'];
 const API_EXACT = new Set(['/chat', '/support', '/health']);
 
 // Paths GitHub Pages answers with 404.html AS THE APP SHELL. Never rewrite their body.
-const SPA_FALLBACK_PREFIXES = ['/pay', '/ref/', '/r/', '/admin'];
+const SPA_FALLBACK_PREFIXES = ['/pay', '/ref/', '/r/', '/admin', '/download/setup'];
 
 // Extensions that are definitely not HTML documents. Anything matching bails out immediately.
 const NON_DOCUMENT_EXT =

@@ -104,6 +104,11 @@ export default {
       return handleCapi(request, env, corsHeaders, ctx);
     }
 
+    if (url.pathname.startsWith('/api/attribution/')) {
+      const { handleAttribution } = await import('./attribution/router.js');
+      return handleAttribution(request, env, corsHeaders);
+    }
+
     if (url.pathname.startsWith('/api/')) {
       const { handleBooking } = await import('./booking/router.js');
       return handleBooking(request, env, corsHeaders, ctx);
