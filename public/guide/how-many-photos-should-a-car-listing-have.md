@@ -80,9 +80,9 @@ Yes — the same shot list, the same order, the same style. Consistency across l
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [The best car photography angles for listing photos, shot by shot](https://autolander.ai/guide/best-angles-for-car-listing-photos/)
+- [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
 - [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
 - [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
-- [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

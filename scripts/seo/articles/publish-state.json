@@ -72,8 +72,8 @@
     "publishedAt": null
   },
   "dark-cluttered-car-photos-cost-sales": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-09-11"
   },
   "remove-background-from-car-photo": {
     "status": "published",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10",
+  "generatedAt": "2026-09-11",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -323,8 +323,8 @@
       ],
       "description": "Bad car listing photos fail a half-second scroll test. The five failures — dark shots, clutter, promo frames, bad crops, missing angles — and the fix for each.",
       "suggestedOrder": 17,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-11"
     },
     {
       "slug": "car-sales-follow-up-templates",
