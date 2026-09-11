@@ -310,6 +310,20 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   const region = clean(request.cf?.region, 48).toLowerCase();
   const regionCode = clean(request.cf?.regionCode, 8);
   const city = clean(request.cf?.city, 48).toLowerCase();
+  if (eventName === 'OutboundClick') {
+    const cf = request.cf && typeof request.cf === 'object' ? request.cf : null;
+    const present = (value) => typeof value === 'string' && value.trim().length > 0;
+    // Temporary production diagnosis: presence flags only. Never log location,
+    // identity, cookie, event-ID, or attribution values from this open endpoint.
+    console.info('[capi/track] OutboundClick request.cf presence', {
+      requestCfPresent: Boolean(cf),
+      countryPresent: present(cf?.country),
+      regionPresent: present(cf?.region),
+      regionCodePresent: present(cf?.regionCode),
+      cityPresent: present(cf?.city),
+      postalCodePresent: present(cf?.postalCode),
+    });
+  }
   const colo = clean(request.cf?.colo, 16).toUpperCase();
   const asn = clean(String(request.cf?.asn || ''), 24);
   const asOrganization = clean(request.cf?.asOrganization, 120);
