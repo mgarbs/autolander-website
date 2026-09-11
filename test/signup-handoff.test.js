@@ -81,7 +81,7 @@ test('missing configuration and oversized streamed requests fail with bounded re
   assert.equal((await worker.fetch(request({ data: 'x'.repeat(24001) }), env, {})).status, 413);
 });
 
-test('setup page starts allowlisted installer and passes code plus referral only to app', async () => {
+test('setup page starts allowlisted installer and passes attribution plus referral only to app', async () => {
   const script = await readFile(new URL('../public/al-download-setup.js', import.meta.url), 'utf8');
   const token = (await issueAttributionToken(env, request(source), source)).token;
   const elements = new Map(); const clicks = [];
@@ -111,6 +111,8 @@ test('setup page starts allowlisted installer and passes code plus referral only
   const html = await readFile(new URL('../public/download/setup/index.html', import.meta.url), 'utf8');
   assert.doesNotMatch(html, /fbq|gtag|googletagmanager|connect\.facebook/);
   assert.match(html, /name="referrer" content="no-referrer"/);
+  assert.doesNotMatch(html, /setup code|textarea|id="copy"/i);
+  assert.match(html, /carry over automatically/i);
 });
 
 test('blocked storage and a signing outage still allow installer download and app signup', async () => {
@@ -137,6 +139,5 @@ test('blocked storage and a signing outage still allow installer download and ap
   assert.match(clicks[0], /\/AutoLander-Setup\.exe$/);
   assert.equal(posted.attribution.fbc, 'fb.1.1757000000000.MiXeD_ID');
   assert.equal(element('open-app').href, 'autolander://signup?ref=dealer123');
-  assert.equal(element('setup-code').value, '');
-  assert.match(element('status').textContent, /You can still open the app/);
+  assert.match(element('status').textContent, /You can still open AutoLander/);
 });

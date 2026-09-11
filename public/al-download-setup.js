@@ -11,27 +11,20 @@
   download.textContent = 'Download for ' + platform[1];
   var openApp = document.getElementById('open-app');
   var status = document.getElementById('status');
-  var code = document.getElementById('setup-code');
   var validToken = function (value) { return typeof value === 'string' && value.length <= 8192 && /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(value); };
   function stored(name) { try { return window.localStorage.getItem(name) || ''; } catch { return ''; } }
   function cookie(name) {
     try { var item = document.cookie.split('; ').find(function (part) { return part.indexOf(name + '=') === 0; }); return item ? decodeURIComponent(item.slice(name.length + 1)) : ''; } catch { return ''; }
   }
   function json(value) { try { return JSON.parse(value) || {}; } catch { return {}; } }
-  function setCode(token) {
+  function setAppLink(token) {
     var link = new URL('autolander://signup');
     var ref = params.get('ref') || '';
     if (/^[a-z0-9]{4,64}$/.test(ref)) link.searchParams.set('ref', ref);
-    if (validToken(token)) { link.searchParams.set('attribution_token', token); code.value = token; }
+    if (validToken(token)) link.searchParams.set('attribution_token', token);
     openApp.href = link.href;
     openApp.removeAttribute('aria-disabled');
   }
-  document.getElementById('copy').addEventListener('click', async function () {
-    var message = document.getElementById('copy-status');
-    if (!code.value) { message.textContent = 'No setup code available. You can still open the app and sign up.'; return; }
-    try { await navigator.clipboard.writeText(code.value); message.textContent = 'Copied. Paste it on the Sign Up screen.'; }
-    catch { code.focus(); code.select(); message.textContent = 'Select and copy the code above.'; }
-  });
   async function prepare() {
     var context = json(stored('al_signup_handoff_context'));
     var paid = json(cookie('al_attr'));
@@ -45,13 +38,13 @@
       var response = await fetch('/api/attribution/token', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(context), signal: controller.signal });
       var result = await response.json();
       if (!response.ok || !validToken(result.token)) throw new Error('setup_unavailable');
-      setCode(result.token);
+      setAppLink(result.token);
       try { window.localStorage.setItem('al_signup_attribution_token', result.token); } catch { /* storage optional */ }
-      status.textContent = 'Ready. Open the app when installation is complete.';
+      status.textContent = 'Ready. No setup code is needed.';
     } catch {
       // Downloads and free signup remain available during a tracking outage.
-      setCode('');
-      status.textContent = 'Setup details are temporarily unavailable. You can still open the app, or refresh this page to try again.';
+      setAppLink('');
+      status.textContent = 'You can still open AutoLander and sign up. Refresh this page if you want to try the automatic handoff again.';
     } finally { clearTimeout(timeout); }
   }
   void prepare();

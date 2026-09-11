@@ -14,10 +14,11 @@ to direct/none, using the existing field IDs. The contact source, tag, workflow,
 Lead confirmation proof, deterministic Lead ID, Gateway and webhook set are preserved.
 
 Downloads now open `/download/setup/`. That static page downloads the existing
-installer asset and offers Open AutoLander plus a copyable setup-code fallback.
-It has no advertising/analytics scripts and sends no setup code to GitHub. The
-snapshot is captured before navigation. Browser storage is optional; cookie and
-safe direct fallbacks keep downloads/signup usable during a tracking outage.
+installer asset and offers a plain Open AutoLander step. The signed attribution
+handoff stays behind the button and is never rendered as a setup code. It has no
+advertising/analytics scripts and sends no handoff token to GitHub. The snapshot
+is captured before navigation. Browser storage is optional; cookie and safe direct
+fallbacks keep downloads/signup usable during a tracking outage.
 
 The Worker uses `ATTRIBUTION_SIGNING_SECRET` (random 32+ bytes) for these endpoints:
 

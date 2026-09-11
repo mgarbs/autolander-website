@@ -135,6 +135,75 @@ test('OutboundClick carries the exact stored fbc through browser payload and Wor
   assert.equal(event.custom_data.content_label, 'Download for Windows');
 });
 
+test('OutboundClick request.cf diagnostic records presence flags only', async (t) => {
+  const requests = [];
+  const logs = [];
+  t.mock.method(globalThis, 'fetch', async (url, init) => {
+    requests.push({ url: String(url), body: JSON.parse(init.body) });
+    return Response.json({ events_received: 1 });
+  });
+  t.mock.method(console, 'info', (...args) => logs.push(args));
+  const trackingValues = new Map();
+  const env = {
+    DISABLE_RATE_LIMITS: 'true', META_PIXEL_ID: '123456789', META_CAPI_ACCESS_TOKEN: 'test-token',
+    TRACKING: {
+      get: async (key, type) => {
+        const value = trackingValues.get(key);
+        return value === undefined ? null : type === 'json' ? JSON.parse(value) : value;
+      },
+      put: async (key, value) => trackingValues.set(key, value),
+    },
+  };
+  const body = {
+    event: 'OutboundClick',
+    sourceUrl: 'https://autolander.ai/',
+    customData: { content_name: 'download' },
+  };
+  const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/126.0.0.0 Safari/537.36';
+  const requestWithCf = new Request('https://autolander.ai/capi/track', {
+    method: 'POST',
+    headers: { Origin: 'https://autolander.ai', 'Content-Type': 'application/json', 'User-Agent': userAgent },
+    body: JSON.stringify({ ...body, eventId: 'evt_outbound_cf_present' }),
+  });
+  Object.defineProperty(requestWithCf, 'cf', { value: {
+    country: 'US', region: 'Florida', regionCode: 'FL', city: 'Tampa', postalCode: '33615',
+  } });
+  const requestWithoutCf = new Request('https://autolander.ai/capi/track', {
+    method: 'POST',
+    headers: { Origin: 'https://autolander.ai', 'Content-Type': 'application/json', 'User-Agent': userAgent },
+    body: JSON.stringify({ ...body, eventId: 'evt_outbound_cf_absent' }),
+  });
+
+  assert.equal((await handleCapi(requestWithCf, env, {})).status, 200);
+  assert.equal((await handleCapi(requestWithoutCf, env, {})).status, 200);
+  assert.deepEqual(logs, [
+    ['[capi/track] OutboundClick request.cf presence', {
+      requestCfPresent: true,
+      countryPresent: true,
+      regionPresent: true,
+      regionCodePresent: true,
+      cityPresent: true,
+      postalCodePresent: true,
+    }],
+    ['[capi/track] OutboundClick request.cf presence', {
+      requestCfPresent: false,
+      countryPresent: false,
+      regionPresent: false,
+      regionCodePresent: false,
+      cityPresent: false,
+      postalCodePresent: false,
+    }],
+  ]);
+  const metaEvents = requests.filter(({ url }) => url.includes('graph.facebook.com')).map(({ body: metaBody }) => metaBody.data[0]);
+  assert.equal(metaEvents[0].user_data.country, await sha256Hex('us'));
+  assert.equal(metaEvents[0].user_data.st, await sha256Hex('fl'));
+  assert.equal(metaEvents[0].user_data.ct, await sha256Hex('tampa'));
+  assert.equal(metaEvents[0].user_data.zp, await sha256Hex('33615'));
+  for (const key of ['country', 'st', 'ct', 'zp']) {
+    assert.equal(Object.hasOwn(metaEvents[1].user_data, key), false);
+  }
+});
+
 test('the build queues Pixel immediately and keeps the production origin gate', async () => {
   const source = await readFile(new URL('../vite.config.js', import.meta.url), 'utf8');
   const script = source.match(/const script = `[\s\S]*?<script>([\s\S]*?)<\/script>/)[1];
