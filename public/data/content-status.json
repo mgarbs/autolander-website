@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-11",
+  "generatedAt": "2026-09-12",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -213,6 +213,47 @@
       "publishedAt": "2026-09-05"
     },
     {
+      "slug": "facebook-seller-app-for-car-dealers",
+      "path": "/guide/facebook-seller-app-for-car-dealers/",
+      "url": "https://autolander.ai/guide/facebook-seller-app-for-car-dealers/",
+      "title": "Facebook Seller App for Car Dealers: What It Does (2026)",
+      "h1": "The Facebook Seller app: what it actually does for a car dealer",
+      "silo": "metaTools",
+      "siloLabel": "Facebook’s new seller tools",
+      "primaryKeyword": "facebook seller app",
+      "secondaryKeywords": [
+        "meta seller app",
+        "facebook marketplace seller app",
+        "facebook seller app for cars",
+        "seller app facebook marketplace review"
+      ],
+      "description": "The Facebook Seller app explained for car dealers: what Meta shipped on July 24, 2026, what it does for vehicle listings, and how it fits next to a posting tool.",
+      "suggestedOrder": 12,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "meta-muse-ai-agent-for-car-dealers",
+      "path": "/guide/meta-muse-ai-agent-for-car-dealers/",
+      "url": "https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers/",
+      "title": "Meta Muse AI Agent: What It Means for Car Dealers (2026)",
+      "h1": "Meta Muse: what happens to your listings when the buyer sends an AI",
+      "silo": "metaTools",
+      "siloLabel": "Facebook’s new seller tools",
+      "primaryKeyword": "meta muse",
+      "secondaryKeywords": [
+        "meta muse ai agent",
+        "what is meta muse",
+        "muse ai facebook marketplace",
+        "will meta muse buy cars",
+        "muse ai shopping agent"
+      ],
+      "description": "Meta Muse explained for car dealers: what the AI agent Meta announced on September 8, 2026 does, whether it can shop Facebook Marketplace, and how to get listings ready.",
+      "suggestedOrder": 13,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
       "slug": "google-business-profile-for-car-dealers",
       "path": "/guide/google-business-profile-for-car-dealers/",
       "url": "https://autolander.ai/guide/google-business-profile-for-car-dealers/",
@@ -227,7 +268,7 @@
         "dealership not showing on google maps"
       ],
       "description": "Google Business Profile for car dealership trust: every field that matters, the photos to add, a delivery-day review script, and Google Maps troubleshooting.",
-      "suggestedOrder": 12,
+      "suggestedOrder": 14,
       "status": "published",
       "publishedAt": "2026-09-06"
     },
@@ -246,7 +287,7 @@
         "renew vs delete and repost"
       ],
       "description": "How to renew a Facebook Marketplace listing, what renewing actually does, when delete-and-repost wins, and a cadence that works for a 30–60 unit lot.",
-      "suggestedOrder": 13,
+      "suggestedOrder": 15,
       "status": "published",
       "publishedAt": "2026-09-07"
     },
@@ -265,7 +306,7 @@
         "interior shots for car listings"
       ],
       "description": "Car photography angles explained — why the three-quarter front is the hero, the full angle-by-angle shot list, what each frame answers, and mistakes to avoid.",
-      "suggestedOrder": 14,
+      "suggestedOrder": 16,
       "status": "published",
       "publishedAt": "2026-09-08"
     },
@@ -284,7 +325,7 @@
         "marketplace buyers who stop responding"
       ],
       "description": "How to respond to Facebook Marketplace messages as a dealer: the \"Is this available?\" reply, six buyer-message templates, and the path to an appointment.",
-      "suggestedOrder": 15,
+      "suggestedOrder": 17,
       "status": "published",
       "publishedAt": "2026-09-09"
     },
@@ -303,7 +344,7 @@
         "vehicle description template"
       ],
       "description": "A Facebook Marketplace car description template that sells: the three facts buyers scan first, two fill-in templates, and the do/don’t list dealers use.",
-      "suggestedOrder": 16,
+      "suggestedOrder": 18,
       "status": "published",
       "publishedAt": "2026-09-10"
     },
@@ -322,7 +363,7 @@
         "cluttered background car photos"
       ],
       "description": "Bad car listing photos fail a half-second scroll test. The five failures — dark shots, clutter, promo frames, bad crops, missing angles — and the fix for each.",
-      "suggestedOrder": 17,
+      "suggestedOrder": 19,
       "status": "published",
       "publishedAt": "2026-09-11"
     },
@@ -341,7 +382,7 @@
         "internet lead follow up"
       ],
       "description": "Car sales follow up templates a real salesperson sends — first touch, day 2, day 5, price drop, anniversary — plus the cadence table that gets replies.",
-      "suggestedOrder": 18,
+      "suggestedOrder": 20,
       "status": "draft",
       "publishedAt": null
     },
@@ -360,7 +401,7 @@
         "ghost listings car dealer"
       ],
       "description": "How to mark a car as sold on Facebook Marketplace, mark-sold vs delete tradeoffs, why ghost listings cost dealers real buyers — and the removal routine.",
-      "suggestedOrder": 19,
+      "suggestedOrder": 21,
       "status": "draft",
       "publishedAt": null
     },
@@ -379,7 +420,7 @@
         "video for car listings"
       ],
       "description": "Car walkaround video for dealers: a 60-second script anyone can follow, phone technique that looks steady, where video surfaces on listings, and an AI fallback.",
-      "suggestedOrder": 20,
+      "suggestedOrder": 22,
       "status": "draft",
       "publishedAt": null
     },
@@ -398,7 +439,7 @@
         "selling cars online without a big website"
       ],
       "description": "How to sell cars online as a small dealership: list where buyers look, photos that compete, one owner for replies, and a simple path to the handshake.",
-      "suggestedOrder": 21,
+      "suggestedOrder": 23,
       "status": "draft",
       "publishedAt": null
     },
@@ -417,7 +458,7 @@
         "facebook marketplace listing pending review"
       ],
       "description": "Facebook Marketplace listing not showing up? Triage it in order: pending review, quiet deranking, removal, or buyer filters — and when to renew or repost.",
-      "suggestedOrder": 22,
+      "suggestedOrder": 24,
       "status": "draft",
       "publishedAt": null
     },
@@ -436,7 +477,7 @@
         "ai background replacement for car photos"
       ],
       "description": "Car photography backdrop, photo booth, staging spot, or AI background replacement? The real costs and tradeoffs of each way to get clean car listing photos.",
-      "suggestedOrder": 23,
+      "suggestedOrder": 25,
       "status": "draft",
       "publishedAt": null
     },
@@ -455,7 +496,7 @@
         "bhph advertising rules"
       ],
       "description": "Buy here pay here marketing that works: honest Marketplace listings, a referral engine, service-drive plays, and the compliance line you never cross.",
-      "suggestedOrder": 24,
+      "suggestedOrder": 26,
       "status": "draft",
       "publishedAt": null
     },
@@ -474,7 +515,7 @@
         "facebook marketplace vs offerup for cars"
       ],
       "description": "Facebook Marketplace vs Craigslist for cars: audience, listing fees, messaging, scams, and dealer workflow compared — and which channel to work first.",
-      "suggestedOrder": 25,
+      "suggestedOrder": 27,
       "status": "draft",
       "publishedAt": null
     },
@@ -493,7 +534,7 @@
         "what makes a car listing convert"
       ],
       "description": "Used car merchandising is five levers on one checklist — price, photos, description, freshness, response speed — and the weakest lever caps every listing.",
-      "suggestedOrder": 26,
+      "suggestedOrder": 28,
       "status": "draft",
       "publishedAt": null
     },
@@ -512,7 +553,7 @@
         "aged unit marketing ideas"
       ],
       "description": "Aged inventory car dealership playbook: why units age, the 30/45/60-day triage — reprice, reshoot, renew — and when paying to boost finally makes sense.",
-      "suggestedOrder": 27,
+      "suggestedOrder": 29,
       "status": "draft",
       "publishedAt": null
     },
@@ -531,7 +572,7 @@
         "travel trailer listing tips"
       ],
       "description": "Selling an RV on Facebook Marketplace: the vehicle type that gets campers found, the interior photos that carry the listing, and honest seasonality advice.",
-      "suggestedOrder": 28,
+      "suggestedOrder": 30,
       "status": "draft",
       "publishedAt": null
     },
@@ -550,7 +591,7 @@
         "days on market used car"
       ],
       "description": "How long does it take to sell a car on Facebook Marketplace? It depends on four variables you control. The signals, the real stats, a week-by-week plan.",
-      "suggestedOrder": 29,
+      "suggestedOrder": 31,
       "status": "draft",
       "publishedAt": null
     },
@@ -569,7 +610,7 @@
         "should car dealers boost listings"
       ],
       "description": "What it means to boost a Facebook Marketplace listing, what it costs, and when a car dealer should pay — after the free fundamentals, never instead of them.",
-      "suggestedOrder": 30,
+      "suggestedOrder": 32,
       "status": "draft",
       "publishedAt": null
     }

@@ -13,9 +13,10 @@ import { ARTICLES as A } from '../scripts/seo/articles/data-articles-marketplace
 import { ARTICLES as B } from '../scripts/seo/articles/data-articles-marketplace-b.mjs';
 import { ARTICLES as P } from '../scripts/seo/articles/data-articles-photos.mjs';
 import { ARTICLES as G } from '../scripts/seo/articles/data-articles-growth.mjs';
+import { ARTICLES as M } from '../scripts/seo/articles/data-articles-meta-tools.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const ALL = [...A, ...B, ...P, ...G];
+const ALL = [...A, ...B, ...P, ...G, ...M];
 
 // Inline links may point only at evergreen pages (drafts would 404). Sibling links are
 // injected by the build system, never hand-written.
@@ -44,9 +45,21 @@ const collectText = (art) => {
   return out;
 };
 
-test('all 30 articles exist, slugs match the drip order exactly', () => {
-  assert.equal(ALL.length, 30);
+test('all 32 articles exist, slugs match the drip order exactly', () => {
+  assert.equal(ALL.length, 32);
   assert.deepEqual(ALL.map((a) => a.slug).sort(), [...SUGGESTED_ORDER].sort());
+});
+
+// House style for the 2026-09-12 Meta-tools articles (Michael): no em-dashes, and none of the
+// "that's not X. It's Y." negation-then-reveal cadence. Both read as machine-written.
+test('the Meta-tools articles carry no em-dashes and no negation-reveal cadence', () => {
+  const contrastTic = /\b(?:is|are|was|were|it’s|it's|that’s|that's)\s+not\s+(?:about\s+)?[^.!?]{1,60}[.!?]\s+(?:It|That|This)\s+(?:is|’s|'s)\b/i;
+  for (const art of M) {
+    const body = [art.title, art.description, art.h1, ...collectText(art)].join('\n');
+    assert.ok(!body.includes('—'), `${art.slug}: contains an em-dash`);
+    assert.ok(!body.includes('–'), `${art.slug}: contains an en-dash`);
+    assert.ok(!contrastTic.test(body), `${art.slug}: "not X. It's Y." cadence at ${body.match(contrastTic)?.[0]}`);
+  }
 });
 
 test('every article carries the required fields and a valid silo', () => {
@@ -63,13 +76,18 @@ test('every article carries the required fields and a valid silo', () => {
   }
 });
 
+// A /guide/ path is a sibling article unless the registry owns it (the evergreen guides live in
+// NAV; drip articles never do). Derived from NAV so a new evergreen guide does not need this
+// list touched — the 2026-09-03 guides had silently fallen off the old hardcoded version.
+const EVERGREEN_GUIDE_PATHS = new Set(Object.values(NAV).map((n) => n.path).filter((p) => p.startsWith('/guide/')));
+
 test('inline links stay on the evergreen whitelist (no hand-written sibling links)', () => {
   for (const art of ALL) {
     for (const text of collectText(art)) {
       for (const m of String(text).matchAll(/\]\((\/[^)\s]*)\)/g)) {
         const href = m[1];
         assert.ok(WHITELIST.has(href), `${art.slug}: inline link ${href} not on whitelist`);
-        assert.ok(!/^\/guide\/(?!facebook-marketplace-automation|how-to-sell-cars|car-dealership-marketing|car-dealership-marketing-ideas|car-sales-leads|social-media-for-car-dealers|how-to-sell-more-cars|ai-for-car-dealerships)/.test(href),
+        assert.ok(!href.startsWith('/guide/') || EVERGREEN_GUIDE_PATHS.has(href),
           `${art.slug}: links a sibling article directly (${href})`);
       }
     }

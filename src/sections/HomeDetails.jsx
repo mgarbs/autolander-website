@@ -11,9 +11,16 @@
 // KEEP IN STEP with the static block in index.html (the AL_STATIC_HOME_DETAILS markers) and with
 // scripts/seo/data-home.mjs, which renders the same facts into /index.md. test/agent-readiness
 // asserts the built homepage clears the word and link thresholds.
+//
+// The "Every AutoLander page, by topic" directory is NOT hand-maintained here any more: it is
+// generated into src/generated/home-directory.json (and the matching static block in index.html)
+// by scripts/build-seo-pages.mjs from scripts/seo/home-directory.mjs, which is how a drip-published
+// /guide/ article shows up on the homepage in the same commit that publishes it.
+// test/home-directory.test.js fails if either copy drifts from the generator.
 
 import { ChevronDown } from 'lucide-react';
 import { Eyebrow } from './StaticUi.jsx';
+import DIRECTORY from '../generated/home-directory.json';
 
 const HOME_DETAIL_FAQ = [
   ['What is AutoLander?',
@@ -41,68 +48,19 @@ const HOME_TESTIMONIALS = [
   ['I like how it picked up on the price changes, which I also did. Not only is it more accurate, but it may push those listings to the top of the feed again.', 'Jim', 'Cox Chevrolet'],
 ];
 
-// Every page on the site, grouped. This is the crawlable link map the footer used to carry only
-// inside its lazy chunk; here it is in the eager DOM (collapsed) so the homepage actually
-// distributes authority to the pages it links.
-const HOME_LINK_GROUPS = [
-  ['Product', [
-    ['/facebook-marketplace-auto-poster/', 'Facebook Marketplace auto poster'],
-    ['/facebook-marketplace-listing-software/', 'Listing software'],
-    ['/facebook-marketplace-automation/', 'Marketplace automation'],
-    ['/facebook-marketplace-inventory-sync/', 'Inventory sync'],
-    ['/bulk-post-cars-to-facebook-marketplace/', 'Bulk posting'],
-    ['/facebook-marketplace-assistant/', 'Marketplace assistant'],
-    ['/facebook-autoposter/', 'Autoposter'],
-    ['/facebook-listing-software/', 'Facebook listing software'],
-    ['/ai-car-photo-editor/', 'AI car photo editor'],
-    ['/rv-dealer-software/', 'RV dealer software'],
-    ['/safest-facebook-marketplace-auto-poster/', 'Account safety'],
-    ['/facebook-marketplace-auto-poster-pricing/', 'Pricing'],
-  ]],
-  ['Integrations', [
-    ['/integrations/', 'All integrations'],
-    ['/integrations/cargurus-facebook-marketplace/', 'CarGurus'],
-    ['/integrations/cars-com-facebook-marketplace/', 'Cars.com'],
-    ['/integrations/vauto-facebook-marketplace/', 'vAuto'],
-    ['/integrations/dealercenter-facebook-marketplace/', 'DealerCenter'],
-    ['/integrations/dealer-com-facebook-marketplace/', 'Dealer.com'],
-    ['/integrations/homenet-facebook-marketplace/', 'HomeNet'],
-    ['/integrations/frazer-facebook-marketplace/', 'Frazer'],
-    ['/integrations/cdk-facebook-marketplace/', 'CDK'],
-    ['/integrations/tekion-facebook-marketplace/', 'Tekion'],
-    ['/dealer-inventory-management/', 'Dealer inventory management'],
-  ]],
-  ['Compare', [
-    ['/compare/', 'Best Marketplace posting tools (2026)'],
-    ['/compare/carvid/', 'vs CARVID'],
-    ['/compare/shiftly/', 'vs Shiftly'],
-    ['/compare/autolisterpro/', 'vs AutoLister Pro'],
-    ['/compare/relayauto/', 'vs RelayAuto'],
-    ['/compare/drift/', 'vs Sell With Drift'],
-    ['/compare/autobook/', 'vs AutoBook.io'],
-    ['/compare/glo3d/', 'vs Glo3D'],
-    ['/why-facebook-marketplace-only/', 'Why Marketplace only'],
-    ['/why-we-dont-answer-your-buyers/', 'Why we don’t answer your buyers'],
-  ]],
-  ['Guides', [
-    ['/guide/how-to-sell-cars-on-facebook-marketplace/', 'How to sell cars on Marketplace'],
-    ['/guide/facebook-marketplace-automation/', 'Automation policy & safety'],
-    ['/facebook-marketplace-for-car-dealers/', 'Marketplace for car dealers'],
-    ['/guide/car-dealership-marketing/', 'Dealership marketing playbook'],
-    ['/guide/car-sales-leads/', 'Car sales leads'],
-    ['/guide/ai-for-car-dealerships/', 'AI for dealerships'],
-    ['/ai-chat-for-car-dealers/', 'AI chat for car dealers'],
-    ['/guide/how-to-sell-rvs-on-facebook-marketplace/', 'How to sell RVs on Marketplace'],
-    ['/facebook-marketplace-used-car-report-2026/', 'Used-Car Report 2026 (original data)'],
-    ['/about/', 'About AutoLander'],
-    ['/contact/', 'Contact'],
-  ]],
-];
+// Every page on the site, grouped: the crawlable link map, in the eager DOM (collapsed) so the
+// homepage actually distributes authority to the pages it links. Generated — see the header.
+// Each group is its own collapsed <details>: a human sees eight short headings and opens one;
+// a crawler sees every <a> in every <nav> regardless. Same content both ways.
+const countLabel = (g) => `${g.links.length} ${g.kind === 'articles' ? 'guides' : 'pages'}`;
 
 const ROW = 'group rounded-2xl border border-white/5 bg-white/[0.02] open:bg-white/[0.04] transition-colors';
 const SUMMARY = 'flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-sm font-black uppercase italic tracking-tight text-white sm:px-6 [&::-webkit-details-marker]:hidden';
 const BODY = 'px-5 pb-5 text-[15px] font-medium leading-relaxed text-slate-400 sm:px-6';
+const DIR_ROW = 'group/dir rounded-xl border border-white/5 bg-white/[0.02] open:bg-white/[0.04]';
+const DIR_SUMMARY = 'flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-[11px] font-black uppercase tracking-widest text-slate-300 [&::-webkit-details-marker]:hidden';
 const Chev = () => <ChevronDown className="h-4 w-4 shrink-0 text-blue-400 transition-transform group-open:rotate-180" aria-hidden="true" />;
+const DirChev = () => <ChevronDown className="h-3.5 w-3.5 shrink-0 text-blue-400 transition-transform group-open/dir:rotate-180" aria-hidden="true" />;
 
 export default function HomeDetails({ openDemoBooking, onWarmDemo }) {
   return (
@@ -208,16 +166,21 @@ export default function HomeDetails({ openDemoBooking, onWarmDemo }) {
           <details className={ROW}>
             <summary className={SUMMARY}>Every AutoLander page, by topic <Chev /></summary>
             <div className={BODY}>
-              <div className="grid gap-6 sm:grid-cols-2">
-                {HOME_LINK_GROUPS.map(([group, links]) => (
-                  <nav key={group} aria-label={group}>
-                    <p className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-500">{group}</p>
-                    <ul className="space-y-1">
-                      {links.map(([href, text]) => (
-                        <li key={href}><a href={href} className="text-[13px] font-semibold text-slate-400 hover:text-blue-400">{text}</a></li>
-                      ))}
-                    </ul>
-                  </nav>
+              <div className="grid gap-3 sm:grid-cols-2 items-start">
+                {DIRECTORY.groups.map((g) => (
+                  <details key={g.id} className={DIR_ROW}>
+                    <summary className={DIR_SUMMARY}>
+                      <span>{g.label} <span className="font-medium normal-case tracking-normal text-slate-500">{countLabel(g)}</span></span>
+                      <DirChev />
+                    </summary>
+                    <nav aria-label={g.label} className="px-4 pb-4">
+                      <ul className="space-y-1 text-[13px] font-semibold">
+                        {g.links.map((l) => (
+                          <li key={l.href}><a href={l.href} className="text-slate-400 hover:text-blue-400">{l.text}</a></li>
+                        ))}
+                      </ul>
+                    </nav>
+                  </details>
                 ))}
               </div>
             </div>

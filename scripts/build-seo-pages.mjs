@@ -12,7 +12,7 @@
 // Run AFTER build-compare-pages.mjs (or alone — both now emit the full sitemap):
 //   node scripts/build-compare-pages.mjs && node scripts/build-seo-pages.mjs
 
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -23,10 +23,12 @@ import {
   buildArticlePage, hubAugmentLinks, contentStatusJson, articleSitemapEntries,
   loadPublishState, isPublished, articlePath,
 } from './seo/articles/article-system.mjs';
+import { buildHomeDirectory, injectHomeDirectory } from './seo/home-directory.mjs';
 import { ARTICLES as ART_MKT_A } from './seo/articles/data-articles-marketplace-a.mjs';
 import { ARTICLES as ART_MKT_B } from './seo/articles/data-articles-marketplace-b.mjs';
 import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs';
 import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
+import { ARTICLES as ART_META } from './seo/articles/data-articles-meta-tools.mjs';
 
 import { PAGES as CATEGORY } from './seo/data-category.mjs';
 import { PAGES as PRICING } from './seo/data-pricing.mjs';
@@ -60,7 +62,7 @@ const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'publi
 // publish-state.json is the gate: draft articles are rendered NOWHERE (no HTML, no sitemap,
 // no llms.txt, no hub links). Publishing an article and rebuilding is what reveals it — and
 // also re-renders every hub/sibling so earlier pages pick up links to the newly live spoke.
-const ARTICLE_CONTENT = [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH];
+const ARTICLE_CONTENT = [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META];
 const PUBLISH_STATE = loadPublishState();
 {
   const known = new Set(Object.keys(PUBLISH_STATE));
@@ -167,6 +169,30 @@ write(
   resolve(PUBLIC_DIR, 'data', 'content-status.json'),
   JSON.stringify(contentStatusJson(ARTICLE_CONTENT, PUBLISH_STATE), null, 2) + '\n',
 );
+
+// ---------- homepage directory ("Every AutoLander page, by topic") ----------
+// Derived from the same publish state as everything else, so a publish adds the article to
+// the homepage in the same commit. Two copies, one generator (see seo/home-directory.mjs):
+//   • index.html, between the AL_STATIC_HOME_DIRECTORY markers — the crawlable static block;
+//   • src/generated/home-directory.json — what HomeDetails.jsx renders after React mounts.
+// Both live OUTSIDE public/, so the publish workflow must `git add` them (it does).
+{
+  const ROOT_DIR = resolve(PUBLIC_DIR, '..');
+  const groups = buildHomeDirectory(ARTICLE_CONTENT, PUBLISH_STATE);
+
+  const genPath = resolve(ROOT_DIR, 'src', 'generated', 'home-directory.json');
+  mkdirSync(dirname(genPath), { recursive: true });
+  const genJson = JSON.stringify({ groups }, null, 2) + '\n';
+  let prevJson = null;
+  try { prevJson = readFileSync(genPath, 'utf8'); } catch { /* first build */ }
+  if (prevJson !== genJson) { writeFileSync(genPath, genJson, 'utf8'); console.log('wrote src/generated/home-directory.json'); }
+
+  const indexPath = resolve(ROOT_DIR, 'index.html');
+  const before = readFileSync(indexPath, 'utf8');
+  const after = injectHomeDirectory(before, groups);
+  if (after !== before) { writeFileSync(indexPath, after, 'utf8'); console.log('wrote index.html (homepage directory)'); }
+  console.log(`Homepage directory: ${groups.length} groups, ${groups.reduce((n, g) => n + g.links.length, 0)} links.`);
+}
 
 // ---------- draft preview (LOCAL ONLY — never into public/) ----------
 // ARTICLE_DRAFT_PREVIEW=1 renders draft articles into dist-preview/ so Michael can read

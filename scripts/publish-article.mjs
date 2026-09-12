@@ -64,12 +64,15 @@ const { ARTICLES: A } = await import('./seo/articles/data-articles-marketplace-a
 const { ARTICLES: B } = await import('./seo/articles/data-articles-marketplace-b.mjs');
 const { ARTICLES: P } = await import('./seo/articles/data-articles-photos.mjs');
 const { ARTICLES: G } = await import('./seo/articles/data-articles-growth.mjs');
-const content = [...A, ...B, ...P, ...G].find((c) => c.slug === slug);
+const { ARTICLES: M } = await import('./seo/articles/data-articles-meta-tools.mjs');
+const content = [...A, ...B, ...P, ...G, ...M].find((c) => c.slug === slug);
 const silo = content ? SILOS[content.silo] : null;
 const urls = [
   articleUrl(slug),
   ...(silo ? silo.augmentKeys.map((key) => SITE.origin + NAV[key].path) : []),
+  // The homepage directory just gained a link to this article (see seo/home-directory.mjs).
+  SITE.origin + '/',
 ];
 writeFileSync(CHANGED_URLS_PATH, JSON.stringify({ slug, publishedAt, urls }, null, 2) + '\n', 'utf8');
 console.log(`[publish] changed URLs recorded -> ${CHANGED_URLS_PATH}\n  ${urls.join('\n  ')}`);
-console.log('[publish] done. Commit public/ + scripts/seo/articles/publish-state.json, deploy, then: npm run seo:indexnow -- --changed');
+console.log('[publish] done. Commit public/ + scripts/seo/articles/publish-state.json + index.html + src/generated/, deploy, then: npm run seo:indexnow -- --changed');

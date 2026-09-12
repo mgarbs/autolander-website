@@ -66,6 +66,19 @@ export const SILOS = {
     related: [L(NAV.mktgHub), L(NAV.mktgIdeas), L(NAV.category), L(NAV.dealers)],
     augmentKeys: ['mktgHub', 'mktgIdeas'],
   },
+  // 2026-09-12: the timely silo for Meta's own seller-side launches (Seller app, Muse). Hub is
+  // /facebook-ai-tools/ (it IS the "Facebook AI tools for car dealers" page), and the dealers
+  // use-case page also gains the links, because that is where a dealer asking "does this post
+  // my cars" lands.
+  metaTools: {
+    label: 'Facebook’s new seller tools',
+    hubKey: 'aiTools',
+    crumb: { name: 'Facebook AI tools for car dealers', url: SITE.origin + NAV.aiTools.path },
+    // whyNoAutoReply is deliberate: the pairing these articles describe (AutoLander lists,
+    // Meta's own AI takes the conversation) is that page's principle stated as product.
+    related: [L(NAV.aiTools), L(NAV.dealers), L(NAV.category), L(NAV.whyNoAutoReply), L(NAV.automation)],
+    augmentKeys: ['aiTools', 'dealers'],
+  },
 };
 
 // ---- the drip order shown in /admin (suggested publish sequence: silos interleaved so
@@ -82,6 +95,10 @@ export const SUGGESTED_ORDER = [
   'how-to-price-used-cars-competitively',
   'facebook-marketplace-car-listing-removed',
   'how-many-photos-should-a-car-listing-have',
+  // 2026-09-12: the two Meta-launch articles jump the queue — they ride live search interest
+  // (Seller app July 24, Muse September 8) and decay if they wait their turn.
+  'facebook-seller-app-for-car-dealers',
+  'meta-muse-ai-agent-for-car-dealers',
   'google-business-profile-for-car-dealers',
   'renew-facebook-marketplace-car-listings',
   'best-angles-for-car-listing-photos',
