@@ -74,7 +74,9 @@ export const SILOS = {
     label: 'Facebook’s new seller tools',
     hubKey: 'aiTools',
     crumb: { name: 'Facebook AI tools for car dealers', url: SITE.origin + NAV.aiTools.path },
-    related: [L(NAV.aiTools), L(NAV.dealers), L(NAV.category), L(NAV.automation)],
+    // whyNoAutoReply is deliberate: the pairing these articles describe (AutoLander lists,
+    // Meta's own AI takes the conversation) is that page's principle stated as product.
+    related: [L(NAV.aiTools), L(NAV.dealers), L(NAV.category), L(NAV.whyNoAutoReply), L(NAV.automation)],
     augmentKeys: ['aiTools', 'dealers'],
   },
 };

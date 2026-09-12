@@ -143,10 +143,13 @@ export const ARTICLES = [
             title: 'Open Seller for the conversations',
             body:
               'Every buyer message about those listings lands in the Seller inbox, sorted by the '
-              + 'vehicle it is about. That is where your salesperson lives. AutoLander has no inbox '
-              + 'feature and never sees any of it. The first reply still comes from a human, and it '
-              + 'still has to be fast; our [response time guide](/guide/marketplace-response-time-for-car-dealers/) '
-              + 'explains why the first reply wins the appointment.',
+              + 'vehicle it is about. That is where your salesperson lives, and where Meta’s own AI '
+              + 'reply can take the availability question if you switch it on per listing. AutoLander '
+              + 'has no inbox feature and never sees any of it. Meta is building that side itself, '
+              + 'first with the availability reply and next, by every sign, with Muse; AutoLander '
+              + 'lists the cars either way. The first real conversation still has to be fast; our '
+              + '[response time guide](/guide/marketplace-response-time-for-car-dealers/) explains '
+              + 'why the first reply wins the appointment.',
           },
           {
             title: 'Read the insights, then act on the lot',
@@ -255,8 +258,9 @@ export const ARTICLES = [
       ['Does the Seller app answer buyers for me?',
         'Meta AI can draft and send an availability reply built from your listing details if you turn '
         + 'that on when you create the listing, and you can preview and edit it. Everything past that '
-        + 'is a human conversation. AutoLander has no inbox feature at all; your team answers buyers '
-        + 'in Messenger or in Seller.'],
+        + 'is a human conversation today, and Meta’s Muse agent is the likely next step for the rest '
+        + 'of it. AutoLander has no inbox feature at all; it lists the cars, and your team, or Meta’s '
+        + 'AI, answers buyers in Messenger or in Seller.'],
       ['Does AutoLander work with the Seller app?',
         'Yes, because they never touch the same job. AutoLander creates and maintains the listings '
         + 'from your inventory feed through your own Facebook session. Seller shows those listings, '
@@ -300,7 +304,10 @@ export const ARTICLES = [
       + 'sellers or for vehicles. It still matters to a dealership, because an agent shopping for a '
       + 'buyer reads listing fields and skips anything with a placeholder price, missing mileage or '
       + 'a sold car still live. Everything that makes a Marketplace listing readable to Muse makes it '
-      + 'sell better to a person today.',
+      + 'sell better to a person today, and it is the same groundwork that lets Meta’s own AI, from '
+      + 'today’s availability reply to Muse itself, answer the first buyer question about a car that '
+      + 'is actually there. AutoLander lists the cars and keeps the facts true; Meta’s AI takes the '
+      + 'conversation.',
     sections: [
       {
         type: 'prose',
@@ -445,10 +452,11 @@ export const ARTICLES = [
           {
             title: 'Answer the first message like it counts',
             body:
-              'When an agent sends the first message, a fast human reply is what turns a shortlist '
-              + 'into an appointment. Speed to lead is covered in our [response time '
+              'When an agent sends the first message, a fast reply is what turns a shortlist into an '
+              + 'appointment, whether it comes from a salesperson or from Meta’s own AI reply on your '
+              + 'account. Speed to lead is covered in our [response time '
               + 'guide](/guide/marketplace-response-time-for-car-dealers/). AutoLander has no part in '
-              + 'that step; your team does.',
+              + 'that step; it lists the cars, and your team or Meta’s AI takes it from there.',
           },
         ],
       },
@@ -481,16 +489,42 @@ export const ARTICLES = [
         ],
       },
       {
+        type: 'qa',
+        q: 'How do Muse and AutoLander fit together?',
+        a: [
+          'The split is the same one Meta has been drawing for two years. Meta builds the buyer side '
+          + 'and the conversation side of Marketplace. In March 2026 it gave sellers an AI reply that '
+          + 'answers the availability question from the listing details, and Muse is the general '
+          + 'version of that idea: a personal agent that acts inside your own accounts, Facebook '
+          + 'included. Meta has not said Muse will work a seller’s Marketplace inbox yet. It is the '
+          + 'obvious next step, and when it arrives it will be Meta’s own AI answering on Meta’s own '
+          + 'platform, which is the one version of inbox automation that carries no account-health '
+          + 'question.',
+          'AutoLander sits on the other side of that line, and stays there on purpose. It takes the '
+          + 'inventory you already publish and turns it into Marketplace listings with the real price, '
+          + 'the real mileage, full photos and a description an agent can parse, then keeps every one '
+          + 'of them current and pulls the sold ones down. It has no inbox feature; that is a '
+          + 'decision, explained in [why we do not answer your buyers](/why-we-dont-answer-your-buyers/), '
+          + 'and Muse is the reason the decision ages well.',
+          'So the working pairing looks like this. AutoLander lists the cars and keeps the facts '
+          + 'true. A buyer, or the buyer’s Muse, finds the listing because the fields are filled. The '
+          + 'first question comes in, and whoever you have chosen to answer it, a salesperson, Meta’s '
+          + 'AI reply, or eventually your own Muse, is answering about a car that is actually there '
+          + 'at the price that is actually on it. Everything AutoLander does upstream is what makes '
+          + 'that reply safe to hand to a machine.',
+        ],
+      },
+      {
         type: 'callout',
         title: 'The honest part',
         body:
           'Muse is in a closed alpha, US-only, and Meta has published nothing about how it treats '
-          + 'Marketplace vehicle listings. Anyone selling you a Muse integration for car dealers in '
-          + 'September 2026 is guessing. AutoLander does not use Muse, does not message buyers, and '
-          + 'cannot guarantee how any Meta system ranks a listing. What it does is keep every listing '
-          + 'generated from your inventory feed, priced to the lot and removed when sold, through '
-          + 'your own Facebook session. Those are the fields an agent reads, and they are the same '
-          + 'fields a person reads first.',
+          + 'Marketplace vehicle listings or whether it will work a seller’s inbox. Anyone selling you '
+          + 'a Muse integration for car dealers in September 2026 is guessing. AutoLander does not '
+          + 'message buyers itself and cannot guarantee how any Meta system ranks a listing. What it '
+          + 'does is keep every listing generated from your inventory feed, priced to the lot and '
+          + 'removed when sold, through your own Facebook session. Those are the fields an agent '
+          + 'reads, and they are the same fields a person reads first.',
       },
     ],
     faq: [
@@ -513,11 +547,19 @@ export const ARTICLES = [
         + 'purchase or negotiation. Expect the first message and the first ask for a best price to '
         + 'arrive through an agent before any purchase does, and expect the person to still come in '
         + 'for the test drive.'],
+      ['Can Muse answer my Marketplace buyers for me?',
+        'Meta has not announced that yet. What exists today is Meta AI’s availability reply for '
+        + 'Marketplace sellers, switched on per listing, which answers the “is this still available” '
+        + 'question from the listing details. Muse is a personal agent that acts inside your own '
+        + 'accounts, so a seller-side version is the natural next step, and this page will say so '
+        + 'the day Meta ships it.'],
       ['Does AutoLander work with Meta Muse?',
-        'There is nothing to connect. AutoLander posts and maintains your vehicle listings from your '
-        + 'inventory feed so the fields an agent reads are filled, current and removed when the car '
-        + 'sells. It does not message buyers, and it does not integrate with Muse or any other AI '
-        + 'agent.'],
+        'Yes, by staying on its own side of the line. AutoLander lists and maintains your vehicle '
+        + 'listings from your inventory feed so the fields an agent reads are filled, current and '
+        + 'removed when the car sells. It has no inbox feature. If you let Meta’s AI reply, or Muse '
+        + 'once Meta opens it to sellers, answer buyer questions, that runs on your own Facebook '
+        + 'account and it is answering about listings AutoLander keeps accurate. There is nothing to '
+        + 'connect.'],
     ],
     cta: {
       heading: 'Be the listing the agent picks',
