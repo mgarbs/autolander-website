@@ -125,7 +125,7 @@ ${g.links.map(li).join('\n')}
                     </ul></nav>
                   </details>`;
   return `${HOME_DIRECTORY_START}
-                <div class="grid gap-3 sm:grid-cols-2">
+                <div class="grid gap-3 sm:grid-cols-2 items-start">
 ${groups.map(block).join('\n')}
                 </div>
                 ${HOME_DIRECTORY_END}`;

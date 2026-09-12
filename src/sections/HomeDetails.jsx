@@ -166,7 +166,7 @@ export default function HomeDetails({ openDemoBooking, onWarmDemo }) {
           <details className={ROW}>
             <summary className={SUMMARY}>Every AutoLander page, by topic <Chev /></summary>
             <div className={BODY}>
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-3 sm:grid-cols-2 items-start">
                 {DIRECTORY.groups.map((g) => (
                   <details key={g.id} className={DIR_ROW}>
                     <summary className={DIR_SUMMARY}>
