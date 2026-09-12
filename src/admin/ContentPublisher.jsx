@@ -126,6 +126,12 @@ export default function ContentPublisher({ onUnauthorized }) {
   }, [onUnauthorized]);
 
   const liveCount = articles.filter((a) => a.status === 'published').length;
+  // "Next up" = the lowest drip-order row that is still a plain draft (not in flight, not
+  // failed). The list is already sorted by suggestedOrder, so the first match is the answer.
+  const nextUp = useMemo(
+    () => articles.find((a) => (effective.get(a.slug)?.state || 'draft') === 'draft') || null,
+    [articles, effective],
+  );
   const silos = useMemo(() => {
     const bySilo = new Map();
     for (const a of articles) {
@@ -143,7 +149,7 @@ export default function ContentPublisher({ onUnauthorized }) {
     <div className="space-y-4 px-5 py-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-          {liveCount}/{articles.length} live · drip one at a time · publish → silo links + sitemap + IndexNow, automatically
+          {liveCount}/{articles.length} live · drip one at a time · publish → silo links + homepage directory + sitemap + IndexNow, automatically
         </p>
         <button
           type="button"
@@ -153,6 +159,14 @@ export default function ContentPublisher({ onUnauthorized }) {
           Refresh
         </button>
       </div>
+
+      {nextUp && (
+        <p className="rounded-xl border border-blue-400/20 bg-blue-500/[0.06] px-4 py-3 text-xs font-bold text-blue-200">
+          <span className="mr-2 text-[10px] font-black uppercase tracking-widest text-blue-400">Next up</span>
+          <span className="text-white">#{nextUp.suggestedOrder} {nextUp.title}</span>
+          <span className="ml-2 text-[10px] font-black uppercase tracking-widest text-slate-500">{nextUp.siloLabel}</span>
+        </p>
+      )}
 
       {error && (
         <p className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-xs font-bold text-red-300">{error}</p>

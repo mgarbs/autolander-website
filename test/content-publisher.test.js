@@ -41,7 +41,7 @@ const state = (published) => Object.fromEntries(
 test('publish-state.json covers exactly the SUGGESTED_ORDER slugs', () => {
   const st = loadPublishState();
   assert.deepEqual(Object.keys(st).sort(), [...SUGGESTED_ORDER].sort());
-  assert.equal(SUGGESTED_ORDER.length, 30);
+  assert.equal(SUGGESTED_ORDER.length, 32);
 });
 
 test('draft siblings never appear in related links; published ones do', () => {

@@ -1,0 +1,277 @@
+{
+  "groups": [
+    {
+      "id": "product",
+      "label": "Product",
+      "kind": "pages",
+      "links": [
+        {
+          "href": "/facebook-marketplace-auto-poster/",
+          "text": "Facebook Marketplace auto poster"
+        },
+        {
+          "href": "/facebook-marketplace-listing-software/",
+          "text": "Listing software"
+        },
+        {
+          "href": "/facebook-marketplace-automation/",
+          "text": "Marketplace automation"
+        },
+        {
+          "href": "/facebook-marketplace-inventory-sync/",
+          "text": "Inventory sync"
+        },
+        {
+          "href": "/bulk-post-cars-to-facebook-marketplace/",
+          "text": "Bulk posting"
+        },
+        {
+          "href": "/facebook-marketplace-assistant/",
+          "text": "Marketplace assistant"
+        },
+        {
+          "href": "/facebook-autoposter/",
+          "text": "Autoposter"
+        },
+        {
+          "href": "/facebook-listing-software/",
+          "text": "Facebook listing software"
+        },
+        {
+          "href": "/ai-car-photo-editor/",
+          "text": "AI car photo editor"
+        },
+        {
+          "href": "/rv-dealer-software/",
+          "text": "RV dealer software"
+        },
+        {
+          "href": "/safest-facebook-marketplace-auto-poster/",
+          "text": "Account safety"
+        },
+        {
+          "href": "/facebook-marketplace-auto-poster-pricing/",
+          "text": "Pricing"
+        }
+      ]
+    },
+    {
+      "id": "integrations",
+      "label": "Integrations",
+      "kind": "pages",
+      "links": [
+        {
+          "href": "/integrations/",
+          "text": "All integrations"
+        },
+        {
+          "href": "/integrations/cargurus-facebook-marketplace/",
+          "text": "CarGurus"
+        },
+        {
+          "href": "/integrations/cars-com-facebook-marketplace/",
+          "text": "Cars.com"
+        },
+        {
+          "href": "/integrations/vauto-facebook-marketplace/",
+          "text": "vAuto"
+        },
+        {
+          "href": "/integrations/dealercenter-facebook-marketplace/",
+          "text": "DealerCenter"
+        },
+        {
+          "href": "/integrations/dealer-com-facebook-marketplace/",
+          "text": "Dealer.com"
+        },
+        {
+          "href": "/integrations/homenet-facebook-marketplace/",
+          "text": "HomeNet"
+        },
+        {
+          "href": "/integrations/frazer-facebook-marketplace/",
+          "text": "Frazer"
+        },
+        {
+          "href": "/integrations/cdk-facebook-marketplace/",
+          "text": "CDK"
+        },
+        {
+          "href": "/integrations/tekion-facebook-marketplace/",
+          "text": "Tekion"
+        },
+        {
+          "href": "/dealer-inventory-management/",
+          "text": "Dealer inventory management"
+        }
+      ]
+    },
+    {
+      "id": "compare",
+      "label": "Compare",
+      "kind": "pages",
+      "links": [
+        {
+          "href": "/compare/",
+          "text": "Best Marketplace posting tools (2026)"
+        },
+        {
+          "href": "/compare/carvid/",
+          "text": "vs CARVID"
+        },
+        {
+          "href": "/compare/shiftly/",
+          "text": "vs Shiftly"
+        },
+        {
+          "href": "/compare/autolisterpro/",
+          "text": "vs AutoLister Pro"
+        },
+        {
+          "href": "/compare/relayauto/",
+          "text": "vs RelayAuto"
+        },
+        {
+          "href": "/compare/drift/",
+          "text": "vs Sell With Drift"
+        },
+        {
+          "href": "/compare/autobook/",
+          "text": "vs AutoBook.io"
+        },
+        {
+          "href": "/compare/glo3d/",
+          "text": "vs Glo3D"
+        },
+        {
+          "href": "/why-facebook-marketplace-only/",
+          "text": "Why Marketplace only"
+        },
+        {
+          "href": "/why-we-dont-answer-your-buyers/",
+          "text": "Why we don’t answer your buyers"
+        }
+      ]
+    },
+    {
+      "id": "guides",
+      "label": "Guides",
+      "kind": "pages",
+      "links": [
+        {
+          "href": "/guide/how-to-sell-cars-on-facebook-marketplace/",
+          "text": "How to sell cars on Marketplace"
+        },
+        {
+          "href": "/guide/facebook-marketplace-automation/",
+          "text": "Automation policy & safety"
+        },
+        {
+          "href": "/facebook-marketplace-for-car-dealers/",
+          "text": "Marketplace for car dealers"
+        },
+        {
+          "href": "/guide/car-dealership-marketing/",
+          "text": "Dealership marketing playbook"
+        },
+        {
+          "href": "/guide/car-sales-leads/",
+          "text": "Car sales leads"
+        },
+        {
+          "href": "/guide/ai-for-car-dealerships/",
+          "text": "AI for dealerships"
+        },
+        {
+          "href": "/facebook-ai-tools/",
+          "text": "Facebook AI tools for dealers"
+        },
+        {
+          "href": "/ai-chat-for-car-dealers/",
+          "text": "AI chat for car dealers"
+        },
+        {
+          "href": "/guide/how-to-sell-rvs-on-facebook-marketplace/",
+          "text": "How to sell RVs on Marketplace"
+        },
+        {
+          "href": "/facebook-marketplace-used-car-report-2026/",
+          "text": "Used-Car Report 2026 (original data)"
+        },
+        {
+          "href": "/about/",
+          "text": "About AutoLander"
+        },
+        {
+          "href": "/contact/",
+          "text": "Contact"
+        }
+      ]
+    },
+    {
+      "id": "articles-marketplace",
+      "label": "Marketplace operations",
+      "kind": "articles",
+      "links": [
+        {
+          "href": "/guide/post-a-car-on-facebook-marketplace-dealer/",
+          "text": "How to post a car on Facebook Marketplace as a dealer"
+        },
+        {
+          "href": "/guide/best-time-to-post-cars-on-facebook-marketplace/",
+          "text": "Best time to post cars on Facebook Marketplace (2026 data)"
+        },
+        {
+          "href": "/guide/facebook-marketplace-car-listing-limits/",
+          "text": "Facebook Marketplace car listing limits for dealers"
+        },
+        {
+          "href": "/guide/facebook-marketplace-car-listing-removed/",
+          "text": "Why Facebook Marketplace removes car listings (and how to fix it)"
+        }
+      ]
+    },
+    {
+      "id": "articles-photos",
+      "label": "Photos & merchandising",
+      "kind": "articles",
+      "links": [
+        {
+          "href": "/guide/how-to-take-pictures-of-a-car-to-sell/",
+          "text": "How to take pictures of a car to sell: a dealer-grade shot list"
+        },
+        {
+          "href": "/guide/remove-background-from-car-photo/",
+          "text": "Remove the background from a car photo without it looking fake"
+        },
+        {
+          "href": "/guide/car-photography-tips-for-dealerships/",
+          "text": "Car dealership photography tips: a process any porter can run"
+        },
+        {
+          "href": "/guide/how-many-photos-should-a-car-listing-have/",
+          "text": "How many photos a car listing should have — coverage beats count"
+        }
+      ]
+    },
+    {
+      "id": "articles-growth",
+      "label": "Dealer growth",
+      "kind": "articles",
+      "links": [
+        {
+          "href": "/guide/free-places-to-advertise-used-cars/",
+          "text": "Free places to advertise used cars (and the free-ish ones)"
+        },
+        {
+          "href": "/guide/used-car-dealer-advertising-on-a-budget/",
+          "text": "Used car dealership advertising on a budget: the $0-first ladder"
+        },
+        {
+          "href": "/guide/how-to-price-used-cars-competitively/",
+          "text": "How to price used cars competitively (price-to-market)"
+        }
+      ]
+    }
+  ]
+}
