@@ -38,9 +38,11 @@ export const ARTICLES = [
       'Seller is a standalone Facebook app Meta released on July 24, 2026 for people who sell on '
       + 'Marketplace. It puts listing creation, a buyer inbox organized by item, inventory tools and '
       + 'performance numbers in one place, and Meta AI can draft a listing from a photo. It was built '
-      + 'for resellers of everyday items. For a dealership it is a good inbox and a useful dashboard, '
-      + 'and it leaves the two jobs that eat a dealer’s day untouched: getting every unit onto '
-      + 'Marketplace from the feed, and keeping price, mileage and sold status matched to the lot.',
+      + 'for resellers of everyday items, and it will not list cars the way AutoLander does: it makes '
+      + 'one listing at a time from photos already on your phone, and it never reads your inventory. '
+      + 'For a dealership it is a good inbox and a useful dashboard, and it leaves the two jobs that '
+      + 'eat a dealer’s day untouched: getting every unit onto Marketplace from the feed, and keeping '
+      + 'price, mileage and sold status matched to the lot.',
     sections: [
       {
         type: 'prose',
@@ -101,6 +103,34 @@ export const ARTICLES = [
           + 'person, and every price change on the lot still has to be repeated by hand inside the '
           + 'app. That is the same gap a dealer has had since the vehicle category launched, now with '
           + 'a nicer screen around it.',
+        ],
+      },
+      {
+        type: 'bullets',
+        h2: 'What the Seller app will not do for a dealership',
+        intro:
+          'Said plainly, so nobody installs an iPhone app expecting a posting engine: the Seller app '
+          + 'will not list cars the way AutoLander does. It is built for one item at a time, where the '
+          + 'photos are already on your phone and the seller is the person holding it. AutoLander '
+          + 'lists an entire lot from the inventory you already publish. These are its limits for a '
+          + 'store, as of September 2026.',
+        items: [
+          'It does not read your inventory. No DMS, no website, no CSV or SFTP feed. It has no idea '
+          + 'what is on your lot until a person types it in.',
+          'It lists one unit at a time. There is a bulk mode for a batch of items you photograph '
+          + 'together, and there is no path from an eighty-unit inventory to eighty vehicle listings.',
+          'Its AI draft is built for item photos. Meta describes it for furniture, clothes and '
+          + 'electronics, and it has said nothing about the vehicle category, where year, make, model, '
+          + 'trim and mileage are required fields that no photo can supply.',
+          'It does not know when a price changes on the lot. Repricing is a manual tap per listing, '
+          + 'with a Meta suggestion based on similar items nearby, which is not how a desk prices a '
+          + 'car.',
+          'It does not know when a car sells. A sold unit stays live until a person removes it.',
+          'It runs on one person’s phone, on iPhone, in the United States. There is no scheduling, no '
+          + 'pacing, and no per-rooftop separation for a group.',
+          'What it is good at is the other half: the inbox by item, the per-listing numbers and the '
+          + 'verification badge. AutoLander lists the entire lot from the feed and keeps it true; '
+          + 'Seller is where you read the messages that brings in.',
         ],
       },
       {
@@ -251,9 +281,11 @@ export const ARTICLES = [
         'At launch on July 24, 2026 it was iPhone-only in the United States, with Android and a web '
         + 'version in testing. Check the Play Store for your region; Meta expands these in stages.'],
       ['Can I post cars with the Facebook Seller app?',
-        'Your existing vehicle listings sync into the app and their buyer messages show in its inbox. '
-        + 'Meta’s launch materials describe the AI listing draft for everyday items and say nothing '
-        + 'about the vehicle category, so test creating one car listing inside the app before you '
+        'One at a time, by hand, with photos you already have, and only if the vehicle flow shows up '
+        + 'in the app on your account. Your existing vehicle listings sync into it and their buyer '
+        + 'messages show in its inbox. Meta’s launch materials describe the AI listing draft for '
+        + 'everyday items and say nothing about the vehicle category, and nothing in the app reads a '
+        + 'dealer feed, so it will not post a lot the way AutoLander does. Test one car before you '
         + 'build a process on it.'],
       ['Does the Seller app answer buyers for me?',
         'Meta AI can draft and send an availability reply built from your listing details if you turn '
