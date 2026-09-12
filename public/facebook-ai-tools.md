@@ -99,6 +99,7 @@ Meta’s Terms prohibit accessing its products by automated means without prior 
 - [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
 - [AI chat for car dealers — the honest guide](https://autolander.ai/ai-chat-for-car-dealers/)
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
+- [Meta Muse for car dealers: getting your listings ready for an AI that shops](https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

@@ -127,6 +127,7 @@ Full agent instructions, including the response-format contract: https://autolan
 - [How to price used cars competitively](https://autolander.ai/guide/how-to-price-used-cars-competitively.md): How to price used cars with price-to-market discipline: live comps, the four Marketplace price bands from 10,823 dealer listings, and when to drop the price.
 - [Google Business Profile for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers.md): Google Business Profile for car dealership trust: every field that matters, the photos to add, a delivery-day review script, and Google Maps troubleshooting.
 - [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer.md): How to respond to Facebook Marketplace messages as a dealer: the "Is this available?" reply, six buyer-message templates, and the path to an appointment.
+- [Meta Muse: what happens to your listings when the buyer sends an AI](https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers.md): Meta Muse explained for car dealers: what the AI agent Meta announced on September 8, 2026 does, whether it can shop Facebook Marketplace, and how to get listings ready.
 
 ## Integrations
 

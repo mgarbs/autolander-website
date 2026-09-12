@@ -209,6 +209,17 @@
       ]
     },
     {
+      "id": "articles-metaTools",
+      "label": "Facebook’s new seller tools",
+      "kind": "articles",
+      "links": [
+        {
+          "href": "/guide/meta-muse-ai-agent-for-car-dealers/",
+          "text": "Meta Muse for car dealers: getting your listings ready for an AI that shops"
+        }
+      ]
+    },
+    {
       "id": "articles-marketplace",
       "label": "Marketplace operations",
       "kind": "articles",
