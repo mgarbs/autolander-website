@@ -4,7 +4,7 @@ import SelfServePicker from './SelfServePicker.jsx';
 import TokenCheckout from './TokenCheckout.jsx';
 
 // Root of the /pay SPA surface (design doc §7). Two shapes:
-//   /pay            -> self-serve Starter/Growth/Pro picker (SelfServePicker)
+//   /pay            -> install/sign in before choosing a plan (SelfServePicker)
 //   /pay/:token     -> durable checkout link opened from admin/app (TokenCheckout)
 // Root.jsx already gates on window.location.pathname.startsWith('/pay') before
 // lazy-loading this component, so we only need to pull the token (if any) back
@@ -23,7 +23,7 @@ export default function PayApp() {
   }, []);
 
   useEffect(() => {
-    document.title = token ? 'Complete your payment — AutoLander' : 'AutoLander Pricing — Start your plan';
+    document.title = token ? 'Complete your payment — AutoLander' : 'Get started with AutoLander';
   }, [token]);
 
   return (
@@ -59,7 +59,7 @@ export default function PayApp() {
 
       <footer className="relative z-10 px-4 pb-10 text-center sm:px-6">
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-600">
-          Secure checkout powered by Stripe · Questions? sales@autolander.ai
+          {token ? 'Secure checkout powered by Stripe · ' : ''}Questions? sales@autolander.ai
         </p>
       </footer>
     </div>

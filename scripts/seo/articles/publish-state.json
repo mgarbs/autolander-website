@@ -16,16 +16,16 @@
     "publishedAt": null
   },
   "renew-facebook-marketplace-car-listings": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-09-07"
   },
   "best-time-to-post-cars-on-facebook-marketplace": {
     "status": "published",
     "publishedAt": "2026-08-30"
   },
   "facebook-marketplace-car-description-template": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-09-10"
   },
   "mark-car-sold-on-facebook-marketplace": {
     "status": "draft",
@@ -72,16 +72,16 @@
     "publishedAt": null
   },
   "best-angles-for-car-listing-photos": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-09-08"
   },
   "car-walkaround-video-for-dealers": {
     "status": "draft",
     "publishedAt": null
   },
   "dark-cluttered-car-photos-cost-sales": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-09-11"
   },
   "remove-background-from-car-photo": {
     "status": "published",
@@ -116,12 +116,12 @@
     "publishedAt": "2026-09-03"
   },
   "google-business-profile-for-car-dealers": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-09-06"
   },
   "respond-to-facebook-marketplace-messages-dealer": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-09-09"
   },
   "aged-inventory-used-car-dealers": {
     "status": "draft",

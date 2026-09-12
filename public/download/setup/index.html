@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Download AutoLander</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#050505;color:#f8fafc;font:16px/1.6 system-ui,sans-serif;min-height:100vh;display:grid;place-items:center;padding:24px}main{width:min(100%,620px)}.brand{color:#60a5fa;font-size:14px;font-weight:800;letter-spacing:.2em}h1{font-size:clamp(32px,7vw,48px);line-height:1.12;letter-spacing:-.045em;margin:22px 0}p{color:#a8b2c5}ol{list-style:none;padding:0;counter-reset:step}li{counter-increment:step;border-top:1px solid #252936;padding:22px 0 22px 48px;position:relative}li:before{content:counter(step);position:absolute;left:0;background:#172238;color:#93c5fd;width:30px;height:30px;text-align:center;border-radius:50%;font-weight:bold}h2{font-size:19px;margin:0 0 8px}li p{margin:4px 0 14px}a{color:#93c5fd}.button{display:inline-block;cursor:pointer;text-decoration:none;padding:11px 18px;border-radius:9px;border:1px solid #334155;background:#121826;color:#f8fafc;font-weight:650}.primary{background:#2563eb;border-color:#2563eb}.button[aria-disabled=true]{opacity:.5;pointer-events:none}details{margin-top:20px;color:#a8b2c5}summary{cursor:pointer;color:#cbd5e1}.status{font-size:14px;min-height:22px}footer{margin-top:22px;font-size:14px;color:#64748b}
+  </style>
+</head>
+<body>
+  <main>
+    <a class="brand" href="/">AUTOLANDER</a>
+    <h1>Download AutoLander.</h1>
+    <p>Your download is starting. Install the app, then open it to create your account.</p>
+    <ol>
+      <li><h2>Download and install</h2><p id="download-status">Your download will start automatically.</p><a id="download" class="button" href="https://github.com/mgarbs/autolander-releases/releases/latest/download/AutoLander-Setup.exe" rel="noreferrer">Download for Windows</a></li>
+      <li><h2>Open AutoLander and sign up</h2><p>Choose <strong>Sign Up</strong> in the app. Any referral or details you already provided will carry over automatically.</p><a id="open-app" class="button primary" aria-disabled="true">Open AutoLander</a><p id="status" class="status" role="status">Getting AutoLander ready…</p></li>
+    </ol>
+    <details><summary>App didn’t open?</summary><p>Finish installing AutoLander, then try the <strong>Open AutoLander</strong> button again. You can also open AutoLander from your computer and choose <strong>Sign Up</strong>.</p></details>
+    <footer>Need a hand? <a href="mailto:sales@autolander.ai">Contact our team</a>.</footer>
+  </main>
+  <script src="/al-download-setup.js" defer></script>
+</body>
+</html>

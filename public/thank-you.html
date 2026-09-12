@@ -39,6 +39,35 @@
         var PIXEL_ID = '2087440198847151';
         var WORKER = 'https://autolander.ai';
         var pixelInitialized = false;
+        var pageViewId = crypto.randomUUID();
+
+        function readCookie(name) {
+          var match = document.cookie.split(';').map(function (part) { return part.trim(); })
+            .find(function (part) { return part.indexOf(name + '=') === 0; });
+          try { return match ? decodeURIComponent(match.slice(name.length + 1)) : ''; }
+          catch (e) { return ''; }
+        }
+
+        function writeMetaCookie(name, value) {
+          document.cookie = name + '=' + encodeURIComponent(value) + '; Max-Age=7776000; Path=/; SameSite=Lax; Secure';
+        }
+
+        var fbp = readCookie('_fbp');
+        if (!/^fb\.\d+\.\d+\.\d+$/.test(fbp)) {
+          fbp = 'fb.1.' + Date.now() + '.' + crypto.getRandomValues(new Uint32Array(1))[0];
+          writeMetaCookie('_fbp', fbp);
+        }
+        var fbc = readCookie('_fbc');
+        var fbclid = new URLSearchParams(location.search).get('fbclid') || '';
+        if (fbclid && fbclid.length <= 1000 && !/\s/.test(fbclid) && (!fbc || !fbc.endsWith('.' + fbclid))) {
+          fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+          writeMetaCookie('_fbc', fbc);
+        }
+        var firstTouch = {};
+        try {
+          var storedAttribution = JSON.parse(readCookie('al_attr') || '{}');
+          if (storedAttribution && typeof storedAttribution === 'object' && !Array.isArray(storedAttribution)) firstTouch = storedAttribution;
+        } catch (e) {}
 
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -58,7 +87,21 @@
             fbq('init', PIXEL_ID, initData);
           }
           else fbq('init', PIXEL_ID);
-          fbq('track', 'PageView');
+          fbq('track', 'PageView', {}, { eventID: pageViewId });
+          fetch(WORKER + '/capi/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors',
+            credentials: 'omit',
+            keepalive: true,
+            body: JSON.stringify({
+              event: 'PageView', eventId: pageViewId, eventTime: Math.floor(Date.now() / 1000),
+              sourceUrl: location.href, vid: readCookie('al_vid'), fbp: fbp, fbc: fbc,
+              fbclid: fbclid || firstTouch.fbclid || '', firstTouch: firstTouch, utms: firstTouch,
+              page: { landing_page: firstTouch.landing_page || '', current_page: location.href,
+                referrer: firstTouch.referrer || document.referrer || '' }
+            })
+          }).catch(function () {});
           pixelInitialized = true;
         }
 

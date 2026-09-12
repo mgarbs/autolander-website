@@ -2165,6 +2165,8 @@ Yes. When a car is marked sold or drops out of the feed, AutoLander removes the 
 - [Best time to post cars on Facebook Marketplace (2026 data)](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/)
 - [Facebook Marketplace car listing limits for dealers](https://autolander.ai/guide/facebook-marketplace-car-listing-limits/)
 - [Why Facebook Marketplace removes car listings (and how to fix it)](https://autolander.ai/guide/facebook-marketplace-car-listing-removed/)
+- [How to renew Facebook Marketplace car listings at lot scale](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/)
+- [Facebook Marketplace car description template that sells](https://autolander.ai/guide/facebook-marketplace-car-description-template/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -2630,6 +2632,8 @@ We keep a working list of 27 dealership marketing ideas ranked by cost and effor
 - [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
 - [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
+- [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -2724,6 +2728,8 @@ Nearly all of them — Marketplace coverage, photo upgrades, response speed and 
 - [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
 - [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
+- [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -3090,6 +3096,8 @@ Standalone chatbots exist that attempt it — vet them hard on inventory truth a
 - [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
 - [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
 - [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
+- [The best car photography angles for listing photos, shot by shot](https://autolander.ai/guide/best-angles-for-car-listing-photos/)
+- [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -3307,6 +3315,8 @@ Yes — travel trailers, fifth wheels and motorhomes get the same studio treatme
 - [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
 - [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
 - [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
+- [The best car photography angles for listing photos, shot by shot](https://autolander.ai/guide/best-angles-for-car-listing-photos/)
+- [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -4430,6 +4440,7 @@ One accountable person — typically the internet manager — posting from an es
 - [Best time to post cars on Facebook Marketplace (2026 data)](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/)
 - [Facebook Marketplace car listing limits for dealers](https://autolander.ai/guide/facebook-marketplace-car-listing-limits/)
 - [Why Facebook Marketplace removes car listings (and how to fix it)](https://autolander.ai/guide/facebook-marketplace-car-listing-removed/)
+- [How to renew Facebook Marketplace car listings at lot scale](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -4526,8 +4537,9 @@ There is no universally safe number, and anyone quoting one is guessing. The hon
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [Why Facebook Marketplace removes car listings (and how to fix it)](https://autolander.ai/guide/facebook-marketplace-car-listing-removed/)
+- [How to renew Facebook Marketplace car listings at lot scale](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/)
+- [Facebook Marketplace car description template that sells](https://autolander.ai/guide/facebook-marketplace-car-description-template/)
 - [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/)
-- [Best time to post cars on Facebook Marketplace (2026 data)](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -4624,6 +4636,104 @@ Watermarks, dealer promo frames, and text-heavy overlays are classic spam signal
 - [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
+- [How to renew Facebook Marketplace car listings at lot scale](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/)
+- [Facebook Marketplace car description template that sells](https://autolander.ai/guide/facebook-marketplace-car-description-template/)
+- [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/)
+- [Best time to post cars on Facebook Marketplace (2026 data)](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# How to renew Facebook Marketplace listings — at dealer scale
+
+> How to renew a Facebook Marketplace listing, what renewing actually does, when delete-and-repost wins, and a cadence that works for a 30–60 unit lot.
+
+Source: https://autolander.ai/guide/renew-facebook-marketplace-car-listings/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 7, 2026
+
+**Short answer:** To renew a Facebook Marketplace listing, open your listings from your selling view, find the vehicle, and choose Renew from its menu when Facebook offers it — roughly weekly per listing. Renewing bumps the listing back toward the fresh end of search and browse for free, without creating a duplicate. It beats delete-and-repost for healthy listings; delete-and-repost wins when a listing has gone cold and needs new photos or a new price.
+
+## How do you renew a Facebook Marketplace listing?
+
+From your selling view, open your listings, find the vehicle, and use the listing’s menu — once the listing becomes eligible, a Renew option appears there. One tap and the listing is treated as fresh again. It is free, it keeps the same listing — same photos, same description, same buyer message threads — and it does not create a duplicate.
+
+The catch is that Renew is offered on Facebook’s schedule, not yours: the option surfaces once a listing has aged, typically on a roughly weekly cycle, and disappears once used until the listing ages again. You cannot renew on demand — which is exactly why renewal at dealer scale is a cadence problem, covered below.
+
+## What does renew actually do on Facebook Marketplace?
+
+One thing, and it is valuable: it resets the listing’s effective age, so Marketplace surfaces it the way it surfaces recent listings instead of letting it sink beneath the daily wave of newer inventory. Freshness is one of the strongest visibility inputs on the platform, and renewal is the free lever that controls it.
+
+What renew does not do: it does not change the listing’s content, fix weak photos, correct an off-market price, or guarantee placement anywhere. A renewed bad listing is a fresh bad listing. Renew preserves everything — including the message history — which is both its advantage over reposting and its limitation.
+
+## How often can you renew a listing?
+
+As often as Facebook offers it, which in practice means on a roughly weekly rhythm per listing — the option appears once the listing has aged and goes away once used. There is no way to renew early and no published schedule, so the operational answer for a dealership is: sweep your listings on a regular weekly pass and renew everything showing the option, rather than trying to time individual units.
+
+## Renew vs. delete-and-repost: which one, when
+
+| Situation | Do this | Why |
+| --- | --- | --- |
+| Listing is healthy — decent photos, right price, some saves or messages | Renew | Keeps the listing, its history, and its message threads while restoring freshness for free |
+| Listing ran for weeks with near-zero messages | Delete, fix, repost | Renewing reruns a listing the market already ignored — change the photos and price, then relaunch fresh |
+| Price changed | Edit the price, then renew when offered | The listing must always match the real advertised price; an edit alone does not restore freshness |
+| Vehicle sold | Delete it the same day | Never renew a sold unit — stale sold listings burn buyers and invite reports |
+| Listing was removed by Facebook | Appeal, fix the cause, then post clean | Renewal is not available on removed listings, and reposting unfixed content invites the next removal |
+
+## A renewal cadence for a 30–60 unit lot
+
+Renewal only works as a system. This is the weekly rhythm that keeps a whole lot effectively fresh:
+
+1. **Track posted dates in one place** — A simple sheet with unit, posting date, and last renewal. Without it, renewals happen to whichever cars someone remembers.
+2. **Run a fixed weekly renewal pass** — Same day every week: open your listings and renew every unit showing the option. Eligibility staggers as inventory turns, so the pass is weekly even though each listing renews on its own cycle.
+3. **Sort the non-renewals** — Units with buyer activity: leave them working. Units silent since posting: pull them out for rework instead of scheduling another identical week.
+4. **Rework the cold ones before relaunch** — New lead photo, tightened description, honest price check against the market. Re-staging the photos is the fastest lever — an AI car photo editor turns the same feed shots into a visibly different listing.
+5. **Delete sold units daily, not weekly** — Sold-unit removal cannot wait for the weekly pass — buyers who drive out for a ghost car do not come back. Automatic inventory sync makes the deletion happen the moment the feed says sold.
+
+## How much work is renewal at dealer scale?
+
+Each renewal is only a few taps — and that is the trap. At 30 to 60 units, a weekly pass means walking every listing, deciding renew versus rework versus leave, actually renewing the eligible ones, plus the daily sold-unit deletions and price edits in between. Call it an hour or two of focused tapping every single week, forever — a chore that quietly stops happening the first busy Saturday.
+
+This maintenance loop, not the original posting, is where hand-run Marketplace programs die. It is also precisely the part software does without getting bored: a Facebook Marketplace auto poster keeps every listing fresh on schedule, and bulk posting plus automatic sold-unit removal keeps the whole lot live and truthful without a weekly ritual.
+
+_Make it worth renewing: led by the raw lot shot (left), this Renegade reruns the same silence every week; re-staged by AutoLander’s AI Photo Studio (right), the same car relaunches as a different listing._
+
+## The honest part
+
+Renewal is a freshness nudge, not a demand machine. If a unit sat for three weeks without a message, the market has voted on the listing — the photos, the price, or the car — and renewing the identical listing mostly schedules another quiet week. Renew what is working, rework what is not, and never let a sold car stay posted a single day.
+
+## Frequently asked questions
+
+### Is renewing a Facebook Marketplace listing free?
+
+Yes. Renew is a free action on your own listing and is separate from any paid promotion Facebook may offer. For a dealership, free renewal on a steady cadence is one of the highest-leverage habits on the platform: it keeps the whole lot surfacing like recent inventory without new spend.
+
+### Why don’t I see a Renew button on my listing?
+
+The option only appears once a listing has aged into eligibility, and it disappears again right after you use it. If a listing is brand new, recently renewed, or was removed rather than expired, Renew will not show. Check again on your next weekly pass rather than hunting for it daily.
+
+### Does renewing reset my listing’s saves, views, or messages?
+
+No — renewal keeps the same listing, so existing saves and buyer message threads stay attached. That continuity is renewal’s core advantage over delete-and-repost, which starts a genuinely new listing and leaves the old conversations behind. Choose based on whether the listing’s history is worth keeping.
+
+### Should I renew or repost a car that is not selling?
+
+Ask what the listing has earned. If it drew saves and conversations, renew it and keep working the leads. If it ran silent for weeks, reposting identical content changes nothing — fix the lead photo, re-check the price against the market, then delete and relaunch it as a stronger listing.
+
+### Can renewing too often get my account flagged?
+
+Renewing through Facebook’s own offered option, at the pace Facebook offers it, is normal platform behavior — the cycle itself throttles you. The patterns that draw friction are different ones: mass delete-and-repost sweeps, duplicate listings, and sudden volume spikes. Steady weekly renewal is the calm alternative to exactly those.
+
+## Related
+
+- [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
+- [Facebook Marketplace car description template that sells](https://autolander.ai/guide/facebook-marketplace-car-description-template/)
 - [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/)
 - [Best time to post cars on Facebook Marketplace (2026 data)](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/)
 - [Facebook Marketplace car listing limits for dealers](https://autolander.ai/guide/facebook-marketplace-car-listing-limits/)
@@ -4729,7 +4839,120 @@ Daily. New arrivals should be posted the day they hit the lot, and the whole in-
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [Facebook Marketplace car listing limits for dealers](https://autolander.ai/guide/facebook-marketplace-car-listing-limits/)
 - [Why Facebook Marketplace removes car listings (and how to fix it)](https://autolander.ai/guide/facebook-marketplace-car-listing-removed/)
+- [How to renew Facebook Marketplace car listings at lot scale](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/)
+- [Facebook Marketplace car description template that sells](https://autolander.ai/guide/facebook-marketplace-car-description-template/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# The Facebook Marketplace car description that sells
+
+> A Facebook Marketplace car description template that sells: the three facts buyers scan first, two fill-in templates, and the do/don’t list dealers use.
+
+Source: https://autolander.ai/guide/facebook-marketplace-car-description-template/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 10, 2026
+
+**Short answer:** A Facebook Marketplace car description has one job: confirm what the photo and the price already promised. Lead with the three facts every buyer scans — where the price stands, what condition the car is in, and whether it is still available — then cover the equipment buyers in that segment search for. Keep it under 150 words, front-load the substance, and disclose the flaw a buyer will find anyway.
+
+## What should a Facebook Marketplace car description say?
+
+The first two lines decide whether the rest gets read. Marketplace buyers skim a description for three facts, in roughly this order: price context (why this number — one owner, fresh trade serviced here, new tires), condition (what works, what does not, what is new), and availability (is it still for sale and how fast can I see it). Everything else — the trim breakdown, the feature list, the financing note — matters only after those three land.
+
+That order exists because of how people shop. A buyer has already seen your photo and your price in the feed before they ever open the listing. The description is where they look for a reason to believe the price — or a reason to move to the next car. Write it as the answer to “why this one,” not as a spec sheet.
+
+## The anatomy of a description that sells
+
+- Open with the one line that justifies the price: “One owner, dealer-serviced, new tires in March” beats “GREAT DEAL!!!” every time.
+- State condition plainly — what was inspected, what was replaced, and any flaw the buyer will spot on the walkaround anyway. Disclosed flaws build trust; discovered flaws kill deals.
+- Confirm availability and the next step: the car is on the lot, when the store is open, and that you will hold a time for a test drive.
+- Then the substance: trim, drivetrain, mileage context, title status, and the two or three options buyers in this segment actually search — AWD, third row, tow package, heated seats.
+- Close with logistics: trades welcome or not, financing available or cash price, and the fastest way to reach a human during business hours.
+
+## What do you write when selling a car on Facebook?
+
+Use a template, so every listing covers the same ground in the same order — price context, condition, availability, equipment, logistics. A template is not lazy; it is how the tenth listing of the day stays as complete as the first. Below are two fill-in versions: a standard one for most retail units, and a short one for budget cars, where a long pitch reads as overselling.
+
+## Template 1: the standard retail unit
+
+Copy it line by line, fill the brackets, delete what does not apply.
+
+- [Year] [Make] [Model] [Trim] — [mileage] miles, [one-owner / two-owner] with a [clean title].
+- Priced at [price] because [what justifies it: recent service, new tires, condition, how it sits against comparable listings]. [Financing available / cash price].
+- Condition: [what was inspected or replaced], plus [known flaws stated plainly — small door ding, worn rear tires].
+- Equipment buyers ask about: [drivetrain — AWD / 4x4 / FWD], [seating or third row], [tow package], [remote start, heated seats, CarPlay].
+- Available now at [dealership area]. Open [hours]. Message a day and time and we will have it pulled up front.
+
+## Template 2: the short version for budget units
+
+On cheap commuter cars, buyers read less and suspect more. Shorter is more credible.
+
+- [Year] [Make] [Model] — [mileage] miles, runs and drives, [clean title].
+- The honest one-liner: [what is good — cold A/C, new battery] and [what is not — cosmetic wear, check engine light with the code listed].
+- [Price] firm, or [price] with the flaw noted above priced in. Sold as-is.
+- On the lot at [area], available for a test drive today. Message for the fastest response during [hours].
+
+## Do
+
+- Front-load the fact that justifies the price — buyers decide in the first two lines.
+- Disclose the flaw they will find anyway; it converts skeptics into serious buyers.
+- Repeat mileage, title status, and drivetrain in the text even when a field exists — buyers read the description as confirmation.
+- Keep it scannable: short lines beat paragraphs on a phone screen.
+- End with a concrete next step a buyer can act on tonight.
+
+## Don’t
+
+- Write in all caps or stack emojis — both read as a lot you cannot trust.
+- Paste the window sticker. A wall of options tells a buyer nobody looked at the car.
+- Say “priced to sell” or “won’t last” — empty urgency sitting where price context should be.
+- Leave the description blank. An empty description makes even a fair price feel like a gamble.
+- Copy another dealer’s text — buyers cross-shop the same search results you do, and they notice.
+
+_The description confirms what the photo promises: the same Kia K5 as a raw dealer lot shot (left) and re-staged by AutoLander’s AI Photo Studio (right). Buyers open the listing on the right expecting good news — the description’s job is to deliver it._
+
+## The honest part
+
+A great description is the third most important thing in the listing, behind the photo and the price. It will not rescue a dark lot shot or a number a thousand dollars over the market — buyers filter on those before they read a word. Get the photos and the price right first; the description closes what they open.
+
+Writing one description well is easy. Writing forty a week, keeping every fact straight while a trade-in is walking through the door — that is how descriptions rot into “CLEAN CAR, MUST SEE.” AutoLander writes the description automatically from your feed data — year, make, model, trim, mileage, and equipment — so every listing goes up complete, accurate, and in a consistent voice, whether you post one unit or the whole lot through a Facebook Marketplace auto poster.
+
+The same feed keeps the description honest over time: when your number changes, automatic price updates keep the listing in step, and when the car sells, the listing comes down instead of collecting messages you can only answer with bad news. The full posting workflow lives in the guide to selling cars on Facebook Marketplace.
+
+## Frequently asked questions
+
+### What is a good car listing description example?
+
+Here is the standard template filled in, details swapped for your unit: “2022 Kia K5 GT-Line, 31k miles, one owner, clean title. Priced under comparable listings because we serviced it here — new front tires, fresh oil. Cold A/C, CarPlay, lane assist. Small ding on the rear door, priced accordingly. On the lot in Mesa, open till 7 — message a time and it will be up front.” Substance first, urgency nowhere.
+
+### Is there a vehicle description template I can copy?
+
+Yes — the two templates above cover the standard retail unit and the budget unit. Copy the lines, fill the brackets with the vehicle’s real facts, and delete what does not apply. The order is the template: price context, condition, availability, then equipment and logistics. Dealers on AutoLander skip the typing entirely — descriptions are generated from feed data automatically.
+
+### How long should a Facebook Marketplace car description be?
+
+Long enough to justify the price and disclose condition — for most retail units that is roughly 80 to 150 words. Budget cars deserve less; rare or high-dollar units deserve more, because their buyers read everything. If someone has to scroll screens to find the mileage, it is too long. Short lines beat dense paragraphs on a phone.
+
+### Should I mention flaws in a car description?
+
+Yes — disclose the flaw the buyer will find on the walkaround anyway. Naming it costs you only the shoppers who were never buying that flaw at any price, and it earns trust with everyone else; discovering it in person costs the deal and the drive out. Pair every disclosed flaw with the price logic that accounts for it.
+
+### Do descriptions affect where a listing shows up in search?
+
+Facebook does not publish how Marketplace search ranks vehicle listings, so treat any confident claim with suspicion. What is observable: buyers search by year, make, model, and features, and a description carrying accurate, specific detail gives the listing more honest ways to match a real search — and gives the buyer who lands there more reasons to message.
+
+## Related
+
+- [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/)
+- [Best time to post cars on Facebook Marketplace (2026 data)](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/)
+- [Facebook Marketplace car listing limits for dealers](https://autolander.ai/guide/facebook-marketplace-car-listing-limits/)
+- [Why Facebook Marketplace removes car listings (and how to fix it)](https://autolander.ai/guide/facebook-marketplace-car-listing-removed/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -4823,8 +5046,9 @@ About fifteen minutes once the routine is muscle memory: two or three minutes st
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
+- [The best car photography angles for listing photos, shot by shot](https://autolander.ai/guide/best-angles-for-car-listing-photos/)
+- [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
 - [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
-- [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -4917,6 +5141,7 @@ Volume stores run a fixed routine — one photo spot, one shot list, one porter 
 - [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
 - [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
 - [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
+- [The best car photography angles for listing photos, shot by shot](https://autolander.ai/guide/best-angles-for-car-listing-photos/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -5005,9 +5230,199 @@ Yes — the same shot list, the same order, the same style. Consistency across l
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
+- [The best car photography angles for listing photos, shot by shot](https://autolander.ai/guide/best-angles-for-car-listing-photos/)
+- [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
+- [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
+- [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# The best car photography angles, shot by shot
+
+> Car photography angles explained — why the three-quarter front is the hero, the full angle-by-angle shot list, what each frame answers, and mistakes to avoid.
+
+Source: https://autolander.ai/guide/best-angles-for-car-listing-photos/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 8, 2026
+
+**Short answer:** Lead with the three-quarter front — it shows the car’s face and its depth in one frame. Then cover both full profiles, both three-quarter rears, straight-on front and rear, a complete interior set with the dash powered on, and detail close-ups. Shoot every exterior angle from mid-door height, fill the frame, and never skip the far side. Each angle exists to answer a specific buyer question.
+
+## What are the best car photography angles?
+
+The set that sells a car is not a secret: three-quarter front, full profile, three-quarter rear, straight-on front and rear — from both sides where the angle differs — plus the interior and details. What separates dealer-grade photos from driveway photos is not exotic angles; it is shooting the standard ones at the right height, in the right order, without skipping the inconvenient ones.
+
+Every angle is a claim of evidence. The buyer cannot walk around the car, so the angles do the walking — and any angle you leave out reads as a question you preferred not to answer.
+
+## Why is the three-quarter front angle the hero shot?
+
+Because it is the only single frame that shows the car’s face and its body at once — grille, headlights, and stance, plus the length of the profile receding behind it. Straight-on shots flatten the car into a cardboard cutout; pure profiles hide the front end buyers identify with. Shoot it from mid-door height, roughly forty-five degrees off the nose, close enough that the car fills the frame. This is the photo that represents the listing in search results, so it gets the best light and the cleanest background of the whole set.
+
+## The angle-by-angle shot list
+
+Walk the loop in this order. Each frame answers a specific question the buyer would otherwise have to ask.
+
+1. **Three-quarter front, driver side** — The hero. Answers “what does this car look like?” in one frame — face, stance, and depth together. Best light and cleanest background of the day go here — or let an AI car photo editor supply the clean background afterward.
+2. **Full profile, driver side** — Answers “is the body straight and the trim complete?” Shot square-on from mid-door height so panel lines stay honest and wheels stay round.
+3. **Three-quarter rear, driver side** — Answers “what condition is the back corner in?” — the corner that takes parking-lot hits. Also shows the tail design buyers care about more than sellers think.
+4. **Straight-on rear, then straight-on front** — Answers “is anything cracked, dented, or misaligned dead-center?” Bumpers, tailgate, grille, and lights, shot level so nothing distorts.
+5. **Repeat the angled shots from the passenger side** — Answers the buyer’s most suspicious question: “what is the side they didn’t show me hiding?” The far side is the most-skipped set in amateur listings — and the most requested follow-up.
+6. **Interior wide, from the driver door** — Answers “what will living in this car feel like?” Doors open for light, seat pulled back, one frame that takes in wheel, dash, and console together.
+7. **Dash powered on, odometer readable** — Answers “does everything work and how far has it gone?” Ignition on so the cluster and screen glow; a separate tight frame makes the mileage legible.
+8. **Details: wheels, tread, seats, cargo, flaws** — Answers the deal-closing questions — tire life, seat wear, trunk space, and the honest close-ups of every ding that would otherwise ambush the showing.
+
+## What interior shots do car listings need?
+
+Six frames minimum: the wide shot from the driver door, the dash and cluster powered on, the odometer, the infotainment screen, the rear seats, and the cargo area. Add the driver’s seat bolster up close on higher-mileage units — it is the first place wear shows and the first thing an in-person buyer checks.
+
+Interior shots fail in the dark. Open both doors for a minute before shooting, and let the phone expose for the cabin rather than the bright windows — a dim interior photo reads as a hiding place even when the cabin is mint.
+
+## Do
+
+- Shoot exteriors from mid-door height — roughly bumper-to-mirror level.
+- Fill the frame with the car; step closer instead of zooming.
+- Cover both sides, even when they look identical.
+- Keep the horizon level so the car does not appear to roll downhill.
+- Power the dash on for every interior frame.
+
+## Don’t
+
+- Shoot down at the car from standing eye level — it makes any vehicle look squat and small.
+- Use ultra-wide mode up close; it bloats bumpers and warps panels.
+- Shoot into the sun, which silhouettes the car and buries the paint.
+- Crop wheels or roofline out of exterior frames.
+- Skip the far side, the rear three-quarter, or the flaws.
+
+_Same 2026 Jeep Wrangler, same three-quarter angle — the angle work was done on the lot, and AutoLander’s AI Photo Studio finished the job by replacing the cluttered background._
+
+## The honest part
+
+Angles present the car; they cannot improve it. The far-side profile you are tempted to skip is precisely the frame serious buyers ask for, and clever angles that hide a dent just relocate the argument to your showroom. Get the angles complete and honest, then let an AI car photo editor fix the one thing the lot ruins — the background — while the car stays exactly as shot.
+
+## Frequently asked questions
+
+### What angles should you photograph a car from?
+
+Eight exterior frames: three-quarter front, full profile, and three-quarter rear from both sides, plus straight-on front and rear. Then the interior set — wide cabin, powered dash, odometer, screen, rear seats, cargo — and detail close-ups of wheels, tread, and flaws. That sequence answers every question a walk-around would, in the order a buyer would ask.
+
+### What height should the camera be for car photos?
+
+Mid-door height — roughly the level of the mirrors, around chest-to-waist on most people. It matches how a buyer sees a car standing a few feet away. Standing tall and shooting down makes vehicles look small and squat; crouching to ground level adds drama but distorts proportions and hides the greenhouse. Consistent height across every unit matters as much as the height itself.
+
+### Should you photograph both sides of the car?
+
+Always. Buyers assume the unphotographed side is the damaged side — it is the single most common suspicion in used-car listings, and it generates the follow-up message you will answer anyway. Shooting both sides costs ninety seconds and removes the doubt before it forms. If the far side does have damage, photograph it close and honestly; hiding it only defers the discovery.
+
+### What is the most flattering angle for a truck or SUV?
+
+A slightly lower three-quarter front — nearer bumper height than mirror height — which emphasizes stance and tire size without warping the body. Trucks also earn two extra frames sedans do not need: the bed from the open tailgate and a straight-on rear showing hitch and bumper condition. Keep the lens standard, not ultra-wide; wide mode up close bloats fenders.
+
+### How do dealerships keep every listing’s angles so consistent?
+
+A fixed loop and no improvisation: every porter shoots the same angles in the same order at the same height on every unit, usually from a printed checklist. Consistency across the lot is what reads as professional when a buyer browses a store’s Marketplace inventory — fifty units that all look shot by the same hand.
+
+## Related
+
+- [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
+- [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
+- [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
 - [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
 - [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
 - [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# Bad car listing photos: the five failures that cost sales
+
+> Bad car listing photos fail a half-second scroll test. The five failures — dark shots, clutter, promo frames, bad crops, missing angles — and the fix for each.
+
+Source: https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 11, 2026
+
+**Short answer:** A buyer gives each listing less than a second in the scroll, and the first photo does all the talking. Bad car listing photos fail in five repeatable ways — too dark, cluttered background, promo frames, the car too small or cropped in the frame, and missing angles. Each failure has a specific fix, and none of them requires a photographer: a light window, a staging spot, and background replacement cover all five.
+
+## Why do bad car listing photos cost sales?
+
+Because the decision happens before anyone reads a word. In the search grid a listing is a thumbnail and a price, judged in well under a second while the thumb is already moving. A dark or cluttered first photo does not make the car look slightly worse — it removes the car from consideration entirely, silently.
+
+That silence is the expensive part. The unit gets no message, the store reads it as “no demand for this car,” and the price gets cut — when the actual failure was that nobody could see the car well enough to want it. Photo problems routinely get misdiagnosed as pricing problems.
+
+## Why isn’t my car listing getting clicks?
+
+Run the scroll test before blaming the price: pull up the search results a buyer would see, find your listing among the competitors, and give it the same half second you give the others. Nine times out of ten the answer is sitting in slot one — a dusk shot, a promo frame, a car parked in a crowded row — next to a competitor’s clean three-quarter front. Stores that consistently sell cars on Facebook Marketplace win that half second first and negotiate price second. If your thumbnail survives the test and clicks still are not coming, then look at price, mileage, and listing age.
+
+## The five photo failures — and what buyers read into each
+
+None of these read as “photo problem” to the buyer. They read as facts about the car and the store.
+
+| Failure | What the buyer reads | The fix |
+| --- | --- | --- |
+| Dark or dusk shots | “They are hiding the condition — or nobody cared enough to shoot it properly” | Shoot in the first or last two hours of daylight, or on bright overcast; reshoot rather than brighten |
+| Cluttered background | “Low-effort store; and is that dent on this car or the one behind it?” | One fixed staging spot on the lot, or AI background replacement on the existing photo |
+| Promo frames and banner graphics | “This is an ad, not a car” — the unit shrinks to make room for the pitch | Strip overlays from listing photos; let the car fill the frame |
+| Wrong crop — car tiny or clipped | “What is outside the frame?” Cut wheels and rooflines read as concealment | Fill the frame with the whole car; step closer instead of zooming |
+| Missing angles | “The side they didn’t show is the damaged side” | Fixed shot list, every unit: both sides, interior, odometer, flaws |
+
+_The whole argument in one frame: the same 2024 Hyundai Sonata, same angle, same price. The left photo is what the lot produced and gets scrolled past; the right is the same shot re-staged by AutoLander’s AI Photo Studio — and it is the one that earns the tap._
+
+## Are dark car photos really that costly?
+
+Yes, because darkness makes the two things a buyer must verify — color and condition — unverifiable. A dusk shot turns silver, gray, and light blue into the same murky nothing, hides panel condition, and adds sensor grain that reads as “old phone, old listing, old car.” The buyer does not think “bad lighting”; they think “pass.”
+
+Dark photos usually come from process, not carelessness: units photographed at intake in the evening, or in winter when the lot loses light before the porter gets free. That is a scheduling fix — hold the shoot for the morning window — not a talent fix.
+
+## What do cluttered background car photos signal?
+
+That nobody is in charge of presentation. A car shot in a packed row makes the buyer’s eye do the work of separating the subject from the scenery — and worse, it borrows defects: the neighboring car’s ding, the dumpster, the sagging banner all attach themselves to your unit at thumbnail size. The traditional fix is a staging spot in the emptiest corner of the lot. The software fix is re-staging the photo you already took: an AI car photo editor lifts the vehicle out of the clutter and sets it in a clean scene, with the car itself — paint, wheels, condition — exactly as shot.
+
+The stakes are not cosmetic. The median dealer unit posted to Marketplace asks $28,295, across 10,823 priced dealer listings in AutoLander’s 2026 Marketplace report — and a buyer weighing a purchase that size cross-shops hard. At those prices, the first photo is fronting a five-figure decision, and it is competing against stores that treat presentation as a system: fixed shot list going forward, and the existing feed re-staged in software so the whole lot passes the scroll test at once.
+
+## The honest part
+
+Great photos of an overpriced car get clicks, not calls — fixing the photos exposes the price rather than excusing it. And no photo fix survives a stale listing: the sold unit still showing, the price that no longer matches the windshield. Photos win the half second; price, accuracy, and response speed have to win everything after it.
+
+## Frequently asked questions
+
+### How do I make my car listing stand out?
+
+Win the thumbnail: a clean three-quarter front shot in good light with nothing behind the car, no promo frame, and the vehicle filling the frame. Then support the click with full coverage — both sides, interior with the dash on, odometer, tires, honest flaws. Most competing listings fail at least one of those, so simply completing the list stands out.
+
+### Can I fix dark car photos with editing?
+
+Only slightly. Brightening a genuinely underexposed photo amplifies sensor grain and shifts the paint color, which trades one credibility problem for another. Exposure has to be captured, not manufactured — reshoot in the morning or late-afternoon window. Background replacement is different: it re-stages a well-exposed car in a new scene, but it cannot rescue a frame that was too dark to begin with.
+
+### Do promo frames and banners on car photos help or hurt?
+
+They hurt in search results. A frame shrinks the actual vehicle to make room for a pitch nobody asked for, and at thumbnail size the listing reads as an advertisement rather than a car — the exact thing scrollers have trained themselves to skip. The store name belongs in the listing details and the description, not on top of the merchandise.
+
+### Why does the first photo matter so much?
+
+Because it is the only photo that exists until someone taps. Search results show one image per listing, so photos two through twenty — however good — are invisible to every buyer who scrolled past slot one. Auditing listings in grid view at phone size, next to real competitors, shows you exactly what that first photo is up against.
+
+### Do better photos matter if my price is already right?
+
+Yes — price only gets evaluated after the click. A well-priced car behind a dark, cluttered thumbnail never gets its price seen by most of the buyers it deserves, which quietly reads as weak demand and invites an unnecessary price cut. Fix the photo first, then let the correct price do its work on the buyers who now actually open the listing.
+
+## Related
+
+- [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
+- [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
+- [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
+- [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
+- [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
+- [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -5105,7 +5520,8 @@ Editing the scene is normal merchandising — dealers have staged cars in front 
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
 - [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
-- [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
+- [The best car photography angles for listing photos, shot by shot](https://autolander.ai/guide/best-angles-for-car-listing-photos/)
+- [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -5205,6 +5621,8 @@ When the free tier runs without heroics — every unit listed and current, revie
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 - [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
+- [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
 - [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
 
 ---
@@ -5300,6 +5718,8 @@ Staleness. Prices that no longer match the website, listings that expired unnoti
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
 - [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
+- [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
@@ -5389,8 +5809,217 @@ A tool helps, but the discipline is the strategy: real comps pulled like a shopp
 - [Car dealership marketing ideas that sell cars](https://autolander.ai/guide/car-dealership-marketing-ideas/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
 - [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# Google Business Profile for car dealerships, field by field
+
+> Google Business Profile for car dealership trust: every field that matters, the photos to add, a delivery-day review script, and Google Maps troubleshooting.
+
+Source: https://autolander.ai/guide/google-business-profile-for-car-dealers/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 6, 2026
+
+**Short answer:** A car dealership’s Google Business Profile is the trust check nearly every buyer runs before visiting: claim and verify it, use your exact real-world name, pick honest categories, complete the hours, load real photos of the lot and the people, point the website link at your inventory, seed the Q&A, and build a steady review rhythm with a delivery-day ask. Local search visibility follows completeness and review velocity.
+
+## How should a car dealership set up its Google Business Profile?
+
+Completely, honestly, and once — then feed it forever. The profile is what appears when a buyer who found your car somewhere else searches your name, and it is how you show up on the map for "used car dealer near me." Every empty field is a question a buyer answers with a guess: no hours means "probably closed," six stale photos means "probably a shabby lot," unanswered reviews mean "probably doesn’t care."
+
+The build below takes an afternoon. The review rhythm that follows is the part that compounds — recency and volume of reviews, plus how you answer them, drive both the trust decision and your local search visibility.
+
+## The field-by-field build
+
+Work top to bottom. None of this requires an agency — just accuracy and an afternoon.
+
+1. **Claim and verify the profile** — Search your dealership’s name, claim the listing if you have not, and complete Google’s verification. Unverified profiles are invisible or uneditable — nothing else on this list matters until this is done.
+2. **Use your exact real-world name** — The name on the profile must match the sign on the building. Resist stuffing extra descriptive words into the name field — it violates Google’s rules and is a common suspension trigger that takes the whole profile off the map.
+3. **Pick categories deliberately** — Primary category "Used car dealer" for a used lot (or your true primary business), then secondary categories only for what you genuinely do — car dealer, auto repair if you have a service drive. Categories decide which searches you can appear for.
+4. **Complete the hours — including the odd ones** — Regular hours, weekend hours, holiday closures. Wrong hours produce the angriest one-star reviews a store can earn: someone drove out to a locked gate.
+5. **Load real photos, then keep them coming** — The building and signage a visitor should look for, the showroom, lot rows, a few current vehicles, and the actual people. No stock photos — buyers can smell them. Add a fresh handful monthly so the profile never looks abandoned.
+6. **Point every link where buyers act** — Website link to your inventory page, not a generic homepage — the buyer checking you out wants the cars. Phone number that rings a human during posted hours; calls from the profile deserve the same speed you give any lead.
+7. **Seed and watch the Q&A** — Anyone can ask and answer questions on your profile, so get there first: post and answer the questions you hear daily — financing available? trades welcome? test drives walk-in? — and check back for new ones.
+8. **Turn on the review rhythm** — The delivery-day ask below, plus a reply to every review within a few days. This is the ongoing engine; everything above is setup.
+
+## How do you get more dealership reviews?
+
+Ask every buyer, in person, on delivery day — the one moment they are demonstrably happy with you. The script that works: "Before you head out — would you take sixty seconds and leave us a Google review? It’s the single biggest thing that helps a small store like ours. I’ll text you the link right now." Then actually text the link while they are standing there; asks that depend on the buyer remembering later mostly evaporate.
+
+Velocity and recency beat totals: a steady flow of fresh reviews with thoughtful replies outperforms a big stale pile. And two hard rules — ask everyone rather than pre-screening the happy ones (selectively gating reviews violates Google’s policy), and never pay or incentivize a review.
+
+## What photos belong on a dealership’s profile
+
+Buyers use profile photos to answer one question: what will it feel like to show up?
+
+- The building and signage from the road — the "you have arrived" shot
+- The lot with rows of clean inventory, shot on a bright day
+- The showroom and customer area, so the visit feels predictable
+- A rotating handful of current vehicles — real units, not renders
+- The team, named where people are comfortable — buyers pick stores where they can picture the handshake
+- Anything that proves the odd amenities: service bays, kids’ corner, coffee
+
+## Do
+
+- Ask every buyer for a review on delivery day, in person
+- Text the direct review link on the spot
+- Reply to every review, good and bad, within days
+- Mention the salesperson’s name in the ask — reviews that name people read as real
+- Report fake or wrong-business reviews through the profile tools
+
+## Don’t
+
+- Screen for happy customers and only ask them — gating violates Google’s policy
+- Pay, discount, or gift for reviews
+- Argue in review replies — the reply is for the next reader, not the reviewer
+- Blast the same customer with repeated requests
+- Let a month of reviews sit unanswered
+
+## Why is my dealership not showing on Google Maps?
+
+Run the checklist in order. First: is the profile actually verified? Second: is it suspended? Name changes, names stuffed with extra words, address edits, and virtual-office addresses are the classic triggers — you will see a notice when you open the profile manager. Third: duplicates — an old listing for the same lot splits your identity; find and merge or remove it. Fourth: category and address accuracy — a wrong primary category or a mismatched address quietly buries you.
+
+If all of that is clean, remember that map results are local by design: you appear strongest near your actual location, and a competitor outranking you on their side of town is normal, not a penalty. The levers you control are completeness, review velocity, and consistency of your name, address, and phone everywhere they appear on the web.
+
+## The honest part
+
+A perfect profile does not list your cars — buyers find the unit on Facebook Marketplace or a portal, then run the Google check on your name minutes later. The profile wins or loses that second search, not the first one. Treat it as the trust layer of the broader marketing stack: essential, cheap, and useless in isolation.
+
+## Frequently asked questions
+
+### How many Google reviews does a car dealership need?
+
+There is no magic number — buyers read the newest handful and your replies, then decide. A store adding a few fresh reviews every month with thoughtful responses beats a store with hundreds of old ones and silence. Aim for rhythm over volume: every delivery gets the ask, every review gets a reply.
+
+### Should a dealership respond to negative reviews?
+
+Always, within days, and calmly — the reply is written for the next hundred readers, not the angry author. Acknowledge, state your side factually without arguing, and offer to make it right offline with a name and number. A composed reply under a harsh review often builds more trust than the five-star ones.
+
+### Can you reward customers for leaving reviews?
+
+No. Paying, discounting, or gifting for reviews violates Google’s policies and risks the whole profile — and buyers increasingly spot bought reviews anyway. The compliant version is simply removing friction: ask in person at delivery and text the direct link so the review takes sixty seconds.
+
+### How often should a dealership add photos to its profile?
+
+A small batch monthly is plenty — a few current vehicles, a fresh lot shot, anything new about the store. Steady additions signal an open, active business to both buyers and the map results, while a profile whose newest photo is two years old quietly reads as closed.
+
+### Does a Google Business Profile replace a dealership website?
+
+No — they answer different questions. The profile proves the store is real, open, and reviewed; the website proves the specific car with photos and a matching price. A buyer typically touches both within minutes, so the phone number, hours, and prices need to agree everywhere they look.
+
+## Related
+
+- [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
+- [Car dealership marketing ideas that sell cars](https://autolander.ai/guide/car-dealership-marketing-ideas/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
+- [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
+- [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
+- [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
+
+---
+AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
+
+
+---
+
+# How to respond to Facebook Marketplace messages as a dealer
+
+> How to respond to Facebook Marketplace messages as a dealer: the "Is this available?" reply, six buyer-message templates, and the path to an appointment.
+
+Source: https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/  
+Author: Michael Garber, Founder, AutoLander  
+Updated: September 9, 2026
+
+**Short answer:** Respond to Facebook Marketplace messages within minutes, like a person: confirm the car is available, give your name, and ask one question that advances the deal — their timing, their name, or their trade. Never send a bare "yes." From there the ladder is chat to phone to a booked appointment with two offered time windows. Every reply here is one a human salesperson sends — the inbox is yours, not software’s.
+
+## How should a dealer respond to Facebook Marketplace messages?
+
+Fast, human, and always advancing. The formula for nearly every reply: answer the actual question, give a first name, and ask exactly one question back that moves toward a visit — when they could come by, what name to put the appointment under, whether they have a trade. One question, not three; an interrogation kills more Marketplace threads than any price ever has.
+
+Speed sets the ceiling on everything else. Marketplace buyers message several sellers in one scrolling session, and the listing that answers first — within minutes, not hours — usually gets the appointment. Put one named person on the inbox each shift with the phone in their pocket.
+
+## What is the right reply to "Is this available?"
+
+Confirm availability, introduce yourself, and attach one advancing question: "Yes — the {year} {make} {model} is still available. I’m {name} at {store}. Are you hoping to come see it this week? Tell me roughly when and I’ll have it pulled up front." Availability plus a name plus a soft commitment question, in three sentences.
+
+Do not read the message as low intent just because it took one tap — Facebook offers buyers that pre-filled question, so it is simply how Marketplace conversations begin. Treat it as a raised hand: the buyer filtered by price and distance, opened your listing, and started a conversation. Your reply does the qualifying, not the button.
+
+## Templates for the six messages every dealer gets
+
+Fill in the braces and send them as written — short, plain, one question each.
+
+| Buyer message | What they are really asking | A reply that advances |
+| --- | --- | --- |
+| "Is this available?" | Is this listing real and current? | "Yes, still available — I’m {name} at {store}. Want to come see it this week? Tell me when and I’ll have it up front." |
+| "What’s your best price?" | Will negotiating be painful? | "It’s listed at {price}, priced against everything comparable nearby. Come drive it — if it’s not worth the number in person, tell me to my face." |
+| "Will you take {low offer}?" | How flexible are you, really? | "I can’t do {offer}, but if you’re serious, come see it — bring your trade if you have one and we’ll make the numbers real at the desk." |
+| "Any problems? Been in an accident?" | Can I trust you? | "Fair question — {honest condition summary}. I can send the history report right now if you want it. What else should I check for you?" |
+| "Can you send more photos / the VIN?" | I’m verifying before I drive out | "Absolutely — sending both now. Anything specific you want a close-up of? And when were you thinking of coming by?" |
+| "Where are you located?" | I’m planning the trip | "We’re at {address}, open until {time} today. Want me to set the {model} aside for a time that works? Morning or afternoon better?" |
+
+_The condition question deserves the flaw included in the answer. Honesty in chat is cheap; a buyer discovering the dent in person is expensive._
+
+## From chat to appointment in five moves
+
+Chat is where deals start, not where they close. Climb the ladder deliberately.
+
+1. **Answer inside minutes during posted hours** — Assign the inbox to one named person per shift. Overnight messages get answered first thing in the morning — never batched into the afternoon. Speed is the discipline the whole speed-to-lead playbook is built on.
+2. **Trade names early** — Give yours in the first reply and use theirs once you have it. Named conversations survive; anonymous ones evaporate. It also sets up the appointment: "I’ll put it under {first name}."
+3. **Offer two concrete windows, never "come by whenever"** — "Would tomorrow morning or Thursday after work suit you better?" A choice between two real options books; an open invitation drifts. Confirm which car, which day, which time, out loud.
+4. **Move to phone or text for logistics** — Once a visit is real, ask for a number to text directions and a confirmation. The thread got the appointment; the phone keeps it — and a buyer who shares a number is measurably further down the funnel.
+5. **Confirm morning-of, with the car’s status** — "Still on for 4:30 — the {model} is washed and up front." One text, sent by you, that separates the stores buyers rave about from the ones they ghost.
+
+## What about Marketplace buyers who stop responding?
+
+Expect it — ghosting is the default behavior on Marketplace, because buyers open several conversations and pursue the one that answered best. Send one bump the next day: "Hi {first name}, the {model} is still available — happy to answer anything or set up a quick look. If the timing’s wrong, no worries at all." Then stop. A second unsolicited push reads as pressure and earns reports, not replies.
+
+The durable fix is upstream: threads mostly die when the reply was slow or the listing looked stale. Fast first responses and accurate listings quietly cut your ghost rate more than any recovery message ever will.
+
+## The honest part
+
+None of this is automated, and none of it should be: AutoLander does not read, route, or answer Marketplace messages — the inbox is entirely yours. Its contribution happens before the conversation starts: the listing the buyer is asking about is live, the price is current, and sold units are removed the day they deliver — because the worst reply in car retail is "sorry, that one actually sold last week."
+
+## Frequently asked questions
+
+### How fast should a dealer respond to Marketplace messages?
+
+Within minutes during business hours — Marketplace buyers message several sellers in one sitting, and the first useful, human answer usually wins the appointment. Overnight messages get a reply first thing next morning. One named owner per shift, phone in pocket, beats a shared inbox every time.
+
+### Should you give your phone number in Marketplace chat?
+
+Yes, once the conversation is real and a visit is forming — moving to phone or text for directions and confirmation is how chats become appointments. Be wary of the reverse pattern: a "buyer" pushing to move off-platform immediately, before asking anything about the car, is usually not a buyer.
+
+### How do you spot scam messages on Marketplace?
+
+The classics: someone asking you to read back a verification code sent to your phone, overpayment or shipping offers on a local car, and instant requests to continue on some other site through a link. Real buyers ask about the car, the price, and when they can see it. When a message fits the scam shape, stop replying.
+
+### Can you use auto-replies on Facebook Marketplace?
+
+Keeping canned openers saved on your phone to paste and personalize is fine — a human is still reading and sending. Full automation of a personal inbox is different territory for both policy and trust, covered honestly in the Marketplace automation guide. AutoLander itself stays out of the inbox entirely: it automates listings, never conversations.
+
+### What if the car sold but messages keep coming in?
+
+Mark it sold and pull the listing everywhere the moment it delivers — every message after that is a buyer you are about to disappoint. If a straggler asks anyway, answer honestly and pivot once: "That one sold, but here’s what else I have near that price." Then update your removal routine so it stops happening.
+
+## Related
+
+- [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
+- [Car dealership marketing ideas that sell cars](https://autolander.ai/guide/car-dealership-marketing-ideas/)
+- [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
+- [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
+- [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
+- [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
+- [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

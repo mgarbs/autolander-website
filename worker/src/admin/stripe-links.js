@@ -17,6 +17,43 @@ function stripeKey(env) {
   return env.STRIPE_SECRET_KEY || env.STRIPE_RESTRICTED_KEY || '';
 }
 
+function cloudBase(env) {
+  return String(
+    env.AUTOLANDER_CLOUD_URL || env.CLOUD_API_URL || 'https://autolander-cloud.onrender.com',
+  ).replace(/\/+$/, '');
+}
+
+async function resolveAccountCustomer(env, orgId, signal) {
+  if (!env.OPS_ADMIN_TOKEN) {
+    return { ok: false, status: 503, reason: 'ops_not_configured', message: 'Account customer resolution is not configured.' };
+  }
+  let response;
+  try {
+    response = await fetch(`${cloudBase(env)}/api/ops/billing/customer`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${env.OPS_ADMIN_TOKEN}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ orgId }),
+      signal,
+    });
+  } catch (error) {
+    return { ok: false, status: 502, reason: 'customer_resolution_failed', message: String(error?.message || error).slice(0, 200) };
+  }
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok || !body.customerId || body.orgId !== orgId || !body.autolanderUserId) {
+    return {
+      ok: false,
+      status: response.status >= 400 && response.status < 500 ? response.status : 502,
+      reason: 'customer_resolution_failed',
+      message: body.message || 'The selected account billing customer could not be resolved.',
+    };
+  }
+  return { ok: true, ...body };
+}
+
 function normalizeText(value, maxLength = 500) {
   if (value === undefined || value === null) return '';
   return String(value).replace(/\s+/g, ' ').trim().slice(0, maxLength);
@@ -129,6 +166,21 @@ export async function createAdminSubscriptionLink(request, env) {
     200,
   );
 
+  const customerIdentity = orgId
+    ? await resolveAccountCustomer(env, orgId, request.signal)
+    : null;
+  if (customerIdentity && !customerIdentity.ok) {
+    return {
+      ok: false,
+      status: customerIdentity.status,
+      body: {
+        ok: false,
+        reason: customerIdentity.reason,
+        message: customerIdentity.message,
+      },
+    };
+  }
+
   const metadata = {
     source: 'website_admin_subscription_link',
     purchase_source: 'website_admin',
@@ -140,6 +192,10 @@ export async function createAdminSubscriptionLink(request, env) {
     ...(customerName ? { customer_name: customerName } : {}),
     ...(customerPhone ? { customer_phone: customerPhone } : {}),
     ...(orgId ? { orgId } : {}),
+    ...(orgId ? { autolander_account_id: orgId } : {}),
+    ...(customerIdentity?.autolanderUserId
+      ? { autolander_user_id: customerIdentity.autolanderUserId }
+      : {}),
     ...(orgId && pickedOrgName ? { pickedOrgName } : {}),
     ...tracking,
   };
@@ -160,7 +216,8 @@ export async function createAdminSubscriptionLink(request, env) {
   params.append('phone_number_collection[enabled]', 'true');
   params.append('billing_address_collection', 'required');
   params.append('automatic_tax[enabled]', 'true');
-  if (customerEmail) params.append('customer_email', customerEmail);
+  if (customerIdentity?.customerId) params.append('customer', customerIdentity.customerId);
+  else if (customerEmail) params.append('customer_email', customerEmail);
   if (clientReferenceId) params.append('client_reference_id', clientReferenceId);
   appendMetadata(params, 'metadata', metadata);
   appendMetadata(params, 'subscription_data[metadata]', metadata);
