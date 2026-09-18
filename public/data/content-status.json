@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-18",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -383,8 +383,8 @@
       ],
       "description": "Car sales follow up templates a real salesperson sends — first touch, day 2, day 5, price drop, anniversary — plus the cadence table that gets replies.",
       "suggestedOrder": 20,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-18"
     },
     {
       "slug": "mark-car-sold-on-facebook-marketplace",

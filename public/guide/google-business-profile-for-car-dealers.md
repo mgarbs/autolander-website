@@ -99,9 +99,9 @@ No — they answer different questions. The profile proves the store is real, op
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 - [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
+- [Car sales follow-up templates your salespeople can send today](https://autolander.ai/guide/car-sales-follow-up-templates/)
 - [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
-- [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
