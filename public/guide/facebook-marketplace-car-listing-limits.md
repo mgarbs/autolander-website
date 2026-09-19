@@ -89,7 +89,7 @@ There is no universally safe number, and anyone quoting one is guessing. The hon
 - [Why Facebook Marketplace removes car listings (and how to fix it)](https://autolander.ai/guide/facebook-marketplace-car-listing-removed/)
 - [How to renew Facebook Marketplace car listings at lot scale](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/)
 - [Facebook Marketplace car description template that sells](https://autolander.ai/guide/facebook-marketplace-car-description-template/)
-- [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/)
+- [How to mark a car as sold on Facebook Marketplace](https://autolander.ai/guide/mark-car-sold-on-facebook-marketplace/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

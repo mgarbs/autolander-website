@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18",
+  "generatedAt": "2026-09-19",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -402,8 +402,8 @@
       ],
       "description": "How to mark a car as sold on Facebook Marketplace, mark-sold vs delete tradeoffs, why ghost listings cost dealers real buyers — and the removal routine.",
       "suggestedOrder": 21,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-19"
     },
     {
       "slug": "car-walkaround-video-for-dealers",
