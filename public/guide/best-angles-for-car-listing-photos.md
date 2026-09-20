@@ -88,9 +88,9 @@ A fixed loop and no improvisation: every porter shoots the same angles in the sa
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
+- [Car walkaround video for dealers: script, technique, AI option](https://autolander.ai/guide/car-walkaround-video-for-dealers/)
 - [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
 - [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
-- [Car dealership photography tips: a process any porter can run](https://autolander.ai/guide/car-photography-tips-for-dealerships/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

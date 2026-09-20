@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19",
+  "generatedAt": "2026-09-20",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -421,8 +421,8 @@
       ],
       "description": "Car walkaround video for dealers: a 60-second script anyone can follow, phone technique that looks steady, where video surfaces on listings, and an AI fallback.",
       "suggestedOrder": 22,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-20"
     },
     {
       "slug": "sell-cars-online-small-dealership",

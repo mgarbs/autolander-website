@@ -89,6 +89,7 @@ Standalone chatbots exist that attempt it — vet them hard on inventory truth a
 - [How many photos a car listing should have — coverage beats count](https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/)
 - [The best car photography angles for listing photos, shot by shot](https://autolander.ai/guide/best-angles-for-car-listing-photos/)
 - [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
+- [Car walkaround video for dealers: script, technique, AI option](https://autolander.ai/guide/car-walkaround-video-for-dealers/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
