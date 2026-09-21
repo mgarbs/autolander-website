@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-20",
+  "generatedAt": "2026-09-21",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -459,8 +459,8 @@
       ],
       "description": "Facebook Marketplace listing not showing up? Triage it in order: pending review, quiet deranking, removal, or buyer filters — and when to renew or repost.",
       "suggestedOrder": 24,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-21"
     },
     {
       "slug": "car-photo-backdrop-vs-ai-background",

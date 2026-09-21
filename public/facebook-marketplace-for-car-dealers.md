@@ -165,6 +165,7 @@ Yes. When a car is marked sold or drops out of the feed, AutoLander removes the 
 - [How to renew Facebook Marketplace car listings at lot scale](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/)
 - [Facebook Marketplace car description template that sells](https://autolander.ai/guide/facebook-marketplace-car-description-template/)
 - [How to mark a car as sold on Facebook Marketplace](https://autolander.ai/guide/mark-car-sold-on-facebook-marketplace/)
+- [Facebook Marketplace listing not showing up: the dealer fix](https://autolander.ai/guide/facebook-marketplace-listing-not-showing-up/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
