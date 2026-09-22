@@ -2,10 +2,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { CarFront } from 'lucide-react';
 import SelfServePicker from './SelfServePicker.jsx';
 import TokenCheckout from './TokenCheckout.jsx';
+import TrialStart from './TrialStart.jsx';
+import { trialCodeFromSearch } from './lib/trial.js';
 
-// Root of the /pay SPA surface (design doc §7). Two shapes:
-//   /pay            -> install/sign in before choosing a plan (SelfServePicker)
-//   /pay/:token     -> durable checkout link opened from admin/app (TokenCheckout)
+// Root of the /pay SPA surface (design doc §7). Three shapes:
+//   /pay                   -> install/sign in before choosing a plan (SelfServePicker)
+//   /pay/?trial=starter3d  -> Starter 3-day card-required trial entry (TrialStart, §3)
+//   /pay/:token            -> durable checkout link opened from admin/app (TokenCheckout)
 // Root.jsx already gates on window.location.pathname.startsWith('/pay') before
 // lazy-loading this component, so we only need to pull the token (if any) back
 // out of the path here.
@@ -21,10 +24,21 @@ export default function PayApp() {
     if (typeof window === 'undefined') return '';
     return new URLSearchParams(window.location.search).get('state') || '';
   }, []);
+  // Only honored when there is no token: a durable /pay/:token link always
+  // wins over a stray ?trial= on the same URL.
+  const trialCode = useMemo(() => {
+    if (typeof window === 'undefined') return '';
+    return trialCodeFromSearch(window.location.search);
+  }, []);
+  const showTrial = !token && Boolean(trialCode);
 
   useEffect(() => {
-    document.title = token ? 'Complete your payment — AutoLander' : 'Get started with AutoLander';
-  }, [token]);
+    document.title = token
+      ? 'Complete your payment — AutoLander'
+      : showTrial
+        ? 'Start your free trial — AutoLander'
+        : 'Get started with AutoLander';
+  }, [token, showTrial]);
 
   return (
     <div className="min-h-dvh bg-[#050505] text-slate-50 font-sans selection:bg-blue-500/30 selection:text-blue-200">
@@ -54,12 +68,18 @@ export default function PayApp() {
       </header>
 
       <main className="relative z-10 mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-16">
-        {token ? <TokenCheckout token={token} state={state} /> : <SelfServePicker />}
+        {token ? (
+          <TokenCheckout token={token} state={state} />
+        ) : showTrial ? (
+          <TrialStart />
+        ) : (
+          <SelfServePicker />
+        )}
       </main>
 
       <footer className="relative z-10 px-4 pb-10 text-center sm:px-6">
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-600">
-          {token ? 'Secure checkout powered by Stripe · ' : ''}Questions? sales@autolander.ai
+          {token || showTrial ? 'Secure checkout powered by Stripe · ' : ''}Questions? sales@autolander.ai
         </p>
       </footer>
     </div>

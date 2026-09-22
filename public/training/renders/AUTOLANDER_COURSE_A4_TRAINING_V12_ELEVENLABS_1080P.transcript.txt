@@ -1,0 +1,11 @@
+Read the queue and verify the result
+
+After starting a post, look at the Queue tab in Post to Market. Read the status on each vehicle. Preparing or processing means the work is still underway. Published means that vehicle has finished posting. If a row says Failed, read its message before starting anything again.
+
+Here's a batch with two published and four still remaining. That isn't a completed six-vehicle batch. Keep the computer online and AutoLander running while it works. You can do other tasks and check back; you don't need to watch every step.
+
+To review listings you've posted, click Posted to FB beside Queue. Find the vehicle you want to check. You can also open your Facebook Marketplace listings and check the matching vehicle there. Confirm its price, description and availability, rather than relying only on a total in AutoLander.
+
+If a vehicle is still waiting, don't add it again just because it's taking a while. Check the existing job first.
+
+Pause on this example. Which vehicles are done, which are still working, and which message would need your attention?

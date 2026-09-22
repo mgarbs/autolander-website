@@ -20,13 +20,18 @@ import {
 import {
   BILLING_LINKS_SETUP_NOTE,
   PLAN_CHOICES,
+  TRIAL_CODE,
+  TRIAL_DAYS,
+  TRIAL_PLAN_CHOICE,
   createBillingLink,
   disableBillingLink,
   formatCents,
   formatDate,
   getBillingLink,
   isBillingLinksNotConfigured,
+  isTrialPlanChoice,
   listBillingLinks,
+  normalizePlanMeta,
   payUrlForToken,
   recreateBillingLink,
 } from './lib/billing-links.js';
@@ -54,7 +59,22 @@ const PLAN_LABELS = {
   GROWTH: 'Growth',
   PRO: 'Pro',
   PRO_TEAM: 'Dealer Plan (Team)',
+  [TRIAL_PLAN_CHOICE]: `Starter · ${TRIAL_DAYS}-day trial (card required)`,
 };
+
+// "TRIAL" chip for list rows, the created-link summary and the detail panel —
+// shown whenever the record's planMeta.trialCode is set (design doc §3).
+function TrialChip({ planMeta, className = '' }) {
+  if (!planMeta?.trialCode) return null;
+  return (
+    <span
+      title={`${planMeta.trialDays || TRIAL_DAYS}-day card-required trial (${planMeta.trialCode})`}
+      className={`shrink-0 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-amber-200 ${className}`}
+    >
+      Trial
+    </span>
+  );
+}
 
 function statusTone(status) {
   switch (status) {
@@ -73,6 +93,7 @@ function statusTone(status) {
 
 export default function BillingLinks({ embedded = false }) {
   const [form, setForm] = useState(EMPTY_FORM);
+  const trialSelected = isTrialPlanChoice(form.planCode);
   const [createResult, setCreateResult] = useState(null);
   const [createMessage, setCreateMessage] = useState(null);
   const [createPending, setCreatePending] = useState(false);
@@ -281,15 +302,30 @@ export default function BillingLinks({ embedded = false }) {
             <label className="space-y-2">
               <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Interval</span>
               <select
-                value={form.billingInterval}
+                value={trialSelected ? 'monthly' : form.billingInterval}
+                disabled={trialSelected}
                 onChange={(event) => updateForm({ billingInterval: event.target.value })}
-                className="h-11 w-full rounded-xl border border-white/10 bg-black/40 px-3 text-sm font-bold text-white outline-none focus:border-blue-500/60"
+                className="h-11 w-full rounded-xl border border-white/10 bg-black/40 px-3 text-sm font-bold text-white outline-none focus:border-blue-500/60 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <option value="monthly">Monthly</option>
                 <option value="annual">Annual</option>
               </select>
             </label>
           </div>
+
+          {trialSelected && (
+            <div className="space-y-1 rounded-xl border border-amber-500/20 bg-amber-500/[0.05] p-4">
+              <p className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-amber-200">
+                <TrialChip planMeta={{ trialCode: TRIAL_CODE, trialDays: TRIAL_DAYS }} />
+                Starter {TRIAL_DAYS}-day free trial · card required
+              </p>
+              <p className="text-xs text-slate-400">
+                $0 today, then Starter monthly at the catalog price (plus any applicable tax) unless the customer cancels.
+                Monthly only — no seats, coupon or setup fee. The customer must be new to AutoLander: pick their
+                GoHighLevel opportunity (with an email) or attach an existing account so eligibility can be checked.
+              </p>
+            </div>
+          )}
 
           {form.planCode === 'PRO_TEAM' && (
             <div className="space-y-3 rounded-xl border border-blue-500/20 bg-blue-500/[0.04] p-4">
@@ -331,31 +367,33 @@ export default function BillingLinks({ embedded = false }) {
             </div>
           )}
 
-          <details className="rounded-xl border border-white/10 bg-white/[0.02]">
-            <summary className="cursor-pointer px-4 py-3 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-300">
-              Advanced billing options
-            </summary>
-            <div className="grid gap-4 border-t border-white/10 p-4 md:grid-cols-2">
-              <label className="space-y-2">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Approved Stripe coupon ID</span>
-                <input
-                  value={form.couponId}
-                  onChange={(event) => updateForm({ couponId: event.target.value })}
-                  placeholder="Leave blank unless approved"
-                  className="h-11 w-full rounded-xl border border-white/10 bg-black/40 px-3 text-sm text-white outline-none focus:border-blue-500/60"
-                />
-              </label>
-              <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                <input
-                  type="checkbox"
-                  checked={form.setupFee}
-                  onChange={(event) => updateForm({ setupFee: event.target.checked })}
-                  className="h-3.5 w-3.5 rounded border-white/20 bg-black/40 accent-blue-500"
-                />
-                Include catalog setup fee
-              </label>
-            </div>
-          </details>
+          {!trialSelected && (
+            <details className="rounded-xl border border-white/10 bg-white/[0.02]">
+              <summary className="cursor-pointer px-4 py-3 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-slate-300">
+                Advanced billing options
+              </summary>
+              <div className="grid gap-4 border-t border-white/10 p-4 md:grid-cols-2">
+                <label className="space-y-2">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Approved Stripe coupon ID</span>
+                  <input
+                    value={form.couponId}
+                    onChange={(event) => updateForm({ couponId: event.target.value })}
+                    placeholder="Leave blank unless approved"
+                    className="h-11 w-full rounded-xl border border-white/10 bg-black/40 px-3 text-sm text-white outline-none focus:border-blue-500/60"
+                  />
+                </label>
+                <label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  <input
+                    type="checkbox"
+                    checked={form.setupFee}
+                    onChange={(event) => updateForm({ setupFee: event.target.checked })}
+                    className="h-3.5 w-3.5 rounded border-white/20 bg-black/40 accent-blue-500"
+                  />
+                  Include catalog setup fee
+                </label>
+              </div>
+            </details>
+          )}
 
           <CrmOpportunityPicker
             selected={selectedCrm}
@@ -478,6 +516,7 @@ export default function BillingLinks({ embedded = false }) {
                       >
                         {link.livemode ? 'Live' : 'Test'}
                       </span>
+                      <TrialChip planMeta={link.planMeta} />
                       {link.crmLinked && (
                         <BadgeCheck size={13} className="shrink-0 text-emerald-400" aria-label="CRM linked" />
                       )}
@@ -513,6 +552,7 @@ export default function BillingLinks({ embedded = false }) {
 
 function CreatedBillingSummary({ result }) {
   const record = result?.request || result?.checkoutRequest || result || {};
+  const planMeta = normalizePlanMeta(record.planMeta);
   const recurring = centsOrNull(record.expectedRecurringCents);
   const oneTime = centsOrNull(record.expectedOneTimeCents);
   const annualTotal = record.billingInterval === 'annual' && recurring !== null
@@ -524,8 +564,16 @@ function CreatedBillingSummary({ result }) {
 
   return (
     <div className="mb-3 rounded-lg border border-emerald-500/20 bg-emerald-500/[0.06] p-3">
-      <p className="text-[9px] font-black uppercase tracking-widest text-emerald-300">Catalog charge confirmed</p>
+      <p className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-emerald-300">
+        Catalog charge confirmed
+        <TrialChip planMeta={planMeta} />
+      </p>
       <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        {planMeta.trialCode && (
+          <span className="text-xs font-bold text-amber-200">
+            $0 today · {planMeta.trialDays}-day trial · then
+          </span>
+        )}
         {recurring !== null && (
           <span className="text-lg font-black text-white">
             {formatCents(recurring, record.currency)}
@@ -915,13 +963,17 @@ const DETAIL_JSON_FIELDS = [
 
 function BillingLinkDetailPanel({ id, detail, loading, error, actionPending, onDisable, onRecreate, onClose }) {
   const record = detail?.record || {};
+  const planMeta = normalizePlanMeta(record.planMeta);
   const canDisable = record.status && !['disabled', 'completed'].includes(record.status);
   const canRecreate = record.status === 'disabled' || record.status === 'expired';
 
   return (
     <div className="space-y-4 rounded-xl border border-blue-500/30 bg-blue-500/[0.04] p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-xs font-black uppercase tracking-widest text-blue-200">Payment link detail — {id}</h3>
+        <h3 className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-200">
+          Payment link detail — {id}
+          <TrialChip planMeta={planMeta} />
+        </h3>
         <div className="flex flex-wrap items-center gap-2">
           {canDisable && (
             <button
@@ -968,6 +1020,10 @@ function BillingLinkDetailPanel({ id, detail, loading, error, actionPending, onD
             <SummaryField label="Mode" value={record.livemode ? 'Live' : 'Test'} />
             <SummaryField label="Plan" value={`${record.planCode || '—'} (${record.planVersion || '—'})`} />
             <SummaryField label="Interval" value={record.billingInterval} />
+            <SummaryField
+              label="Trial"
+              value={planMeta.trialCode ? `${planMeta.trialDays}-day · card required · ${planMeta.trialCode}` : '—'}
+            />
             <SummaryField label="Seat count" value={record.seatCount ?? '—'} />
             <SummaryField label="CRM linked" value={record.crmLinked ? 'Yes' : 'No'} />
             <SummaryField label="Expected recurring" value={formatCents(record.expectedRecurringCents, record.currency)} />

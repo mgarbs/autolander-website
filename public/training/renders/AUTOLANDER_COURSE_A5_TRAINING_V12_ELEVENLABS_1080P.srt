@@ -1,0 +1,207 @@
+1
+00:00:00,260 --> 00:00:01,360
+From Post to Market,
+
+2
+00:00:01,400 --> 00:00:02,540
+click Listing
+
+3
+00:00:02,540 --> 00:00:03,920
+Updates in the left sidebar.
+
+4
+00:00:03,980 --> 00:00:05,180
+Here are real
+
+5
+00:00:05,180 --> 00:00:06,790
+price changes and vehicles
+
+6
+00:00:06,790 --> 00:00:07,810
+that are no longer
+
+7
+00:00:07,810 --> 00:00:09,050
+in the connected inventory.
+
+8
+00:00:09,620 --> 00:00:11,100
+Start with a price card.
+
+9
+00:00:11,200 --> 00:00:12,440
+Compare the old price
+
+10
+00:00:12,440 --> 00:00:13,520
+with the new one.
+
+11
+00:00:13,830 --> 00:00:14,970
+On a sold card,
+
+12
+00:00:15,020 --> 00:00:16,040
+check the vehicle
+
+13
+00:00:16,040 --> 00:00:17,310
+and the action shown.
+
+14
+00:00:17,670 --> 00:00:19,230
+Choose individual vehicles
+
+15
+00:00:19,230 --> 00:00:20,770
+using their selection boxes.
+
+16
+00:00:21,180 --> 00:00:22,460
+Or, if you want
+
+17
+00:00:22,460 --> 00:00:23,880
+to handle every change shown,
+
+18
+00:00:23,980 --> 00:00:25,120
+use Select
+
+19
+00:00:25,120 --> 00:00:26,240
+All at the bottom.
+
+20
+00:00:26,700 --> 00:00:28,180
+Check the selected count.
+
+21
+00:00:28,300 --> 00:00:30,440
+Then click Process Updates.
+
+22
+00:00:30,440 --> 00:00:31,470
+The Queue
+
+23
+00:00:31,470 --> 00:00:32,910
+shows the work in progress.
+
+24
+00:00:33,110 --> 00:00:35,210
+In this example, AutoLander
+
+25
+00:00:35,210 --> 00:00:36,970
+is marking one vehicle sold.
+
+26
+00:00:37,030 --> 00:00:38,060
+Watch for Done
+
+27
+00:00:38,060 --> 00:00:39,080
+on that row.
+
+28
+00:00:39,080 --> 00:00:40,100
+That confirms
+
+29
+00:00:40,100 --> 00:00:41,120
+the action finished.
+
+30
+00:00:41,460 --> 00:00:42,500
+After a price
+
+31
+00:00:42,500 --> 00:00:44,020
+update finishes successfully,
+
+32
+00:00:44,160 --> 00:00:45,380
+the matching Facebook
+
+33
+00:00:45,380 --> 00:00:47,000
+listing shows the new price.
+
+34
+00:00:47,140 --> 00:00:49,040
+If a row says Failed,
+
+35
+00:00:49,040 --> 00:00:50,060
+read its message
+
+36
+00:00:50,060 --> 00:00:51,100
+before trying again.
+
+37
+00:00:51,360 --> 00:00:52,780
+Using Auto-Pilot?
+
+38
+00:00:52,780 --> 00:00:54,020
+It handles price
+
+39
+00:00:54,020 --> 00:00:55,110
+and sold updates
+
+40
+00:00:55,110 --> 00:00:56,350
+for you while it's running.
+
+41
+00:00:56,350 --> 00:00:57,370
+You don't have
+
+42
+00:00:57,370 --> 00:00:58,400
+to keep this page open
+
+43
+00:00:58,400 --> 00:00:59,820
+or watch each update.
+
+44
+00:00:59,820 --> 00:01:01,650
+If you're posting manually,
+
+45
+00:01:01,770 --> 00:01:03,670
+check Listing Updates as part
+
+46
+00:01:03,670 --> 00:01:04,690
+of your daily routine.
+
+47
+00:01:05,070 --> 00:01:07,270
+Now find one price change,
+
+48
+00:01:07,390 --> 00:01:08,650
+one sold card
+
+49
+00:01:08,670 --> 00:01:10,070
+and the selection controls.
+
+50
+00:01:10,310 --> 00:01:11,430
+If your page
+
+51
+00:01:11,430 --> 00:01:12,710
+has no changes today,
+
+52
+00:01:12,810 --> 00:01:14,150
+there's nothing to process.

@@ -1,0 +1,191 @@
+1
+00:00:00,260 --> 00:00:01,800
+AI Background is optional.
+
+2
+00:00:01,840 --> 00:00:02,860
+It changes
+
+3
+00:00:02,860 --> 00:00:04,160
+the setting around a vehicle
+
+4
+00:00:04,160 --> 00:00:05,440
+from your inventory photo.
+
+5
+00:00:05,750 --> 00:00:07,050
+This is the original
+
+6
+00:00:07,050 --> 00:00:08,670
+image beside the finished
+
+7
+00:00:08,670 --> 00:00:10,130
+result for the same vehicle.
+
+8
+00:00:10,210 --> 00:00:11,690
+To choose a style,
+
+9
+00:00:11,690 --> 00:00:13,090
+click Configuration
+
+10
+00:00:13,090 --> 00:00:14,270
+in the left sidebar.
+
+11
+00:00:14,600 --> 00:00:16,570
+Open Post Style, then
+
+12
+00:00:16,570 --> 00:00:17,870
+find the background choices.
+
+13
+00:00:18,330 --> 00:00:19,440
+Select the style
+
+14
+00:00:19,440 --> 00:00:20,460
+you want to use.
+
+15
+00:00:20,710 --> 00:00:21,790
+Now click Post
+
+16
+00:00:21,790 --> 00:00:23,070
+to Market in the sidebar.
+
+17
+00:00:23,420 --> 00:00:24,660
+On the vehicle card,
+
+18
+00:00:24,680 --> 00:00:26,200
+find AI Background.
+
+19
+00:00:26,660 --> 00:00:27,680
+First Photo
+
+20
+00:00:27,680 --> 00:00:28,850
+changes the lead image.
+
+21
+00:00:28,850 --> 00:00:30,050
+The other options
+
+22
+00:00:30,050 --> 00:00:31,690
+cover more exterior photos.
+
+23
+00:00:32,130 --> 00:00:33,750
+Before starting the post,
+
+24
+00:00:33,870 --> 00:00:35,050
+read the credit cost
+
+25
+00:00:35,050 --> 00:00:36,190
+beside your choice.
+
+26
+00:00:36,350 --> 00:00:37,950
+Prefer the original photos?
+
+27
+00:00:38,110 --> 00:00:40,090
+Leave AI Background off.
+
+28
+00:00:40,210 --> 00:00:41,470
+You'll see the generated
+
+29
+00:00:41,470 --> 00:00:42,750
+result after posting.
+
+30
+00:00:43,050 --> 00:00:44,410
+Open the finished Marketplace
+
+31
+00:00:44,410 --> 00:00:46,030
+listing and check that
+
+32
+00:00:46,030 --> 00:00:47,230
+the image still represents
+
+33
+00:00:47,230 --> 00:00:48,510
+the vehicle accurately.
+
+34
+00:00:48,750 --> 00:00:50,250
+If something is wrong,
+
+35
+00:00:50,370 --> 00:00:51,770
+have the listing corrected.
+
+36
+00:00:52,220 --> 00:00:53,420
+Dealer-account users
+
+37
+00:00:53,420 --> 00:00:54,640
+can tell their manager;
+
+38
+00:00:54,820 --> 00:00:56,260
+individual users can
+
+39
+00:00:56,260 --> 00:00:57,900
+contact the AutoLander admin.
+
+40
+00:00:57,900 --> 00:00:59,690
+For this exercise,
+
+41
+00:00:59,830 --> 00:01:00,950
+find the style
+
+42
+00:01:00,950 --> 00:01:02,350
+and First Photo controls
+
+43
+00:01:02,350 --> 00:01:03,790
+without starting a post.
+
+44
+00:01:03,910 --> 00:01:05,610
+Then compare the original
+
+45
+00:01:05,610 --> 00:01:07,430
+and finished photos shown here.
+
+46
+00:01:07,720 --> 00:01:08,800
+Your workbook has
+
+47
+00:01:08,800 --> 00:01:09,970
+space to note the option
+
+48
+00:01:09,970 --> 00:01:10,990
+and its cost.

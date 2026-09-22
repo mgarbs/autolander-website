@@ -1,8 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
-import { CheckCircle2, Loader2, Lock, ShieldCheck, TriangleAlert } from 'lucide-react';
+import { CalendarClock, CheckCircle2, Loader2, Lock, ShieldCheck, TriangleAlert } from 'lucide-react';
 import { getPaySummary, openPaySession, PayApiError, redirectToCheckout } from './lib/pay-api.js';
 import { buildAttributionSnapshot } from './lib/attribution.js';
-import { amountPresentation, normalizeSummary } from './lib/summary.js';
+import { amountPresentation, normalizeSummary, trialPresentation } from './lib/summary.js';
+import { formatTrialEnd } from './lib/trial.js';
+
+// On the success view of a card-required trial the cloud only learns
+// `trial.endsAt` once the Stripe webhook lands, which is usually seconds after
+// the customer is returned here. Re-fetch the summary a handful of times
+// (never more) until it arrives; the copy degrades gracefully if it does not.
+const TRIAL_END_POLL_MAX = 6;
+const TRIAL_END_POLL_INTERVAL_MS = 2000;
 
 const PHASE = {
   loading: 'loading',
@@ -28,6 +36,11 @@ export default function TokenCheckout({ token, state }) {
   const [summary, setSummary] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [redirectPending, setRedirectPending] = useState(false);
+  // Success-view trial polling (see TRIAL_END_POLL_MAX): the attempt count is
+  // state (not a ref) so the view can read it, and bumping it after every
+  // fetch — including one that failed and left `summary` unchanged — re-arms
+  // the effect so a single transient error does not end the poll early.
+  const [trialPollAttempts, setTrialPollAttempts] = useState(0);
 
   const loadSummary = useCallback(async () => {
     if (!isSuccessReturn) setPhase(PHASE.loading);
@@ -71,6 +84,23 @@ export default function TokenCheckout({ token, state }) {
     return () => window.clearTimeout(timeoutId);
   }, [loadSummary]);
 
+  useEffect(() => {
+    // Trial success view only: keep re-fetching until `trial.endsAt` arrives
+    // (capped). `loadSummary` already returns before any setPhase on the
+    // success return, so this can never move the customer off the success
+    // view — it only refreshes display copy. Same deferred idiom as above.
+    if (!isSuccessReturn) return undefined;
+    const trial = summary?.trial;
+    if (!trial || trial.endsAt) return undefined;
+    if (trialPollAttempts >= TRIAL_END_POLL_MAX) return undefined;
+
+    const timeoutId = window.setTimeout(async () => {
+      await loadSummary();
+      setTrialPollAttempts((attempts) => attempts + 1);
+    }, TRIAL_END_POLL_INTERVAL_MS);
+    return () => window.clearTimeout(timeoutId);
+  }, [isSuccessReturn, summary, loadSummary, trialPollAttempts]);
+
   const continueToCheckout = useCallback(async () => {
     if (redirectPending) return;
     setRedirectPending(true);
@@ -104,6 +134,41 @@ export default function TokenCheckout({ token, state }) {
   }
 
   if (phase === PHASE.success) {
+    const trial = trialPresentation(summary);
+    if (trial) {
+      const endsAtLabel = formatTrialEnd(trial.endsAt);
+      const stillConfirming = !endsAtLabel && trialPollAttempts < TRIAL_END_POLL_MAX;
+      return (
+        <CenteredCard>
+          <IconBadge tone="emerald"><CheckCircle2 size={28} /></IconBadge>
+          <h1 className="mt-6 text-2xl font-black uppercase italic tracking-tight text-white sm:text-3xl">
+            Your free trial is live
+          </h1>
+          <p className="mt-3 text-sm leading-relaxed text-slate-400">
+            Check your email for your AutoLander login and next steps. Nothing was charged today.
+          </p>
+          <div className="mt-6 w-full rounded-2xl border border-white/10 bg-black/40 p-5 text-left">
+            <p className="flex items-start gap-2 text-sm font-bold text-white">
+              <CalendarClock size={18} className="mt-0.5 shrink-0 text-emerald-300" aria-hidden="true" />
+              <span>
+                {endsAtLabel
+                  ? `Your trial ends ${endsAtLabel}`
+                  : stillConfirming
+                    ? `Your ${trial.days}-day trial is live — confirming your exact end time…`
+                    : `Your ${trial.days}-day trial is live — the exact end time is in your email and under Configuration → Billing.`}
+              </span>
+            </p>
+            <p className="mt-2 pl-7 text-sm leading-relaxed text-slate-400">{trial.afterTrial}</p>
+            <p className="mt-2 pl-7 text-xs font-bold uppercase tracking-widest text-slate-500">
+              Cancel any time under Configuration → Billing in AutoLander
+            </p>
+          </div>
+          {summary?.businessName && (
+            <p className="mt-4 text-xs font-bold uppercase tracking-widest text-slate-500">{summary.businessName}</p>
+          )}
+        </CenteredCard>
+      );
+    }
     return (
       <CenteredCard>
         <IconBadge tone="emerald"><CheckCircle2 size={28} /></IconBadge>
@@ -175,6 +240,7 @@ export default function TokenCheckout({ token, state }) {
   // PHASE.ready (covers both the fresh open and the `?state=cancel` return —
   // cancel just re-shows this exact same checkout button per the design doc).
   const price = amountPresentation(summary);
+  const trial = trialPresentation(summary);
   return (
     <CenteredCard>
       {state === 'cancel' && (
@@ -186,7 +252,7 @@ export default function TokenCheckout({ token, state }) {
 
       <IconBadge tone="blue"><Lock size={26} /></IconBadge>
       <h1 className="mt-6 text-2xl font-black uppercase italic tracking-tight text-white sm:text-3xl">
-        Complete your payment
+        {trial ? 'Start your free trial' : 'Complete your payment'}
       </h1>
       {summary?.businessName && (
         <p className="mt-1 text-sm font-bold text-slate-400">{summary.businessName}</p>
@@ -194,8 +260,22 @@ export default function TokenCheckout({ token, state }) {
 
       <div className="mt-8 w-full rounded-2xl border border-white/10 bg-black/40 p-6 text-left">
         <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">Plan</p>
-        <p className="mt-1 text-lg font-black uppercase italic tracking-tight text-white">{summary?.planName}</p>
-        {price && (
+        <p className="mt-1 text-lg font-black uppercase italic tracking-tight text-white">
+          {summary?.planName}
+          {trial && (
+            <span className="ml-2 align-middle rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2 py-0.5 text-[10px] not-italic tracking-widest text-emerald-300">
+              {trial.days}-day trial
+            </span>
+          )}
+        </p>
+        {trial ? (
+          <>
+            <p className="mt-3 text-3xl font-black italic tracking-tight text-white">
+              {trial.todayLabel}
+            </p>
+            <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-300">{trial.terms}</p>
+          </>
+        ) : price && (
           <>
             <p className="mt-3 text-3xl font-black italic tracking-tight text-white">
               {price.amount}
@@ -227,10 +307,16 @@ export default function TokenCheckout({ token, state }) {
         ) : (
           <ShieldCheck size={18} />
         )}
-        {redirectPending || phase === PHASE.redirecting ? 'Redirecting to secure checkout…' : 'Continue to secure checkout'}
+        {redirectPending || phase === PHASE.redirecting
+          ? 'Redirecting to secure checkout…'
+          : trial
+            ? 'Start my free trial'
+            : 'Continue to secure checkout'}
       </button>
       <p className="mt-4 text-[10px] font-bold uppercase tracking-widest text-slate-600">
-        You will be redirected to Stripe to complete your payment securely.
+        {trial
+          ? 'You will be redirected to Stripe to add your card securely. $0 today.'
+          : 'You will be redirected to Stripe to complete your payment securely.'}
       </p>
     </CenteredCard>
   );

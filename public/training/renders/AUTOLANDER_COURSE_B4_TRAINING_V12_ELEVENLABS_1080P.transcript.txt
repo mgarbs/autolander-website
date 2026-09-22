@@ -1,0 +1,13 @@
+Use the dashboard to coach the next task
+
+Click Manager Dashboard in the left sidebar. Start with the reporting period. Choose Today, This Week or This Month. Use the same period when comparing activity.
+
+Read the label on each number. Posting activity, active listings and sold reporting tell you different things. A reported sale is useful context, but that number alone doesn't explain what led to it.
+
+If a teammate's activity looks low, start with a simple question. What happened with your last post? Ask them to open Post to Market and show you the Queue. If the task stopped, check the connection and inventory together.
+
+Can't find the page? Go to Configuration, then Team, and check their access. If the setup is ready but a step is unclear, replay that lesson. Let the teammate show you the step afterwards.
+
+Agree on one useful next action, such as checking a failed row or confirming the correct inventory. Follow up on that action during the next shift.
+
+In your workbook, choose a reporting period and one metric. Write the question you would ask, and the next task you would check together.

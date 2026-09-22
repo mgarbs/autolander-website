@@ -1,5 +1,18 @@
 import { getAttributionPayload } from '../../lib/identity.js';
 
+// The viewer's IANA timezone (design doc §3): the cloud stores it on
+// CheckoutRequest.attribution.timezone so trial-end dates in the welcome
+// email / in-app Billing can be rendered in the customer's own zone.
+// Guarded — some embedded/locked-down browsers throw or return undefined.
+export function resolveViewerTimezone() {
+  try {
+    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return typeof zone === 'string' ? zone.trim().slice(0, 64) : '';
+  } catch {
+    return '';
+  }
+}
+
 // Builds the `attribution` object the cloud CheckoutRequest.attribution /
 // Stripe metadata block expects (design doc §1/§4/§7): reuses the same
 // al_vid visitor id + al_attr UTM/meta-id cookie + fbp/fbc that the rest of
@@ -32,5 +45,6 @@ export function buildAttributionSnapshot() {
     visitor_id: payload.vid || '',
     event_source_url: page.current_page || (typeof window !== 'undefined' ? window.location.href : ''),
     referrer: page.referrer || (typeof document !== 'undefined' ? document.referrer || '' : ''),
+    timezone: resolveViewerTimezone(),
   };
 }

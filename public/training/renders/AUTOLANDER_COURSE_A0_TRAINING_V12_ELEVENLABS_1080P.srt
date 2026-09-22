@@ -1,0 +1,295 @@
+1
+00:00:00,260 --> 00:00:01,560
+Let's get AutoLander ready
+
+2
+00:00:01,560 --> 00:00:02,920
+on your Windows or Mac
+
+3
+00:00:02,920 --> 00:00:04,240
+laptop or desktop.
+
+4
+00:00:04,900 --> 00:00:06,720
+Open autolander dot ai.
+
+5
+00:00:06,920 --> 00:00:08,350
+At the top right,
+
+6
+00:00:08,370 --> 00:00:09,670
+next to Book a Demo,
+
+7
+00:00:09,670 --> 00:00:10,710
+choose Download.
+
+8
+00:00:11,520 --> 00:00:12,560
+On Windows, you
+
+9
+00:00:12,560 --> 00:00:13,920
+may see a security prompt.
+
+10
+00:00:14,100 --> 00:00:16,120
+First, confirm the installer
+
+11
+00:00:16,120 --> 00:00:18,040
+came from AutoLander.ai.
+
+12
+00:00:18,220 --> 00:00:19,470
+If your browser
+
+13
+00:00:19,470 --> 00:00:20,530
+blocks the download,
+
+14
+00:00:20,650 --> 00:00:22,350
+open Downloads and choose Keep
+
+15
+00:00:22,350 --> 00:00:23,950
+only for that trusted file.
+
+16
+00:00:24,490 --> 00:00:26,130
+Choose Show in Folder,
+
+17
+00:00:26,130 --> 00:00:27,870
+or Open Containing Folder,
+
+18
+00:00:27,870 --> 00:00:29,050
+then open the installer.
+
+19
+00:00:29,570 --> 00:00:30,650
+If Windows says,
+
+20
+00:00:30,650 --> 00:00:32,490
+Windows protected your PC,
+
+21
+00:00:32,730 --> 00:00:34,930
+choose More info, then Run
+
+22
+00:00:34,930 --> 00:00:36,810
+anyway, if offered and allowed
+
+23
+00:00:36,810 --> 00:00:37,830
+by your organization.
+
+24
+00:00:38,100 --> 00:00:39,380
+The next screens
+
+25
+00:00:39,380 --> 00:00:40,400
+are normal setup.
+
+26
+00:00:40,800 --> 00:00:42,500
+Choose Only for me unless
+
+27
+00:00:42,500 --> 00:00:44,160
+your IT team says otherwise,
+
+28
+00:00:44,230 --> 00:00:45,250
+then Next.
+
+29
+00:00:45,280 --> 00:00:46,370
+Keep the default
+
+30
+00:00:46,370 --> 00:00:47,710
+folder and click Install.
+
+31
+00:00:47,870 --> 00:00:49,220
+When it finishes,
+
+32
+00:00:49,260 --> 00:00:50,800
+leave Run AutoLander
+
+33
+00:00:50,800 --> 00:00:52,300
+checked and click Finish.
+
+34
+00:00:52,600 --> 00:00:54,100
+These Windows steps do
+
+35
+00:00:54,100 --> 00:00:55,140
+not apply on Mac.
+
+36
+00:00:55,470 --> 00:00:56,650
+If a malware alert
+
+37
+00:00:56,650 --> 00:00:57,790
+or company policy
+
+38
+00:00:57,790 --> 00:00:58,850
+blocks installation,
+
+39
+00:00:59,090 --> 00:01:00,790
+stop and ask for help.
+
+40
+00:01:01,220 --> 00:01:02,520
+Once the app opens,
+
+41
+00:01:02,560 --> 00:01:04,140
+you'll see this login screen.
+
+42
+00:01:04,360 --> 00:01:06,310
+If your dealership invited you,
+
+43
+00:01:06,310 --> 00:01:07,380
+use the details
+
+44
+00:01:07,380 --> 00:01:08,700
+in your AutoLander email.
+
+45
+00:01:08,990 --> 00:01:10,010
+Check your spam
+
+46
+00:01:10,010 --> 00:01:11,080
+folder if it's missing,
+
+47
+00:01:11,080 --> 00:01:12,300
+then ask your manager.
+
+48
+00:01:12,730 --> 00:01:14,590
+This is your AutoLander login,
+
+49
+00:01:14,690 --> 00:01:16,290
+not your Facebook password.
+
+50
+00:01:16,740 --> 00:01:17,760
+We'll connect Facebook
+
+51
+00:01:17,760 --> 00:01:18,780
+separately after
+
+52
+00:01:18,780 --> 00:01:19,800
+you're signed in.
+
+53
+00:01:19,800 --> 00:01:21,560
+Keep both passwords private.
+
+54
+00:01:22,170 --> 00:01:23,430
+Moving to another computer?
+
+55
+00:01:23,690 --> 00:01:24,710
+Sign in to
+
+56
+00:01:24,710 --> 00:01:25,730
+your existing account.
+
+57
+00:01:26,020 --> 00:01:27,100
+Forgot password
+
+58
+00:01:27,100 --> 00:01:28,410
+is below Sign In.
+
+59
+00:01:28,410 --> 00:01:29,430
+If you're setting
+
+60
+00:01:29,430 --> 00:01:30,450
+up your own account
+
+61
+00:01:30,450 --> 00:01:31,470
+for the first time,
+
+62
+00:01:31,470 --> 00:01:33,220
+choose Register below Sign
+
+63
+00:01:33,220 --> 00:01:35,000
+In and follow the instructions.
+
+64
+00:01:35,260 --> 00:01:36,310
+You can review
+
+65
+00:01:36,310 --> 00:01:37,870
+plans inside the app.
+
+66
+00:01:38,267 --> 00:01:39,197
+Once you're signed
+
+67
+00:01:39,197 --> 00:01:40,457
+in, look at the bottom
+
+68
+00:01:40,457 --> 00:01:42,277
+left of the AutoLander sidebar.
+
+69
+00:01:42,717 --> 00:01:44,337
+Product Tour is right here.
+
+70
+00:01:44,477 --> 00:01:45,657
+Use it whenever you
+
+71
+00:01:45,657 --> 00:01:46,977
+need help finding a feature.
+
+72
+00:01:47,367 --> 00:01:48,597
+Before moving on,
+
+73
+00:01:48,597 --> 00:01:49,807
+make sure you know which
+
+74
+00:01:49,807 --> 00:01:51,067
+login path is yours.

@@ -1,0 +1,15 @@
+Five readiness checks
+
+Before you start a run, make five quick checks. First, are you signed into the right AutoLander account with access to the work you're about to do?
+
+Second, is Facebook connected? Check the indicator at the top right. If it needs attention, go to Configuration, then Facebook, and follow the connection steps.
+
+Third, is the inventory right? Open Post to Market and look for a few vehicles you recognize from the correct dealership. If you're setting up your own feed, the inventory lesson shows the connection steps. If your dealership already manages it, use that existing feed.
+
+Fourth, is the vehicle ready to advertise? Check its price and mileage, your selection count, and any optional AI credit cost. Resolve incorrect information before posting it.
+
+Fifth, is the computer online with AutoLander running? If you use Auto-Pilot, check that it's on and configured for the window you want.
+
+Now read any unfinished Queue item before starting another job. If something still doesn't match, you've narrowed down the issue. Dealer-account users can take that specific problem to their manager; individual users can contact the AutoLander admin through Support.
+
+Pause and do those five checks on your own screen. Write down only the item that needs attention.

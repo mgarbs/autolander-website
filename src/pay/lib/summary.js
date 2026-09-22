@@ -27,6 +27,31 @@ export function isAnnualInterval(interval) {
   return ANNUAL_INTERVALS.has(String(interval || '').trim().toLowerCase());
 }
 
+function isoOrNull(value) {
+  if (typeof value !== 'string' || !value.trim()) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+}
+
+// `GET /api/pay/:token` carries `trial: { code, days, priceCents, endsAt?,
+// timezoneHint? } | null` (design doc §3 cross-lane contract). `endsAt` and
+// `timezoneHint` only appear once the Stripe checkout completed, so both are
+// nullable here and the success view polls until `endsAt` arrives.
+export function normalizeTrial(raw) {
+  if (!raw || typeof raw !== 'object') return null;
+  const code = typeof raw.code === 'string' ? raw.code.trim() : '';
+  if (!code) return null;
+
+  const days = Number(raw.days);
+  return {
+    code,
+    days: Number.isSafeInteger(days) && days > 0 ? days : null,
+    priceCents: parseCents(raw.priceCents),
+    endsAt: isoOrNull(raw.endsAt),
+    timezoneHint: typeof raw.timezoneHint === 'string' && raw.timezoneHint.trim() ? raw.timezoneHint.trim() : null,
+  };
+}
+
 // The cloud's durable pay-link contract separates subscription and one-time
 // totals. `cents`/`amountCents` are retained only as backwards-compatible
 // fallbacks for links created before that contract shipped.
@@ -47,6 +72,7 @@ export function normalizeSummary(payload) {
     businessName: payload?.businessName || payload?.crmSnapshot?.businessName || '',
     status: payload?.status || 'created',
     livemode: Boolean(payload?.livemode),
+    trial: normalizeTrial(payload?.trial),
   };
 }
 
@@ -83,4 +109,30 @@ export function amountPresentation(summary) {
   }
 
   return { amount: billed, suffix: '/month', detail: '' };
+}
+
+const DEFAULT_TRIAL_DAYS = 3;
+const DEFAULT_TRIAL_PRICE_CENTS = 3900;
+
+// Copy for a card-required trial link (design doc §3): "$0 today · 3-day free
+// trial · then $39/month (plus any applicable tax) unless you cancel". The
+// price comes from `trial.priceCents` (the catalog's expectedRecurringCents),
+// falling back to the link's own recurring amount; the browser constant is
+// the last resort only when both are missing.
+export function trialPresentation(summary) {
+  const trial = summary?.trial;
+  if (!trial) return null;
+  const days = trial.days || DEFAULT_TRIAL_DAYS;
+  const priceCents = trial.priceCents ?? summary.amountCents ?? DEFAULT_TRIAL_PRICE_CENTS;
+  const monthly = formatMoney(priceCents, summary.currency) || formatMoney(DEFAULT_TRIAL_PRICE_CENTS, summary.currency);
+  const zero = formatMoney(0, summary.currency);
+  const afterTrial = `then ${monthly}/month (plus any applicable tax) unless you cancel`;
+  return {
+    days,
+    monthly,
+    todayLabel: `${zero} today`,
+    afterTrial,
+    terms: `${zero} today · ${days}-day free trial · ${afterTrial}`,
+    endsAt: trial.endsAt,
+  };
 }

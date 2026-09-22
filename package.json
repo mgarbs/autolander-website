@@ -13,6 +13,7 @@
     "seo:indexnow": "node scripts/submit-indexnow.mjs",
     "preview": "vite preview",
     "seo:pages": "node scripts/build-compare-pages.mjs && node scripts/build-seo-pages.mjs",
+    "training:build": "node scripts/training/build-training-mirror.mjs",
     "seo:og": "node scripts/build-og-cards.mjs",
     "articles:preview": "node scripts/build-seo-pages.mjs --draft-preview",
     "articles:publish": "node scripts/publish-article.mjs"

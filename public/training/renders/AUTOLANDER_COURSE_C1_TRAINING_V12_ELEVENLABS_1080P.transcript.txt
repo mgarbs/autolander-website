@@ -1,0 +1,17 @@
+Manual selection or Auto-Pilot
+
+Use manual selection when you have particular vehicles in mind. Choose them in Post to Market and start that batch. Use Auto-Pilot for the ongoing routine.
+
+Let's find its settings. Click Post to Market in the left sidebar. Find Auto-Pilot, then choose Configure.
+
+Set the start and stop times for your posting window. Choose which inventory to use, then your photo options. Read the message about the window and your account's daily allowance.
+
+When the settings are right, turn Auto-Pilot on. Check that it shows an active state. It spreads posting across your chosen window, so you don't have to start each batch yourself.
+
+It also keeps existing listings up to date. When a price changes in your connected inventory, Auto-Pilot can update the matching Facebook listing posted through AutoLander. When a vehicle is marked sold, it handles the supported sold update too. You don't need to sit on the Listing Updates page and watch.
+
+Keep the computer powered on and connected to the internet, with AutoLander running. You can minimize the app. Closing it or shutting down the computer stops that work. On a laptop, make sure the computer stays awake.
+
+Check the app each day, and again after a restart or lost connection. Confirm Facebook, the feed and Auto-Pilot, then read any unfinished Queue items.
+
+Which mode fits your day? Note that in your workbook, then find the schedule on your own screen. Change the live settings only when you're ready to use them.

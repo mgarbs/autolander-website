@@ -1,0 +1,13 @@
+Choose and check an AI background
+
+AI Background is optional. It changes the setting around a vehicle from your inventory photo. This is the original image beside the finished result for the same vehicle.
+
+To choose a style, click Configuration in the left sidebar. Open Post Style, then find the background choices. Select the style you want to use.
+
+Now click Post to Market in the sidebar. On the vehicle card, find AI Background. First Photo changes the lead image. The other options cover more exterior photos.
+
+Before starting the post, read the credit cost beside your choice. Prefer the original photos? Leave AI Background off.
+
+You'll see the generated result after posting. Open the finished Marketplace listing and check that the image still represents the vehicle accurately. If something is wrong, have the listing corrected. Dealer-account users can tell their manager; individual users can contact the AutoLander admin.
+
+For this exercise, find the style and First Photo controls without starting a post. Then compare the original and finished photos shown here. Your workbook has space to note the option and its cost.
