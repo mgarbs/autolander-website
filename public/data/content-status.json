@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-21",
+  "generatedAt": "2026-09-22",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -440,8 +440,8 @@
       ],
       "description": "How to sell cars online as a small dealership: list where buyers look, photos that compete, one owner for replies, and a simple path to the handshake.",
       "suggestedOrder": 23,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-22"
     },
     {
       "slug": "facebook-marketplace-listing-not-showing-up",

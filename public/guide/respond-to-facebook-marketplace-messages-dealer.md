@@ -84,9 +84,9 @@ Mark it sold and pull the listing everywhere the moment it delivers — every me
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 - [Car sales follow-up templates your salespeople can send today](https://autolander.ai/guide/car-sales-follow-up-templates/)
+- [How to sell cars online as a small dealership](https://autolander.ai/guide/sell-cars-online-small-dealership/)
 - [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
-- [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
