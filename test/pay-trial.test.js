@@ -107,11 +107,14 @@ test('GET /api/pay/:token trial block is normalized and presented as $0 today ·
 });
 
 test('the trial end renders in the viewer timezone with a zone abbreviation', () => {
-  const label = formatTrialEnd('2026-09-25T18:15:00.000Z');
+  // 18:15Z is Friday in every zone from UTC-18 to UTC+5; use a noon-UTC instant so
+  // the weekday assertion holds on any CI runner, and require a real zone token
+  // (not the AM/PM marker) after the time.
+  const label = formatTrialEnd('2026-09-25T12:00:00.000Z');
   assert.match(label, /Friday/);
   assert.match(label, /Sep/);
   assert.match(label, /\d{1,2}:\d{2}/);
-  assert.match(label, /[A-Z]{2,5}|GMT[+-]?\d*/);
+  assert.match(label, /\d{1,2}:\d{2}\s*(?:[AP]M\s+)?(?:[A-Z]{2,5}|GMT[+-]?\d*|UTC)\b/);
   assert.equal(formatTrialEnd(null), '');
   assert.equal(formatTrialEnd('garbage'), '');
 });
