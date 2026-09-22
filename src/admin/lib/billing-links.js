@@ -1,4 +1,5 @@
 import { ApiError, apiGet, apiPost } from './api.js';
+import { TRIAL_DAYS, TRIAL_PLAN_CHOICE } from './billing-link-form.js';
 
 // Helpers for the admin "Payment Links" surface (worker /admin-api/billing-links*
 // proxy to the AutoLander cloud /api/billing-links*). Normalized defensively —
@@ -13,7 +14,24 @@ export const BILLING_LINKS_SETUP_NOTE =
   'Payment links are not configured yet. Set the OPS_ADMIN_TOKEN secret on the Cloudflare Worker '
   + '(wrangler secret put OPS_ADMIN_TOKEN) and the matching OPS_ADMIN_TOKEN on the AutoLander cloud, then redeploy the Worker.';
 
-export const PLAN_CHOICES = ['STARTER', 'GROWTH', 'PRO', 'PRO_TEAM'];
+// Catalog plan codes the cloud accepts verbatim, plus one UI-only choice:
+// STARTER_TRIAL_3D is never sent as a planCode — buildBillingLinkPayload maps
+// it to `planCode:'STARTER', billingInterval:'monthly', trialCode:'starter_3d_v1'`
+// (design doc §3). Kept last so the four real codes keep their positions.
+export { TRIAL_CODE, TRIAL_DAYS, TRIAL_PLAN_CHOICE, isTrialPlanChoice } from './billing-link-form.js';
+export const PLAN_CHOICES = ['STARTER', 'GROWTH', 'PRO', 'PRO_TEAM', TRIAL_PLAN_CHOICE];
+
+// `planMeta` on list/detail rows carries `{ trialCode, trialDays }` for a
+// card-required trial link (Json on CheckoutRequest, no schema change).
+export function normalizePlanMeta(raw) {
+  const meta = raw && typeof raw === 'object' ? raw : {};
+  const trialCode = text(meta.trialCode);
+  const days = Number(meta.trialDays);
+  return {
+    trialCode,
+    trialDays: Number.isSafeInteger(days) && days > 0 ? days : (trialCode ? TRIAL_DAYS : null),
+  };
+}
 
 export async function listBillingLinks(params = {}) {
   const search = new URLSearchParams();
@@ -65,6 +83,7 @@ export function normalizeBillingLinkRow(row) {
     createdAt: row?.createdAt || null,
     completedAt: row?.completedAt || null,
     origin: text(row?.origin),
+    planMeta: normalizePlanMeta(row?.planMeta),
   };
 }
 

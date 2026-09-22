@@ -1,6 +1,21 @@
 export const TEAM_MIN_SEATS = 3;
 export const TEAM_SEAT_FIELDS = ['seatsStarter', 'seatsGrowth', 'seatsPro'];
 
+// Starter 3-day card-required trial (design doc §3). STARTER_TRIAL_3D is a
+// UI-only plan choice: the cloud never sees it — it becomes
+// `planCode:'STARTER', billingInterval:'monthly', trialCode:'starter_3d_v1'`
+// with no seats, setup fee or coupon. Defined here (dependency-free) so the
+// node:test suite can import it without pulling the fetch wrapper.
+export const TRIAL_PLAN_CHOICE = 'STARTER_TRIAL_3D';
+export const TRIAL_CODE = 'starter_3d_v1';
+export const TRIAL_DAYS = 3;
+export const TRIAL_BASE_PLAN = 'STARTER';
+export const TRIAL_INTERVAL = 'monthly';
+
+export function isTrialPlanChoice(code) {
+  return String(code || '').trim().toUpperCase() === TRIAL_PLAN_CHOICE;
+}
+
 const PLAN_CODES = new Set(['STARTER', 'GROWTH', 'PRO', 'PRO_TEAM']);
 const BILLING_INTERVALS = new Set(['monthly', 'annual']);
 const CRM_SNAPSHOT_FIELDS = ['email', 'phone', 'firstName', 'lastName', 'businessName', 'website'];
@@ -71,10 +86,14 @@ function normalizeSelectedCrm(selectedCrm) {
 // GHL selection. Deliberately accepts no dollar/price fields: the cloud billing
 // catalog remains the only authority for what Stripe charges.
 export function buildBillingLinkPayload({ form = {}, selectedOrg, selectedCrm } = {}) {
-  const planCode = text(form.planCode, 40).toUpperCase();
+  const planChoice = text(form.planCode, 40).toUpperCase();
+  const isTrial = isTrialPlanChoice(planChoice);
+  const planCode = isTrial ? TRIAL_BASE_PLAN : planChoice;
   if (!PLAN_CODES.has(planCode)) return { ok: false, error: 'Choose a supported plan.' };
 
-  const billingInterval = text(form.billingInterval, 20).toLowerCase();
+  // A trial is monthly by catalog definition — the interval control is hidden
+  // for it in the UI, so whatever the form still holds is ignored here.
+  const billingInterval = isTrial ? TRIAL_INTERVAL : text(form.billingInterval, 20).toLowerCase();
   if (!BILLING_INTERVALS.has(billingInterval)) {
     return { ok: false, error: 'Choose monthly or annual billing.' };
   }
@@ -87,12 +106,22 @@ export function buildBillingLinkPayload({ form = {}, selectedOrg, selectedCrm } 
     };
   }
 
+  const orgId = text(selectedOrg?.orgId, 200);
+  if (isTrial && !orgId && !crm?.crmSnapshot?.email) {
+    return {
+      ok: false,
+      error: 'A trial link needs the customer email from the GoHighLevel opportunity, or an attached AutoLander account, so eligibility can be checked.',
+    };
+  }
+
   const payload = {
     planCode,
     billingInterval,
-    withSetupFee: form.setupFee === true,
-    ...(text(selectedOrg?.orgId, 200) ? { orgId: text(selectedOrg.orgId, 200) } : {}),
+    withSetupFee: isTrial ? false : form.setupFee === true,
+    ...(orgId ? { orgId } : {}),
   };
+
+  if (isTrial) payload.trialCode = TRIAL_CODE;
 
   if (planCode === 'PRO_TEAM') {
     const seatSelection = normalizeTeamSeats(form);
@@ -100,7 +129,7 @@ export function buildBillingLinkPayload({ form = {}, selectedOrg, selectedCrm } 
     payload.seats = seatSelection.seats;
   }
 
-  const couponId = text(form.couponId, 200);
+  const couponId = isTrial ? '' : text(form.couponId, 200);
   if (couponId) payload.couponId = couponId;
 
   if (crm) {
