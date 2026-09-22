@@ -755,6 +755,7 @@ export function LandingFooter() {
               <a href="/rv-dealer-software/" className="block py-1 hover:text-blue-500 transition-colors">RV Dealers</a>
               <a href="/safest-facebook-marketplace-auto-poster/" className="block py-1 hover:text-blue-500 transition-colors">Account Safety</a>
               <a href="/facebook-marketplace-auto-poster-pricing/" className="block py-1 hover:text-blue-500 transition-colors">Pricing</a>
+              <a href="/training/" className="block py-1 hover:text-blue-500 transition-colors">Training</a>
             </nav>
 
             {/* Integrations */}

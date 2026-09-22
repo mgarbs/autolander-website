@@ -429,6 +429,7 @@ export default function App() {
              <a href="/guide/how-to-sell-cars-on-facebook-marketplace/" className="hidden text-sm font-semibold text-slate-400 transition-all hover:text-white xl:inline">Dealer Guide</a>
           </div>
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <a href="/training/" className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap">Training</a>
             {showDownloadButtons && (
               <button
                 type="button"

@@ -506,6 +506,7 @@ export function siteFooter() {
       <a href="${NAV.rvDealers.path}">RV dealer software</a>
       <a href="${NAV.sellGuide.path}">How to sell cars</a>
       <a href="${NAV.guide.path}">Guide</a>
+      <a href="${NAV.training.path}">Training</a>
       <a href="${SITE.origin}/">AutoLander home</a>
       <a href="${SITE.origin}/#pricing">Pricing</a>
       <a href="${NAV.about.path}">About</a>
