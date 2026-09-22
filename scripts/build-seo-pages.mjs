@@ -441,6 +441,8 @@ function sitemapXml() {
     { loc: SITE.origin + NAV.report2026.path, pri: '0.9', freq: 'monthly' },
     { loc: SITE.origin + NAV.about.path, pri: '0.6', freq: 'monthly' },
     { loc: SITE.origin + NAV.contact.path, pri: '0.6', freq: 'monthly' },
+    // Customer training library: a static mirror in public/training/ (never a generated page)
+    { loc: SITE.origin + NAV.training.path, pri: '0.8', freq: 'monthly', lastmod: '2026-09-22' },
     // 2026-09-03 discovery + cluster pages
     { loc: SITE.origin + NAV.whyMarketplaceOnly.path, pri: '0.8', freq: 'monthly', lastmod: '2026-09-03' },
     { loc: SITE.origin + NAV.whyNoAutoReply.path, pri: '0.8', freq: 'monthly', lastmod: '2026-09-03' },
