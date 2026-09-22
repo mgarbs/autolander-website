@@ -1,0 +1,199 @@
+WEBVTT
+
+00:00:00.260 --> 00:00:01.520
+Your inventory feed
+
+00:00:01.520 --> 00:00:02.760
+brings the dealership's
+
+00:00:02.760 --> 00:00:04.260
+vehicles into AutoLander.
+
+00:00:04.280 --> 00:00:06.080
+If your manager has already
+
+00:00:06.080 --> 00:00:07.380
+connected the right feed,
+
+00:00:07.420 --> 00:00:08.480
+keep that connection.
+
+00:00:08.600 --> 00:00:09.620
+You only need
+
+00:00:09.620 --> 00:00:10.640
+to check the vehicles.
+
+00:00:10.680 --> 00:00:12.200
+To add your own source,
+
+00:00:12.280 --> 00:00:13.820
+start in the left sidebar.
+
+00:00:13.860 --> 00:00:15.620
+Click Configuration.
+
+00:00:15.850 --> 00:00:17.250
+Across the top of that
+
+00:00:17.250 --> 00:00:19.580
+page, choose Inventory Feeds.
+
+00:00:19.580 --> 00:00:21.490
+Then click Add Feed.
+
+00:00:21.630 --> 00:00:23.030
+You'll see two routes:
+
+00:00:23.210 --> 00:00:25.390
+Website Scrape and Data Feed.
+
+00:00:25.750 --> 00:00:27.010
+Let's start with a website.
+
+00:00:27.010 --> 00:00:28.840
+For Cars dot com
+
+00:00:28.840 --> 00:00:30.650
+or CarGurus, copy
+
+00:00:30.650 --> 00:00:32.120
+the address of your dealership's
+
+00:00:32.120 --> 00:00:33.140
+inventory page.
+
+00:00:33.430 --> 00:00:35.750
+Back in AutoLander, choose Enter
+
+00:00:35.750 --> 00:00:37.990
+a URL under Website Scrape.
+
+00:00:38.140 --> 00:00:39.160
+Paste that address
+
+00:00:39.160 --> 00:00:40.480
+into Website URL.
+
+00:00:40.620 --> 00:00:41.640
+You can add
+
+00:00:41.640 --> 00:00:42.750
+the dealer name as well.
+
+00:00:42.960 --> 00:00:43.980
+Click Verify
+
+00:00:43.980 --> 00:00:45.270
+and read the result.
+
+00:00:45.590 --> 00:00:46.950
+When the source is ready,
+
+00:00:46.950 --> 00:00:48.810
+choose Connect Website.
+
+00:00:48.810 --> 00:00:50.920
+For a custom dealership website,
+
+00:00:51.220 --> 00:00:52.780
+first ask AutoLander
+
+00:00:52.780 --> 00:00:54.220
+to confirm that it's supported.
+
+00:00:54.380 --> 00:00:55.680
+Now look at Data Feed.
+
+00:00:55.680 --> 00:00:57.640
+This route uses inventory
+
+00:00:57.640 --> 00:00:59.180
+supplied by your provider.
+
+00:00:59.240 --> 00:01:00.730
+They can send a file,
+
+00:01:00.730 --> 00:01:01.980
+provide a feed link,
+
+00:01:01.980 --> 00:01:03.980
+or use the SFTP option.
+
+00:01:04.180 --> 00:01:05.200
+On a dealer
+
+00:01:05.200 --> 00:01:06.220
+or team plan,
+
+00:01:06.230 --> 00:01:07.650
+AutoLander can help arrange
+
+00:01:07.650 --> 00:01:08.950
+a connection with a provider
+
+00:01:08.950 --> 00:01:10.090
+such as vAuto.
+
+00:01:10.350 --> 00:01:11.370
+Have that connection
+
+00:01:11.370 --> 00:01:12.440
+set up with the correct
+
+00:01:12.440 --> 00:01:13.930
+details before using it.
+
+00:01:14.160 --> 00:01:15.560
+When the inventory loads,
+
+00:01:15.740 --> 00:01:17.420
+click Post to Market
+
+00:01:17.420 --> 00:01:18.520
+in the sidebar.
+
+00:01:18.810 --> 00:01:19.850
+Check the location
+
+00:01:19.850 --> 00:01:21.330
+and three familiar vehicles.
+
+00:01:21.390 --> 00:01:22.410
+Do their
+
+00:01:22.410 --> 00:01:23.520
+prices and mileage match
+
+00:01:23.520 --> 00:01:24.900
+your dealership's information?
+
+00:01:24.900 --> 00:01:26.990
+Clear the search or filters
+
+00:01:26.990 --> 00:01:28.750
+if expected vehicles are hidden.
+
+00:01:28.750 --> 00:01:30.400
+If the source is wrong,
+
+00:01:30.480 --> 00:01:31.760
+dealer-account users
+
+00:01:31.760 --> 00:01:32.980
+should tell their manager.
+
+00:01:33.260 --> 00:01:34.800
+Individual users should
+
+00:01:34.800 --> 00:01:36.480
+contact the AutoLander admin.
+
+00:01:36.910 --> 00:01:38.510
+In your workbook, note
+
+00:01:38.510 --> 00:01:39.680
+your source and the three
+
+00:01:39.680 --> 00:01:40.700
+vehicles you checked.

@@ -1,0 +1,13 @@
+Review listing changes
+
+From Post to Market, click Listing Updates in the left sidebar. Here are real price changes and vehicles that are no longer in the connected inventory.
+
+Start with a price card. Compare the old price with the new one. On a sold card, check the vehicle and the action shown.
+
+Choose individual vehicles using their selection boxes. Or, if you want to handle every change shown, use Select All at the bottom. Check the selected count. Then click Process Updates.
+
+The Queue shows the work in progress. In this example, AutoLander is marking one vehicle sold. Watch for Done on that row. That confirms the action finished. After a price update finishes successfully, the matching Facebook listing shows the new price. If a row says Failed, read its message before trying again.
+
+Using Auto-Pilot? It handles price and sold updates for you while it's running. You don't have to keep this page open or watch each update. If you're posting manually, check Listing Updates as part of your daily routine.
+
+Now find one price change, one sold card and the selection controls. If your page has no changes today, there's nothing to process.

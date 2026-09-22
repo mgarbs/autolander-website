@@ -1,0 +1,11 @@
+Check the Facebook connection
+
+Before your first post, connect the Facebook profile you use for Marketplace. Start in AutoLander, move to Configuration in the left sidebar, and click it. Then select the Facebook tab.
+
+If this is your first connection, choose Connect Facebook. Follow the sign-in steps with your own personal Marketplace profile, not a dealership Business Page. Enter your password and any security code privately. If Facebook says that profile cannot use Marketplace, resolve that access issue with Facebook before trying to post through AutoLander.
+
+When you return to AutoLander, check the connection status. After setup, the Facebook Connected indicator at the top right is a quick place to check before you work. It tells you about the connection, not whether a particular vehicle has finished posting.
+
+If the session expires later, return to Configuration, open Facebook, and choose Reconnect Facebook. Finish the sign-in steps, then check the status again. There's no need to disconnect a working account just to follow this lesson.
+
+For practice, locate the Facebook tab and the top-right connection indicator. If the connection still won't complete, show the message to your manager on a dealer account, or contact the AutoLander admin through Support on an individual account.

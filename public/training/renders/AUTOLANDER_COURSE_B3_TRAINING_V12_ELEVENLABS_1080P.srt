@@ -1,0 +1,203 @@
+1
+00:00:00,260 --> 00:00:01,300
+This lesson is for the
+
+2
+00:00:01,300 --> 00:00:03,020
+person managing the dealership's
+
+3
+00:00:03,020 --> 00:00:04,040
+AutoLander access.
+
+4
+00:00:04,340 --> 00:00:05,610
+Start in the left
+
+5
+00:00:05,610 --> 00:00:07,770
+sidebar and click Configuration.
+
+6
+00:00:07,810 --> 00:00:09,250
+Then choose Team.
+
+7
+00:00:09,620 --> 00:00:11,040
+Find the teammate's row.
+
+8
+00:00:11,410 --> 00:00:13,290
+Posting Access and Manager
+
+9
+00:00:13,290 --> 00:00:14,610
+Dashboard Access are
+
+10
+00:00:14,610 --> 00:00:15,630
+separate choices.
+
+11
+00:00:16,180 --> 00:00:17,520
+A rep who publishes
+
+12
+00:00:17,520 --> 00:00:19,160
+vehicles needs posting access.
+
+13
+00:00:19,480 --> 00:00:21,480
+A manager who only reviews
+
+14
+00:00:21,480 --> 00:00:23,280
+activity may need dashboard
+
+15
+00:00:23,280 --> 00:00:24,960
+access without posting access.
+
+16
+00:00:25,580 --> 00:00:26,620
+Match the settings
+
+17
+00:00:26,620 --> 00:00:27,820
+to that person's job.
+
+18
+00:00:28,380 --> 00:00:29,620
+To add someone new,
+
+19
+00:00:29,660 --> 00:00:30,960
+choose Invite Member.
+
+20
+00:00:30,960 --> 00:00:32,320
+Enter the correct
+
+21
+00:00:32,320 --> 00:00:33,460
+email and the role
+
+22
+00:00:33,460 --> 00:00:34,940
+details shown in the form.
+
+23
+00:00:35,300 --> 00:00:36,600
+Check your plan's seat
+
+24
+00:00:36,600 --> 00:00:37,940
+arrangements before sending.
+
+25
+00:00:38,370 --> 00:00:39,490
+Each person should
+
+26
+00:00:39,490 --> 00:00:40,710
+use their own login.
+
+27
+00:00:41,100 --> 00:00:42,560
+Ask the teammate to check
+
+28
+00:00:42,560 --> 00:00:44,120
+their inbox and spam folder,
+
+29
+00:00:44,120 --> 00:00:45,600
+then follow the invitation.
+
+30
+00:00:46,130 --> 00:00:47,150
+Have them sign
+
+31
+00:00:47,150 --> 00:00:48,180
+in and show you
+
+32
+00:00:48,180 --> 00:00:49,200
+the page they need.
+
+33
+00:00:49,420 --> 00:00:50,520
+That checks both
+
+34
+00:00:50,520 --> 00:00:52,360
+the invitation and their access.
+
+35
+00:00:52,640 --> 00:00:54,250
+If a rep can't find
+
+36
+00:00:54,250 --> 00:00:55,930
+the inventory or posting page,
+
+37
+00:00:56,050 --> 00:00:57,080
+check their account
+
+38
+00:00:57,080 --> 00:00:58,100
+and access first.
+
+39
+00:00:58,430 --> 00:00:59,890
+Use the existing account
+
+40
+00:00:59,890 --> 00:01:01,410
+instead of creating a duplicate.
+
+41
+00:01:01,410 --> 00:01:02,930
+If the issue
+
+42
+00:01:02,930 --> 00:01:05,080
+concerns seats or billing, check
+
+43
+00:01:05,080 --> 00:01:06,380
+the subscription separately.
+
+44
+00:01:06,720 --> 00:01:08,640
+Now compare two roles
+
+45
+00:01:08,640 --> 00:01:10,440
+in your workbook: a posting
+
+46
+00:01:10,440 --> 00:01:11,700
+rep and a manager
+
+47
+00:01:11,700 --> 00:01:13,260
+who only reviews the team.
+
+48
+00:01:13,730 --> 00:01:14,990
+Write down the access
+
+49
+00:01:14,990 --> 00:01:16,030
+each one needs.
+
+50
+00:01:16,260 --> 00:01:17,830
+Leave the live settings as
+
+51
+00:01:17,830 --> 00:01:19,210
+they are during this exercise.

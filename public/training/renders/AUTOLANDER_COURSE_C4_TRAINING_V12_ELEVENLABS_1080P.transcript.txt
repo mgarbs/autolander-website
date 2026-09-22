@@ -1,0 +1,13 @@
+Read the error before changing the setup
+
+If a task stops, read the message before changing settings. Open the Queue and find the affected vehicle. Failed means there's a message to check. Processing means the job is still working. Give that job time instead of adding it again.
+
+If Facebook needs to reconnect, start in the left sidebar. Click Configuration. Open the Facebook tab, then choose Reconnect Facebook. Complete the sign-in steps privately. Back in AutoLander, check Facebook Connected at the top right. Review the affected job before retrying it, and leave successful vehicles alone.
+
+If vehicles are missing, first clear the search and filters in Post to Market. Still missing? Click Configuration in the left sidebar. Choose Inventory Feeds and check the connected source. Make sure it's the right dealership before changing anything.
+
+For Auto-Pilot, check four things: is it on, is it within the posting window, is the computer online, and is AutoLander running? Read any warning on the screen.
+
+If you still need help, record what you tried, what you expected and the exact message. Add the time and a screenshot without private information. To find the app version, click Configuration, then Updates.
+
+On a dealer account, send those details to your manager. On an individual account, contact the AutoLander admin through Support in the sidebar. Use the workbook's help form to practice writing a clear report for this example.

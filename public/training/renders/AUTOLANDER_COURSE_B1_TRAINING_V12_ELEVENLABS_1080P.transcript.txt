@@ -1,0 +1,15 @@
+Connect and verify the right inventory
+
+Your inventory feed brings the dealership's vehicles into AutoLander. If your manager has already connected the right feed, keep that connection. You only need to check the vehicles.
+
+To add your own source, start in the left sidebar. Click Configuration. Across the top of that page, choose Inventory Feeds. Then click Add Feed.
+
+You'll see two routes: Website Scrape and Data Feed. Let's start with a website. For Cars dot com or CarGurus, copy the address of your dealership's inventory page. Back in AutoLander, choose Enter a URL under Website Scrape.
+
+Paste that address into Website URL. You can add the dealer name as well. Click Verify and read the result. When the source is ready, choose Connect Website. For a custom dealership website, first ask AutoLander to confirm that it's supported.
+
+Now look at Data Feed. This route uses inventory supplied by your provider. They can send a file, provide a feed link, or use the SFTP option. On a dealer or team plan, AutoLander can help arrange a connection with a provider such as vAuto. Have that connection set up with the correct details before using it.
+
+When the inventory loads, click Post to Market in the sidebar. Check the location and three familiar vehicles. Do their prices and mileage match your dealership's information? Clear the search or filters if expected vehicles are hidden.
+
+If the source is wrong, dealer-account users should tell their manager. Individual users should contact the AutoLander admin. In your workbook, note your source and the three vehicles you checked.

@@ -1,0 +1,203 @@
+1
+00:00:00,260 --> 00:00:01,600
+Before your first post,
+
+2
+00:00:01,640 --> 00:00:03,420
+connect the Facebook profile you
+
+3
+00:00:03,420 --> 00:00:04,500
+use for Marketplace.
+
+4
+00:00:04,850 --> 00:00:07,110
+Start in AutoLander, move
+
+5
+00:00:07,110 --> 00:00:08,550
+to Configuration in the left
+
+6
+00:00:08,550 --> 00:00:09,950
+sidebar, and click it.
+
+7
+00:00:10,040 --> 00:00:11,840
+Then select the Facebook tab.
+
+8
+00:00:12,170 --> 00:00:13,190
+If this is
+
+9
+00:00:13,190 --> 00:00:14,210
+your first connection,
+
+10
+00:00:14,210 --> 00:00:15,490
+choose Connect Facebook.
+
+11
+00:00:16,040 --> 00:00:17,180
+Follow the sign-in
+
+12
+00:00:17,180 --> 00:00:18,500
+steps with your own personal
+
+13
+00:00:18,500 --> 00:00:19,560
+Marketplace profile,
+
+14
+00:00:19,760 --> 00:00:21,660
+not a dealership Business Page.
+
+15
+00:00:22,040 --> 00:00:23,200
+Enter your password
+
+16
+00:00:23,200 --> 00:00:25,140
+and any security code privately.
+
+17
+00:00:25,140 --> 00:00:27,480
+If Facebook says that profile
+
+18
+00:00:27,480 --> 00:00:28,920
+cannot use Marketplace,
+
+19
+00:00:29,000 --> 00:00:30,660
+resolve that access issue
+
+20
+00:00:30,660 --> 00:00:32,220
+with Facebook before trying
+
+21
+00:00:32,220 --> 00:00:33,560
+to post through AutoLander.
+
+22
+00:00:33,600 --> 00:00:36,110
+When you return to AutoLander,
+
+23
+00:00:36,130 --> 00:00:37,430
+check the connection status.
+
+24
+00:00:37,770 --> 00:00:39,610
+After setup, the Facebook
+
+25
+00:00:39,610 --> 00:00:41,110
+Connected indicator at the top
+
+26
+00:00:41,110 --> 00:00:42,450
+right is a quick place
+
+27
+00:00:42,450 --> 00:00:43,810
+to check before you work.
+
+28
+00:00:43,970 --> 00:00:44,990
+It tells you
+
+29
+00:00:44,990 --> 00:00:46,010
+about the connection,
+
+30
+00:00:46,010 --> 00:00:47,190
+not whether a particular
+
+31
+00:00:47,190 --> 00:00:48,810
+vehicle has finished posting.
+
+32
+00:00:48,970 --> 00:00:51,150
+If the session expires later,
+
+33
+00:00:51,250 --> 00:00:52,570
+return to Configuration,
+
+34
+00:00:52,950 --> 00:00:54,010
+open Facebook,
+
+35
+00:00:54,010 --> 00:00:56,010
+and choose Reconnect Facebook.
+
+36
+00:00:56,010 --> 00:00:58,140
+Finish the sign-in steps,
+
+37
+00:00:58,220 --> 00:00:59,840
+then check the status again.
+
+38
+00:01:00,120 --> 00:01:01,540
+There's no need to disconnect
+
+39
+00:01:01,540 --> 00:01:02,820
+a working account just
+
+40
+00:01:02,820 --> 00:01:03,920
+to follow this lesson.
+
+41
+00:01:03,980 --> 00:01:05,240
+For practice,
+
+42
+00:01:05,280 --> 00:01:06,460
+locate the Facebook
+
+43
+00:01:06,460 --> 00:01:07,900
+tab and the top-right
+
+44
+00:01:07,900 --> 00:01:08,920
+connection indicator.
+
+45
+00:01:09,100 --> 00:01:10,230
+If the connection
+
+46
+00:01:10,230 --> 00:01:11,780
+still won't complete, show
+
+47
+00:01:11,780 --> 00:01:13,020
+the message to your manager
+
+48
+00:01:13,020 --> 00:01:14,040
+on a dealer account,
+
+49
+00:01:14,040 --> 00:01:15,730
+or contact the AutoLander
+
+50
+00:01:15,730 --> 00:01:16,870
+admin through Support
+
+51
+00:01:16,870 --> 00:01:18,210
+on an individual account.

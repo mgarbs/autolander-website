@@ -1,0 +1,96 @@
+DEMO_D01 | Less repetitive work, more time for customers
+AutoLander helps your team post inventory to Facebook Marketplace and keep those listings current. Let's walk through it, starting with where your inventory comes from.
+
+DEMO_D02 | Start with your dealership's inventory
+In Configuration, open Inventory Feeds. You have two ways to bring vehicles into AutoLander: a supported website, or a data feed from your inventory provider. Either way, the goal is the same. Your team works from the inventory you already have, without entering every car from scratch.
+
+Website Scrape lets you enter your dealership's Cars dot com or CarGurus inventory URL. A custom dealership website can work too, once AutoLander confirms that site is supported. Paste the URL, verify it, and connect the website.
+
+Data Feed is the other option. You can use a feed link or connect with your inventory provider, including through SFTP. For dealer and team plans, AutoLander can help set that up with systems such as vAuto.
+
+Once the vehicles appear, check that you have the right store and inventory. If your manager has already connected it, you're ready to use that feed.
+
+DEMO_D03 | Choose what you want to advertise
+Now you can work straight from that inventory. In Post to Market, the Available tab shows the photos, prices and mileage for each vehicle. You're choosing from the dealership's existing information, rather than building every listing from a blank form.
+
+Maybe you want to feature a fresh arrival, or a few trucks that just came in. Use the search and filters to find them, then select the vehicles you want to post.
+
+Here I've selected four, and the Post to Marketplace button confirms that number. The vehicle cards stay in view, so you can check the details and photos before starting. You can keep the original images or choose an optional AI background.
+
+When you're ready, choose Post to Marketplace. AutoLander takes care of the repetitive listing preparation and posting steps, one vehicle at a time.
+
+DEMO_D04 | See the posting progress and the listing
+You can check progress in the Queue while AutoLander prepares and posts each vehicle. It takes time; you don't have to sit and watch every step. You can carry on with other work and come back to check each vehicle's status.
+
+In this batch, two vehicles are published and the rest are still processing. Posted to FB is where you review your listings. And here's how a finished listing looks to a shopper on Marketplace.
+
+DEMO_D05 | Let AutoPilot handle the ongoing routine
+Choosing vehicles yourself is useful when you have something specific in mind. For the day-to-day routine, there's Auto-Pilot.
+
+In Post to Market, open Configure. Set your posting window, choose the inventory and photo options you want, then turn Auto-Pilot on.
+
+It handles more than new posts. When prices change or vehicles are marked sold in your connected inventory source, Auto-Pilot can apply those changes to the matching listings you've already posted through AutoLander. For example, your manager might reduce a price in the Cars dot com feed or your connected inventory system. That change can carry through to the corresponding Facebook listing. You don't have to compare every listing by hand.
+
+Keep the computer powered on, connected to the internet, and AutoLander running. You can minimize the app and get on with your day; don't close it or shut down the computer.
+
+A quick daily check, especially after a restart, helps you confirm that your connections are ready and Auto-Pilot is on.
+
+DEMO_D06 | Make the listing sound like your dealership
+Let's look at what the shopper actually reads. AutoLander helps prepare the description from the vehicle information and your listing settings. Here you can see the complete feature list with emojis, followed by the dealership information and contact details.
+
+You shape that wording in Configuration, under Post Style. Dealer Playbook is where your dealership's information belongs. Start with the example in the app, then make it your own. This keeps your listings consistent without typing the same dealership information for every vehicle.
+
+Our sample includes financing available, trade-ins welcome, and Spanish-speaking assistance. The finished listing also shows the dealership's fee wording. Use statements your store has approved and services it actually offers.
+
+My Listing Additions puts your closing information at the bottom of the description. A simple example is: Please message me for more pictures and information. My phone number is in my bio. Then add your approved contact email.
+
+If you want shoppers to call, put your business number in your Facebook profile bio too, and check that it's visible to them. That's a separate step from Listing Additions.
+
+Back on the finished listing, you can see how it comes together: the vehicle details, the dealership's information, and a clear way to reach you, all in one description.
+
+DEMO_D07 | Give the lead photo a cleaner presentation
+The first photo is another part of that presentation. Here's the original dealership image, and here's the same vehicle with an AI background. It can be useful when the original has a busy dealership background and you'd prefer a cleaner setting.
+
+You can choose the background style in Post Style. First Photo is a practical starting point: you get a different lead image without applying the option to every photograph.
+
+AI credits are separate from your posting allowance, so check the current cost in the app. Then review the result and make sure it still shows the vehicle accurately.
+
+DEMO_D08 | Include relevant local groups
+You can also include Facebook buy-and-sell groups in your posting routine. In Configuration, open My Groups and choose the groups you want to use.
+
+Focus on groups that fit your area and the vehicles you sell. Their rules and approval process still apply, so selecting a group doesn't guarantee that its administrators will publish the post.
+
+DEMO_D09 | Keep price and availability current
+Now, what happens when the inventory changes? Listing Updates brings those changes into one place. Here you can see the old and new prices, alongside vehicles no longer in the feed. After a price update completes successfully, the Facebook listing reflects that new price.
+
+To process changes manually, select the vehicles individually or use Select All, then choose Process Updates. The cards help you see which action applies to each vehicle. Here we're processing a sold vehicle. You can follow it through the Queue, then see Done when the action finishes successfully.
+
+With Auto-Pilot running, AutoLander handles this routine maintenance for you. You don't need to keep watching the Listing Updates page.
+
+DEMO_D10 | Delete and repost an available vehicle
+If an older listing is still available and you want to advertise it again, go to Post to Market, then Posted to FB, beside Available and Queue.
+
+Choose Repost on the vehicle, and the blue Delete and Repost control appears. That deletes the original listing published through AutoLander and creates a fresh Marketplace listing for that vehicle. It's a new listing, rather than an edit to the wording in the old one.
+
+Check that the vehicle and its details are still current before you repost it.
+
+DEMO_D11 | The buyer conversation stays with you
+When a shopper messages about a vehicle, the conversation comes to your Facebook Messenger, on your computer or phone. Keep notifications on so you can respond promptly.
+
+AutoLander handles posting and price updates while you focus on the customer.
+
+DEMO_D12 | Give managers a view of the team
+For managers, there's a team view as well. Manager Dashboard shows the posting activity available for your team, so you can see where someone may need help. It's a useful starting point for coaching: review the activity, then work through any setup or posting questions with that teammate.
+
+Posting Access and Manager Dashboard Access are set separately. That gives you a clear way to manage who can post and who can see the management view, while your salespeople stay responsible for the customer conversations.
+
+DEMO_D13 | Get started with your own inventory
+To get started, visit autolander dot ai on a Windows or Mac laptop or desktop, and choose Download.
+
+On Windows, you may see a security prompt. For the trusted AutoLander download, choose More info, then Run anyway, if offered and permitted. Follow the setup screens: Next, Install, then Finish, with Run AutoLander checked. These Windows steps do not apply on Mac. If a malware alert or company policy blocks installation, stop and ask for help.
+
+Create your account inside the app, review the current plans, and start the subscription that fits your needs. If you're already a customer or your dealership invited you, use your existing account or the invitation instructions instead of creating another one.
+
+In Configuration, connect Facebook and confirm your inventory source. Then open Post to Market and choose your first vehicle. The Product Tour in the sidebar can guide you as you go.
+
+And if you need help with a custom feed or team setup, contact AutoLander. Bring in your inventory, get your listings working for you, and keep your attention on your customers.

@@ -1,0 +1,13 @@
+Give each teammate the right access
+
+This lesson is for the person managing the dealership's AutoLander access. Start in the left sidebar and click Configuration. Then choose Team.
+
+Find the teammate's row. Posting Access and Manager Dashboard Access are separate choices. A rep who publishes vehicles needs posting access. A manager who only reviews activity may need dashboard access without posting access. Match the settings to that person's job.
+
+To add someone new, choose Invite Member. Enter the correct email and the role details shown in the form. Check your plan's seat arrangements before sending. Each person should use their own login.
+
+Ask the teammate to check their inbox and spam folder, then follow the invitation. Have them sign in and show you the page they need. That checks both the invitation and their access.
+
+If a rep can't find the inventory or posting page, check their account and access first. Use the existing account instead of creating a duplicate. If the issue concerns seats or billing, check the subscription separately.
+
+Now compare two roles in your workbook: a posting rep and a manager who only reviews the team. Write down the access each one needs. Leave the live settings as they are during this exercise.
