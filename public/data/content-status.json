@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-22",
+  "generatedAt": "2026-09-23",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -478,8 +478,8 @@
       ],
       "description": "Car photography backdrop, photo booth, staging spot, or AI background replacement? The real costs and tradeoffs of each way to get clean car listing photos.",
       "suggestedOrder": 25,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-23"
     },
     {
       "slug": "buy-here-pay-here-marketing",
