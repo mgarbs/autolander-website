@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Book an AutoLander demo with Clay</title>
+  <!--
+    Static fallback for the autolander.ai/demo-clay vanity booking link. The zone Worker normally answers
+    this path with a 302 before GitHub Pages is ever asked (worker/src/agent/short-links.js); this page
+    only serves when the Worker fails open or is off, and on the Pages preview. Keep the target in step
+    with SHORT_LINKS there — test/short-links.test.js pins the two together. No analytics, no Pixel,
+    no canonical, and deliberately NOT in the sitemap or llms.txt.
+  -->
+  <script>(function(){var t='https://go.autolander.ai/widget/bookings/autolander-demo-clay';var d=t+(window.location.search||'')+(window.location.hash||'');try{window.location.replace(d);}catch(e){window.location.href=d;}})();</script>
+  <noscript><meta http-equiv="refresh" content="0; url=https://go.autolander.ai/widget/bookings/autolander-demo-clay" /></noscript>
+  <style>body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#050505;color:#f8fafc;font:16px/1.6 system-ui,sans-serif}a{color:#93c5fd}</style>
+</head>
+<body>
+  <main>
+    <p>Opening Clay’s AutoLander demo booking page…</p>
+    <p><a id="booking-link" href="https://go.autolander.ai/widget/bookings/autolander-demo-clay">Continue to booking</a></p>
+    <noscript><p>JavaScript is off. <a href="https://go.autolander.ai/widget/bookings/autolander-demo-clay">Open the booking page</a>.</p></noscript>
+  </main>
+  <script>(function(){var a=document.getElementById('booking-link');if(a)a.href=a.getAttribute('href')+(window.location.search||'')+(window.location.hash||'');})();</script>
+</body>
+</html>
