@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-23",
+  "generatedAt": "2026-09-24",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -497,8 +497,8 @@
       ],
       "description": "Buy here pay here marketing that works: honest Marketplace listings, a referral engine, service-drive plays, and the compliance line you never cross.",
       "suggestedOrder": 26,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-24"
     },
     {
       "slug": "facebook-marketplace-vs-craigslist-for-selling-cars",
