@@ -2,6 +2,7 @@ import { AUTOLANDER_KNOWLEDGE } from './autolander-knowledge.js';
 import { sha256Hex } from './capi/hash.js';
 import { saveSupportRequest } from './support/storage.js';
 import { handleSiteRequest, isApiPath } from './agent/site.js';
+import { shortLinkResponse } from './agent/short-links.js';
 
 const DEFAULT_ALLOWED_ORIGINS = [
   'https://autolander.ai',
@@ -67,8 +68,15 @@ export default {
     // autolander-chatbot.<account>.workers.dev (preview builds call it there, see .env.preview),
     // and there is no static origin behind that hostname — a passthrough fetch() would resolve
     // straight back into this Worker and loop until Cloudflare killed the subrequest chain.
+    //
+    // The vanity booking links (/onboarding, /demo, /demo-clay — see agent/short-links.js) are
+    // answered first, with a 302 to go.autolander.ai and no origin fetch. Exact paths only (GET/
+    // HEAD); every other request reaches handleSiteRequest exactly as before, and a throw here
+    // still falls through to GitHub Pages, whose static public/<slug>/ page redirects too.
     if (url.hostname.toLowerCase() === 'autolander.ai' && !isApiPath(url.pathname)) {
       try {
+        const shortLink = shortLinkResponse(request, url);
+        if (shortLink) return shortLink;
         return await handleSiteRequest(request, url);
       } catch (err) {
         try {

@@ -4,11 +4,14 @@ import { getPaySummary, openPaySession, PayApiError, redirectToCheckout } from '
 import { buildAttributionSnapshot } from './lib/attribution.js';
 import { amountPresentation, normalizeSummary, trialPresentation } from './lib/summary.js';
 import { formatTrialEnd } from './lib/trial.js';
+import { downloadSetupHref, nextStepsSegments } from './lib/next-steps.js';
 
-// On the success view of a card-required trial the cloud only learns
-// `trial.endsAt` once the Stripe webhook lands, which is usually seconds after
-// the customer is returned here. Re-fetch the summary a handful of times
-// (never more) until it arrives; the copy degrades gracefully if it does not.
+// On the success view the cloud only learns some display copy once the Stripe
+// webhook lands, which is usually seconds after the customer is returned here:
+// a card-required trial's `trial.endsAt`, and (for a return that carried a
+// Stripe session id) the payer e-mail on links whose checkout session is not
+// complete at Stripe yet. Re-fetch the summary a handful of times (never more)
+// until it arrives; the copy degrades gracefully if it does not.
 const TRIAL_END_POLL_MAX = 6;
 const TRIAL_END_POLL_INTERVAL_MS = 2000;
 
@@ -22,7 +25,7 @@ const PHASE = {
   error: 'error',
 };
 
-export default function TokenCheckout({ token, state }) {
+export default function TokenCheckout({ token, state, sessionId = '' }) {
   // `?state=success` is presentational-only: the return URL from Stripe.
   // The verified conversion event is emitted server-side from the Stripe
   // webhook (initial_subscription_payment_paid), never from this page — per
@@ -46,7 +49,9 @@ export default function TokenCheckout({ token, state }) {
     if (!isSuccessReturn) setPhase(PHASE.loading);
     setErrorMessage('');
     try {
-      const payload = await getPaySummary(token);
+      // The Stripe session id rides along only on the success return: it is what
+      // lets the cloud reveal the payer e-mail for the next-steps copy below.
+      const payload = await getPaySummary(token, { sessionId: isSuccessReturn ? sessionId : '' });
       const normalized = normalizeSummary(payload);
       setSummary(normalized);
       if (isSuccessReturn) return; // already showing the success view — never move off it
@@ -72,7 +77,7 @@ export default function TokenCheckout({ token, state }) {
       setPhase(PHASE.error);
       setErrorMessage(err?.message || 'Could not load this payment link.');
     }
-  }, [isSuccessReturn, token]);
+  }, [isSuccessReturn, sessionId, token]);
 
   useEffect(() => {
     // Deferred via setTimeout(0) — same idiom as admin/Dashboard.jsx and
@@ -85,13 +90,16 @@ export default function TokenCheckout({ token, state }) {
   }, [loadSummary]);
 
   useEffect(() => {
-    // Trial success view only: keep re-fetching until `trial.endsAt` arrives
-    // (capped). `loadSummary` already returns before any setPhase on the
-    // success return, so this can never move the customer off the success
-    // view — it only refreshes display copy. Same deferred idiom as above.
-    if (!isSuccessReturn) return undefined;
-    const trial = summary?.trial;
-    if (!trial || trial.endsAt) return undefined;
+    // Success view only: keep re-fetching until the webhook-filled copy arrives
+    // — a trial's `trial.endsAt`, and the payer e-mail when this return carried
+    // a Stripe session id (capped either way). `loadSummary` already returns
+    // before any setPhase on the success return, so this can never move the
+    // customer off the success view — it only refreshes display copy. Same
+    // deferred idiom as above.
+    if (!isSuccessReturn || !summary) return undefined;
+    const needsTrialEnd = Boolean(summary.trial && !summary.trial.endsAt);
+    const needsPayerEmail = Boolean(sessionId) && !summary.payerEmail;
+    if (!needsTrialEnd && !needsPayerEmail) return undefined;
     if (trialPollAttempts >= TRIAL_END_POLL_MAX) return undefined;
 
     const timeoutId = window.setTimeout(async () => {
@@ -99,7 +107,7 @@ export default function TokenCheckout({ token, state }) {
       setTrialPollAttempts((attempts) => attempts + 1);
     }, TRIAL_END_POLL_INTERVAL_MS);
     return () => window.clearTimeout(timeoutId);
-  }, [isSuccessReturn, summary, loadSummary, trialPollAttempts]);
+  }, [isSuccessReturn, summary, sessionId, loadSummary, trialPollAttempts]);
 
   const continueToCheckout = useCallback(async () => {
     if (redirectPending) return;
@@ -163,6 +171,7 @@ export default function TokenCheckout({ token, state }) {
               Cancel any time under Configuration → Billing in AutoLander
             </p>
           </div>
+          <NextSteps payerEmail={summary?.payerEmail} />
           {summary?.businessName && (
             <p className="mt-4 text-xs font-bold uppercase tracking-widest text-slate-500">{summary.businessName}</p>
           )}
@@ -179,6 +188,7 @@ export default function TokenCheckout({ token, state }) {
           Check your email for your receipt and next steps. Your AutoLander team will follow up shortly to get you
           set up.
         </p>
+        <NextSteps payerEmail={summary?.payerEmail} />
         {summary?.businessName && (
           <p className="mt-4 text-xs font-bold uppercase tracking-widest text-slate-500">{summary.businessName}</p>
         )}
@@ -319,6 +329,43 @@ export default function TokenCheckout({ token, state }) {
           : 'You will be redirected to Stripe to complete your payment securely.'}
       </p>
     </CenteredCard>
+  );
+}
+
+// "Next: download AutoLander and create your account or sign in with this same
+// e-mail (…)" — the team's sentence, built by lib/next-steps.js so the exact
+// wording is unit-tested. Display only: like the rest of the success view it
+// never fires a pixel or track call. The download link opens a new tab so this
+// confirmation stays on screen; React escapes every segment.
+function NextSteps({ payerEmail }) {
+  const linkClass = 'font-semibold text-blue-300 underline underline-offset-2';
+  const downloadHref = downloadSetupHref({
+    userAgent: typeof navigator === 'undefined' ? '' : navigator.userAgent,
+    maxTouchPoints: typeof navigator === 'undefined' ? 0 : navigator.maxTouchPoints || 0,
+  });
+  return (
+    <p className="mt-6 w-full rounded-2xl border border-blue-400/20 bg-blue-500/10 p-5 text-left text-sm leading-relaxed text-slate-200">
+      {nextStepsSegments(payerEmail).map((segment, index) => {
+        if (segment.kind === 'download') {
+          return (
+            <a key={index} href={downloadHref} target="_blank" rel="noopener" className={linkClass}>
+              {segment.text}
+            </a>
+          );
+        }
+        if (segment.kind === 'tel') {
+          return (
+            <a key={index} href={segment.href} className={linkClass}>
+              {segment.text}
+            </a>
+          );
+        }
+        if (segment.kind === 'email') {
+          return <strong key={index} className="break-all text-white">{segment.text}</strong>;
+        }
+        return <span key={index}>{segment.text}</span>;
+      })}
+    </p>
   );
 }
 

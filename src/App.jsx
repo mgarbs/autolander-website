@@ -472,14 +472,14 @@ export default function App() {
               <h1 className="font-display text-5xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.85] text-white">
                 GET 25% OFF<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-b from-blue-400 to-indigo-600">
-                  AUTOLANDER PRO.
+                  YOUR FIRST MONTH.
                 </span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.2}>
               <p className="text-lg lg:text-xl text-slate-400 mb-10 max-w-xl mx-auto leading-relaxed font-medium italic">
-                Your private referral invite is ready. Subscribe to the $125/mo Pro plan and get 25% off your first Pro month. Your referrer gets a free Pro month after your payment succeeds.
+                Your private referral invite is ready. Subscribe to any monthly AutoLander plan and get 25% off your first month. Your referrer gets a credit worth half their monthly bill after your first payment succeeds.
               </p>
             </FadeIn>
 
@@ -501,7 +501,7 @@ export default function App() {
                   <div className="mt-5 grid gap-3 text-sm font-bold text-slate-300 sm:grid-cols-3">
                     <div className="rounded-2xl bg-black/25 p-4">1. Download AutoLander</div>
                     <div className="rounded-2xl bg-black/25 p-4">2. Create your account</div>
-                    <div className="rounded-2xl bg-black/25 p-4">3. Choose $125/mo Pro</div>
+                    <div className="rounded-2xl bg-black/25 p-4">3. Choose a monthly plan</div>
                   </div>
                   {showDownloadButtons && (
                     <div className="mt-4 flex flex-wrap gap-2">

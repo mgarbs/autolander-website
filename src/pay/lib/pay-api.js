@@ -3,6 +3,8 @@
 // rest of the site already calls (src/lib/tracker.js), never autolander.ai
 // directly (that's GitHub Pages and has no /api/*).
 
+import { isCheckoutSessionId } from './checkout-session.js';
+
 const RAW_API_URL = import.meta.env.VITE_CAPI_URL || import.meta.env.VITE_CHAT_API_URL || '';
 const API_URL = RAW_API_URL.replace(/\/+$/, '');
 
@@ -46,7 +48,11 @@ async function request(path, { method = 'GET', body } = {}) {
   return json;
 }
 
-export const getPaySummary = (token) => request(`/api/pay/${encodeURIComponent(token)}`);
+// `sessionId` is sent only on the success return, and only when it is a well-formed Stripe
+// Checkout Session id; the cloud answers with `payerEmail` when that session belongs to the link.
+export const getPaySummary = (token, { sessionId = '' } = {}) => request(
+  `/api/pay/${encodeURIComponent(token)}${isCheckoutSessionId(sessionId) ? `?session_id=${encodeURIComponent(sessionId)}` : ''}`,
+);
 export const openPaySession = (token, body) =>
   request(`/api/pay/${encodeURIComponent(token)}/session`, { method: 'POST', body });
 export const openSelfServeSession = (body) => request('/api/pay/self-serve', { method: 'POST', body });

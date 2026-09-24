@@ -77,6 +77,28 @@
     return ['direct', 'none'];
   }
 
+  // A Stripe Checkout return (/pay/<token>?state=success&session_id=cs_…) must never persist its
+  // session id: together with the pay token in the same path it unlocks the payer e-mail on the
+  // success page. This script runs before the app bundle (whose main.jsx scrubs the address bar),
+  // so drop just that pair here. Any other query is returned byte-for-byte unchanged.
+  function paramName(pair) {
+    var raw = pair.split('=')[0].replace(/\+/g, ' ');
+    try {
+      return decodeURIComponent(raw);
+    } catch {
+      return raw;
+    }
+  }
+
+  function withoutCheckoutSession(search) {
+    var pairs = String(search || '').replace(/^\?/, '').split('&');
+    var kept = pairs.filter(function (pair) {
+      return paramName(pair) !== 'session_id';
+    });
+    if (kept.length === pairs.length) return search;
+    return kept.join('&') ? '?' + kept.join('&') : '';
+  }
+
   try {
     if (window.localStorage.getItem(KEY)) return; // First touch wins; never overwrite it.
 
@@ -109,7 +131,7 @@
       utm_campaign: clean(query.get('utm_campaign') || '', MAX_UTM_LENGTH),
       utm_content: clean(query.get('utm_content') || '', MAX_UTM_LENGTH),
       utm_term: clean(query.get('utm_term') || '', MAX_UTM_LENGTH),
-      landing_page: ((window.location.pathname || '/') + (window.location.search || '')).slice(0, 500),
+      landing_page: ((window.location.pathname || '/') + withoutCheckoutSession(window.location.search || '')).slice(0, 500),
       referrer_url: referrerUrl.slice(0, 1200),
       first_seen: new Date().toISOString()
     }));
