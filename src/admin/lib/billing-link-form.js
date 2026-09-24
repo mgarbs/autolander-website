@@ -85,7 +85,12 @@ function normalizeSelectedCrm(selectedCrm) {
 // Build the allowlisted cloud payload from catalog codes and a server-resolved
 // GHL selection. Deliberately accepts no dollar/price fields: the cloud billing
 // catalog remains the only authority for what Stripe charges.
-export function buildBillingLinkPayload({ form = {}, selectedOrg, selectedCrm } = {}) {
+//
+// `accountAttach: 'none'` is passed only when the rep removed the e-mail
+// auto-match suggestion; it tells the cloud not to auto-attach this link by the
+// CRM e-mail (at create or at first open). An explicit account always wins, and
+// a trial link never auto-attaches, so the flag is omitted for both.
+export function buildBillingLinkPayload({ form = {}, selectedOrg, selectedCrm, accountAttach } = {}) {
   const planChoice = text(form.planCode, 40).toUpperCase();
   const isTrial = isTrialPlanChoice(planChoice);
   const planCode = isTrial ? TRIAL_BASE_PLAN : planChoice;
@@ -120,6 +125,8 @@ export function buildBillingLinkPayload({ form = {}, selectedOrg, selectedCrm } 
     withSetupFee: isTrial ? false : form.setupFee === true,
     ...(orgId ? { orgId } : {}),
   };
+
+  if (!orgId && !isTrial && accountAttach === 'none') payload.accountAttach = 'none';
 
   if (isTrial) payload.trialCode = TRIAL_CODE;
 

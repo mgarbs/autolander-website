@@ -4,6 +4,7 @@ import SelfServePicker from './SelfServePicker.jsx';
 import TokenCheckout from './TokenCheckout.jsx';
 import TrialStart from './TrialStart.jsx';
 import { trialCodeFromSearch } from './lib/trial.js';
+import { checkoutSessionIdFor } from './lib/checkout-session.js';
 
 // Root of the /pay SPA surface (design doc §7). Three shapes:
 //   /pay                   -> install/sign in before choosing a plan (SelfServePicker)
@@ -31,6 +32,12 @@ export default function PayApp() {
     return trialCodeFromSearch(window.location.search);
   }, []);
   const showTrial = !token && Boolean(trialCode);
+  // The Stripe Checkout Session id main.jsx moved out of the URL (sessionStorage) on the
+  // success return — lets the success view ask the cloud for the payer e-mail.
+  const sessionId = useMemo(
+    () => (token && state === 'success' ? checkoutSessionIdFor(token) : ''),
+    [token, state],
+  );
 
   useEffect(() => {
     document.title = token
@@ -69,7 +76,7 @@ export default function PayApp() {
 
       <main className="relative z-10 mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-16">
         {token ? (
-          <TokenCheckout token={token} state={state} />
+          <TokenCheckout token={token} state={state} sessionId={sessionId} />
         ) : showTrial ? (
           <TrialStart />
         ) : (

@@ -8,6 +8,10 @@
 
 const DEFAULT_CLOUD_URL = 'https://autolander-cloud.onrender.com';
 const FETCH_TIMEOUT_MS = 10000;
+// Stripe Checkout Session id (`cs_live_…` / `cs_test_…`). Same pattern as the cloud's
+// services/billing-links.js and the client's src/pay/lib/checkout-session.js — change all three
+// together if Stripe ever changes its id format.
+const CHECKOUT_SESSION_ID_PATTERN = /^cs_[A-Za-z0-9_]{1,250}$/;
 
 function cloudBase(env) {
   return String(env.AUTOLANDER_CLOUD_URL || DEFAULT_CLOUD_URL).replace(/\/+$/, '');
@@ -71,9 +75,15 @@ function enrichAttribution(request, rawBody) {
   };
 }
 
-// GET /api/pay/:token -> GET {cloud}/api/pay/:token
-export async function getPaySummary(env, token) {
-  return proxyToCloud(env, `/api/pay/${encodeURIComponent(token)}`);
+// GET /api/pay/:token[?session_id=cs_…] -> GET {cloud}/api/pay/:token[?session_id=cs_…]
+// Only a well-formed Checkout Session id is ever forwarded (the cloud reveals the payer e-mail on
+// the success page only when that id belongs to the link); no other client query reaches the
+// cloud. A missing or malformed id is dropped, which is exactly today's request.
+export async function getPaySummary(env, token, { sessionId = '' } = {}) {
+  const search = typeof sessionId === 'string' && CHECKOUT_SESSION_ID_PATTERN.test(sessionId)
+    ? `?session_id=${encodeURIComponent(sessionId)}`
+    : '';
+  return proxyToCloud(env, `/api/pay/${encodeURIComponent(token)}`, { search });
 }
 
 // POST /api/pay/:token/session -> POST {cloud}/api/pay/:token/session

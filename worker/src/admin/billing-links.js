@@ -1,10 +1,13 @@
 // Admin-only proxy to the AutoLander cloud centralized billing-link endpoints
-// (POST/GET /api/billing-links, GET /api/billing-links/:id, disable, recreate).
+// (POST/GET /api/billing-links, GET /api/billing-links/:id, disable, recreate,
+// GET /api/billing-links/account-match, POST /api/billing-links/:id/account).
 // The browser never sees OPS_ADMIN_TOKEN — every call goes browser -> Worker
 // (admin session required in router.js) -> cloud with the server-side token.
 // Mirrors admin/ops-linking.js exactly.
 
 const DEFAULT_CLOUD_URL = 'https://autolander-cloud.onrender.com';
+const MAX_EMAIL_LENGTH = 320;
+const MAX_ORG_ID_LENGTH = 200;
 
 function cloudBase(env) {
   return String(env.AUTOLANDER_CLOUD_URL || DEFAULT_CLOUD_URL).replace(/\/+$/, '');
@@ -97,6 +100,51 @@ export function handleBillingLinkRecreate(env, id) {
     return Promise.resolve({ status: 400, body: { ok: false, reason: 'missing_id' } });
   }
   return proxyBillingLinks(env, `/${encodeURIComponent(id)}/recreate`, { method: 'POST', body: {} });
+}
+
+// GET /admin/billing-links/account-match?email=… -> the ONE AutoLander account (if any) whose
+// active user has exactly this e-mail, plus the core-plan guard verdict for it. Cross-tenant by
+// design, so it only ever runs behind the admin session here and the ops token on the cloud.
+export function handleBillingLinkAccountMatch(url, env) {
+  const email = String(url.searchParams.get('email') || '').trim();
+  if (!email) {
+    return Promise.resolve({ status: 400, body: { ok: false, reason: 'missing_email' } });
+  }
+  if (email.length > MAX_EMAIL_LENGTH) {
+    return Promise.resolve({ status: 400, body: { ok: false, reason: 'invalid_email' } });
+  }
+  return proxyBillingLinks(env, '/account-match', { search: `?email=${encodeURIComponent(email)}` });
+}
+
+// POST /admin/billing-links/:id/account {orgId|null} -> attach (or, with null, detach) the
+// account on a link nobody has opened yet. The cloud refuses once the link was opened
+// (LINK_ACCOUNT_LOCKED) or when the account already has an active core plan (CORE_PLAN_ACTIVE).
+// Null is a detach, so a body we cannot read or an orgId that is neither a string nor null is
+// refused here instead of being forwarded as one (the cloud answers 400 for a non-string orgId
+// too). An absent orgId stays a detach, as on the cloud.
+export async function handleBillingLinkSetAccount(request, env, id) {
+  if (!id) return { status: 400, body: { ok: false, reason: 'missing_id' } };
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return { status: 400, body: { ok: false, reason: 'invalid_body' } };
+  }
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { status: 400, body: { ok: false, reason: 'invalid_body' } };
+  }
+  const rawOrgId = body.orgId;
+  if (rawOrgId !== undefined && rawOrgId !== null && typeof rawOrgId !== 'string') {
+    return { status: 400, body: { ok: false, reason: 'invalid_org_id' } };
+  }
+  const orgId = typeof rawOrgId === 'string' ? rawOrgId.trim() : '';
+  if (orgId.length > MAX_ORG_ID_LENGTH) {
+    return { status: 400, body: { ok: false, reason: 'invalid_org_id' } };
+  }
+  return proxyBillingLinks(env, `/${encodeURIComponent(id)}/account`, {
+    method: 'POST',
+    body: { orgId: orgId || null },
+  });
 }
 
 async function safeJson(request) {

@@ -19,9 +19,11 @@ import {
 } from './billing-cycle.js';
 import { handleGhlOpportunitySearch } from './ghl-linking.js';
 import {
+  handleBillingLinkAccountMatch,
   handleBillingLinkDetail,
   handleBillingLinkDisable,
   handleBillingLinkRecreate,
+  handleBillingLinkSetAccount,
   handleBillingLinksCreate,
   handleBillingLinksList,
 } from './billing-links.js';
@@ -143,6 +145,19 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
 
   if (path === '/admin/billing-links' && request.method === 'POST') {
     const result = await handleBillingLinksCreate(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  // Account auto-match + change/detach. Both MUST stay above the detail regex
+  // below, which would otherwise read 'account-match' as a link id.
+  if (path === '/admin/billing-links/account-match' && request.method === 'GET') {
+    const result = await handleBillingLinkAccountMatch(url, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  const billingLinkSetAccountMatch = path.match(/^\/admin\/billing-links\/([^/]+)\/account$/);
+  if (billingLinkSetAccountMatch && request.method === 'POST') {
+    const result = await handleBillingLinkSetAccount(request, env, decodeURIComponent(billingLinkSetAccountMatch[1]));
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 

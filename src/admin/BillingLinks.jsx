@@ -23,17 +23,27 @@ import {
   TRIAL_CODE,
   TRIAL_DAYS,
   TRIAL_PLAN_CHOICE,
+  accountCoreWarning,
+  accountMatchLabel,
+  accountMatchNote,
+  billingLinkAccountErrorText,
   createBillingLink,
+  describeCreatedAccountMatch,
   disableBillingLink,
+  findAccountMatch,
   formatCents,
   formatDate,
   getBillingLink,
+  isAccountMatchUnavailable,
   isBillingLinksNotConfigured,
+  isCoreLinkChoice,
   isTrialPlanChoice,
   listBillingLinks,
+  normalizeAccountMatchStamp,
   normalizePlanMeta,
   payUrlForToken,
   recreateBillingLink,
+  setBillingLinkAccount,
 } from './lib/billing-links.js';
 import {
   TEAM_MIN_SEATS,
@@ -76,6 +86,25 @@ function TrialChip({ planMeta, className = '' }) {
   );
 }
 
+// "E-mail match" chip for list rows whose account was attached by the cloud's
+// exact-e-mail match (planMeta.accountMatch), at create or at first open.
+function AccountMatchChip({ accountMatch, className = '' }) {
+  if (!accountMatch || !['auto_attached', 'auto_attached_at_open'].includes(accountMatch.status)) return null;
+  return (
+    <span
+      title={`${accountMatchLabel(accountMatch.status)}${accountMatch.email ? ` · ${accountMatch.email}` : ''}`}
+      className={`shrink-0 rounded-full border border-sky-500/30 bg-sky-500/10 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-sky-200 ${className}`}
+    >
+      E-mail match
+    </span>
+  );
+}
+
+// The CRM e-mail the cloud matches accounts by — the same field it snapshots.
+function crmEmailOf(selectedCrm) {
+  return String(selectedCrm?.crmSnapshot?.email || selectedCrm?.email || '').trim();
+}
+
 function statusTone(status) {
   switch (status) {
     case 'completed':
@@ -100,6 +129,16 @@ export default function BillingLinks({ embedded = false }) {
   const [copied, setCopied] = useState(false);
   const [selectedOrg, setSelectedOrg] = useState(null);
   const [selectedCrm, setSelectedCrm] = useState(null);
+  // E-mail auto-match (core, non-trial links): the cloud's suggestion for the
+  // picked CRM e-mail, whether it is still loading, and whether the rep removed
+  // it (then the link is created with accountAttach:'none'). A manual account
+  // pick is never overwritten by a suggestion.
+  const [accountMatch, setAccountMatch] = useState(null);
+  const [accountMatchPending, setAccountMatchPending] = useState(false);
+  const [autoMatchCleared, setAutoMatchCleared] = useState(false);
+  const accountMatchSeq = useRef(0);
+  const crmEmail = crmEmailOf(selectedCrm);
+  const coreLinkSelected = isCoreLinkChoice(form.planCode);
 
   const [links, setLinks] = useState([]);
   const [listLoading, setListLoading] = useState(true);
@@ -137,6 +176,62 @@ export default function BillingLinks({ embedded = false }) {
     return () => window.clearTimeout(timeoutId);
   }, [loadLinks]);
 
+  useEffect(() => {
+    // Same seq/debounce idiom as AccountAttachment's search: only the latest
+    // lookup may write state, and every setState runs outside the effect body.
+    const seq = accountMatchSeq.current + 1;
+    accountMatchSeq.current = seq;
+    const email = crmEmail;
+    const shouldLookup = Boolean(email) && coreLinkSelected;
+    const dropSuggestion = (current) => (current?.autoMatched ? null : current);
+    const timeoutId = window.setTimeout(async () => {
+      if (accountMatchSeq.current !== seq) return;
+      if (!shouldLookup) {
+        setAccountMatch(null);
+        setAccountMatchPending(false);
+        setSelectedOrg(dropSuggestion);
+        return;
+      }
+
+      setAccountMatchPending(true);
+      let match;
+      try {
+        match = await findAccountMatch(email);
+      } catch (err) {
+        if (accountMatchSeq.current !== seq) return;
+        setAccountMatchPending(false);
+        // No endpoint yet (older cloud) or no ops token: no suggestion, and the
+        // link is created exactly as before. Anything else is shown as a note.
+        setAccountMatch(isAccountMatchUnavailable(err) ? null : { status: 'lookup_failed', email, candidates: [] });
+        setSelectedOrg(dropSuggestion);
+        return;
+      }
+      if (accountMatchSeq.current !== seq) return;
+      setAccountMatchPending(false);
+      setAccountMatch(match);
+      setSelectedOrg((current) => {
+        if (current && !current.autoMatched) return current; // never overwrite a manual pick
+        if (match.autoAttach && match.candidate && !autoMatchCleared) {
+          return { ...match.candidate, autoMatched: true, matchedEmail: email };
+        }
+        return null;
+      });
+    }, shouldLookup ? 250 : 0);
+    return () => window.clearTimeout(timeoutId);
+  }, [autoMatchCleared, coreLinkSelected, crmEmail]);
+
+  // A new (or no) CRM pick starts the e-mail match over: forget a removed
+  // suggestion and drop the suggested account (a manual pick stays).
+  function resetAutoMatch() {
+    setAutoMatchCleared(false);
+    setSelectedOrg((current) => (current?.autoMatched ? null : current));
+  }
+
+  function clearSelectedOrg() {
+    if (selectedOrg?.autoMatched) setAutoMatchCleared(true);
+    setSelectedOrg(null);
+  }
+
   function updateForm(patch) {
     setForm((current) => ({ ...current, ...patch }));
   }
@@ -157,7 +252,14 @@ export default function BillingLinks({ embedded = false }) {
     event.preventDefault();
     if (createPending) return;
 
-    const built = buildBillingLinkPayload({ form, selectedOrg, selectedCrm });
+    const built = buildBillingLinkPayload({
+      form,
+      selectedOrg,
+      selectedCrm,
+      // The rep removed the e-mail suggestion: tell the cloud not to attach by
+      // e-mail on its own either (at create or when the dealer opens the link).
+      accountAttach: !selectedOrg && autoMatchCleared ? 'none' : undefined,
+    });
     if (!built.ok) {
       setCreateMessage({ type: 'error', text: built.error });
       return;
@@ -170,11 +272,17 @@ export default function BillingLinks({ embedded = false }) {
 
     try {
       const response = await createBillingLink(built.payload);
-      setCreateResult(response);
+      setCreateResult({
+        ...response,
+        // Remembered only to name the account in the created-link summary.
+        pickedOrg: selectedOrg ? { orgId: selectedOrg.orgId, orgName: selectedOrg.orgName } : null,
+      });
       setCreateMessage({ type: 'success', text: 'Payment link ready.' });
       loadLinks();
     } catch (err) {
-      setCreateMessage({ type: 'error', text: err?.message || 'Could not create payment link.' });
+      // serverMessage carries the cloud's sentence (e.g. CORE_PLAN_ACTIVE: "…
+      // already has an active Pro subscription…") instead of the bare code.
+      setCreateMessage({ type: 'error', text: err?.serverMessage || err?.message || 'Could not create payment link.' });
     } finally {
       setCreatePending(false);
     }
@@ -210,6 +318,19 @@ export default function BillingLinks({ embedded = false }) {
       loadLinks();
     } catch (err) {
       setDetailError(err?.message || 'Could not disable this payment link.');
+    } finally {
+      setActionPending('');
+    }
+  }
+
+  async function runSetAccount(id, orgId) {
+    setActionPending(orgId ? 'attach' : 'detach');
+    try {
+      await setBillingLinkAccount(id, orgId);
+      await openDetail(id);
+      loadLinks();
+    } catch (err) {
+      setDetailError(billingLinkAccountErrorText(err));
     } finally {
       setActionPending('');
     }
@@ -400,16 +521,29 @@ export default function BillingLinks({ embedded = false }) {
             notCrmLinked={form.notCrmLinked}
             onSelect={(selection) => {
               setSelectedCrm(selection);
+              resetAutoMatch();
               updateForm({ notCrmLinked: false });
             }}
-            onClear={() => setSelectedCrm(null)}
+            onClear={() => {
+              setSelectedCrm(null);
+              resetAutoMatch();
+            }}
             onNotCrmLinkedChange={(checked) => {
               setSelectedCrm(null);
+              resetAutoMatch();
               updateForm({ notCrmLinked: checked });
             }}
           />
 
-          <AccountAttachment selectedOrg={selectedOrg} onSelect={setSelectedOrg} onClear={() => setSelectedOrg(null)} />
+          <AccountAttachment
+            selectedOrg={selectedOrg}
+            onSelect={setSelectedOrg}
+            onClear={clearSelectedOrg}
+            autoMatch={coreLinkSelected && crmEmail ? accountMatch : null}
+            autoMatchPending={coreLinkSelected && Boolean(crmEmail) && accountMatchPending}
+            autoMatchCleared={coreLinkSelected && Boolean(crmEmail) && autoMatchCleared}
+            coreWarning={coreLinkSelected ? accountCoreWarning({ selectedOrg, accountMatch }) : ''}
+          />
 
           <div className="flex flex-col gap-3 sm:flex-row">
             <button
@@ -425,6 +559,7 @@ export default function BillingLinks({ embedded = false }) {
           {createResult?.request?.token || createResult?.checkoutRequest?.token || createResult?.token ? (
             <div className="rounded-xl border border-white/10 bg-black/40 p-3">
               <CreatedBillingSummary result={createResult} />
+              <CreatedAccountLine result={createResult} />
               <p className="mb-2 text-[9px] font-black uppercase tracking-widest text-slate-600">Durable pay URL</p>
               <p className="break-all font-mono text-xs text-slate-300">
                 {createResult.payUrl || payUrlForToken(createResult.request?.token || createResult.checkoutRequest?.token || createResult.token)}
@@ -517,6 +652,7 @@ export default function BillingLinks({ embedded = false }) {
                         {link.livemode ? 'Live' : 'Test'}
                       </span>
                       <TrialChip planMeta={link.planMeta} />
+                      <AccountMatchChip accountMatch={link.accountMatch} />
                       {link.crmLinked && (
                         <BadgeCheck size={13} className="shrink-0 text-emerald-400" aria-label="CRM linked" />
                       )}
@@ -541,6 +677,7 @@ export default function BillingLinks({ embedded = false }) {
             actionPending={actionPending}
             onDisable={runDisable}
             onRecreate={runRecreate}
+            onSetAccount={runSetAccount}
             onClose={() => setSelectedId('')}
           />
         )}
@@ -596,6 +733,31 @@ function CreatedBillingSummary({ result }) {
       </div>
       <p className="mt-1 text-[10px] text-slate-500">This amount came from the central billing catalog, not this browser.</p>
     </div>
+  );
+}
+
+// Which account (if any) the new link is attached to, from the cloud's
+// `accountMatch` in the create response. Renders nothing for an older cloud.
+function CreatedAccountLine({ result }) {
+  const record = result?.request || result?.checkoutRequest || result || {};
+  const picked = result?.pickedOrg;
+  const line = describeCreatedAccountMatch(result?.accountMatch, {
+    orgId: record.orgId,
+    orgName: picked && picked.orgId && picked.orgId === record.orgId ? picked.orgName : '',
+  });
+  if (!line) return null;
+  const attached = Boolean(record.orgId);
+  return (
+    <p
+      className={`mb-3 flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold ${
+        attached
+          ? 'border-emerald-500/20 bg-emerald-500/[0.06] text-emerald-200'
+          : 'border-white/10 bg-white/[0.03] text-slate-400'
+      }`}
+    >
+      <Building2 size={13} className="shrink-0" />
+      {line}
+    </p>
   );
 }
 
@@ -800,7 +962,17 @@ function CrmOpportunityPicker({ selected, notCrmLinked, onSelect, onClear, onNot
   );
 }
 
-function AccountAttachment({ selectedOrg, onSelect, onClear }) {
+function AccountAttachment({
+  selectedOrg,
+  onSelect,
+  onClear,
+  autoMatch = null,
+  autoMatchPending = false,
+  autoMatchCleared = false,
+  coreWarning = '',
+  title = 'Attach to AutoLander account',
+  helpText = 'Attach an account to activate it automatically after payment. Leave this blank to create a CRM-only payment link.',
+}) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -851,7 +1023,7 @@ function AccountAttachment({ selectedOrg, onSelect, onClear }) {
     <div className="space-y-3 rounded-xl border border-white/10 bg-white/[0.02] p-4">
       <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
         <Building2 size={14} />
-        Attach to AutoLander account
+        {title}
         <span className="font-bold normal-case tracking-normal text-slate-600">(optional)</span>
       </div>
 
@@ -860,31 +1032,46 @@ function AccountAttachment({ selectedOrg, onSelect, onClear }) {
           Account attachment is unavailable until the shared ops connection is configured. This payment link can still be created.
         </p>
       ) : selectedOrg ? (
-        <div className="flex items-start justify-between gap-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-3">
-          <div className="min-w-0">
-            <p className="flex items-center gap-2 text-sm font-black text-white">
-              <Zap size={14} className="shrink-0 text-emerald-300" />
-              <span className="truncate">{selectedOrg.orgName || selectedOrg.orgId}</span>
-            </p>
-            <p className="mt-1 text-xs font-bold text-emerald-200">
-              When this link is paid, the subscription attaches to this account automatically.
-            </p>
-            <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">
-              {candidateSubscriptionSummary(selectedOrg)}
-            </p>
+        <>
+          <div className="flex items-start justify-between gap-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-3">
+            <div className="min-w-0">
+              {selectedOrg.autoMatched && (
+                <p className="mb-2 inline-flex max-w-full items-center gap-1 rounded-full border border-sky-400/30 bg-sky-400/10 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-sky-200">
+                  <span className="truncate">Matched by e-mail · {selectedOrg.matchedEmail}</span>
+                </p>
+              )}
+              <p className="flex items-center gap-2 text-sm font-black text-white">
+                <Zap size={14} className="shrink-0 text-emerald-300" />
+                <span className="truncate">{selectedOrg.orgName || selectedOrg.orgId}</span>
+              </p>
+              <p className="mt-1 text-xs font-bold text-emerald-200">
+                {selectedOrg.autoMatched
+                  ? 'Exactly one AutoLander account uses this e-mail, so the link will attach to it. Remove it (X) or search to pick a different account.'
+                  : 'When this link is paid, the subscription attaches to this account automatically.'}
+              </p>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                {candidateSubscriptionSummary(selectedOrg)}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onClear}
+              className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/20 text-slate-300 transition hover:bg-white/10 hover:text-white"
+              title={selectedOrg.autoMatched ? 'Remove the e-mail match' : 'Remove account attachment'}
+            >
+              <X size={14} aria-hidden="true" />
+              <span className="sr-only">{selectedOrg.autoMatched ? 'Remove the e-mail match' : 'Remove account attachment'}</span>
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={onClear}
-            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-black/20 text-slate-300 transition hover:bg-white/10 hover:text-white"
-            title="Remove account attachment"
-          >
-            <X size={14} aria-hidden="true" />
-            <span className="sr-only">Remove account attachment</span>
-          </button>
-        </div>
+          {coreWarning && (
+            <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-200">
+              {coreWarning}
+            </p>
+          )}
+        </>
       ) : (
         <>
+          <AutoMatchNote match={autoMatch} pending={autoMatchPending} cleared={autoMatchCleared} onPick={choose} />
           <div className="relative">
             <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
@@ -895,9 +1082,7 @@ function AccountAttachment({ selectedOrg, onSelect, onClear }) {
             />
             {searching && <Loader2 size={14} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-slate-400" />}
           </div>
-          <p className="text-[10px] text-slate-600">
-            Attach an account to activate it automatically after payment. Leave this blank to create a CRM-only payment link.
-          </p>
+          <p className="text-[10px] text-slate-600">{helpText}</p>
           {error && <p className="text-xs font-bold text-red-200">{error}</p>}
           {results.length > 0 && (
             <div className="max-h-56 space-y-1 overflow-y-auto rounded-xl border border-white/10 bg-black/40 p-1">
@@ -925,6 +1110,58 @@ function AccountAttachment({ selectedOrg, onSelect, onClear }) {
             <p className="text-xs text-slate-500">No matching accounts.</p>
           )}
         </>
+      )}
+    </div>
+  );
+}
+
+const AUTO_MATCH_NOTE_TONES = {
+  muted: 'border-white/10 bg-black/40 text-slate-400',
+  warn: 'border-amber-500/30 bg-amber-500/10 text-amber-200',
+};
+
+// What the e-mail auto-match found when it did NOT attach an account itself
+// (copy + suggestions from accountMatchNote). Suggested accounts are offered as
+// buttons; picking one is a normal manual attach (the cloud records it as the
+// rep's choice).
+function AutoMatchNote({ match, pending, cleared, onPick }) {
+  if (pending) {
+    return (
+      <p className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+        <Loader2 size={12} className="animate-spin" />
+        Checking AutoLander accounts for this e-mail…
+      </p>
+    );
+  }
+  const described = accountMatchNote(match, { cleared });
+  if (!described) return null;
+  const { note, options } = described;
+  const tone = AUTO_MATCH_NOTE_TONES[described.tone] || AUTO_MATCH_NOTE_TONES.muted;
+
+  return (
+    <div className={`space-y-2 rounded-lg border px-3 py-2 text-xs font-bold ${tone}`}>
+      <p>{note}</p>
+      {options.length > 0 && (
+        <div className="space-y-1">
+          {options.map((candidate) => (
+            <button
+              key={candidate.orgId}
+              type="button"
+              onClick={() => onPick(candidate)}
+              className="flex w-full items-center justify-between gap-3 rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-left transition hover:bg-white/10"
+            >
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-bold text-white">{candidate.orgName || candidate.orgId}</span>
+                <span className="block truncate text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                  {candidate.admins?.length ? candidate.admins.join(', ') : candidate.orgId}
+                </span>
+              </span>
+              <span className="shrink-0 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                {candidateSubscriptionSummary(candidate)}
+              </span>
+            </button>
+          ))}
+        </div>
       )}
     </div>
   );
@@ -961,11 +1198,27 @@ const DETAIL_JSON_FIELDS = [
   ['attribution', 'Attribution'],
 ];
 
-function BillingLinkDetailPanel({ id, detail, loading, error, actionPending, onDisable, onRecreate, onClose }) {
+function BillingLinkDetailPanel({
+  id,
+  detail,
+  loading,
+  error,
+  actionPending,
+  onDisable,
+  onRecreate,
+  onSetAccount,
+  onClose,
+}) {
   const record = detail?.record || {};
   const planMeta = normalizePlanMeta(record.planMeta);
   const canDisable = record.status && !['disabled', 'completed'].includes(record.status);
   const canRecreate = record.status === 'disabled' || record.status === 'expired';
+  const accountStamp = normalizeAccountMatchStamp(record.planMeta?.accountMatch);
+  // Mirrors the cloud's isAccountMutable (which stays authoritative and answers
+  // LINK_ACCOUNT_LOCKED otherwise): an admin core-plan link nobody has opened.
+  const canChangeAccount = record.status === 'created' && record.origin === 'admin'
+    && isCoreLinkChoice(record.planCode) && !planMeta.trialCode
+    && !record.stripeCheckoutSessionId && !record.planMeta?.checkoutSessionSnapshot;
 
   return (
     <div className="space-y-4 rounded-xl border border-blue-500/30 bg-blue-500/[0.04] p-5">
@@ -1029,10 +1282,52 @@ function BillingLinkDetailPanel({ id, detail, loading, error, actionPending, onD
             <SummaryField label="Expected recurring" value={formatCents(record.expectedRecurringCents, record.currency)} />
             <SummaryField label="Expected one-time" value={formatCents(record.expectedOneTimeCents, record.currency)} />
             <SummaryField label="Origin" value={record.origin} />
+            <SummaryField
+              label="Account match"
+              value={accountStamp
+                ? `${accountMatchLabel(accountStamp.status)}${accountStamp.email ? ` · ${accountStamp.email}` : ''}`
+                : '—'}
+            />
             <SummaryField label="Created" value={formatDate(record.createdAt)} />
             <SummaryField label="Opened" value={formatDate(record.openedAt)} />
             <SummaryField label="Completed" value={formatDate(record.completedAt)} />
           </div>
+
+          {canChangeAccount && (
+            <div className="space-y-3 rounded-xl border border-white/10 bg-black/40 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                  Account on this link{' '}
+                  <span className="font-mono normal-case tracking-normal text-slate-300">{record.orgId || 'none'}</span>
+                </p>
+                {record.orgId && (
+                  <button
+                    type="button"
+                    onClick={() => onSetAccount(id, null)}
+                    disabled={Boolean(actionPending)}
+                    className="inline-flex h-9 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 text-[10px] font-black uppercase tracking-widest text-slate-300 transition hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {actionPending === 'detach' ? <Loader2 size={13} className="animate-spin" /> : <X size={13} />}
+                    Detach
+                  </button>
+                )}
+              </div>
+              {actionPending === 'attach' ? (
+                <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-500">
+                  <Loader2 size={13} className="animate-spin" />
+                  Changing the account…
+                </p>
+              ) : (
+                <AccountAttachment
+                  selectedOrg={null}
+                  onSelect={(candidate) => onSetAccount(id, candidate.orgId)}
+                  onClear={() => {}}
+                  title="Change account"
+                  helpText="Pick the account this link should attach to. Possible only until the dealer opens the link; after that, disable it and create a new one."
+                />
+              )}
+            </div>
+          )}
 
           <div className="rounded-xl border border-white/10 bg-black/40 p-4">
             <p className="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-500">Every ID on this record</p>

@@ -304,10 +304,10 @@ export default function DeferredLandingSections({
                         <div>
                           <p className="text-[10px] font-black uppercase tracking-[0.26em] text-amber-200">Limited-Time Private Invite</p>
                           <h3 className="mt-2 text-3xl font-black uppercase italic leading-none text-white sm:text-4xl">
-                            Give 25%. Get 1 Free Month.
+                            Give 25%. Get 50% off a month.
                           </h3>
                           <p className="mt-3 max-w-2xl text-sm font-bold leading-relaxed text-slate-200 lg:text-base">
-                            Join through this private link on monthly <span className="text-amber-200">$125/mo Pro</span> to get 25% off your first Pro month. The referrer gets a <span className="text-amber-200">$125 account credit</span> after your payment succeeds.
+                            Join through this private link on <span className="text-amber-200">any monthly plan</span> to get 25% off your first month. The referrer gets a <span className="text-amber-200">credit worth half their monthly bill</span> after your first payment succeeds.
                           </p>
                         </div>
                       </div>
@@ -318,7 +318,7 @@ export default function DeferredLandingSections({
                     <div className="mt-6 grid gap-3 md:grid-cols-3">
                       <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
                         <p className="text-[10px] font-black uppercase tracking-widest text-amber-200">Referrer Reward</p>
-                        <p className="mt-1 text-xl font-black italic text-white">1 Free Pro Month</p>
+                        <p className="mt-1 text-xl font-black italic text-white">Half-Month Credit Per Dealer</p>
                       </div>
                       <div className="rounded-2xl border border-white/10 bg-white/10 p-4">
                         <p className="text-[10px] font-black uppercase tracking-widest text-blue-200">New Dealer Offer</p>
@@ -329,7 +329,7 @@ export default function DeferredLandingSections({
                           {isMonthlyBilling ? 'Active Below' : 'Annual Selected'}
                         </p>
                         <p className="mt-1 text-xl font-black italic text-white">
-                          {isMonthlyBilling ? '$125/mo Pro Only' : 'Switch to Monthly'}
+                          {isMonthlyBilling ? 'Any Monthly Plan' : 'Switch to Monthly'}
                         </p>
                       </div>
                     </div>
@@ -437,7 +437,7 @@ export default function DeferredLandingSections({
                   )}
                   <p className={`mt-0 text-center text-[10px] font-black uppercase italic tracking-widest opacity-40 ${showsPlanCta ? 'md:mt-4' : ''}`}>
                     {plan.proPromo && hasReferral
-                      ? (isMonthlyBilling ? 'Limited-time offer requires monthly $125 Pro' : 'Annual Pro is not part of this limited-time referral offer')
+                      ? 'Referral discount applies to monthly plans'
                       : plan.proPromo ? 'Best for high-volume single rooftops'
                       : plan.team ? 'Download + upgrade in-app' : 'First 5 posts are free'}
                   </p>

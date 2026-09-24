@@ -1,3 +1,5 @@
+import { normalizePayerEmail } from './next-steps.js';
+
 const ONE_TIME_INTERVALS = new Set(['one_time', 'one-time', 'payment']);
 const ANNUAL_INTERVALS = new Set(['annual', 'year', 'yearly']);
 
@@ -54,7 +56,9 @@ export function normalizeTrial(raw) {
 
 // The cloud's durable pay-link contract separates subscription and one-time
 // totals. `cents`/`amountCents` are retained only as backwards-compatible
-// fallbacks for links created before that contract shipped.
+// fallbacks for links created before that contract shipped. `payerEmail` only
+// appears on a success return that proved its Stripe session (?session_id=);
+// it is '' whenever it is absent or not a plausible address.
 export function normalizeSummary(payload) {
   const amount = payload?.amountSummary && typeof payload.amountSummary === 'object'
     ? payload.amountSummary
@@ -73,6 +77,7 @@ export function normalizeSummary(payload) {
     status: payload?.status || 'created',
     livemode: Boolean(payload?.livemode),
     trial: normalizeTrial(payload?.trial),
+    payerEmail: normalizePayerEmail(payload?.payerEmail),
   };
 }
 

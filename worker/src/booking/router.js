@@ -148,7 +148,9 @@ export async function handleBooking(request, env, corsHeaders, ctx) {
 
   const payTokenMatch = url.pathname.match(/^\/api\/pay\/([^/]+)$/);
   if (payTokenMatch && request.method === 'GET') {
-    const result = await getPaySummary(env, decodeURIComponent(payTokenMatch[1]));
+    const result = await getPaySummary(env, decodeURIComponent(payTokenMatch[1]), {
+      sessionId: url.searchParams.get('session_id') || '',
+    });
     return json(result.body, result.status, corsHeaders);
   }
 
