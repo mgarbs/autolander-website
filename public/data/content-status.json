@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-24",
+  "generatedAt": "2026-09-25",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -516,8 +516,8 @@
       ],
       "description": "Facebook Marketplace vs Craigslist for cars: audience, listing fees, messaging, scams, and dealer workflow compared — and which channel to work first.",
       "suggestedOrder": 27,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-25"
     },
     {
       "slug": "used-car-merchandising-checklist",

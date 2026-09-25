@@ -101,8 +101,8 @@ Facebook does not publish how Marketplace search ranks vehicle listings, so trea
 - [Safest Facebook Marketplace auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/)
 - [How to mark a car as sold on Facebook Marketplace](https://autolander.ai/guide/mark-car-sold-on-facebook-marketplace/)
 - [Facebook Marketplace listing not showing up: the dealer fix](https://autolander.ai/guide/facebook-marketplace-listing-not-showing-up/)
+- [Facebook Marketplace vs Craigslist for selling cars](https://autolander.ai/guide/facebook-marketplace-vs-craigslist-for-selling-cars/)
 - [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/)
-- [Best time to post cars on Facebook Marketplace (2026 data)](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

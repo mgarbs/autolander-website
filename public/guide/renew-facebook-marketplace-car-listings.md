@@ -87,7 +87,7 @@ Renewing through Facebook’s own offered option, at the pace Facebook offers it
 - [Facebook Marketplace car description template that sells](https://autolander.ai/guide/facebook-marketplace-car-description-template/)
 - [How to mark a car as sold on Facebook Marketplace](https://autolander.ai/guide/mark-car-sold-on-facebook-marketplace/)
 - [Facebook Marketplace listing not showing up: the dealer fix](https://autolander.ai/guide/facebook-marketplace-listing-not-showing-up/)
-- [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/)
+- [Facebook Marketplace vs Craigslist for selling cars](https://autolander.ai/guide/facebook-marketplace-vs-craigslist-for-selling-cars/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
