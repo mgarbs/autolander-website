@@ -1,7 +1,9 @@
 // /pay success next-step copy (src/pay/lib/next-steps.js + TokenCheckout's NextSteps).
 //
 // Pins the team's sentence verbatim (with and without a known payer e-mail), the Clay tel:
-// link, the download link per device, and the success view's no-pixel invariant.
+// link, the download link per device, and the success view's no-pixel invariant. The trial
+// screen ("Your free trial is live") has its own sentence (Notion #14): the cloud already
+// created the account and mailed the login, so it never says "create your account".
 
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -16,6 +18,9 @@ import {
   nextStepsSegments,
   nextStepsText,
   normalizePayerEmail,
+  TRIAL_EMAIL_FALLBACK,
+  trialNextStepsSegments,
+  trialNextStepsText,
 } from '../src/pay/lib/next-steps.js';
 import { normalizeSummary } from '../src/pay/lib/summary.js';
 
@@ -28,6 +33,14 @@ const WITHOUT_EMAIL =
   'Next: download AutoLander and create your account or sign in with the same e-mail you paid with '
   + 'so your plan shows up automatically. Already have an account under a different e-mail? '
   + 'Text Clay at (919) 280-0967 and he\'ll link it for you.';
+
+const TRIAL_WITH_EMAIL =
+  'Your login is on its way to buyer@example.com. Download AutoLander and sign in with it.';
+
+const TRIAL_WITHOUT_EMAIL =
+  'Your login is on its way to the e-mail you signed up with. Download AutoLander and sign in with it.';
+
+const INVALID_EMAILS = ['', null, undefined, '   ', 'not-an-email', 42, 'a@b', '<script>@x.com', 'a b@c.com', {}, []];
 
 const UA = {
   windowsChrome: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
@@ -67,6 +80,40 @@ test('segments: one download link, one Clay tel: link, an e-mail segment only wh
   }
 });
 
+test('trial screen: "login on its way" sentence verbatim, e-mail normalized, never "create your account"', () => {
+  assert.equal(trialNextStepsText('Buyer@Example.com '), TRIAL_WITH_EMAIL);
+  assert.equal(trialNextStepsText('buyer@example.com'), TRIAL_WITH_EMAIL);
+  for (const sentence of [TRIAL_WITH_EMAIL, TRIAL_WITHOUT_EMAIL]) {
+    assert.doesNotMatch(sentence, /create your account|sign in with this same e-mail|Text Clay/);
+  }
+  // The paid ("Payment received") sentence is untouched by the trial variant.
+  assert.equal(nextStepsText('buyer@example.com'), WITH_EMAIL);
+});
+
+test('trial screen falls back when the payer e-mail is unknown or invalid', () => {
+  assert.equal(TRIAL_EMAIL_FALLBACK, 'the e-mail you signed up with');
+  for (const value of INVALID_EMAILS) {
+    assert.equal(trialNextStepsText(value), TRIAL_WITHOUT_EMAIL, JSON.stringify(value));
+  }
+});
+
+test('trial segments: one "Download AutoLander" link, an e-mail segment only when valid, no tel segment', () => {
+  const withEmail = trialNextStepsSegments('buyer@example.com');
+  const withoutEmail = trialNextStepsSegments('');
+  for (const segments of [withEmail, withoutEmail]) {
+    const downloads = segments.filter((segment) => segment.kind === 'download');
+    assert.equal(downloads.length, 1);
+    assert.equal(downloads[0].text, 'Download AutoLander');
+    assert.equal(segments.filter((segment) => segment.kind === 'tel').length, 0);
+    for (const segment of segments) {
+      assert.ok(['text', 'download', 'email', 'tel'].includes(segment.kind), segment.kind);
+      assert.equal(typeof segment.text, 'string');
+    }
+  }
+  assert.deepEqual(withEmail.filter((segment) => segment.kind === 'email'), [{ kind: 'email', text: 'buyer@example.com' }]);
+  assert.deepEqual(withoutEmail.filter((segment) => segment.kind === 'email'), []);
+});
+
 test('normalizePayerEmail keeps plausible addresses and drops markup-ish or oversized input', () => {
   assert.equal(normalizePayerEmail(' Owner@Dealer.COM '), 'owner@dealer.com');
   assert.equal(normalizePayerEmail('first.last+tag@sub.dealer.co'), 'first.last+tag@sub.dealer.co');
@@ -102,7 +149,7 @@ test('normalizeSummary carries a normalized payerEmail ("" when absent or invali
   assert.equal(normalizeSummary(null).payerEmail, '');
 });
 
-test('source guard: TokenCheckout renders NextSteps on both success branches and fires no pixel', async () => {
+test('source guard: TokenCheckout renders NextSteps on both success branches (trial variant on the trial one) and fires no pixel', async () => {
   const [tokenCheckout, mainSource, payApp, payApi] = await Promise.all([
     readFile(new URL('../src/pay/TokenCheckout.jsx', import.meta.url), 'utf8'),
     readFile(new URL('../src/main.jsx', import.meta.url), 'utf8'),
@@ -112,6 +159,17 @@ test('source guard: TokenCheckout renders NextSteps on both success branches and
 
   assert.match(tokenCheckout, /from '\.\/lib\/next-steps\.js'/);
   assert.equal((tokenCheckout.match(/<NextSteps/g) || []).length, 2);
+  // Notion #14: the trial branch carries variant="trial"; the "Payment received" branch keeps
+  // the paid sentence (plain call, no variant).
+  assert.match(tokenCheckout, /trialNextStepsSegments/);
+  assert.equal((tokenCheckout.match(/<NextSteps [^>]*variant="trial"/g) || []).length, 1);
+  assert.equal((tokenCheckout.match(/<NextSteps payerEmail=\{summary\?\.payerEmail\} \/>/g) || []).length, 1);
+  const trialHeadingAt = tokenCheckout.indexOf('Your free trial is live');
+  const trialVariantAt = tokenCheckout.indexOf('variant="trial"');
+  const paidHeadingAt = tokenCheckout.indexOf('Payment received');
+  assert.ok(trialHeadingAt !== -1 && paidHeadingAt !== -1, 'both success headings present');
+  assert.ok(trialHeadingAt < trialVariantAt, 'variant="trial" sits after the trial heading');
+  assert.ok(trialVariantAt < paidHeadingAt, 'variant="trial" sits before the Payment received branch');
   assert.doesNotMatch(tokenCheckout, /fbq\(|trackCustom\(|track\(['"]Purchase/);
   assert.match(tokenCheckout, /getPaySummary\(token, \{ sessionId: isSuccessReturn \? sessionId : '' \}\)/);
   assert.match(tokenCheckout, /rel="noopener"/);

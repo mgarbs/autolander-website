@@ -2,10 +2,16 @@
 // Pure — no DOM, no fetch — so the exact wording and the download/tel links are pinned by
 // test/pay-next-steps.test.js without React.
 //
+// Two sentences: nextStepsSegments for "Payment received" (admin/paid link — the account may not
+// exist yet, so it says "create your account or sign in with this same e-mail") and
+// trialNextStepsSegments for "Your free trial is live" (the cloud already created the account and
+// mailed the login, so it says "Your login is on its way to <e-mail>").
+//
 // The payer e-mail comes from GET /api/pay/:token?session_id=cs_… (the cloud only returns it
 // to a caller holding both the pay token and a Stripe session stored on that link, within 24h
 // of payment). Whenever it is unknown — old cloud, old Worker, no session id, invalid value —
-// the copy falls back to "the same e-mail you paid with", so every deploy order is safe.
+// the copy falls back to "the same e-mail you paid with" (trial: TRIAL_EMAIL_FALLBACK), so every
+// deploy order is safe.
 
 import { SUPPORT_TEXT_NUMBER } from './trial.js';
 
@@ -77,4 +83,26 @@ export function nextStepsSegments(payerEmail) {
 
 export function nextStepsText(payerEmail) {
   return nextStepsSegments(payerEmail).map((segment) => segment.text).join('');
+}
+
+// Trial variant for the "Your free trial is live" screen (Notion #14). The cloud has already
+// created the account and mailed "Your AutoLander login" to the form e-mail (which is exactly the
+// payerEmail the cloud reveals for a trial), so this copy never says "create your account". Same
+// segment kinds as nextStepsSegments so TokenCheckout's NextSteps renders it unchanged; no Clay
+// tel: segment — the trial screen is not where account linking happens.
+export const TRIAL_EMAIL_FALLBACK = 'the e-mail you signed up with';
+
+export function trialNextStepsSegments(payerEmail) {
+  const email = normalizePayerEmail(payerEmail);
+  return [
+    { kind: 'text', text: 'Your login is on its way to ' },
+    email ? { kind: 'email', text: email } : { kind: 'text', text: TRIAL_EMAIL_FALLBACK },
+    { kind: 'text', text: '. ' },
+    { kind: 'download', text: 'Download AutoLander' },
+    { kind: 'text', text: ' and sign in with it.' },
+  ];
+}
+
+export function trialNextStepsText(payerEmail) {
+  return trialNextStepsSegments(payerEmail).map((segment) => segment.text).join('');
 }

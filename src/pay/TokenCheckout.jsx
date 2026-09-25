@@ -4,7 +4,7 @@ import { getPaySummary, openPaySession, PayApiError, redirectToCheckout } from '
 import { buildAttributionSnapshot } from './lib/attribution.js';
 import { amountPresentation, normalizeSummary, trialPresentation } from './lib/summary.js';
 import { formatTrialEnd } from './lib/trial.js';
-import { downloadSetupHref, nextStepsSegments } from './lib/next-steps.js';
+import { downloadSetupHref, nextStepsSegments, trialNextStepsSegments } from './lib/next-steps.js';
 
 // On the success view the cloud only learns some display copy once the Stripe
 // webhook lands, which is usually seconds after the customer is returned here:
@@ -171,7 +171,7 @@ export default function TokenCheckout({ token, state, sessionId = '' }) {
               Cancel any time under Configuration → Billing in AutoLander
             </p>
           </div>
-          <NextSteps payerEmail={summary?.payerEmail} />
+          <NextSteps payerEmail={summary?.payerEmail} variant="trial" />
           {summary?.businessName && (
             <p className="mt-4 text-xs font-bold uppercase tracking-widest text-slate-500">{summary.businessName}</p>
           )}
@@ -332,12 +332,15 @@ export default function TokenCheckout({ token, state, sessionId = '' }) {
   );
 }
 
-// "Next: download AutoLander and create your account or sign in with this same
-// e-mail (…)" — the team's sentence, built by lib/next-steps.js so the exact
-// wording is unit-tested. Display only: like the rest of the success view it
-// never fires a pixel or track call. The download link opens a new tab so this
-// confirmation stays on screen; React escapes every segment.
-function NextSteps({ payerEmail }) {
+// Paid ("Payment received"): "Next: download AutoLander and create your account or
+// sign in with this same e-mail (…)" — the team's sentence. Trial ("Your free trial
+// is live", variant="trial"): "Your login is on its way to <e-mail>. Download
+// AutoLander and sign in with it." — the cloud already created the account and
+// mailed the login. Both are built by lib/next-steps.js so the exact wording is
+// unit-tested. Display only: like the rest of the success view it never fires a
+// pixel or track call. The download link opens a new tab so this confirmation
+// stays on screen; React escapes every segment.
+function NextSteps({ payerEmail, variant = 'paid' }) {
   const linkClass = 'font-semibold text-blue-300 underline underline-offset-2';
   const downloadHref = downloadSetupHref({
     userAgent: typeof navigator === 'undefined' ? '' : navigator.userAgent,
@@ -345,7 +348,7 @@ function NextSteps({ payerEmail }) {
   });
   return (
     <p className="mt-6 w-full rounded-2xl border border-blue-400/20 bg-blue-500/10 p-5 text-left text-sm leading-relaxed text-slate-200">
-      {nextStepsSegments(payerEmail).map((segment, index) => {
+      {(variant === 'trial' ? trialNextStepsSegments : nextStepsSegments)(payerEmail).map((segment, index) => {
         if (segment.kind === 'download') {
           return (
             <a key={index} href={downloadHref} target="_blank" rel="noopener" className={linkClass}>
