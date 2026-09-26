@@ -116,6 +116,10 @@
           "text": "Best Marketplace posting tools (2026)"
         },
         {
+          "href": "/compare/meta-muse-for-car-salesmen/",
+          "text": "Meta Muse for car salesmen"
+        },
+        {
           "href": "/compare/carvid/",
           "text": "vs CARVID"
         },
@@ -205,17 +209,6 @@
         {
           "href": "/contact/",
           "text": "Contact"
-        }
-      ]
-    },
-    {
-      "id": "articles-compare",
-      "label": "Comparisons & alternatives",
-      "kind": "articles",
-      "links": [
-        {
-          "href": "/compare/meta-muse-for-car-salesmen/",
-          "text": "Meta Muse for car salesmen: the rep’s guide to using it well"
         }
       ]
     },

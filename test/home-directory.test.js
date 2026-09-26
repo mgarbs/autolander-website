@@ -27,7 +27,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(resolve(ROOT, p), 'utf8');
 const REAL = [...A, ...B, ...P, ...G, ...M, ...C];
 
-const fake = (slug, silo) => ({ slug, silo, anchor: `Anchor ${slug}` });
+const fake = (slug, silo) => ({ slug, silo, anchor: `Anchor ${slug}`, crumb: `Crumb ${slug}` });
 const state = (published) => Object.fromEntries(
   SUGGESTED_ORDER.map((s) => [s, published.includes(s)
     ? { status: 'published', publishedAt: '2026-09-01' }
@@ -48,9 +48,13 @@ test('evergreen groups come first, article groups follow in DIRECTORY_SILO_ORDER
   ]));
   const ids = groups.map((g) => g.id);
   assert.deepEqual(ids.slice(0, 4), ['product', 'integrations', 'compare', 'guides']);
-  assert.deepEqual(ids.slice(4), ['articles-compare', 'articles-metaTools', 'articles-marketplace']); // photos: nothing published
-  const compare = groups.find((g) => g.id === 'articles-compare');
-  assert.deepEqual(compare.links.map((l) => l.href), ['/compare/meta-muse-vs-autolander-vs-carvid/']);
+  // compare-silo articles merge into the evergreen Compare box (no box of their own);
+  // photos: nothing published
+  assert.deepEqual(ids.slice(4), ['articles-metaTools', 'articles-marketplace']);
+  const compare = groups.find((g) => g.id === 'compare');
+  assert.equal(compare.links[0].href, '/compare/');
+  assert.deepEqual(compare.links[1], { href: '/compare/meta-muse-vs-autolander-vs-carvid/', text: 'Crumb meta-muse-vs-autolander-vs-carvid' });
+  assert.equal(compare.links[2].href, '/compare/carvid/');
   const mkt = groups.find((g) => g.id === 'articles-marketplace');
   // drip order, not input order
   assert.deepEqual(mkt.links.map((l) => l.href), [
