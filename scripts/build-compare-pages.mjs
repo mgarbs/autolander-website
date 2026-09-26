@@ -596,9 +596,9 @@ function renderHub() {
 
     <section class="card">
       <h2>AI agents and alternatives: the deeper comparisons</h2>
-      <p>Explore detailed guides to specific AI agents, dealer workflows and alternatives.</p>
+      <p>Head-to-head guides on Meta Muse, Marketplace auto-reply and the other tools dealers are weighing this year.</p>
       <ul>
-${deeperLinks.map((link) => `        <li><a href="${esc(link.href)}">${esc(link.text)}</a> &mdash; ${esc(link.description)}</li>`).join('\n')}
+${deeperLinks.map((link) => `        <li><a href="${esc(link.href)}">${esc(link.text)}</a><br />${esc(link.description)}</li>`).join('\n')}
       </ul>
     </section>` : '';
 
