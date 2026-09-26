@@ -209,6 +209,17 @@
       ]
     },
     {
+      "id": "articles-compare",
+      "label": "Comparisons & alternatives",
+      "kind": "articles",
+      "links": [
+        {
+          "href": "/compare/meta-muse-for-car-salesmen/",
+          "text": "Meta Muse for car salesmen: the rep’s guide to using it well"
+        }
+      ]
+    },
+    {
       "id": "articles-metaTools",
       "label": "Facebook’s new seller tools",
       "kind": "articles",

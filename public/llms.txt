@@ -161,6 +161,7 @@ Full agent instructions, including the response-format contract: https://autolan
 - [AutoLander vs CARVID](https://autolander.ai/compare/carvid/): Head-to-head comparison. CARVID: A Chrome-extension poster (CARVID also offers a desktop app) that runs in the dealer’s own browser session, syndicates listings to ~9 platforms and pushes leads into your CRM, from $249/mo.
 - [AutoLander vs Glo3D](https://autolander.ai/compare/glo3d/): Head-to-head comparison. Glo3D: A vehicle-photography suite (360° spin, AI backgrounds) that also offers scheduled Facebook posting with human support.
 - [AutoLander vs AutoLister Pro](https://autolander.ai/compare/autolisterpro/): Head-to-head comparison. AutoLister Pro: A Chrome extension that auto-fills Facebook Marketplace listings for cars, RVs, boats and ATVs from your inventory feed, posting through your real account.
+- [Meta Muse for car salesmen: let it sell with you, and let something else post](https://autolander.ai/compare/meta-muse-for-car-salesmen.md): A car salesman’s guide to Meta Muse: 12 ways it helps you sell, why posting your cars through it wastes it, and why a $39 feed-driven poster does that job better.
 
 ## Buyer guides
 

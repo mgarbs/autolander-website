@@ -80,6 +80,7 @@ They are among the highest-intent free leads in used-car retail: local shoppers 
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace assistant](https://autolander.ai/facebook-marketplace-assistant/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [Meta Muse for car salesmen: the rep’s guide to using it well](https://autolander.ai/compare/meta-muse-for-car-salesmen/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
