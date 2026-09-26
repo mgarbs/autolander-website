@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-25",
+  "generatedAt": "2026-09-26",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -520,6 +520,92 @@
       "publishedAt": "2026-09-25"
     },
     {
+      "slug": "meta-muse-vs-autolander-vs-carvid",
+      "path": "/compare/meta-muse-vs-autolander-vs-carvid/",
+      "url": "https://autolander.ai/compare/meta-muse-vs-autolander-vs-carvid/",
+      "title": "Meta Muse vs AutoLander vs CARVID for Car Dealers (2026)",
+      "h1": "Meta Muse vs AutoLander vs CARVID: which one a car dealer actually needs",
+      "silo": "compare",
+      "siloLabel": "Comparisons & alternatives",
+      "primaryKeyword": "meta muse vs autolander",
+      "secondaryKeywords": [
+        "muse vs carvid",
+        "meta muse alternative for car dealers",
+        "can meta muse post on facebook marketplace",
+        "carvid alternative",
+        "meta muse for car dealers",
+        "autolander vs carvid"
+      ],
+      "description": "Meta Muse vs AutoLander vs CARVID for car dealers: posting, auto-reply, buyer hunting, teams and price compared, plus what Muse said when we asked it.",
+      "suggestedOrder": 28,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "meta-muse-for-car-dealerships",
+      "path": "/compare/meta-muse-for-car-dealerships/",
+      "url": "https://autolander.ai/compare/meta-muse-for-car-dealerships/",
+      "title": "Meta Muse for Car Dealerships: What It Runs, Where It Stops",
+      "h1": "Meta Muse at a car dealership: what to hand it, and what to keep off its plate",
+      "silo": "compare",
+      "siloLabel": "Comparisons & alternatives",
+      "primaryKeyword": "meta muse for car dealerships",
+      "secondaryKeywords": [
+        "meta muse car dealership",
+        "can meta muse post cars on facebook marketplace",
+        "ai agent for car dealerships",
+        "meta muse for used car dealers",
+        "muse facebook marketplace dealer"
+      ],
+      "description": "How a car dealership should use Meta Muse in 2026: the jobs it runs well, the lot and team work it cannot, and where a feed-driven poster fits in.",
+      "suggestedOrder": 29,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "meta-muse-for-car-salesmen",
+      "path": "/compare/meta-muse-for-car-salesmen/",
+      "url": "https://autolander.ai/compare/meta-muse-for-car-salesmen/",
+      "title": "Meta Muse for Car Salesmen: How Reps Should Use It (2026)",
+      "h1": "Meta Muse for car salesmen: let it sell with you, and let something else post",
+      "silo": "compare",
+      "siloLabel": "Comparisons & alternatives",
+      "primaryKeyword": "meta muse for car salesmen",
+      "secondaryKeywords": [
+        "ai for car salesmen",
+        "meta muse for car sales reps",
+        "best ai tools for car salesmen",
+        "muse facebook marketplace car salesman",
+        "ai assistant for car sales"
+      ],
+      "description": "A car salesman’s guide to Meta Muse: 12 ways it helps you sell, why posting your cars through it wastes it, and why a $39 feed-driven poster does that job better.",
+      "suggestedOrder": 30,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
+      "slug": "facebook-marketplace-auto-reply-for-car-dealers",
+      "path": "/compare/facebook-marketplace-auto-reply-for-car-dealers/",
+      "url": "https://autolander.ai/compare/facebook-marketplace-auto-reply-for-car-dealers/",
+      "title": "Facebook Marketplace Auto-Reply for Car Dealers (2026 Guide)",
+      "h1": "Facebook Marketplace auto-reply for car dealers: every option, and the one thing they all depend on",
+      "silo": "compare",
+      "siloLabel": "Comparisons & alternatives",
+      "primaryKeyword": "facebook marketplace auto reply",
+      "secondaryKeywords": [
+        "facebook marketplace auto reply for car dealers",
+        "facebook marketplace ai auto reply",
+        "carvid ai inbox",
+        "meta ai marketplace auto reply",
+        "muse marketplace auto reply",
+        "marketplace buyer hunting tool"
+      ],
+      "description": "Facebook Marketplace auto-reply for car dealers compared: Meta’s built-in availability reply, Meta Muse, CARVID’s AI Inbox and RelayAuto, and what each one depends on.",
+      "suggestedOrder": 31,
+      "status": "draft",
+      "publishedAt": null
+    },
+    {
       "slug": "used-car-merchandising-checklist",
       "path": "/guide/used-car-merchandising-checklist/",
       "url": "https://autolander.ai/guide/used-car-merchandising-checklist/",
@@ -534,7 +620,7 @@
         "what makes a car listing convert"
       ],
       "description": "Used car merchandising is five levers on one checklist — price, photos, description, freshness, response speed — and the weakest lever caps every listing.",
-      "suggestedOrder": 28,
+      "suggestedOrder": 32,
       "status": "draft",
       "publishedAt": null
     },
@@ -553,7 +639,7 @@
         "aged unit marketing ideas"
       ],
       "description": "Aged inventory car dealership playbook: why units age, the 30/45/60-day triage — reprice, reshoot, renew — and when paying to boost finally makes sense.",
-      "suggestedOrder": 29,
+      "suggestedOrder": 33,
       "status": "draft",
       "publishedAt": null
     },
@@ -572,7 +658,7 @@
         "travel trailer listing tips"
       ],
       "description": "Selling an RV on Facebook Marketplace: the vehicle type that gets campers found, the interior photos that carry the listing, and honest seasonality advice.",
-      "suggestedOrder": 30,
+      "suggestedOrder": 34,
       "status": "draft",
       "publishedAt": null
     },
@@ -591,7 +677,7 @@
         "days on market used car"
       ],
       "description": "How long does it take to sell a car on Facebook Marketplace? It depends on four variables you control. The signals, the real stats, a week-by-week plan.",
-      "suggestedOrder": 31,
+      "suggestedOrder": 35,
       "status": "draft",
       "publishedAt": null
     },
@@ -610,7 +696,7 @@
         "should car dealers boost listings"
       ],
       "description": "What it means to boost a Facebook Marketplace listing, what it costs, and when a car dealer should pay — after the free fundamentals, never instead of them.",
-      "suggestedOrder": 32,
+      "suggestedOrder": 36,
       "status": "draft",
       "publishedAt": null
     }

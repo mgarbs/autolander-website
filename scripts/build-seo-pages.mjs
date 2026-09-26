@@ -29,6 +29,7 @@ import { ARTICLES as ART_MKT_B } from './seo/articles/data-articles-marketplace-
 import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs';
 import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
 import { ARTICLES as ART_META } from './seo/articles/data-articles-meta-tools.mjs';
+import { ARTICLES as ART_COMPARE } from './seo/articles/data-articles-compare.mjs';
 
 import { PAGES as CATEGORY } from './seo/data-category.mjs';
 import { PAGES as PRICING } from './seo/data-pricing.mjs';
@@ -62,14 +63,19 @@ const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'publi
 // publish-state.json is the gate: draft articles are rendered NOWHERE (no HTML, no sitemap,
 // no llms.txt, no hub links). Publishing an article and rebuilding is what reveals it — and
 // also re-renders every hub/sibling so earlier pages pick up links to the newly live spoke.
-const ARTICLE_CONTENT = [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META];
+const ARTICLE_CONTENT = [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META, ...ART_COMPARE];
 const PUBLISH_STATE = loadPublishState();
 {
   const known = new Set(Object.keys(PUBLISH_STATE));
+  const competitorSlugs = new Set(Object.values(COMPETITORS).map((c) => c.slug));
   const dupes = ARTICLE_CONTENT.filter((c, i) => ARTICLE_CONTENT.findIndex((x) => x.slug === c.slug) !== i);
   if (dupes.length) throw new Error(`duplicate article slugs: ${dupes.map((d) => d.slug).join(', ')}`);
   const unknown = ARTICLE_CONTENT.filter((c) => !known.has(c.slug));
   if (unknown.length) throw new Error(`article slugs missing from publish-state.json: ${unknown.map((d) => d.slug).join(', ')}`);
+  const compareCollisions = ARTICLE_CONTENT.filter((c) => c.silo === 'compare' && competitorSlugs.has(c.slug));
+  if (compareCollisions.length) {
+    throw new Error(`compare article slugs collide with versus pages: ${compareCollisions.map((d) => d.slug).join(', ')}`);
+  }
 }
 const PUBLISHED_ARTICLES = ARTICLE_CONTENT.filter((c) => isPublished(PUBLISH_STATE, c.slug));
 const ARTICLE_PAGES = PUBLISHED_ARTICLES.map((c) => buildArticlePage(c, ARTICLE_CONTENT, PUBLISH_STATE));
@@ -206,9 +212,9 @@ if (process.env.ARTICLE_DRAFT_PREVIEW === '1' || process.argv.includes('--draft-
   ]));
   for (const c of ARTICLE_CONTENT) {
     const page = buildArticlePage(c, ARTICLE_CONTENT, pretendState, { previewDate });
-    write(resolve(PREVIEW_DIR, articlePath(c.slug).replace(/^\/|\/$/g, ''), 'index.html'), renderPage(page));
+    write(resolve(PREVIEW_DIR, articlePath(c).replace(/^\/|\/$/g, ''), 'index.html'), renderPage(page));
   }
-  console.log(`\n[preview] ${ARTICLE_CONTENT.length} article previews -> dist-preview/ (open dist-preview/guide/<slug>/index.html)`);
+  console.log(`\n[preview] ${ARTICLE_CONTENT.length} article previews -> dist-preview/ (open the article's base-path directory)`);
 }
 
 // ---------- Markdown twins + llms.txt ----------
@@ -257,6 +263,10 @@ function buildLlmsTxt(twins) {
     const rows = paths.map((p) => entry(p)).filter(Boolean);
     return rows.length ? `## ${heading}\n\n${rows.join('\n')}\n` : '';
   };
+  const comparisonArticleRows = PUBLISHED_ARTICLES
+    .filter((c) => c.silo === 'compare')
+    .map((c) => entry(articlePath(c)))
+    .filter(Boolean);
 
   const header = `# AutoLander
 
@@ -301,15 +311,16 @@ Contact: sales@autolander.ai · (919) 280-0967
       NAV.rvSellGuide.path, NAV.rvPhotos.path, NAV.aiChatVendor.path, NAV.responseTime.path,
     ]),
     // Drip-published long-tail library — only articles that are actually live.
-    group('Deep-dive dealer guides', PUBLISHED_ARTICLES.map((c) => articlePath(c.slug))),
+    group('Deep-dive dealer guides', PUBLISHED_ARTICLES
+      .filter((c) => c.silo !== 'compare')
+      .map((c) => articlePath(c))),
     group('Integrations', [NAV.integHub.path, ...INTEGRATIONS.map((s) => integrationPath(s.slug))]),
-    // The /compare/ cluster and the two long-form guides come from build-compare-pages.mjs and are
-    // hand-authored HTML, so they have no Markdown twin — linked here as HTML so the index is
-    // still complete. Give them .md twins if that generator ever moves onto page objects.
+    // The evergreen /compare/ cluster comes from build-compare-pages.mjs and has no Markdown
+    // twins. Published drip comparison articles are page objects, so their twin links append here.
     `## Comparisons
 
 - [Best Facebook Marketplace auto-posting tools for car dealers (2026)](${SITE.origin}/compare/): Buyer's guide comparing every major Facebook Marketplace posting tool for dealers on workflow, session architecture, AI photo/video and price.
-${Object.values(COMPETITORS).map((c) => `- [AutoLander vs ${c.name}](${SITE.origin}/compare/${c.slug}/): Head-to-head comparison. ${c.name}: ${c.oneLiner}`).join('\n')}
+${Object.values(COMPETITORS).map((c) => `- [AutoLander vs ${c.name}](${SITE.origin}/compare/${c.slug}/): Head-to-head comparison. ${c.name}: ${c.oneLiner}`).join('\n')}${comparisonArticleRows.length ? `\n${comparisonArticleRows.join('\n')}` : ''}
 `,
     `## Buyer guides
 

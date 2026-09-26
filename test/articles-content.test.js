@@ -14,14 +14,17 @@ import { ARTICLES as B } from '../scripts/seo/articles/data-articles-marketplace
 import { ARTICLES as P } from '../scripts/seo/articles/data-articles-photos.mjs';
 import { ARTICLES as G } from '../scripts/seo/articles/data-articles-growth.mjs';
 import { ARTICLES as M } from '../scripts/seo/articles/data-articles-meta-tools.mjs';
+import { ARTICLES as C } from '../scripts/seo/articles/data-articles-compare.mjs';
+import { COMPETITORS } from '../scripts/compare-data.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const ALL = [...A, ...B, ...P, ...G, ...M];
+const ALL = [...A, ...B, ...P, ...G, ...M, ...C];
 
 // Inline links may point only at evergreen pages (drafts would 404). Sibling links are
 // injected by the build system, never hand-written.
 const WHITELIST = new Set([
   ...Object.values(NAV).map((n) => n.path),
+  ...Object.values(COMPETITORS).map((c) => `/compare/${c.slug}/`),
   '/', '/#pricing', '/compare/',
 ]);
 
@@ -45,16 +48,16 @@ const collectText = (art) => {
   return out;
 };
 
-test('all 32 articles exist, slugs match the drip order exactly', () => {
-  assert.equal(ALL.length, 32);
+test('all 36 articles exist, slugs match the drip order exactly', () => {
+  assert.equal(ALL.length, 36);
   assert.deepEqual(ALL.map((a) => a.slug).sort(), [...SUGGESTED_ORDER].sort());
 });
 
-// House style for the 2026-09-12 Meta-tools articles (Michael): no em-dashes, and none of the
-// "that's not X. It's Y." negation-then-reveal cadence. Both read as machine-written.
-test('the Meta-tools articles carry no em-dashes and no negation-reveal cadence', () => {
+// House style for the 2026-09-12 Meta-tools and 2026-09-26 comparison articles (Michael): no
+// em-dashes or en-dashes, and none of the "that's not X. It's Y." negation-then-reveal cadence.
+test('the Meta-tools and comparison articles carry no em-dashes, en-dashes, or negation-reveal cadence', () => {
   const contrastTic = /\b(?:is|are|was|were|it’s|it's|that’s|that's)\s+not\s+(?:about\s+)?[^.!?]{1,60}[.!?]\s+(?:It|That|This)\s+(?:is|’s|'s)\b/i;
-  for (const art of M) {
+  for (const art of [...M, ...C]) {
     const body = [art.title, art.description, art.h1, ...collectText(art)].join('\n');
     assert.ok(!body.includes('—'), `${art.slug}: contains an em-dash`);
     assert.ok(!body.includes('–'), `${art.slug}: contains an en-dash`);
@@ -80,6 +83,7 @@ test('every article carries the required fields and a valid silo', () => {
 // NAV; drip articles never do). Derived from NAV so a new evergreen guide does not need this
 // list touched — the 2026-09-03 guides had silently fallen off the old hardcoded version.
 const EVERGREEN_GUIDE_PATHS = new Set(Object.values(NAV).map((n) => n.path).filter((p) => p.startsWith('/guide/')));
+const COMPARE_ARTICLE_PATHS = new Set(C.map((a) => `/compare/${a.slug}/`));
 
 test('inline links stay on the evergreen whitelist (no hand-written sibling links)', () => {
   for (const art of ALL) {
@@ -88,6 +92,8 @@ test('inline links stay on the evergreen whitelist (no hand-written sibling link
         const href = m[1];
         assert.ok(WHITELIST.has(href), `${art.slug}: inline link ${href} not on whitelist`);
         assert.ok(!href.startsWith('/guide/') || EVERGREEN_GUIDE_PATHS.has(href),
+          `${art.slug}: links a sibling article directly (${href})`);
+        assert.ok(!COMPARE_ARTICLE_PATHS.has(href),
           `${art.slug}: links a sibling article directly (${href})`);
       }
     }

@@ -21,10 +21,11 @@ import { ARTICLES as B } from '../scripts/seo/articles/data-articles-marketplace
 import { ARTICLES as P } from '../scripts/seo/articles/data-articles-photos.mjs';
 import { ARTICLES as G } from '../scripts/seo/articles/data-articles-growth.mjs';
 import { ARTICLES as M } from '../scripts/seo/articles/data-articles-meta-tools.mjs';
+import { ARTICLES as C } from '../scripts/seo/articles/data-articles-compare.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(resolve(ROOT, p), 'utf8');
-const REAL = [...A, ...B, ...P, ...G, ...M];
+const REAL = [...A, ...B, ...P, ...G, ...M, ...C];
 
 const fake = (slug, silo) => ({ slug, silo, anchor: `Anchor ${slug}` });
 const state = (published) => Object.fromEntries(
@@ -39,13 +40,17 @@ test('evergreen groups come first, article groups follow in DIRECTORY_SILO_ORDER
     fake('facebook-marketplace-car-listing-limits', 'marketplace'),
     fake('remove-background-from-car-photo', 'photos'),
     fake('facebook-seller-app-for-car-dealers', 'metaTools'),
+    fake('meta-muse-vs-autolander-vs-carvid', 'compare'),
   ];
   const groups = buildHomeDirectory(arts, state([
-    'facebook-marketplace-car-listing-limits', 'post-a-car-on-facebook-marketplace-dealer', 'facebook-seller-app-for-car-dealers',
+    'facebook-marketplace-car-listing-limits', 'post-a-car-on-facebook-marketplace-dealer',
+    'facebook-seller-app-for-car-dealers', 'meta-muse-vs-autolander-vs-carvid',
   ]));
   const ids = groups.map((g) => g.id);
   assert.deepEqual(ids.slice(0, 4), ['product', 'integrations', 'compare', 'guides']);
-  assert.deepEqual(ids.slice(4), ['articles-metaTools', 'articles-marketplace']); // photos: nothing published
+  assert.deepEqual(ids.slice(4), ['articles-compare', 'articles-metaTools', 'articles-marketplace']); // photos: nothing published
+  const compare = groups.find((g) => g.id === 'articles-compare');
+  assert.deepEqual(compare.links.map((l) => l.href), ['/compare/meta-muse-vs-autolander-vs-carvid/']);
   const mkt = groups.find((g) => g.id === 'articles-marketplace');
   // drip order, not input order
   assert.deepEqual(mkt.links.map((l) => l.href), [
@@ -64,6 +69,7 @@ test('a draft article never reaches the directory', () => {
 });
 
 test('every silo in DIRECTORY_SILO_ORDER exists, and every silo is listed', () => {
+  assert.deepEqual(DIRECTORY_SILO_ORDER, ['compare', 'metaTools', 'marketplace', 'photos', 'growth']);
   assert.deepEqual([...DIRECTORY_SILO_ORDER].sort(), Object.keys(SILOS).sort());
 });
 
@@ -107,7 +113,7 @@ test('every published article is in the directory and every draft is absent', ()
   const st = loadPublishState();
   const hrefs = new Set(buildHomeDirectory(REAL, st).flatMap((g) => g.links.map((l) => l.href)));
   for (const a of REAL) {
-    const href = articlePath(a.slug);
+    const href = articlePath(a);
     if (isPublished(st, a.slug)) assert.ok(hrefs.has(href), `published ${a.slug} missing from the homepage directory`);
     else assert.ok(!hrefs.has(href), `draft ${a.slug} leaked into the homepage directory`);
   }
