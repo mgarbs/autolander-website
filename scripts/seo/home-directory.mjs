@@ -83,7 +83,7 @@ const EVERGREEN_GROUPS = [
 
 // Order the article groups appear in, after the evergreen groups. The newest topic goes
 // first: it is the one people are searching for this month.
-export const DIRECTORY_SILO_ORDER = ['metaTools', 'marketplace', 'photos', 'growth'];
+export const DIRECTORY_SILO_ORDER = ['compare', 'metaTools', 'marketplace', 'photos', 'growth'];
 
 // -> [{ id, label, kind: 'pages' | 'articles', links: [{ href, text }] }]
 // Draft articles are invisible here exactly as they are everywhere else; an article silo with
@@ -101,7 +101,7 @@ export function buildHomeDirectory(articles, state) {
     const links = articles
       .filter((a) => a.silo === silo && isPublished(state, a.slug))
       .sort((a, b) => (orderIndex.get(a.slug) ?? 99) - (orderIndex.get(b.slug) ?? 99))
-      .map((a) => ({ href: articlePath(a.slug), text: a.anchor }));
+      .map((a) => ({ href: articlePath(a), text: a.anchor }));
     if (links.length) {
       groups.push({ id: `articles-${silo}`, label: SILOS[silo].label, kind: 'articles', links });
     }

@@ -323,6 +323,7 @@ export const ARTICLES = [
       'will meta muse buy cars',
       'muse ai shopping agent',
     ],
+    alsoRelated: ['meta-muse-vs-autolander-vs-carvid', 'meta-muse-for-car-dealerships', 'meta-muse-for-car-salesmen'],
     title: 'Meta Muse AI Agent: What It Means for Car Dealers (2026)',
     description:
       'Meta Muse explained for car dealers: what the AI agent Meta announced on September 8, 2026 '

@@ -18,12 +18,26 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { orgLd, ORG_ID, ogImageFor } from './seo/shell.mjs';
 import {
+  compareHubLinks, versusPageLinks, loadPublishState,
+} from './seo/articles/article-system.mjs';
+import { ARTICLES as ART_MKT_A } from './seo/articles/data-articles-marketplace-a.mjs';
+import { ARTICLES as ART_MKT_B } from './seo/articles/data-articles-marketplace-b.mjs';
+import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs';
+import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
+import { ARTICLES as ART_META } from './seo/articles/data-articles-meta-tools.mjs';
+import { ARTICLES as ART_COMPARE } from './seo/articles/data-articles-compare.mjs';
+import {
   SITE, DIMENSIONS, AUTOLANDER, AUTOLANDER_WINS_GLOBAL, SESSION_FAQ,
   COMPETITORS, HUB, HUB_ORDER, INSIGHTS, EXTRA_FAQ, GUIDE, OTHER_TOOLS,
 } from './compare-data.mjs';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const COMPARE_DIR = resolve(PUBLIC_DIR, 'compare');
+const ARTICLE_CONTENT = [
+  ...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META, ...ART_COMPARE,
+];
+const PUBLISH_STATE = loadPublishState();
+const VERSUS_ARTICLE_LINKS = versusPageLinks(ARTICLE_CONTENT, PUBLISH_STATE);
 
 // ---------- helpers ----------
 const esc = (s) => String(s)
@@ -402,6 +416,10 @@ function renderVersus(competitor) {
     .filter((x) => x.slug !== c.slug)
     .map((s) => `        <li><a href="/compare/${s.slug}/">AutoLander vs ${esc(s.name)}</a></li>`)
     .join('\n');
+  const articleLinks = (VERSUS_ARTICLE_LINKS.get(c.slug) || [])
+    .map((link) => `        <li><a href="${esc(link.href)}">${esc(link.text)}</a></li>`)
+    .join('\n');
+  const appendedArticleLinks = articleLinks ? `\n${articleLinks}` : '';
   const relatedHtml = `    <nav class="related" aria-label="Related comparisons">
       <h2>Related comparisons</h2>
       <ul class="related-list">
@@ -410,7 +428,7 @@ ${siblingLinks}
         <li><a href="/facebook-marketplace-auto-poster/">Facebook Marketplace auto poster for car dealers</a></li>
         <li><a href="/facebook-marketplace-automation/">Facebook Marketplace automation software</a></li>
         <li><a href="/guide/facebook-marketplace-automation/">Guide: the dos &amp; don&#39;ts of Marketplace automation</a></li>
-        <li><a href="/guide/how-to-sell-cars-on-facebook-marketplace/">How to sell cars on Facebook Marketplace</a></li>
+        <li><a href="/guide/how-to-sell-cars-on-facebook-marketplace/">How to sell cars on Facebook Marketplace</a></li>${appendedArticleLinks}
       </ul>
     </nav>`;
 
@@ -573,6 +591,17 @@ function renderHub() {
         <div class="faq-a"><p>${esc(a)}</p></div>
       </details>`).join('');
 
+  const deeperLinks = compareHubLinks(ARTICLE_CONTENT, PUBLISH_STATE);
+  const deeperComparisonsHtml = deeperLinks.length ? `
+
+    <section class="card">
+      <h2>AI agents and alternatives: the deeper comparisons</h2>
+      <p>Explore detailed guides to specific AI agents, dealer workflows and alternatives.</p>
+      <ul>
+${deeperLinks.map((link) => `        <li><a href="${esc(link.href)}">${esc(link.text)}</a> &mdash; ${esc(link.description)}</li>`).join('\n')}
+      </ul>
+    </section>` : '';
+
   return [
     head({
       title, description: HUB.metaDescription, canonical, jsonLdBlocks,
@@ -631,7 +660,7 @@ ${glanceRows}
     </div>
     <p class="legend"><span class="ic ic-yes">&#10003;</span> has it / advantage &nbsp;
       <span class="ic ic-mid">&bull;</span> partial or neutral fact &nbsp;
-      <span class="ic ic-no">&ndash;</span> not advertised</p>
+      <span class="ic ic-no">&ndash;</span> not advertised</p>${deeperComparisonsHtml}
 
     <section class="card others">
       <h2>Other tools dealers ask about</h2>
@@ -669,9 +698,9 @@ ${OTHER_TOOLS.map((t) => `        <li><strong>${esc(t.name)}</strong> &mdash; ${
       <div class="session-grid session-grid--3">
         <div class="session-card session-card--al"><h3>Native app</h3><p><strong>AutoLander.</strong>
           Runs from your own computer through your normal session; the computer must stay on.</p></div>
-        <div class="session-card"><h3>Browser extension</h3><p>AutoBook.io, Shiftly. Runs in your
+        <div class="session-card"><h3>Browser extension</h3><p>AutoBook.io, Shiftly, CARVID. Runs in your
           browser with sensitive permissions.</p></div>
-        <div class="session-card"><h3>Cloud-operated</h3><p>Sell With Drift, RelayAuto, CARVID,
+        <div class="session-card"><h3>Cloud-operated</h3><p>Sell With Drift, RelayAuto,
           Glo3D. Run account workflows from vendor-operated servers; any published safety rate is a vendor claim, not Meta approval.</p></div>
       </div>
       <p class="session-note">We list delivery models as published facts, not accusations. Ask any

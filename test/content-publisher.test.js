@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import {
   SILOS, SUGGESTED_ORDER, articlePath, loadPublishState, isPublished,
   relatedForArticle, buildArticlePage, hubAugmentLinks, contentStatusJson,
-  articleSitemapEntries,
+  articleSitemapEntries, compareHubLinks, versusPageLinks, backlinkedFrom,
 } from '../scripts/seo/articles/article-system.mjs';
 import { handleContentList, handleContentPublish } from '../worker/src/admin/content.js';
 
@@ -41,7 +41,15 @@ const state = (published) => Object.fromEntries(
 test('publish-state.json covers exactly the SUGGESTED_ORDER slugs', () => {
   const st = loadPublishState();
   assert.deepEqual(Object.keys(st).sort(), [...SUGGESTED_ORDER].sort());
-  assert.equal(SUGGESTED_ORDER.length, 32);
+  assert.equal(SUGGESTED_ORDER.length, 36);
+});
+
+test('articlePath keeps string callers under /guide/ and routes compare article objects', () => {
+  assert.equal(articlePath('legacy-slug'), '/guide/legacy-slug/');
+  assert.equal(
+    articlePath({ slug: 'meta-muse-vs-autolander-vs-carvid', silo: 'compare' }),
+    '/compare/meta-muse-vs-autolander-vs-carvid/',
+  );
 });
 
 test('draft siblings never appear in related links; published ones do', () => {
@@ -68,6 +76,39 @@ test('buildArticlePage stamps the real publish date and the silo breadcrumb', ()
   assert.equal(page.author, true);
 });
 
+test('buildArticlePage routes a compare article and uses the Compare breadcrumb', () => {
+  const content = art('meta-muse-vs-autolander-vs-carvid', 'compare');
+  const st = state([content.slug]);
+  const page = buildArticlePage(content, [content], st);
+  assert.equal(page.path, '/compare/meta-muse-vs-autolander-vs-carvid/');
+  assert.equal(page.breadcrumbs[1].name, SILOS.compare.crumb.name);
+  assert.equal(page.breadcrumbs[2].url, `https://autolander.ai${page.path}`);
+});
+
+test('alsoRelated links require a published target and do not reduce sibling slots', () => {
+  const source = art('post-a-car-on-facebook-marketplace-dealer', 'marketplace', {
+    alsoRelated: ['meta-muse-vs-autolander-vs-carvid'],
+  });
+  const siblings = [
+    art('best-time-to-post-cars-on-facebook-marketplace', 'marketplace'),
+    art('facebook-marketplace-car-listing-limits', 'marketplace'),
+    art('facebook-marketplace-car-listing-removed', 'marketplace'),
+    art('renew-facebook-marketplace-car-listings', 'marketplace'),
+  ];
+  const target = art('meta-muse-vs-autolander-vs-carvid', 'compare');
+  const articles = [source, ...siblings, target];
+  const siblingSlugs = siblings.map((a) => a.slug);
+
+  const whileDraft = relatedForArticle(source, articles, state(siblingSlugs));
+  assert.equal(whileDraft.length, 8);
+  assert.ok(whileDraft.every((link) => link.href !== articlePath(target)));
+
+  const whilePublished = relatedForArticle(source, articles, state([...siblingSlugs, target.slug]));
+  assert.equal(whilePublished.filter((link) => siblings.some((a) => link.href === articlePath(a))).length, 4);
+  assert.equal(whilePublished.length, 9);
+  assert.ok(whilePublished.some((link) => link.href === articlePath(target)));
+});
+
 test('hubAugmentLinks exposes only published articles, on the right hub keys', () => {
   const st = state(['post-a-car-on-facebook-marketplace-dealer', 'remove-background-from-car-photo']);
   const aug = hubAugmentLinks(ARTS, st);
@@ -75,6 +116,16 @@ test('hubAugmentLinks exposes only published articles, on the right hub keys', (
   assert.ok(aug.get('photoEditor').some((l) => l.href === articlePath('remove-background-from-car-photo')));
   assert.equal(aug.get('dealers').length, 1); // the draft marketplace articles stay invisible
   assert.ok(!aug.has('mktgHub')); // no growth article published -> no key at all
+});
+
+test('hubAugmentLinks adds per-article augmentKeys after the silo keys without duplicates', () => {
+  const content = art('meta-muse-for-car-dealerships', 'compare', {
+    augmentKeys: ['aiTools', 'aiDealers'],
+  });
+  const aug = hubAugmentLinks([content], state([content.slug]));
+  assert.deepEqual([...aug.keys()], ['aiTools', 'aiDealers']);
+  assert.deepEqual(aug.get('aiTools'), [{ href: articlePath(content), text: content.anchor }]);
+  assert.deepEqual(aug.get('aiDealers'), [{ href: articlePath(content), text: content.anchor }]);
 });
 
 test('contentStatusJson lists every article with status and drip order', () => {
@@ -87,6 +138,53 @@ test('contentStatusJson lists every article with status and drip order', () => {
   assert.equal(limits.url, 'https://autolander.ai/guide/facebook-marketplace-car-listing-limits/');
   const orders = json.articles.map((a) => a.suggestedOrder);
   assert.deepEqual(orders, [...orders].sort((a, b) => a - b));
+});
+
+test('contentStatusJson uses the compare silo URL for compare articles', () => {
+  const content = art('meta-muse-vs-autolander-vs-carvid', 'compare');
+  const json = contentStatusJson([content], state([]));
+  assert.equal(json.articles[0].path, '/compare/meta-muse-vs-autolander-vs-carvid/');
+  assert.equal(json.articles[0].url, 'https://autolander.ai/compare/meta-muse-vs-autolander-vs-carvid/');
+});
+
+test('compareHubLinks and versusPageLinks list only published articles in drip order', () => {
+  const meta = art('meta-muse-ai-agent-for-car-dealers', 'metaTools', {
+    alsoOnCompetitors: ['carvid'],
+  });
+  const first = art('meta-muse-vs-autolander-vs-carvid', 'compare', {
+    description: 'A neutral comparison.',
+    alsoOnCompetitors: ['carvid'],
+  });
+  const second = art('meta-muse-for-car-dealerships', 'compare', {
+    description: 'A dealership guide.',
+    alsoOnCompetitors: ['carvid', 'relayauto'],
+  });
+  const articles = [second, first, meta];
+  const st = state([meta.slug, first.slug]);
+
+  assert.deepEqual(compareHubLinks(articles, st), [{
+    href: articlePath(first),
+    text: first.anchor,
+    description: first.description,
+  }]);
+  assert.deepEqual(versusPageLinks(articles, st).get('carvid'), [
+    { href: articlePath(meta), text: meta.anchor },
+    { href: articlePath(first), text: first.anchor },
+  ]);
+  assert.ok(!versusPageLinks(articles, st).has('relayauto'));
+});
+
+test('backlinkedFrom returns articles whose alsoRelated names the target', () => {
+  const target = 'meta-muse-vs-autolander-vs-carvid';
+  const articles = [
+    art('meta-muse-ai-agent-for-car-dealers', 'metaTools', { alsoRelated: [target] }),
+    art('facebook-seller-app-for-car-dealers', 'metaTools'),
+    art('meta-muse-for-car-dealerships', 'compare', { alsoRelated: [target, 'another-slug'] }),
+  ];
+  assert.deepEqual(backlinkedFrom(target, articles), [
+    'meta-muse-ai-agent-for-car-dealers',
+    'meta-muse-for-car-dealerships',
+  ]);
 });
 
 test('sitemap entries carry per-article lastmod and exclude drafts', () => {

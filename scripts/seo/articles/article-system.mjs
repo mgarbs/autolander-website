@@ -1,4 +1,4 @@
-// Avalanche article layer — the drip-published long-tail library under /guide/.
+// Avalanche article layer: the drip-published long-tail library with per-silo URL roots.
 // Owned by the orchestrator; content modules (data-articles-*.mjs) never edit this.
 //
 // WHY THIS EXISTS: the evergreen silo (registry.mjs NAV) targets the verified >100/mo
@@ -16,11 +16,14 @@
 //
 // CONTENT OBJECT CONTRACT (what data-articles-*.mjs export in ARTICLES):
 //   {
-//     slug,              // final URL: /guide/<slug>/  (must exist in publish-state.json)
-//     silo,              // 'marketplace' | 'photos' | 'growth'
+//     slug,              // final URL uses the silo basePath (must exist in publish-state.json)
+//     silo,              // 'marketplace' | 'photos' | 'growth' | 'metaTools' | 'compare'
 //     anchor,            // keyword-rich anchor text used when OTHER pages link here
 //     crumb,             // very short breadcrumb tail name
 //     primaryKeyword, secondaryKeywords: [..],   // recorded in content-status.json
+//     alsoRelated: [slug, ...],                  // optional publish-aware cross-silo links
+//     augmentKeys: [navKey, ...],                // optional extra NAV hubs to augment
+//     alsoOnCompetitors: [competitorSlug, ...],  // optional /compare/ versus-page links
 //     title, description, eyebrow, h1, tldr,     // same meaning as shell.mjs contract
 //     sections, faq, cta,                        // same section types as shell.mjs
 //   }
@@ -36,9 +39,6 @@ import { SITE, NAV } from '../registry.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 export const PUBLISH_STATE_PATH = resolve(HERE, 'publish-state.json');
-
-export const articlePath = (slug) => `/guide/${slug}/`;
-export const articleUrl = (slug) => SITE.origin + articlePath(slug);
 
 // ---- silo definitions. hub = the page whose breadcrumb the article sits under and the
 // first related link; money = commercial pages every article in the silo may descend to.
@@ -79,7 +79,28 @@ export const SILOS = {
     related: [L(NAV.aiTools), L(NAV.dealers), L(NAV.category), L(NAV.whyNoAutoReply), L(NAV.automation)],
     augmentKeys: ['aiTools', 'dealers'],
   },
+  // Comparison pieces belong in the /compare/ silo by URL, breadcrumb, and hub links. The
+  // /compare/ hub is built by build-compare-pages.mjs, so compareHubLinks() supplies its
+  // down-links instead of including compareHub in augmentKeys.
+  compare: {
+    label: 'Comparisons & alternatives',
+    hubKey: 'compareHub',
+    basePath: '/compare/',
+    crumb: { name: 'Compare', url: SITE.origin + NAV.compareHub.path },
+    related: [L(NAV.compareHub), L(NAV.aiTools), L(NAV.whyNoAutoReply), L(NAV.category), L(NAV.pricing)],
+    augmentKeys: ['aiTools'],
+  },
 };
+
+// A slug string retains the original /guide/ contract. Passing the content object lets a
+// silo opt into a different URL family without making legacy callers aware of SILOS.
+export const articlePath = (articleOrSlug) => {
+  const content = typeof articleOrSlug === 'string' ? null : articleOrSlug;
+  const slug = content?.slug ?? articleOrSlug;
+  const basePath = content ? (SILOS[content.silo]?.basePath || '/guide/') : '/guide/';
+  return `${basePath}${slug}/`;
+};
+export const articleUrl = (articleOrSlug) => SITE.origin + articlePath(articleOrSlug);
 
 // ---- the drip order shown in /admin (suggested publish sequence: silos interleaved so
 // every hub grows steadily; the two highest-volume stretch targets go early).
@@ -113,6 +134,12 @@ export const SUGGESTED_ORDER = [
   'car-photo-backdrop-vs-ai-background',
   'buy-here-pay-here-marketing',
   'facebook-marketplace-vs-craigslist-for-selling-cars',
+  // 2026-09-26: timely Muse comparison pieces jump the queue, the same reasoning as the
+  // 2026-09-12 Meta-tools pair.
+  'meta-muse-vs-autolander-vs-carvid',
+  'meta-muse-for-car-dealerships',
+  'meta-muse-for-car-salesmen',
+  'facebook-marketplace-auto-reply-for-car-dealers',
   'used-car-merchandising-checklist',
   'aged-inventory-used-car-dealers',
   'sell-rvs-on-facebook-marketplace',
@@ -141,16 +168,26 @@ export function relatedForArticle(content, articles, state) {
     const sib = bySlug.get(slug);
     if (!sib || sib.silo !== content.silo) continue;
     if (!isPublished(state, slug)) continue;
-    links.push({ href: articlePath(slug), text: sib.anchor });
+    links.push({ href: articlePath(sib), text: sib.anchor });
     added += 1;
   }
-  return links.slice(0, 8);
+  const capped = links.slice(0, 8);
+  const seenHrefs = new Set(capped.map((link) => link.href));
+  for (const slug of content.alsoRelated || []) {
+    const target = bySlug.get(slug);
+    if (!target || target.slug === content.slug || !isPublished(state, target.slug)) continue;
+    const href = articlePath(target);
+    if (seenHrefs.has(href)) continue;
+    capped.push({ href, text: target.anchor });
+    seenHrefs.add(href);
+  }
+  return capped;
 }
 
 // ---- full page object for shell.renderPage(). `datePublished` is the real publish
 // date; a draft rendered in preview mode gets today so the preview looks final.
 export function buildArticlePage(content, articles, state, { previewDate } = {}) {
-  const path = articlePath(content.slug);
+  const path = articlePath(content);
   const published = state?.[content.slug]?.publishedAt || null;
   return {
     path,
@@ -190,12 +227,44 @@ export function hubAugmentLinks(articles, state) {
     .filter((a) => isPublished(state, a.slug))
     .sort((a, b) => (orderIndex.get(a.slug) ?? 99) - (orderIndex.get(b.slug) ?? 99));
   for (const a of publishedSorted) {
-    for (const key of SILOS[a.silo].augmentKeys) {
+    const keys = [...new Set([...(SILOS[a.silo].augmentKeys || []), ...(a.augmentKeys || [])])];
+    for (const key of keys) {
       if (!out.has(key)) out.set(key, []);
-      out.get(key).push({ href: articlePath(a.slug), text: a.anchor });
+      out.get(key).push({ href: articlePath(a), text: a.anchor });
     }
   }
   return out;
+}
+
+// The hand-built /compare/ hub consumes these separately from NAV hub augmentation.
+export function compareHubLinks(articles, state) {
+  const orderIndex = new Map(SUGGESTED_ORDER.map((s, i) => [s, i]));
+  return articles
+    .filter((a) => a.silo === 'compare' && isPublished(state, a.slug))
+    .sort((a, b) => (orderIndex.get(a.slug) ?? 99) - (orderIndex.get(b.slug) ?? 99))
+    .map((a) => ({ href: articlePath(a), text: a.anchor, description: a.description }));
+}
+
+// Published articles can opt into one or more hand-built competitor pages.
+export function versusPageLinks(articles, state) {
+  const out = new Map();
+  const orderIndex = new Map(SUGGESTED_ORDER.map((s, i) => [s, i]));
+  const publishedSorted = articles
+    .filter((a) => isPublished(state, a.slug))
+    .sort((a, b) => (orderIndex.get(a.slug) ?? 99) - (orderIndex.get(b.slug) ?? 99));
+  for (const a of publishedSorted) {
+    for (const competitorSlug of new Set(a.alsoOnCompetitors || [])) {
+      if (!out.has(competitorSlug)) out.set(competitorSlug, []);
+      out.get(competitorSlug).push({ href: articlePath(a), text: a.anchor });
+    }
+  }
+  return out;
+}
+
+export function backlinkedFrom(slug, articles) {
+  return articles
+    .filter((a) => (a.alsoRelated || []).includes(slug))
+    .map((a) => a.slug);
 }
 
 // ---- content-status.json payload — the /admin Content Publisher reads this.
@@ -207,8 +276,8 @@ export function contentStatusJson(articles, state) {
     articles: articles
       .map((a) => ({
         slug: a.slug,
-        path: articlePath(a.slug),
-        url: articleUrl(a.slug),
+        path: articlePath(a),
+        url: articleUrl(a),
         title: a.title,
         h1: a.h1,
         silo: a.silo,
@@ -229,7 +298,7 @@ export function articleSitemapEntries(articles, state) {
   return articles
     .filter((a) => isPublished(state, a.slug))
     .map((a) => ({
-      loc: articleUrl(a.slug),
+      loc: articleUrl(a),
       pri: '0.7',
       freq: 'monthly',
       lastmod: state[a.slug].publishedAt,
