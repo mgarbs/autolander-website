@@ -46,9 +46,11 @@ export const ARTICLES = [
       'They do different jobs, and for a dealership the job that decides it is the inventory. Meta Muse '
       + 'is a personal AI agent, one per person, and it now covers two things dealer tools charge extra '
       + 'for: hunting Marketplace for cars to buy and answering buyers in Messenger. CARVID sells those as '
-      + 'Acquire at $599 a month and as an AI Inbox add-on of $299 to $499 a month on its team plans. What '
-      + 'Muse cannot do is run a lot: it reads no DMS or inventory feed, has no team seats or manager '
-      + 'view, and posting even a small lot through it uses the agent up on form-filling. AutoLander posts '
+      + 'Acquire at $599 a month and as an AI Inbox add-on of $299 to $499 a month on its team plans. Muse '
+      + 'can post cars, even from a feed you hand it. What it cannot be is the system that keeps a lot '
+      + 'true: the daily upkeep of prices, arrivals and sold units draws on its weekly usage, nobody '
+      + 'checks its field choices but you, no DMS delivers to it, and it has no team seats or manager '
+      + 'view. AutoLander posts '
       + 'every unit from your feed with the real price, mileage and studio-grade photos, keeps each '
       + 'listing true, pulls sold cars and gives managers a team dashboard, from $39 a month. The lot '
       + 'belongs on AutoLander; the conversations can go to whichever assistant you trust.',
@@ -64,6 +66,9 @@ export const ARTICLES = [
           + 'vendors would.',
           'The short version: Muse changes the price of two jobs dealers used to pay for, and leaves the '
           + 'hardest dealer job, keeping a whole lot accurate on Marketplace, with the tools built for it.',
+          'One thing up front, because every dealer will test it: Muse can post cars. We handed it an '
+          + 'inventory feed and it created the listings. That is the easy part of the job. This page is '
+          + 'about the rest of it, the part that runs every day for as long as the cars are for sale.',
         ],
       },
       {
@@ -98,10 +103,12 @@ export const ARTICLES = [
         alCol: 2,
         rows: [
           ['What it is', 'A personal AI agent for one person', 'A desktop app that posts dealer inventory to Facebook Marketplace', 'A dealer posting and lead platform (Chrome extension plus desktop app)'],
-          ['Reads your DMS or inventory feed', 'No', 'Yes: vAuto, Dealer.com, CDK, HomeNet, CarGurus, Cars.com, CSV and SFTP drops, and more', 'Yes, 15 or more systems'],
-          ['Posts a 100-unit lot', 'One listing at a time, as a browser task you set up', 'From the feed, at a pace you set per seat', 'From the feed, with daily post limits by plan'],
-          ['Keeps price and mileage in step with the lot', 'Only through a recurring task you write', 'Automatically, from the feed', 'Yes, from the feed'],
-          ['Removes sold units', 'Only when told', 'Automatically when the feed drops the car', 'Yes, when the feed marks it sold'],
+          ['Where inventory comes from', 'A feed file or link you hand it, interpreted by the agent', 'Scheduled DMS and SFTP drops, website feeds, vAuto, Dealer.com, CDK, HomeNet, CarGurus and Cars.com, mapped field by field', 'Integrations with 15 or more systems'],
+          ['Posts a 100-unit lot', 'Yes, as a long browser task that draws on its weekly usage', 'From the feed, at a paced rate per seat', 'From the feed, with daily post limits by plan'],
+          ['Keeps price and mileage in step with the lot', 'Through a daily task you set up, while the week’s usage lasts', 'Automatically, from the feed', 'Yes, from the feed'],
+          ['Removes sold units', 'Through the same daily task', 'Automatically when the feed drops the car', 'Yes, when the feed marks it sold'],
+          ['Checks what it entered', 'You read the listings', 'Every dropdown read back and verified; unknown mileage left blank', 'Not publicly specified'],
+          ['When Facebook changes the listing form', 'You fix your prompt', 'AutoLander ships the fix, usually within hours', 'The vendor ships the fix'],
           ['Listing photos', 'Posted as uploaded', 'AI Photo Studio replaces the background and leaves the car untouched', 'Background removal'],
           ['Walkaround video', 'No', 'AI walkaround video', 'Video walkaround'],
           ['Vehicle descriptions', 'Whatever you ask it to write', 'AI-written from the feed data for every unit', 'AI-written'],
@@ -171,23 +178,32 @@ export const ARTICLES = [
         type: 'bullets',
         h2: 'Where Muse falls short for a dealership',
         intro:
-          'These limits come from how Muse is built. They matter little to a person selling a couch and a '
-          + 'great deal to a store with a feed.',
+          'Muse can post cars; we handed it a feed and it did. These limits show up in the weeks after, and '
+          + 'every one of them holds even if Muse gets every single listing right.',
         items: [
-          'No feed. Muse does not read vAuto, CDK, HomeNet, Dealer.com or your website feed. Every year, '
-          + 'trim, mileage and price it posts comes from whatever you paste into a chat or build into a '
-          + 'script, so a listing is only as current as the last time somebody updated the prompt.',
+          'Upkeep is a daily job. A live lot changes every day. Keeping Marketplace true means re-reading '
+          + 'the feed and walking every live listing daily for price drops, new arrivals and sold units. '
+          + 'For Muse that is a recurring browser task you set up and watch. For AutoLander it is the '
+          + 'product.',
+          'One weekly pool pays for everything. Muse’s usage is metered week by week, browser work is the '
+          + 'heaviest kind, and the daily upkeep draws on the same pool as every customer task. Muse called '
+          + 'a 595-unit store running through it “a slog.” When the week runs out, the work waits for the '
+          + 'reset, sold cars included.',
+          'Nobody checks its choices but you. When a trim is spelled differently, a body style has no exact '
+          + 'match or a value is missing, an agent decides and fills in the form. AutoLander verifies every '
+          + 'dropdown it selects against the label before it continues, and leaves unknown mileage blank '
+          + 'rather than guessing.',
+          'No DMS delivers to it. vAuto, HomeNet, CDK and DealerCenter send inventory as scheduled file '
+          + 'drops, often over SFTP, to a destination the dealer authorizes, and AutoLander can be that '
+          + 'destination. Muse reads the file or link someone hands it, which is what it meant by “I can’t '
+          + 'do DMS feed ingestion.”',
           'No team. One agent belongs to one person. There are no seats, no roles, no shared queue and no '
           + 'manager view of who posted which units and which posts turned into sales.',
-          'Volume is expensive. Posting is browser work: the agent reads each screen of the Marketplace '
-          + 'form, types, uploads photos and checks the result, and every screen counts against the week’s usage. Muse called '
-          + 'a 595-unit store running through it “a slog,” and a daily price check across that many '
-          + 'listings is exactly the kind of job that eats a weekly allowance.',
-          'Keeping listings true is on you. A price drop or a sold car reaches Marketplace only if a task '
-          + 'you wrote catches it, and no system is watching for the unit the script missed.',
-          'It lives on one person’s account. The listings, the memory and the scripts sit with the '
-          + 'salesperson who set them up. When that person leaves the store, the setup leaves too.',
-          'Photos go out as they came in. Muse posts the pictures it is given, so a watermarked or '
+          'It lives on one person’s account. The listings, the memory and the setup sit with the '
+          + 'salesperson who built it. When that person leaves the store, the setup leaves too.',
+          'When Facebook changes the form, the fix is yours. A Muse setup is a prompt you maintain. '
+          + 'AutoLander ships the fix to every store, usually within hours.',
+          'Photos go out as they came in. Muse posts the pictures in the feed, so a watermarked or '
           + 'cluttered lot photo is what buyers see.',
           'Coverage. Muse is available in the United States and Canada as of September 26, 2026. '
           + 'AutoLander also serves dealers in Spanish-speaking Latin America.',
@@ -197,10 +213,11 @@ export const ARTICLES = [
         type: 'qa',
         q: 'Can a small lot use Muse to post its cars?',
         a: [
-          'Technically, yes. A 15-car independent lot where the owner does everything can have Muse post '
-          + 'each unit from a spreadsheet and run a nightly check for price changes and sold cars. Be ready '
-          + 'to build it: Muse told us the 35 listings it posted for one dealer took “hand-built '
-          + 'scripting,” and somebody has to maintain that script every time Marketplace changes a form.',
+          'Yes. A 15-car independent lot where the owner does everything can hand Muse its feed or a '
+          + 'spreadsheet, have it post every unit, and set a nightly task to catch price changes and sold '
+          + 'cars. Be ready to own it: Muse told us the 35 listings it posted for one dealer took '
+          + '“hand-built scripting,” and that setup is somebody’s to maintain every time the feed or '
+          + 'Marketplace changes.',
           'The bigger cost shows up somewhere else. An agent that spends its week filling Marketplace '
           + 'forms is an agent that is not answering the buyer who messaged at 9pm, following up with the '
           + 'couple who test drove on Saturday, finding the trade-in you should buy, or remembering which '
@@ -229,14 +246,22 @@ export const ARTICLES = [
         variant: 'win',
         h2: 'Why dealers put their inventory on AutoLander',
         intro:
-          'Everything on this list is work Muse leaves to you and CARVID prices well above $39. AutoLander '
-          + 'does all of it from one app.',
+          'Everything here is built into AutoLander from $39 a month. With Muse, each item is a task you set '
+          + 'up, pay for out of its weekly usage and check yourself. CARVID prices most of it well above $39.',
         items: [
           'Every unit from the feed you already have: CarGurus, Cars.com, vAuto, Dealer.com, HomeNet, '
-          + 'Frazer, CDK, Tekion, DealerCenter, website feeds and CSV or SFTP drops. See the full list of '
-          + '[integrations](/integrations/).',
+          + 'Frazer, CDK, Tekion, DealerCenter, website feeds and scheduled CSV or SFTP drops that your DMS '
+          + 'delivers straight to AutoLander. See the full list of [integrations](/integrations/).',
           'Prices and mileage that follow the desk. When the feed changes, the Marketplace listing '
-          + 'changes, and sold units come down without anyone remembering to do it.',
+          + 'changes, and sold units come down without anyone remembering to do it, every day, on a flat '
+          + 'monthly plan.',
+          'Checked work. Every dropdown AutoLander selects is read back and verified against its label '
+          + 'before the post continues, mileage is the odometer or blank and never a guess, and the price '
+          + 'comes only from the feed.',
+          'Paced posting. Humanized typing, a cooldown after each publish and a daily allowance per seat, '
+          + 'so a lot goes up at a pace a person could keep.',
+          'Fixes ship from us. When Facebook changes the listing form, every store gets the fix, usually '
+          + 'within hours, with nothing for you to rewrite.',
           'Photos that stop the scroll. The [AI Photo Studio](/ai-car-photo-editor/) replaces the lot '
           + 'behind the real car and never repaints it, and AI walkaround video adds motion to the listing.',
           'Descriptions written from the feed data for every unit, so year, trim, mileage and features '
@@ -277,7 +302,7 @@ export const ARTICLES = [
         head: ['Your situation', 'Best setup', 'Why'],
         rows: [
           ['A salesperson with a few cars on a personal profile', 'AutoLander Starter for the listings, Muse for the customer work', 'A $39 poster keeps listings live and true without spending the agent'],
-          ['Small lot under 20 units, one person does everything', 'AutoLander Starter from $39 a month, Muse for customers', 'Muse can post a few cars, but then it does little else that week; Starter lists 20 units in four days and keeps them true'],
+          ['Small lot under 20 units, one person does everything', 'AutoLander Starter from $39 a month, Muse for customers', 'Muse can post them, but the daily upkeep then comes out of its week; Starter lists 20 units in four days and keeps them true'],
           ['Independent store, 30 to 150 units', 'AutoLander for the lot, Muse for acquisition and first replies', 'Feed-driven listings stay true while Muse handles people'],
           ['Franchise store or group with several reps', 'AutoLander Dealer Plan plus each rep’s own Muse', 'Seats, a manager dashboard and per-rep posting, with an assistant per person'],
           ['A store that wants nine channels and ADF leads in its CRM', 'CARVID, with Muse for acquisition', 'Breadth and CRM plumbing are what CARVID charges for'],
@@ -389,15 +414,17 @@ export const ARTICLES = [
         + 'posted. AutoLander’s Dealer Plan, from $117 a month for three seats, gives a store one account, '
         + 'a live manager dashboard and a posting queue for every seat.'],
       ['Can Meta Muse post my inventory to Facebook Marketplace?',
-        'It can create Marketplace listings from your own account, one at a time, from details and '
-        + 'photos you give it, and it can repeat the work on a schedule. It does not read a DMS or '
-        + 'inventory feed, so every fact has to be supplied. For a handful of cars that works. For a lot, '
-        + 'it spends the agent on form-filling and leaves price and sold status to scripts you maintain.'],
+        'Yes. Hand it a feed file or link and it can create the listings from your own account; we tested '
+        + 'it and it posted the cars. The harder part is every day after: price drops, new arrivals and '
+        + 'sold units all have to reach Marketplace, which for Muse is a recurring task that draws on its '
+        + 'weekly usage and that nobody checks but you. AutoLander does that upkeep as its whole job, '
+        + 'verifies what it enters and runs on a flat plan from $39 a month.'],
       ['Can Muse replace CARVID?',
         'For two features, largely yes. Muse can hunt Marketplace for private-party cars and answer '
-        + 'buyers in Messenger, which overlaps CARVID Acquire ($599 a month) and CARVID’s AI Inbox. It does '
-        + 'not replace the inventory side: DMS feeds, posting a lot, keeping prices true, team seats or '
-        + 'lead delivery into your CRM. For the inventory, AutoLander does that work from $39 a month.'],
+        + 'buyers in Messenger, which overlaps CARVID Acquire ($599 a month) and CARVID’s AI Inbox. It is a '
+        + 'weak replacement for the inventory side: scheduled DMS delivery, daily upkeep of a whole lot, '
+        + 'verified listings, team seats and lead delivery into your CRM. For the inventory, AutoLander '
+        + 'does that work from $39 a month.'],
       ['Does Muse work with AutoLander?',
         'Yes, because they never do the same job. AutoLander posts and maintains your vehicle listings '
         + 'from your inventory feed through your own Facebook session. Muse works in the same Facebook '
@@ -451,9 +478,9 @@ export const ARTICLES = [
       + 'salesperson, BDC rep and used-car manager and a poor system for the store itself. Hand it '
       + 'acquisition hunting, first replies to Marketplace buyers, follow-ups, scheduling and research. '
       + 'Keep inventory posting, price and sold-status sync, photos, team oversight and multi-rooftop work '
-      + 'on a tool built for the lot, because Muse reads no inventory feed, has no seats or manager view, '
-      + 'and burns its weekly usage on form-filling when it posts at volume. AutoLander does that side '
-      + 'from your feed, from $39 a month.',
+      + 'on a tool built for the lot. Muse can post from a feed, but the daily upkeep of a whole lot draws '
+      + 'on one person’s weekly usage, nobody checks its field choices but you, no DMS delivers to it, and '
+      + 'it has no seats or manager view. AutoLander does that side from your feed, from $39 a month.',
     sections: [
       {
         type: 'prose',
@@ -464,9 +491,10 @@ export const ARTICLES = [
           + 'As a person’s assistant, Muse is the most useful new tool to reach the showroom floor in '
           + 'years. As the system that runs a dealership’s Marketplace presence, it is missing the parts '
           + 'that make a system.',
-          'This page walks through a dealership job by job, then gives each seat on the floor its own '
-          + 'Muse routine. Everything here was checked on September 26, 2026, and Meta updates Muse '
-          + 'almost weekly.',
+          'Muse can post cars, even straight from a feed; we tried it. The real question is which system '
+          + 'should own the lot every day after that first post. This page walks through a dealership job '
+          + 'by job, then gives each seat on the floor its own Muse routine. Everything here was checked on '
+          + 'September 26, 2026, and Meta updates Muse almost weekly.',
         ],
       },
       {
@@ -483,9 +511,10 @@ export const ARTICLES = [
           ['Test-drive scheduling and reminders', 'Yes', 'Calendar access and a confirmation message in one step'],
           ['Pricing homework on a trade or a unit', 'Yes', 'It pulls comparable listings from across the web in minutes'],
           ['Review replies and walkaround scripts', 'Yes', 'Writing is what it does fastest'],
-          ['Post the whole lot to Marketplace', 'No', 'No feed, one listing at a time, and every form costs allowance'],
-          ['Keep 80 prices in step with the desk', 'No', 'Only as reliable as a script someone maintains'],
-          ['Pull sold units the day they sell', 'No', 'It cannot know a car sold unless someone tells it'],
+          ['Post the whole lot to Marketplace', 'It can, but keep it off', 'Hand it a feed and it will post; every day of upkeep after that comes out of one person’s weekly usage'],
+          ['Receive the DMS feed', 'No', 'DMS vendors deliver scheduled drops to an authorized destination; Muse reads what someone hands it'],
+          ['Keep 80 prices in step with the desk', 'No', 'A daily re-read of the feed and 80 listings, checked by nobody but you'],
+          ['Pull sold units the day they sell', 'No', 'Only as reliable as the daily task and the week’s remaining usage'],
           ['See which rep posted what and what sold', 'No', 'No seats, no roles, no manager view'],
           ['Run several rooftops', 'No', 'One agent per person and no store-level account'],
           ['Clean up lot photos', 'No', 'It posts the photos it is given'],
@@ -496,22 +525,28 @@ export const ARTICLES = [
       },
       {
         type: 'bullets',
-        h2: 'Six reasons Muse cannot run a dealership’s Marketplace',
+        h2: 'Seven reasons Muse cannot run a dealership’s Marketplace',
         intro:
-          'Each of these follows from Meta building a personal agent for one person. A dealership is a '
-          + 'business with a feed, a team and a lot that changes every day.',
+          'Each of these follows from Meta building a personal agent for one person, and each holds even '
+          + 'when Muse posts every car perfectly. A dealership is a business with a feed, a team and a lot '
+          + 'that changes every day.',
         items: [
-          'It has no source of truth. A dealership’s facts live in the DMS, the website feed and the price '
-          + 'desk. Muse knows only what it is told, so a Marketplace listing drifts from the lot the moment '
-          + 'someone forgets to tell it.',
+          'Nothing delivers the source of truth to it. A dealership’s facts live in the DMS, the website '
+          + 'feed and the price desk. DMS vendors deliver by scheduled drop, often over SFTP, to a '
+          + 'destination the dealer authorizes, and AutoLander can be that destination. Muse reads the file '
+          + 'or link someone hands it, so a listing is only as current as its last read.',
+          'Nobody checks its choices. When a trim is spelled differently, a body style has no exact match '
+          + 'or a value is missing, an agent decides and fills in the form. AutoLander verifies every '
+          + 'dropdown it selects against the label before it continues, and leaves unknown mileage blank '
+          + 'rather than guessing.',
           'It belongs to one employee. The agent, its memory and every script live on a salesperson’s '
           + 'personal account. When that person leaves, the store’s Marketplace process leaves with them.',
           'Managers cannot see it. There is no dashboard of who posted which units, which posts turned '
           + 'into conversations or which conversations turned into sales. AutoLander’s [Dealer '
           + 'Plan](/facebook-marketplace-auto-poster-pricing/) exists for exactly that view.',
-          'Volume costs allowance. Posting is screen-by-screen browser work, and Meta meters Muse by '
-          + 'weekly usage. A lot of 80 units plus a daily price check is the heaviest job you could give '
-          + 'it and the least valuable one.',
+          'Upkeep costs usage. Posting is screen-by-screen browser work, and keeping 80 listings true means '
+          + 'doing some of it every day. Meta meters Muse by weekly usage, and that upkeep is the heaviest '
+          + 'job you could give it and the least valuable one. When the week runs out, the sold cars wait.',
           'It cannot split work across stores. One agent works one person’s list. A group with five '
           + 'rooftops has no way to give Muse a store-level queue, a posting pace per rooftop or a separate '
           + 'profile per store.',
@@ -534,8 +569,8 @@ export const ARTICLES = [
         q: 'What about a small lot? Can Muse do the posting there?',
         a: [
           'It can, and for a very small store it may be the right call. A lot with 10 to 20 units and one '
-          + 'person doing everything can hand Muse a spreadsheet, have it create each listing from the '
-          + 'owner’s account, and schedule a nightly check against the spreadsheet for price changes and '
+          + 'person doing everything can hand Muse its feed or a spreadsheet, have it create each listing '
+          + 'from the owner’s account, and schedule a nightly check against the feed for price changes and '
           + 'sold units.',
           'Go in knowing the trade. If Muse posts, posting becomes Muse’s main job. The weekly allowance '
           + 'that could have gone to answering buyers at 9pm, following up with Saturday’s test drives and '
@@ -661,9 +696,10 @@ export const ARTICLES = [
         + 'salesperson, manager or BDC rep uses their own agent on their own account. There is no '
         + 'store-level login, seat management or shared queue.'],
       ['Can Meta Muse post a dealership’s inventory to Facebook Marketplace?',
-        'One listing at a time, from details and photos someone gives it, on the account of the person '
-        + 'who owns the agent. It does not read a DMS, website feed or CSV, so it cannot keep an inventory '
-        + 'in step with the lot the way a feed-driven poster does.'],
+        'Yes, from a feed file or link someone hands it, on the account of the person who owns the agent. '
+        + 'What it does poorly is own the lot afterward: daily price and sold updates draw on that one '
+        + 'person’s weekly usage, nobody verifies its field choices, and no DMS delivers to it. A '
+        + 'feed-driven poster such as AutoLander does that upkeep as its whole job.'],
       ['Is Meta Muse safe for a dealership to use on Facebook?',
         'Muse is Meta’s own agent acting inside Meta’s own apps, and by default it asks before important '
         + 'actions. It still acts in the account owner’s name, so write rules for what it may say, keep '
@@ -713,11 +749,13 @@ export const ARTICLES = [
     tldr:
       'For a car salesman, Meta Muse is the most useful assistant to arrive in years. It can answer your '
       + 'Marketplace buyers from your own account, chase every follow-up, book and confirm appointments, '
-      + 'research a customer’s trade and write the texts you never get to. It is a weak way to post your '
-      + 'cars. Posting from your profile works for a handful of units, but it turns the assistant into a '
-      + 'form-filler, spends your weekly allowance, and never learns when the desk changes a price or a '
-      + 'car sells. Keep Muse on your customers and let a feed-driven poster like AutoLander, from $39 a '
-      + 'month, keep your listings live and accurate.',
+      + 'research a customer’s trade and write the texts you never get to. It can post cars too: hand it '
+      + 'a feed and it will create the listings. Posting is the easy day. After it, every price drop, new '
+      + 'arrival and sold unit has to reach Marketplace as well, every day, and for Muse that upkeep is a '
+      + 'recurring job that draws on the same weekly usage your customers need, with nobody checking its '
+      + 'choices but you. AutoLander does that upkeep as its whole job, from $39 a month: it posts from '
+      + 'your store’s feed, verifies what it enters, keeps prices and sold status true and upgrades every '
+      + 'photo. Give Muse the customers and AutoLander the cars.',
     sections: [
       {
         type: 'prose',
@@ -727,9 +765,11 @@ export const ARTICLES = [
           + 'went quiet, confirming appointments and looking up what a trade is worth. Muse is the first '
           + 'real assistant most reps have had, it lives inside the same Facebook account your buyers '
           + 'message, and it runs on your phone, on the web and in WhatsApp.',
-          'The first thing every rep asks is whether Muse can post their cars. It can, a few at a time. '
-          + 'This guide explains why that is the least valuable thing to ask of it, and what to hand it '
-          + 'instead. Facts were checked on September 26, 2026.',
+          'The first thing every rep asks is whether Muse can post their cars. It can. We handed Muse an '
+          + 'inventory feed and it posted the cars. This guide is about everything after that first post: '
+          + 'what keeping a lot true on Marketplace takes every day, what it costs the assistant, and why '
+          + 'that work belongs on a tool built for it while Muse spends its week on your customers. Facts '
+          + 'were checked on September 26, 2026.',
         ],
       },
       {
@@ -753,21 +793,30 @@ export const ARTICLES = [
       },
       {
         type: 'bullets',
-        h2: 'Why posting your cars through Muse is a bad trade',
-        intro: 'Muse can create a Marketplace listing from your account. The trouble starts after the first post.',
+        h2: 'What posting through Muse costs you after day one',
+        intro:
+          'Muse can read a feed and create the listings. Every cost below shows up in the weeks after, '
+          + 'even if Muse gets every single listing right.',
         items: [
-          'You become the feed. Muse knows the year, trim, mileage and price only because you typed or '
-          + 'pasted them. Every car is a small data-entry job, and every typo goes live under your name.',
-          'It never hears that the desk moved the price. When the used-car manager drops a unit $1,000 on '
-          + 'Tuesday, your listing keeps the old number until you tell Muse, and buyers keep reading a price '
-          + 'the store no longer asks.',
-          'It never hears that the car sold. A sold unit stays live until you remember it, and the next '
-          + 'buyer who messages gets bad news instead of a car.',
-          'It spends your usage on forms. Filling a Marketplace listing is screen-by-screen browser work, '
-          + 'among the heaviest jobs an agent does. A few dozen posts and nightly re-checks can take most '
-          + 'of a week’s usage and leave little for customers.',
-          'Your photos go up as they are. Whatever came off your phone or the store website, glare, '
-          + 'clutter and watermarks included, is what buyers see.',
+          'The upkeep never ends. A live lot changes every day: the desk drops a price on Tuesday, three '
+          + 'units arrive Wednesday, two sell Thursday. Keeping Marketplace true means re-reading the feed '
+          + 'and walking every live listing, every day, for as long as the cars are posted.',
+          'It all comes out of one weekly pool. Muse’s usage is metered week by week, browser work is the '
+          + 'heaviest kind, and that daily upkeep draws on the same pool as your follow-ups, appointments '
+          + 'and research. When the week runs out, all of it waits for the reset, including the sold car '
+          + 'that should have come down today.',
+          'Nobody checks its choices but you. When a trim is spelled differently, a body style has no exact '
+          + 'match or a value is missing, an agent decides and fills in the form. You find out what it '
+          + 'chose by reading the listing. AutoLander verifies every dropdown it selects against the label '
+          + 'before it continues, and leaves unknown mileage blank instead of guessing.',
+          'Same feed, same result, every time: that is what software gives you. An agent works each run '
+          + 'out fresh, which is its strength on a customer conversation and a risk on eighty listings '
+          + 'that should all follow one set of rules.',
+          'It is yours to fix. When Facebook changes the listing form, a Muse setup is a prompt you '
+          + 'maintain. AutoLander ships the fix to every store, usually within hours, with nothing for you '
+          + 'to rewrite.',
+          'Your photos go up as they are. Whatever the feed carries, glare, clutter and watermarks '
+          + 'included, is what buyers see.',
           'Everything lands on your personal profile. Marketplace’s listing limits apply to that account '
           + 'whether a person or an agent does the posting, and it is the same account you use for '
           + 'everything else.',
@@ -777,16 +826,15 @@ export const ARTICLES = [
         type: 'qa',
         q: 'When does posting with Muse make sense for a salesperson?',
         a: [
-          'When the numbers are small and the cars are yours to manage. A rep who keeps three to five units '
-          + 'live on a personal profile, checks prices with the desk once a week and does not mind removing '
-          + 'a sold car by hand can let Muse do the typing, as long as they accept that every fact still '
-          + 'starts with them.',
-          'Past that, the trade turns fast. At 20 or 30 units the listing work fills Muse’s week and still '
-          + 'depends on you to notice every price change. A feed-driven poster does that part without you: '
-          + 'AutoLander’s Starter plan is $39 a month for five posts a day, works from your store’s own '
-          + 'feed, pulls sold units down on its own, cleans up every photo in the AI Photo Studio and '
-          + 'writes each description from the feed. Your first 5 posts are free with no card. See [how the '
-          + 'plans work](/facebook-marketplace-auto-poster-pricing/).',
+          'When the lot is tiny and you are willing to be the quality check. A rep with three to five units '
+          + 'on a personal profile can hand Muse the list, read every listing it makes, and accept that the '
+          + 'daily upkeep comes out of the same weekly usage as their customers.',
+          'Past that, the math turns fast. At 20 or 30 units, keeping listings true every day is a real job, '
+          + 'and it is the one job AutoLander was built for. It works from your store’s own feed, posts at a '
+          + 'paced rate with a cooldown after each publish, verifies every field it selects, pulls sold units '
+          + 'on its own, cleans up every photo in the AI Photo Studio and writes each description from the '
+          + 'feed, for $39 a month on Starter. Your first 5 posts are free with no card. See [how the plans '
+          + 'work](/facebook-marketplace-auto-poster-pricing/).',
         ],
       },
       {
@@ -796,14 +844,15 @@ export const ARTICLES = [
         head: ['', 'Posting with Muse', 'Posting with AutoLander'],
         alCol: 2,
         rows: [
-          ['Built for', 'One person’s errands, posting included', 'Posting a store’s inventory and keeping it true'],
+          ['Built for', 'Anything you ask it, posting included', 'Posting a store’s inventory and keeping it true'],
+          ['Where the car facts come from', 'A feed or list you hand it, interpreted by the agent', 'Your store’s inventory feed, mapped field by field'],
           ['Daily capacity', 'Whatever your weekly usage allows, shared with everything else you ask it', '5, 10 or 15 posts a day on Starter ($39), Growth ($59) or Pro ($79)'],
-          ['Where the car facts come from', 'Whatever you type or paste', 'Your store’s inventory feed'],
-          ['When the desk changes a price', 'Wrong until you tell Muse', 'Updated from the feed'],
-          ['When a car sells', 'Live until you remove it', 'Pulled down automatically'],
+          ['When the desk changes a price', 'Caught if the daily task runs and the week’s usage lasts', 'Updated from the feed'],
+          ['When a car sells', 'Caught if the daily task runs and the week’s usage lasts', 'Pulled down automatically'],
+          ['Checking the work', 'You read the listings', 'Every dropdown read back and verified; unknown mileage left blank'],
           ['Photos', 'As uploaded', 'AI Photo Studio: clean background, same car'],
-          ['Your time per car', 'Setting it up and checking it', 'None once the feed is connected'],
-          ['What is left of Muse’s week', 'Whatever posting did not use', 'All of it, for your customers'],
+          ['When Facebook changes the form', 'You fix your prompt', 'AutoLander ships the fix'],
+          ['What is left of Muse’s week', 'Whatever the listing work did not use', 'All of it, for your customers'],
         ],
         note:
           'Muse details from Meta’s help center; AutoLander plans from our published pricing; both as of '
@@ -830,7 +879,8 @@ export const ARTICLES = [
           + 'private-party cars and contacts the sellers, for $599 a month per user.',
           'For a rep that changes the shopping list. You may not need a dealer tool to answer buyers or to '
           + 'hunt private-party cars, because Muse does both from your own account. You still need '
-          + 'something that keeps your listings accurate, and that is the one job Muse leaves to you. The '
+          + 'something whose whole job is keeping your listings accurate every day, and an assistant with a '
+          + 'weekly usage limit and a dozen other jobs is the wrong place to put it. The '
           + 'full breakdown is on our [head-to-head with CARVID](/compare/carvid/) and the [comparison of '
           + 'every Marketplace posting tool](/compare/).',
         ],
@@ -896,10 +946,10 @@ export const ARTICLES = [
         + 'Marketplace threads under rules you set, and by default it asks before important actions. Keep '
         + 'price, trade and credit conversations for yourself.'],
       ['Should I post my cars with Muse?',
-        'Only a handful. Muse can create listings from your account, but it has no inventory feed, never '
-        + 'learns when a price changes or a car sells, and spends its weekly usage on forms. For more '
-        + 'than a few units, a feed-driven poster such as AutoLander from $39 a month keeps listings '
-        + 'accurate and leaves Muse for your customers.'],
+        'Only a handful. Muse can post from a feed you hand it, but keeping those listings true afterward '
+        + 'is a daily job that draws on the same weekly usage as your customers, and nobody checks its '
+        + 'field choices but you. For more than a few units, a feed-driven poster such as AutoLander from '
+        + '$39 a month does the upkeep, verifies what it enters and leaves Muse for your customers.'],
       ['What is the best AI tool for car salesmen in 2026?',
         'For most reps the strongest setup is Meta Muse for the customer work (replies, follow-ups, '
         + 'scheduling and research) paired with a feed-driven Marketplace poster for the listings. Muse '
