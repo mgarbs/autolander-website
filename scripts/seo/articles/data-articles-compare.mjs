@@ -24,7 +24,7 @@ export const ARTICLES = [
     slug: 'meta-muse-vs-autolander-vs-carvid',
     silo: 'compare',
     anchor: 'Meta Muse vs AutoLander vs CARVID: which one a car dealer actually needs',
-    crumb: 'Muse vs AutoLander vs CARVID',
+    crumb: 'Meta Muse vs AutoLander vs CARVID',
     primaryKeyword: 'meta muse vs autolander',
     secondaryKeywords: [
       'muse vs carvid',
@@ -456,7 +456,7 @@ export const ARTICLES = [
     slug: 'meta-muse-for-car-dealerships',
     silo: 'compare',
     anchor: 'Meta Muse for car dealerships: what to hand it and what to keep',
-    crumb: 'Muse for dealerships',
+    crumb: 'Meta Muse for dealerships',
     primaryKeyword: 'meta muse for car dealerships',
     secondaryKeywords: [
       'meta muse car dealership',
@@ -729,7 +729,7 @@ export const ARTICLES = [
     slug: 'meta-muse-for-car-salesmen',
     silo: 'compare',
     anchor: 'Meta Muse for car salesmen: the rep’s guide to using it well',
-    crumb: 'Muse for car salesmen',
+    crumb: 'Meta Muse for car salesmen',
     primaryKeyword: 'meta muse for car salesmen',
     secondaryKeywords: [
       'ai for car salesmen',
@@ -974,7 +974,7 @@ export const ARTICLES = [
     slug: 'facebook-marketplace-auto-reply-for-car-dealers',
     silo: 'compare',
     anchor: 'Facebook Marketplace auto-reply for car dealers: every option compared',
-    crumb: 'Marketplace auto-reply',
+    crumb: 'Marketplace auto-reply for dealers',
     primaryKeyword: 'facebook marketplace auto reply',
     secondaryKeywords: [
       'facebook marketplace auto reply for car dealers',

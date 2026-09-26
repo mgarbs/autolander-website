@@ -85,6 +85,13 @@ const EVERGREEN_GROUPS = [
 // first: it is the one people are searching for this month.
 export const DIRECTORY_SILO_ORDER = ['compare', 'metaTools', 'marketplace', 'photos', 'growth'];
 
+// Silos whose published articles belong INSIDE an evergreen group instead of a box of their
+// own. The /compare/ articles are comparison pages, so they sit in the Compare box right under
+// the hub link, beside the versus pages, which is where a visitor looking for a comparison
+// looks. A second "comparisons" box below Guides read as a duplicate and got missed (Michael,
+// 2026-09-26). Labels there are the short breadcrumb names, matching the box's "vs CARVID" style.
+export const DIRECTORY_MERGE_INTO = { compare: 'compare' };
+
 // -> [{ id, label, kind: 'pages' | 'articles', links: [{ href, text }] }]
 // Draft articles are invisible here exactly as they are everywhere else; an article silo with
 // nothing published yet contributes no group at all.
@@ -98,13 +105,19 @@ export function buildHomeDirectory(articles, state) {
   const orderIndex = new Map(SUGGESTED_ORDER.map((s, i) => [s, i]));
   for (const silo of DIRECTORY_SILO_ORDER) {
     if (!SILOS[silo]) throw new Error(`home-directory: unknown silo ${silo}`);
-    const links = articles
+    const published = articles
       .filter((a) => a.silo === silo && isPublished(state, a.slug))
-      .sort((a, b) => (orderIndex.get(a.slug) ?? 99) - (orderIndex.get(b.slug) ?? 99))
-      .map((a) => ({ href: articlePath(a), text: a.anchor }));
-    if (links.length) {
-      groups.push({ id: `articles-${silo}`, label: SILOS[silo].label, kind: 'articles', links });
+      .sort((a, b) => (orderIndex.get(a.slug) ?? 99) - (orderIndex.get(b.slug) ?? 99));
+    if (!published.length) continue;
+    const into = DIRECTORY_MERGE_INTO[silo];
+    if (into) {
+      const group = groups.find((g) => g.id === into);
+      if (!group) throw new Error(`home-directory: unknown merge target ${into}`);
+      group.links.splice(1, 0, ...published.map((a) => ({ href: articlePath(a), text: a.crumb })));
+      continue;
     }
+    const links = published.map((a) => ({ href: articlePath(a), text: a.anchor }));
+    groups.push({ id: `articles-${silo}`, label: SILOS[silo].label, kind: 'articles', links });
   }
   return groups;
 }
