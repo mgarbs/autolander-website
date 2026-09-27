@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import BlogStudio from './BlogStudio.jsx';
 import { ApiError, apiGet, apiPost } from './lib/api.js';
+import { filterDripArticles, isBlogActivityInFlight } from './lib/blog-studio.js';
 
 // Content Publisher — the Avalanche article drip console.
 // Lists every prepared article (draft + live) from /admin/content and publishes one at a
@@ -33,6 +35,7 @@ export default function ContentPublisher({ onUnauthorized }) {
   const [loadedAt, setLoadedAt] = useState(0); // wall clock stamped when data arrives, not during render
   const [confirmSlug, setConfirmSlug] = useState('');
   const [dispatched, setDispatched] = useState({}); // slug -> true (optimistic until runs/status catch up)
+  const [blogBusy, setBlogBusy] = useState(false);
   const [notice, setNotice] = useState('');
   const timerRef = useRef(null);
 
@@ -69,7 +72,7 @@ export default function ContentPublisher({ onUnauthorized }) {
     return () => window.clearTimeout(timeoutId);
   }, [load]);
 
-  const articles = useMemo(() => data?.articles || [], [data]);
+  const dripArticles = useMemo(() => filterDripArticles(data?.articles), [data]);
 
   // One place decides what each row is doing. The case that matters: a run that COMPLETED
   // SUCCESSFULLY while the status file still reads draft. The article IS live — only the
@@ -78,7 +81,7 @@ export default function ContentPublisher({ onUnauthorized }) {
   // row flips to live on its own.
   const effective = useMemo(() => {
     const map = new Map();
-    for (const a of articles) {
+    for (const a of dripArticles) {
       const run = runFor(data?.runs, a.slug);
       if (a.status === 'published') { map.set(a.slug, { state: 'published', run }); continue; }
       const running = run?.status === 'queued' || run?.status === 'in_progress';
@@ -90,13 +93,14 @@ export default function ContentPublisher({ onUnauthorized }) {
       map.set(a.slug, { state: 'draft', run });
     }
     return map;
-  }, [articles, data, dispatched, loadedAt]);
+  }, [data, dispatched, dripArticles, loadedAt]);
 
   // Poll while anything is in flight so rows flip to Live on their own.
-  const anyInFlight = useMemo(
-    () => [...effective.values()].some((v) => v.state === 'publishing'),
-    [effective],
-  );
+  const anyInFlight = useMemo(() => (
+    [...effective.values()].some((v) => v.state === 'publishing')
+    || blogBusy
+    || isBlogActivityInFlight(data)
+  ), [blogBusy, data, effective]);
 
   useEffect(() => {
     if (!anyInFlight) return undefined;
@@ -125,21 +129,21 @@ export default function ContentPublisher({ onUnauthorized }) {
     }
   }, [onUnauthorized]);
 
-  const liveCount = articles.filter((a) => a.status === 'published').length;
+  const liveCount = dripArticles.filter((a) => a.status === 'published').length;
   // "Next up" = the lowest drip-order row that is still a plain draft (not in flight, not
   // failed). The list is already sorted by suggestedOrder, so the first match is the answer.
   const nextUp = useMemo(
-    () => articles.find((a) => (effective.get(a.slug)?.state || 'draft') === 'draft') || null,
-    [articles, effective],
+    () => dripArticles.find((a) => (effective.get(a.slug)?.state || 'draft') === 'draft') || null,
+    [dripArticles, effective],
   );
   const silos = useMemo(() => {
     const bySilo = new Map();
-    for (const a of articles) {
+    for (const a of dripArticles) {
       if (!bySilo.has(a.siloLabel)) bySilo.set(a.siloLabel, []);
       bySilo.get(a.siloLabel).push(a);
     }
     return [...bySilo.entries()];
-  }, [articles]);
+  }, [dripArticles]);
 
   if (loading) {
     return <div className="px-5 py-6 text-[10px] font-bold uppercase tracking-widest text-slate-500">Loading content…</div>;
@@ -149,7 +153,7 @@ export default function ContentPublisher({ onUnauthorized }) {
     <div className="space-y-4 px-5 py-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-          {liveCount}/{articles.length} live · drip one at a time · publish → silo links + homepage directory + sitemap + IndexNow, automatically
+          {liveCount}/{dripArticles.length} live · drip one at a time · publish → silo links + homepage directory + sitemap + IndexNow, automatically
         </p>
         <button
           type="button"
@@ -159,6 +163,13 @@ export default function ContentPublisher({ onUnauthorized }) {
           Refresh
         </button>
       </div>
+
+      <BlogStudio
+        data={data}
+        reload={load}
+        onUnauthorized={onUnauthorized}
+        onBusyChange={setBlogBusy}
+      />
 
       {nextUp && (
         <p className="rounded-xl border border-blue-400/20 bg-blue-500/[0.06] px-4 py-3 text-xs font-bold text-blue-200">

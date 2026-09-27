@@ -36,8 +36,10 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { SITE, NAV } from '../registry.mjs';
+import { collectText } from './content-rules.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const BLOG_REQUEST_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export const PUBLISH_STATE_PATH = resolve(HERE, 'publish-state.json');
 
 // ---- silo definitions. hub = the page whose breadcrumb the article sits under and the
@@ -89,6 +91,14 @@ export const SILOS = {
     crumb: { name: 'Compare', url: SITE.origin + NAV.compareHub.path },
     related: [L(NAV.compareHub), L(NAV.aiTools), L(NAV.whyNoAutoReply), L(NAV.category), L(NAV.pricing)],
     augmentKeys: ['aiTools'],
+  },
+  blog: {
+    label: 'Blog',
+    hubKey: 'blog',
+    basePath: '/blog/',
+    crumb: { name: 'Blog', url: SITE.origin + NAV.blog.path },
+    related: [L(NAV.blog), L(NAV.category), L(NAV.dealers), L(NAV.pricing)],
+    augmentKeys: [],
   },
 };
 
@@ -152,24 +162,46 @@ export function loadPublishState() {
 }
 
 export const isPublished = (state, slug) => state?.[slug]?.status === 'published';
+export const isBlog = (article) => article?.silo === 'blog';
+
+const publishedDate = (article, state) => state?.[article.slug]?.publishedAt || '';
+const newestPublishedBlogPosts = (articles, state) => articles
+  .filter((article) => isBlog(article) && isPublished(state, article.slug))
+  .sort((a, b) => publishedDate(b, state).localeCompare(publishedDate(a, state)) || a.slug.localeCompare(b.slug));
+
+const articleOrder = (orderIndex) => (a, b) => {
+  const aBlog = isBlog(a);
+  const bBlog = isBlog(b);
+  if (aBlog !== bBlog) return aBlog ? 1 : -1;
+  if (aBlog) return String(b.meta?.updatedAt || '').localeCompare(String(a.meta?.updatedAt || '')) || a.slug.localeCompare(b.slug);
+  return (orderIndex.get(a.slug) ?? 99) - (orderIndex.get(b.slug) ?? 99);
+};
 
 // ---- related links for one article: hub links + up to 4 PUBLISHED silo siblings
 // (deterministic round-robin from SUGGESTED_ORDER so every build agrees), capped at 8.
 export function relatedForArticle(content, articles, state) {
   const silo = SILOS[content.silo];
   const links = [...silo.related];
-  const order = SUGGESTED_ORDER.filter((s) => s !== content.slug);
-  const start = Math.max(0, SUGGESTED_ORDER.indexOf(content.slug));
-  const rotated = [...order.slice(start), ...order.slice(0, start)];
   const bySlug = new Map(articles.map((a) => [a.slug, a]));
-  let added = 0;
-  for (const slug of rotated) {
-    if (added >= 4) break;
-    const sib = bySlug.get(slug);
-    if (!sib || sib.silo !== content.silo) continue;
-    if (!isPublished(state, slug)) continue;
-    links.push({ href: articlePath(sib), text: sib.anchor });
-    added += 1;
+  if (isBlog(content)) {
+    for (const sibling of newestPublishedBlogPosts(articles, state)) {
+      if (sibling.slug === content.slug) continue;
+      links.push({ href: articlePath(sibling), text: sibling.anchor });
+      if (links.length >= silo.related.length + 4) break;
+    }
+  } else {
+    const order = SUGGESTED_ORDER.filter((slug) => slug !== content.slug);
+    const start = Math.max(0, SUGGESTED_ORDER.indexOf(content.slug));
+    const rotated = [...order.slice(start), ...order.slice(0, start)];
+    let added = 0;
+    for (const slug of rotated) {
+      if (added >= 4) break;
+      const sibling = bySlug.get(slug);
+      if (!sibling || sibling.silo !== content.silo) continue;
+      if (!isPublished(state, slug)) continue;
+      links.push({ href: articlePath(sibling), text: sibling.anchor });
+      added += 1;
+    }
   }
   const capped = links.slice(0, 8);
   const seenHrefs = new Set(capped.map((link) => link.href));
@@ -181,7 +213,24 @@ export function relatedForArticle(content, articles, state) {
     capped.push({ href, text: target.anchor });
     seenHrefs.add(href);
   }
+  let inboundAdded = 0;
+  for (const post of newestPublishedBlogPosts(articles, state)) {
+    if (inboundAdded >= 4) break;
+    if (post.slug === content.slug || !(post.inboundFrom || []).includes(content.slug)) continue;
+    const href = articlePath(post);
+    if (seenHrefs.has(href)) continue;
+    capped.push({ href, text: post.anchor });
+    seenHrefs.add(href);
+    inboundAdded += 1;
+  }
   return capped;
+}
+
+export function blogInboundTargets(post, articles, state) {
+  const bySlug = new Map(articles.map((article) => [article.slug, article]));
+  return [...new Set(post.inboundFrom || [])]
+    .map((slug) => bySlug.get(slug))
+    .filter((article) => article && article.slug !== post.slug && isPublished(state, article.slug));
 }
 
 // ---- full page object for shell.renderPage(). `datePublished` is the real publish
@@ -189,11 +238,15 @@ export function relatedForArticle(content, articles, state) {
 export function buildArticlePage(content, articles, state, { previewDate } = {}) {
   const path = articlePath(content);
   const published = state?.[content.slug]?.publishedAt || null;
+  const datePublished = published || previewDate || SITE.updated;
+  const dateModified = isBlog(content)
+    ? [datePublished, content.meta?.updatedAt].filter(Boolean).sort().at(-1)
+    : datePublished;
   return {
     path,
     title: content.title,
     description: content.description,
-    eyebrow: content.eyebrow || SILOS[content.silo].label,
+    eyebrow: content.eyebrow || (isBlog(content) ? 'AutoLander blog' : SILOS[content.silo].label),
     h1: content.h1,
     tldr: content.tldr,
     bylineUpdated: true,
@@ -201,8 +254,14 @@ export function buildArticlePage(content, articles, state, { previewDate } = {})
     // Articles carry their OWN date everywhere a date is user- or crawler-visible:
     // byline, WebPage/Article dateModified, and the .md twin. Site-wide SITE.updated
     // stays for evergreen pages only.
-    updated: published || previewDate || SITE.updated,
-    article: { datePublished: published || previewDate || SITE.updated },
+    updated: dateModified,
+    article: {
+      datePublished,
+      ...(isBlog(content) ? {
+        type: 'BlogPosting',
+        isPartOf: `${SITE.origin}/blog/#blog`,
+      } : {}),
+    },
     breadcrumbs: [
       { name: 'Home', url: SITE.origin + '/' },
       SILOS[content.silo].crumb,
@@ -225,7 +284,7 @@ export function hubAugmentLinks(articles, state) {
   const orderIndex = new Map(SUGGESTED_ORDER.map((s, i) => [s, i]));
   const publishedSorted = articles
     .filter((a) => isPublished(state, a.slug))
-    .sort((a, b) => (orderIndex.get(a.slug) ?? 99) - (orderIndex.get(b.slug) ?? 99));
+    .sort(articleOrder(orderIndex));
   for (const a of publishedSorted) {
     const keys = [...new Set([...(SILOS[a.silo].augmentKeys || []), ...(a.augmentKeys || [])])];
     for (const key of keys) {
@@ -274,22 +333,54 @@ export function contentStatusJson(articles, state) {
     generatedAt: new Date().toISOString().slice(0, 10),
     note: 'Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).',
     articles: articles
-      .map((a) => ({
-        slug: a.slug,
-        path: articlePath(a),
-        url: articleUrl(a),
-        title: a.title,
-        h1: a.h1,
-        silo: a.silo,
-        siloLabel: SILOS[a.silo].label,
-        primaryKeyword: a.primaryKeyword,
-        secondaryKeywords: a.secondaryKeywords || [],
-        description: a.description,
-        suggestedOrder: orderIndex.get(a.slug) ?? null,
-        status: state?.[a.slug]?.status || 'draft',
-        publishedAt: state?.[a.slug]?.publishedAt || null,
-      }))
-      .sort((a, b) => (a.suggestedOrder ?? 99) - (b.suggestedOrder ?? 99)),
+      .map((a) => {
+        const blogRow = isBlog(a);
+        try {
+          if (blogRow && (typeof a.slug !== 'string' || !a.slug)) {
+            throw new Error('blog content-status row has an invalid slug');
+          }
+          const row = {
+            slug: a.slug,
+            kind: blogRow ? 'blog' : 'drip',
+            path: articlePath(a),
+            url: articleUrl(a),
+            title: a.title,
+            h1: a.h1,
+            silo: a.silo,
+            siloLabel: SILOS[a.silo].label,
+            primaryKeyword: a.primaryKeyword,
+            secondaryKeywords: Array.isArray(a.secondaryKeywords) ? a.secondaryKeywords : [],
+            description: a.description,
+            suggestedOrder: orderIndex.get(a.slug) ?? null,
+            status: state?.[a.slug]?.status || 'draft',
+            publishedAt: state?.[a.slug]?.publishedAt || null,
+          };
+          if (!blogRow) return row;
+          const text = collectText(a);
+          const outboundLinks = new Set(text.flatMap((value) => [...value.matchAll(/\]\((\/[^)\s]*)\)/g)].map((match) => match[1])));
+          return {
+            ...row,
+            requestId: BLOG_REQUEST_ID_RE.test(a.meta?.requestId || '') ? a.meta.requestId : null,
+            updatedAt: a.meta?.updatedAt || null,
+            validationOk: a.meta?.validation?.ok === true,
+            validationErrors: (Array.isArray(a.meta?.validation?.errors) ? a.meta.validation.errors : []).slice(0, 20),
+            wordCount: text.join(' ').split(/\s+/).filter(Boolean).length,
+            outboundLinks: outboundLinks.size,
+            inboundFrom: Array.isArray(a.inboundFrom) ? [...a.inboundFrom] : [],
+            augmentKeys: Array.isArray(a.augmentKeys) ? [...a.augmentKeys] : [],
+          };
+        } catch (error) {
+          if (!blogRow) throw error;
+          console.warn(`Skipping malformed blog content-status row ${a?.slug || '(unknown)'}`);
+          return null;
+        }
+      })
+      .filter(Boolean)
+      .sort((a, b) => {
+        if (a.kind !== b.kind) return a.kind === 'drip' ? -1 : 1;
+        if (a.kind === 'drip') return (a.suggestedOrder ?? 99) - (b.suggestedOrder ?? 99);
+        return String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')) || a.slug.localeCompare(b.slug);
+      }),
   };
 }
 
@@ -301,6 +392,8 @@ export function articleSitemapEntries(articles, state) {
       loc: articleUrl(a),
       pri: '0.7',
       freq: 'monthly',
-      lastmod: state[a.slug].publishedAt,
+      lastmod: isBlog(a) && a.meta?.updatedAt > state[a.slug].publishedAt
+        ? a.meta.updatedAt
+        : state[a.slug].publishedAt,
     }));
 }

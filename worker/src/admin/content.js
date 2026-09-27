@@ -17,6 +17,8 @@
 // autolander-website repo with Actions read/write + Contents read/write). The token
 // never reaches the browser; without it the panel is read-only and says so.
 
+import { loadBlogActivity } from './blog.js';
+
 const contentRepo = (env) => env.CONTENT_REPO || 'mgarbs/autolander-website';
 const WORKFLOW_FILE = 'publish-article.yml';
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{2,80}$/;
@@ -97,10 +99,19 @@ export async function handleContentList(env) {
           status: r.status,            // queued | in_progress | completed
           conclusion: r.conclusion,    // success | failure | cancelled | null
           createdAt: r.created_at,
+          updatedAt: r.updated_at,
           url: r.html_url,
         }));
       }
     } catch { /* runs are best-effort */ }
+  }
+
+  let blogRuns = [];
+  let blogRequests = [];
+  if (token && env.TRACKING) {
+    try {
+      ({ blogRuns, blogRequests } = await loadBlogActivity(env));
+    } catch { /* blog activity is best-effort */ }
   }
 
   return {
@@ -111,6 +122,8 @@ export async function handleContentList(env) {
       generatedAt: statusJson.generatedAt || null,
       articles: Array.isArray(statusJson.articles) ? statusJson.articles : [],
       runs,
+      blogRuns,
+      blogRequests,
     },
   };
 }

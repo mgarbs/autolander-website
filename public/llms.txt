@@ -138,6 +138,10 @@ Full agent instructions, including the response-format contract: https://autolan
 - [The Facebook Seller app: what it actually does for a car dealer](https://autolander.ai/guide/facebook-seller-app-for-car-dealers.md): The Facebook Seller app explained for car dealers: what Meta shipped on July 24, 2026, what it does for vehicle listings, and how it fits next to a posting tool.
 - [Meta Muse: what happens to your listings when the buyer sends an AI](https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers.md): Meta Muse explained for car dealers: what the AI agent Meta announced on September 8, 2026 does, whether it can shop Facebook Marketplace, and how to get listings ready.
 
+## Blog
+
+- [The AutoLander blog](https://autolander.ai/blog.md): Practical Facebook Marketplace playbooks for car dealers, plus every AutoLander guide on vehicle merchandising, dealership growth, and listing operations.
+
 ## Integrations
 
 - [Facebook Marketplace integrations & DMS feeds](https://autolander.ai/integrations.md): Connect dealer inventory feeds to Facebook Marketplace with AutoLander. Supports CarGurus, Cars.com and custom DMS exports. From $39/mo.

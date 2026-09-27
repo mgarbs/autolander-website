@@ -23,6 +23,8 @@ import {
   buildArticlePage, hubAugmentLinks, contentStatusJson, articleSitemapEntries,
   loadPublishState, isPublished, articlePath,
 } from './seo/articles/article-system.mjs';
+import { loadBlogPosts } from './seo/articles/blog-loader.mjs';
+import { blogIndexPage, blogRss, publishedBlogPosts } from './seo/blog-pages.mjs';
 import { buildHomeDirectory, injectHomeDirectory } from './seo/home-directory.mjs';
 import { ARTICLES as ART_MKT_A } from './seo/articles/data-articles-marketplace-a.mjs';
 import { ARTICLES as ART_MKT_B } from './seo/articles/data-articles-marketplace-b.mjs';
@@ -63,7 +65,8 @@ const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'publi
 // publish-state.json is the gate: draft articles are rendered NOWHERE (no HTML, no sitemap,
 // no llms.txt, no hub links). Publishing an article and rebuilding is what reveals it — and
 // also re-renders every hub/sibling so earlier pages pick up links to the newly live spoke.
-const ARTICLE_CONTENT = [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META, ...ART_COMPARE];
+const BLOG_POSTS = loadBlogPosts();
+const ARTICLE_CONTENT = [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META, ...ART_COMPARE, ...BLOG_POSTS];
 const PUBLISH_STATE = loadPublishState();
 {
   const known = new Set(Object.keys(PUBLISH_STATE));
@@ -78,9 +81,16 @@ const PUBLISH_STATE = loadPublishState();
   }
 }
 const PUBLISHED_ARTICLES = ARTICLE_CONTENT.filter((c) => isPublished(PUBLISH_STATE, c.slug));
+const PUBLISHED_BLOG_POSTS = publishedBlogPosts(ARTICLE_CONTENT, PUBLISH_STATE);
+const BLOG_LASTMOD = PUBLISHED_BLOG_POSTS
+  .flatMap((post) => [PUBLISH_STATE[post.slug]?.publishedAt, post.meta?.updatedAt])
+  .filter(Boolean)
+  .sort()
+  .at(-1) || SITE.updated;
 const ARTICLE_PAGES = PUBLISHED_ARTICLES.map((c) => buildArticlePage(c, ARTICLE_CONTENT, PUBLISH_STATE));
+const BLOG_PAGE = blogIndexPage(ARTICLE_CONTENT, PUBLISH_STATE);
 
-const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...POSITIONING, ...INVDIST, ...RVCLUSTER, ...AICHATCLUSTER, ...ARTICLE_PAGES];
+const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...POSITIONING, ...INVDIST, ...RVCLUSTER, ...AICHATCLUSTER, BLOG_PAGE, ...ARTICLE_PAGES];
 
 // Hub pages grow "Keep exploring" links to their silo's PUBLISHED articles. With zero
 // published articles this is a no-op and every existing page renders byte-identical.
@@ -113,6 +123,10 @@ for (const page of ALL) {
   write(pathToFile(urlPath), renderPage(page));
   renderedPaths.add(urlPath);
 }
+write(
+  resolve(PUBLIC_DIR, 'blog', 'feed.xml'),
+  blogRss(ARTICLE_CONTENT, PUBLISH_STATE, { now: new Date(`${BLOG_LASTMOD}T00:00:00Z`) }),
+);
 
 // ---------- machine-readable copies of the report data ----------
 // Derived from the report page's OWN table sections, so the CSV/JSON can never drift from the
@@ -312,8 +326,9 @@ Contact: sales@autolander.ai · (919) 280-0967
     ]),
     // Drip-published long-tail library — only articles that are actually live.
     group('Deep-dive dealer guides', PUBLISHED_ARTICLES
-      .filter((c) => c.silo !== 'compare')
+      .filter((c) => c.silo !== 'compare' && c.silo !== 'blog')
       .map((c) => articlePath(c))),
+    group('Blog', [NAV.blog.path, ...PUBLISHED_BLOG_POSTS.map((c) => articlePath(c))]),
     group('Integrations', [NAV.integHub.path, ...INTEGRATIONS.map((s) => integrationPath(s.slug))]),
     // The evergreen /compare/ cluster comes from build-compare-pages.mjs and has no Markdown
     // twins. Published drip comparison articles are page objects, so their twin links append here.
@@ -348,6 +363,7 @@ const expected = [
   NAV.mktgHub.path, NAV.mktgIdeas.path, NAV.salesLeads.path, NAV.socialMedia.path,
   NAV.sellMore.path, NAV.aiDealers.path, NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path, NAV.report2026.path,
   NAV.about.path, NAV.contact.path,
+  NAV.blog.path,
   NAV.whyMarketplaceOnly.path, NAV.whyNoAutoReply.path, NAV.inventoryDist.path,
   NAV.rvSellGuide.path, NAV.rvPhotos.path, NAV.aiChatVendor.path, NAV.responseTime.path,
   ...INTEGRATIONS.map((s) => integrationPath(s.slug)),
@@ -452,6 +468,7 @@ function sitemapXml() {
     { loc: SITE.origin + NAV.report2026.path, pri: '0.9', freq: 'monthly' },
     { loc: SITE.origin + NAV.about.path, pri: '0.6', freq: 'monthly' },
     { loc: SITE.origin + NAV.contact.path, pri: '0.6', freq: 'monthly' },
+    { loc: SITE.origin + NAV.blog.path, pri: '0.8', freq: 'weekly', lastmod: BLOG_LASTMOD },
     // Customer training library: a static mirror in public/training/ (never a generated page)
     { loc: SITE.origin + NAV.training.path, pri: '0.8', freq: 'monthly', lastmod: '2026-09-22' },
     // 2026-09-03 discovery + cluster pages

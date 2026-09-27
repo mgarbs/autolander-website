@@ -1,0 +1,305 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://autolander.ai/schemas/blog-post.json",
+  "title": "AutoLander blog post",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "silo",
+    "anchor",
+    "crumb",
+    "primaryKeyword",
+    "secondaryKeywords",
+    "title",
+    "description",
+    "eyebrow",
+    "h1",
+    "tldr",
+    "sections",
+    "faq",
+    "cta",
+    "alsoRelated",
+    "augmentKeys",
+    "alsoOnCompetitors",
+    "inboundFrom"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{2,80}$"
+    },
+    "silo": {
+      "const": "blog"
+    },
+    "anchor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "crumb": {
+      "type": "string",
+      "minLength": 1
+    },
+    "primaryKeyword": {
+      "type": "string",
+      "minLength": 1
+    },
+    "secondaryKeywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "description": {
+      "type": "string",
+      "minLength": 140,
+      "maxLength": 160
+    },
+    "eyebrow": {
+      "type": "string",
+      "minLength": 1
+    },
+    "h1": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tldr": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "required": ["type", "paras"],
+            "properties": {
+              "type": { "const": "prose" },
+              "paras": {
+                "oneOf": [
+                  { "type": "string", "minLength": 1 },
+                  { "type": "array", "items": { "type": "string" } }
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "q", "a"],
+            "properties": {
+              "type": { "const": "qa" },
+              "q": { "type": "string", "minLength": 1 },
+              "a": {
+                "oneOf": [
+                  { "type": "string", "minLength": 1 },
+                  { "type": "array", "minItems": 1, "items": { "type": "string" } }
+                ]
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "h2", "items"],
+            "properties": {
+              "type": { "const": "bullets" },
+              "h2": { "type": "string", "minLength": 1 },
+              "items": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "h2", "cards"],
+            "properties": {
+              "type": { "const": "features" },
+              "h2": { "type": "string", "minLength": 1 },
+              "cards": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["title", "body"],
+                  "properties": {
+                    "title": { "type": "string", "minLength": 1 },
+                    "body": { "type": "string", "minLength": 1 }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "h2", "steps"],
+            "properties": {
+              "type": { "const": "steps" },
+              "h2": { "type": "string", "minLength": 1 },
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["title", "body"],
+                  "properties": {
+                    "title": { "type": "string", "minLength": 1 },
+                    "body": { "type": "string", "minLength": 1 }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "h2", "head", "rows"],
+            "properties": {
+              "type": { "const": "table" },
+              "h2": { "type": "string", "minLength": 1 },
+              "head": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+              "rows": {
+                "type": "array",
+                "items": { "type": "array", "items": { "type": "string" } }
+              },
+              "alCol": { "type": "integer", "minimum": 0 }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "body"],
+            "properties": {
+              "type": { "const": "callout" },
+              "body": { "type": "string", "minLength": 1 }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "h2", "quotes"],
+            "properties": {
+              "type": { "const": "quotes" },
+              "h2": { "type": "string", "minLength": 1 },
+              "quotes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["text", "who"],
+                  "properties": {
+                    "text": { "type": "string", "minLength": 1 },
+                    "who": { "type": "string", "minLength": 1 },
+                    "role": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "left", "right"],
+            "properties": {
+              "type": { "const": "twocol" },
+              "left": { "$ref": "#/$defs/column" },
+              "right": { "$ref": "#/$defs/column" }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "before", "after", "beforeAlt", "afterAlt", "caption"],
+            "properties": {
+              "type": { "const": "figure" },
+              "before": { "type": "string", "minLength": 1 },
+              "after": { "type": "string", "minLength": 1 },
+              "beforeAlt": { "type": "string", "minLength": 1 },
+              "afterAlt": { "type": "string", "minLength": 1 },
+              "caption": { "type": "string", "minLength": 1 }
+            }
+          },
+          {
+            "type": "object",
+            "required": ["type", "src", "alt", "caption"],
+            "properties": {
+              "type": { "const": "image" },
+              "src": { "type": "string", "minLength": 1 },
+              "alt": { "type": "string", "minLength": 1 },
+              "caption": { "type": "string", "minLength": 1 }
+            }
+          }
+        ]
+      }
+    },
+    "faq": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "cta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "heading",
+        "sub"
+      ],
+      "properties": {
+        "heading": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sub": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "alsoRelated": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "augmentKeys": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "string"
+      }
+    },
+    "alsoOnCompetitors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inboundFrom": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "column": {
+      "type": "object",
+      "required": ["h2", "items"],
+      "properties": {
+        "h2": { "type": "string", "minLength": 1 },
+        "items": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -407,7 +407,7 @@ export default function App() {
             className="flex shrink-0 cursor-pointer items-center space-x-2 border-0 bg-transparent p-0 text-left sm:space-x-3 group"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+                <div className="hidden sm:flex w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
               <CarFront className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <img
@@ -428,8 +428,9 @@ export default function App() {
              <a href="#studio" onClick={openDeferredSection('studio')} className="text-sm font-semibold text-slate-400 hover:text-white transition-all">AI Studio</a>
              <a href="/guide/how-to-sell-cars-on-facebook-marketplace/" className="hidden text-sm font-semibold text-slate-400 transition-all hover:text-white xl:inline">Dealer Guide</a>
           </div>
-          <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-            <a href="/training/" className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap">Training</a>
+              <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+                <a href="/blog/" className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap">Blog</a>
+                <a href="/training/" className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap">Training</a>
             {showDownloadButtons && (
               <button
                 type="button"

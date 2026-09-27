@@ -53,6 +53,7 @@ export const NAV = {
   // entry, so no generator ever overwrites it; registered here for the footer, sitemap and the
   // link allow-lists (home directory + article tests) that derive from NAV.
   training:   { key: 'training',   path: '/training/',                                 anchor: 'AutoLander training' },
+  blog:       { key: 'blog',       path: '/blog/',                                     anchor: 'AutoLander blog: Facebook Marketplace playbooks for car dealers' },
   // ---- Discovery + cluster pages (2026-09-03, from the GrindstoneSEO diagnostic). ----
   // Two positioning pages turn deliberate scope choices (Marketplace-only, no buyer auto-reply)
   // from feature-matrix absences into stated principles; the inventory page takes the one

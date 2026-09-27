@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AutoLander blog</title>
+    <link>https://autolander.ai/blog/</link>
+    <description>Facebook Marketplace playbooks for car dealers.</description>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 03 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link rel="self" href="https://autolander.ai/blog/feed.xml" type="application/rss+xml" />
+    <atom:link rel="hub" href="https://pubsubhubbub.appspot.com/" />
+  </channel>
+</rss>

@@ -551,6 +551,13 @@
     </image:image>
   </url>
   <url>
+    <loc>https://autolander.ai/blog/</loc>
+    <image:image>
+      <image:loc>https://autolander.ai/og/blog.png</image:loc>
+      <image:title>AutoLander Blog | Facebook Marketplace Playbooks</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/</loc>
     <image:image>
       <image:loc>https://autolander.ai/studio/jeep-wrangler-before.webp</image:loc>

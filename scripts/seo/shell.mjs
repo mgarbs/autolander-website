@@ -245,8 +245,9 @@ export const personLd = {
 // declaring itself part of itself is noise.
 export const articleLd = ({
   title, canonical, description, datePublished, dateModified, image, pillar,
+  type = 'Article', isPartOf,
 }) => ({
-  '@context': 'https://schema.org', '@type': 'Article',
+  '@context': 'https://schema.org', '@type': type,
   '@id': canonical + '#article',
   headline: title,
   description,
@@ -255,7 +256,9 @@ export const articleLd = ({
   author: { '@id': PERSON_ID },
   creator: { '@id': PERSON_ID },
   publisher: { '@id': ORG_ID },
-  ...(pillar && pillar.url !== canonical ? {
+  ...(isPartOf ? {
+    isPartOf: { '@type': 'Blog', '@id': isPartOf },
+  } : pillar && pillar.url !== canonical ? {
     isPartOf: {
       '@type': 'WebPage',
       '@id': pillar.url + '#webpage',
@@ -433,6 +436,7 @@ export function head({
   <!-- Markdown twin: answer engines parse it far more reliably than HTML. Generated from the
        same page object as this document by renderMarkdown(), so it can never drift. -->
   <link rel="alternate" type="text/markdown" href="${esc(canonical.replace(/\/$/, '') + '.md')}" title="Markdown version" />
+  <link rel="alternate" type="application/rss+xml" title="AutoLander blog" href="${SITE.origin}/blog/feed.xml" />
   <link rel="icon" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <meta property="og:type" content="${esc(ogType)}" />
@@ -473,6 +477,7 @@ export function siteHeader(breadcrumbs) {
     <a class="brand" href="${SITE.origin}/">
       <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" />
     </a>
+    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a></nav>
     <nav class="crumbs" aria-label="Breadcrumb">
       ${crumbs}
     </nav>
@@ -507,6 +512,7 @@ export function siteFooter() {
       <a href="${NAV.sellGuide.path}">How to sell cars</a>
       <a href="${NAV.guide.path}">Guide</a>
       <a href="${NAV.training.path}">Training</a>
+      <a href="${NAV.blog.path}">Blog</a>
       <a href="${SITE.origin}/">AutoLander home</a>
       <a href="${SITE.origin}/#pricing">Pricing</a>
       <a href="${NAV.about.path}">About</a>
@@ -546,7 +552,7 @@ export function renderSection(s) {
       </ul>${s.note ? `\n      <p class="legend">${fmt(s.note)}</p>` : ''}
     </section>`;
     case 'bullets':
-      return `    <section class="card${s.variant === 'win' ? ' win' : ''}">
+      return `    <section class="card${s.variant === 'win' ? ' win' : ''}"${s.id ? ` id="${esc(s.id)}"` : ''}>
       <h2>${esc(s.h2)}</h2>${s.intro ? `\n      <p>${esc(s.intro)}</p>` : ''}
       <ul>
         ${liList(s.items)}
@@ -670,6 +676,7 @@ export function renderPage(page) {
   // Google requires a genuine aggregateRating or review for SoftwareApplication rich results.
   // AutoLander does not currently publish verified review data, so do not emit that type until it does.
   if (page.schema?.itemList) jsonLdBlocks.push(jsonld(itemListLd(page.schema.itemList)));
+  if (page.schema?.blog) jsonLdBlocks.push(jsonld(page.schema.blog));
 
   // Article: emitted for authored, dated content (research + guides). Carries the named author,
   // which is the E-E-A-T signal answer engines weight most heavily on this kind of page.
@@ -685,6 +692,8 @@ export function renderPage(page) {
       dateModified,
       image: page.article.image || ogImage,
       pillar,
+      type: page.article.type,
+      isPartOf: page.article.isPartOf,
     })));
     // Mirrored onto the OpenGraph layer (article:*). Same source values as the JSON-LD above so
     // the two can never disagree about when a page was published or who wrote it.
@@ -885,6 +894,8 @@ export function renderMarkdown(page) {
 
 // ---------- supplemental stylesheet (new components; base comes from /compare/styles.css) ----------
 export const SEO_STYLES = `/* SEO silo supplemental styles — base in /compare/styles.css */
+.topnav{display:flex;align-items:center;gap:14px;white-space:nowrap}
+.topnav a{color:var(--text);font-size:13px;font-weight:700}
 .prose-block p{font-size:16px;color:var(--text);margin:0 0 14px}
 .qa{margin-top:8px}
 .qa h2{margin-bottom:8px}
@@ -928,5 +939,5 @@ border:1px solid var(--line);border-radius:14px;padding:14px 18px;text-decoratio
 .download-list a:hover{border-color:var(--blue2)}
 .dl-fmt{font-weight:800;color:var(--blue2);font-size:14.5px}
 .dl-desc{color:var(--muted);font-size:14px}
-@media(max-width:640px){.feature-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.topnav{gap:10px}.topnav a{font-size:12px}.feature-grid{grid-template-columns:1fr}}
 `;

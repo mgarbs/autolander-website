@@ -62,3 +62,4 @@ dist-ssr
 # Avalanche article tooling (regenerable / local-only)
 dist-preview/
 .last-publish.json
+.blog-context/

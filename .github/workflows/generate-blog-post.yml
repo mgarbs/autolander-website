@@ -1,0 +1,135 @@
+name: Generate blog post
+
+run-name: 'blog: ${{ inputs.mode }} ${{ inputs.request_id }}'
+
+on:
+  workflow_dispatch:
+    inputs:
+      request_id:
+        description: 'Request id (uuid)'
+        required: true
+        type: string
+      mode:
+        description: 'new | revise | discard'
+        required: true
+        type: string
+      slug:
+        description: 'Post slug (revise/discard)'
+        required: false
+        type: string
+        default: ''
+      payload:
+        description: 'Encrypted request (AES-GCM, base64)'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: blog-generate
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    container: node:22-bookworm
+    timeout-minutes: 60
+    env:
+      BLOG_MODEL: 'claude-opus-5-5[1m]'
+      BLOG_MODEL_FALLBACK: claude-opus-5-5
+      BLOG_EFFORT: max
+      BLOG_MAX_TURNS: '80'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Validate inputs
+        id: input_check
+        run: node scripts/blog/check-inputs.mjs
+        env:
+          BLOG_MODE: '${{ inputs.mode }}'
+          BLOG_SLUG: '${{ inputs.slug }}'
+          BLOG_REQUEST_ID: '${{ inputs.request_id }}'
+
+      - name: Decrypt request
+        if: inputs.mode != 'discard'
+        run: node scripts/blog/decrypt-input.mjs
+        env:
+          BLOG_INPUT_KEY: ${{ secrets.BLOG_INPUT_KEY }}
+          BLOG_PAYLOAD: '${{ inputs.payload }}'
+          BLOG_REQUEST_ID: '${{ inputs.request_id }}'
+          BLOG_MODE: '${{ inputs.mode }}'
+          BLOG_SLUG: '${{ inputs.slug }}'
+
+      - name: Discard draft
+        id: discard
+        if: inputs.mode == 'discard'
+        run: node scripts/blog/discard-post.mjs "$BLOG_SLUG" --request-id "$BLOG_REQUEST_ID"
+        env:
+          BLOG_SLUG: '${{ inputs.slug }}'
+          BLOG_REQUEST_ID: '${{ inputs.request_id }}'
+
+      - name: Build writer context (whole site)
+        if: inputs.mode != 'discard'
+        run: node scripts/blog/prepare-context.mjs --mode "$BLOG_MODE" --slug "$BLOG_SLUG"
+        env:
+          BLOG_MODE: '${{ inputs.mode }}'
+          BLOG_SLUG: '${{ inputs.slug }}'
+
+      - name: Install Claude Code
+        if: inputs.mode != 'discard'
+        run: |
+          npm install --global @anthropic-ai/claude-code@2.1.233
+          claude --version
+
+      - name: Install Playwright Chromium
+        if: inputs.mode != 'discard'
+        continue-on-error: true
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+
+      # writer-settings.json denies Read(//home/**) and Read(~/**). That is only safe because this
+      # job runs in the node:22-bookworm container, whose workspace is /__w/...; on a bare runner the
+      # repo lives under /home/runner and every read would be denied. Fail loudly instead.
+      - name: Preflight (writer deny rules need the container workspace)
+        if: inputs.mode != 'discard'
+        run: |
+          case "$GITHUB_WORKSPACE" in
+            /__w/*) echo "workspace ok: $GITHUB_WORKSPACE" ;;
+            *) echo "::error::GITHUB_WORKSPACE=$GITHUB_WORKSPACE is outside the container workspace (/__w/); writer-settings.json would deny every repo read"; exit 1 ;;
+          esac
+
+      - name: Write with Claude (Opus 5.5, max effort, subscription)
+        if: inputs.mode != 'discard'
+        id: writer
+        continue-on-error: true
+        run: node scripts/blog/run-writer.mjs --context .blog-context --out .blog-context/writer.json
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+      - name: Finalize draft
+        id: finalize
+        if: always() && steps.input_check.outcome == 'success' && inputs.mode != 'discard'
+        run: node scripts/blog/finalize-draft.mjs --request-id "$BLOG_REQUEST_ID" --mode "$BLOG_MODE" --slug "$BLOG_SLUG" --writer-result .blog-context/writer.json
+        env:
+          BLOG_MODE: '${{ inputs.mode }}'
+          BLOG_SLUG: '${{ inputs.slug }}'
+          BLOG_REQUEST_ID: '${{ inputs.request_id }}'
+
+      - name: Commit
+        if: always() && steps.input_check.outcome == 'success' && (steps.discard.outcome == 'success' || steps.finalize.outcome == 'success')
+        run: node scripts/blog/commit-draft.mjs
+        env:
+          BLOG_MODE: '${{ inputs.mode }}'
+          BLOG_SLUG: '${{ inputs.slug }}'
+          BLOG_REQUEST_ID: '${{ inputs.request_id }}'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -42,6 +42,8 @@ const TEMPLATES = resolve(ROOT, 'scripts', 'training', 'templates');
 const ORIGIN = 'https://autolander.ai';
 const BASE_PATH = '/training/';
 const CANONICAL_PREFIX = ORIGIN + BASE_PATH; // the one place `training/player` etc. may legitimately appear
+const BLOG_URL = `${ORIGIN}/blog/`;
+const RSS_TAG = `<link rel="alternate" type="application/rss+xml" title="AutoLander blog" href="${BLOG_URL}feed.xml">`;
 const DEMO_VIDEO_ID = 'i5uUB5OxIhk';
 const COURSE_VIDEO_ID = 'ePsAvCZWw_A';
 const EMBED_ATTRS = 'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"';
@@ -51,6 +53,7 @@ const watchUrl = (id) => `https://www.youtube.com/watch?v=${id}`;
 
 const DROP_FILES = new Set(['README.txt', 'YOUTUBE_UPLOAD_GUIDE_V12.txt', 'START_HERE.html']);
 const DROP_DIRS = new Set(['cdn-cgi']);
+const TEXT_FILE_RE = /\.(?:css|html|js|json|srt|txt|vtt)$/i;
 const FORBIDDEN_LITERALS = ['README.txt', 'YOUTUBE_UPLOAD_GUIDE', 'chatgpt.site', 'cdn-cgi', '__CF$cv$params', '.mp4'];
 const UNREBASED_RE = /training\/(player|manuals|workbooks|renders)/g;
 
@@ -59,6 +62,7 @@ class BuildError extends Error {}
 const fail = (msg) => { throw new BuildError(msg); };
 const read = (p) => readFileSync(p, 'utf8');
 const readTemplate = (name) => read(join(TEMPLATES, name));
+const toLf = (text) => String(text).replace(/\r\n?/g, '\n');
 const toPosix = (p) => p.split(sep).join('/');
 const escHtml = (s) => String(s).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 const escAttr = (s) => escHtml(s).replaceAll('"', '&quot;').replaceAll("'", '&#x27;');
@@ -116,7 +120,7 @@ function topBar(up, currentKey) {
     `<a href="${rel ? up + rel : (up || './')}"${key === currentKey ? ' aria-current="page"' : ''}>${label}</a>`).join('');
   return `<div class="al-topbar"><div class="al-topbar-inner">`
     + `<a class="al-topbar-brand" href="${ORIGIN}/" aria-label="AutoLander home"><img src="${up}../autolander-logo-240.webp" alt="AutoLander" width="240" height="72" decoding="async"></a>`
-    + `<nav class="al-topbar-nav" aria-label="AutoLander training">${links}<a class="al-topbar-back" href="${ORIGIN}/">Back to autolander.ai</a></nav>`
+    + `<nav class="al-topbar-nav" aria-label="AutoLander training">${links}<a href="${BLOG_URL}">Blog</a><a class="al-topbar-back" href="${ORIGIN}/">Back to autolander.ai</a></nav>`
     + `</div></div>`;
 }
 
@@ -125,7 +129,7 @@ function pageChrome(html, { label, depth, canonical, title, currentKey }) {
   const up = '../'.repeat(depth);
   html = stripCloudflare(html, label);
   html = mustReplace(html, '<meta name="robots" content="noindex,nofollow,noarchive">',
-    `<meta name="robots" content="index,follow">\n<link rel="canonical" href="${CANONICAL_PREFIX}${canonical}">`, `${label}: robots meta`);
+    `<meta name="robots" content="index,follow">\n<link rel="canonical" href="${CANONICAL_PREFIX}${canonical}">\n${RSS_TAG}`, `${label}: robots meta`);
   html = mustReplaceRe(html, /<title>[^<]*<\/title>/, () => `<title>${escHtml(title)}</title>`, `${label}: <title>`, { min: 1, max: 1 });
   html = mustReplaceRe(html, /<link rel="stylesheet" href="[^"]+">/, (m) => `${m}<link rel="stylesheet" href="${up}site.css">`, `${label}: stylesheet link`, { min: 1, max: 1 });
   html = mustReplaceRe(html, /<header\b/, () => `${topBar(up, currentKey)}<header`, `${label}: <header>`, { min: 1, max: 1 });
@@ -259,8 +263,8 @@ function transformManualJs(js) {
 }
 
 const START_HERE_ALIAS = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AutoLander Training</title><meta name="robots" content="index,follow"><link rel="canonical" href="${CANONICAL_PREFIX}"><meta http-equiv="refresh" content="0; url=./">${ATTRIBUTION_TAG}</head>
-<body><p>The AutoLander training library is at <a href="./">autolander.ai/training</a>.</p></body></html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AutoLander Training</title><meta name="robots" content="index,follow"><link rel="canonical" href="${CANONICAL_PREFIX}">${RSS_TAG}<meta http-equiv="refresh" content="0; url=./">${ATTRIBUTION_TAG}</head>
+<body><p>The AutoLander training library is at <a href="./">autolander.ai/training</a>. Read the <a href="${BLOG_URL}">AutoLander blog</a>.</p></body></html>
 `;
 
 // ---------------------------------------------------------------- chapter sanity check
@@ -388,8 +392,11 @@ function main() {
     mkdirSync(dirname(dest), { recursive: true });
     const transform = TRANSFORMS[published];
     if (transform) {
-      writeFileSync(dest, transform(read(join(SRC, sourceRel))), 'utf8');
+      writeFileSync(dest, toLf(transform(read(join(SRC, sourceRel)))), 'utf8');
       report.transformed.push(published);
+    } else if (TEXT_FILE_RE.test(published)) {
+      writeFileSync(dest, toLf(read(join(SRC, sourceRel))), 'utf8');
+      report.copied += 1;
     } else {
       copyFileSync(join(SRC, sourceRel), dest);
       report.copied += 1;
@@ -397,15 +404,15 @@ function main() {
   }
   for (const name of Object.keys(TRANSFORMS)) if (!plan.has(name)) fail(`expected source file for ${name} was not found in the package`);
 
-  writeFileSync(join(OUT, 'START_HERE.html'), START_HERE_ALIAS, 'utf8');
-  writeFileSync(join(OUT, 'site.css'), readTemplate('site.css'), 'utf8');
+  writeFileSync(join(OUT, 'START_HERE.html'), toLf(START_HERE_ALIAS), 'utf8');
+  writeFileSync(join(OUT, 'site.css'), toLf(readTemplate('site.css')), 'utf8');
 
   // 2. assertions
   const published = listFiles(OUT);
   const problems = [...checkLinks(published), ...scanForbidden(published)];
 
   // 3. report
-  console.log(`training mirror: ${published.length} files in public/training/ (${report.copied} copied verbatim, ${report.transformed.length} transformed, ${report.dropped.length} dropped)`);
+  console.log(`training mirror: ${published.length} files in public/training/ (${report.copied} copied, ${report.transformed.length} transformed, ${report.dropped.length} dropped)`);
   console.log(`  transformed: ${report.transformed.join(', ')}`);
   console.log(`  dropped:     ${report.dropped.join(', ')}`);
   const check = report.chapterCheck;
