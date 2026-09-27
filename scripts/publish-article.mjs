@@ -29,6 +29,7 @@ import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs'
 import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
 import { ARTICLES as ART_META } from './seo/articles/data-articles-meta-tools.mjs';
 import { ARTICLES as ART_COMPARE } from './seo/articles/data-articles-compare.mjs';
+import { loadBlogPosts } from './seo/articles/blog-loader.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const CHANGED_URLS_PATH = resolve(ROOT, '.last-publish.json');
@@ -37,6 +38,7 @@ const slug = process.argv[2];
 const dryRun = process.argv.includes('--dry-run');
 const ARTICLE_CONTENT = [
   ...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META, ...ART_COMPARE,
+  ...loadBlogPosts(),
 ];
 
 if (!slug || !/^[a-z0-9][a-z0-9-]{2,80}$/.test(slug)) {

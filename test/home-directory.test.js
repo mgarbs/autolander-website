@@ -22,10 +22,11 @@ import { ARTICLES as P } from '../scripts/seo/articles/data-articles-photos.mjs'
 import { ARTICLES as G } from '../scripts/seo/articles/data-articles-growth.mjs';
 import { ARTICLES as M } from '../scripts/seo/articles/data-articles-meta-tools.mjs';
 import { ARTICLES as C } from '../scripts/seo/articles/data-articles-compare.mjs';
+import { loadBlogPosts } from '../scripts/seo/articles/blog-loader.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(resolve(ROOT, p), 'utf8');
-const REAL = [...A, ...B, ...P, ...G, ...M, ...C];
+const REAL = [...A, ...B, ...P, ...G, ...M, ...C, ...loadBlogPosts()];
 
 const fake = (slug, silo) => ({ slug, silo, anchor: `Anchor ${slug}`, crumb: `Crumb ${slug}` });
 const state = (published) => Object.fromEntries(
@@ -47,10 +48,10 @@ test('evergreen groups come first, article groups follow in DIRECTORY_SILO_ORDER
     'facebook-seller-app-for-car-dealers', 'meta-muse-vs-autolander-vs-carvid',
   ]));
   const ids = groups.map((g) => g.id);
-  assert.deepEqual(ids.slice(0, 4), ['product', 'integrations', 'compare', 'guides']);
+  assert.deepEqual(ids.slice(0, 5), ['product', 'integrations', 'compare', 'guides', 'blog']);
   // compare-silo articles merge into the evergreen Compare box (no box of their own);
   // photos: nothing published
-  assert.deepEqual(ids.slice(4), ['articles-metaTools', 'articles-marketplace']);
+  assert.deepEqual(ids.slice(5), ['articles-metaTools', 'articles-marketplace']);
   const compare = groups.find((g) => g.id === 'compare');
   assert.equal(compare.links[0].href, '/compare/');
   assert.deepEqual(compare.links[1], { href: '/compare/meta-muse-vs-autolander-vs-carvid/', text: 'Crumb meta-muse-vs-autolander-vs-carvid' });
@@ -70,6 +71,26 @@ test('a draft article never reaches the directory', () => {
   const groups = buildHomeDirectory(arts, state([]));
   assert.ok(groups.every((g) => g.links.every((l) => !l.href.includes('renew-facebook-marketplace'))));
   assert.ok(!groups.some((g) => g.id === 'articles-marketplace'));
+});
+
+test('the Blog group is always present and lists at most five published posts newest first', () => {
+  const posts = ['p-six', 'p-five', 'p-four', 'p-three', 'p-two', 'p-one', 'p-draft']
+    .map((slug) => fake(slug, 'blog'));
+  const blogState = {
+    'p-one': { status: 'published', publishedAt: '2026-09-27' },
+    'p-two': { status: 'published', publishedAt: '2026-09-26' },
+    'p-three': { status: 'published', publishedAt: '2026-09-25' },
+    'p-four': { status: 'published', publishedAt: '2026-09-24' },
+    'p-five': { status: 'published', publishedAt: '2026-09-23' },
+    'p-six': { status: 'published', publishedAt: '2026-09-22' },
+    'p-draft': { status: 'draft', publishedAt: null },
+  };
+  const blog = buildHomeDirectory(posts, blogState).find((group) => group.id === 'blog');
+  assert.deepEqual(blog.links.map((link) => link.href), [
+    '/blog/', '/blog/p-one/', '/blog/p-two/', '/blog/p-three/', '/blog/p-four/', '/blog/p-five/',
+  ]);
+  const empty = buildHomeDirectory([], {}).find((group) => group.id === 'blog');
+  assert.deepEqual(empty.links, [{ href: '/blog/', text: 'The AutoLander blog' }]);
 });
 
 test('every drip silo in DIRECTORY_SILO_ORDER exists, and every drip silo is listed', () => {
@@ -113,14 +134,24 @@ test('src/generated/home-directory.json matches a fresh render', () => {
   assert.deepEqual(json.groups, groups);
 });
 
-test('every published article is in the directory and every draft is absent', () => {
+test('every published drip article is in the directory and every draft is absent', () => {
   const st = loadPublishState();
   const hrefs = new Set(buildHomeDirectory(REAL, st).flatMap((g) => g.links.map((l) => l.href)));
-  for (const a of REAL) {
+  for (const a of REAL.filter((article) => article.silo !== 'blog')) {
     const href = articlePath(a);
     if (isPublished(st, a.slug)) assert.ok(hrefs.has(href), `published ${a.slug} missing from the homepage directory`);
     else assert.ok(!hrefs.has(href), `draft ${a.slug} leaked into the homepage directory`);
   }
+  const expectedBlogs = REAL
+    .filter((article) => article.silo === 'blog' && isPublished(st, article.slug))
+    .sort((a, b) => String(st[b.slug]?.publishedAt || '').localeCompare(String(st[a.slug]?.publishedAt || ''))
+      || a.slug.localeCompare(b.slug))
+    .slice(0, 5)
+    .map((article) => articlePath(article));
+  assert.deepEqual(
+    [...hrefs].filter((href) => href.startsWith('/blog/') && href !== '/blog/'),
+    expectedBlogs,
+  );
 });
 
 test('every directory link resolves to a page the site builds', () => {

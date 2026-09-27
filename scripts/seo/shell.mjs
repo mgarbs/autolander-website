@@ -245,8 +245,9 @@ export const personLd = {
 // declaring itself part of itself is noise.
 export const articleLd = ({
   title, canonical, description, datePublished, dateModified, image, pillar,
+  type = 'Article', isPartOf,
 }) => ({
-  '@context': 'https://schema.org', '@type': 'Article',
+  '@context': 'https://schema.org', '@type': type,
   '@id': canonical + '#article',
   headline: title,
   description,
@@ -255,7 +256,9 @@ export const articleLd = ({
   author: { '@id': PERSON_ID },
   creator: { '@id': PERSON_ID },
   publisher: { '@id': ORG_ID },
-  ...(pillar && pillar.url !== canonical ? {
+  ...(isPartOf ? {
+    isPartOf: { '@type': 'Blog', '@id': isPartOf },
+  } : pillar && pillar.url !== canonical ? {
     isPartOf: {
       '@type': 'WebPage',
       '@id': pillar.url + '#webpage',
@@ -433,6 +436,7 @@ export function head({
   <!-- Markdown twin: answer engines parse it far more reliably than HTML. Generated from the
        same page object as this document by renderMarkdown(), so it can never drift. -->
   <link rel="alternate" type="text/markdown" href="${esc(canonical.replace(/\/$/, '') + '.md')}" title="Markdown version" />
+  <link rel="alternate" type="application/rss+xml" title="AutoLander blog" href="${SITE.origin}/blog/feed.xml" />
   <link rel="icon" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <meta property="og:type" content="${esc(ogType)}" />
@@ -546,7 +550,7 @@ export function renderSection(s) {
       </ul>${s.note ? `\n      <p class="legend">${fmt(s.note)}</p>` : ''}
     </section>`;
     case 'bullets':
-      return `    <section class="card${s.variant === 'win' ? ' win' : ''}">
+      return `    <section class="card${s.variant === 'win' ? ' win' : ''}"${s.id ? ` id="${esc(s.id)}"` : ''}>
       <h2>${esc(s.h2)}</h2>${s.intro ? `\n      <p>${esc(s.intro)}</p>` : ''}
       <ul>
         ${liList(s.items)}
@@ -670,6 +674,7 @@ export function renderPage(page) {
   // Google requires a genuine aggregateRating or review for SoftwareApplication rich results.
   // AutoLander does not currently publish verified review data, so do not emit that type until it does.
   if (page.schema?.itemList) jsonLdBlocks.push(jsonld(itemListLd(page.schema.itemList)));
+  if (page.schema?.blog) jsonLdBlocks.push(jsonld(page.schema.blog));
 
   // Article: emitted for authored, dated content (research + guides). Carries the named author,
   // which is the E-E-A-T signal answer engines weight most heavily on this kind of page.
@@ -685,6 +690,8 @@ export function renderPage(page) {
       dateModified,
       image: page.article.image || ogImage,
       pillar,
+      type: page.article.type,
+      isPartOf: page.article.isPartOf,
     })));
     // Mirrored onto the OpenGraph layer (article:*). Same source values as the JSON-LD above so
     // the two can never disagree about when a page was published or who wrote it.

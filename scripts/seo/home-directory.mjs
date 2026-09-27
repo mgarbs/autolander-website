@@ -17,7 +17,9 @@
 // pre-render, not cloaking.
 
 import { NAV } from './registry.mjs';
-import { SILOS, SUGGESTED_ORDER, isPublished, articlePath } from './articles/article-system.mjs';
+import {
+  SILOS, SUGGESTED_ORDER, isBlog, isPublished, articlePath,
+} from './articles/article-system.mjs';
 
 export const HOME_DIRECTORY_START = '<!--AL_STATIC_HOME_DIRECTORY_START-->';
 export const HOME_DIRECTORY_END = '<!--AL_STATIC_HOME_DIRECTORY_END-->';
@@ -102,6 +104,20 @@ export function buildHomeDirectory(articles, state) {
     kind: 'pages',
     links: links.map(([href, text]) => ({ href, text })),
   }));
+  const newestPosts = articles
+    .filter((article) => isBlog(article) && isPublished(state, article.slug))
+    .sort((a, b) => String(state[b.slug].publishedAt || '').localeCompare(String(state[a.slug].publishedAt || ''))
+      || a.slug.localeCompare(b.slug))
+    .slice(0, 5);
+  groups.push({
+    id: 'blog',
+    label: 'Blog',
+    kind: 'pages',
+    links: [
+      { href: NAV.blog.path, text: 'The AutoLander blog' },
+      ...newestPosts.map((post) => ({ href: articlePath(post), text: post.anchor })),
+    ],
+  });
   const orderIndex = new Map(SUGGESTED_ORDER.map((s, i) => [s, i]));
   for (const silo of DIRECTORY_SILO_ORDER) {
     if (!SILOS[silo]) throw new Error(`home-directory: unknown silo ${silo}`);

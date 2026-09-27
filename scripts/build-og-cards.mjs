@@ -48,6 +48,7 @@ import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs'
 import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
 import { ARTICLES as ART_META_TOOLS } from './seo/articles/data-articles-meta-tools.mjs';
 import { ARTICLES as ART_COMPARE } from './seo/articles/data-articles-compare.mjs';
+import { loadBlogPosts } from './seo/articles/blog-loader.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const PUBLIC_DIR = resolve(ROOT, 'public');
@@ -80,11 +81,16 @@ function collectTargets() {
   }
   targets.push({ path: '/guide/facebook-marketplace-automation/', eyebrow: 'Guide', title: 'Facebook Marketplace automation: the honest version' });
   targets.push({ path: '/guide/how-to-sell-cars-on-facebook-marketplace/', eyebrow: 'Guide', title: 'How to sell cars on Facebook Marketplace' });
+  targets.push({ path: '/blog/', eyebrow: 'Blog', title: 'The AutoLander blog' });
 
-  // Avalanche articles — cards are pre-rendered for ALL 36 (drafts included) so a later
-  // publish never needs Playwright; an unreferenced card in public/og/ is harmless.
-  for (const a of [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META_TOOLS, ...ART_COMPARE]) {
-    targets.push({ path: articlePath(a), eyebrow: a.eyebrow || 'Dealer guide', title: a.h1 || a.title });
+  // Avalanche articles and blog posts get cards while still drafts, so a later publish does not
+  // need Playwright; an unreferenced card in public/og/ is harmless.
+  for (const a of [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META_TOOLS, ...ART_COMPARE, ...loadBlogPosts()]) {
+    targets.push({
+      path: articlePath(a),
+      eyebrow: a.eyebrow || (a.silo === 'blog' ? 'AutoLander blog' : 'Dealer guide'),
+      title: a.h1 || a.title,
+    });
   }
 
   // Registry sanity: an integration spoke with no card is a silent gap, so name it.

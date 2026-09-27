@@ -26,6 +26,7 @@ import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs'
 import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
 import { ARTICLES as ART_META } from './seo/articles/data-articles-meta-tools.mjs';
 import { ARTICLES as ART_COMPARE } from './seo/articles/data-articles-compare.mjs';
+import { loadBlogPosts } from './seo/articles/blog-loader.mjs';
 import {
   SITE, DIMENSIONS, AUTOLANDER, AUTOLANDER_WINS_GLOBAL, SESSION_FAQ,
   COMPETITORS, HUB, HUB_ORDER, INSIGHTS, EXTRA_FAQ, GUIDE, OTHER_TOOLS,
@@ -35,6 +36,7 @@ const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'publi
 const COMPARE_DIR = resolve(PUBLIC_DIR, 'compare');
 const ARTICLE_CONTENT = [
   ...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META, ...ART_COMPARE,
+  ...loadBlogPosts(),
 ];
 const PUBLISH_STATE = loadPublishState();
 const VERSUS_ARTICLE_LINKS = versusPageLinks(ARTICLE_CONTENT, PUBLISH_STATE);

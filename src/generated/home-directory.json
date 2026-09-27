@@ -213,6 +213,17 @@
       ]
     },
     {
+      "id": "blog",
+      "label": "Blog",
+      "kind": "pages",
+      "links": [
+        {
+          "href": "/blog/",
+          "text": "The AutoLander blog"
+        }
+      ]
+    },
+    {
       "id": "articles-metaTools",
       "label": "Facebook’s new seller tools",
       "kind": "articles",

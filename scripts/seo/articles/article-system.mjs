@@ -237,11 +237,15 @@ export function blogInboundTargets(post, articles, state) {
 export function buildArticlePage(content, articles, state, { previewDate } = {}) {
   const path = articlePath(content);
   const published = state?.[content.slug]?.publishedAt || null;
+  const datePublished = published || previewDate || SITE.updated;
+  const dateModified = isBlog(content)
+    ? [datePublished, content.meta?.updatedAt].filter(Boolean).sort().at(-1)
+    : datePublished;
   return {
     path,
     title: content.title,
     description: content.description,
-    eyebrow: content.eyebrow || SILOS[content.silo].label,
+    eyebrow: content.eyebrow || (isBlog(content) ? 'AutoLander blog' : SILOS[content.silo].label),
     h1: content.h1,
     tldr: content.tldr,
     bylineUpdated: true,
@@ -249,8 +253,14 @@ export function buildArticlePage(content, articles, state, { previewDate } = {})
     // Articles carry their OWN date everywhere a date is user- or crawler-visible:
     // byline, WebPage/Article dateModified, and the .md twin. Site-wide SITE.updated
     // stays for evergreen pages only.
-    updated: published || previewDate || SITE.updated,
-    article: { datePublished: published || previewDate || SITE.updated },
+    updated: dateModified,
+    article: {
+      datePublished,
+      ...(isBlog(content) ? {
+        type: 'BlogPosting',
+        isPartOf: `${SITE.origin}/blog/#blog`,
+      } : {}),
+    },
     breadcrumbs: [
       { name: 'Home', url: SITE.origin + '/' },
       SILOS[content.silo].crumb,
@@ -369,6 +379,8 @@ export function articleSitemapEntries(articles, state) {
       loc: articleUrl(a),
       pri: '0.7',
       freq: 'monthly',
-      lastmod: state[a.slug].publishedAt,
+      lastmod: isBlog(a) && a.meta?.updatedAt > state[a.slug].publishedAt
+        ? a.meta.updatedAt
+        : state[a.slug].publishedAt,
     }));
 }
