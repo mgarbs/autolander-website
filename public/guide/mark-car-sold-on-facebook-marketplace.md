@@ -3,7 +3,7 @@
 > How to mark a car as sold on Facebook Marketplace, mark-sold vs delete tradeoffs, why ghost listings cost dealers real buyers — and the removal routine.
 
 Source: https://autolander.ai/guide/mark-car-sold-on-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 19, 2026
 
 **Short answer:** Open the listing from your selling view and use its status control: Mark as pending while paperwork finishes, Mark as sold when the car delivers — sold ends the listing’s visibility to buyers. Marking sold preserves your conversation history; deleting erases the listing entirely, so reserve deletion for mistakes and duplicates. Do one of them the day the car leaves — a listing for a sold car only generates messages you answer with bad news.

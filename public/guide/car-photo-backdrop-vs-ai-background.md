@@ -3,7 +3,7 @@
 > Car photography backdrop, photo booth, staging spot, or AI background replacement? The real costs and tradeoffs of each way to get clean car listing photos.
 
 Source: https://autolander.ai/guide/car-photo-backdrop-vs-ai-background/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 23, 2026
 
 **Short answer:** There are three ways to get clean, consistent backgrounds behind your inventory: a physical backdrop or photo booth (total control, but a dedicated bay and a serious five-figure build), a staging spot on the lot (free, but hostage to weather and light), and AI background replacement (per-photo software that re-stages the real shot). Most independent dealers get booth-grade consistency cheapest from the staging spot plus AI.

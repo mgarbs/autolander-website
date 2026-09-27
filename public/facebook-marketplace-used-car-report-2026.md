@@ -3,7 +3,7 @@
 > Original data from 196 dealerships and 10,800+ dealer listings on Facebook Marketplace: median prices, mileage, top models and posting patterns.
 
 Source: https://autolander.ai/facebook-marketplace-used-car-report-2026/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** AutoLander analyzed anonymized data from 196 U.S. dealerships using its platform — 74,000+ synced vehicles and 10,823 priced dealer listings posted to Facebook Marketplace, including 17,700+ posts in the last 90 days. Headline findings: the median asking price of a dealer unit posted to Marketplace is $28,295; 45% of posted units are priced above $30,000; the five most-listed vehicles are all pickups and 4x4s, led by the Ford F-150; 22.6% of listings change price after going live; and Thursday is the biggest day for new dealer listings — 3.3× busier than Sunday.

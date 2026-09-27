@@ -215,7 +215,7 @@ export const orgLd = {
 // journalists both weight named, credentialed attribution.
 export const AUTHOR = {
   name: 'Michael Garber',
-  jobTitle: 'Founder',
+  jobTitle: 'Co-founder',
   url: SITE.origin + '/about/',
   email: 'michael@autolander.ai',
 };

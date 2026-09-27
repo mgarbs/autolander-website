@@ -3,7 +3,7 @@
 > How to take pictures of a car to sell: prep, light, background, a dealer-grade shot list, and the phone settings that make any car look worth the asking price.
 
 Source: https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 28, 2026
 
 **Short answer:** Clean the car completely, shoot in the first or last hours of daylight with the sun behind you, and find open space with nothing distracting behind the car. Hold the phone at mid-door height, fill the frame, and work a full list: eight exterior angles, the interior with the dash on, the odometer, tires, and every flaw. Around twenty honest, well-lit photos sell a car better than any description.

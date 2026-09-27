@@ -3,7 +3,7 @@
 > How to price used cars with price-to-market discipline: live comps, the four Marketplace price bands from 10,823 dealer listings, and when to drop the price.
 
 Source: https://autolander.ai/guide/how-to-price-used-cars-competitively/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** Price used cars to the market, not to the money in them: position each unit against the live comparable listings a shopper actually sees, adjust for miles and condition, put one price on every channel, and review it on a calendar. Repricing is routine — 22.6% of dealer Marketplace listings changed price after going live in AutoLander’s 2026 report — so build the cadence in from day one instead of treating a drop as defeat.

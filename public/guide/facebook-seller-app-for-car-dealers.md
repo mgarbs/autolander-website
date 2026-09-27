@@ -3,7 +3,7 @@
 > The Facebook Seller app explained for car dealers: what Meta shipped on July 24, 2026, what it does for vehicle listings, and how it fits next to a posting tool.
 
 Source: https://autolander.ai/guide/facebook-seller-app-for-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 16, 2026
 
 **Short answer:** Seller is a standalone Facebook app Meta released on July 24, 2026 for people who sell on Marketplace. It puts listing creation, a buyer inbox organized by item, inventory tools and performance numbers in one place, and Meta AI can draft a listing from a photo. It was built for resellers of everyday items, and it will not list cars the way AutoLander does: it makes one listing at a time from photos already on your phone, and it never reads your inventory. For a dealership it is a good inbox and a useful dashboard, and it leaves the two jobs that eat a dealer’s day untouched: getting every unit onto Marketplace from the feed, and keeping price, mileage and sold status matched to the lot.

@@ -3,7 +3,7 @@
 > On Facebook Marketplace the first accurate reply usually gets the appointment. Why speed depends on the listing being right, how to set a reply standard, and what to automate — and not.
 
 Source: https://autolander.ai/guide/marketplace-response-time-for-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** A Marketplace buyer messages several listings at once and goes to see the one that answers first with a straight answer. Response time is therefore a sales metric, not a courtesy — but speed only works if the reply is right. The fastest way to a fast, correct reply is not a bot; it is a listing whose price and availability are already true, so the human answer is one sentence. Set a reply standard your team can actually meet, put the listings on a schedule that keeps them accurate, and automate the listing — not the conversation.

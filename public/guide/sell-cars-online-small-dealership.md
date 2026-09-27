@@ -3,7 +3,7 @@
 > How to sell cars online as a small dealership: list where buyers look, photos that compete, one owner for replies, and a simple path to the handshake.
 
 Source: https://autolander.ai/guide/sell-cars-online-small-dealership/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 22, 2026
 
 **Short answer:** Selling cars online as a small dealership takes four pieces, not a tech stack: inventory listed everywhere local buyers actually search (Facebook Marketplace first), photos that compete with the franchise store’s, one named person owning every reply, and a simple path from chat to appointment to paperwork. The internet sells the appointment; the lot still sells the car. Consistency beats sophistication every month.

@@ -3,7 +3,7 @@
 > How to photograph a travel trailer, fifth wheel or motorhome so it reads in a Marketplace thumbnail: the shot list, the lead photo, and what an AI studio can and cannot fix.
 
 Source: https://autolander.ai/guide/rv-photos-for-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** An RV photo has to do something a car photo does not: make a thirty-foot subject read clearly in a thumbnail the size of a thumb. That means a lead shot from a three-quarter angle with the whole unit in frame and nothing behind it, followed by a fixed shot list — awning side, interior from the door, kitchen, bedroom, bath, hitch or cab, and the data plate. A clean background is worth more on an RV than on any car, which is why AI background replacement earns its keep here; it cannot fix a crooked horizon, a slide-out left closed, or an interior shot with the lights off.

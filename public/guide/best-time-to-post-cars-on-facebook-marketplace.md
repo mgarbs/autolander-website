@@ -3,7 +3,7 @@
 > The best time to post on Facebook Marketplace, from 17,778 real dealer posts: Thursday is the crowded day, Sunday the open lane — and what matters more.
 
 Source: https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 30, 2026
 
 **Short answer:** Across 17,778 dealer posts in AutoLander’s 2026 Marketplace report, Thursday is the heaviest listing day (17.5% of posts) and Sunday the lightest (5.4%) — a 3.3× gap. That data measures dealer supply, not buyer demand: it means a car listed Sunday or Monday competes with the week’s thinnest wave of fresh listings. Timing is a real but small edge; posting every unit consistently matters far more.

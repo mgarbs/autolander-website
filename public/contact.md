@@ -30,7 +30,7 @@ Invoices, plan changes, adding or removing seats, cancelling, and refund questio
 
 ### Press & data enquiries — sales@autolander.ai
 
-Journalists and analysts citing the Facebook Marketplace Used-Car Report 2026, or asking about method, sample sizes and corrections. Our research is written by founder Michael Garber and computed from anonymized aggregate platform data; the underlying tables are published as CSV and JSON under CC BY 4.0.
+Journalists and analysts citing the Facebook Marketplace Used-Car Report 2026, or asking about method, sample sizes and corrections. Our research is written by co-founder Michael Garber and computed from anonymized aggregate platform data; the underlying tables are published as CSV and JSON under CC BY 4.0.
 
 ## Phone and postal address
 
@@ -40,7 +40,7 @@ AutoLander LLC is a United States company. Phone is answered during US Eastern b
 - Sales email: sales@autolander.ai — replies within one business day.
 - Support email: support@autolander.ai — replies within one business day; posting outages sooner.
 - Postal address: AutoLander LLC, 5830 Memorial Hwy, Apt 1322, Tampa, FL 33615, United States.
-- Company: AutoLander LLC, a United States limited liability company. Founder: Michael Garber.
+- Company: AutoLander LLC, a United States limited liability company. Co-founder: Michael Garber.
 
 ## What to include so we can answer on the first reply
 

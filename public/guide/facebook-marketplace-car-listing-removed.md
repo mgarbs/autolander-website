@@ -3,7 +3,7 @@
 > Facebook Marketplace car listing removed? The real causes — commerce policy, duplicates, price flags — how to appeal it, and how to stop the next one.
 
 Source: https://autolander.ai/guide/facebook-marketplace-car-listing-removed/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 4, 2026
 
 **Short answer:** Car listings on Facebook Marketplace usually get removed for a short list of reasons: commerce-policy triggers in the text, duplicate listings of the same vehicle, category or price mismatches, spam-signal photos, or account-level flags from posting too fast. Appeal from your Support Inbox by requesting a review of the removed listing, and fix the underlying cause before reposting — repeat removals compound into account restrictions.

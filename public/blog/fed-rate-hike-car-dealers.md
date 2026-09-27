@@ -3,7 +3,7 @@
 > What a Fed rate hike means for new and used car dealers: payment math, holding costs, price bands from 10,823 dealer listings and a 30-day action plan.
 
 Source: https://autolander.ai/blog/fed-rate-hike-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 27, 2026
 
 **Short answer:** A Fed rate hike raises the cost of money on both sides of the car business: financed buyers see a bigger payment on the same price, and inventory on a variable-rate line costs more each day it sits. New-car stores should check floorplan terms and manufacturer offers first; used stores should check where their prices sit against search filter lines. Then decide aged units sooner, keep one price everywhere and favor free Marketplace coverage over paid ads. AutoLander keeps those Marketplace listings current.

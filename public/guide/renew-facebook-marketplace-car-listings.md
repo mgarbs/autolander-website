@@ -3,7 +3,7 @@
 > How to renew a Facebook Marketplace listing, what renewing actually does, when delete-and-repost wins, and a cadence that works for a 30–60 unit lot.
 
 Source: https://autolander.ai/guide/renew-facebook-marketplace-car-listings/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 7, 2026
 
 **Short answer:** To renew a Facebook Marketplace listing, open your listings from your selling view, find the vehicle, and choose Renew from its menu when Facebook offers it — roughly weekly per listing. Renewing bumps the listing back toward the fresh end of search and browse for free, without creating a duplicate. It beats delete-and-repost for healthy listings; delete-and-repost wins when a listing has gone cold and needs new photos or a new price.

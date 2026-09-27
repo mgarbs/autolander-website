@@ -3,7 +3,7 @@
 > How to respond to Facebook Marketplace messages as a dealer: the "Is this available?" reply, six buyer-message templates, and the path to an appointment.
 
 Source: https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 9, 2026
 
 **Short answer:** Respond to Facebook Marketplace messages within minutes, like a person: confirm the car is available, give your name, and ask one question that advances the deal — their timing, their name, or their trade. Never send a bare "yes." From there the ladder is chat to phone to a booked appointment with two offered time windows. Every reply here is one a human salesperson sends — the inbox is yours, not software’s.

@@ -3,7 +3,7 @@
 > Used car dealership advertising on a budget: what to run at $0, where the first paid dollars go, and why free coverage beats ad spend for small stores.
 
 Source: https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 1, 2026
 
 **Short answer:** Used car dealership advertising on a budget follows a strict ladder: exhaust the free, high-intent channels before the first paid dollar. That means every unit on Facebook Marketplace daily, a fully built Google Business Profile with fresh reviews, and photos that compete — all of which cost time, not money. When real budget exists, paid spend gets a narrow job: moving aged units and retargeting shoppers who already looked.

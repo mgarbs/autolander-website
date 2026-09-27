@@ -3,7 +3,7 @@
 > A car salesman’s guide to Meta Muse: 12 ways it helps you sell, why posting your cars through it wastes it, and why a $39 feed-driven poster does that job better.
 
 Source: https://autolander.ai/compare/meta-muse-for-car-salesmen/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 26, 2026
 
 **Short answer:** For a car salesman, Meta Muse is the most useful assistant to arrive in years. It can answer your Marketplace buyers from your own account, chase every follow-up, book and confirm appointments, research a customer’s trade and write the texts you never get to. It can post cars too: hand it a feed and it will create the listings. Posting is the easy day. After it, every price drop, new arrival and sold unit has to reach Marketplace as well, every day, and for Muse that upkeep is a recurring job that draws on the same weekly usage your customers need, with nobody checking its choices but you. AutoLander does that upkeep as its whole job, from $39 a month: it posts from your store’s feed, verifies what it enters, keeps prices and sold status true and upgrades every photo. Give Muse the customers and AutoLander the cars.

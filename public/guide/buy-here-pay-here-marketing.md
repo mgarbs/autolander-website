@@ -3,7 +3,7 @@
 > Buy here pay here marketing that works: honest Marketplace listings, a referral engine, service-drive plays, and the compliance line you never cross.
 
 Source: https://autolander.ai/guide/buy-here-pay-here-marketing/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 24, 2026
 
 **Short answer:** Buy here pay here marketing works when it matches how BHPH buyers shop: payment-first, locally, and urgently. The plays that fill the payment book are full Facebook Marketplace coverage with honest prices, a Google profile with real reviews, a deliberate referral engine, and retention through the payment desk. The line you never cross is deceptive credit promises — plain, honest claims are both the law’s demand and the better ad.

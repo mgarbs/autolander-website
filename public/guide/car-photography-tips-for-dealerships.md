@@ -3,7 +3,7 @@
 > Car dealership photography tips that scale: the per-unit process any porter can run — time of day, lot spot, shot list, phone settings — and where AI fits.
 
 Source: https://autolander.ai/guide/car-photography-tips-for-dealerships/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 2, 2026
 
 **Short answer:** Good dealership photography is a process, not a talent. Pick one photo spot on the lot, shoot in the first or last hours of daylight, walk the same shot list on every unit, and lock the phone settings once. A porter can produce consistent, dealer-grade photos in about fifteen minutes per car. AI background replacement then handles the one variable the process cannot: what is behind the car.

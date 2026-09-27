@@ -3,7 +3,7 @@
 > How many photos should a car listing have? Coverage beats count — the shots that answer buyer objections, the first photo that wins the click, and order.
 
 Source: https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 5, 2026
 
 **Short answer:** Enough to answer every question a serious buyer would ask in person — in practice, fifteen to twenty-five photos. Coverage beats count: eight exterior angles, a full interior set, odometer, tires, and honest flaw close-ups. Below roughly eight photos, buyers assume the listing is hiding something. And the first photo matters more than the rest combined, because it is the only one shown in the search results.

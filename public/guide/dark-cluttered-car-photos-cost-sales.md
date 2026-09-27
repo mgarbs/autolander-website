@@ -3,7 +3,7 @@
 > Bad car listing photos fail a half-second scroll test. The five failures — dark shots, clutter, promo frames, bad crops, missing angles — and the fix for each.
 
 Source: https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 11, 2026
 
 **Short answer:** A buyer gives each listing less than a second in the scroll, and the first photo does all the talking. Bad car listing photos fail in five repeatable ways — too dark, cluttered background, promo frames, the car too small or cropped in the frame, and missing angles. Each failure has a specific fix, and none of them requires a photographer: a light window, a staging spot, and background replacement cover all five.

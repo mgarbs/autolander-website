@@ -3,7 +3,7 @@
 > Facebook Marketplace listing not showing up? Triage it in order: pending review, quiet deranking, removal, or buyer filters — and when to renew or repost.
 
 Source: https://autolander.ai/guide/facebook-marketplace-listing-not-showing-up/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 21, 2026
 
 **Short answer:** When a Facebook Marketplace listing is not showing up, check four things in order: is it pending review (wait it out), was it removed (check your Support Inbox, then appeal), has it gone stale and been quietly deranked (renew or repost), or is it live but filtered out of the buyer’s view by distance, category, or price settings. Most “invisible” dealer listings turn out to be stale or price-filtered, not removed.

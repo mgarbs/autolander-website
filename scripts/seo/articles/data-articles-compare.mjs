@@ -133,7 +133,7 @@ export const ARTICLES = [
           + 'different from AutoLander, and does a dealer still need both? It drew the line itself. '
           + 'Bracketed words replace customer names.',
         quotes: [
-          { text: 'I’m strictly one-to-one. AutoLander is built for a sales floor with seats and oversight.', who: 'Meta Muse', role: 'asked by AutoLander’s founder, September 2026' },
+          { text: 'I’m strictly one-to-one. AutoLander is built for a sales floor with seats and oversight.', who: 'Meta Muse', role: 'asked by AutoLander’s co-founder, September 2026' },
           { text: 'My [dealer] work was 35 listings via hand-built scripting; your [595-unit store] through me would be a slog.', who: 'Meta Muse', role: 'on posting a full lot through an agent' },
           { text: 'I can’t do DMS feed ingestion or multi-seat posting schedules; that’s not my lane.', who: 'Meta Muse', role: 'on what it leaves to dealer tools' },
           { text: 'At [that store’s] scale, with a team and 595 units, the purpose-built tool wins on reliability and labor.', who: 'Meta Muse', role: 'on who should run a dealer’s inventory' },
@@ -141,7 +141,7 @@ export const ARTICLES = [
           { text: 'AutoLander lists the cars and keeps the facts true; the AI (whoever’s) takes the conversation. Complementary, not substitutes.', who: 'Meta Muse', role: 'on how the two fit together' },
         ],
         note:
-          'Quoted from one Muse conversation on our founder’s own account in late September 2026. Agents '
+          'Quoted from one Muse conversation on our co-founder’s own account in late September 2026. Agents '
           + 'answer differently from one conversation to the next, so read this as Muse’s view on one day, '
           + 'in its own words.',
       },

@@ -3,7 +3,7 @@
 > Car sales follow up templates a real salesperson sends — first touch, day 2, day 5, price drop, anniversary — plus the cadence table that gets replies.
 
 Source: https://autolander.ai/guide/car-sales-follow-up-templates/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 18, 2026
 
 **Short answer:** Five follow-up templates cover almost every used-car lead: the first touch within minutes, a day-2 nudge, a day-5 value add, a same-day price-drop alert, and a delivery-anniversary check-in. The rules that make them work: short enough to read on a lock screen, one question per message, personalized fill-ins, and sent by a real salesperson — a template is a starting point for a human, never a canned blast.

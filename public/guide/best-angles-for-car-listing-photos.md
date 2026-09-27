@@ -3,7 +3,7 @@
 > Car photography angles explained — why the three-quarter front is the hero, the full angle-by-angle shot list, what each frame answers, and mistakes to avoid.
 
 Source: https://autolander.ai/guide/best-angles-for-car-listing-photos/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 8, 2026
 
 **Short answer:** Lead with the three-quarter front — it shows the car’s face and its depth in one frame. Then cover both full profiles, both three-quarter rears, straight-on front and rear, a complete interior set with the dash powered on, and detail close-ups. Shoot every exterior angle from mid-door height, fill the frame, and never skip the far side. Each angle exists to answer a specific buyer question.
