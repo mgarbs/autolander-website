@@ -194,3 +194,44 @@ test('the generate workflow fails loudly unless it runs in the container workspa
   assert.ok(preflight > 0 && preflight < writer, 'preflight must run before the writer');
   assert.match(yml, /\/__w\//);
 });
+
+// ---- 2026-09-27 first live run: finalize died on `git status` (container runs as root over a
+// runner-owned checkout -> "dubious ownership"), and the writer failed in ~4s with no evidence in
+// the log because its stderr is private by design.
+
+test('the generate workflow trusts the container workspace for git before any git use', () => {
+  const yml = readFileSync(resolve(ROOT, '.github', 'workflows', 'generate-blog-post.yml'), 'utf8');
+  const trust = yml.search(/git config --global --add safe\.directory "\$GITHUB_WORKSPACE"/);
+  assert.ok(trust > 0, 'safe.directory step missing');
+  assert.ok(trust > yml.indexOf('actions/checkout@v4'), 'must run after checkout');
+  assert.ok(trust < yml.indexOf('name: Build writer context'), 'must run before prepare-context');
+});
+
+test('writer diagnostics are logged safely: outcome, masked stderr head, no request text or tokens', async (t) => {
+  const { writerDiagnostics } = await import('../scripts/blog/run-writer.mjs');
+  const root = scratch(t, 'diag');
+  const contextDir = resolve(root, '.blog-context');
+  const prompt = 'Write a playbook about secret-topic-4471 for dealers';
+  writeJson(resolve(contextDir, 'request.json'), {
+    requestId: 'r1', mode: 'new', slug: '', prompt, keyword: 'kw-9931', feedback: '', originalPrompt: '',
+  });
+  write(resolve(contextDir, 'writer.stderr'), [
+    '\u001b[31mError:\u001b[0m could not start',
+    `echoed: ${prompt}`,
+    'token sk-ant-oat01-AAAAAAAAAAAAAAAAAAAA and kw-9931',
+  ].join('\n'));
+  writeJson(resolve(contextDir, 'result.json'), { type: 'result', subtype: 'error_during_execution', is_error: true, result: prompt });
+  const lines = writerDiagnostics({
+    ok: false, exitCode: 1, model: 'claude-opus-5-5', contextWindow: '200k', errorKind: 'other',
+    resultPath: resolve(contextDir, 'result.json'),
+  }, { contextDir });
+  const text = lines.join('\n');
+  assert.match(text, /ok=false exit=1 model=claude-opus-5-5 context=200k errorKind=other/);
+  assert.match(text, /subtype=error_during_execution is_error=true/);
+  assert.match(text, /could not start/);
+  assert.doesNotMatch(text, /secret-topic-4471|kw-9931|sk-ant-oat01/);
+  assert.ok(!text.includes('\u001b'), 'ANSI escapes must be stripped');
+  assert.ok(text.length < 1200);
+  const ok = writerDiagnostics({ ok: true, exitCode: 0, model: 'm', contextWindow: '1m', errorKind: null, resultPath: resolve(contextDir, 'none.json') }, { contextDir });
+  assert.equal(ok.length, 1);
+});

@@ -1,5 +1,7 @@
 import { spawn } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+  existsSync, mkdirSync, readFileSync, writeFileSync,
+} from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
 import { env as processEnv } from 'node:process';
 import { fileURLToPath } from 'node:url';
@@ -173,15 +175,62 @@ function cliValue(args, flag) {
   return index >= 0 ? args[index + 1] : '';
 }
 
+// Log-safe evidence for a failed writer run (the public Actions log is the only place it can
+// surface). stderr stays private on disk; only a short head is logged, after masking every request
+// value (prompt, keyword, feedback, original prompt), anything token-shaped, and ANSI codes.
+const SECRET_SHAPED = /sk-ant-[A-Za-z0-9_-]+|gh[pousr]_[A-Za-z0-9]{10,}|github_pat_[A-Za-z0-9_]+|(authorization|bearer)\s*[:=]?\s*\S+/gi;
+const ANSI = /\u001b\[[0-9;?]*[ -/]*[@-~]/g;
+
+function readRequestValues(contextDir) {
+  try {
+    const request = JSON.parse(readFileSync(resolve(contextDir, 'request.json'), 'utf8'));
+    return [request.prompt, request.keyword, request.feedback, request.originalPrompt]
+      .filter((value) => typeof value === 'string' && value.trim().length >= 3)
+      .flatMap((value) => [value, ...value.split(/\r?\n/)])
+      .map((value) => value.trim())
+      .filter((value) => value.length >= 3)
+      .sort((a, b) => b.length - a.length);
+  } catch {
+    return [];
+  }
+}
+
+export function writerDiagnostics(result, { contextDir, error } = {}) {
+  const lines = [
+    `writer: ok=${result.ok} exit=${result.exitCode} model=${result.model} context=${result.contextWindow} errorKind=${result.errorKind}`,
+  ];
+  if (result.ok) return lines;
+  const mask = (text) => {
+    let value = String(text || '').replace(ANSI, '');
+    for (const secret of readRequestValues(contextDir)) value = value.split(secret).join('[request]');
+    return value.replace(SECRET_SHAPED, '[redacted]');
+  };
+  try {
+    if (result.resultPath && existsSync(result.resultPath)) {
+      const parsed = JSON.parse(readFileSync(result.resultPath, 'utf8'));
+      lines.push(`writer result: subtype=${mask(parsed?.subtype)} is_error=${parsed?.is_error} turns=${parsed?.num_turns ?? '-'}`);
+    }
+  } catch { lines.push('writer result: not JSON'); }
+  try {
+    const stderr = readFileSync(resolve(contextDir, 'writer.stderr'), 'utf8');
+    const head = mask(stderr).split(/\r?\n/).map((line) => line.trim()).filter(Boolean).slice(0, 8).join(' | ');
+    if (head) lines.push(`writer stderr (masked head): ${head.slice(0, 600)}`);
+  } catch { /* no stderr file */ }
+  if (error) lines.push(`writer exception: ${mask(error?.message || error).slice(0, 300)}`);
+  return lines;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const contextDir = cliValue(args, '--context');
   const out = cliValue(args, '--out');
   const resultPath = resolve(contextDir || '.blog-context', 'result.json');
   let result;
+  let failure;
   try {
     result = await runWriter({ contextDir: contextDir || '.blog-context' });
-  } catch {
+  } catch (error) {
+    failure = error;
     result = {
       ok: false,
       exitCode: 1,
@@ -197,6 +246,11 @@ async function main() {
     mkdirSync(dirname(outPath), { recursive: true });
     writeFileSync(outPath, `${JSON.stringify(result, null, 2)}\n`, 'utf8');
   }
+  try {
+    for (const line of writerDiagnostics(result, { contextDir: contextDir || '.blog-context', error: failure })) {
+      console.log(line);
+    }
+  } catch { /* diagnostics are best-effort */ }
   process.exitCode = 0;
 }
 
