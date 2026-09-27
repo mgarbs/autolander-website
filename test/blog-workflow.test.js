@@ -159,6 +159,25 @@ test('generate workflow constrains concurrency, credentials, shell inputs, and c
   assert.equal(addLists.length, 0, 'commit-draft.mjs owns the exact staging allowlist');
 });
 
+test('generate workflow uses Node 22 and keeps optional Playwright separate from Claude Code', () => {
+  const yaml = read(GENERATE_WORKFLOW);
+  assert.match(yaml, /node-version:\s*22\b/);
+  const claudeStep = yaml.indexOf('- name: Install Claude Code');
+  const playwrightStep = yaml.indexOf('- name: Install Playwright Chromium');
+  const writerStep = yaml.indexOf('- name: Write with Claude');
+  assert.ok(claudeStep >= 0);
+  assert.ok(playwrightStep > claudeStep);
+  assert.ok(writerStep > playwrightStep);
+  const claudeBlock = yaml.slice(claudeStep, playwrightStep);
+  assert.match(claudeBlock, /npm install --global @anthropic-ai\/claude-code@2\.1\.233/);
+  assert.match(claudeBlock, /claude --version/);
+  assert.doesNotMatch(claudeBlock, /playwright|continue-on-error/);
+  const playwrightBlock = yaml.slice(playwrightStep, writerStep);
+  assert.match(playwrightBlock, /continue-on-error:\s*true/);
+  assert.match(playwrightBlock, /npm install --no-save --package-lock=false playwright/);
+  assert.match(playwrightBlock, /npx playwright install --with-deps chromium/);
+});
+
 test('GitHub auth is an ephemeral git config argument and raw tokens are scrubbed from Git children', async () => {
   const source = read(COMMIT_UTILS);
   const { gitChildEnv, githubAuthArgs } = await importFresh(COMMIT_UTILS);
@@ -235,6 +254,10 @@ test('postPublish pings WebSub and verifies the live post, sitemap, and RSS feed
   const root = scratchRoot(t, 'post-publish-success');
   const slug = 'verified-blog-post';
   const postUrl = `${ORIGIN}/blog/${slug}/`;
+  const timestamp = 1_790_524_800_000;
+  const postCheckUrl = `${postUrl}?cb=${timestamp}`;
+  const sitemapCheckUrl = `${ORIGIN}/sitemap.xml?cb=${timestamp}`;
+  const feedCheckUrl = `${ORIGIN}/blog/feed.xml?cb=${timestamp}`;
   const summaryPath = resolve(root, 'step-summary.md');
   writeFileSync(resolve(root, '.last-publish.json'), `${JSON.stringify({
     slug, kind: 'blog', publishedAt: '2026-09-27', urls: [postUrl],
@@ -244,9 +267,9 @@ test('postPublish pings WebSub and verifies the live post, sitemap, and RSS feed
     const url = String(input?.url || input);
     calls.push({ url, init });
     if (url === 'https://pubsubhubbub.appspot.com/') return response(204);
-    if (url === postUrl) return response(200, `<html><head><link rel="canonical" href="${postUrl}" /></head></html>`);
-    if (url === `${ORIGIN}/sitemap.xml`) return response(200, `<loc>${postUrl}</loc>`);
-    if (url === `${ORIGIN}/blog/feed.xml`) return response(200, `<link>${postUrl}</link>`);
+    if (url === postCheckUrl) return response(200, `<html><head><link rel="canonical" href="${postUrl}" /></head></html>`);
+    if (url === sitemapCheckUrl) return response(200, `<loc>${postUrl}</loc>`);
+    if (url === feedCheckUrl) return response(200, `<link>${postUrl}</link>`);
     return response(500, 'unexpected URL');
   };
   const sleeps = [];
@@ -255,14 +278,15 @@ test('postPublish pings WebSub and verifies the live post, sitemap, and RSS feed
     root,
     fetchImpl,
     sleep: async (milliseconds) => { sleeps.push(milliseconds); },
+    nowImpl: () => timestamp,
     summaryPath,
   });
 
   assert.deepEqual(calls.map(({ url }) => url), [
     'https://pubsubhubbub.appspot.com/',
-    postUrl,
-    `${ORIGIN}/sitemap.xml`,
-    `${ORIGIN}/blog/feed.xml`,
+    postCheckUrl,
+    sitemapCheckUrl,
+    feedCheckUrl,
   ]);
   assert.equal(calls[0].init.method, 'POST');
   assert.match(String(calls[0].init.headers?.['content-type'] || calls[0].init.headers?.['Content-Type']), /application\/x-www-form-urlencoded/i);
@@ -270,6 +294,13 @@ test('postPublish pings WebSub and verifies the live post, sitemap, and RSS feed
     String(calls[0].init.body),
     'hub.mode=publish&hub.url=https%3A%2F%2Fautolander.ai%2Fblog%2Ffeed.xml',
   );
+  for (const { init } of calls.slice(1)) {
+    assert.equal(init.cache, 'no-store');
+    assert.equal(init.headers?.['Cache-Control'], 'no-cache');
+  }
+  assert.equal(calls[0].init.cache, undefined);
+  assert.equal(calls[0].init.headers?.['Cache-Control'], undefined);
+  assert.ok(!calls[0].url.includes('cb='));
   assert.deepEqual(sleeps, []);
   const summary = read(summaryPath);
   assert.match(summary, /\|[^|\n]*WebSub[^|\n]*\|/i);
@@ -294,7 +325,7 @@ test('postPublish fails after persistent live-post 404 responses without real wa
     const url = String(input?.url || input);
     calls.push(url);
     if (url === 'https://pubsubhubbub.appspot.com/') return response(204);
-    if (url === postUrl) return response(404, 'not found');
+    if (url.startsWith(`${postUrl}?cb=`)) return response(404, 'not found');
     return response(500, 'verification should stop before this URL');
   };
 
@@ -307,7 +338,9 @@ test('postPublish fails after persistent live-post 404 responses without real wa
     }),
     /404|live|verification|canonical/i,
   );
-  assert.ok(calls.filter((url) => url === postUrl).length > 1, 'live URL should be polled');
+  const postPolls = calls.filter((url) => url.startsWith(`${postUrl}?cb=`));
+  assert.ok(postPolls.length > 1, 'live URL should be polled');
+  assert.equal(new Set(postPolls).size, 1, 'polls reuse one run timestamp');
   assert.ok(sleeps.length > 0, '404 polling should use the injected sleep');
   assert.ok(sleeps.every((milliseconds) => milliseconds === 15_000));
   assert.ok(sleeps.reduce((sum, milliseconds) => sum + milliseconds, 0) <= 5 * 60_000);
@@ -325,7 +358,7 @@ test('postPublish bounds a live-page fetch that never settles', { timeout: 1_000
   const fetchImpl = async (input) => {
     const url = String(input?.url || input);
     if (url === 'https://pubsubhubbub.appspot.com/') return response(204);
-    if (url === postUrl) {
+    if (url.startsWith(`${postUrl}?cb=`)) {
       liveCalls += 1;
       return new Promise(() => {});
     }

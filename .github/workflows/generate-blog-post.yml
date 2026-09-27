@@ -47,7 +47,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
 
@@ -84,11 +84,16 @@ jobs:
           BLOG_MODE: '${{ inputs.mode }}'
           BLOG_SLUG: '${{ inputs.slug }}'
 
-      - name: Install Claude Code + Playwright
+      - name: Install Claude Code
         if: inputs.mode != 'discard'
         run: |
           npm install --global @anthropic-ai/claude-code@2.1.233
           claude --version
+
+      - name: Install Playwright Chromium
+        if: inputs.mode != 'discard'
+        continue-on-error: true
+        run: |
           npm install --no-save --package-lock=false playwright
           npx playwright install --with-deps chromium
 

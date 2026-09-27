@@ -17,6 +17,17 @@ function escapeCell(value) {
   return String(value).replaceAll('|', '\\|').replace(/[\r\n]+/g, ' ');
 }
 
+function cacheBusted(url, timestamp) {
+  const value = new URL(url);
+  value.searchParams.set('cb', String(Math.trunc(timestamp)));
+  return value.href;
+}
+
+const noCacheGet = () => ({
+  headers: { 'Cache-Control': 'no-cache' },
+  cache: 'no-store',
+});
+
 function summaryFor(postUrl, checks) {
   const row = (label, check) => `| ${label} | ${check.ok ? 'PASS' : 'FAIL'} | ${escapeCell(check.detail)} |`;
   return [
@@ -99,8 +110,12 @@ export async function postPublish({
     },
   };
 
+  const pollStartedAt = nowImpl();
+  const postCheckUrl = cacheBusted(postUrl, pollStartedAt);
+  const sitemapCheckUrl = cacheBusted(`${ORIGIN}/sitemap.xml`, pollStartedAt);
+  const feedCheckUrl = cacheBusted(FEED_URL, pollStartedAt);
   const maxAttempts = Math.floor(pollTimeoutMs / pollIntervalMs) + 1;
-  const pollDeadline = nowImpl() + pollTimeoutMs;
+  const pollDeadline = pollStartedAt + pollTimeoutMs;
   let postResponse = null;
   let canonicalFound = false;
   let attempts = 0;
@@ -108,10 +123,12 @@ export async function postPublish({
     if (attempt > 0 && nowImpl() >= pollDeadline) break;
     attempts += 1;
     const remainingMs = Math.max(1, pollDeadline - nowImpl());
-    postResponse = await fetchCheck(fetchImpl, postUrl, {
-      headers: { 'cache-control': 'no-cache' },
-      cache: 'no-store',
-    }, Math.min(requestTimeoutMs, remainingMs));
+    postResponse = await fetchCheck(
+      fetchImpl,
+      postCheckUrl,
+      noCacheGet(),
+      Math.min(requestTimeoutMs, remainingMs),
+    );
     const html = await responseText(postResponse);
     canonicalFound = postResponse?.ok === true
       && postResponse.status === 200
@@ -126,20 +143,19 @@ export async function postPublish({
     detail: `${statusDetail(postResponse)}; canonical ${canonicalFound ? 'found' : 'missing'} after ${attempts} attempt${attempts === 1 ? '' : 's'}`,
   };
 
-  const sitemapResponse = await fetchCheck(fetchImpl, `${ORIGIN}/sitemap.xml`, {
-    headers: { 'cache-control': 'no-cache' },
-    cache: 'no-store',
-  }, requestTimeoutMs);
+  const sitemapResponse = await fetchCheck(
+    fetchImpl,
+    sitemapCheckUrl,
+    noCacheGet(),
+    requestTimeoutMs,
+  );
   const sitemapText = await responseText(sitemapResponse);
   checks.sitemap = {
     ok: Boolean(sitemapResponse?.ok && sitemapText.includes(postUrl)),
     detail: `${statusDetail(sitemapResponse)}; post URL ${sitemapText.includes(postUrl) ? 'found' : 'missing'}`,
   };
 
-  const feedResponse = await fetchCheck(fetchImpl, FEED_URL, {
-    headers: { 'cache-control': 'no-cache' },
-    cache: 'no-store',
-  }, requestTimeoutMs);
+  const feedResponse = await fetchCheck(fetchImpl, feedCheckUrl, noCacheGet(), requestTimeoutMs);
   const feedText = await responseText(feedResponse);
   checks.feed = {
     ok: Boolean(feedResponse?.ok && feedText.includes(postUrl)),
