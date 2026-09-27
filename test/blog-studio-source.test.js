@@ -57,7 +57,9 @@ test('BlogStudio shows recent request state, elapsed time, excerpts, failures, a
 });
 
 test('failed and needs-attention request rows can discard a missing article with confirmation', () => {
-  assert.match(studio, /\['failed',\s*'needs_attention'\]/);
+  // The failed/needs_attention + orphaned-slug rule lives in canDiscardFromRequest
+  // (src/admin/lib/blog-studio.js, behavior-tested in blog-review-fixes.test.js).
+  assert.match(studio, /canDiscardFromRequest\(request,\s*view,\s*data\?\.articles\)/);
   assert.match(studio, /request\.slug/);
   assert.match(studio, /request-discard/);
   assert.match(studio, /Confirm discard/);
