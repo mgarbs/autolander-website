@@ -5,6 +5,7 @@
 // Static, NO pixel. Follows the page-object contract in scripts/seo/shell.mjs.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.aiTools.path;
 
@@ -52,8 +53,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/jeep-wrangler-before.webp',
-        after: '/studio/jeep-wrangler-after.webp',
+        before: STUDIO_IMAGES.jeepWrangler.before,
+        after: STUDIO_IMAGES.jeepWrangler.after,
         beforeAlt: 'Raw dealership lot photo of a 2026 Jeep Wrangler before AutoLander',
         afterAlt: 'The same 2026 Jeep Wrangler as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'One of the AI tools in action: AutoLander turns a raw 2026 Jeep Wrangler lot photo (left) into a showroom-grade Facebook Marketplace listing (right), automatically.',

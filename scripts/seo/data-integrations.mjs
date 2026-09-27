@@ -19,6 +19,7 @@ import {
   relatedFor,
   siblingSpokes,
 } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const HUB_PATH = NAV.integHub.path; // '/integrations/'
 const INVENTORY_PATH = NAV.inventory.path; // '/facebook-marketplace-inventory-sync/'
@@ -429,21 +430,21 @@ const COPY = {
 
 // ---- AI Photo Studio before/after pool — one distinct vehicle per spoke ----
 const STUDIO = [
-  { slug: 'hyundai-sonata', vehicle: '2024 Hyundai Sonata' },
-  { slug: 'nissan-kicks', vehicle: '2025 Nissan Kicks' },
-  { slug: 'jeep-wrangler', vehicle: '2026 Jeep Wrangler' },
-  { slug: 'tesla-model-y', vehicle: '2023 Tesla Model Y' },
-  { slug: 'ford-expedition', vehicle: '2024 Ford Expedition' },
-  { slug: 'toyota-tacoma', vehicle: '2025 Toyota Tacoma' },
-  { slug: 'chevrolet-malibu', vehicle: '2022 Chevrolet Malibu' },
-  { slug: 'jeep-renegade', vehicle: '2019 Jeep Renegade' },
-  { slug: 'kia-k5', vehicle: '2022 Kia K5' },
+  { image: STUDIO_IMAGES.hyundaiSonata, vehicle: '2024 Hyundai Sonata' },
+  { image: STUDIO_IMAGES.nissanKicks, vehicle: '2025 Nissan Kicks' },
+  { image: STUDIO_IMAGES.jeepWrangler, vehicle: '2026 Jeep Wrangler' },
+  { image: STUDIO_IMAGES.teslaModelY, vehicle: '2023 Tesla Model Y' },
+  { image: STUDIO_IMAGES.fordExpedition, vehicle: '2024 Ford Expedition' },
+  { image: STUDIO_IMAGES.toyotaTacoma, vehicle: '2025 Toyota Tacoma' },
+  { image: STUDIO_IMAGES.chevroletMalibu, vehicle: '2022 Chevrolet Malibu' },
+  { image: STUDIO_IMAGES.jeepRenegade, vehicle: '2019 Jeep Renegade' },
+  { image: STUDIO_IMAGES.kiaK5, vehicle: '2022 Kia K5' },
 ];
 function studioFigure(v) {
   return {
     type: 'figure',
-    before: `/studio/${v.slug}-before.webp`,
-    after: `/studio/${v.slug}-after.webp`,
+    before: v.image.before,
+    after: v.image.after,
     beforeAlt: `Raw dealership lot photo of a ${v.vehicle} before AutoLander`,
     afterAlt: `The same ${v.vehicle} as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio`,
     caption: `AutoLander’s AI Photo Studio: a raw dealer lot photo of a ${v.vehicle} (left) becomes a showroom-grade Facebook Marketplace listing (right), automatically.`,
@@ -682,8 +683,8 @@ const hub = {
   sections: [
     {
       type: 'figure',
-      before: '/studio/ford-maverick-before.webp',
-      after: '/studio/ford-maverick-after.webp',
+      before: STUDIO_IMAGES.fordMaverick.before,
+      after: STUDIO_IMAGES.fordMaverick.after,
       beforeAlt: 'Raw dealership lot photo of a 2026 Ford Maverick before AutoLander',
       afterAlt: 'The same 2026 Ford Maverick as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
       caption: 'From your feed to a showroom-grade listing: a raw 2026 Ford Maverick lot photo (left) becomes a polished Facebook Marketplace listing (right), automatically.',

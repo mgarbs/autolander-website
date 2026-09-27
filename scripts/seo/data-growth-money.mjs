@@ -10,6 +10,7 @@
 // Follows the page-object contract in scripts/seo/shell.mjs. Static, NO pixel.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const home = SITE.origin + '/';
 const aiToolsCrumb = { name: 'Facebook AI tools', url: SITE.origin + NAV.aiTools.path };
@@ -171,16 +172,16 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/infiniti-qx60-before.webp',
-        after: '/studio/infiniti-qx60-after.webp',
+        before: STUDIO_IMAGES.infinitiQx60.before,
+        after: STUDIO_IMAGES.infinitiQx60.after,
         beforeAlt: 'Dealer feed photo of a 2023 Infiniti QX60 with branded frame overlay, before AutoLander',
         afterAlt: 'The same 2023 Infiniti QX60 composited into a clean showroom by AutoLander’s AI car photo editor',
         caption: 'A real feed photo (left) — branded frame and all — becomes a showroom listing image (right). Same QX60, same angle, nothing about the car altered.',
       },
       {
         type: 'figure',
-        before: '/studio/genesis-gv70-before.webp',
-        after: '/studio/genesis-gv70-after.webp',
+        before: STUDIO_IMAGES.genesisGv70.before,
+        after: STUDIO_IMAGES.genesisGv70.after,
         beforeAlt: 'Dealer feed photo of a Genesis GV70 with portal frame, before AutoLander',
         afterAlt: 'The same Genesis GV70 in a bright showroom scene after AutoLander’s AI Photo Studio',
         caption: 'The GV70’s paint flecks and chrome stay exactly as shot — the studio changes the scene, never the car.',
@@ -199,15 +200,15 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/jeep-renegade-before.webp',
-        after: '/studio/jeep-renegade-after.webp',
+        before: STUDIO_IMAGES.jeepRenegade.before,
+        after: STUDIO_IMAGES.jeepRenegade.after,
         beforeAlt: 'Jeep Renegade feed photo boxed in a third-party promo frame, before AutoLander',
         afterAlt: 'The same blue Jeep Renegade staged in a golden-hour lot scene by AutoLander’s AI car photo editor',
         caption: 'From boxed-in feed photo to golden-hour hero shot: the Renegade’s bright blue paint and black wheels stay exactly as photographed.',
       },
       {
         type: 'image',
-        src: '/studio/toyota-tundra-after.webp',
+        src: STUDIO_IMAGES.toyotaTundra.after,
         alt: 'A 2025 Toyota Tundra TRD Pro composited in front of the dealership’s own storefront by AutoLander’s AI Photo Studio',
         caption: 'The branded-backdrop option: the dealer’s actual storefront composited behind every unit — each listing photo doubles as an ad for the store.',
       },
@@ -286,7 +287,7 @@ export const PAGES = [
       },
       {
         type: 'image',
-        src: '/studio/coachmen-catalina-studio.webp',
+        src: STUDIO_IMAGES.coachmenCatalina.src,
         alt: 'A 2027 Coachmen Catalina Legacy Edition travel trailer on a clean white studio background, processed by AutoLander’s AI Photo Studio for an RV dealer',
         caption: 'Straight from a working RV dealer’s AutoLander account: a 2027 Coachmen Catalina travel trailer, studio-processed for its Marketplace listing.',
       },

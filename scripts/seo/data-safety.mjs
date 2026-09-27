@@ -7,6 +7,7 @@
 // Written to the page-object contract in scripts/seo/shell.mjs.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.safety.path;
 
@@ -42,8 +43,8 @@ export const PAGES = [
     sections: [
       {
         type: 'figure',
-        before: '/studio/jeep-renegade-before.webp',
-        after: '/studio/jeep-renegade-after.webp',
+        before: STUDIO_IMAGES.jeepRenegade.before,
+        after: STUDIO_IMAGES.jeepRenegade.after,
         beforeAlt: 'Raw dealership lot photo of a 2019 Jeep Renegade before AutoLander',
         afterAlt: 'The same 2019 Jeep Renegade as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'Enhanced on your own machine: AutoLander turns a raw 2019 Jeep Renegade lot photo (left) into a showroom-grade Marketplace listing (right).',

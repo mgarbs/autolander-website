@@ -7,6 +7,7 @@
 
 import { SITE, NAV } from './registry.mjs';
 import { testimonialsSection } from './data-testimonials.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.category.path;
 
@@ -41,8 +42,8 @@ export const PAGES = [
     sections: [
       {
         type: 'figure',
-        before: '/studio/tesla-model-y-before.webp',
-        after: '/studio/tesla-model-y-after.webp',
+        before: STUDIO_IMAGES.teslaModelY.before,
+        after: STUDIO_IMAGES.teslaModelY.after,
         beforeAlt: 'Raw dealership lot photo of a 2023 Tesla Model Y before AutoLander',
         afterAlt: 'The same 2023 Tesla Model Y as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'Before a vehicle enters the queue, AutoLander can prepare its photo assets; the auto poster then handles the repeated work of getting queue-ready inventory published.',

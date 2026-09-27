@@ -8,6 +8,7 @@
 // Follows the page-object contract in scripts/seo/shell.mjs; matches data-category.mjs in style.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.inventory.path;
 
@@ -42,8 +43,8 @@ export const PAGES = [
     sections: [
       {
         type: 'figure',
-        before: '/studio/ford-expedition-before.webp',
-        after: '/studio/ford-expedition-after.webp',
+        before: STUDIO_IMAGES.fordExpedition.before,
+        after: STUDIO_IMAGES.fordExpedition.after,
         beforeAlt: 'Raw dealership lot photo of a 2024 Ford Expedition before AutoLander',
         afterAlt: 'The same 2024 Ford Expedition as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'Every synced vehicle gets the treatment: AutoLander turns a raw 2024 Ford Expedition lot photo (left) into a showroom-grade Marketplace listing (right).',
