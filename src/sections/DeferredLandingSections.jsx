@@ -789,6 +789,7 @@ export function LandingFooter() {
             {/* Company */}
             <nav aria-label="Company" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
               <h3 className="mb-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">Company</h3>
+              <a href="/blog/" className="block py-1 hover:text-blue-500 transition-colors">Blog</a>
               {/* Contact points at the real /contact/ page, not a mailto:. An AI agent checking
                   whether this is a legitimate business cannot click a mailto: — the trust-anchor
                   page has to be reachable by an ordinary link. Support keeps the mailto:. */}

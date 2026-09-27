@@ -17,6 +17,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { orgLd, ORG_ID, ogImageFor } from './seo/shell.mjs';
+import { NAV } from './seo/registry.mjs';
 import {
   compareHubLinks, versusPageLinks, loadPublishState,
 } from './seo/articles/article-system.mjs';
@@ -235,6 +236,7 @@ function head({ title, description, canonical, jsonLdBlocks, ogTitle, ogDescript
   <meta name="description" content="${esc(description)}" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
   <link rel="canonical" href="${esc(canonical)}" />
+  <link rel="alternate" type="application/rss+xml" title="AutoLander blog" href="${SITE.origin}${NAV.blog.path}feed.xml" />
   <link rel="icon" href="/favicon.svg" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <meta property="og:type" content="article" />
@@ -267,6 +269,7 @@ function siteHeader(crumbActive) {
     <a class="brand" href="${SITE.origin}/">
       <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" />
     </a>
+    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a></nav>
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="${SITE.origin}/">Home</a>
       <span>/</span>
@@ -290,6 +293,7 @@ function siteFooter() {
   return `  <footer class="foot">
     <a href="${SITE.origin}/" class="foot-brand"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
     <nav class="foot-links">
+      <a href="${NAV.blog.path}">Blog</a>
       <a href="/compare/">All comparisons</a>
       <a href="/facebook-marketplace-auto-poster/">Auto poster</a>
       <a href="/facebook-marketplace-automation/">Automation</a>
@@ -798,6 +802,7 @@ function renderGuide() {
     }),
     `  <header class="topbar">
     <a class="brand" href="${SITE.origin}/"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
+    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a></nav>
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="${SITE.origin}/">Home</a><span>/</span><span>Guide</span><span>/</span>
       <span class="crumb-active">Facebook Marketplace automation</span>
@@ -926,14 +931,16 @@ h2{font-size:clamp(21px,3.2vw,28px);margin:42px 0 14px;color:var(--ink);font-wei
 h3{font-size:17px;margin:0 0 8px;color:var(--ink);font-weight:700}
 p{color:var(--text)}.muted{color:var(--muted)}
 .eyebrow{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--blue2);margin:0}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+.topbar{display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:12px 20px;
 max-width:880px;margin:0 auto;padding:18px 22px;border-bottom:1px solid var(--line)}
 .brand{display:inline-flex;align-items:center}
 .brand:hover{text-decoration:none}
 .brand-logo{height:30px;width:auto;display:block}
+.topnav{display:flex;align-items:center;gap:14px;white-space:nowrap}
+.topnav a{color:var(--text);font-size:13px;font-weight:700}
 .foot-brand{display:inline-block;margin-bottom:16px}
 .foot-brand .brand-logo{height:34px}
-.crumbs{font-size:13px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.crumbs{min-width:0;justify-self:end;font-size:13px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .crumbs a{color:var(--muted)}.crumb-active{color:var(--text)}
 .lede{font-size:16px;color:var(--muted);margin:6px 0 8px}
 .tldr{background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(79,70,229,.06));
@@ -1033,6 +1040,10 @@ border:1px solid rgba(59,130,246,.28);border-radius:22px}
 .foot-links a{font-size:13px;font-weight:700;color:var(--muted)}
 .disclaimer{font-size:12px;color:var(--dim);line-height:1.6;margin:0 0 10px}
 .copyright{font-size:12px;color:var(--dim);margin:0}
+@media(max-width:760px){.topbar{grid-template-columns:auto minmax(0,1fr)}
+.topnav{justify-self:end}.crumbs{grid-column:1/-1;justify-self:start;width:100%}}
+@media(max-width:420px){.topbar{grid-template-columns:1fr}.topnav{justify-self:start;width:100%}
+.crumbs{grid-column:1}}
 @media(max-width:640px){.two-col,.ranks,.session-grid,.session-grid--3{grid-template-columns:1fr}
 .rank-card--al{grid-column:auto}}
 `;

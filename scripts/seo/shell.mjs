@@ -477,6 +477,7 @@ export function siteHeader(breadcrumbs) {
     <a class="brand" href="${SITE.origin}/">
       <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" />
     </a>
+    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a></nav>
     <nav class="crumbs" aria-label="Breadcrumb">
       ${crumbs}
     </nav>
@@ -511,6 +512,7 @@ export function siteFooter() {
       <a href="${NAV.sellGuide.path}">How to sell cars</a>
       <a href="${NAV.guide.path}">Guide</a>
       <a href="${NAV.training.path}">Training</a>
+      <a href="${NAV.blog.path}">Blog</a>
       <a href="${SITE.origin}/">AutoLander home</a>
       <a href="${SITE.origin}/#pricing">Pricing</a>
       <a href="${NAV.about.path}">About</a>
@@ -892,6 +894,8 @@ export function renderMarkdown(page) {
 
 // ---------- supplemental stylesheet (new components; base comes from /compare/styles.css) ----------
 export const SEO_STYLES = `/* SEO silo supplemental styles — base in /compare/styles.css */
+.topnav{display:flex;align-items:center;gap:14px;white-space:nowrap}
+.topnav a{color:var(--text);font-size:13px;font-weight:700}
 .prose-block p{font-size:16px;color:var(--text);margin:0 0 14px}
 .qa{margin-top:8px}
 .qa h2{margin-bottom:8px}
@@ -935,5 +939,5 @@ border:1px solid var(--line);border-radius:14px;padding:14px 18px;text-decoratio
 .download-list a:hover{border-color:var(--blue2)}
 .dl-fmt{font-weight:800;color:var(--blue2);font-size:14.5px}
 .dl-desc{color:var(--muted);font-size:14px}
-@media(max-width:640px){.feature-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.topnav{gap:10px}.topnav a{font-size:12px}.feature-grid{grid-template-columns:1fr}}
 `;
