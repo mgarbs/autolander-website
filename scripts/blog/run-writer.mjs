@@ -209,9 +209,15 @@ export function writerDiagnostics(result, { contextDir, error } = {}) {
     if (result.resultPath && existsSync(result.resultPath)) {
       const parsed = JSON.parse(readFileSync(result.resultPath, 'utf8'));
       lines.push(`writer result: subtype=${mask(parsed?.subtype)} is_error=${parsed?.is_error} turns=${parsed?.num_turns ?? '-'}`);
-      // An error run carries its API/CLI error message in `result` (stderr is often empty).
-      if (parsed?.is_error && parsed?.result) {
-        lines.push(`writer result error (masked head): ${mask(parsed.result).replace(/\s+/g, ' ').slice(0, 400)}`);
+      // An error run carries its API/CLI error message in `result` (stderr is often empty). Log
+      // only the first sentence, and only when it is an API/CLI error: model prose (which could
+      // paraphrase the private request) is never logged.
+      if (parsed?.is_error && typeof parsed?.result === 'string') {
+        const flat = mask(parsed.result).replace(/\s+/g, ' ').trim();
+        const sentence = (flat.match(/^.*?[.!?](?=\s|$)/)?.[0] || flat).slice(0, 240);
+        lines.push(/^(API Error|Error)\b/i.test(sentence)
+          ? `writer result error: ${sentence}`
+          : 'writer result error: (model text withheld)');
       }
     }
   } catch { lines.push('writer result: not JSON'); }
