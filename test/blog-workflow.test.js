@@ -143,6 +143,11 @@ test('generate workflow constrains concurrency, credentials, shell inputs, and c
   assert.match(yaml, /- name: Validate inputs\s*\n\s+id: input_check\b/);
   assert.match(yaml, /if: always\(\) && steps\.input_check\.outcome == 'success' && inputs\.mode != 'discard'/);
   assert.match(yaml, /if: always\(\) && steps\.input_check\.outcome == 'success' && \(steps\.discard\.outcome/);
+  assertOrdered(yaml, [
+    'git pull --rebase origin main',
+    'node scripts/blog/check-inputs.mjs --assert-parent-draft',
+    'git push origin main',
+  ]);
 
   const addLists = gitAddLists(yaml);
   assert.equal(addLists.length, 1, 'generate workflow must have exactly one git add command');
@@ -172,10 +177,11 @@ test('publish workflow passes inputs through env and verifies blog publishes aft
   ]);
 });
 
-test('checkInputs is a pure API that validates uuid, mode, and conditional slug rules', async () => {
+test('checkInputs validates dispatch fields and the pre-push draft-state guard', async () => {
   probeSideEffectFreeImport(CHECK_INPUTS);
-  const { checkInputs } = await importFresh(CHECK_INPUTS);
+  const { assertMutableDraft, checkInputs } = await importFresh(CHECK_INPUTS);
   assert.equal(typeof checkInputs, 'function');
+  assert.equal(typeof assertMutableDraft, 'function');
 
   assert.doesNotThrow(() => checkInputs({ requestId: REQUEST_ID, mode: 'new', slug: '' }));
   assert.doesNotThrow(() => checkInputs({ requestId: REQUEST_ID, mode: 'revise', slug: 'valid-blog-post' }));
@@ -195,6 +201,20 @@ test('checkInputs is a pure API that validates uuid, mode, and conditional slug 
   assert.throws(
     () => checkInputs({ requestId: REQUEST_ID, mode: 'discard', slug: 'bad slug; echo owned' }),
     /slug/i,
+  );
+
+  const draftState = { 'valid-blog-post': { status: 'draft', publishedAt: null } };
+  const publishedState = { 'valid-blog-post': { status: 'published', publishedAt: '2026-09-27' } };
+  assert.doesNotThrow(() => assertMutableDraft({ mode: 'revise', slug: 'valid-blog-post', state: draftState }));
+  assert.doesNotThrow(() => assertMutableDraft({ mode: 'discard', slug: 'valid-blog-post', state: draftState }));
+  assert.doesNotThrow(() => assertMutableDraft({ mode: 'new', slug: '', state: publishedState }));
+  assert.throws(
+    () => assertMutableDraft({ mode: 'revise', slug: 'valid-blog-post', state: publishedState }),
+    /draft|published|state/i,
+  );
+  assert.throws(
+    () => assertMutableDraft({ mode: 'discard', slug: 'valid-blog-post', state: {} }),
+    /draft|state/i,
   );
 });
 

@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -13,13 +14,32 @@ export function checkInputs({ requestId = '', mode = '', slug = '' } = {}) {
   return { requestId, mode, slug };
 }
 
+export function assertMutableDraft({ mode = '', slug = '', state = {} } = {}) {
+  if (mode === 'new') return;
+  if (state?.[slug]?.status !== 'draft') {
+    throw new Error('blog post must still be a draft before push');
+  }
+}
+
+function readParentPublishState() {
+  const raw = execFileSync(
+    'git',
+    ['show', 'HEAD^:scripts/seo/articles/publish-state.json'],
+    { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] },
+  );
+  return JSON.parse(raw);
+}
+
 function main() {
   try {
-    checkInputs({
+    const inputs = checkInputs({
       requestId: process.env.BLOG_REQUEST_ID,
       mode: process.env.BLOG_MODE,
       slug: process.env.BLOG_SLUG,
     });
+    if (process.argv.includes('--assert-parent-draft') && inputs.mode !== 'new') {
+      assertMutableDraft({ ...inputs, state: readParentPublishState() });
+    }
   } catch (error) {
     console.error(`invalid blog workflow input: ${error.message}`);
     process.exitCode = 1;

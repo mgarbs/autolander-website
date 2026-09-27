@@ -118,7 +118,9 @@ jobs:
           fi
           git commit -m "blog: $BLOG_MODE $BLOG_REQUEST_ID"
           git pull --rebase origin main
+          node scripts/blog/check-inputs.mjs --assert-parent-draft
           git push origin main
         env:
           BLOG_MODE: '${{ inputs.mode }}'
+          BLOG_SLUG: '${{ inputs.slug }}'
           BLOG_REQUEST_ID: '${{ inputs.request_id }}'

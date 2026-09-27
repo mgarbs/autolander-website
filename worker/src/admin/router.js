@@ -30,6 +30,12 @@ import {
 import { readDimensionForDay, readRecentEvents } from '../capi/storage.js';
 import { deleteSupportRequest, readSupportRequests } from '../support/storage.js';
 import { handleContentList, handleContentPublish } from './content.js';
+import {
+  handleBlogDiscard,
+  handleBlogGenerate,
+  handleBlogPreview,
+  handleBlogRevise,
+} from './blog.js';
 
 const DEFAULT_DAYS = 30;
 const MAX_DAYS = 90;
@@ -187,6 +193,26 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
 
   if (path === '/admin/content/publish' && request.method === 'POST') {
     const result = await handleContentPublish(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/blog/generate' && request.method === 'POST') {
+    const result = await handleBlogGenerate(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/blog/revise' && request.method === 'POST') {
+    const result = await handleBlogRevise(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/blog/discard' && request.method === 'POST') {
+    const result = await handleBlogDiscard(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/blog/preview' && request.method === 'GET') {
+    const result = await handleBlogPreview(url, env);
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
