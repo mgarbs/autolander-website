@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 
 import {
   buildHomeDirectory, renderHomeDirectoryHtml, injectHomeDirectory, extractHomeDirectory,
-  DIRECTORY_SILO_ORDER, HOME_DIRECTORY_START, HOME_DIRECTORY_END,
+  countLabel, DIRECTORY_SILO_ORDER, HOME_DIRECTORY_START, HOME_DIRECTORY_END,
 } from '../scripts/seo/home-directory.mjs';
 import { SILOS, SUGGESTED_ORDER, loadPublishState, isPublished, articlePath } from '../scripts/seo/articles/article-system.mjs';
 import { ARTICLES as A } from '../scripts/seo/articles/data-articles-marketplace-a.mjs';
@@ -91,6 +91,13 @@ test('the Blog group is always present and lists at most five published posts ne
   ]);
   const empty = buildHomeDirectory([], {}).find((group) => group.id === 'blog');
   assert.deepEqual(empty.links, [{ href: '/blog/', text: 'The AutoLander blog' }]);
+});
+
+test('directory count labels use singular and plural nouns', () => {
+  assert.equal(countLabel({ kind: 'pages', links: [{}] }), '1 page');
+  assert.equal(countLabel({ kind: 'pages', links: [{}, {}] }), '2 pages');
+  assert.equal(countLabel({ kind: 'articles', links: [{}] }), '1 guide');
+  assert.equal(countLabel({ kind: 'articles', links: [{}, {}] }), '2 guides');
 });
 
 test('every drip silo in DIRECTORY_SILO_ORDER exists, and every drip silo is listed', () => {

@@ -35,6 +35,11 @@ test('loadBlogPosts reads *.json sorted by slug and skips _-prefixed entries', (
   assert.deepEqual(loadBlogPosts(dir).map((p) => p.slug), ['a-post', 'b-post']);
 });
 
+test('loadBlogPosts returns an empty list when the blog directory is absent', () => {
+  const root = mkdtempSync(join(tmpdir(), 'blog-missing-'));
+  assert.deepEqual(loadBlogPosts(join(root, 'does-not-exist')), []);
+});
+
 test('loadBlogPosts skips invalid JSON, unsafe shapes, and filename slug mismatches', () => {
   const dir = mkdtempSync(join(tmpdir(), 'blog-malformed-'));
   writeFileSync(join(dir, 'good-post.json'), JSON.stringify(post('good-post')));

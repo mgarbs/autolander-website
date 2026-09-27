@@ -1,8 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { blogIndexPage, blogRss, blogLd } from '../scripts/seo/blog-pages.mjs';
 import { buildArticlePage, articleSitemapEntries } from '../scripts/seo/articles/article-system.mjs';
 import { renderPage } from '../scripts/seo/shell.mjs';
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const read = (path) => readFileSync(resolve(ROOT, path), 'utf8');
 
 const post = (slug, extra = {}) => ({
   slug,
@@ -70,4 +76,17 @@ test('sitemap: published posts only, lastmod = later of publish/update', () => {
   assert.ok(entries.some((entry) => entry.loc.endsWith('/blog/p-live/') && entry.lastmod === '2026-09-27'));
   assert.ok(!entries.some((entry) => entry.loc.includes('p-draft')));
   assert.equal(blogLd(articles, state).blogPost.length, 1);
+});
+
+test('/blog/ has a dedicated generated Open Graph card on every generated surface', () => {
+  const manifest = JSON.parse(read('public/og/manifest.json'));
+  assert.equal(manifest['/blog/'], '/og/blog.png');
+  assert.ok(existsSync(resolve(ROOT, 'public/og/blog.png')));
+  const blogHtml = read('public/blog/index.html');
+  assert.match(blogHtml, /<meta property="og:image" content="https:\/\/autolander\.ai\/og\/blog\.png"/);
+  assert.match(blogHtml, /<meta property="og:image:type" content="image\/png"/);
+  assert.match(
+    read('public/image-sitemap.xml'),
+    /<url>(?:(?!<\/url>)[\s\S])*?<loc>https:\/\/autolander\.ai\/blog\/<\/loc>(?:(?!<\/url>)[\s\S])*?<image:loc>https:\/\/autolander\.ai\/og\/blog\.png<\/image:loc>(?:(?!<\/url>)[\s\S])*?<\/url>/,
+  );
 });

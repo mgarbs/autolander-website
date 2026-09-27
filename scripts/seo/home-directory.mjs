@@ -141,7 +141,10 @@ export function buildHomeDirectory(articles, state) {
 const esc = (s) => String(s)
   .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 
-export const countLabel = (g) => `${g.links.length} ${g.kind === 'articles' ? 'guides' : 'pages'}`;
+export const countLabel = (g) => {
+  const noun = g.kind === 'articles' ? 'guide' : 'page';
+  return `${g.links.length} ${noun}${g.links.length === 1 ? '' : 's'}`;
+};
 
 // The static twin of what HomeDetails.jsx renders: same nesting, same classes, same text.
 // Tailwind scans index.html and the JSX, so every class here is emitted in the bundle.

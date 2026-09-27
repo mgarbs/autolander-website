@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -8,6 +8,7 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 export const BLOG_DIR = resolve(HERE, 'blog');
 
 export function loadBlogPosts(dir = BLOG_DIR) {
+  if (!existsSync(dir)) return [];
   const posts = [];
   const entries = readdirSync(dir, { withFileTypes: true })
     .filter((entry) => entry.isFile() && entry.name.endsWith('.json') && !entry.name.startsWith('_'))
