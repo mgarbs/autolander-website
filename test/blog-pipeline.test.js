@@ -1,0 +1,527 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
+import { env as processEnv, execPath } from 'node:process';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+
+import { buildClaudeArgs, classifyWriterError, runWriter } from '../scripts/blog/run-writer.mjs';
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const FIXTURE = resolve(ROOT, 'test', 'fixtures', 'blog', 'valid-post.json');
+const FAKE_CLAUDE = resolve(ROOT, 'test', 'fixtures', 'blog', 'fake-claude.mjs');
+const PREPARE = resolve(ROOT, 'scripts', 'blog', 'prepare-context.mjs');
+const FINALIZE = resolve(ROOT, 'scripts', 'blog', 'finalize-draft.mjs');
+const DISCARD = resolve(ROOT, 'scripts', 'blog', 'discard-post.mjs');
+const SLUG = 'test-fixture-valid-blog-post';
+const SECRET = 'private prompt marker 74d03a';
+const ALLOWED_TOOLS = 'Read,Glob,Grep,Edit(scripts/seo/articles/blog/**),Bash(node scripts/blog/validate-post.mjs *)';
+
+const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
+const write = (path, contents) => {
+  mkdirSync(dirname(path), { recursive: true });
+  writeFileSync(path, contents, 'utf8');
+};
+const writeJson = (path, value) => write(path, json(value));
+const readJson = (path) => JSON.parse(readFileSync(path, 'utf8'));
+const scratchRoot = (t, label) => {
+  const root = mkdtempSync(join(tmpdir(), `autolander-blog-${label}-`));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  return root;
+};
+const runNode = (script, args, options = {}) => spawnSync(execPath, [script, ...args], {
+  cwd: options.cwd || ROOT,
+  encoding: 'utf8',
+  env: { ...processEnv, ...options.env },
+});
+const git = (root, args) => {
+  const result = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  return result.stdout;
+};
+
+const livePaths = [
+  '/',
+  '/facebook-marketplace-for-car-dealers/',
+  '/facebook-marketplace-auto-poster-pricing/',
+  '/dealer-inventory-management/',
+  '/facebook-marketplace-inventory-sync/',
+  '/ai-car-photo-editor/',
+  '/guide/how-to-sell-cars-on-facebook-marketplace/',
+  '/facebook-marketplace-auto-poster/',
+  '/facebook-marketplace-listing-software/',
+  '/guide/car-dealership-marketing/',
+];
+
+const publishedState = () => ({
+  'facebook-marketplace-car-listing-limits': { status: 'published', publishedAt: '2026-09-01' },
+  'how-to-take-pictures-of-a-car-to-sell': { status: 'published', publishedAt: '2026-09-02' },
+  'post-a-car-on-facebook-marketplace-dealer': { status: 'published', publishedAt: '2026-09-03' },
+});
+
+function seedRoot(t, label, { post = null, state = publishedState(), preview = false, og = false } = {}) {
+  const root = scratchRoot(t, label);
+  write(resolve(root, '.gitignore'), '.blog-context/\n');
+  write(resolve(root, 'public', 'sitemap.xml'), [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset>',
+    ...livePaths.map((path) => `  <url><loc>https://autolander.ai${path}</loc></url>`),
+    '</urlset>',
+    '',
+  ].join('\n'));
+  writeJson(resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json'), state);
+  mkdirSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests'), { recursive: true });
+  if (post) writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${post.slug}.json`), post);
+  if (preview) write(resolve(root, 'previews', 'blog', `${SLUG}.html`), 'old preview\n');
+  if (og) {
+    write(resolve(root, 'public', 'og', `blog-${SLUG}.png`), 'fake png');
+    writeJson(resolve(root, 'public', 'og', 'manifest.json'), { [`/blog/${SLUG}/`]: `/og/blog-${SLUG}.png` });
+  }
+  git(root, ['init', '-q']);
+  git(root, ['add', '.']);
+  git(root, ['-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'commit', '-qm', 'baseline']);
+  return root;
+}
+
+function seedWriterResult(root, overrides = {}) {
+  const context = resolve(root, '.blog-context');
+  mkdirSync(context, { recursive: true });
+  const resultPath = resolve(context, 'result.json');
+  writeJson(resultPath, {
+    type: 'result', subtype: 'success', num_turns: 3, duration_ms: 1000,
+    total_cost_usd: 0, usage: { input_tokens: 20, output_tokens: 10 },
+  });
+  const wrapper = {
+    ok: true,
+    exitCode: 0,
+    model: 'claude-opus-5-5[1m]',
+    contextWindow: '1m',
+    errorKind: null,
+    resultPath,
+    ...overrides,
+  };
+  const wrapperPath = resolve(context, 'writer.json');
+  writeJson(wrapperPath, wrapper);
+  return wrapperPath;
+}
+
+function manifestBefore(root, paths = []) {
+  writeJson(resolve(root, '.blog-context', 'pre-files.json'), paths);
+}
+
+function allTextFiles(root, { excludeContext = false } = {}) {
+  const values = [];
+  const visit = (directory) => {
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      if (entry.name === '.git' || (excludeContext && entry.name === '.blog-context')) continue;
+      const path = resolve(directory, entry.name);
+      if (entry.isDirectory()) visit(path);
+      else if (!entry.name.endsWith('.png')) values.push(readFileSync(path, 'utf8'));
+    }
+  };
+  visit(root);
+  return values.join('\n');
+}
+
+test('buildClaudeArgs uses verified constrained Claude Code flags', () => {
+  const args = buildClaudeArgs({
+    model: 'claude-opus-5-5[1m]', effort: 'max', maxTurns: 80,
+    taskText: SECRET, rulesPath: '.blog-context/rules.md',
+  });
+  assert.deepEqual(args, [
+    '-p', SECRET,
+    '--model', 'claude-opus-5-5[1m]',
+    '--effort', 'max',
+    '--max-turns', '80',
+    '--output-format', 'json',
+    '--permission-mode', 'dontAsk',
+    '--append-system-prompt-file', '.blog-context/rules.md',
+    '--allowedTools', ALLOWED_TOOLS,
+    '--disallowedTools', 'WebFetch,WebSearch',
+  ]);
+  assert.ok(!args.includes('--dangerously-skip-permissions'));
+  assert.ok(!args.join(' ').includes('Write(scripts/seo/articles/blog/**)'));
+});
+
+test('classifyWriterError recognizes safe operational categories', () => {
+  assert.equal(classifyWriterError('Claude usage limit reached'), 'usage_limit');
+  assert.equal(classifyWriterError('OAuth token has expired'), 'auth');
+  assert.equal(classifyWriterError('model is not available'), 'model_unavailable');
+  assert.equal(classifyWriterError('unexpected process failure'), 'other');
+});
+
+test('runWriter captures output privately and reports a 1m success', async (t) => {
+  const root = scratchRoot(t, 'writer-ok');
+  const contextDir = resolve(root, '.blog-context');
+  mkdirSync(contextDir, { recursive: true });
+  write(resolve(contextDir, 'task.md'), `${SECRET}\nWrite scripts/seo/articles/blog/<slug>.json\n`);
+  write(resolve(contextDir, 'rules.md'), 'rules\n');
+  const result = await runWriter({
+    claudeCmd: [execPath, FAKE_CLAUDE],
+    env: {
+      ...processEnv,
+      FAKE_CLAUDE_MODE: 'ok',
+      BLOG_MODEL: 'claude-opus-5-5[1m]',
+      BLOG_MODEL_FALLBACK: 'claude-opus-5-5',
+      BLOG_EFFORT: 'max',
+      BLOG_MAX_TURNS: '80',
+    },
+    contextDir,
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.contextWindow, '1m');
+  assert.equal(result.model, 'claude-opus-5-5[1m]');
+  assert.equal(JSON.parse(readFileSync(result.resultPath, 'utf8')).num_turns, 3);
+  assert.ok(!readFileSync(resolve(contextDir, 'writer.stderr'), 'utf8').includes(SECRET));
+  assert.ok(existsSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`)));
+});
+
+test('runWriter retries unavailable 1m context once with the fallback model', async (t) => {
+  const root = scratchRoot(t, 'writer-fallback');
+  const contextDir = resolve(root, '.blog-context');
+  mkdirSync(contextDir, { recursive: true });
+  write(resolve(contextDir, 'task.md'), 'Write scripts/seo/articles/blog/<slug>.json\n');
+  write(resolve(contextDir, 'rules.md'), 'rules\n');
+  const result = await runWriter({
+    claudeCmd: [execPath, FAKE_CLAUDE],
+    env: {
+      ...processEnv,
+      FAKE_CLAUDE_MODE: 'nomodel1m',
+      BLOG_MODEL: 'claude-opus-5-5[1m]',
+      BLOG_MODEL_FALLBACK: 'claude-opus-5-5',
+      BLOG_EFFORT: 'max',
+      BLOG_MAX_TURNS: '80',
+    },
+    contextDir,
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.model, 'claude-opus-5-5');
+  assert.equal(result.contextWindow, '200k');
+});
+
+test('runWriter classifies usage and authentication failures', async (t) => {
+  for (const [mode, expected] of [['usage', 'usage_limit'], ['auth', 'auth']]) {
+    const root = scratchRoot(t, `writer-${mode}`);
+    const contextDir = resolve(root, '.blog-context');
+    mkdirSync(contextDir, { recursive: true });
+    write(resolve(contextDir, 'task.md'), 'task\n');
+    write(resolve(contextDir, 'rules.md'), 'rules\n');
+    const result = await runWriter({
+      claudeCmd: [execPath, FAKE_CLAUDE],
+      env: {
+        ...processEnv,
+        FAKE_CLAUDE_MODE: mode,
+        BLOG_MODEL: 'claude-opus-5-5[1m]',
+        BLOG_MODEL_FALLBACK: 'claude-opus-5-5',
+        BLOG_EFFORT: 'max',
+        BLOG_MAX_TURNS: '80',
+      },
+      contextDir,
+    });
+    assert.equal(result.ok, false);
+    assert.equal(result.errorKind, expected);
+  }
+});
+
+test('prepare-context builds the private writer packet without logging its request', (t) => {
+  const root = scratchRoot(t, 'prepare');
+  const context = resolve(root, '.blog-context');
+  writeJson(resolve(context, 'request.json'), {
+    requestId: 'prepare-1', mode: 'new', slug: '', prompt: SECRET,
+    keyword: 'dealer workflow', feedback: '', originalPrompt: '',
+  });
+  write(resolve(root, 'public', 'llms-full.txt'), '# Existing shell corpus\n');
+  write(resolve(root, 'public', 'index.md'), '# Homepage corpus\n');
+  write(resolve(root, 'public', 'sitemap.xml'), '<urlset><url><loc>https://autolander.ai/compare/sample/</loc></url></urlset>\n');
+  write(resolve(root, 'public', 'compare', 'sample', 'index.html'), [
+    '<!doctype html><html><head><title>Sample comparison</title>',
+    '<meta name="description" content="A useful sample page.">',
+    '<link rel="canonical" href="https://autolander.ai/compare/sample/"></head>',
+    '<body><header>Skip header</header><main><h1>Sample H1</h1><h2>Useful details</h2>',
+    '<p>Visible comparison text.</p><script>secretScript()</script></main><footer>Skip footer</footer></body></html>',
+  ].join(''));
+  const result = runNode(PREPARE, ['--root', root, '--out', '.blog-context', '--mode', 'new', '--no-build'], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok(!result.stdout.includes(SECRET));
+  for (const name of [
+    'site-full.md', 'site-index.md', 'live-urls.json', 'nav-keys.json', 'competitors.json',
+    'articles.json', 'images.json', 'keywords.json', 'post-schema.json', 'rules.md',
+    'task.md', 'pre-files.json',
+  ]) assert.ok(existsSync(resolve(context, name)), name);
+  assert.match(readFileSync(resolve(context, 'task.md'), 'utf8'), /DONE <slug>/);
+  assert.match(readFileSync(resolve(context, 'task.md'), 'utf8'), new RegExp(SECRET));
+  const siteFull = readFileSync(resolve(context, 'site-full.md'), 'utf8');
+  assert.match(siteFull, /Visible comparison text/);
+  assert.ok(!siteFull.includes('secretScript'));
+  assert.ok(!siteFull.includes('Skip header'));
+});
+
+test('finalize-draft stamps a valid new draft and keeps request plaintext out of outputs', (t) => {
+  const root = seedRoot(t, 'finalize-new');
+  const post = readJson(FIXTURE);
+  post.meta = { prompt: SECRET, model: 'model-written metadata' };
+  post.prompt = SECRET;
+  writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), post);
+  manifestBefore(root);
+  const writerResult = seedWriterResult(root);
+  const result = runNode(FINALIZE, [
+    '--root', root, '--no-build', '--request-id', 'request-new', '--mode', 'new',
+    '--writer-result', writerResult,
+  ], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+
+  const finalized = readJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`));
+  assert.equal(finalized.meta.requestId, 'request-new');
+  assert.equal(finalized.meta.mode, 'new');
+  assert.equal(finalized.meta.model, 'claude-opus-5-5[1m]');
+  assert.equal(finalized.meta.contextWindow, '1m');
+  assert.equal(finalized.meta.revisionCount, 0);
+  assert.equal(finalized.meta.validation.ok, true);
+  assert.ok(!Object.hasOwn(finalized, 'prompt'));
+  assert.deepEqual(finalized.meta.usage, {
+    num_turns: 3, duration_ms: 1000, total_cost_usd: 0,
+    usage: { input_tokens: 20, output_tokens: 10 },
+  });
+  assert.deepEqual(readJson(resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json'))[SLUG], {
+    status: 'draft', publishedAt: null,
+  });
+  assert.equal(readJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-new.json')).status, 'drafted');
+  const preview = readFileSync(resolve(root, 'previews', 'blog', `${SLUG}.html`), 'utf8');
+  assert.match(preview, /<base href="https:\/\/autolander\.ai\/">/);
+  assert.match(preview, /<meta name="robots" content="noindex">/);
+  assert.ok(!allTextFiles(root).includes(SECRET));
+});
+
+test('finalize-draft records validation and no-output outcomes', (t) => {
+  const invalidRoot = seedRoot(t, 'finalize-invalid');
+  const invalid = readJson(FIXTURE);
+  invalid.description = 'too short';
+  invalid.primaryKeyword = 'car dealership photography tips';
+  invalid.title = 'Car Dealership Photography Tips for a Better Workflow';
+  writeJson(resolve(invalidRoot, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), invalid);
+  manifestBefore(invalidRoot);
+  const invalidResult = runNode(FINALIZE, [
+    '--root', invalidRoot, '--no-build', '--request-id', 'request-invalid', '--mode', 'new',
+    '--writer-result', seedWriterResult(invalidRoot),
+  ], { cwd: invalidRoot });
+  assert.equal(invalidResult.status, 0, invalidResult.stderr);
+  const invalidMarker = readJson(resolve(invalidRoot, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-invalid.json'));
+  assert.equal(invalidMarker.status, 'needs_attention');
+  assert.equal(invalidMarker.errorKind, 'validation');
+  const invalidErrors = readJson(
+    resolve(invalidRoot, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`),
+  ).meta.validation.errors;
+  assert.ok(invalidErrors.some((error) => error.includes('cannibalizes existing page')));
+
+  const emptyRoot = seedRoot(t, 'finalize-empty');
+  manifestBefore(emptyRoot);
+  const emptyResult = runNode(FINALIZE, [
+    '--root', emptyRoot, '--no-build', '--request-id', 'request-empty', '--mode', 'new',
+    '--writer-result', seedWriterResult(emptyRoot),
+  ], { cwd: emptyRoot });
+  assert.equal(emptyResult.status, 0, emptyResult.stderr);
+  const emptyMarker = readJson(resolve(emptyRoot, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-empty.json'));
+  assert.equal(emptyMarker.status, 'failed');
+  assert.equal(emptyMarker.errorKind, 'no_output');
+});
+
+test('finalize-draft refuses to revise a published post without changing it', (t) => {
+  const post = readJson(FIXTURE);
+  const state = { ...publishedState(), [SLUG]: { status: 'published', publishedAt: '2026-09-20' } };
+  const root = seedRoot(t, 'finalize-published', { post, state });
+  manifestBefore(root, [`scripts/seo/articles/blog/${SLUG}.json`]);
+  const writerResult = seedWriterResult(root);
+  const beforePost = readFileSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), 'utf8');
+  const beforeState = readFileSync(resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json'), 'utf8');
+  const result = runNode(FINALIZE, [
+    '--root', root, '--no-build', '--request-id', 'request-revise', '--mode', 'revise',
+    '--slug', SLUG, '--writer-result', writerResult,
+  ], { cwd: root });
+  assert.equal(result.status, 2);
+  assert.equal(readFileSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), 'utf8'), beforePost);
+  assert.equal(readFileSync(resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json'), 'utf8'), beforeState);
+  assert.ok(!existsSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-revise.json')));
+});
+
+test('finalize-draft preserves revision history for a valid draft revision', (t) => {
+  const original = readJson(FIXTURE);
+  original.meta = {
+    requestId: 'request-original', mode: 'new', model: 'older-model', effort: 'max',
+    contextWindow: '200k', createdAt: '2026-09-20', updatedAt: '2026-09-20',
+    revisionCount: 2, validation: { ok: true, errors: [], checkedAt: '2026-09-20T00:00:00.000Z' },
+    usage: {},
+  };
+  const state = { ...publishedState(), [SLUG]: { status: 'draft', publishedAt: null } };
+  const root = seedRoot(t, 'finalize-revision', { post: original, state });
+  manifestBefore(root, [`scripts/seo/articles/blog/${SLUG}.json`]);
+  writeJson(resolve(root, '.blog-context', 'existing-post.json'), original);
+  const revised = readJson(FIXTURE);
+  revised.title = 'Test Fixture Blog Keyword: Revised Dealer Guide';
+  writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), revised);
+  const result = runNode(FINALIZE, [
+    '--root', root, '--no-build', '--request-id', 'request-revision', '--mode', 'revise',
+    '--slug', SLUG, '--writer-result', seedWriterResult(root),
+  ], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+  const finalized = readJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`));
+  assert.equal(finalized.meta.createdAt, '2026-09-20');
+  assert.equal(finalized.meta.revisionCount, 3);
+  assert.equal(finalized.meta.requestId, 'request-revision');
+  assert.equal(readJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-revision.json')).status, 'drafted');
+});
+
+test('finalize-draft removes partial, extra, and malformed writer output before recording failure', (t) => {
+  const failedRoot = seedRoot(t, 'finalize-partial');
+  manifestBefore(failedRoot);
+  writeJson(resolve(failedRoot, 'scripts', 'seo', 'articles', 'blog', 'partial-output.json'), {
+    meta: { prompt: SECRET },
+  });
+  const failedResult = runNode(FINALIZE, [
+    '--root', failedRoot, '--no-build', '--request-id', 'request-partial', '--mode', 'new',
+    '--writer-result', seedWriterResult(failedRoot, { ok: false, exitCode: 1, errorKind: 'usage_limit' }),
+  ], { cwd: failedRoot });
+  assert.equal(failedResult.status, 0, failedResult.stderr);
+  assert.ok(!existsSync(resolve(failedRoot, 'scripts', 'seo', 'articles', 'blog', 'partial-output.json')));
+  assert.equal(readJson(resolve(failedRoot, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-partial.json')).errorKind, 'usage_limit');
+  assert.ok(!allTextFiles(failedRoot).includes(SECRET));
+
+  const multipleRoot = seedRoot(t, 'finalize-multiple');
+  manifestBefore(multipleRoot);
+  writeJson(resolve(multipleRoot, 'scripts', 'seo', 'articles', 'blog', 'first-output.json'), { secret: SECRET });
+  writeJson(resolve(multipleRoot, 'scripts', 'seo', 'articles', 'blog', 'second-output.json'), { secret: SECRET });
+  const multipleResult = runNode(FINALIZE, [
+    '--root', multipleRoot, '--no-build', '--request-id', 'request-multiple', '--mode', 'new',
+    '--writer-result', seedWriterResult(multipleRoot),
+  ], { cwd: multipleRoot });
+  assert.equal(multipleResult.status, 0, multipleResult.stderr);
+  assert.ok(!existsSync(resolve(multipleRoot, 'scripts', 'seo', 'articles', 'blog', 'first-output.json')));
+  assert.ok(!existsSync(resolve(multipleRoot, 'scripts', 'seo', 'articles', 'blog', 'second-output.json')));
+  assert.equal(readJson(resolve(multipleRoot, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-multiple.json')).errorKind, 'no_output');
+  assert.ok(!allTextFiles(multipleRoot).includes(SECRET));
+
+  const malformedRoot = seedRoot(t, 'finalize-malformed');
+  manifestBefore(malformedRoot);
+  write(resolve(malformedRoot, 'scripts', 'seo', 'articles', 'blog', 'malformed-output.json'), `{${SECRET}`);
+  const malformedResult = runNode(FINALIZE, [
+    '--root', malformedRoot, '--no-build', '--request-id', 'request-malformed', '--mode', 'new',
+    '--writer-result', seedWriterResult(malformedRoot),
+  ], { cwd: malformedRoot });
+  assert.equal(malformedResult.status, 0, malformedResult.stderr);
+  assert.ok(!existsSync(resolve(malformedRoot, 'scripts', 'seo', 'articles', 'blog', 'malformed-output.json')));
+  assert.equal(readJson(resolve(malformedRoot, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-malformed.json')).status, 'failed');
+  assert.ok(!allTextFiles(malformedRoot).includes(SECRET));
+
+  const nullRoot = seedRoot(t, 'finalize-null');
+  manifestBefore(nullRoot);
+  write(resolve(nullRoot, 'scripts', 'seo', 'articles', 'blog', 'null-output.json'), 'null\n');
+  const nullResult = runNode(FINALIZE, [
+    '--root', nullRoot, '--no-build', '--request-id', 'request-null', '--mode', 'new',
+    '--writer-result', seedWriterResult(nullRoot),
+  ], { cwd: nullRoot });
+  assert.equal(nullResult.status, 0, nullResult.stderr);
+  assert.ok(!existsSync(resolve(nullRoot, 'scripts', 'seo', 'articles', 'blog', 'null-output.json')));
+
+  const oddNamesRoot = seedRoot(t, 'finalize-odd-names');
+  manifestBefore(oddNamesRoot);
+  writeJson(resolve(oddNamesRoot, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), readJson(FIXTURE));
+  write(resolve(oddNamesRoot, 'scripts', 'seo', 'articles', 'blog', 'raw secret..txt'), SECRET);
+  write(resolve(oddNamesRoot, 'scripts', 'seo', 'articles', 'blog', 'raw secret file.txt'), SECRET);
+  const oddNamesResult = runNode(FINALIZE, [
+    '--root', oddNamesRoot, '--no-build', '--request-id', 'request-odd-names', '--mode', 'new',
+    '--writer-result', seedWriterResult(oddNamesRoot),
+  ], { cwd: oddNamesRoot });
+  assert.equal(oddNamesResult.status, 0, oddNamesResult.stderr);
+  assert.ok(!existsSync(resolve(oddNamesRoot, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`)));
+  assert.ok(!existsSync(resolve(oddNamesRoot, 'scripts', 'seo', 'articles', 'blog', 'raw secret..txt')));
+  assert.ok(!existsSync(resolve(oddNamesRoot, 'scripts', 'seo', 'articles', 'blog', 'raw secret file.txt')));
+  assert.ok(!allTextFiles(oddNamesRoot).includes(SECRET));
+});
+
+test('finalize-draft restores a non-target blog file instead of committing it', (t) => {
+  const existing = readJson(FIXTURE);
+  existing.slug = 'existing-blog-draft';
+  existing.primaryKeyword = 'existing draft fixture keyword';
+  existing.title = 'Existing Draft Fixture Keyword Guide';
+  existing.h1 = 'Existing draft fixture keyword guide';
+  const state = { ...publishedState(), [existing.slug]: { status: 'draft', publishedAt: null } };
+  const root = seedRoot(t, 'finalize-unrelated', { post: existing, state });
+  const existingPath = resolve(root, 'scripts', 'seo', 'articles', 'blog', `${existing.slug}.json`);
+  const before = readFileSync(existingPath, 'utf8');
+  manifestBefore(root, [`scripts/seo/articles/blog/${existing.slug}.json`]);
+  const changed = { ...existing, meta: { prompt: SECRET } };
+  writeJson(existingPath, changed);
+  writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), readJson(FIXTURE));
+  const result = runNode(FINALIZE, [
+    '--root', root, '--no-build', '--request-id', 'request-unrelated', '--mode', 'new',
+    '--writer-result', seedWriterResult(root),
+  ], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(readFileSync(existingPath, 'utf8'), before);
+  assert.ok(!existsSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`)));
+  const marker = readJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-unrelated.json'));
+  assert.equal(marker.status, 'failed');
+  assert.equal(marker.errorKind, 'other');
+  assert.ok(!allTextFiles(root).includes(SECRET));
+});
+
+test('finalize-draft rejects a draft that reproduces private request text', (t) => {
+  const root = seedRoot(t, 'finalize-request-leak');
+  manifestBefore(root);
+  writeJson(resolve(root, '.blog-context', 'request.json'), {
+    requestId: 'request-leak', mode: 'new', slug: '', prompt: SECRET,
+    keyword: '', feedback: '', originalPrompt: '',
+  });
+  const post = readJson(FIXTURE);
+  post.sections[0].privatePrompt = SECRET;
+  writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), post);
+  const result = runNode(FINALIZE, [
+    '--root', root, '--no-build', '--request-id', 'request-leak', '--mode', 'new',
+    '--writer-result', seedWriterResult(root),
+  ], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok(!existsSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`)));
+  const marker = readJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-leak.json'));
+  assert.equal(marker.status, 'failed');
+  assert.equal(marker.errorKind, 'other');
+  assert.ok(!allTextFiles(root, { excludeContext: true }).includes(SECRET));
+});
+
+test('finalize-draft exits 3 when any changed path is outside the commit allowlist', (t) => {
+  const root = seedRoot(t, 'finalize-allowlist');
+  manifestBefore(root);
+  writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), readJson(FIXTURE));
+  write(resolve(root, 'unexpected.txt'), 'unrelated change\n');
+  const result = runNode(FINALIZE, [
+    '--root', root, '--no-build', '--request-id', 'request-allowlist', '--mode', 'new',
+    '--writer-result', seedWriterResult(root),
+  ], { cwd: root });
+  assert.equal(result.status, 3);
+  assert.match(result.stderr, /unexpected\.txt/);
+});
+
+test('discard-post removes a draft and refuses a published post', (t) => {
+  const post = readJson(FIXTURE);
+  const draftState = { ...publishedState(), [SLUG]: { status: 'draft', publishedAt: null } };
+  const root = seedRoot(t, 'discard-draft', { post, state: draftState, preview: true, og: true });
+  const result = runNode(DISCARD, [SLUG, '--root', root, '--no-build', '--request-id', 'request-discard'], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok(!existsSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`)));
+  assert.ok(!existsSync(resolve(root, 'previews', 'blog', `${SLUG}.html`)));
+  assert.ok(!existsSync(resolve(root, 'public', 'og', `blog-${SLUG}.png`)));
+  assert.ok(!readJson(resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json'))[SLUG]);
+  assert.ok(!readJson(resolve(root, 'public', 'og', 'manifest.json'))[`/blog/${SLUG}/`]);
+  assert.equal(readJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-discard.json')).status, 'discarded');
+
+  const publishedStateValue = { ...publishedState(), [SLUG]: { status: 'published', publishedAt: '2026-09-20' } };
+  const publishedRoot = seedRoot(t, 'discard-published', { post, state: publishedStateValue, preview: true, og: true });
+  const before = allTextFiles(publishedRoot);
+  const refused = runNode(DISCARD, [
+    SLUG, '--root', publishedRoot, '--no-build', '--request-id', 'request-refused',
+  ], { cwd: publishedRoot });
+  assert.equal(refused.status, 2);
+  assert.equal(allTextFiles(publishedRoot), before);
+});

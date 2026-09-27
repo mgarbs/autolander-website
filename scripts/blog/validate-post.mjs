@@ -113,11 +113,11 @@ function studioFilesAt(root) {
     .map((entry) => `/studio/${entry.name}`));
 }
 
-export function buildValidationContext({ root = ROOT } = {}) {
+export function buildValidationContext({ root = ROOT, selfSlug = '' } = {}) {
   const statePath = resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json');
   const state = existsSync(statePath) ? JSON.parse(readFileSync(statePath, 'utf8')) : {};
   const blogPosts = blogPostsAt(root);
-  const articles = [...DRIP_ARTICLES, ...blogPosts];
+  const articles = [...DRIP_ARTICLES, ...blogPosts.filter((post) => post.slug !== selfSlug)];
   const paths = sitemapPaths(root);
   const liveUrls = new Set([...paths, '/', '/#pricing']);
   const navKeys = new Set(Object.keys(NAV));
@@ -126,7 +126,11 @@ export function buildValidationContext({ root = ROOT } = {}) {
   const publishedSlugs = new Set(Object.entries(state)
     .filter(([, value]) => value?.status === 'published')
     .map(([slug]) => slug));
-  const allSlugs = new Set([...SUGGESTED_ORDER, ...Object.keys(state), ...blogPosts.map((post) => post.slug)]);
+  const allSlugs = new Set([
+    ...SUGGESTED_ORDER,
+    ...Object.keys(state).filter((slug) => slug !== selfSlug),
+    ...blogPosts.filter((post) => post.slug !== selfSlug).map((post) => post.slug),
+  ]);
   const slugOwners = new Map(articles.map((article) => [article.slug, articlePath(article)]));
   const existingKeywords = new Map();
   for (const article of articles) {
@@ -329,7 +333,7 @@ async function main() {
     process.exitCode = 1;
     return;
   }
-  const result = validatePost(post, buildValidationContext(), { selfSlug: slug });
+  const result = validatePost(post, buildValidationContext({ selfSlug: slug }), { selfSlug: slug });
   if (result.ok) {
     console.log(`OK (${result.stats.words} words, ${result.stats.internalLinks} internal links)`);
     return;
