@@ -16,6 +16,9 @@ import { ARTICLES as MARKETPLACE_A_ARTICLES } from '../seo/articles/data-article
 import { ARTICLES as MARKETPLACE_B_ARTICLES } from '../seo/articles/data-articles-marketplace-b.mjs';
 import { ARTICLES as META_TOOLS_ARTICLES } from '../seo/articles/data-articles-meta-tools.mjs';
 import { ARTICLES as PHOTO_ARTICLES } from '../seo/articles/data-articles-photos.mjs';
+import {
+  imageUsage, PAGE_STUDIO_USAGES, studioPairsAt, unusedStudioPairs,
+} from '../seo/articles/image-usage.mjs';
 import { NAV } from '../seo/registry.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -248,79 +251,90 @@ function competitorInventory() {
     }]));
 }
 
-function imageAltMap(root) {
-  const map = new Map();
-  const htmlFiles = [resolve(root, 'index.html'), ...walkFiles(
-    resolve(root, 'public'),
-    (path) => path.toLowerCase().endsWith('.html'),
-  )].filter((path) => existsSync(path));
-  for (const file of htmlFiles) {
-    const html = readFileSync(file, 'utf8');
-    for (const tag of html.match(/<img\b[^>]*>/gi) || []) {
-      const src = attribute(tag, 'src');
-      const alt = decodeEntities(attribute(tag, 'alt')).trim();
-      if (src.startsWith('/studio/') && alt && !map.has(src)) map.set(src, alt);
+const LEGACY_MODEL_PREFIXES = new Set(['cr', 'cx', 'f', 'gx', 'hr', 'mx', 'nx', 'rx']);
+const LEGACY_ACRONYMS = new Map([
+  ['bmw', 'BMW'],
+  ['gmc', 'GMC'],
+  ['rv', 'RV'],
+  ['suv', 'SUV'],
+]);
+
+function label(value) {
+  return String(value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function plainWords(value) {
+  return label(value)
+    .replace(/([a-z\d])([A-Z])/g, '$1 $2')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
+function legacyVehicle(key) {
+  const parts = label(key).split('-').filter(Boolean);
+  const words = [];
+  for (let index = 0; index < parts.length; index += 1) {
+    const part = parts[index].toLowerCase();
+    const next = parts[index + 1];
+    if (LEGACY_MODEL_PREFIXES.has(part) && /^\d+$/.test(next || '')) {
+      words.push(`${part.toUpperCase()}-${next}`);
+      index += 1;
+    } else if (LEGACY_ACRONYMS.has(part)) {
+      words.push(LEGACY_ACRONYMS.get(part));
+    } else if (/^(?=.*\d)[a-z\d]+$/.test(part)) {
+      words.push(part.toUpperCase());
+    } else {
+      words.push(part.charAt(0).toUpperCase() + part.slice(1));
     }
   }
-  return map;
+  return words.join(' ');
 }
 
-function defaultAltHint(key, stage) {
-  const subject = key.split('-').map((part) => {
-    if (/^\d+$/.test(part)) return part;
-    if (['bmw', 'rv'].includes(part)) return part.toUpperCase();
-    return part.charAt(0).toUpperCase() + part.slice(1);
-  }).join(' ');
-  return stage === 'before'
-    ? `${subject} in the original dealer photo before AutoLander`
-    : `The same ${subject} after AutoLander photo editing`;
+function angleWords(value) {
+  const view = plainWords(value);
+  if (!view) return '';
+  return /\bview$/.test(view) ? view : `${view} view`;
 }
 
-function imageInventory(root) {
-  const directory = resolve(root, 'public', 'studio');
-  if (!existsSync(directory)) return { pairs: [], individualImages: [] };
-  const names = readdirSync(directory, { withFileTypes: true })
-    .filter((entry) => entry.isFile())
-    .map((entry) => entry.name);
-  const nameSet = new Set(names);
-  const eligible = names.filter((name) => (
-    name.toLowerCase().endsWith('.webp')
-      && !name.toLowerCase().endsWith('-550.webp')
-      && nameSet.has(name.replace(/\.webp$/i, '-550.webp'))
-  ));
-  const altMap = imageAltMap(root);
-  const pairKeys = [...new Set(eligible.flatMap((name) => {
-    const match = name.match(/^(.*)-(before|after)\.webp$/i);
-    return match ? [match[1]] : [];
-  }))].sort();
-  const pairs = pairKeys.filter((key) => (
-    nameSet.has(`${key}-before.webp`) && nameSet.has(`${key}-before-550.webp`)
-      && nameSet.has(`${key}-after.webp`) && nameSet.has(`${key}-after-550.webp`)
-  )).map((key) => {
-    const before = `/studio/${key}-before.webp`;
-    const after = `/studio/${key}-after.webp`;
-    return {
-      key,
-      before,
-      before550: `/studio/${key}-before-550.webp`,
-      after,
-      after550: `/studio/${key}-after-550.webp`,
-      beforeAltHint: altMap.get(before) || defaultAltHint(key, 'before'),
-      afterAltHint: altMap.get(after) || defaultAltHint(key, 'after'),
-    };
-  });
-  const pairedNames = new Set(pairs.flatMap((pair) => [
-    pair.before.split('/').at(-1), pair.after.split('/').at(-1),
-  ]));
-  const individualImages = eligible.filter((name) => !pairedNames.has(name)).sort().map((name) => {
-    const src = `/studio/${name}`;
-    return {
-      src,
-      src550: src.replace(/\.webp$/i, '-550.webp'),
-      altHint: altMap.get(src) || defaultAltHint(name.replace(/\.webp$/i, ''), 'after'),
-    };
-  });
-  return { pairs, individualImages };
+function altHints({ vehicle, color, background, view }) {
+  const colorLabel = label(color).toLowerCase();
+  const subject = [colorLabel, label(vehicle)].filter(Boolean).join(' ');
+  const angle = angleWords(view);
+  const anglePhrase = angle ? ` shown in a ${angle}` : '';
+  const beforeSubject = subject ? subject.charAt(0).toUpperCase() + subject.slice(1) : 'Vehicle';
+  const afterSetting = background ? ` in the ${background}` : '';
+  return {
+    before: `${beforeSubject}${anglePhrase} before AutoLander photo editing`,
+    after: `The same ${subject || 'vehicle'}${anglePhrase} after AutoLander photo editing${afterSetting}`,
+  };
+}
+
+function contextImagePair(pair) {
+  const isLegacy = pair.source === 'legacy';
+  const result = {
+    before: pair.before,
+    after: pair.after,
+    before550: pair.before550,
+    after550: pair.after550,
+    vehicle: isLegacy
+      ? legacyVehicle(pair.key)
+      : [pair.year, pair.make, pair.model, pair.trim].map(label).filter(Boolean).join(' '),
+    color: isLegacy ? '' : label(pair.color),
+    bodyStyle: isLegacy ? '' : plainWords(pair.bodyStyle),
+    vehicleClass: isLegacy ? '' : plainWords(pair.vehicleClass),
+    background: isLegacy ? '' : plainWords(pair.preset || pair.sceneKey),
+    view: isLegacy ? '' : plainWords(pair.view),
+  };
+  return { ...result, altHints: altHints(result) };
+}
+
+function imageInventory(root, { selfSlug = '' } = {}) {
+  const articles = [...DRIP_ARTICLES, ...blogPostsAt(root)];
+  const usage = imageUsage({ articles, extraUsages: PAGE_STUDIO_USAGES });
+  const pairs = unusedStudioPairs({ pairs: studioPairsAt(root), usage, selfSlug });
+  return pairs.map(contextImagePair);
 }
 
 function normalizeUrlHeaders(contents) {
@@ -522,6 +536,9 @@ function main() {
   const pageUrls = [...new Set([...sitemap, ...indexableHtmlUrls(options.root)])];
   const pages = buildSitePages(options.root, pageUrls);
   const keywords = keywordsInventory(options.root, pages);
+  const images = imageInventory(options.root, {
+    selfSlug: options.mode === 'revise' ? options.slug : '',
+  });
   const outputs = new Map();
 
   outputs.set('site-full.md', siteFull(options.root));
@@ -530,7 +547,7 @@ function main() {
   outputs.set('nav-keys.json', json(navInventory()));
   outputs.set('competitors.json', json(competitorInventory()));
   outputs.set('articles.json', json(articles));
-  outputs.set('images.json', json(imageInventory(options.root)));
+  outputs.set('images.json', json(images));
   outputs.set('keywords.json', json(keywords));
   outputs.set('task.md', taskMarkdown({ mode: options.mode, slug: options.slug, request }));
   outputs.set('pre-files.json', json(preFiles(options.root)));
@@ -543,7 +560,8 @@ function main() {
 
   for (const [name, contents] of outputs) {
     const bytes = writeContextFile(options.out, name, contents);
-    console.log(`context ${name}: ${bytes} bytes`);
+    if (name === 'images.json') console.log(`context images.json: ${images.length} unused pairs`);
+    else console.log(`context ${name}: ${bytes} bytes`);
   }
   for (const [source, target] of [
     ['post-schema.json', 'post-schema.json'],
