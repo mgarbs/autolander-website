@@ -7,6 +7,7 @@ import {
   relatedForArticle, buildArticlePage, hubAugmentLinks, contentStatusJson,
   articleSitemapEntries, compareHubLinks, versusPageLinks, backlinkedFrom,
 } from '../scripts/seo/articles/article-system.mjs';
+import { loadBlogPosts } from '../scripts/seo/articles/blog-loader.mjs';
 import { handleContentList, handleContentPublish } from '../worker/src/admin/content.js';
 
 const art = (slug, silo, extra = {}) => ({
@@ -38,9 +39,10 @@ const state = (published) => Object.fromEntries(
     : { status: 'draft', publishedAt: null }]),
 );
 
-test('publish-state.json covers exactly the SUGGESTED_ORDER slugs', () => {
+test('publish-state.json covers exactly the drip and blog slugs', () => {
   const st = loadPublishState();
-  assert.deepEqual(Object.keys(st).sort(), [...SUGGESTED_ORDER].sort());
+  const expected = [...SUGGESTED_ORDER, ...loadBlogPosts().map((post) => post.slug)];
+  assert.deepEqual(Object.keys(st).sort(), expected.sort());
   assert.equal(SUGGESTED_ORDER.length, 36);
 });
 

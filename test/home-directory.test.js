@@ -72,9 +72,9 @@ test('a draft article never reaches the directory', () => {
   assert.ok(!groups.some((g) => g.id === 'articles-marketplace'));
 });
 
-test('every silo in DIRECTORY_SILO_ORDER exists, and every silo is listed', () => {
+test('every drip silo in DIRECTORY_SILO_ORDER exists, and every drip silo is listed', () => {
   assert.deepEqual(DIRECTORY_SILO_ORDER, ['compare', 'metaTools', 'marketplace', 'photos', 'growth']);
-  assert.deepEqual([...DIRECTORY_SILO_ORDER].sort(), Object.keys(SILOS).sort());
+  assert.deepEqual([...DIRECTORY_SILO_ORDER].sort(), Object.keys(SILOS).filter((key) => key !== 'blog').sort());
 });
 
 test('injectHomeDirectory replaces exactly the marked region and refuses a page without markers', () => {
