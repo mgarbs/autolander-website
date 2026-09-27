@@ -1,0 +1,84 @@
+{
+  "slug": "test-fixture-valid-blog-post",
+  "silo": "blog",
+  "anchor": "A practical dealer publishing workflow",
+  "crumb": "Dealer publishing workflow",
+  "primaryKeyword": "test fixture blog keyword",
+  "secondaryKeywords": [
+    "dealer vehicle publishing workflow",
+    "accurate Marketplace listing process"
+  ],
+  "title": "Test Fixture Blog Keyword: Dealer Publishing Guide",
+  "description": "A practical test fixture blog keyword guide for dealers who want a repeatable process for accurate vehicle pages, useful links, and careful publishing.",
+  "eyebrow": "AutoLander blog",
+  "h1": "Test fixture blog keyword guide for dealer publishing",
+  "tldr": "A reliable dealer publishing workflow starts with clean inventory records, useful photos, accurate listing details, and a deliberate review before anything goes live. Build one repeatable checklist, connect each step to a responsible person, confirm that every linked page is current, and review results often enough to catch stale information before it becomes a customer problem.",
+  "sections": [
+    {
+      "type": "qa",
+      "q": "What should a dealer publishing workflow accomplish?",
+      "a": "A useful test fixture blog keyword workflow gives the dealership one dependable path from an inventory record to a reviewed vehicle listing. Begin with the operating principles in the [Facebook Marketplace guide for car dealers](/facebook-marketplace-for-car-dealers/), then decide which details must be present before a vehicle can move forward. The record should include the current price, mileage, trim, condition notes, photo set, and the employee responsible for review. A clear workflow prevents staff from building each listing from memory or from a mixture of old notes. It also makes corrections easier because everyone knows which source owns each fact. Keep the checklist short enough to use on a busy day, but precise enough that a missing detail stops publication. Dealers evaluating tools can compare that workflow with the [AutoLander pricing page](/facebook-marketplace-auto-poster-pricing/) and confirm which work belongs in the software and which work still belongs with dealership staff. The result should be consistency, traceability, and a cleaner handoff between merchandising and sales."
+    },
+    {
+      "type": "qa",
+      "q": "How do clean inventory records support accurate listings?",
+      "a": "Treat the inventory system as the source record and make each downstream listing easy to reconcile with it. The [dealer inventory management guide](/dealer-inventory-management/) explains the value of moving accurate vehicle information from the dealership system toward the places shoppers browse. Before publication, compare the stock number, VIN, year, make, model, trim, mileage, price, and availability against the latest approved record. Do not fill a gap with a guess. Send incomplete records back to the person who owns the data and record what needs attention. A simple exception queue is often more useful than a long meeting because it makes the next action visible. The [inventory sync overview](/facebook-marketplace-inventory-sync/) can help a team decide how feed data fits into that process. The review should also identify vehicles that are sold, held, or not ready for sale so they do not enter the publication queue. When corrections are made, rerun the same checks instead of assuming the first issue was the only issue."
+    },
+    {
+      "type": "qa",
+      "q": "Which photo checks belong before publication?",
+      "a": "Photos should identify the correct vehicle, show it clearly, and follow a consistent order that a shopper can understand. Start with the guidance in the [AI car photo editor overview](/ai-car-photo-editor/) and use it to define a dealership standard for framing, lighting, background, and image sequence. Confirm that the first image shows the vehicle clearly, that exterior angles cover each side, and that interior images document the cabin and important equipment. Remove accidental duplicates and images from another stock unit. Check that reflections, signs, keys, paperwork, and people do not distract from the vehicle. If the team replaces a background, review the finished image for believable edges and accurate body details. The goal is a cleaner presentation without changing the vehicle itself. Keep original images available so a reviewer can compare them when something looks wrong. Assign one person to approve exceptions, since inconsistent one-off decisions can weaken the standard. Record the approved set with the stock number so later updates use the same vehicle and the same source images."
+    },
+    {
+      "type": "qa",
+      "q": "How should a team review listing copy and links?",
+      "a": "Review copy for accuracy, clarity, and usefulness before polishing it for search. The [guide to selling cars on Facebook Marketplace](/guide/how-to-sell-cars-on-facebook-marketplace/) gives the team a practical reference for the listing process, while the [Facebook Marketplace auto poster overview](/facebook-marketplace-auto-poster/) explains the commercial workflow. Read the title, price, mileage, vehicle details, and description against the source record. Make sure the description distinguishes verified equipment from assumptions based on trim. Remove internal notes, placeholder text, unsupported claims, and language that could confuse a shopper. Test every inline link and confirm that it reaches a live page relevant to the sentence around it. Descriptive link text is more useful than vague phrases because a reader can predict the destination. Review the call to action as well. It should tell the reader what to do next without promising how another platform will handle a conversation. A second reviewer is valuable for high-risk changes, but the checklist should still be usable when one trained employee handles the routine queue."
+    },
+    {
+      "type": "qa",
+      "q": "What belongs in the final publication check?",
+      "a": "The final check should answer a small set of operational questions with evidence. Is the vehicle still available? Does the price match the approved record? Are the visible photos for the correct unit? Does the description match the equipment and condition notes? Do all required fields have usable values? Does every link resolve to a current page? The team can use the [Marketplace listing software guide](/facebook-marketplace-listing-software/) to compare these controls with the tools in its stack. Give the reviewer a clear choice to approve, return for correction, or hold. A hold should include a reason and an owner so it does not become an invisible backlog. Capture the publication time and the source version used for approval. That small audit trail helps when a later correction is needed. Avoid adding extra approval layers that do not change the result. The aim is a dependable release gate that catches material mistakes, gives staff a quick path to resolve them, and preserves enough context to understand what was approved."
+    },
+    {
+      "type": "qa",
+      "q": "How can a dealership improve the workflow over time?",
+      "a": "Review exceptions and corrections as signals about the process. Group them by cause, such as missing inventory data, wrong photo set, outdated price, unclear ownership, broken link, or skipped review. Look for repeat causes that a checklist, feed rule, template, or training note can address. The [car dealership marketing playbook](/guide/car-dealership-marketing/) can help connect merchandising work with the wider demand plan, and the [AutoLander home page](/) provides the current product context for teams evaluating the workflow. Make one controlled change at a time, tell the people who use the process, and confirm that the change actually removes the problem. Keep the wording of checklist items concrete. A prompt such as confirm mileage against the approved record is easier to follow than a broad instruction to check quality. Revisit ownership when staffing changes. Archive obsolete templates so they cannot return through an old bookmark or copied document. A stable process should make routine work faster while making unusual cases more visible, giving the dealership a practical way to improve without rebuilding the entire system each month."
+    }
+  ],
+  "faq": [
+    [
+      "Who should own the final listing review?",
+      "Choose a trained employee who can compare the listing with the approved inventory record and return incomplete work to the right owner. The role can rotate, but the approval standard should remain documented and consistent."
+    ],
+    [
+      "Should every vehicle follow the same checklist?",
+      "Use one core checklist for required facts, photos, links, and approval. Add a short exception path for unusual inventory instead of creating a separate process for every vehicle category."
+    ],
+    [
+      "How often should the workflow be reviewed?",
+      "Review it when recurring errors appear, when the inventory source changes, or when staff responsibilities move. Regular exception review is more useful than changing the process without evidence."
+    ],
+    [
+      "What should happen when a required detail is missing?",
+      "Hold the listing, record the missing detail, and assign the correction to the person who owns that source data. Publish only after the same validation check passes with the updated record."
+    ]
+  ],
+  "cta": {
+    "heading": "Build a more dependable publishing workflow",
+    "sub": "See how AutoLander supports consistent vehicle listing work for dealership teams."
+  },
+  "alsoRelated": [
+    "facebook-marketplace-car-listing-limits",
+    "how-to-take-pictures-of-a-car-to-sell"
+  ],
+  "augmentKeys": [
+    "dealers"
+  ],
+  "alsoOnCompetitors": [
+    "carvid"
+  ],
+  "inboundFrom": [
+    "post-a-car-on-facebook-marketplace-dealer",
+    "facebook-marketplace-car-listing-limits"
+  ]
+}

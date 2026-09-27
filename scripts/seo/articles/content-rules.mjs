@@ -1,6 +1,6 @@
 export const EM_DASH_RE = /[—–]/;
 
-export const CONTRAST_TIC_RE = /\b(?:is|are|was|were|it’s|it's|that’s|that's)\s+not\s+(?:about\s+)?[^.!?]{1,60}[.!?]\s+(?:It|That|This)\s+(?:is|’s|'s)\b/i;
+export const CONTRAST_TIC_RE = /\b(?:is|are|was|were|it’s|it's|that’s|that's)\s+not\s+(?:about\s+)?[^.!?]{1,60}[.!?]\s+(?:(?:It|That|This)\s+is|(?:It|That|This)(?:’s|'s))\b/i;
 
 export const FORBIDDEN_CLAIMS = [
   /auto[- ]?respond/i,

@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://autolander.ai/schemas/blog-post.json",
+  "title": "AutoLander blog post",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "silo",
+    "anchor",
+    "crumb",
+    "primaryKeyword",
+    "secondaryKeywords",
+    "title",
+    "description",
+    "eyebrow",
+    "h1",
+    "tldr",
+    "sections",
+    "faq",
+    "cta",
+    "alsoRelated",
+    "augmentKeys",
+    "alsoOnCompetitors",
+    "inboundFrom"
+  ],
+  "properties": {
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{2,80}$"
+    },
+    "silo": {
+      "const": "blog"
+    },
+    "anchor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "crumb": {
+      "type": "string",
+      "minLength": 1
+    },
+    "primaryKeyword": {
+      "type": "string",
+      "minLength": 1
+    },
+    "secondaryKeywords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60
+    },
+    "description": {
+      "type": "string",
+      "minLength": 140,
+      "maxLength": 160
+    },
+    "eyebrow": {
+      "type": "string",
+      "minLength": 1
+    },
+    "h1": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tldr": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sections": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "prose",
+              "qa",
+              "bullets",
+              "features",
+              "steps",
+              "table",
+              "callout",
+              "quotes",
+              "twocol",
+              "figure",
+              "image"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "faq": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "array",
+        "prefixItems": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ],
+        "items": false,
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "cta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "heading",
+        "sub"
+      ],
+      "properties": {
+        "heading": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sub": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "alsoRelated": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "augmentKeys": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "string"
+      }
+    },
+    "alsoOnCompetitors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inboundFrom": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
