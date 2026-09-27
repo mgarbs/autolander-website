@@ -1,0 +1,9 @@
+{
+  "requestId": "521101f1-aee3-4158-962c-60e87b8be854",
+  "mode": "new",
+  "slug": "",
+  "status": "failed",
+  "errorKind": "model_unavailable",
+  "error": "The requested Claude model was unavailable.",
+  "finishedAt": "2026-09-27T17:57:11.747Z"
+}
