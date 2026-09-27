@@ -108,18 +108,7 @@ jobs:
 
       - name: Commit
         if: always() && steps.input_check.outcome == 'success' && (steps.discard.outcome == 'success' || steps.finalize.outcome == 'success')
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add scripts/seo/articles/blog scripts/seo/articles/publish-state.json public/data/content-status.json public/og previews/blog
-          if git diff --cached --quiet; then
-            echo "nothing to commit"
-            exit 0
-          fi
-          git commit -m "blog: $BLOG_MODE $BLOG_REQUEST_ID"
-          git pull --rebase origin main
-          node scripts/blog/check-inputs.mjs --assert-parent-draft
-          git push origin main
+        run: node scripts/blog/commit-draft.mjs
         env:
           BLOG_MODE: '${{ inputs.mode }}'
           BLOG_SLUG: '${{ inputs.slug }}'

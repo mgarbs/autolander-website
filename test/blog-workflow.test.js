@@ -143,32 +143,22 @@ test('generate workflow constrains concurrency, credentials, shell inputs, and c
   assert.match(yaml, /- name: Validate inputs\s*\n\s+id: input_check\b/);
   assert.match(yaml, /if: always\(\) && steps\.input_check\.outcome == 'success' && inputs\.mode != 'discard'/);
   assert.match(yaml, /if: always\(\) && steps\.input_check\.outcome == 'success' && \(steps\.discard\.outcome/);
-  assertOrdered(yaml, [
-    'git pull --rebase origin main',
-    'node scripts/blog/check-inputs.mjs --assert-parent-draft',
-    'git push origin main',
-  ]);
+  assert.match(yaml, /node scripts\/blog\/commit-draft\.mjs/);
+  assert.doesNotMatch(yaml, /git pull --rebase|git push origin main|--assert-parent-draft/);
 
   const addLists = gitAddLists(yaml);
-  assert.equal(addLists.length, 1, 'generate workflow must have exactly one git add command');
-  assert.deepEqual(addLists[0], [
-    'scripts/seo/articles/blog',
-    'scripts/seo/articles/publish-state.json',
-    'public/data/content-status.json',
-    'public/og',
-    'previews/blog',
-  ]);
+  assert.equal(addLists.length, 0, 'commit-draft.mjs owns the exact staging allowlist');
 });
 
 test('publish workflow passes inputs through env and verifies blog publishes after IndexNow', () => {
   const yaml = read(PUBLISH_WORKFLOW);
   assertNoInputExpressionsInRun(yaml, 'publish-article.yml');
   const addLists = gitAddLists(yaml);
-  assert.equal(addLists.length, 1, 'publish workflow must have exactly one git add command');
-  assert.ok(addLists[0].includes('scripts/seo/articles/blog'));
+  assert.equal(addLists.length, 0, 'commit-publish.mjs owns the publish staging allowlist');
+  assert.match(yaml, /node scripts\/blog\/commit-publish\.mjs "\$ARTICLE_SLUG"/);
+  assert.doesNotMatch(yaml, /git pull --rebase|git push origin main/);
   assertOrdered(yaml, [
-    'Flip publish state + regenerate silo',
-    'Commit the published article',
+    'Publish from latest main and commit',
     'Build site',
     'actions/deploy-pages@v4',
     'Ping IndexNow with the changed URLs',

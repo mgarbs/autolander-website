@@ -49,23 +49,8 @@ jobs:
           cache: npm
       - run: npm ci
 
-      - name: Flip publish state + regenerate silo
-        run: node scripts/publish-article.mjs "$ARTICLE_SLUG"
-
-      - name: Commit the published article
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # index.html + src/generated carry the homepage directory the build just regenerated
-          # (the newly published article's link on the homepage); they live outside public/.
-          git add public scripts/seo/articles/publish-state.json scripts/seo/articles/blog index.html src/generated
-          if git diff --cached --quiet; then
-            echo "nothing to commit (already published) — continuing to deploy"
-          else
-            git commit -m "publish: $ARTICLE_SLUG"
-            git pull --rebase origin main
-            git push origin main
-          fi
+      - name: Publish from latest main and commit
+        run: node scripts/blog/commit-publish.mjs "$ARTICLE_SLUG"
 
       - name: Build site
         run: npm run build
