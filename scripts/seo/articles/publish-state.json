@@ -146,5 +146,9 @@
   "q4-used-car-sales-facebook-marketplace": {
     "status": "published",
     "publishedAt": "2026-09-27"
+  },
+  "fed-rate-hike-car-dealers": {
+    "status": "draft",
+    "publishedAt": null
   }
 }

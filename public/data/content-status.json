@@ -737,6 +737,47 @@
       "publishedAt": null
     },
     {
+      "slug": "fed-rate-hike-car-dealers",
+      "kind": "blog",
+      "path": "/blog/fed-rate-hike-car-dealers/",
+      "url": "https://autolander.ai/blog/fed-rate-hike-car-dealers/",
+      "title": "What a Fed Rate Hike Means for Car Dealers, New and Used",
+      "h1": "What a Fed rate hike means for car dealers, new and used: a 30-day plan",
+      "silo": "blog",
+      "siloLabel": "Blog",
+      "primaryKeyword": "what a fed rate hike means for car dealers",
+      "secondaryKeywords": [
+        "fed rate hike car dealers",
+        "how interest rates affect car dealerships",
+        "interest rates and used car sales",
+        "floorplan interest rate hike",
+        "car dealer strategy for higher interest rates",
+        "advertising car payments on facebook marketplace"
+      ],
+      "description": "What a Fed rate hike means for new and used car dealers: payment math, holding costs, price bands from 10,823 dealer listings and a 30-day action plan.",
+      "suggestedOrder": null,
+      "status": "draft",
+      "publishedAt": null,
+      "requestId": "c749a71d-f52c-46f0-8864-6c0f24ff44a3",
+      "updatedAt": "2026-09-27",
+      "validationOk": true,
+      "validationErrors": [],
+      "wordCount": 2431,
+      "outboundLinks": 15,
+      "inboundFrom": [
+        "how-to-price-used-cars-competitively",
+        "used-car-dealer-advertising-on-a-budget",
+        "buy-here-pay-here-marketing",
+        "q4-used-car-sales-facebook-marketplace",
+        "car-sales-follow-up-templates"
+      ],
+      "augmentKeys": [
+        "mktgHub",
+        "sellMore",
+        "inventoryDist"
+      ]
+    },
+    {
       "slug": "q4-used-car-sales-facebook-marketplace",
       "kind": "blog",
       "path": "/blog/q4-used-car-sales-facebook-marketplace/",
