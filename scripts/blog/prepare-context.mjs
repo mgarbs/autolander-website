@@ -323,14 +323,43 @@ function imageInventory(root) {
   return { pairs, individualImages };
 }
 
+function normalizeUrlHeaders(contents) {
+  return String(contents).replace(
+    /^Source:[ \t]*(https?:\/\/\S+)[ \t]*$/gim,
+    (_, url) => `URL: ${url.trim()}`,
+  );
+}
+
+function wrapContextText(value, width = 120) {
+  const words = String(value).split(/\s+/).filter(Boolean)
+    .flatMap((word) => word.match(new RegExp(`.{1,${width}}`, 'g')) || []);
+  const lines = [];
+  let line = '';
+  for (const word of words) {
+    const candidate = line ? `${line} ${word}` : word;
+    if (line && candidate.length > width) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = candidate;
+    }
+  }
+  if (line) lines.push(line);
+  return lines.join('\n');
+}
+
 function siteFull(root) {
   const publicDir = resolve(root, 'public');
   const llmsPath = resolve(publicDir, 'llms-full.txt');
   const homePath = resolve(publicDir, 'index.md');
-  const llms = existsSync(llmsPath) ? readFileSync(llmsPath, 'utf8').trim() : '';
-  const home = existsSync(homePath) ? readFileSync(homePath, 'utf8').trim() : '';
+  const llms = existsSync(llmsPath)
+    ? normalizeUrlHeaders(readFileSync(llmsPath, 'utf8')).trim()
+    : '';
+  const home = existsSync(homePath)
+    ? normalizeUrlHeaders(readFileSync(homePath, 'utf8')).trim()
+    : '';
   const coveredUrls = new Set([llms, home].flatMap((contents) => (
-    [...contents.matchAll(/^Source:\s*(https?:\/\/\S+)\s*$/gim)].map((match) => match[1].trim())
+    [...contents.matchAll(/^URL:[ \t]*(https?:\/\/\S+)[ \t]*$/gim)].map((match) => match[1].trim())
   )));
   const additions = [];
   const indexFiles = walkFiles(publicDir, (path) => path.toLowerCase().endsWith(`${sep}index.html`))
@@ -343,7 +372,7 @@ function siteFull(root) {
     const title = firstTagText(html, 'title') || firstTagText(html, 'h1') || canonical;
     const text = readableHtml(html);
     if (!text) continue;
-    additions.push(`# ${title}\nURL: ${canonical}\n\n${text}`);
+    additions.push(`# ${title}\nURL: ${canonical}\n\n${wrapContextText(text)}`);
   }
   return [llms, home, ...additions].filter(Boolean).join('\n\n---\n\n') + '\n';
 }

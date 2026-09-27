@@ -19,6 +19,7 @@ const PREPARE = resolve(ROOT, 'scripts', 'blog', 'prepare-context.mjs');
 const FINALIZE = resolve(ROOT, 'scripts', 'blog', 'finalize-draft.mjs');
 const DISCARD = resolve(ROOT, 'scripts', 'blog', 'discard-post.mjs');
 const WRITER_SETTINGS = resolve(ROOT, 'scripts', 'blog', 'writer-settings.json');
+const WRITER_RULES = resolve(ROOT, 'scripts', 'blog', 'writer-rules.md');
 const SLUG = 'test-fixture-valid-blog-post';
 const SECRET = 'private prompt marker 74d03a';
 const ALLOWED_TOOLS = 'Read,Glob,Grep,Edit(scripts/seo/articles/blog/**),Bash(node scripts/blog/validate-post.mjs *)';
@@ -173,6 +174,15 @@ test('classifyWriterError recognizes safe operational categories', () => {
   assert.equal(classifyWriterError('Claude usage limit reached'), 'usage_limit');
   assert.equal(classifyWriterError('OAuth token has expired'), 'auth');
   assert.equal(classifyWriterError('model is not available'), 'model_unavailable');
+  for (const message of [
+    'context length exceeded',
+    'context window is unavailable',
+    'prompt is too long',
+    'extra usage is required',
+    'usage credits are required',
+    '1m context requires an account upgrade',
+    'usage limit reached, enable extra usage to continue',
+  ]) assert.equal(classifyWriterError(message), 'model_unavailable', message);
   assert.equal(classifyWriterError('unexpected process failure'), 'other');
 });
 
@@ -208,11 +218,14 @@ test('runWriter retries unavailable 1m context once with the fallback model', as
   mkdirSync(contextDir, { recursive: true });
   write(resolve(contextDir, 'task.md'), 'Write scripts/seo/articles/blog/<slug>.json\n');
   write(resolve(contextDir, 'rules.md'), 'rules\n');
+  const taskLog = resolve(contextDir, 'attempts.ndjson');
   const result = await runWriter({
     claudeCmd: [execPath, FAKE_CLAUDE],
     env: {
       ...processEnv,
       FAKE_CLAUDE_MODE: 'nomodel1m',
+      FAKE_CLAUDE_1M_ERROR: 'prompt is too long for the 1m context request',
+      FAKE_CLAUDE_TASK_LOG: taskLog,
       BLOG_MODEL: 'claude-opus-5-5[1m]',
       BLOG_MODEL_FALLBACK: 'claude-opus-5-5',
       BLOG_EFFORT: 'max',
@@ -223,6 +236,25 @@ test('runWriter retries unavailable 1m context once with the fallback model', as
   assert.equal(result.ok, true);
   assert.equal(result.model, 'claude-opus-5-5');
   assert.equal(result.contextWindow, '200k');
+  const attempts = readFileSync(taskLog, 'utf8').trim().split(/\r?\n/)
+    .map((line) => JSON.parse(line));
+  assert.equal(attempts.length, 2);
+  assert.equal(attempts[0].model, 'claude-opus-5-5[1m]');
+  assert.doesNotMatch(attempts[0].taskText, /200K fallback context mode/);
+  assert.equal(attempts[1].model, 'claude-opus-5-5');
+  assert.match(attempts[1].taskText, /200K fallback context mode/);
+  assert.match(attempts[1].taskText, /Read `\.blog-context\/site-index\.md` completely/);
+  assert.match(attempts[1].taskText, /Never read `\.blog-context\/site-full\.md` as a whole/);
+  assert.match(attempts[1].taskText, /Grep.*`URL:` header/i);
+  assert.match(attempts[1].taskText, /Read with offset and limit/i);
+  assert.match(attempts[1].taskText, /every page you link/i);
+  assert.equal(readFileSync(resolve(contextDir, 'task.md'), 'utf8'), 'Write scripts/seo/articles/blog/<slug>.json\n');
+});
+
+test('writer rules reserve the complete site-full read for 1M mode', () => {
+  const rules = readFileSync(WRITER_RULES, 'utf8');
+  assert.match(rules, /1M context mode[\s\S]*site-full\.md` completely/i);
+  assert.match(rules, /200K fallback[\s\S]*overrides this instruction/i);
 });
 
 test('runWriter classifies usage and authentication failures', async (t) => {
@@ -256,15 +288,16 @@ test('prepare-context builds the private writer packet without logging its reque
     requestId: 'prepare-1', mode: 'new', slug: '', prompt: SECRET,
     keyword: 'dealer workflow', feedback: '', originalPrompt: '',
   });
-  write(resolve(root, 'public', 'llms-full.txt'), '# Existing shell corpus\n');
-  write(resolve(root, 'public', 'index.md'), '# Homepage corpus\n');
+  write(resolve(root, 'public', 'llms-full.txt'), '# Existing shell corpus\nSource: https://autolander.ai/from-llms/  \n');
+  write(resolve(root, 'public', 'index.md'), '# Homepage corpus\nSource: https://autolander.ai/  \n');
   write(resolve(root, 'public', 'sitemap.xml'), '<urlset><url><loc>https://autolander.ai/compare/sample/</loc></url></urlset>\n');
   write(resolve(root, 'public', 'compare', 'sample', 'index.html'), [
     '<!doctype html><html><head><title>Sample comparison</title>',
     '<meta name="description" content="A useful sample page.">',
     '<link rel="canonical" href="https://autolander.ai/compare/sample/"></head>',
     '<body><header>Skip header</header><main><h1>Sample H1</h1><h2>Useful details</h2>',
-    '<p>Visible comparison text.</p><script>secretScript()</script></main><footer>Skip footer</footer></body></html>',
+    `<p>${'Visible comparison text. '.repeat(20)}</p>`,
+    '<script>secretScript()</script></main><footer>Skip footer</footer></body></html>',
   ].join(''));
   const result = runNode(PREPARE, ['--root', root, '--out', '.blog-context', '--mode', 'new', '--no-build'], { cwd: root });
   assert.equal(result.status, 0, result.stderr);
@@ -278,9 +311,22 @@ test('prepare-context builds the private writer packet without logging its reque
   assert.match(readFileSync(resolve(context, 'task.md'), 'utf8'), /DONE <slug>/);
   assert.match(readFileSync(resolve(context, 'task.md'), 'utf8'), new RegExp(SECRET));
   const siteFull = readFileSync(resolve(context, 'site-full.md'), 'utf8');
+  assert.match(siteFull, /^URL: https:\/\/autolander\.ai\/from-llms\/$/m);
+  assert.match(siteFull, /^URL: https:\/\/autolander\.ai\/$/m);
+  assert.match(siteFull, /^URL: https:\/\/autolander\.ai\/compare\/sample\/$/m);
+  assert.doesNotMatch(siteFull, /^Source:\s*https?:\/\//m);
   assert.match(siteFull, /Visible comparison text/);
+  assert.ok(Math.max(...siteFull.split(/\r?\n/).map((line) => line.length)) <= 160);
   assert.ok(!siteFull.includes('secretScript'));
   assert.ok(!siteFull.includes('Skip header'));
+  const siteIndexText = readFileSync(resolve(context, 'site-index.md'), 'utf8');
+  const indexedUrls = [...siteIndexText.matchAll(/^URL:\s*(https?:\/\/\S+)\s*$/gm)]
+    .map((match) => match[1]);
+  for (const url of indexedUrls) {
+    const fullHeaders = [...siteFull.matchAll(/^URL:\s*(https?:\/\/\S+)\s*$/gm)]
+      .filter((match) => match[1] === url);
+    assert.equal(fullHeaders.length, 1, `${url} must map to exactly one full-context section`);
+  }
 });
 
 test('finalize-draft stamps a valid new draft and keeps request plaintext out of outputs', (t) => {

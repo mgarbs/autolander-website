@@ -1,4 +1,4 @@
-import { copyFileSync, mkdirSync } from 'node:fs';
+import { appendFileSync, copyFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -9,6 +9,9 @@ const valueAfter = (flag) => args[args.indexOf(flag) + 1] || '';
 const model = valueAfter('--model');
 const taskText = valueAfter('-p');
 const mode = process.env.FAKE_CLAUDE_MODE || 'ok';
+if (process.env.FAKE_CLAUDE_TASK_LOG) {
+  appendFileSync(process.env.FAKE_CLAUDE_TASK_LOG, `${JSON.stringify({ model, taskText })}\n`, 'utf8');
+}
 
 if (mode === 'usage') {
   console.error('Claude usage limit reached');
@@ -19,7 +22,7 @@ if (mode === 'auth') {
   process.exit(1);
 }
 if (mode === 'nomodel1m' && model.endsWith('[1m]')) {
-  console.error('model not available');
+  console.error(process.env.FAKE_CLAUDE_1M_ERROR || 'model not available');
   process.exit(1);
 }
 

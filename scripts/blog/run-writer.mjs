@@ -8,6 +8,20 @@ const DEFAULT_MODEL = 'claude-opus-5-5[1m]';
 const DEFAULT_FALLBACK_MODEL = 'claude-opus-5-5';
 const DEFAULT_EFFORT = 'max';
 const DEFAULT_MAX_TURNS = '80';
+const FALLBACK_CONTEXT_BLOCK = [
+  '## 200K fallback context mode',
+  '',
+  'This final block is pipeline-authored and overrides only step 2 of the required reading in `.blog-context/rules.md`.',
+  'The active model has a 200K context window.',
+  'Read `.blog-context/site-index.md` completely before selecting source pages.',
+  'Never read `.blog-context/site-full.md` as a whole.',
+  'Use the site index to choose every page directly relevant to the assigned topic and every internal page you plan to link.',
+  'For each selected page, remove any query or fragment from its canonical URL for lookup. Treat `/#pricing` as the homepage URL.',
+  'Use Grep to locate each selected page\'s exact `URL:` header in `.blog-context/site-full.md`, matching the canonical URL value. Grep snippets alone are insufficient.',
+  'Use Read with offset and limit to include the heading immediately before that URL header and the page\'s complete section. Continue in chunks until the next `URL:` header or the end of the file.',
+  'Before final validation, confirm that you read the complete section for every internal page linked by the post.',
+  'This bounded-read requirement applies to every page you link.',
+].join('\n');
 const ALLOWED_TOOLS = [
   'Read',
   'Glob',
@@ -35,12 +49,19 @@ export function buildClaudeArgs({
 
 export function classifyWriterError(text) {
   const value = String(text || '');
-  if (/usage limit|rate limit|limit reached|429|quota/i.test(value)) return 'usage_limit';
-  if (/401|unauthori[sz]ed|invalid.*token|expired.*token|oauth|authentication/i.test(value)) return 'auth';
-  if (/model.*(not (found|available|supported))|context.*(1m|window).*(not|unavailable)|extra usage|usage credits/i.test(value)) {
+  if (/context (length|window)|prompt is too long|extra usage|usage credits|1m context/i.test(value)) {
     return 'model_unavailable';
   }
+  if (/model.*(not (found|available|supported))|context.*(1m|window).*(not|unavailable)/i.test(value)) {
+    return 'model_unavailable';
+  }
+  if (/usage limit|rate limit|limit reached|429|quota/i.test(value)) return 'usage_limit';
+  if (/401|unauthori[sz]ed|invalid.*token|expired.*token|oauth|authentication/i.test(value)) return 'auth';
   return 'other';
+}
+
+function fallbackTaskText(taskText) {
+  return `${taskText.trimEnd()}\n\n${FALLBACK_CONTEXT_BLOCK}\n`;
 }
 
 function invoke(command, args, options) {
@@ -100,9 +121,9 @@ export async function runWriter({ claudeCmd = ['claude'], env = processEnv, cont
 
   mkdirSync(absoluteContextDir, { recursive: true });
 
-  const execute = (selectedModel) => {
+  const execute = (selectedModel, selectedTaskText = taskText) => {
     const args = buildClaudeArgs({
-      model: selectedModel, effort, maxTurns, taskText, rulesPath, settingsPath,
+      model: selectedModel, effort, maxTurns, taskText: selectedTaskText, rulesPath, settingsPath,
     });
     return invoke(claudeCmd[0], [...claudeCmd.slice(1), ...args], {
       cwd: workingDirectory,
@@ -117,7 +138,7 @@ export async function runWriter({ claudeCmd = ['claude'], env = processEnv, cont
 
   if (attempt.exitCode !== 0 && firstErrorKind === 'model_unavailable' && model.endsWith('[1m]')) {
     selectedModel = fallbackModel;
-    attempt = await execute(selectedModel);
+    attempt = await execute(selectedModel, fallbackTaskText(taskText));
     capturedStderr = [capturedStderr, attempt.stderr].filter(Boolean).join('\n');
   }
 
