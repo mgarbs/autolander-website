@@ -194,3 +194,73 @@ test('the generate workflow fails loudly unless it runs in the container workspa
   assert.ok(preflight > 0 && preflight < writer, 'preflight must run before the writer');
   assert.match(yml, /\/__w\//);
 });
+
+// ---- 2026-09-27 first live run: finalize died on `git status` (container runs as root over a
+// runner-owned checkout -> "dubious ownership"), and the writer failed in ~4s with no evidence in
+// the log because its stderr is private by design.
+
+test('the generate workflow trusts the container workspace for git before any git use', () => {
+  const yml = readFileSync(resolve(ROOT, '.github', 'workflows', 'generate-blog-post.yml'), 'utf8');
+  const trust = yml.search(/git config --global --add safe\.directory "\$GITHUB_WORKSPACE"/);
+  assert.ok(trust > 0, 'safe.directory step missing');
+  assert.ok(trust > yml.indexOf('actions/checkout@v4'), 'must run after checkout');
+  assert.ok(trust < yml.indexOf('name: Build writer context'), 'must run before prepare-context');
+});
+
+test('writer diagnostics are logged safely: outcome, masked stderr head, no request text or tokens', async (t) => {
+  const { writerDiagnostics } = await import('../scripts/blog/run-writer.mjs');
+  const root = scratch(t, 'diag');
+  const contextDir = resolve(root, '.blog-context');
+  const prompt = 'Write a playbook about secret-topic-4471 for dealers';
+  writeJson(resolve(contextDir, 'request.json'), {
+    requestId: 'r1', mode: 'new', slug: '', prompt, keyword: 'kw-9931', feedback: '', originalPrompt: '',
+  });
+  write(resolve(contextDir, 'writer.stderr'), [
+    '\u001b[31mError:\u001b[0m could not start',
+    `echoed: ${prompt}`,
+    'token sk-ant-oat01-AAAAAAAAAAAAAAAAAAAA and kw-9931',
+  ].join('\n'));
+  writeJson(resolve(contextDir, 'result.json'), { type: 'result', subtype: 'error_during_execution', is_error: true, result: prompt });
+  const lines = writerDiagnostics({
+    ok: false, exitCode: 1, model: 'claude-opus-5-5', contextWindow: '200k', errorKind: 'other',
+    resultPath: resolve(contextDir, 'result.json'),
+  }, { contextDir });
+  const text = lines.join('\n');
+  assert.match(text, /ok=false exit=1 model=claude-opus-5-5 context=200k errorKind=other/);
+  assert.match(text, /subtype=error_during_execution is_error=true/);
+  assert.match(text, /could not start/);
+  assert.doesNotMatch(text, /secret-topic-4471|kw-9931|sk-ant-oat01/);
+  assert.ok(!text.includes('\u001b'), 'ANSI escapes must be stripped');
+  assert.ok(text.length < 1200);
+  const ok = writerDiagnostics({ ok: true, exitCode: 0, model: 'm', contextWindow: '1m', errorKind: null, resultPath: resolve(contextDir, 'none.json') }, { contextDir });
+  assert.equal(ok.length, 1);
+});
+
+// Second live run: both attempts failed with "Claude Code 2.1.233 does not support this model;
+// version 2.1.280 or newer is required" (Opus 5.5 needs >= 2.1.280). The message sat in the
+// result JSON's `result` field, which the diagnostics did not show.
+
+test('the workflow pins a Claude Code version that supports Opus 5.5 (>= 2.1.280)', () => {
+  const yml = readFileSync(resolve(ROOT, '.github', 'workflows', 'generate-blog-post.yml'), 'utf8');
+  const pin = yml.match(/@anthropic-ai\/claude-code@(\d+)\.(\d+)\.(\d+)/);
+  assert.ok(pin, 'Claude Code must be pinned to an exact version');
+  const [major, minor, patch] = pin.slice(1).map(Number);
+  assert.ok(major > 2 || (major === 2 && (minor > 1 || (minor === 1 && patch >= 280))), `pinned ${pin[0]} is older than 2.1.280`);
+});
+
+test('writer diagnostics show the masked error text from an is_error result', async (t) => {
+  const { writerDiagnostics } = await import('../scripts/blog/run-writer.mjs');
+  const root = scratch(t, 'diag-result');
+  const contextDir = resolve(root, '.blog-context');
+  writeJson(resolve(contextDir, 'request.json'), { prompt: 'topic-secret-5512 for dealers', keyword: '', feedback: '', originalPrompt: '' });
+  writeJson(resolve(contextDir, 'result.json'), {
+    type: 'result', subtype: 'success', is_error: true, num_turns: 1,
+    result: 'API Error: 400 Claude Code 2.1.233 does not support this model; version 2.1.280 or newer is required. topic-secret-5512',
+  });
+  const text = writerDiagnostics({
+    ok: false, exitCode: 1, model: 'claude-opus-5-5', contextWindow: '200k', errorKind: 'model_unavailable',
+    resultPath: resolve(contextDir, 'result.json'),
+  }, { contextDir }).join('\n');
+  assert.match(text, /does not support this model; version 2\.1\.280 or newer is required/);
+  assert.doesNotMatch(text, /topic-secret-5512/);
+});

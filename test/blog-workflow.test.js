@@ -169,7 +169,8 @@ test('generate workflow uses Node 22 and keeps optional Playwright separate from
   assert.ok(playwrightStep > claudeStep);
   assert.ok(writerStep > playwrightStep);
   const claudeBlock = yaml.slice(claudeStep, playwrightStep);
-  assert.match(claudeBlock, /npm install --global @anthropic-ai\/claude-code@2\.1\.233/);
+  // Exact pin; the >= 2.1.280 floor Opus 5.5 needs is enforced in blog-review-fixes.test.js.
+  assert.match(claudeBlock, /npm install --global @anthropic-ai\/claude-code@\d+\.\d+\.\d+\b/);
   assert.match(claudeBlock, /claude --version/);
   assert.doesNotMatch(claudeBlock, /playwright|continue-on-error/);
   const playwrightBlock = yaml.slice(playwrightStep, writerStep);
