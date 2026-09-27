@@ -98,6 +98,7 @@ We keep a working list of 27 dealership marketing ideas ranked by cost and effor
 - [Car sales follow-up templates your salespeople can send today](https://autolander.ai/guide/car-sales-follow-up-templates/)
 - [How to sell cars online as a small dealership](https://autolander.ai/guide/sell-cars-online-small-dealership/)
 - [Buy here pay here marketing plays that actually work](https://autolander.ai/guide/buy-here-pay-here-marketing/)
+- [Q4 used car sales playbook for Facebook Marketplace](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

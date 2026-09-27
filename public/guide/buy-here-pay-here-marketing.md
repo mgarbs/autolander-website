@@ -92,6 +92,7 @@ More important than in any other segment of car retail, because your customers a
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
 - [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
 - [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [Q4 used car sales playbook for Facebook Marketplace](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

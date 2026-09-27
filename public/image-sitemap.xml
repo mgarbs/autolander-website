@@ -953,4 +953,19 @@
       <image:title>Meta Muse for Car Salesmen: How Reps Should Use It (2026)</image:title>
     </image:image>
   </url>
+  <url>
+    <loc>https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/</loc>
+    <image:image>
+      <image:loc>https://autolander.ai/studio/chevrolet-malibu-before.webp</image:loc>
+      <image:title>Silver 2022 Chevrolet Malibu parked on cracked asphalt with trees, shrubs and power lines behind it</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/studio/chevrolet-malibu-after.webp</image:loc>
+      <image:title>The same silver 2022 Chevrolet Malibu on open pavement under a golden sunset sky after AutoLander's AI Photo Studio replaced the background</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/og/blog-q4-used-car-sales-facebook-marketplace.png</image:loc>
+      <image:title>Q4 Used Car Sales on Facebook Marketplace: 2026 Playbook</image:title>
+    </image:image>
+  </url>
 </urlset>

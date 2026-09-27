@@ -141,6 +141,7 @@ Full agent instructions, including the response-format contract: https://autolan
 ## Blog
 
 - [The AutoLander blog](https://autolander.ai/blog.md): Practical Facebook Marketplace playbooks for car dealers, plus every AutoLander guide on vehicle merchandising, dealership growth, and listing operations.
+- [Q4 used car sales on Facebook Marketplace: the October to December playbook](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace.md): A Q4 used car sales plan for Facebook Marketplace dealers: units to list first, aged inventory, winter photos, holiday coverage and a weekly checklist.
 
 ## Integrations
 

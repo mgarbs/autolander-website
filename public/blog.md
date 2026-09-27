@@ -4,13 +4,13 @@
 
 Source: https://autolander.ai/blog/  
 Author: The AutoLander team  
-Updated: September 3, 2026
+Updated: September 27, 2026
 
 Practical guidance for dealership teams that publish, merchandise, and market vehicle inventory. Start with the latest posts, or browse every published guide by topic.
 
 ## Latest posts
 
-- No posts yet. Published posts will appear here.
+- Q4 Used Car Sales on Facebook Marketplace: 2026 Playbook | September 27, 2026. A Q4 used car sales plan for Facebook Marketplace dealers: units to list first, aged inventory, winter photos, holiday coverage and a weekly checklist.
 
 ## Guides and playbooks: Marketplace operations
 

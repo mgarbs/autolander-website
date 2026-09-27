@@ -84,6 +84,7 @@ A tool helps, but the discipline is the strategy: real comps pulled like a shopp
 - [How to respond to Facebook Marketplace messages as a dealer](https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/)
 - [Car sales follow-up templates your salespeople can send today](https://autolander.ai/guide/car-sales-follow-up-templates/)
 - [How to sell cars online as a small dealership](https://autolander.ai/guide/sell-cars-online-small-dealership/)
+- [Q4 used car sales playbook for Facebook Marketplace](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

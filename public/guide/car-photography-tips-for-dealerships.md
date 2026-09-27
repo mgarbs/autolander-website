@@ -87,6 +87,7 @@ About fifteen minutes once the routine is muscle memory: two or three minutes st
 - [The best car photography angles for listing photos, shot by shot](https://autolander.ai/guide/best-angles-for-car-listing-photos/)
 - [Bad car listing photos: the five failures that cost the click](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
 - [Car walkaround video for dealers: script, technique, AI option](https://autolander.ai/guide/car-walkaround-video-for-dealers/)
+- [Q4 used car sales playbook for Facebook Marketplace](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

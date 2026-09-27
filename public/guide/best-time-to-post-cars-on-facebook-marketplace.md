@@ -95,6 +95,7 @@ Daily. New arrivals should be posted the day they hit the lot, and the whole in-
 - [Why Facebook Marketplace removes car listings (and how to fix it)](https://autolander.ai/guide/facebook-marketplace-car-listing-removed/)
 - [How to renew Facebook Marketplace car listings at lot scale](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/)
 - [Facebook Marketplace car description template that sells](https://autolander.ai/guide/facebook-marketplace-car-description-template/)
+- [Q4 used car sales playbook for Facebook Marketplace](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
