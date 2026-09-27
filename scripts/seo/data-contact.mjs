@@ -94,7 +94,7 @@ export const PAGES = [
             title: 'Press & data enquiries — ' + CONTACT.sales,
             body:
               'Journalists and analysts citing the Facebook Marketplace Used-Car Report 2026, or asking '
-              + 'about method, sample sizes and corrections. Our research is written by founder Michael '
+              + 'about method, sample sizes and corrections. Our research is written by co-founder Michael '
               + 'Garber and computed from anonymized aggregate platform data; the underlying tables are '
               + 'published as CSV and JSON under CC BY 4.0.',
           },
@@ -112,7 +112,7 @@ export const PAGES = [
           'Support email: ' + CONTACT.support + ' — replies within one business day; posting outages sooner.',
           'Postal address: AutoLander LLC, ' + CONTACT.street + ', ' + CONTACT.locality + ', '
             + CONTACT.region + ' ' + CONTACT.postalCode + ', ' + CONTACT.country + '.',
-          'Company: AutoLander LLC, a United States limited liability company. Founder: Michael Garber.',
+          'Company: AutoLander LLC, a United States limited liability company. Co-founder: Michael Garber.',
         ],
       },
       {

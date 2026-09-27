@@ -3,7 +3,7 @@
 > Advertise cars for free: the channels that cost dealers nothing, the free-ish ones like Craigslist, and what each is actually worth to a used car lot.
 
 Source: https://autolander.ai/guide/free-places-to-advertise-used-cars/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 29, 2026
 
 **Short answer:** The genuinely free list is short: Facebook Marketplace, your Google Business Profile, your own website, and organic social pages. Craigslist looks free but charges dealers for every vehicle listing, and the big portals are paid outright. Facebook Marketplace is the anchor — the largest pool of local, in-market buyers at zero listing cost — and the real price of every free channel is the labor of keeping listings live, current, and gone when sold.

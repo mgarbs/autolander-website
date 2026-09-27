@@ -3,7 +3,7 @@
 > Car walkaround video for dealers: a 60-second script anyone can follow, phone technique that looks steady, where video surfaces on listings, and an AI fallback.
 
 Source: https://autolander.ai/guide/car-walkaround-video-for-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 20, 2026
 
 **Short answer:** A car walkaround video is a single continuous sixty-second lap: open on the three-quarter front, walk the exterior slowly, step into the interior with the dash powered on, show the odometer, and close on the feature that sells the unit. Shoot it on a phone with slow feet and a wiped lens. When nobody has time to shoot, AutoLander can generate a walkaround-style AI video from the listing photos instead.

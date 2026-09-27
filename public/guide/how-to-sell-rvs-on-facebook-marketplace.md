@@ -3,7 +3,7 @@
 > How RV dealers sell travel trailers, fifth wheels and motorhomes on Facebook Marketplace: the RV/Camper category, the fields that matter, seasonal pricing and keeping a whole lot current.
 
 Source: https://autolander.ai/guide/how-to-sell-rvs-on-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** To sell RVs on Facebook Marketplace as a dealer, list every unit in the RV/Camper category — not as a car — with the RV type, length, sleeping capacity, year, make, model and a real price, led by a clean exterior photo. Buyers filter by type and price and message directly, so the listing that is accurate and answered first usually gets the visit. The hard part is not the first listing; it is keeping thirty to two hundred units current through seasonal repricing and sales, which is the job RV-aware software like AutoLander automates.

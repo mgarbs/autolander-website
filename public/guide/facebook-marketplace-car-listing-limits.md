@@ -3,7 +3,7 @@
 > Facebook Marketplace car listing limits explained honestly: what Meta publishes (nothing), what dealers actually observe, and a pacing playbook that scales.
 
 Source: https://autolander.ai/guide/facebook-marketplace-car-listing-limits/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 30, 2026
 
 **Short answer:** Facebook does not publish exact Marketplace car listing limits. Limits exist, they vary by account, and they change without notice. What dealers consistently observe: newer accounts get far less headroom than established ones, sudden volume spikes draw friction — failed publishes, pending review, temporary blocks — and a steady daily posting pace runs clean where burst posting gets flagged. Pace the account; do not race it.

@@ -25,7 +25,7 @@ export const PAGES = [
       + 'Spanish-speaking Latin America, available in English, Spanish and French, built and operated by '
       + 'AutoLander LLC. Dealers connect an inventory feed; the platform posts vehicles to Marketplace, '
       + 'keeps prices current, removes sold units and runs AI photo editing on listing images. Our '
-      + 'published research is written by founder Michael Garber and computed directly from anonymized, '
+      + 'published research is written by co-founder Michael Garber and computed directly from anonymized, '
       + 'aggregate platform data — never from surveys or estimates.',
     breadcrumbs: [
       { name: 'Home', url: home },
@@ -50,7 +50,7 @@ export const PAGES = [
         id: 'author',
         q: 'Who writes AutoLander’s research?',
         a: [
-          'Michael Garber, founder of AutoLander LLC. He built the platform the data comes from and runs '
+          'Michael Garber, co-founder of AutoLander LLC. He built the platform the data comes from and runs '
           + 'it day to day, which is the whole of the claim to authority here — the numbers are not '
           + 'reported second-hand from an industry survey, they are computed from the production system '
           + 'he operates.',
@@ -112,7 +112,7 @@ export const PAGES = [
     faq: [
       [
         'Who is behind AutoLander?',
-        'AutoLander is built and operated by AutoLander LLC. Its founder, Michael Garber, writes the '
+        'AutoLander is built and operated by AutoLander LLC. Its co-founder, Michael Garber, writes the '
         + 'company’s published research and can be reached at sales@autolander.ai or (919) 280-0967.',
       ],
       [

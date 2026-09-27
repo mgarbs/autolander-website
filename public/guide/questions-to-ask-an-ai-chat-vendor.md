@@ -3,7 +3,7 @@
 > Twelve questions that separate a useful dealership AI chat tool from a liability: where the availability answer comes from, what it does with a price, how fast a human takes over.
 
 Source: https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** Before connecting any AI chat tool to a dealership inbox, get straight answers to a short list of questions: where it reads availability and price from and how often; whether it will ever quote a number the listing does not show; how many messages pass before a frustrated or finance-question buyer reaches a person; which Facebook account it operates through and under what Meta permission; and what it logs. A vendor who answers all of them plainly is selling a tool. One who answers with a demo video is selling a risk. AutoLander is not an AI chat product and does not touch the inbox; this guide exists because dealers ask us what to look for.

@@ -3,10 +3,10 @@
 > Who builds AutoLander, what the platform does, and how the figures in our published research are produced — sourcing, method and media contact.
 
 Source: https://autolander.ai/about/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
-**Short answer:** AutoLander is Facebook Marketplace software for car dealerships in the United States, Canada and Spanish-speaking Latin America, available in English, Spanish and French, built and operated by AutoLander LLC. Dealers connect an inventory feed; the platform posts vehicles to Marketplace, keeps prices current, removes sold units and runs AI photo editing on listing images. Our published research is written by founder Michael Garber and computed directly from anonymized, aggregate platform data — never from surveys or estimates.
+**Short answer:** AutoLander is Facebook Marketplace software for car dealerships in the United States, Canada and Spanish-speaking Latin America, available in English, Spanish and French, built and operated by AutoLander LLC. Dealers connect an inventory feed; the platform posts vehicles to Marketplace, keeps prices current, removes sold units and runs AI photo editing on listing images. Our published research is written by co-founder Michael Garber and computed directly from anonymized, aggregate platform data — never from surveys or estimates.
 
 AutoLander LLC builds and operates AutoLander, a desktop application and cloud platform that car dealerships use to merchandise their inventory on Facebook Marketplace. A dealer connects the inventory source they already run — a DMS export, an SFTP or CSV feed, or their dealer website — and the platform handles the rest: creating listings, keeping asking prices in step with the feed, pulling sold units down, and preparing photos.
 
@@ -14,7 +14,7 @@ We publish original research about the dealer side of Facebook Marketplace becau
 
 ## Who writes AutoLander’s research?
 
-Michael Garber, founder of AutoLander LLC. He built the platform the data comes from and runs it day to day, which is the whole of the claim to authority here — the numbers are not reported second-hand from an industry survey, they are computed from the production system he operates.
+Michael Garber, co-founder of AutoLander LLC. He built the platform the data comes from and runs it day to day, which is the whole of the claim to authority here — the numbers are not reported second-hand from an industry survey, they are computed from the production system he operates.
 
 For data questions, corrections or media enquiries: sales@autolander.ai, or (919) 280-0967.
 
@@ -48,7 +48,7 @@ None. AutoLander is an independent product and is not affiliated with, endorsed 
 
 ### Who is behind AutoLander?
 
-AutoLander is built and operated by AutoLander LLC. Its founder, Michael Garber, writes the company’s published research and can be reached at sales@autolander.ai or (919) 280-0967.
+AutoLander is built and operated by AutoLander LLC. Its co-founder, Michael Garber, writes the company’s published research and can be reached at sales@autolander.ai or (919) 280-0967.
 
 ### Where do AutoLander’s statistics come from?
 

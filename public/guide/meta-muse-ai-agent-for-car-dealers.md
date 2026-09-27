@@ -3,7 +3,7 @@
 > Meta Muse explained for car dealers: what the AI agent Meta announced on September 8, 2026 does, whether it can shop Facebook Marketplace, and how to get listings ready.
 
 Source: https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 12, 2026
 
 **Short answer:** Muse is a personal AI agent Meta announced on September 8, 2026. It runs on its own computer in Meta’s cloud, opens a browser, fills forms, negotiates, and checks out with the user’s card once they approve. It is US-only, invite-gated, and Meta has announced nothing for sellers or for vehicles. It still matters to a dealership, because an agent shopping for a buyer reads listing fields and skips anything with a placeholder price, missing mileage or a sold car still live. Everything that makes a Marketplace listing readable to Muse makes it sell better to a person today, and it is the same groundwork that lets Meta’s own AI, from today’s availability reply to Muse itself, answer the first buyer question about a car that is actually there. AutoLander lists the cars and keeps the facts true; Meta’s AI takes the conversation.

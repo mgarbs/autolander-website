@@ -3,7 +3,7 @@
 > How to post a car on Facebook Marketplace as a dealer: every field — category, photos, price, mileage, description — plus the per-unit time math.
 
 Source: https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 27, 2026
 
 **Short answer:** To post a car on Facebook Marketplace as a dealer, open Marketplace from an established personal profile, create a Vehicle for sale listing, and complete every field: vehicle type, photos, price, mileage, year, make, model, description, and location. A single unit takes roughly ten to fifteen minutes done well; a full lot is hours of daily work, which is why most dealerships end up automating the posting.

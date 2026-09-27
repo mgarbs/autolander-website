@@ -3,7 +3,7 @@
 > Dealer inventory management is two jobs: the DMS holds the record, distribution gets it in front of buyers. How the second job breaks, and how to keep every channel current.
 
 Source: https://autolander.ai/dealer-inventory-management/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** Dealer inventory management has two halves. The system of record — a DMS or inventory platform like vAuto, DealerCenter, CDK, Tekion, Frazer or HomeNet — holds the truth about every unit: cost, price, mileage, photos, status. Distribution is the second half: getting that truth in front of buyers on the website, the portals and Facebook Marketplace, and keeping it true as prices move and cars sell. The DMS half is a solved problem. The distribution half breaks quietly, one stale listing at a time, and Marketplace is where it breaks most because nothing built into the DMS keeps it current. AutoLander is that missing leg: it reads the inventory you already manage and keeps Marketplace matched to it.

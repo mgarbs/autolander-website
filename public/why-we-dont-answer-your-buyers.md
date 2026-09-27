@@ -3,7 +3,7 @@
 > AutoLander has no autoresponder and never touches your Marketplace inbox. The reasoning, the risk we refuse to sell you, and what we do instead.
 
 Source: https://autolander.ai/why-we-dont-answer-your-buyers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** AutoLander does not reply to buyers, does not read your Marketplace messages, and does not route, forward or summarize them. Your team answers every conversation in Messenger, exactly as it does now. We made that choice because an automated reply that quotes a wrong price, misses a trade-in, or keeps chatting when a buyer needs a person does more damage than the after-hours coverage is worth — and because the thing that actually makes a fast reply useful is the listing being right. That part we do.

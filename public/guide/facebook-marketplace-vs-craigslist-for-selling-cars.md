@@ -3,7 +3,7 @@
 > Facebook Marketplace vs Craigslist for cars: audience, listing fees, messaging, scams, and dealer workflow compared — and which channel to work first.
 
 Source: https://autolander.ai/guide/facebook-marketplace-vs-craigslist-for-selling-cars/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 25, 2026
 
 **Short answer:** For selling cars locally in 2026, Facebook Marketplace beats Craigslist for most dealers: the buyer pool is far larger, listings are free while Craigslist charges dealers per vehicle listing, and buyers message from visible profiles instead of anonymous relays. Craigslist still produces buyers in certain regions and segments — work trucks, project cars, budget transportation — so treat it as additive. List everything on Marketplace first; add Craigslist where it still pulls.

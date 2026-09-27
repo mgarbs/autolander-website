@@ -3,7 +3,7 @@
 > AutoLander posts to Facebook Marketplace and nowhere else — on purpose. The trade-off, who it is wrong for, and why one channel done right beats five done shallow.
 
 Source: https://autolander.ai/why-facebook-marketplace-only/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** AutoLander does not post to Craigslist, OfferUp, eBay Motors or any channel other than Facebook Marketplace. That is a decision, not a gap. Marketplace is the one free channel where a dealer’s local buyers already are, where the listing format is vehicle-native, and where keeping a whole lot accurate — prices, sold units, photos — is a daily job worth doing perfectly. Doing that one job well is harder than doing five channels shallowly, and the dealers who get the most from Marketplace are the ones whose listings are never stale.

@@ -3,7 +3,7 @@
 > How to remove the background from a car photo — why generic removers fail on wheels, glass, and shadows, when a free tool is fine, and what dealers use instead.
 
 Source: https://autolander.ai/guide/remove-background-from-car-photo/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 31, 2026
 
 **Short answer:** Any background remover can cut a car out of a photo. The hard part is what makes the result believable: wheel spokes, glass the old background still shows through, the old scene reflected in the paint, and the ground shadow that keeps the car from floating. Generic tools fail on those four; vehicle-specific background replacement rebuilds them. Free tools are fine for one car, once — a dealer lot every week is a different problem.

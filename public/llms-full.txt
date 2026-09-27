@@ -3450,7 +3450,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Original data from 196 dealerships and 10,800+ dealer listings on Facebook Marketplace: median prices, mileage, top models and posting patterns.
 
 Source: https://autolander.ai/facebook-marketplace-used-car-report-2026/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** AutoLander analyzed anonymized data from 196 U.S. dealerships using its platform — 74,000+ synced vehicles and 10,823 priced dealer listings posted to Facebook Marketplace, including 17,700+ posts in the last 90 days. Headline findings: the median asking price of a dealer unit posted to Marketplace is $28,295; 45% of posted units are priced above $30,000; the five most-listed vehicles are all pickups and 4x4s, led by the Ford F-150; 22.6% of listings change price after going live; and Thursday is the biggest day for new dealer listings — 3.3× busier than Sunday.
@@ -3596,10 +3596,10 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Who builds AutoLander, what the platform does, and how the figures in our published research are produced — sourcing, method and media contact.
 
 Source: https://autolander.ai/about/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
-**Short answer:** AutoLander is Facebook Marketplace software for car dealerships in the United States, Canada and Spanish-speaking Latin America, available in English, Spanish and French, built and operated by AutoLander LLC. Dealers connect an inventory feed; the platform posts vehicles to Marketplace, keeps prices current, removes sold units and runs AI photo editing on listing images. Our published research is written by founder Michael Garber and computed directly from anonymized, aggregate platform data — never from surveys or estimates.
+**Short answer:** AutoLander is Facebook Marketplace software for car dealerships in the United States, Canada and Spanish-speaking Latin America, available in English, Spanish and French, built and operated by AutoLander LLC. Dealers connect an inventory feed; the platform posts vehicles to Marketplace, keeps prices current, removes sold units and runs AI photo editing on listing images. Our published research is written by co-founder Michael Garber and computed directly from anonymized, aggregate platform data — never from surveys or estimates.
 
 AutoLander LLC builds and operates AutoLander, a desktop application and cloud platform that car dealerships use to merchandise their inventory on Facebook Marketplace. A dealer connects the inventory source they already run — a DMS export, an SFTP or CSV feed, or their dealer website — and the platform handles the rest: creating listings, keeping asking prices in step with the feed, pulling sold units down, and preparing photos.
 
@@ -3607,7 +3607,7 @@ We publish original research about the dealer side of Facebook Marketplace becau
 
 ## Who writes AutoLander’s research?
 
-Michael Garber, founder of AutoLander LLC. He built the platform the data comes from and runs it day to day, which is the whole of the claim to authority here — the numbers are not reported second-hand from an industry survey, they are computed from the production system he operates.
+Michael Garber, co-founder of AutoLander LLC. He built the platform the data comes from and runs it day to day, which is the whole of the claim to authority here — the numbers are not reported second-hand from an industry survey, they are computed from the production system he operates.
 
 For data questions, corrections or media enquiries: sales@autolander.ai, or (919) 280-0967.
 
@@ -3641,7 +3641,7 @@ None. AutoLander is an independent product and is not affiliated with, endorsed 
 
 ### Who is behind AutoLander?
 
-AutoLander is built and operated by AutoLander LLC. Its founder, Michael Garber, writes the company’s published research and can be reached at sales@autolander.ai or (919) 280-0967.
+AutoLander is built and operated by AutoLander LLC. Its co-founder, Michael Garber, writes the company’s published research and can be reached at sales@autolander.ai or (919) 280-0967.
 
 ### Where do AutoLander’s statistics come from?
 
@@ -3702,7 +3702,7 @@ Invoices, plan changes, adding or removing seats, cancelling, and refund questio
 
 ### Press & data enquiries — sales@autolander.ai
 
-Journalists and analysts citing the Facebook Marketplace Used-Car Report 2026, or asking about method, sample sizes and corrections. Our research is written by founder Michael Garber and computed from anonymized aggregate platform data; the underlying tables are published as CSV and JSON under CC BY 4.0.
+Journalists and analysts citing the Facebook Marketplace Used-Car Report 2026, or asking about method, sample sizes and corrections. Our research is written by co-founder Michael Garber and computed from anonymized aggregate platform data; the underlying tables are published as CSV and JSON under CC BY 4.0.
 
 ## Phone and postal address
 
@@ -3712,7 +3712,7 @@ AutoLander LLC is a United States company. Phone is answered during US Eastern b
 - Sales email: sales@autolander.ai — replies within one business day.
 - Support email: support@autolander.ai — replies within one business day; posting outages sooner.
 - Postal address: AutoLander LLC, 5830 Memorial Hwy, Apt 1322, Tampa, FL 33615, United States.
-- Company: AutoLander LLC, a United States limited liability company. Founder: Michael Garber.
+- Company: AutoLander LLC, a United States limited liability company. Co-founder: Michael Garber.
 
 ## What to include so we can answer on the first reply
 
@@ -3788,7 +3788,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > AutoLander posts to Facebook Marketplace and nowhere else — on purpose. The trade-off, who it is wrong for, and why one channel done right beats five done shallow.
 
 Source: https://autolander.ai/why-facebook-marketplace-only/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** AutoLander does not post to Craigslist, OfferUp, eBay Motors or any channel other than Facebook Marketplace. That is a decision, not a gap. Marketplace is the one free channel where a dealer’s local buyers already are, where the listing format is vehicle-native, and where keeping a whole lot accurate — prices, sold units, photos — is a daily job worth doing perfectly. Doing that one job well is harder than doing five channels shallowly, and the dealers who get the most from Marketplace are the ones whose listings are never stale.
@@ -3873,7 +3873,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > AutoLander has no autoresponder and never touches your Marketplace inbox. The reasoning, the risk we refuse to sell you, and what we do instead.
 
 Source: https://autolander.ai/why-we-dont-answer-your-buyers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** AutoLander does not reply to buyers, does not read your Marketplace messages, and does not route, forward or summarize them. Your team answers every conversation in Messenger, exactly as it does now. We made that choice because an automated reply that quotes a wrong price, misses a trade-in, or keeps chatting when a buyer needs a person does more damage than the after-hours coverage is worth — and because the thing that actually makes a fast reply useful is the listing being right. That part we do.
@@ -3957,7 +3957,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Dealer inventory management is two jobs: the DMS holds the record, distribution gets it in front of buyers. How the second job breaks, and how to keep every channel current.
 
 Source: https://autolander.ai/dealer-inventory-management/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** Dealer inventory management has two halves. The system of record — a DMS or inventory platform like vAuto, DealerCenter, CDK, Tekion, Frazer or HomeNet — holds the truth about every unit: cost, price, mileage, photos, status. Distribution is the second half: getting that truth in front of buyers on the website, the portals and Facebook Marketplace, and keeping it true as prices move and cars sell. The DMS half is a solved problem. The distribution half breaks quietly, one stale listing at a time, and Marketplace is where it breaks most because nothing built into the DMS keeps it current. AutoLander is that missing leg: it reads the inventory you already manage and keeps Marketplace matched to it.
@@ -4056,7 +4056,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How RV dealers sell travel trailers, fifth wheels and motorhomes on Facebook Marketplace: the RV/Camper category, the fields that matter, seasonal pricing and keeping a whole lot current.
 
 Source: https://autolander.ai/guide/how-to-sell-rvs-on-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** To sell RVs on Facebook Marketplace as a dealer, list every unit in the RV/Camper category — not as a car — with the RV type, length, sleeping capacity, year, make, model and a real price, led by a clean exterior photo. Buyers filter by type and price and message directly, so the listing that is accurate and answered first usually gets the visit. The hard part is not the first listing; it is keeping thirty to two hundred units current through seasonal repricing and sales, which is the job RV-aware software like AutoLander automates.
@@ -4138,7 +4138,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How to photograph a travel trailer, fifth wheel or motorhome so it reads in a Marketplace thumbnail: the shot list, the lead photo, and what an AI studio can and cannot fix.
 
 Source: https://autolander.ai/guide/rv-photos-for-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** An RV photo has to do something a car photo does not: make a thirty-foot subject read clearly in a thumbnail the size of a thumb. That means a lead shot from a three-quarter angle with the whole unit in frame and nothing behind it, followed by a fixed shot list — awning side, interior from the door, kitchen, bedroom, bath, hitch or cab, and the data plate. A clean background is worth more on an RV than on any car, which is why AI background replacement earns its keep here; it cannot fix a crooked horizon, a slide-out left closed, or an interior shot with the lights off.
@@ -4213,7 +4213,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Twelve questions that separate a useful dealership AI chat tool from a liability: where the availability answer comes from, what it does with a price, how fast a human takes over.
 
 Source: https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** Before connecting any AI chat tool to a dealership inbox, get straight answers to a short list of questions: where it reads availability and price from and how often; whether it will ever quote a number the listing does not show; how many messages pass before a frustrated or finance-question buyer reaches a person; which Facebook account it operates through and under what Meta permission; and what it logs. A vendor who answers all of them plainly is selling a tool. One who answers with a demo video is selling a risk. AutoLander is not an AI chat product and does not touch the inbox; this guide exists because dealers ask us what to look for.
@@ -4304,7 +4304,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > On Facebook Marketplace the first accurate reply usually gets the appointment. Why speed depends on the listing being right, how to set a reply standard, and what to automate — and not.
 
 Source: https://autolander.ai/guide/marketplace-response-time-for-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** A Marketplace buyer messages several listings at once and goes to see the one that answers first with a straight answer. Response time is therefore a sales metric, not a courtesy — but speed only works if the reply is right. The fastest way to a fast, correct reply is not a bot; it is a listing whose price and availability are already true, so the human answer is one sentence. Set a reply standard your team can actually meet, put the listings on a schedule that keeps them accurate, and automate the listing — not the conversation.
@@ -4455,7 +4455,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How to post a car on Facebook Marketplace as a dealer: every field — category, photos, price, mileage, description — plus the per-unit time math.
 
 Source: https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 27, 2026
 
 **Short answer:** To post a car on Facebook Marketplace as a dealer, open Marketplace from an established personal profile, create a Vehicle for sale listing, and complete every field: vehicle type, photos, price, mileage, year, make, model, description, and location. A single unit takes roughly ten to fifteen minutes done well; a full lot is hours of daily work, which is why most dealerships end up automating the posting.
@@ -4551,7 +4551,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Facebook Marketplace car listing limits explained honestly: what Meta publishes (nothing), what dealers actually observe, and a pacing playbook that scales.
 
 Source: https://autolander.ai/guide/facebook-marketplace-car-listing-limits/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 30, 2026
 
 **Short answer:** Facebook does not publish exact Marketplace car listing limits. Limits exist, they vary by account, and they change without notice. What dealers consistently observe: newer accounts get far less headroom than established ones, sudden volume spikes draw friction — failed publishes, pending review, temporary blocks — and a steady daily posting pace runs clean where burst posting gets flagged. Pace the account; do not race it.
@@ -4650,7 +4650,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Facebook Marketplace car listing removed? The real causes — commerce policy, duplicates, price flags — how to appeal it, and how to stop the next one.
 
 Source: https://autolander.ai/guide/facebook-marketplace-car-listing-removed/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 4, 2026
 
 **Short answer:** Car listings on Facebook Marketplace usually get removed for a short list of reasons: commerce-policy triggers in the text, duplicate listings of the same vehicle, category or price mismatches, spam-signal photos, or account-level flags from posting too fast. Appeal from your Support Inbox by requesting a review of the removed listing, and fix the underlying cause before reposting — repeat removals compound into account restrictions.
@@ -4750,7 +4750,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Facebook Marketplace listing not showing up? Triage it in order: pending review, quiet deranking, removal, or buyer filters — and when to renew or repost.
 
 Source: https://autolander.ai/guide/facebook-marketplace-listing-not-showing-up/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 21, 2026
 
 **Short answer:** When a Facebook Marketplace listing is not showing up, check four things in order: is it pending review (wait it out), was it removed (check your Support Inbox, then appeal), has it gone stale and been quietly deranked (renew or repost), or is it live but filtered out of the buyer’s view by distance, category, or price settings. Most “invisible” dealer listings turn out to be stale or price-filtered, not removed.
@@ -4845,7 +4845,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How to renew a Facebook Marketplace listing, what renewing actually does, when delete-and-repost wins, and a cadence that works for a 30–60 unit lot.
 
 Source: https://autolander.ai/guide/renew-facebook-marketplace-car-listings/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 7, 2026
 
 **Short answer:** To renew a Facebook Marketplace listing, open your listings from your selling view, find the vehicle, and choose Renew from its menu when Facebook offers it — roughly weekly per listing. Renewing bumps the listing back toward the fresh end of search and browse for free, without creating a duplicate. It beats delete-and-repost for healthy listings; delete-and-repost wins when a listing has gone cold and needs new photos or a new price.
@@ -4942,7 +4942,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > The best time to post on Facebook Marketplace, from 17,778 real dealer posts: Thursday is the crowded day, Sunday the open lane — and what matters more.
 
 Source: https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 30, 2026
 
 **Short answer:** Across 17,778 dealer posts in AutoLander’s 2026 Marketplace report, Thursday is the heaviest listing day (17.5% of posts) and Sunday the lightest (5.4%) — a 3.3× gap. That data measures dealer supply, not buyer demand: it means a car listed Sunday or Monday competes with the week’s thinnest wave of fresh listings. Timing is a real but small edge; posting every unit consistently matters far more.
@@ -5047,7 +5047,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > A Facebook Marketplace car description template that sells: the three facts buyers scan first, two fill-in templates, and the do/don’t list dealers use.
 
 Source: https://autolander.ai/guide/facebook-marketplace-car-description-template/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 10, 2026
 
 **Short answer:** A Facebook Marketplace car description has one job: confirm what the photo and the price already promised. Lead with the three facts every buyer scans — where the price stands, what condition the car is in, and whether it is still available — then cover the equipment buyers in that segment search for. Keep it under 150 words, front-load the substance, and disclose the flaw a buyer will find anyway.
@@ -5159,7 +5159,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How to mark a car as sold on Facebook Marketplace, mark-sold vs delete tradeoffs, why ghost listings cost dealers real buyers — and the removal routine.
 
 Source: https://autolander.ai/guide/mark-car-sold-on-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 19, 2026
 
 **Short answer:** Open the listing from your selling view and use its status control: Mark as pending while paperwork finishes, Mark as sold when the car delivers — sold ends the listing’s visibility to buyers. Marking sold preserves your conversation history; deleting erases the listing entirely, so reserve deletion for mistakes and duplicates. Do one of them the day the car leaves — a listing for a sold car only generates messages you answer with bad news.
@@ -5255,7 +5255,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Facebook Marketplace vs Craigslist for cars: audience, listing fees, messaging, scams, and dealer workflow compared — and which channel to work first.
 
 Source: https://autolander.ai/guide/facebook-marketplace-vs-craigslist-for-selling-cars/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 25, 2026
 
 **Short answer:** For selling cars locally in 2026, Facebook Marketplace beats Craigslist for most dealers: the buyer pool is far larger, listings are free while Craigslist charges dealers per vehicle listing, and buyers message from visible profiles instead of anonymous relays. Craigslist still produces buyers in certain regions and segments — work trucks, project cars, budget transportation — so treat it as additive. List everything on Marketplace first; add Craigslist where it still pulls.
@@ -5348,7 +5348,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Car dealership photography tips that scale: the per-unit process any porter can run — time of day, lot spot, shot list, phone settings — and where AI fits.
 
 Source: https://autolander.ai/guide/car-photography-tips-for-dealerships/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 2, 2026
 
 **Short answer:** Good dealership photography is a process, not a talent. Pick one photo spot on the lot, shoot in the first or last hours of daylight, walk the same shot list on every unit, and lock the phone settings once. A porter can produce consistent, dealer-grade photos in about fifteen minutes per car. AI background replacement then handles the one variable the process cannot: what is behind the car.
@@ -5445,7 +5445,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How to take pictures of a car to sell: prep, light, background, a dealer-grade shot list, and the phone settings that make any car look worth the asking price.
 
 Source: https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 28, 2026
 
 **Short answer:** Clean the car completely, shoot in the first or last hours of daylight with the sun behind you, and find open space with nothing distracting behind the car. Hold the phone at mid-door height, fill the frame, and work a full list: eight exterior angles, the interior with the dash on, the odometer, tires, and every flaw. Around twenty honest, well-lit photos sell a car better than any description.
@@ -5538,7 +5538,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How many photos should a car listing have? Coverage beats count — the shots that answer buyer objections, the first photo that wins the click, and order.
 
 Source: https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 5, 2026
 
 **Short answer:** Enough to answer every question a serious buyer would ask in person — in practice, fifteen to twenty-five photos. Coverage beats count: eight exterior angles, a full interior set, odometer, tires, and honest flaw close-ups. Below roughly eight photos, buyers assume the listing is hiding something. And the first photo matters more than the rest combined, because it is the only one shown in the search results.
@@ -5630,7 +5630,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Car photography backdrop, photo booth, staging spot, or AI background replacement? The real costs and tradeoffs of each way to get clean car listing photos.
 
 Source: https://autolander.ai/guide/car-photo-backdrop-vs-ai-background/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 23, 2026
 
 **Short answer:** There are three ways to get clean, consistent backgrounds behind your inventory: a physical backdrop or photo booth (total control, but a dedicated bay and a serious five-figure build), a staging spot on the lot (free, but hostage to weather and light), and AI background replacement (per-photo software that re-stages the real shot). Most independent dealers get booth-grade consistency cheapest from the staging spot plus AI.
@@ -5719,7 +5719,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Car photography angles explained — why the three-quarter front is the hero, the full angle-by-angle shot list, what each frame answers, and mistakes to avoid.
 
 Source: https://autolander.ai/guide/best-angles-for-car-listing-photos/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 8, 2026
 
 **Short answer:** Lead with the three-quarter front — it shows the car’s face and its depth in one frame. Then cover both full profiles, both three-quarter rears, straight-on front and rear, a complete interior set with the dash powered on, and detail close-ups. Shoot every exterior angle from mid-door height, fill the frame, and never skip the far side. Each angle exists to answer a specific buyer question.
@@ -5819,7 +5819,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Car walkaround video for dealers: a 60-second script anyone can follow, phone technique that looks steady, where video surfaces on listings, and an AI fallback.
 
 Source: https://autolander.ai/guide/car-walkaround-video-for-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 20, 2026
 
 **Short answer:** A car walkaround video is a single continuous sixty-second lap: open on the three-quarter front, walk the exterior slowly, step into the interior with the dash powered on, show the odometer, and close on the feature that sells the unit. Shoot it on a phone with slow feet and a wiped lens. When nobody has time to shoot, AutoLander can generate a walkaround-style AI video from the listing photos instead.
@@ -5915,7 +5915,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Bad car listing photos fail a half-second scroll test. The five failures — dark shots, clutter, promo frames, bad crops, missing angles — and the fix for each.
 
 Source: https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 11, 2026
 
 **Short answer:** A buyer gives each listing less than a second in the scroll, and the first photo does all the talking. Bad car listing photos fail in five repeatable ways — too dark, cluttered background, promo frames, the car too small or cropped in the frame, and missing angles. Each failure has a specific fix, and none of them requires a photographer: a light window, a staging spot, and background replacement cover all five.
@@ -6004,7 +6004,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How to remove the background from a car photo — why generic removers fail on wheels, glass, and shadows, when a free tool is fine, and what dealers use instead.
 
 Source: https://autolander.ai/guide/remove-background-from-car-photo/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 31, 2026
 
 **Short answer:** Any background remover can cut a car out of a photo. The hard part is what makes the result believable: wheel spokes, glass the old background still shows through, the old scene reflected in the paint, and the ground shadow that keeps the car from floating. Generic tools fail on those four; vehicle-specific background replacement rebuilds them. Free tools are fine for one car, once — a dealer lot every week is a different problem.
@@ -6103,7 +6103,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Used car dealership advertising on a budget: what to run at $0, where the first paid dollars go, and why free coverage beats ad spend for small stores.
 
 Source: https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 1, 2026
 
 **Short answer:** Used car dealership advertising on a budget follows a strict ladder: exhaust the free, high-intent channels before the first paid dollar. That means every unit on Facebook Marketplace daily, a fully built Google Business Profile with fresh reviews, and photos that compete — all of which cost time, not money. When real budget exists, paid spend gets a narrow job: moving aged units and retargeting shoppers who already looked.
@@ -6207,7 +6207,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Advertise cars for free: the channels that cost dealers nothing, the free-ish ones like Craigslist, and what each is actually worth to a used car lot.
 
 Source: https://autolander.ai/guide/free-places-to-advertise-used-cars/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: August 29, 2026
 
 **Short answer:** The genuinely free list is short: Facebook Marketplace, your Google Business Profile, your own website, and organic social pages. Craigslist looks free but charges dealers for every vehicle listing, and the big portals are paid outright. Facebook Marketplace is the anchor — the largest pool of local, in-market buyers at zero listing cost — and the real price of every free channel is the labor of keeping listings live, current, and gone when sold.
@@ -6303,7 +6303,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How to sell cars online as a small dealership: list where buyers look, photos that compete, one owner for replies, and a simple path to the handshake.
 
 Source: https://autolander.ai/guide/sell-cars-online-small-dealership/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 22, 2026
 
 **Short answer:** Selling cars online as a small dealership takes four pieces, not a tech stack: inventory listed everywhere local buyers actually search (Facebook Marketplace first), photos that compete with the franchise store’s, one named person owning every reply, and a simple path from chat to appointment to paperwork. The internet sells the appointment; the lot still sells the car. Consistency beats sophistication every month.
@@ -6401,7 +6401,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Buy here pay here marketing that works: honest Marketplace listings, a referral engine, service-drive plays, and the compliance line you never cross.
 
 Source: https://autolander.ai/guide/buy-here-pay-here-marketing/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 24, 2026
 
 **Short answer:** Buy here pay here marketing works when it matches how BHPH buyers shop: payment-first, locally, and urgently. The plays that fill the payment book are full Facebook Marketplace coverage with honest prices, a Google profile with real reviews, a deliberate referral engine, and retention through the payment desk. The line you never cross is deceptive credit promises — plain, honest claims are both the law’s demand and the better ad.
@@ -6504,7 +6504,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Car sales follow up templates a real salesperson sends — first touch, day 2, day 5, price drop, anniversary — plus the cadence table that gets replies.
 
 Source: https://autolander.ai/guide/car-sales-follow-up-templates/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 18, 2026
 
 **Short answer:** Five follow-up templates cover almost every used-car lead: the first touch within minutes, a day-2 nudge, a day-5 value add, a same-day price-drop alert, and a delivery-anniversary check-in. The rules that make them work: short enough to read on a lock screen, one question per message, personalized fill-ins, and sent by a real salesperson — a template is a starting point for a human, never a canned blast.
@@ -6596,7 +6596,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How to price used cars with price-to-market discipline: live comps, the four Marketplace price bands from 10,823 dealer listings, and when to drop the price.
 
 Source: https://autolander.ai/guide/how-to-price-used-cars-competitively/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 3, 2026
 
 **Short answer:** Price used cars to the market, not to the money in them: position each unit against the live comparable listings a shopper actually sees, adjust for miles and condition, put one price on every channel, and review it on a calendar. Repricing is routine — 22.6% of dealer Marketplace listings changed price after going live in AutoLander’s 2026 report — so build the cadence in from day one instead of treating a drop as defeat.
@@ -6691,7 +6691,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Google Business Profile for car dealership trust: every field that matters, the photos to add, a delivery-day review script, and Google Maps troubleshooting.
 
 Source: https://autolander.ai/guide/google-business-profile-for-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 6, 2026
 
 **Short answer:** A car dealership’s Google Business Profile is the trust check nearly every buyer runs before visiting: claim and verify it, use your exact real-world name, pick honest categories, complete the hours, load real photos of the lot and the people, point the website link at your inventory, seed the Q&A, and build a steady review rhythm with a delivery-day ask. Local search visibility follows completeness and review velocity.
@@ -6802,7 +6802,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > How to respond to Facebook Marketplace messages as a dealer: the "Is this available?" reply, six buyer-message templates, and the path to an appointment.
 
 Source: https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 9, 2026
 
 **Short answer:** Respond to Facebook Marketplace messages within minutes, like a person: confirm the car is available, give your name, and ask one question that advances the deal — their timing, their name, or their trade. Never send a bare "yes." From there the ladder is chat to phone to a booked appointment with two offered time windows. Every reply here is one a human salesperson sends — the inbox is yours, not software’s.
@@ -6898,7 +6898,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > The Facebook Seller app explained for car dealers: what Meta shipped on July 24, 2026, what it does for vehicle listings, and how it fits next to a posting tool.
 
 Source: https://autolander.ai/guide/facebook-seller-app-for-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 16, 2026
 
 **Short answer:** Seller is a standalone Facebook app Meta released on July 24, 2026 for people who sell on Marketplace. It puts listing creation, a buyer inbox organized by item, inventory tools and performance numbers in one place, and Meta AI can draft a listing from a photo. It was built for resellers of everyday items, and it will not list cars the way AutoLander does: it makes one listing at a time from photos already on your phone, and it never reads your inventory. For a dealership it is a good inbox and a useful dashboard, and it leaves the two jobs that eat a dealer’s day untouched: getting every unit onto Marketplace from the feed, and keeping price, mileage and sold status matched to the lot.
@@ -7028,7 +7028,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > Meta Muse explained for car dealers: what the AI agent Meta announced on September 8, 2026 does, whether it can shop Facebook Marketplace, and how to get listings ready.
 
 Source: https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 12, 2026
 
 **Short answer:** Muse is a personal AI agent Meta announced on September 8, 2026. It runs on its own computer in Meta’s cloud, opens a browser, fills forms, negotiates, and checks out with the user’s card once they approve. It is US-only, invite-gated, and Meta has announced nothing for sellers or for vehicles. It still matters to a dealership, because an agent shopping for a buyer reads listing fields and skips anything with a placeholder price, missing mileage or a sold car still live. Everything that makes a Marketplace listing readable to Muse makes it sell better to a person today, and it is the same groundwork that lets Meta’s own AI, from today’s availability reply to Muse itself, answer the first buyer question about a car that is actually there. AutoLander lists the cars and keeps the facts true; Meta’s AI takes the conversation.
@@ -7160,7 +7160,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > A car salesman’s guide to Meta Muse: 12 ways it helps you sell, why posting your cars through it wastes it, and why a $39 feed-driven poster does that job better.
 
 Source: https://autolander.ai/compare/meta-muse-for-car-salesmen/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 26, 2026
 
 **Short answer:** For a car salesman, Meta Muse is the most useful assistant to arrive in years. It can answer your Marketplace buyers from your own account, chase every follow-up, book and confirm appointments, research a customer’s trade and write the texts you never get to. It can post cars too: hand it a feed and it will create the listings. Posting is the easy day. After it, every price drop, new arrival and sold unit has to reach Marketplace as well, every day, and for Muse that upkeep is a recurring job that draws on the same weekly usage your customers need, with nobody checking its choices but you. AutoLander does that upkeep as its whole job, from $39 a month: it posts from your store’s feed, verifies what it enters, keeps prices and sold status true and upgrades every photo. Give Muse the customers and AutoLander the cars.
@@ -7321,7 +7321,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > What a Fed rate hike means for new and used car dealers: payment math, holding costs, price bands from 10,823 dealer listings and a 30-day action plan.
 
 Source: https://autolander.ai/blog/fed-rate-hike-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 27, 2026
 
 **Short answer:** A Fed rate hike raises the cost of money on both sides of the car business: financed buyers see a bigger payment on the same price, and inventory on a variable-rate line costs more each day it sits. New-car stores should check floorplan terms and manufacturer offers first; used stores should check where their prices sit against search filter lines. Then decide aged units sooner, keep one price everywhere and favor free Marketplace coverage over paid ads. AutoLander keeps those Marketplace listings current.
@@ -7462,7 +7462,7 @@ AutoLander — Facebook Marketplace software for car dealers. https://autolander
 > A Q4 used car sales plan for Facebook Marketplace dealers: units to list first, aged inventory, winter photos, holiday coverage and a weekly checklist.
 
 Source: https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 27, 2026
 
 **Short answer:** To win Q4 used car sales on Facebook Marketplace, get every front-line unit live before Thanksgiving, decide each aged unit's price at 30, 45 and 60 days, and name an inbox owner for every holiday shift. List new arrivals and units under common price-filter lines first, shoot photos in the morning light window, post daily with the weekend lane in mind, and keep one price everywhere. AutoLander handles listing and sync; your team answers every buyer.

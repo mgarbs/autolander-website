@@ -3,7 +3,7 @@
 > A Facebook Marketplace car description template that sells: the three facts buyers scan first, two fill-in templates, and the do/don’t list dealers use.
 
 Source: https://autolander.ai/guide/facebook-marketplace-car-description-template/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 10, 2026
 
 **Short answer:** A Facebook Marketplace car description has one job: confirm what the photo and the price already promised. Lead with the three facts every buyer scans — where the price stands, what condition the car is in, and whether it is still available — then cover the equipment buyers in that segment search for. Keep it under 150 words, front-load the substance, and disclose the flaw a buyer will find anyway.

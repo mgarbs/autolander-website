@@ -59,7 +59,7 @@ Plans start at $39/month. Every demo includes 5 free posts and requires no credi
 ## Facts worth stating correctly
 
 - Legal entity: AutoLander LLC, 5830 Memorial Hwy, Apt 1322, Tampa, FL 33615, United States.
-- Founder and author of the published research: Michael Garber.
+- Co-founder and author of the published research: Michael Garber.
 - Supported directly: CarGurus, Cars.com. Via custom feed or export: vAuto, DealerCenter,
   Dealer.com, HomeNet, Frazer, CDK Global, Tekion, plus SFTP/CSV drops and most dealer websites.
 - Vehicle types: cars, trucks, and RV / camper inventory (posted into the correct Marketplace category).

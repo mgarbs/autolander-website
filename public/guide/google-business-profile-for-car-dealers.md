@@ -3,7 +3,7 @@
 > Google Business Profile for car dealership trust: every field that matters, the photos to add, a delivery-day review script, and Google Maps troubleshooting.
 
 Source: https://autolander.ai/guide/google-business-profile-for-car-dealers/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 6, 2026
 
 **Short answer:** A car dealership’s Google Business Profile is the trust check nearly every buyer runs before visiting: claim and verify it, use your exact real-world name, pick honest categories, complete the hours, load real photos of the lot and the people, point the website link at your inventory, seed the Q&A, and build a steady review rhythm with a delivery-day ask. Local search visibility follows completeness and review velocity.

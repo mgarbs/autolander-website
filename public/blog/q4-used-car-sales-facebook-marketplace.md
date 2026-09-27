@@ -3,7 +3,7 @@
 > A Q4 used car sales plan for Facebook Marketplace dealers: units to list first, aged inventory, winter photos, holiday coverage and a weekly checklist.
 
 Source: https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/  
-Author: Michael Garber, Founder, AutoLander  
+Author: Michael Garber, Co-founder, AutoLander  
 Updated: September 27, 2026
 
 **Short answer:** To win Q4 used car sales on Facebook Marketplace, get every front-line unit live before Thanksgiving, decide each aged unit's price at 30, 45 and 60 days, and name an inbox owner for every holiday shift. List new arrivals and units under common price-filter lines first, shoot photos in the morning light window, post daily with the weekend lane in mind, and keep one price everywhere. AutoLander handles listing and sync; your team answers every buyer.
