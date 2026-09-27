@@ -308,6 +308,17 @@ export async function handleBlogDiscard(request, env) {
   if (slug === null || !SLUG_RE.test(slug)) return errorResult(400, 'invalid_slug');
 
   const requestId = newRequestId();
+  const record = {
+    requestId,
+    mode: 'discard',
+    slug,
+    createdAt: new Date().toISOString(),
+  };
+  try {
+    await storeRequest(env, record);
+  } catch {
+    return errorResult(502, 'request_store_failed', 'The discard request could not be saved. Try again.');
+  }
   const dispatched = await dispatchWorkflow(env, {
     request_id: requestId,
     mode: 'discard',
@@ -315,6 +326,7 @@ export async function handleBlogDiscard(request, env) {
     payload: '',
   });
   if (!dispatched) {
+    await cleanFailedDispatch(env, record);
     return errorResult(502, 'dispatch_failed', 'The discard workflow could not be started. Try again.');
   }
 
@@ -372,6 +384,7 @@ function parseRun(run) {
     status: run.status,
     conclusion: run.conclusion,
     createdAt: run.created_at,
+    updatedAt: run.updated_at,
     url: run.html_url,
   };
 }
@@ -439,12 +452,12 @@ async function loadRequests(kv) {
       && (typeof record.requestId !== 'string' || record.requestId.toLowerCase() !== keyRequestId)) {
       return null;
     }
-    if (!['new', 'revise'].includes(record.mode) || !Number.isFinite(Date.parse(record.createdAt || ''))) {
+    if (!['new', 'revise', 'discard'].includes(record.mode) || !Number.isFinite(Date.parse(record.createdAt || ''))) {
       return null;
     }
     if (record.mode === 'new' && typeof record.prompt !== 'string') return null;
-    if (record.mode === 'revise'
-      && (!SLUG_RE.test(record.slug || '') || typeof record.feedback !== 'string')) return null;
+    if (record.mode !== 'new' && !SLUG_RE.test(record.slug || '')) return null;
+    if (record.mode === 'revise' && typeof record.feedback !== 'string') return null;
     return {
       ...record,
       requestId: keyRequestId,

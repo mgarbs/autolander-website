@@ -39,6 +39,7 @@ import { SITE, NAV } from '../registry.mjs';
 import { collectText } from './content-rules.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
+const BLOG_REQUEST_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export const PUBLISH_STATE_PATH = resolve(HERE, 'publish-state.json');
 
 // ---- silo definitions. hub = the page whose breadcrumb the article sits under and the
@@ -354,6 +355,7 @@ export function contentStatusJson(articles, state) {
         const outboundLinks = new Set(text.flatMap((value) => [...value.matchAll(/\]\((\/[^)\s]*)\)/g)].map((match) => match[1])));
         return {
           ...row,
+          requestId: BLOG_REQUEST_ID_RE.test(a.meta?.requestId || '') ? a.meta.requestId : null,
           updatedAt: a.meta?.updatedAt || null,
           validationOk: a.meta?.validation?.ok === true,
           validationErrors: (a.meta?.validation?.errors || []).slice(0, 20),

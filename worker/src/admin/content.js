@@ -99,6 +99,7 @@ export async function handleContentList(env) {
           status: r.status,            // queued | in_progress | completed
           conclusion: r.conclusion,    // success | failure | cancelled | null
           createdAt: r.created_at,
+          updatedAt: r.updated_at,
           url: r.html_url,
         }));
       }

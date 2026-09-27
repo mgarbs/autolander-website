@@ -328,7 +328,8 @@ test('blog revise validates the slug and feedback, then includes the original pr
 
 test('blog discard validates its slug and dispatches an empty encrypted-payload field', async () => {
   const { handleBlogDiscard } = await blogApi();
-  const env = workerEnv();
+  const kv = new MemoryKv();
+  const env = workerEnv(kv);
 
   const invalid = await handleBlogDiscard(jsonRequest(
     { slug: 'Bad Slug' },
@@ -356,6 +357,11 @@ test('blog discard validates its slug and dispatches an empty encrypted-payload 
     slug: 'dealer-operations-guide',
     payload: '',
   });
+  const stored = JSON.parse(kv.values.get(`blogreq:${dispatch.inputs.request_id}`));
+  assert.equal(stored.mode, 'discard');
+  assert.equal(stored.slug, 'dealer-operations-guide');
+  assert.ok(Number.isFinite(Date.parse(stored.createdAt)));
+  assert.equal(kv.puts.at(-1).options.expirationTtl, 7_776_000);
 });
 
 test('blog preview reads raw HTML from main and handles invalid or missing previews', async () => {
@@ -450,6 +456,7 @@ test('content list merges generation runs with the newest 20 private KV requests
           status: 'in_progress',
           conclusion: null,
           created_at: '2026-09-27T12:01:00.000Z',
+          updated_at: '2026-09-27T12:02:00.000Z',
           html_url: 'https://github.example/runs/202',
         },
         {
@@ -506,6 +513,7 @@ test('content list merges generation runs with the newest 20 private KV requests
         { mode: 'new', requestId: ORIGINAL_REQUEST_ID },
       ],
     );
+    assert.equal(result.body.blogRuns[0].updatedAt, '2026-09-27T12:02:00.000Z');
 
     assert.equal(result.body.blogRequests.length, 20);
     assert.equal(result.body.blogRequests[0].requestId, CURRENT_REQUEST_ID);

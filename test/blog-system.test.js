@@ -54,14 +54,19 @@ test('inboundFrom adds a link on the target only once the post is published', ()
   assert.deepEqual(blogInboundTargets(p, arts, st({ [target.slug]: '2026-08-27' })).map((a) => a.slug), [target.slug]);
 });
 
-test('content-status marks blog rows and never carries prompt text', () => {
-  const p = post('x-post', { meta: { prompt: 'SECRET', validation: { ok: false, errors: ['e1'] }, updatedAt: '2026-09-27' } });
-  const json = contentStatusJson([guide('g-one'), p], st({ 'g-one': '2026-08-27', 'x-post': null }));
+test('content-status marks blog rows, carries request identity, and never carries prompt text', () => {
+  const requestId = '11111111-1111-4111-8111-111111111111';
+  const p = post('x-post', { meta: { requestId, prompt: 'SECRET', validation: { ok: false, errors: ['e1'] }, updatedAt: '2026-09-27' } });
+  const poisoned = post('y-post', { meta: { requestId: 'PRIVATE REQUEST TEXT', validation: { ok: true, errors: [] }, updatedAt: '2026-09-27' } });
+  const json = contentStatusJson([guide('g-one'), p, poisoned], st({ 'g-one': '2026-08-27', 'x-post': null, 'y-post': null }));
   const row = json.articles.find((a) => a.slug === 'x-post');
   assert.equal(row.kind, 'blog');
   assert.equal(row.suggestedOrder, null);
   assert.equal(row.validationOk, false);
+  assert.equal(row.requestId, requestId);
   assert.deepEqual(row.validationErrors, ['e1']);
   assert.ok(!JSON.stringify(json).includes('SECRET'));
+  assert.equal(json.articles.find((a) => a.slug === 'y-post').requestId, null);
+  assert.ok(!JSON.stringify(json).includes('PRIVATE REQUEST TEXT'));
   assert.equal(json.articles.find((a) => a.slug === 'g-one').kind, 'drip');
 });
