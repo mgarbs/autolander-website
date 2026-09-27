@@ -735,6 +735,48 @@
       "suggestedOrder": 36,
       "status": "draft",
       "publishedAt": null
+    },
+    {
+      "slug": "q4-used-car-sales-facebook-marketplace",
+      "kind": "blog",
+      "path": "/blog/q4-used-car-sales-facebook-marketplace/",
+      "url": "https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/",
+      "title": "Q4 Used Car Sales on Facebook Marketplace: 2026 Playbook",
+      "h1": "Q4 used car sales on Facebook Marketplace: the October to December playbook",
+      "silo": "blog",
+      "siloLabel": "Blog",
+      "primaryKeyword": "q4 used car sales",
+      "secondaryKeywords": [
+        "q4 facebook marketplace strategy for car dealers",
+        "year-end used car sales",
+        "holiday car sales on facebook marketplace",
+        "selling used cars in winter",
+        "winter car photos for listings",
+        "q4 dealership checklist"
+      ],
+      "description": "A Q4 used car sales plan for Facebook Marketplace dealers: units to list first, aged inventory, winter photos, holiday coverage and a weekly checklist.",
+      "suggestedOrder": null,
+      "status": "draft",
+      "publishedAt": null,
+      "requestId": "6febca74-1b5f-4aca-a6c6-b0905e89698d",
+      "updatedAt": "2026-09-27",
+      "validationOk": true,
+      "validationErrors": [],
+      "wordCount": 3602,
+      "outboundLinks": 22,
+      "inboundFrom": [
+        "how-to-price-used-cars-competitively",
+        "best-time-to-post-cars-on-facebook-marketplace",
+        "car-photography-tips-for-dealerships",
+        "mark-car-sold-on-facebook-marketplace",
+        "buy-here-pay-here-marketing",
+        "used-car-dealer-advertising-on-a-budget"
+      ],
+      "augmentKeys": [
+        "dealers",
+        "sellMore",
+        "mktgHub"
+      ]
     }
   ]
 }

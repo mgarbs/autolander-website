@@ -142,5 +142,9 @@
   "aged-inventory-used-car-dealers": {
     "status": "draft",
     "publishedAt": null
+  },
+  "q4-used-car-sales-facebook-marketplace": {
+    "status": "draft",
+    "publishedAt": null
   }
 }
