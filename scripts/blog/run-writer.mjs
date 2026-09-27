@@ -209,6 +209,10 @@ export function writerDiagnostics(result, { contextDir, error } = {}) {
     if (result.resultPath && existsSync(result.resultPath)) {
       const parsed = JSON.parse(readFileSync(result.resultPath, 'utf8'));
       lines.push(`writer result: subtype=${mask(parsed?.subtype)} is_error=${parsed?.is_error} turns=${parsed?.num_turns ?? '-'}`);
+      // An error run carries its API/CLI error message in `result` (stderr is often empty).
+      if (parsed?.is_error && parsed?.result) {
+        lines.push(`writer result error (masked head): ${mask(parsed.result).replace(/\s+/g, ' ').slice(0, 400)}`);
+      }
     }
   } catch { lines.push('writer result: not JSON'); }
   try {

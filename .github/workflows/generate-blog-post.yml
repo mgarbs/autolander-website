@@ -91,7 +91,8 @@ jobs:
       - name: Install Claude Code
         if: inputs.mode != 'discard'
         run: |
-          npm install --global @anthropic-ai/claude-code@2.1.233
+          # Opus 5.5 requires Claude Code >= 2.1.280 (2.1.233 got "does not support this model").
+          npm install --global @anthropic-ai/claude-code@2.1.283
           claude --version
 
       - name: Install Playwright Chromium
