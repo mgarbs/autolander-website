@@ -123,6 +123,7 @@ test('commitDraft retries a publish race and preserves both the publish and new 
     requestId: REQUEST_ID,
     mode: 'new',
     slug: '',
+    token: 'unit-test-github-token',
     sleep: async (milliseconds) => { delays.push(milliseconds); },
     random: () => 0,
     beforePush: async ({ attempt }) => {
@@ -134,6 +135,8 @@ test('commitDraft retries a publish race and preserves both the publish and new 
 
   assert.equal(result.pushed, true);
   assert.equal(result.attempts, 2);
+  const localConfig = readFileSync(resolve(generator, '.git', 'config'), 'utf8');
+  assert.doesNotMatch(localConfig, /unit-test-github-token|extraheader|AUTHORIZATION/i);
   assert.deepEqual(delays, [5_000]);
   const verify = repo.clone('verify');
   const state = readJson(resolve(verify, 'scripts', 'seo', 'articles', 'publish-state.json'));

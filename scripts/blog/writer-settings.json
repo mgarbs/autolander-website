@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "blockReadsOutsideWorkingDirectories": true,
+    "deny": [
+      "Read(//proc/**)",
+      "Read(//etc/**)",
+      "Read(//home/**)",
+      "Read(//root/**)",
+      "Read(~/**)",
+      "Read(.git/**)",
+      "Read(//tmp/**)",
+      "Read(.blog-context/request.json)"
+    ]
+  }
+}

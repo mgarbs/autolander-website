@@ -25,6 +25,7 @@ const MODULE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..')
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{2,80}$/;
 const REQUEST_ID_RE = /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/;
 const ERROR_KINDS = new Set(['usage_limit', 'auth', 'model_unavailable', 'no_output', 'validation', 'other']);
+const SECRET_LIKE_PATTERN = /sk-ant-[A-Za-z0-9_-]{8,}|CLAUDE_CODE_OAUTH_TOKEN|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|x-access-token|AUTHORIZATION:|-----BEGIN [A-Z ]*PRIVATE KEY-----/;
 const DRIP_ARTICLES = [...MARKETPLACE_A, ...MARKETPLACE_B, ...PHOTOS, ...GROWTH, ...META_TOOLS, ...COMPARE];
 const POST_FIELDS = [
   'slug', 'silo', 'anchor', 'crumb', 'primaryKeyword', 'secondaryKeywords', 'title', 'description',
@@ -382,6 +383,12 @@ export async function finalizeDraft(options) {
   } catch {
     return failUnsafeDraft({
       root, requestId, mode, slug, writerChanges, noBuild,
+    });
+  }
+  if (SECRET_LIKE_PATTERN.test(JSON.stringify(modelPost))) {
+    return failUnsafeDraft({
+      root, requestId, mode, slug, writerChanges, noBuild,
+      error: 'post contained secret-like content',
     });
   }
   if (containsPrivateRequestText(modelPost, privateRequestValues(root))) {

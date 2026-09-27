@@ -7,6 +7,18 @@ import { dirname, resolve } from 'node:path';
 export const ACTIONS_NAME = 'github-actions[bot]';
 export const ACTIONS_EMAIL = '41898282+github-actions[bot]@users.noreply.github.com';
 
+export function githubAuthArgs(token) {
+  if (!token) return [];
+  const encoded = Buffer.from(`x-access-token:${token}`, 'utf8').toString('base64');
+  return ['-c', `http.https://github.com/.extraheader=AUTHORIZATION: basic ${encoded}`];
+}
+
+export function gitChildEnv(env = process.env) {
+  const childEnv = { ...env };
+  delete childEnv.GITHUB_TOKEN;
+  return childEnv;
+}
+
 export const readJson = (path) => JSON.parse(readFileSync(path, 'utf8'));
 
 export function writeJson(path, value) {
@@ -19,14 +31,15 @@ export function runGit(root, args, { allowFailure = false } = {}) {
     cwd: root,
     encoding: 'utf8',
     shell: false,
-    env: process.env,
+    env: gitChildEnv(),
   });
   if (!allowFailure && result.status !== 0) throw new Error('git operation failed');
   return result;
 }
 
-export function fetchAndReset(root, remote, branch) {
+export function fetchAndReset(root, remote, branch, token = '') {
   runGit(root, [
+    ...githubAuthArgs(token),
     'fetch', remote, `+refs/heads/${branch}:refs/remotes/${remote}/${branch}`,
   ]);
   runGit(root, ['reset', '--hard', `refs/remotes/${remote}/${branch}`]);
@@ -74,8 +87,11 @@ export function commitStaged(root, message) {
   return runGit(root, ['rev-parse', 'HEAD']).stdout.trim();
 }
 
-export function pushHead(root, remote, branch) {
-  return runGit(root, ['push', '--porcelain', remote, `HEAD:${branch}`], { allowFailure: true });
+export function pushHead(root, remote, branch, token = '') {
+  return runGit(root, [
+    ...githubAuthArgs(token),
+    'push', '--porcelain', remote, `HEAD:${branch}`,
+  ], { allowFailure: true });
 }
 
 export function isPushRejection(result) {

@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { Buffer } from 'node:buffer';
 import { spawnSync } from 'node:child_process';
 import {
   mkdtempSync, readFileSync, rmSync, writeFileSync,
@@ -15,6 +16,7 @@ const PUBLISH_WORKFLOW = resolve(ROOT, '.github', 'workflows', 'publish-article.
 const CHECK_INPUTS = resolve(ROOT, 'scripts', 'blog', 'check-inputs.mjs');
 const POST_PUBLISH = resolve(ROOT, 'scripts', 'blog', 'post-publish.mjs');
 const PUBLISH_ARTICLE = resolve(ROOT, 'scripts', 'publish-article.mjs');
+const COMMIT_UTILS = resolve(ROOT, 'scripts', 'blog', 'commit-utils.mjs');
 const VALID_POST = resolve(ROOT, 'test', 'fixtures', 'blog', 'valid-post.json');
 const REQUEST_ID = '550e8400-e29b-41d4-a716-446655440000';
 const ORIGIN = 'https://autolander.ai';
@@ -138,6 +140,13 @@ test('generate workflow constrains concurrency, credentials, shell inputs, and c
   assert.match(yaml, /concurrency:\s*\n\s+group:\s*blog-generate\s*\n\s+cancel-in-progress:\s*false\b/);
   assert.match(yaml, /permissions:\s*\n\s+contents:\s*write\b/);
   assert.match(yaml, /CLAUDE_CODE_OAUTH_TOKEN:\s*\$\{\{\s*secrets\.CLAUDE_CODE_OAUTH_TOKEN\s*\}\}/);
+  assert.match(yaml, /container:\s*node:22-bookworm\b/);
+  assert.match(yaml, /uses:\s*actions\/checkout@v4\s*\n\s+with:\s*\n\s+persist-credentials:\s*false\b/);
+  const commitStep = yaml.indexOf('- name: Commit');
+  assert.ok(commitStep >= 0);
+  assert.doesNotMatch(yaml.slice(0, commitStep), /GITHUB_TOKEN/);
+  assert.match(yaml.slice(commitStep), /GITHUB_TOKEN:\s*\$\{\{\s*secrets\.GITHUB_TOKEN\s*\}\}/);
+  assert.equal((yaml.match(/secrets\.GITHUB_TOKEN/g) || []).length, 1);
   assert.doesNotMatch(yaml, /ANTHROPIC_(?:API_KEY|AUTH_TOKEN)/);
   assertNoInputExpressionsInRun(yaml, 'generate-blog-post.yml');
   assert.match(yaml, /- name: Validate inputs\s*\n\s+id: input_check\b/);
@@ -148,6 +157,19 @@ test('generate workflow constrains concurrency, credentials, shell inputs, and c
 
   const addLists = gitAddLists(yaml);
   assert.equal(addLists.length, 0, 'commit-draft.mjs owns the exact staging allowlist');
+});
+
+test('GitHub auth is an ephemeral git config argument and raw tokens are scrubbed from Git children', async () => {
+  const source = read(COMMIT_UTILS);
+  const { gitChildEnv, githubAuthArgs } = await importFresh(COMMIT_UTILS);
+  const token = 'unit-test-token-123';
+  const encoded = Buffer.from(`x-access-token:${token}`, 'utf8').toString('base64');
+  assert.deepEqual(githubAuthArgs(token), [
+    '-c', `http.https://github.com/.extraheader=AUTHORIZATION: basic ${encoded}`,
+  ]);
+  assert.deepEqual(githubAuthArgs(''), []);
+  assert.deepEqual(gitChildEnv({ GITHUB_TOKEN: token, SAFE_VALUE: 'kept' }), { SAFE_VALUE: 'kept' });
+  assert.doesNotMatch(source, /git\s+config|\['config'|"config"/);
 });
 
 test('publish workflow passes inputs through env and verifies blog publishes after IndexNow', () => {

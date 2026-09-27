@@ -16,7 +16,9 @@ const ALLOWED_TOOLS = [
   'Bash(node scripts/blog/validate-post.mjs *)',
 ].join(',');
 
-export function buildClaudeArgs({ model, effort, maxTurns, taskText, rulesPath }) {
+export function buildClaudeArgs({
+  model, effort, maxTurns, taskText, rulesPath, settingsPath,
+}) {
   return [
     '-p', taskText,
     '--model', model,
@@ -25,6 +27,7 @@ export function buildClaudeArgs({ model, effort, maxTurns, taskText, rulesPath }
     '--output-format', 'json',
     '--permission-mode', 'dontAsk',
     '--append-system-prompt-file', rulesPath,
+    '--settings', settingsPath,
     '--allowedTools', ALLOWED_TOOLS,
     '--disallowedTools', 'WebFetch,WebSearch',
   ];
@@ -83,6 +86,8 @@ export async function runWriter({ claudeCmd = ['claude'], env = processEnv, cont
   const taskText = readFileSync(resolve(absoluteContextDir, 'task.md'), 'utf8');
   const rulesFile = resolve(absoluteContextDir, 'rules.md');
   const rulesPath = relative(workingDirectory, rulesFile).replaceAll('\\', '/');
+  const settingsFile = resolve(absoluteContextDir, 'settings.json');
+  const settingsPath = relative(workingDirectory, settingsFile).replaceAll('\\', '/');
   const resultPath = resolve(absoluteContextDir, 'result.json');
   const stderrPath = resolve(absoluteContextDir, 'writer.stderr');
   const model = env.BLOG_MODEL || DEFAULT_MODEL;
@@ -96,7 +101,9 @@ export async function runWriter({ claudeCmd = ['claude'], env = processEnv, cont
   mkdirSync(absoluteContextDir, { recursive: true });
 
   const execute = (selectedModel) => {
-    const args = buildClaudeArgs({ model: selectedModel, effort, maxTurns, taskText, rulesPath });
+    const args = buildClaudeArgs({
+      model: selectedModel, effort, maxTurns, taskText, rulesPath, settingsPath,
+    });
     return invoke(claudeCmd[0], [...claudeCmd.slice(1), ...args], {
       cwd: workingDirectory,
       env: childEnv,

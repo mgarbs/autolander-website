@@ -516,7 +516,11 @@ function main() {
     const bytes = writeContextFile(options.out, name, contents);
     console.log(`context ${name}: ${bytes} bytes`);
   }
-  for (const [source, target] of [['post-schema.json', 'post-schema.json'], ['writer-rules.md', 'rules.md']]) {
+  for (const [source, target] of [
+    ['post-schema.json', 'post-schema.json'],
+    ['writer-rules.md', 'rules.md'],
+    ['writer-settings.json', 'settings.json'],
+  ]) {
     copyContextAsset(options.root, options.out, source, target);
     console.log(`context ${target}: ${statSync(resolve(options.out, target)).size} bytes`);
   }

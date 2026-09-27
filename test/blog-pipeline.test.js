@@ -18,6 +18,7 @@ const FAKE_CLAUDE = resolve(ROOT, 'test', 'fixtures', 'blog', 'fake-claude.mjs')
 const PREPARE = resolve(ROOT, 'scripts', 'blog', 'prepare-context.mjs');
 const FINALIZE = resolve(ROOT, 'scripts', 'blog', 'finalize-draft.mjs');
 const DISCARD = resolve(ROOT, 'scripts', 'blog', 'discard-post.mjs');
+const WRITER_SETTINGS = resolve(ROOT, 'scripts', 'blog', 'writer-settings.json');
 const SLUG = 'test-fixture-valid-blog-post';
 const SECRET = 'private prompt marker 74d03a';
 const ALLOWED_TOOLS = 'Read,Glob,Grep,Edit(scripts/seo/articles/blog/**),Bash(node scripts/blog/validate-post.mjs *)';
@@ -132,7 +133,7 @@ function allTextFiles(root, { excludeContext = false } = {}) {
 test('buildClaudeArgs uses verified constrained Claude Code flags', () => {
   const args = buildClaudeArgs({
     model: 'claude-opus-5-5[1m]', effort: 'max', maxTurns: 80,
-    taskText: SECRET, rulesPath: '.blog-context/rules.md',
+    taskText: SECRET, rulesPath: '.blog-context/rules.md', settingsPath: '.blog-context/settings.json',
   });
   assert.deepEqual(args, [
     '-p', SECRET,
@@ -142,11 +143,30 @@ test('buildClaudeArgs uses verified constrained Claude Code flags', () => {
     '--output-format', 'json',
     '--permission-mode', 'dontAsk',
     '--append-system-prompt-file', '.blog-context/rules.md',
+    '--settings', '.blog-context/settings.json',
     '--allowedTools', ALLOWED_TOOLS,
     '--disallowedTools', 'WebFetch,WebSearch',
   ]);
   assert.ok(!args.includes('--dangerously-skip-permissions'));
   assert.ok(!args.join(' ').includes('Write(scripts/seo/articles/blog/**)'));
+});
+
+test('writer settings deny sensitive host and private request paths', () => {
+  assert.deepEqual(readJson(WRITER_SETTINGS), {
+    permissions: {
+      blockReadsOutsideWorkingDirectories: true,
+      deny: [
+        'Read(//proc/**)',
+        'Read(//etc/**)',
+        'Read(//home/**)',
+        'Read(//root/**)',
+        'Read(~/**)',
+        'Read(.git/**)',
+        'Read(//tmp/**)',
+        'Read(.blog-context/request.json)',
+      ],
+    },
+  });
 });
 
 test('classifyWriterError recognizes safe operational categories', () => {
@@ -252,8 +272,9 @@ test('prepare-context builds the private writer packet without logging its reque
   for (const name of [
     'site-full.md', 'site-index.md', 'live-urls.json', 'nav-keys.json', 'competitors.json',
     'articles.json', 'images.json', 'keywords.json', 'post-schema.json', 'rules.md',
-    'task.md', 'pre-files.json',
+    'settings.json', 'task.md', 'pre-files.json',
   ]) assert.ok(existsSync(resolve(context, name)), name);
+  assert.deepEqual(readJson(resolve(context, 'settings.json')), readJson(WRITER_SETTINGS));
   assert.match(readFileSync(resolve(context, 'task.md'), 'utf8'), /DONE <slug>/);
   assert.match(readFileSync(resolve(context, 'task.md'), 'utf8'), new RegExp(SECRET));
   const siteFull = readFileSync(resolve(context, 'site-full.md'), 'utf8');
@@ -635,6 +656,44 @@ test('finalize-draft rejects a draft that reproduces private request text', (t) 
   assert.equal(marker.status, 'failed');
   assert.equal(marker.errorKind, 'other');
   assert.ok(!allTextFiles(root, { excludeContext: true }).includes(SECRET));
+});
+
+test('finalize-draft rejects secret-like content before unknown fields are projected away', (t) => {
+  const secretLikeValues = [
+    'sk-ant-Abcdefgh_123',
+    'CLAUDE_CODE_OAUTH_TOKEN',
+    `ghp_${'A'.repeat(20)}`,
+    `gho_${'B'.repeat(20)}`,
+    `ghu_${'C'.repeat(20)}`,
+    `ghs_${'D'.repeat(20)}`,
+    `ghr_${'E'.repeat(20)}`,
+    `github_pat_${'F'.repeat(20)}`,
+    'x-access-token',
+    'AUTHORIZATION: basic hidden',
+    '-----BEGIN RSA PRIVATE KEY-----',
+  ];
+
+  for (const [index, secretLike] of secretLikeValues.entries()) {
+    const root = seedRoot(t, `finalize-secret-${index}`);
+    manifestBefore(root);
+    const post = readJson(FIXTURE);
+    post.untrustedWriterField = secretLike;
+    writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), post);
+
+    const result = runNode(FINALIZE, [
+      '--root', root, '--no-build', '--request-id', `request-secret-${index}`, '--mode', 'new',
+      '--writer-result', seedWriterResult(root),
+    ], { cwd: root });
+    assert.equal(result.status, 0, result.stderr);
+    assert.ok(!existsSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`)));
+    const marker = readJson(resolve(
+      root, 'scripts', 'seo', 'articles', 'blog', '_requests', `request-secret-${index}.json`,
+    ));
+    assert.equal(marker.status, 'failed');
+    assert.equal(marker.errorKind, 'validation');
+    assert.equal(marker.error, 'post contained secret-like content');
+    assert.ok(!allTextFiles(root, { excludeContext: true }).includes(secretLike));
+  }
 });
 
 test('finalize-draft exits 3 when any changed path is outside the commit allowlist', (t) => {

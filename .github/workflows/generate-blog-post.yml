@@ -34,6 +34,7 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    container: node:22-bookworm
     timeout-minutes: 60
     env:
       BLOG_MODEL: 'claude-opus-5-5[1m]'
@@ -42,6 +43,8 @@ jobs:
       BLOG_MAX_TURNS: '80'
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -113,3 +116,4 @@ jobs:
           BLOG_MODE: '${{ inputs.mode }}'
           BLOG_SLUG: '${{ inputs.slug }}'
           BLOG_REQUEST_ID: '${{ inputs.request_id }}'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

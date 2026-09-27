@@ -184,15 +184,15 @@ function publishedRaceMarker(capsule, timestamp) {
 }
 
 async function pushWithRetry({
-  root, remote, branch, maxAttempts, sleep, random, beforePush, applyAttempt,
+  root, remote, branch, token, maxAttempts, sleep, random, beforePush, applyAttempt,
 }) {
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    fetchAndReset(root, remote, branch);
+    fetchAndReset(root, remote, branch, token);
     const attemptResult = applyAttempt(attempt);
     const commit = commitStaged(root, attemptResult.message);
     if (!commit) return { ...attemptResult, attempts: attempt, pushed: false, commit: '' };
     await beforePush?.({ attempt, root, commit });
-    const push = pushHead(root, remote, branch);
+    const push = pushHead(root, remote, branch, token);
     if (push.status === 0) return {
       ...attemptResult, attempts: attempt, pushed: true, commit,
     };
@@ -209,6 +209,7 @@ export async function commitDraft({
   slug: requestedSlug = '',
   remote = 'origin',
   branch = 'main',
+  token = process.env.GITHUB_TOKEN || '',
   maxAttempts = 5,
   sleep = defaultSleep,
   random = Math.random,
@@ -224,7 +225,7 @@ export async function commitDraft({
   const capsule = captureArtifacts(root, { requestId, mode, requestedSlug });
   let raceMarker = null;
   return pushWithRetry({
-    root, remote, branch, maxAttempts, sleep, random, beforePush,
+    root, remote, branch, token, maxAttempts, sleep, random, beforePush,
     applyAttempt: () => {
       cleanUntrackedArtifacts(root, capsule);
       const state = readJson(resolve(root, STATE_PATH));
