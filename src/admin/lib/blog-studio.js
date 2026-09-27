@@ -107,6 +107,15 @@ export function filterDripArticles(articles) {
   return articles.filter((article) => article?.kind !== 'blog');
 }
 
+// A failed or needs-attention request row offers Discard only for an ORPHANED slug (one the draft
+// list cannot show). A failed revision of a healthy draft keeps that draft intact, and discarding
+// from the request row would delete it; that draft's own card carries Discard instead.
+export function canDiscardFromRequest(request, view, articles) {
+  if (!request?.slug || !['failed', 'needs_attention'].includes(view?.state)) return false;
+  const listed = Array.isArray(articles) && articles.some((article) => article?.slug === request.slug);
+  return !listed;
+}
+
 export function canWriteDraft(prompt, keyword = '') {
   if (typeof prompt !== 'string' || typeof keyword !== 'string') return false;
   const promptLength = prompt.trim().length;

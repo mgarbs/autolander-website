@@ -4,6 +4,8 @@ import { dirname, relative, resolve } from 'node:path';
 import { env as processEnv } from 'node:process';
 import { fileURLToPath } from 'node:url';
 
+import { cleanWriterBlogChanges } from './finalize-draft.mjs';
+
 const DEFAULT_MODEL = 'claude-opus-5-5[1m]';
 const DEFAULT_FALLBACK_MODEL = 'claude-opus-5-5';
 const DEFAULT_EFFORT = 'max';
@@ -47,9 +49,12 @@ export function buildClaudeArgs({
   ];
 }
 
-export function classifyWriterError(text) {
+// `oneMillion` is true while classifying the [1m] attempt: there, "extra usage" / "usage credits"
+// and context-length errors mean the 1M window is unavailable and the 200K fallback should run.
+// On the fallback model the same subscription wording is an ordinary usage limit.
+export function classifyWriterError(text, { oneMillion = true } = {}) {
   const value = String(text || '');
-  if (/context (length|window)|prompt is too long|extra usage|usage credits|1m context/i.test(value)) {
+  if (oneMillion && /context (length|window)|prompt is too long|extra usage|usage credits|1m context/i.test(value)) {
     return 'model_unavailable';
   }
   if (/model.*(not (found|available|supported))|context.*(1m|window).*(not|unavailable)/i.test(value)) {
@@ -137,6 +142,11 @@ export async function runWriter({ claudeCmd = ['claude'], env = processEnv, cont
   let capturedStderr = attempt.stderr;
 
   if (attempt.exitCode !== 0 && firstErrorKind === 'model_unavailable' && model.endsWith('[1m]')) {
+    // The failed 1M attempt may have left a half-written post; the fallback must start clean or
+    // finalize sees two new files and records no_output.
+    try {
+      cleanWriterBlogChanges(workingDirectory);
+    } catch { /* not a git checkout (hermetic tests) or nothing to clean */ }
     selectedModel = fallbackModel;
     attempt = await execute(selectedModel, fallbackTaskText(taskText));
     capturedStderr = [capturedStderr, attempt.stderr].filter(Boolean).join('\n');
@@ -151,7 +161,9 @@ export async function runWriter({ claudeCmd = ['claude'], env = processEnv, cont
     exitCode: attempt.exitCode,
     model: selectedModel,
     contextWindow: contextWindowFor(selectedModel),
-    errorKind: ok ? null : classifyWriterError(`${attempt.stderr}\n${attempt.stdout}`),
+    errorKind: ok ? null : classifyWriterError(`${attempt.stderr}\n${attempt.stdout}`, {
+      oneMillion: selectedModel.endsWith('[1m]'),
+    }),
     resultPath,
   };
 }

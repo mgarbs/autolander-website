@@ -155,7 +155,7 @@ function restoreRepoPathFromHeadOrRemove(root, path) {
   }
 }
 
-function cleanWriterBlogChanges(root, paths = writerBlogChanges(root)) {
+export function cleanWriterBlogChanges(root, paths = writerBlogChanges(root)) {
   for (const path of paths) restoreFromHeadOrRemove(root, path);
 }
 
@@ -273,7 +273,9 @@ function buildOutputs(root, slug) {
     console.warn('OG card skipped: Playwright is unavailable');
     return;
   }
-  throw new Error('OG card generation failed');
+  // The card is optional: a browser crash or timeout must never discard a valid draft. Without a
+  // manifest entry the page falls back to the default share image.
+  console.warn('OG card skipped: card generation failed');
 }
 
 function unexpectedChanges(root) {

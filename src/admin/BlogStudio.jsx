@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ApiError, apiGet, apiPost } from './lib/api.js';
 import {
   blogFailureMessage,
+  canDiscardFromRequest,
   canSendRevision,
   canWriteDraft,
   hasNewPublishRun,
@@ -327,8 +328,7 @@ export default function BlogStudio({ data, reload, onUnauthorized, onBusyChange 
               const requestKind = request.mode === 'revise'
                 ? 'Revision'
                 : request.mode === 'discard' ? 'Discard' : 'New post';
-              const requestDiscardable = request.slug
-                && ['failed', 'needs_attention'].includes(view.state);
+              const requestDiscardable = canDiscardFromRequest(request, view, data?.articles);
               const requestActionBusy = Boolean(pendingAction)
                 || isBlogSlugInFlight(data, request.slug, optimisticSlugs, now);
               return (

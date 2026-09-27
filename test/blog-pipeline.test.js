@@ -164,6 +164,8 @@ test('writer settings deny sensitive host and private request paths', () => {
         'Read(~/**)',
         'Read(.git/**)',
         'Read(//tmp/**)',
+        'Read(//__w/_temp/**)',
+        'Read(//github/**)',
         'Read(.blog-context/request.json)',
       ],
     },

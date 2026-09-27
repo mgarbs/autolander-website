@@ -5,6 +5,8 @@ import { dirname, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
+import { SUGGESTED_ORDER } from '../seo/articles/article-system.mjs';
+
 const MODULE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{2,80}$/;
 const REQUEST_ID_RE = /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/;
@@ -74,6 +76,9 @@ export function discardPost({ root, slug, requestId, noBuild }) {
   const statePath = resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json');
   const state = readJson(statePath);
   if (state[slug]?.status === 'published') return { exitCode: 2 };
+  // A failed request can carry a slug that collided with a hand-written drip article. Discarding
+  // it would delete that article's publish-state key and break every later site build.
+  if (SUGGESTED_ORDER.includes(slug)) return { exitCode: 2 };
 
   removeFile(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${slug}.json`));
   delete state[slug];

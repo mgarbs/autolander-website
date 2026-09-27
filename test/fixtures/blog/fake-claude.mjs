@@ -1,4 +1,6 @@
-import { appendFileSync, copyFileSync, mkdirSync } from 'node:fs';
+import {
+  appendFileSync, copyFileSync, mkdirSync, writeFileSync,
+} from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -21,7 +23,16 @@ if (mode === 'auth') {
   console.error('OAuth token has expired');
   process.exit(1);
 }
+if (mode === 'usage-extra') {
+  console.error('usage limit reached, enable extra usage to continue');
+  process.exit(1);
+}
 if (mode === 'nomodel1m' && model.endsWith('[1m]')) {
+  if (process.env.FAKE_CLAUDE_1M_PARTIAL) {
+    const partial = resolve(process.env.FAKE_CLAUDE_1M_PARTIAL);
+    mkdirSync(dirname(partial), { recursive: true });
+    writeFileSync(partial, '{"slug": "half-written-attempt", "title": ', 'utf8');
+  }
   console.error(process.env.FAKE_CLAUDE_1M_ERROR || 'model not available');
   process.exit(1);
 }

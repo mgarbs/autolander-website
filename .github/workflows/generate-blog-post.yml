@@ -97,6 +97,17 @@ jobs:
           npm install --no-save --package-lock=false playwright
           npx playwright install --with-deps chromium
 
+      # writer-settings.json denies Read(//home/**) and Read(~/**). That is only safe because this
+      # job runs in the node:22-bookworm container, whose workspace is /__w/...; on a bare runner the
+      # repo lives under /home/runner and every read would be denied. Fail loudly instead.
+      - name: Preflight (writer deny rules need the container workspace)
+        if: inputs.mode != 'discard'
+        run: |
+          case "$GITHUB_WORKSPACE" in
+            /__w/*) echo "workspace ok: $GITHUB_WORKSPACE" ;;
+            *) echo "::error::GITHUB_WORKSPACE=$GITHUB_WORKSPACE is outside the container workspace (/__w/); writer-settings.json would deny every repo read"; exit 1 ;;
+          esac
+
       - name: Write with Claude (Opus 5.5, max effort, subscription)
         if: inputs.mode != 'discard'
         id: writer
