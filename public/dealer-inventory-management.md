@@ -89,6 +89,7 @@ DMS and IMS pricing is set by those vendors and usually quoted. AutoLander, whic
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 - [Facebook Marketplace Used-Car Report 2026 (original data)](https://autolander.ai/facebook-marketplace-used-car-report-2026/)
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
+- [What a Fed rate hike means for car dealers, new and used](https://autolander.ai/blog/fed-rate-hike-car-dealers/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

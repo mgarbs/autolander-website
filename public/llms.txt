@@ -141,6 +141,7 @@ Full agent instructions, including the response-format contract: https://autolan
 ## Blog
 
 - [The AutoLander blog](https://autolander.ai/blog.md): Practical Facebook Marketplace playbooks for car dealers, plus every AutoLander guide on vehicle merchandising, dealership growth, and listing operations.
+- [What a Fed rate hike means for car dealers, new and used: a 30-day plan](https://autolander.ai/blog/fed-rate-hike-car-dealers.md): What a Fed rate hike means for new and used car dealers: payment math, holding costs, price bands from 10,823 dealer listings and a 30-day action plan.
 - [Q4 used car sales on Facebook Marketplace: the October to December playbook](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace.md): A Q4 used car sales plan for Facebook Marketplace dealers: units to list first, aged inventory, winter photos, holiday coverage and a weekly checklist.
 
 ## Integrations

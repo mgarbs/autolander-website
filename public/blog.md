@@ -10,6 +10,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 
 ## Latest posts
 
+- What a Fed Rate Hike Means for Car Dealers, New and Used | September 27, 2026. What a Fed rate hike means for new and used car dealers: payment math, holding costs, price bands from 10,823 dealer listings and a 30-day action plan.
 - Q4 Used Car Sales on Facebook Marketplace: 2026 Playbook | September 27, 2026. A Q4 used car sales plan for Facebook Marketplace dealers: units to list first, aged inventory, winter photos, holiday coverage and a weekly checklist.
 
 ## Guides and playbooks: Marketplace operations

@@ -82,6 +82,7 @@ One graceful exit after the cadence runs out: "Sounds like the timing isn’t ri
 - [Buy here pay here marketing plays that actually work](https://autolander.ai/guide/buy-here-pay-here-marketing/)
 - [Free places to advertise used cars (and the free-ish ones)](https://autolander.ai/guide/free-places-to-advertise-used-cars/)
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
+- [What a Fed rate hike means for car dealers, new and used](https://autolander.ai/blog/fed-rate-hike-car-dealers/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
