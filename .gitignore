@@ -63,3 +63,4 @@ dist-ssr
 dist-preview/
 .last-publish.json
 .blog-context/
+.studio-import/
