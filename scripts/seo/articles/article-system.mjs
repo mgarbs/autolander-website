@@ -334,37 +334,48 @@ export function contentStatusJson(articles, state) {
     note: 'Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).',
     articles: articles
       .map((a) => {
-        const row = {
-          slug: a.slug,
-          kind: isBlog(a) ? 'blog' : 'drip',
-          path: articlePath(a),
-          url: articleUrl(a),
-          title: a.title,
-          h1: a.h1,
-          silo: a.silo,
-          siloLabel: SILOS[a.silo].label,
-          primaryKeyword: a.primaryKeyword,
-          secondaryKeywords: a.secondaryKeywords || [],
-          description: a.description,
-          suggestedOrder: orderIndex.get(a.slug) ?? null,
-          status: state?.[a.slug]?.status || 'draft',
-          publishedAt: state?.[a.slug]?.publishedAt || null,
-        };
-        if (!isBlog(a)) return row;
-        const text = collectText(a);
-        const outboundLinks = new Set(text.flatMap((value) => [...value.matchAll(/\]\((\/[^)\s]*)\)/g)].map((match) => match[1])));
-        return {
-          ...row,
-          requestId: BLOG_REQUEST_ID_RE.test(a.meta?.requestId || '') ? a.meta.requestId : null,
-          updatedAt: a.meta?.updatedAt || null,
-          validationOk: a.meta?.validation?.ok === true,
-          validationErrors: (a.meta?.validation?.errors || []).slice(0, 20),
-          wordCount: text.join(' ').split(/\s+/).filter(Boolean).length,
-          outboundLinks: outboundLinks.size,
-          inboundFrom: [...(a.inboundFrom || [])],
-          augmentKeys: [...(a.augmentKeys || [])],
-        };
+        const blogRow = isBlog(a);
+        try {
+          if (blogRow && (typeof a.slug !== 'string' || !a.slug)) {
+            throw new Error('blog content-status row has an invalid slug');
+          }
+          const row = {
+            slug: a.slug,
+            kind: blogRow ? 'blog' : 'drip',
+            path: articlePath(a),
+            url: articleUrl(a),
+            title: a.title,
+            h1: a.h1,
+            silo: a.silo,
+            siloLabel: SILOS[a.silo].label,
+            primaryKeyword: a.primaryKeyword,
+            secondaryKeywords: Array.isArray(a.secondaryKeywords) ? a.secondaryKeywords : [],
+            description: a.description,
+            suggestedOrder: orderIndex.get(a.slug) ?? null,
+            status: state?.[a.slug]?.status || 'draft',
+            publishedAt: state?.[a.slug]?.publishedAt || null,
+          };
+          if (!blogRow) return row;
+          const text = collectText(a);
+          const outboundLinks = new Set(text.flatMap((value) => [...value.matchAll(/\]\((\/[^)\s]*)\)/g)].map((match) => match[1])));
+          return {
+            ...row,
+            requestId: BLOG_REQUEST_ID_RE.test(a.meta?.requestId || '') ? a.meta.requestId : null,
+            updatedAt: a.meta?.updatedAt || null,
+            validationOk: a.meta?.validation?.ok === true,
+            validationErrors: (Array.isArray(a.meta?.validation?.errors) ? a.meta.validation.errors : []).slice(0, 20),
+            wordCount: text.join(' ').split(/\s+/).filter(Boolean).length,
+            outboundLinks: outboundLinks.size,
+            inboundFrom: Array.isArray(a.inboundFrom) ? [...a.inboundFrom] : [],
+            augmentKeys: Array.isArray(a.augmentKeys) ? [...a.augmentKeys] : [],
+          };
+        } catch (error) {
+          if (!blogRow) throw error;
+          console.warn(`Skipping malformed blog content-status row ${a?.slug || '(unknown)'}`);
+          return null;
+        }
       })
+      .filter(Boolean)
       .sort((a, b) => {
         if (a.kind !== b.kind) return a.kind === 'drip' ? -1 : 1;
         if (a.kind === 'drip') return (a.suggestedOrder ?? 99) - (b.suggestedOrder ?? 99);

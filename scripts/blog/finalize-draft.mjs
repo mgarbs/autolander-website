@@ -8,7 +8,9 @@ import { env as processEnv } from 'node:process';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
-import { buildValidationContext, validatePost } from './validate-post.mjs';
+import {
+  buildValidationContext, structuralErrorsForPost, validatePost,
+} from './validate-post.mjs';
 import { loadBlogPosts } from '../seo/articles/blog-loader.mjs';
 import { buildArticlePage } from '../seo/articles/article-system.mjs';
 import { renderPage } from '../seo/shell.mjs';
@@ -130,7 +132,16 @@ function restoreFromHeadOrRemove(root, path) {
   if (!normalizedPath.startsWith('scripts/seo/articles/blog/')
     || !withinBlog || withinBlog === '..' || withinBlog.startsWith('../')
     || withinBlog.startsWith('..\\') || isAbsolute(withinBlog)) throw new Error('unsafe blog cleanup path');
-  const original = spawnSync('git', ['show', `HEAD:${path}`], {
+  restoreRepoPathFromHeadOrRemove(root, normalizedPath);
+}
+
+function restoreRepoPathFromHeadOrRemove(root, path) {
+  const normalizedPath = path.replaceAll('\\', '/');
+  const absolutePath = resolve(root, normalizedPath);
+  const withinRoot = relative(root, absolutePath);
+  if (!normalizedPath || withinRoot === '..' || withinRoot.startsWith('../')
+    || withinRoot.startsWith('..\\') || isAbsolute(withinRoot)) throw new Error('unsafe cleanup path');
+  const original = spawnSync('git', ['show', `HEAD:${normalizedPath}`], {
     cwd: root,
     encoding: null,
     shell: false,
@@ -145,6 +156,29 @@ function restoreFromHeadOrRemove(root, path) {
 
 function cleanWriterBlogChanges(root, paths = writerBlogChanges(root)) {
   for (const path of paths) restoreFromHeadOrRemove(root, path);
+}
+
+function restoreWorkingTreeToHead(root) {
+  for (const path of changedPaths(root)) restoreRepoPathFromHeadOrRemove(root, path);
+}
+
+function rollbackUnsafeDraft({ root, slug, writerChanges, outputsStarted, noBuild }) {
+  cleanWriterBlogChanges(root, writerChanges);
+  restoreRepoPathFromHeadOrRemove(root, 'scripts/seo/articles/publish-state.json');
+  if (slug) {
+    restoreRepoPathFromHeadOrRemove(root, `previews/blog/${slug}.html`);
+    restoreRepoPathFromHeadOrRemove(root, `public/og/blog-${slug}.png`);
+  }
+  restoreRepoPathFromHeadOrRemove(root, 'public/og/manifest.json');
+  if (outputsStarted && !noBuild) {
+    try {
+      runNode(root, 'scripts/build-seo-pages.mjs');
+    } catch {
+      // The exact tracked snapshot below remains the final safety net if recovery generation fails.
+    }
+  }
+  restoreRepoPathFromHeadOrRemove(root, 'public/data/content-status.json');
+  restoreWorkingTreeToHead(root);
 }
 
 function projectPost(modelPost) {
@@ -250,6 +284,22 @@ function unexpectedChanges(root) {
   return changedPaths(root).filter((path) => !allowed(path));
 }
 
+function failUnsafeDraft({
+  root, requestId, mode, slug, writerChanges, outputsStarted = false, noBuild,
+  error = safeWriterFailure('validation'),
+}) {
+  rollbackUnsafeDraft({ root, slug, writerChanges, outputsStarted, noBuild });
+  const marker = requestMarker(root, requestId, {
+    mode,
+    slug,
+    status: 'failed',
+    errorKind: 'validation',
+    error,
+  });
+  const unexpected = unexpectedChanges(root);
+  return { exitCode: unexpected.length ? 3 : 0, marker, unexpected };
+}
+
 export async function finalizeDraft(options) {
   const {
     root, requestId, mode, slug: requestedSlug, writerResult, noBuild,
@@ -330,12 +380,9 @@ export async function finalizeDraft(options) {
       throw new Error('post output must be an object');
     }
   } catch {
-    cleanWriterBlogChanges(root, writerChanges);
-    const marker = requestMarker(root, requestId, {
-      mode, slug, status: 'failed', errorKind: 'no_output', error: safeWriterFailure('no_output'),
+    return failUnsafeDraft({
+      root, requestId, mode, slug, writerChanges, noBuild,
     });
-    const unexpected = unexpectedChanges(root);
-    return { exitCode: unexpected.length ? 3 : 0, marker, unexpected };
   }
   if (containsPrivateRequestText(modelPost, privateRequestValues(root))) {
     cleanWriterBlogChanges(root, writerChanges);
@@ -347,9 +394,23 @@ export async function finalizeDraft(options) {
     return { exitCode: unexpected.length ? 3 : 0, marker, unexpected };
   }
   const post = projectPost(modelPost);
-  const validationResult = validatePost(post, buildValidationContext({ root, selfSlug: slug }), { selfSlug: slug });
+  const structuralErrors = structuralErrorsForPost(post, {
+    fileSlug: slug,
+    mode,
+    requestedSlug,
+  });
+  if (structuralErrors.length) {
+    return failUnsafeDraft({
+      root, requestId, mode, slug, writerChanges, noBuild,
+    });
+  }
+  const validationResult = validatePost(post, buildValidationContext({ root, selfSlug: slug }), {
+    selfSlug: slug,
+    fileSlug: slug,
+    mode,
+    requestedSlug,
+  });
   const validationErrors = [...validationResult.errors];
-  if (post.slug !== slug) validationErrors.unshift('post slug must match its target filename');
   const checkedAt = now();
   const date = today();
   let previousMeta = {};
@@ -377,21 +438,23 @@ export async function finalizeDraft(options) {
   if (!state[slug]) state[slug] = { status: 'draft', publishedAt: null };
   writeJson(statePath, state);
 
+  let outputsStarted = false;
   if (!noBuild) {
+    outputsStarted = true;
     try {
       buildOutputs(root, slug);
     } catch {
-      validationErrors.push('generated outputs could not be refreshed');
+      return failUnsafeDraft({
+        root, requestId, mode, slug, writerChanges, outputsStarted, noBuild,
+      });
     }
   }
   try {
     renderPreview(root, slug, post, state, date);
   } catch {
-    validationErrors.push('preview rendering failed');
-  }
-  if (validationErrors.length !== post.meta.validation.errors.length) {
-    post.meta.validation = { ok: false, errors: [...new Set(validationErrors)], checkedAt };
-    writeJson(postPath, post);
+    return failUnsafeDraft({
+      root, requestId, mode, slug, writerChanges, outputsStarted, noBuild,
+    });
   }
 
   const valid = post.meta.validation.ok;

@@ -327,6 +327,10 @@ export default function BlogStudio({ data, reload, onUnauthorized, onBusyChange 
               const requestKind = request.mode === 'revise'
                 ? 'Revision'
                 : request.mode === 'discard' ? 'Discard' : 'New post';
+              const requestDiscardable = request.slug
+                && ['failed', 'needs_attention'].includes(view.state);
+              const requestActionBusy = Boolean(pendingAction)
+                || isBlogSlugInFlight(data, request.slug, optimisticSlugs, now);
               return (
                 <li key={request.requestId} className="min-w-0 rounded-xl border border-white/10 bg-black/20 px-4 py-3">
                   <div className="flex flex-wrap items-center gap-2">
@@ -344,6 +348,18 @@ export default function BlogStudio({ data, reload, onUnauthorized, onBusyChange 
                   </div>
                   <p className="mt-2 break-words text-xs text-slate-300">{promptExcerpt(request) || request.slug}</p>
                   {failure && <p className="mt-2 break-words text-xs font-bold text-red-300">{failure}</p>}
+                  {requestDiscardable && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {confirm?.action === 'request-discard' && confirm.requestId === request.requestId ? (
+                        <>
+                          <button type="button" onClick={() => discardDraft(request.slug)} disabled={requestActionBusy} className={`${BUTTON} border-red-400/40 bg-red-500/15 text-red-200`}>Confirm discard</button>
+                          <button type="button" onClick={() => setConfirm(null)} disabled={requestActionBusy} className={`${BUTTON} border-white/10 text-slate-400`}>Cancel</button>
+                        </>
+                      ) : (
+                        <button type="button" onClick={() => setConfirm({ action: 'request-discard', requestId: request.requestId })} disabled={requestActionBusy} className={`${BUTTON} border-red-400/30 bg-red-500/10 text-red-200`}>Discard</button>
+                      )}
+                    </div>
+                  )}
                 </li>
               );
             })}

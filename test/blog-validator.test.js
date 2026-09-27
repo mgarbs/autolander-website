@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { validatePost, buildValidationContext } from '../scripts/blog/validate-post.mjs';
+import {
+  validatePost, buildValidationContext, isStructurallyRenderable,
+} from '../scripts/blog/validate-post.mjs';
 
 const ctx = buildValidationContext();
 const base = () => JSON.parse(readFileSync(new URL('./fixtures/blog/valid-post.json', import.meta.url), 'utf8'));
@@ -51,5 +53,49 @@ test('malformed nested section content reports an error instead of throwing', ()
   const post = base();
   post.sections[0] = { type: 'twocol', left: {}, right: {} };
   assert.doesNotThrow(() => validatePost(post, ctx));
-  assert.match(validatePost(post, ctx).errors.join('\n'), /section content/);
+  assert.match(validatePost(post, ctx).errors.join('\n'), /section 1 shape/);
+});
+
+test('structural validation rejects renderer-unsafe section shapes with indexed errors', () => {
+  const cases = [
+    { type: 'prose', paras: ['ok', 7] },
+    { type: 'bullets', h2: 'Bullets', items: ['ok', 7] },
+    { type: 'features', h2: 'Features', cards: [{ title: 'Card' }] },
+    { type: 'steps', h2: 'Steps', steps: [{ title: 'Step', body: 7 }] },
+    { type: 'table', h2: 'Table', head: ['A', 'B'], rows: [['one', 'two'], 'bad-row'] },
+    { type: 'quotes', h2: 'Quotes', quotes: [{ text: 'Quote' }] },
+    { type: 'twocol', left: { h2: 'Left', items: ['ok'] }, right: { h2: 'Right', items: 'bad' } },
+  ];
+  for (const section of cases) {
+    const post = base();
+    post.sections[0] = section;
+    const result = validatePost(post, ctx);
+    assert.equal(isStructurallyRenderable(post), false, section.type);
+    assert.match(result.errors.join('\n'), /section 1 shape/, section.type);
+  }
+});
+
+test('structural validation enforces faq pairs and target slug identity', () => {
+  const malformedFaq = base();
+  malformedFaq.faq[0] = ['question only'];
+  assert.equal(isStructurallyRenderable(malformedFaq), false);
+  assert.match(validatePost(malformedFaq, ctx).errors.join('\n'), /faq.*shape/i);
+
+  const fileMismatch = base();
+  assert.match(
+    validatePost(fileMismatch, ctx, { selfSlug: fileMismatch.slug, fileSlug: 'different-file' }).errors.join('\n'),
+    /slug must match file name/,
+  );
+
+  const reviseMismatch = base();
+  reviseMismatch.slug = 'writer-changed-the-slug';
+  assert.match(
+    validatePost(reviseMismatch, ctx, {
+      selfSlug: 'test-fixture-valid-blog-post',
+      fileSlug: 'test-fixture-valid-blog-post',
+      mode: 'revise',
+      requestedSlug: 'test-fixture-valid-blog-post',
+    }).errors.join('\n'),
+    /revise must keep slug/,
+  );
 });

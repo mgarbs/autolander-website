@@ -19,6 +19,11 @@ import { ARTICLES as GROWTH } from '../seo/articles/data-articles-growth.mjs';
 import { ARTICLES as META_TOOLS } from '../seo/articles/data-articles-meta-tools.mjs';
 import { ARTICLES as COMPARE_ARTICLES } from '../seo/articles/data-articles-compare.mjs';
 import { NAV } from '../seo/registry.mjs';
+import {
+  isStructurallyRenderable, structuralErrorsForPost,
+} from '../seo/articles/blog-post-structure.mjs';
+
+export { isStructurallyRenderable, structuralErrorsForPost };
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 export const ROOT = resolve(HERE, '..', '..');
@@ -211,8 +216,10 @@ function validatePercentages(texts, errors) {
   }
 }
 
-export function validatePost(post, ctx, { selfSlug = post?.slug } = {}) {
-  const errors = [];
+export function validatePost(post, ctx, {
+  selfSlug = post?.slug, fileSlug = '', mode = '', requestedSlug = '',
+} = {}) {
+  const errors = structuralErrorsForPost(post, { fileSlug, mode, requestedSlug });
   validateRequired(post, errors);
   const sections = Array.isArray(post?.sections) ? post.sections : [];
   const faq = Array.isArray(post?.faq) ? post.faq : [];
@@ -333,7 +340,10 @@ async function main() {
     process.exitCode = 1;
     return;
   }
-  const result = validatePost(post, buildValidationContext({ selfSlug: slug }), { selfSlug: slug });
+  const result = validatePost(post, buildValidationContext({ selfSlug: slug }), {
+    selfSlug: slug,
+    fileSlug: slug,
+  });
   if (result.ok) {
     console.log(`OK (${result.stats.words} words, ${result.stats.internalLinks} internal links)`);
     return;

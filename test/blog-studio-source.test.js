@@ -56,6 +56,14 @@ test('BlogStudio shows recent request state, elapsed time, excerpts, failures, a
   assert.match(studio, /rel="noreferrer"/);
 });
 
+test('failed and needs-attention request rows can discard a missing article with confirmation', () => {
+  assert.match(studio, /\['failed',\s*'needs_attention'\]/);
+  assert.match(studio, /request\.slug/);
+  assert.match(studio, /request-discard/);
+  assert.match(studio, /Confirm discard/);
+  assert.match(studio, /discardDraft\(request\.slug\)/);
+});
+
 test('draft cards expose SEO facts and all guarded actions', () => {
   for (const field of [
     'primaryKeyword',

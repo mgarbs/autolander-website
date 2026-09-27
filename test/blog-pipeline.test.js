@@ -10,6 +10,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 import { buildClaudeArgs, classifyWriterError, runWriter } from '../scripts/blog/run-writer.mjs';
+import { publishArticle } from '../scripts/publish-article.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const FIXTURE = resolve(ROOT, 'test', 'fixtures', 'blog', 'valid-post.json');
@@ -74,6 +75,7 @@ function seedRoot(t, label, { post = null, state = publishedState(), preview = f
     '',
   ].join('\n'));
   writeJson(resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json'), state);
+  write(resolve(root, 'public', 'data', 'content-status.json'), 'seed content status\n');
   mkdirSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests'), { recursive: true });
   if (post) writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${post.slug}.json`), post);
   if (preview) write(resolve(root, 'previews', 'blog', `${SLUG}.html`), 'old preview\n');
@@ -329,6 +331,149 @@ test('finalize-draft records validation and no-output outcomes', (t) => {
   assert.equal(emptyMarker.errorKind, 'no_output');
 });
 
+test('finalize-draft fails and rolls back all three renderer-breaking reviewer repros', (t) => {
+  const cases = [
+    {
+      label: 'filename-mismatch',
+      mode: 'new',
+      requestedSlug: '',
+      fileSlug: 'different-file-name',
+      mutate: () => {},
+    },
+    {
+      label: 'malformed-table-row',
+      mode: 'new',
+      requestedSlug: '',
+      fileSlug: SLUG,
+      mutate: (post) => {
+        post.sections[0] = { type: 'table', h2: 'Unsafe table', head: ['A'], rows: ['not-an-array'] };
+      },
+    },
+    {
+      label: 'revise-changed-slug',
+      mode: 'revise',
+      requestedSlug: SLUG,
+      fileSlug: SLUG,
+      mutate: (post) => { post.slug = 'writer-changed-the-slug'; },
+    },
+  ];
+
+  for (const repro of cases) {
+    const original = readJson(FIXTURE);
+    const state = repro.mode === 'revise'
+      ? { ...publishedState(), [SLUG]: { status: 'draft', publishedAt: null } }
+      : publishedState();
+    const root = seedRoot(t, `repro-${repro.label}`, {
+      post: repro.mode === 'revise' ? original : null,
+      state,
+    });
+    const originalPostPath = resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`);
+    const originalPostBytes = repro.mode === 'revise' ? readFileSync(originalPostPath) : null;
+    const statePath = resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json');
+    const contentStatusPath = resolve(root, 'public', 'data', 'content-status.json');
+    const stateBytes = readFileSync(statePath);
+    const contentStatusBytes = readFileSync(contentStatusPath);
+    manifestBefore(root, repro.mode === 'revise' ? [`scripts/seo/articles/blog/${SLUG}.json`] : []);
+    if (repro.mode === 'revise') writeJson(resolve(root, '.blog-context', 'existing-post.json'), original);
+    const written = readJson(FIXTURE);
+    repro.mutate(written);
+    writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${repro.fileSlug}.json`), written);
+
+    const args = [
+      '--root', root, '--no-build', '--request-id', `request-${repro.label}`, '--mode', repro.mode,
+      '--writer-result', seedWriterResult(root),
+    ];
+    if (repro.requestedSlug) args.push('--slug', repro.requestedSlug);
+    const result = runNode(FINALIZE, args, { cwd: root });
+    assert.equal(result.status, 0, result.stderr);
+    const marker = readJson(resolve(
+      root, 'scripts', 'seo', 'articles', 'blog', '_requests', `request-${repro.label}.json`,
+    ));
+    assert.equal(marker.status, 'failed', repro.label);
+    assert.equal(marker.errorKind, 'validation', repro.label);
+    assert.equal(marker.error, 'The draft did not pass validation.', repro.label);
+    assert.deepEqual(readFileSync(statePath), stateBytes, repro.label);
+    assert.deepEqual(readFileSync(contentStatusPath), contentStatusBytes, repro.label);
+    const remaining = readdirSync(resolve(root, 'scripts', 'seo', 'articles', 'blog'))
+      .filter((name) => name.endsWith('.json'));
+    if (repro.mode === 'revise') {
+      assert.deepEqual(readFileSync(originalPostPath), originalPostBytes, repro.label);
+      assert.deepEqual(remaining, [`${SLUG}.json`], repro.label);
+    } else {
+      assert.deepEqual(remaining, [], repro.label);
+    }
+  }
+});
+
+test('a build failure is a validation failure and restores generated state before the marker', (t) => {
+  const root = seedRoot(t, 'finalize-build-failure');
+  const statePath = resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json');
+  const contentStatusPath = resolve(root, 'public', 'data', 'content-status.json');
+  const stateBytes = readFileSync(statePath);
+  const contentStatusBytes = readFileSync(contentStatusPath);
+  write(resolve(root, 'scripts', 'build-seo-pages.mjs'), [
+    "import { existsSync, mkdirSync, writeFileSync } from 'node:fs';",
+    "import { dirname, resolve } from 'node:path';",
+    "const count = resolve('.blog-context/build-once');",
+    "const output = resolve('public/data/content-status.json');",
+    "mkdirSync(dirname(output), { recursive: true });",
+    "if (!existsSync(count)) { writeFileSync(count, '1'); writeFileSync(output, 'partial output\\n'); process.exit(1); }",
+    "writeFileSync(output, 'seed content status\\n');",
+    '',
+  ].join('\n'));
+  write(resolve(root, 'scripts', 'build-og-cards.mjs'), 'process.exit(0);\n');
+  git(root, ['add', '.']);
+  git(root, ['-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'commit', '-qm', 'build stubs']);
+  manifestBefore(root);
+  writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), readJson(FIXTURE));
+
+  const result = runNode(FINALIZE, [
+    '--root', root, '--request-id', 'request-build-failure', '--mode', 'new',
+    '--writer-result', seedWriterResult(root),
+  ], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+  const marker = readJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-build-failure.json'));
+  assert.equal(marker.status, 'failed');
+  assert.equal(marker.errorKind, 'validation');
+  assert.deepEqual(readFileSync(statePath), stateBytes);
+  assert.deepEqual(readFileSync(contentStatusPath), contentStatusBytes);
+  assert.ok(!existsSync(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`)));
+});
+
+test('a second recovery build failure still leaves exactly HEAD plus the failed marker', (t) => {
+  const root = seedRoot(t, 'finalize-double-build-failure');
+  write(resolve(root, 'public', 'blog', 'index.html'), 'seed blog index\n');
+  write(resolve(root, 'scripts', 'build-seo-pages.mjs'), [
+    "import { mkdirSync, writeFileSync } from 'node:fs';",
+    "import { dirname, resolve } from 'node:path';",
+    "for (const [path, value] of [",
+    "  ['public/data/content-status.json', 'partial status\\n'],",
+    "  ['public/blog/index.html', 'partial tracked page\\n'],",
+    "  ['public/blog/partial.html', 'partial untracked page\\n'],",
+    "]) { const output = resolve(path); mkdirSync(dirname(output), { recursive: true }); writeFileSync(output, value); }",
+    'process.exit(1);',
+    '',
+  ].join('\n'));
+  write(resolve(root, 'scripts', 'build-og-cards.mjs'), 'process.exit(0);\n');
+  git(root, ['add', '.']);
+  git(root, ['-c', 'user.name=Test', '-c', 'user.email=test@example.com', 'commit', '-qm', 'always failing build']);
+  manifestBefore(root);
+  writeJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', `${SLUG}.json`), readJson(FIXTURE));
+
+  const result = runNode(FINALIZE, [
+    '--root', root, '--request-id', 'request-double-build-failure', '--mode', 'new',
+    '--writer-result', seedWriterResult(root),
+  ], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+  const markerPath = 'scripts/seo/articles/blog/_requests/request-double-build-failure.json';
+  const marker = readJson(resolve(root, markerPath));
+  assert.equal(marker.status, 'failed');
+  assert.equal(marker.errorKind, 'validation');
+  assert.equal(git(root, ['status', '--porcelain=v1', '--untracked-files=all']), `?? ${markerPath}\n`);
+  assert.equal(readFileSync(resolve(root, 'public', 'blog', 'index.html'), 'utf8'), 'seed blog index\n');
+  assert.ok(!existsSync(resolve(root, 'public', 'blog', 'partial.html')));
+});
+
 test('finalize-draft refuses to revise a published post without changing it', (t) => {
   const post = readJson(FIXTURE);
   const state = { ...publishedState(), [SLUG]: { status: 'published', publishedAt: '2026-09-20' } };
@@ -412,7 +557,9 @@ test('finalize-draft removes partial, extra, and malformed writer output before 
   ], { cwd: malformedRoot });
   assert.equal(malformedResult.status, 0, malformedResult.stderr);
   assert.ok(!existsSync(resolve(malformedRoot, 'scripts', 'seo', 'articles', 'blog', 'malformed-output.json')));
-  assert.equal(readJson(resolve(malformedRoot, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-malformed.json')).status, 'failed');
+  const malformedMarker = readJson(resolve(malformedRoot, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-malformed.json'));
+  assert.equal(malformedMarker.status, 'failed');
+  assert.equal(malformedMarker.errorKind, 'validation');
   assert.ok(!allTextFiles(malformedRoot).includes(SECRET));
 
   const nullRoot = seedRoot(t, 'finalize-null');
@@ -524,4 +671,47 @@ test('discard-post removes a draft and refuses a published post', (t) => {
   ], { cwd: publishedRoot });
   assert.equal(refused.status, 2);
   assert.equal(allTextFiles(publishedRoot), before);
+});
+
+test('discard-post succeeds when every per-post artifact is already missing', (t) => {
+  const root = seedRoot(t, 'discard-half-deleted');
+  const result = runNode(DISCARD, [
+    SLUG, '--root', root, '--no-build', '--request-id', 'request-half-deleted',
+  ], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(
+    readJson(resolve(root, 'scripts', 'seo', 'articles', 'blog', '_requests', 'request-half-deleted.json')).status,
+    'discarded',
+  );
+});
+
+test('publishing a drip article succeeds while malformed blog files are skipped', (t) => {
+  const state = {
+    ...publishedState(),
+    'facebook-marketplace-car-listing-limits': { status: 'draft', publishedAt: null },
+  };
+  const root = seedRoot(t, 'publish-with-malformed-blog', { state });
+  write(resolve(root, 'scripts', 'seo', 'articles', 'blog', 'bad-json.json'), '{');
+  assert.doesNotThrow(() => publishArticle({
+    root,
+    slug: 'facebook-marketplace-car-listing-limits',
+    noBuild: true,
+    today: '2026-09-27',
+  }));
+  assert.equal(readJson(resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json'))['facebook-marketplace-car-listing-limits'].status, 'published');
+});
+
+test('a full drip publish rebuild succeeds with malformed blog JSON present', (t) => {
+  const root = scratchRoot(t, 'publish-full-build-malformed-blog');
+  git(ROOT, ['clone', '-q', '--no-local', '-c', 'core.autocrlf=false', ROOT, root]);
+  write(resolve(root, 'scripts', 'seo', 'articles', 'blog', 'bad-json.json'), '{');
+  const slug = 'aged-inventory-used-car-dealers';
+
+  const result = runNode(resolve(root, 'scripts', 'publish-article.mjs'), [slug], { cwd: root });
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(result.stderr, /Skipping blog file bad-json\.json: invalid JSON/);
+  assert.equal(readJson(resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json'))[slug].status, 'published');
+  const status = readJson(resolve(root, 'public', 'data', 'content-status.json'));
+  assert.equal(status.articles.filter((row) => row.kind === 'drip').length, 36);
+  assert.equal(status.articles.find((row) => row.slug === slug).status, 'published');
 });

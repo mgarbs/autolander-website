@@ -18,19 +18,29 @@ export const MUSE_TIER_RE = /Muse[^.]{0,160}(\$\s?\d|free tier|tokens?)/i;
 export function collectText(article) {
   const out = [];
   const push = (value) => { if (typeof value === 'string') out.push(value); };
+  const each = (value, visit = push) => {
+    if (Array.isArray(value)) value.forEach(visit);
+  };
+  if (!article || typeof article !== 'object') return out;
   push(article.tldr);
-  for (const section of article.sections || []) {
+  for (const section of (Array.isArray(article.sections) ? article.sections : [])) {
+    if (!section || typeof section !== 'object' || Array.isArray(section)) continue;
     push(section.q); push(section.a); push(section.intro); push(section.body); push(section.caption); push(section.h2);
-    (Array.isArray(section.a) ? section.a : []).forEach(push);
-    (section.paras || []).forEach(push);
-    (section.items || []).forEach(push);
-    (section.cards || []).forEach((card) => { push(card.title); push(card.body); });
-    (section.steps || []).forEach((step) => { push(step.title); push(step.body); });
-    (section.rows || []).forEach((row) => row.forEach(push));
-    if (section.left) section.left.items.forEach(push);
-    if (section.right) section.right.items.forEach(push);
-    (section.files || []).forEach((file) => { push(file.label); push(file.desc); });
+    each(section.a);
+    push(section.paras);
+    each(section.paras);
+    each(section.items);
+    each(section.cards, (card) => { if (card && typeof card === 'object') { push(card.title); push(card.body); } });
+    each(section.steps, (step) => { if (step && typeof step === 'object') { push(step.title); push(step.body); } });
+    each(section.rows, (row) => each(row));
+    if (section.left && typeof section.left === 'object') each(section.left.items);
+    if (section.right && typeof section.right === 'object') each(section.right.items);
+    each(section.files, (file) => { if (file && typeof file === 'object') { push(file.label); push(file.desc); } });
   }
-  for (const [question, answer] of article.faq || []) { push(question); push(answer); }
+  each(article.faq, (entry) => {
+    if (!Array.isArray(entry)) return;
+    push(entry[0]);
+    push(entry[1]);
+  });
   return out;
 }
