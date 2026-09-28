@@ -4,12 +4,13 @@
 
 Source: https://autolander.ai/blog/  
 Author: The AutoLander team  
-Updated: September 27, 2026
+Updated: September 28, 2026
 
 Practical guidance for dealership teams that publish, merchandise, and market vehicle inventory. Start with the latest posts, or browse every published guide by topic.
 
 ## Latest posts
 
+- What High Gas Prices Mean for Car Dealers, New and Used | September 28, 2026. What high gas prices mean for new and used car dealers: trade appraisals, lot mix, truck-heavy Marketplace data and a 30-day plan for a fuel price spike.
 - What a Fed Rate Hike Means for Car Dealers, New and Used | September 27, 2026. What a Fed rate hike means for new and used car dealers: payment math, holding costs, price bands from 10,823 dealer listings and a 30-day action plan.
 - Q4 Used Car Sales on Facebook Marketplace: 2026 Playbook | September 27, 2026. A Q4 used car sales plan for Facebook Marketplace dealers: units to list first, aged inventory, winter photos, holiday coverage and a weekly checklist.
 

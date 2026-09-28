@@ -171,6 +171,7 @@ Every front-line unit that is ready to sell, at a pace your account handles clea
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
+- [What high gas prices mean for car dealers, new and used](https://autolander.ai/blog/high-gas-prices-car-dealers/)
 - [What a Fed rate hike means for car dealers, new and used](https://autolander.ai/blog/fed-rate-hike-car-dealers/)
 - [How to price used cars competitively (price-to-market)](https://autolander.ai/guide/how-to-price-used-cars-competitively/)
 - [Best time to post cars on Facebook Marketplace (2026 data)](https://autolander.ai/guide/best-time-to-post-cars-on-facebook-marketplace/)

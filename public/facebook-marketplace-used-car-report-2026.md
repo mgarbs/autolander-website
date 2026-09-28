@@ -137,6 +137,7 @@ Anonymized aggregates from 196 U.S. dealerships that post inventory to Facebook 
 - [How to sell more cars](https://autolander.ai/guide/how-to-sell-more-cars/)
 - [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
 - [Facebook Marketplace inventory sync & feed](https://autolander.ai/facebook-marketplace-inventory-sync/)
+- [What high gas prices mean for car dealers, new and used](https://autolander.ai/blog/high-gas-prices-car-dealers/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

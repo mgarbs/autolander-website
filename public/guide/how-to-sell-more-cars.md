@@ -80,6 +80,7 @@ AI moves two of the six levers directly: photos (the AI studio) and coverage (au
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [How to sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/)
 - [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/)
+- [What high gas prices mean for car dealers, new and used](https://autolander.ai/blog/high-gas-prices-car-dealers/)
 - [What a Fed rate hike means for car dealers, new and used](https://autolander.ai/blog/fed-rate-hike-car-dealers/)
 - [Q4 used car sales playbook for Facebook Marketplace](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/)
 
