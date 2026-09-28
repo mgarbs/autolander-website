@@ -152,12 +152,16 @@ function cleanCandidate(pair) {
 
   const identity = pairIdentity({ ...pair, make, model });
   if (!identity.key) return null;
+  // The cloud leaves TrainingSample.preset null on validated rows; the background the pipeline
+  // actually rendered is sceneKey. Every background cap and the stored label use this value.
+  const preset = String(pair.preset ?? '').trim() || String(pair.sceneKey ?? '').trim() || null;
   return {
     ...pair,
     make,
     model,
     beforeUrl,
     afterUrl,
+    preset,
     ...identity,
   };
 }

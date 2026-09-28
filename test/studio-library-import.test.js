@@ -571,3 +571,29 @@ test('selection skips missing required values and IDs and deduplicates before UR
   assert.equal(selected.length, 1);
   assert.equal(selected[0].beforeUrl, valid.beforeUrl);
 });
+
+// Live data (2026-09-27): TrainingSample.preset is null on every validated row; the real background
+// lives in sceneKey. Capping by the null preset admitted exactly ONE pair out of 1,500.
+test('selection uses sceneKey as the background when preset is null (live data shape)', () => {
+  const scenes = ['outdoor_sunset', 'dark_showroom', 'overcast_empty_lot', 'suburban_driveway', 'white_showroom', 'open_concrete_pad'];
+  const bodies = ['SUV', 'Sedan', 'Truck', 'Coupe', 'Van'];
+  const candidates = Array.from({ length: 300 }, (_, index) => ({
+    id: `live-shape-${index}`,
+    make: `Make${index % 60}`,
+    model: `Model${index % 60}`,
+    year: 2020,
+    preset: null,
+    sceneKey: scenes[index % scenes.length],
+    bodyStyle: bodies[index % bodies.length],
+    vehicleClass: 'car',
+    view: 'FRONT_3Q',
+    beforeUrl: `https://example.test/${index}/source.jpg`,
+    afterUrl: `https://example.test/${index}/final.jpg`,
+  }));
+  const selected = selectPairs(candidates, [], { target: 100, perModel: 2 });
+  assert.equal(selected.length, 100);
+  const byScene = new Map();
+  for (const pair of selected) byScene.set(pair.preset, (byScene.get(pair.preset) || 0) + 1);
+  assert.ok([...byScene.keys()].every((scene) => scenes.includes(scene)), 'preset falls back to sceneKey');
+  assert.ok(Math.max(...byScene.values()) <= 35, 'no background over 35%');
+});

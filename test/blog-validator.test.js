@@ -12,7 +12,10 @@ import {
   imageUsage, normalizeStudioPath, studioFilesAt,
 } from '../scripts/seo/articles/image-usage.mjs';
 
-const ctx = buildValidationContext();
+// General-rule tests pin an EMPTY studio pool: the real library grows and shrinks as posts use
+// pairs, so "a figure is required" must not depend on repo state here. The image rules below build
+// their own contexts with explicit pairs.
+const ctx = { ...buildValidationContext(), studioPairs: [] };
 const base = () => JSON.parse(readFileSync(new URL('./fixtures/blog/valid-post.json', import.meta.url), 'utf8'));
 const errs = (mutate) => { const post = base(); mutate(post); return validatePost(post, ctx).errors.join('\n'); };
 
