@@ -1,5 +1,5 @@
 import {
-  existsSync, readFileSync, readdirSync,
+  existsSync, readFileSync,
 } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +9,10 @@ import {
   articlePath, SUGGESTED_ORDER,
 } from '../seo/articles/article-system.mjs';
 import { loadBlogPosts } from '../seo/articles/blog-loader.mjs';
+import {
+  imageUsage, normalizeStudioPath, PAGE_STUDIO_USAGES, studioFilesAt, studioPairsAt,
+  unusedStudioPairs,
+} from '../seo/articles/image-usage.mjs';
 import {
   collectText, CONTRAST_TIC_RE, EM_DASH_RE, FORBIDDEN_CLAIMS, MUSE_TIER_RE,
 } from '../seo/articles/content-rules.mjs';
@@ -110,19 +114,16 @@ function blogPostsAt(root) {
   return existsSync(dir) ? loadBlogPosts(dir) : [];
 }
 
-function studioFilesAt(root) {
-  const dir = resolve(root, 'public', 'studio');
-  if (!existsSync(dir)) return new Set();
-  return new Set(readdirSync(dir, { withFileTypes: true })
-    .filter((entry) => entry.isFile())
-    .map((entry) => `/studio/${entry.name}`));
-}
-
 export function buildValidationContext({ root = ROOT, selfSlug = '' } = {}) {
   const statePath = resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json');
   const state = existsSync(statePath) ? JSON.parse(readFileSync(statePath, 'utf8')) : {};
   const blogPosts = blogPostsAt(root);
   const articles = [...DRIP_ARTICLES, ...blogPosts.filter((post) => post.slug !== selfSlug)];
+  const imageUsages = imageUsage({
+    articles: [...DRIP_ARTICLES, ...blogPosts],
+    extraUsages: PAGE_STUDIO_USAGES,
+  });
+  const studioFiles = studioFilesAt(root);
   const paths = sitemapPaths(root);
   const liveUrls = new Set([...paths, '/', '/#pricing']);
   const navKeys = new Set(Object.keys(NAV));
@@ -160,7 +161,9 @@ export function buildValidationContext({ root = ROOT, selfSlug = '' } = {}) {
     allSlugs,
     slugOwners,
     existingKeywords,
-    studioFiles: studioFilesAt(root),
+    studioFiles,
+    studioPairs: studioPairsAt(root, { studioFiles }),
+    imageUsages,
     sectionTypes: new Set(SECTION_TYPES),
   };
 }
@@ -182,7 +185,30 @@ function validateRequired(post, errors) {
   if (!Array.isArray(post?.inboundFrom)) errors.push('required field inboundFrom must be an array');
 }
 
-function validateImages(post, ctx, errors) {
+function pairPart(path, pairs) {
+  const normalized = normalizeStudioPath(path);
+  for (const pair of pairs || []) {
+    if (normalizeStudioPath(pair.before) === normalized) return { key: `entry:${pair.key}`, role: 'before' };
+    if (normalizeStudioPath(pair.after) === normalized) return { key: `entry:${pair.key}`, role: 'after' };
+  }
+  const legacy = normalized.match(/^\/studio\/([^/]+)-(before|after)\.webp$/i);
+  return legacy ? { key: `path:${legacy[1]}`, role: legacy[2].toLowerCase() } : null;
+}
+
+function pairUsagePaths(path, pairs) {
+  const normalized = normalizeStudioPath(path);
+  const pair = (pairs || []).find((entry) => [entry.before, entry.after]
+    .some((candidate) => normalizeStudioPath(candidate) === normalized));
+  if (pair) return [normalizeStudioPath(pair.before), normalizeStudioPath(pair.after)];
+  const legacy = normalized.match(/^\/studio\/([^/]+)-(before|after)\.webp$/i);
+  if (!legacy) return [normalized];
+  return [
+    `/studio/${legacy[1]}-before.webp`,
+    `/studio/${legacy[1]}-after.webp`,
+  ];
+}
+
+function validateImages(post, ctx, errors, selfSlug) {
   const checkPath = (path, label) => {
     if (typeof path !== 'string' || !path.startsWith('/studio/')) {
       errors.push(`${label} image must use a /studio/ path`);
@@ -191,17 +217,34 @@ function validateImages(post, ctx, errors) {
     if (!ctx.studioFiles.has(path)) errors.push(`${label} image does not exist: ${path}`);
     const variant = path.replace(/\.webp$/i, '-550.webp');
     if (variant === path || !ctx.studioFiles.has(variant)) errors.push(`${label} image is missing its -550 variant: ${path}`);
+    const owner = pairUsagePaths(path, ctx.studioPairs)
+      .flatMap((candidate) => ctx.imageUsages?.get(candidate) || [])
+      .find((slug) => slug !== selfSlug);
+    if (owner) errors.push(`image already used by ${owner}: ${path}`);
   };
   for (const [index, section] of (post.sections || []).entries()) {
     if (section?.type === 'figure') {
       if (!section.beforeAlt || !section.afterAlt || !section.caption) errors.push(`figure section ${index + 1} needs alt text and a caption`);
       checkPath(section.before, `figure section ${index + 1} before`);
       checkPath(section.after, `figure section ${index + 1} after`);
+      const before = pairPart(section.before, ctx.studioPairs);
+      const after = pairPart(section.after, ctx.studioPairs);
+      if (!before || !after || before.role !== 'before' || after.role !== 'after' || before.key !== after.key) {
+        errors.push(`figure section ${index + 1} must use before/after images from the same studio pair`);
+      }
     }
     if (section?.type === 'image') {
       if (!section.alt || !section.caption) errors.push(`image section ${index + 1} needs alt text and a caption`);
       checkPath(section.src, `image section ${index + 1}`);
     }
+  }
+  const available = unusedStudioPairs({
+    pairs: ctx.studioPairs,
+    usage: ctx.imageUsages,
+    selfSlug,
+  });
+  if (available.length && !(post.sections || []).some((section) => section?.type === 'figure')) {
+    errors.push('post needs at least one unused before/after figure');
   }
 }
 
@@ -243,7 +286,7 @@ export function validatePost(post, ctx, {
   for (const [index, section] of sections.entries()) {
     if (!ctx.sectionTypes.has(section?.type)) errors.push(`unsupported section type at section ${index + 1}: ${section?.type || '(missing)'}`);
   }
-  validateImages({ ...post, sections }, ctx, errors);
+  validateImages({ ...post, sections }, ctx, errors, selfSlug);
 
   if (String(post?.title || '').length > 60) errors.push(`title must be 60 characters or fewer (${post.title.length})`);
   const descriptionLength = String(post?.description || '').length;

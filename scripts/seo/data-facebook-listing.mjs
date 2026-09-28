@@ -8,6 +8,7 @@
 // Follows the page-object contract in scripts/seo/shell.mjs.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.fbListing.path;
 
@@ -57,8 +58,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/ram-1500-before.webp',
-        after: '/studio/ram-1500-after.webp',
+        before: STUDIO_IMAGES.ram1500.before,
+        after: STUDIO_IMAGES.ram1500.after,
         beforeAlt: 'Raw dealership lot photo of a 2021 Ram 1500 before AutoLander',
         afterAlt: 'The same 2021 Ram 1500 as a polished Facebook listing photo after AutoLander’s AI Photo Studio',
         caption: 'From lot photo to Facebook-ready: AutoLander turns a raw 2021 Ram 1500 lot shot (left) into a showroom-grade listing photo (right), automatically.',

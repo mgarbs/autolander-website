@@ -42,7 +42,7 @@ Use only these section shapes:
 - `figure`: `{"type":"figure","before":"/studio/...webp","after":"/studio/...webp","beforeAlt":"...","afterAlt":"...","caption":"..."}`
 - `image`: `{"type":"image","src":"/studio/...webp","alt":"...","caption":"..."}`
 
-Use an optional `id` only when a stable deep link helps. Do not use `html` or `downloads`. Use only image paths in `images.json`, and only when the required `-550.webp` variant exists. Alt text and captions must describe the actual image. Images are optional.
+Use an optional `id` only when a stable deep link helps. Do not use `html` or `downloads`. When `images.json` contains pairs, include one or two `figure` sections using complete before and after pairs from that file. Choose pairs that fit the topic, such as trucks for a truck post, SUVs for family buyers, and RVs for RV posts. Write specific before and after alt text from the available vehicle, color, background, body style, vehicle class, and view labels. Write a caption that says what visibly changed, such as the background, lighting, or clutter, without claiming anything the images do not show. Never name or imply the dealership shown. Never use a pair that is absent from `images.json`. Each pair is used by exactly one page, and the validator enforces that rule. If `images.json` is empty, omit figure and image sections.
 
 ## Search and answer quality
 

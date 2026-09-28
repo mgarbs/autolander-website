@@ -6,6 +6,7 @@
 // Follows the page-object contract in scripts/seo/shell.mjs. Static, NO pixel, no fabricated stats.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const home = SITE.origin + '/';
 const hubCrumb = { name: 'Car dealership marketing', url: SITE.origin + NAV.mktgHub.path };
@@ -74,8 +75,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/jeep-wagoneer-before.webp',
-        after: '/studio/jeep-wagoneer-after.webp',
+        before: STUDIO_IMAGES.jeepWagoneer.before,
+        after: STUDIO_IMAGES.jeepWagoneer.after,
         beforeAlt: 'Jeep Wagoneer feed photo boxed in a third-party promo frame, before AutoLander',
         afterAlt: 'The same Jeep Wagoneer re-shot by AutoLander’s AI Photo Studio in a clean golden-hour scene',
         caption: 'Merchandising is marketing: the same Wagoneer, freed from a cluttered promo frame (left) and staged in a clean golden-hour scene (right) by AutoLander’s AI Photo Studio.',
@@ -179,8 +180,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/ford-maverick-before.webp',
-        after: '/studio/ford-maverick-after.webp',
+        before: STUDIO_IMAGES.fordMaverick.before,
+        after: STUDIO_IMAGES.fordMaverick.after,
         beforeAlt: 'Raw lot photo of a Ford Maverick before AutoLander',
         afterAlt: 'The same Ford Maverick on a clean showroom background after AutoLander’s AI Photo Studio',
         caption: 'Idea #9 in practice: same truck, same phone photo — the AI studio background is the only change.',
@@ -390,8 +391,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/chevrolet-malibu-before.webp',
-        after: '/studio/chevrolet-malibu-after.webp',
+        before: STUDIO_IMAGES.chevroletMalibu.before,
+        after: STUDIO_IMAGES.chevroletMalibu.after,
         beforeAlt: 'Raw lot photo of a Chevrolet Malibu before AutoLander',
         afterAlt: 'The same Chevrolet Malibu on a clean studio background after AutoLander’s AI Photo Studio',
         caption: 'The same Malibu, before and after the AI studio — the version on the right earns the click on every social surface.',
@@ -473,8 +474,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/hyundai-sonata-before.webp',
-        after: '/studio/hyundai-sonata-after.webp',
+        before: STUDIO_IMAGES.hyundaiSonata.before,
+        after: STUDIO_IMAGES.hyundaiSonata.after,
         beforeAlt: 'Raw lot photo of a Hyundai Sonata before AutoLander',
         afterAlt: 'The same Hyundai Sonata on a showroom background after AutoLander’s AI Photo Studio',
         caption: 'Lever #2: identical Sonata, identical price — the right-hand photo is the one that gets the message.',
@@ -562,8 +563,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/ford-expedition-before.webp',
-        after: '/studio/ford-expedition-after.webp',
+        before: STUDIO_IMAGES.fordExpedition.before,
+        after: STUDIO_IMAGES.fordExpedition.after,
         beforeAlt: 'Raw dealership lot photo of a Ford Expedition before AutoLander',
         afterAlt: 'The same Ford Expedition on a showroom background after AutoLander’s AI Photo Studio',
         caption: 'Compositing, not repainting: the Expedition’s paint, trim and wheels are untouched — only the scene changed.',

@@ -8,6 +8,7 @@
 
 import { SITE, NAV } from './registry.mjs';
 import { testimonialsSection } from './data-testimonials.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.dealers.path;
 
@@ -57,8 +58,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/jeep-wagoneer-before.webp',
-        after: '/studio/jeep-wagoneer-after.webp',
+        before: STUDIO_IMAGES.jeepWagoneer.before,
+        after: STUDIO_IMAGES.jeepWagoneer.after,
         beforeAlt: 'Raw dealership lot photo of a 2024 Jeep Wagoneer before AutoLander',
         afterAlt: 'The same 2024 Jeep Wagoneer as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'What professional Marketplace listings look like: AutoLander turns a real 2024 Jeep Wagoneer lot photo (left) into a showroom-grade shot (right), automatically.',

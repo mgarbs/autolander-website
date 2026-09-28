@@ -5,6 +5,7 @@
 // marketplace term. NO pixel. Follows the page-object contract in scripts/seo/shell.mjs.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.autoposter.path;
 
@@ -54,8 +55,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/nissan-kicks-before.webp',
-        after: '/studio/nissan-kicks-after.webp',
+        before: STUDIO_IMAGES.nissanKicks.before,
+        after: STUDIO_IMAGES.nissanKicks.after,
         beforeAlt: 'Raw dealership lot photo of a 2025 Nissan Kicks before AutoLander',
         afterAlt: 'The same 2025 Nissan Kicks as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'The autoposter enhances as it posts: AutoLander turns a raw 2025 Nissan Kicks lot photo (left) into a showroom-grade Facebook listing (right), automatically.',

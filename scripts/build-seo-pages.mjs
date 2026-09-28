@@ -24,6 +24,7 @@ import {
   loadPublishState, isPublished, articlePath,
 } from './seo/articles/article-system.mjs';
 import { loadBlogPosts } from './seo/articles/blog-loader.mjs';
+import { STUDIO_IMAGES } from './seo/articles/image-usage.mjs';
 import { blogIndexPage, blogRss, publishedBlogPosts } from './seo/blog-pages.mjs';
 import { buildHomeDirectory, injectHomeDirectory } from './seo/home-directory.mjs';
 import { ARTICLES as ART_MKT_A } from './seo/articles/data-articles-marketplace-a.mjs';
@@ -419,8 +420,8 @@ function imageSitemapXml() {
     loc: SITE.origin + '/',
     images: [
       { loc: ogImageFor('/'), title: HOME.title },
-      { loc: SITE.origin + '/studio/chevrolet-malibu-before.webp', title: 'Raw dealership lot photo before AutoLander’s AI Photo Studio' },
-      { loc: SITE.origin + '/studio/chevrolet-malibu-after.webp', title: 'The same vehicle as a showroom-grade Facebook Marketplace listing photo after AutoLander' },
+      { loc: SITE.origin + STUDIO_IMAGES.chevroletMalibu.before, title: 'Raw dealership lot photo before AutoLander’s AI Photo Studio' },
+      { loc: SITE.origin + STUDIO_IMAGES.chevroletMalibu.after, title: 'The same vehicle as a showroom-grade Facebook Marketplace listing photo after AutoLander' },
     ],
   });
   const body = entries.map((e) => `  <url>

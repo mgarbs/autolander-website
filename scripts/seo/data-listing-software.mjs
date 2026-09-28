@@ -8,6 +8,7 @@
 // Follows the page-object contract in scripts/seo/shell.mjs.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.listingSw.path;
 
@@ -58,8 +59,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/kia-k5-before.webp',
-        after: '/studio/kia-k5-after.webp',
+        before: STUDIO_IMAGES.kiaK5.before,
+        after: STUDIO_IMAGES.kiaK5.after,
         beforeAlt: 'Raw dealership lot photo of a 2022 Kia K5 before AutoLander',
         afterAlt: 'The same 2022 Kia K5 as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'Listing quality starts with the record buyers inspect: accurate fields, a clear description and photos that present the real vehicle consistently.',

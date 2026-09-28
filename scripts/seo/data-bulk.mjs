@@ -8,6 +8,7 @@
 // Follows the page-object contract in scripts/seo/shell.mjs.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const SOFTWARE_DESC =
   'AutoLander is Facebook Marketplace bulk vehicle posting software for car dealers: a native desktop '
@@ -40,8 +41,8 @@ export const PAGES = [
     sections: [
       {
         type: 'figure',
-        before: '/studio/toyota-tacoma-before.webp',
-        after: '/studio/toyota-tacoma-after.webp',
+        before: STUDIO_IMAGES.toyotaTacoma.before,
+        after: STUDIO_IMAGES.toyotaTacoma.after,
         beforeAlt: 'Raw dealership lot photo of a 2025 Toyota Tacoma before AutoLander',
         afterAlt: 'The same 2025 Toyota Tacoma as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'Posted at scale, still polished — a raw 2025 Toyota Tacoma lot photo (left) becomes a showroom-grade Marketplace listing (right), automatically.',

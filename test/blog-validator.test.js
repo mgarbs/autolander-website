@@ -1,11 +1,21 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import {
+  mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import {
   validatePost, buildValidationContext, isStructurallyRenderable,
 } from '../scripts/blog/validate-post.mjs';
+import {
+  imageUsage, normalizeStudioPath, studioFilesAt,
+} from '../scripts/seo/articles/image-usage.mjs';
 
-const ctx = buildValidationContext();
+// General-rule tests pin an EMPTY studio pool: the real library grows and shrinks as posts use
+// pairs, so "a figure is required" must not depend on repo state here. The image rules below build
+// their own contexts with explicit pairs.
+const ctx = { ...buildValidationContext(), studioPairs: [] };
 const base = () => JSON.parse(readFileSync(new URL('./fixtures/blog/valid-post.json', import.meta.url), 'utf8'));
 const errs = (mutate) => { const post = base(); mutate(post); return validatePost(post, ctx).errors.join('\n'); };
 
@@ -98,4 +108,146 @@ test('structural validation enforces faq pairs and target slug identity', () => 
     }).errors.join('\n'),
     /revise must keep slug/,
   );
+});
+
+const testPair = (key) => ({
+  key,
+  before: `/studio/library/${key}-before.webp`,
+  after: `/studio/library/${key}-after.webp`,
+  before550: `/studio/library/${key}-before-550.webp`,
+  after550: `/studio/library/${key}-after-550.webp`,
+  source: 'library',
+});
+
+const contextWithPairs = (pairs, imageUsages = new Map()) => ({
+  ...ctx,
+  studioFiles: new Set([
+    ...ctx.studioFiles,
+    ...pairs.flatMap((pair) => [pair.before, pair.after, pair.before550, pair.after550]),
+  ]),
+  studioPairs: pairs,
+  imageUsages,
+});
+
+const addFigure = (post, before, after) => post.sections.push({
+  type: 'figure',
+  before,
+  after,
+  beforeAlt: 'Vehicle before studio processing',
+  afterAlt: 'Vehicle after studio processing',
+  caption: 'The background and lighting were cleaned up.',
+});
+
+test('image usage covers figures and images and normalizes -550 variants', () => {
+  const usage = imageUsage({
+    articles: [{
+      slug: 'drip-guide',
+      sections: [
+        { type: 'figure', before: '/studio/a-before-550.webp', after: '/studio/a-after.webp' },
+        { type: 'image', src: '/studio/single-550.webp' },
+      ],
+    }],
+    extraUsages: [{ slug: 'home', paths: ['/studio/home-550.webp'] }],
+  });
+  assert.deepEqual(usage.get('/studio/a-before.webp'), ['drip-guide']);
+  assert.deepEqual(usage.get('/studio/a-after.webp'), ['drip-guide']);
+  assert.deepEqual(usage.get('/studio/single.webp'), ['drip-guide']);
+  assert.deepEqual(usage.get('/studio/home.webp'), ['home']);
+  assert.equal(normalizeStudioPath('/studio/a-before-550.webp'), '/studio/a-before.webp');
+});
+
+test('reuse of a drip image fails with the owner and path', () => {
+  const pair = testPair('drip-pair');
+  const post = base();
+  addFigure(post, pair.before, pair.after);
+  const usage = imageUsage({ articles: [{ slug: 'existing-drip', sections: [{ type: 'figure', ...pair }] }] });
+  const result = validatePost(post, contextWithPairs([pair], usage));
+  assert.ok(result.errors.includes(`image already used by existing-drip: ${pair.before}`));
+  assert.ok(result.errors.includes(`image already used by existing-drip: ${pair.after}`));
+});
+
+test('reuse of another blog post image fails whether that post is draft or published', () => {
+  for (const status of ['draft', 'published']) {
+    const pair = testPair(`${status}-pair`);
+    const post = base();
+    addFigure(post, pair.before, pair.after);
+    const usage = imageUsage({
+      articles: [{ slug: `${status}-blog-post`, meta: { status }, sections: [{ type: 'figure', ...pair }] }],
+    });
+    assert.match(
+      validatePost(post, contextWithPairs([pair], usage)).errors.join('\n'),
+      new RegExp(`image already used by ${status}-blog-post`),
+    );
+  }
+});
+
+test('using the other half of a pair in an image section still counts as reuse', () => {
+  const pair = testPair('split-image-pair');
+  const post = base();
+  post.sections.push({
+    type: 'image', src: pair.after, alt: 'Vehicle after editing', caption: 'A cleaned-up background.',
+  });
+  const usage = imageUsage({
+    articles: [{ slug: 'page-using-before-half', sections: [{ type: 'image', src: pair.before }] }],
+  });
+  const result = validatePost(post, contextWithPairs([pair], usage));
+  assert.ok(result.errors.includes(`image already used by page-using-before-half: ${pair.after}`));
+});
+
+test('a revision may keep the same post image', () => {
+  const pair = testPair('own-pair');
+  const post = base();
+  addFigure(post, pair.before, pair.after);
+  const usage = imageUsage({ articles: [{ slug: post.slug, sections: [{ type: 'figure', ...pair }] }] });
+  const result = validatePost(post, contextWithPairs([pair], usage), { selfSlug: post.slug });
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.ok, true);
+});
+
+test('a figure cannot mix halves from different pairs', () => {
+  const first = testPair('first-pair');
+  const second = testPair('second-pair');
+  const post = base();
+  addFigure(post, first.before, second.after);
+  assert.match(
+    validatePost(post, contextWithPairs([first, second])).errors.join('\n'),
+    /same studio pair/,
+  );
+});
+
+test('a figure is required only while an unused pair exists', () => {
+  const pair = testPair('available-pair');
+  assert.ok(
+    validatePost(base(), contextWithPairs([pair])).errors
+      .includes('post needs at least one unused before/after figure'),
+  );
+  const used = new Map([[pair.before, ['other-page']]]);
+  assert.equal(
+    validatePost(base(), contextWithPairs([pair], used)).errors
+      .includes('post needs at least one unused before/after figure'),
+    false,
+  );
+});
+
+test('validation context finds studio files and pairs in the library subdirectory', () => {
+  const root = mkdtempSync(join(tmpdir(), 'studio-ledger-'));
+  try {
+    const pair = testPair('nested-pair');
+    const dir = join(root, 'public', 'studio', 'library');
+    mkdirSync(dir, { recursive: true });
+    for (const path of [pair.before, pair.after, pair.before550, pair.after550]) {
+      writeFileSync(join(root, 'public', ...path.split('/').filter(Boolean)), 'image');
+    }
+    writeFileSync(
+      join(root, 'public', 'studio', 'library.json'),
+      `${JSON.stringify([{ ...pair, source: undefined }])}\n`,
+    );
+    const files = studioFilesAt(root);
+    const built = buildValidationContext({ root, selfSlug: 'new-post' });
+    assert.ok(files.has(pair.before550));
+    assert.ok(built.studioFiles.has(pair.after));
+    assert.equal(built.studioPairs[0].key, pair.key);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });

@@ -6,6 +6,7 @@
 // Follows the page-object contract in scripts/seo/shell.mjs.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.automation.path;
 
@@ -53,8 +54,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/ford-maverick-before.webp',
-        after: '/studio/ford-maverick-after.webp',
+        before: STUDIO_IMAGES.fordMaverick.before,
+        after: STUDIO_IMAGES.fordMaverick.after,
         beforeAlt: 'Raw dealership lot photo of a 2026 Ford Maverick before AutoLander',
         afterAlt: 'The same 2026 Ford Maverick as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'Automation includes the photos: AutoLander turns a raw 2026 Ford Maverick lot photo (left) into a showroom-grade Marketplace listing (right), automatically.',

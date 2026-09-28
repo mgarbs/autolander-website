@@ -403,12 +403,15 @@ test('postPublish is a no-op for a non-blog publish', async (t) => {
 
 test('assertPublishable rejects an invalid blog draft with authoritative validator errors', async () => {
   const { assertPublishable } = await loadPublishApi();
+  const { buildValidationContext } = await import('../scripts/blog/validate-post.mjs');
   const valid = JSON.parse(read(VALID_POST));
-  assert.doesNotThrow(() => assertPublishable(valid, { root: ROOT }));
+  // Empty studio pool so the real (growing) library does not make the fixture need a figure.
+  const context = { ...buildValidationContext({ root: ROOT, selfSlug: valid.slug }), studioPairs: [] };
+  assert.doesNotThrow(() => assertPublishable(valid, { root: ROOT, context }));
   const invalid = structuredClone(valid);
   invalid.description = 'Too short.';
   assert.throws(
-    () => assertPublishable(invalid, { root: ROOT }),
+    () => assertPublishable(invalid, { root: ROOT, context }),
     /description.*140|140.*description/i,
   );
 });

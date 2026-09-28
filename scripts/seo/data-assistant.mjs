@@ -7,6 +7,7 @@
 // NO pixel. Follows scripts/seo/shell.mjs contract.
 
 import { SITE, NAV } from './registry.mjs';
+import { STUDIO_IMAGES } from './articles/image-usage.mjs';
 
 const canonical = SITE.origin + NAV.assistant.path;
 
@@ -57,8 +58,8 @@ export const PAGES = [
       },
       {
         type: 'figure',
-        before: '/studio/hyundai-sonata-before.webp',
-        after: '/studio/hyundai-sonata-after.webp',
+        before: STUDIO_IMAGES.hyundaiSonata.before,
+        after: STUDIO_IMAGES.hyundaiSonata.after,
         beforeAlt: 'Raw dealership lot photo of a 2024 Hyundai Sonata before AutoLander',
         afterAlt: 'The same 2024 Hyundai Sonata as a showroom-grade Facebook Marketplace listing photo after AutoLander’s AI Photo Studio',
         caption: 'Your assistant handles the photos too: AutoLander turns a raw 2024 Hyundai Sonata lot photo (left) into a showroom-grade Marketplace listing (right), automatically.',
