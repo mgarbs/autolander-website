@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* The /team landing page builds its own stylesheet (src/team/team.css); keep it out of this one. */
+@source not "./team";
 
 @font-face {
   font-family: 'Inter';
