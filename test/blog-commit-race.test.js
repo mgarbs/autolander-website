@@ -65,6 +65,11 @@ function raceRepo(t, label) {
     git(scratch, ['clone', '-q', '-c', 'core.autocrlf=false', '--branch', 'main', remote, path]);
     return path;
   };
+  // These tests exercise git races, not images: start every race from an empty studio library so
+  // the "post needs an unused figure" rule never depends on how many real pairs are committed.
+  const seeder = clone('seeder');
+  write(resolve(seeder, 'public', 'studio', 'library.json'), '[]\n');
+  if (commitAll(seeder, 'test: empty studio library')) git(seeder, ['push', '-q', 'origin', 'HEAD:main']);
   return { scratch, remote, clone };
 }
 
