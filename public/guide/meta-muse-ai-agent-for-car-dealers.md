@@ -122,6 +122,7 @@ Yes, by staying on its own side of the line. AutoLander lists and maintains your
 - [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers/)
 - [Facebook Marketplace automation](https://autolander.ai/facebook-marketplace-automation/)
 - [The Facebook Seller app for car dealers: what it does and where it fits](https://autolander.ai/guide/facebook-seller-app-for-car-dealers/)
+- [Meta Muse vs AutoLander vs CARVID: which one a car dealer actually needs](https://autolander.ai/compare/meta-muse-vs-autolander-vs-carvid/)
 - [Meta Muse for car salesmen: the rep’s guide to using it well](https://autolander.ai/compare/meta-muse-for-car-salesmen/)
 
 ---

@@ -101,6 +101,7 @@ Meta’s Terms prohibit accessing its products by automated means without prior 
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [The Facebook Seller app for car dealers: what it does and where it fits](https://autolander.ai/guide/facebook-seller-app-for-car-dealers/)
 - [Meta Muse for car dealers: getting your listings ready for an AI that shops](https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers/)
+- [Meta Muse vs AutoLander vs CARVID: which one a car dealer actually needs](https://autolander.ai/compare/meta-muse-vs-autolander-vs-carvid/)
 - [Meta Muse for car salesmen: the rep’s guide to using it well](https://autolander.ai/compare/meta-muse-for-car-salesmen/)
 
 ---

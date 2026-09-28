@@ -54,6 +54,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 
 ## Guides and playbooks: Comparisons & alternatives
 
+- Meta Muse vs AutoLander vs CARVID for Car Dealers (2026)
 - Meta Muse for Car Salesmen: How Reps Should Use It (2026)
 
 ## Evergreen hubs

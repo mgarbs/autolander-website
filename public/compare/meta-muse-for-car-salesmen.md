@@ -151,6 +151,7 @@ Muse is Meta’s own agent, but Marketplace rules and listing limits still apply
 - [Why AutoLander does not answer your buyers for you](https://autolander.ai/why-we-dont-answer-your-buyers/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
+- [Meta Muse vs AutoLander vs CARVID: which one a car dealer actually needs](https://autolander.ai/compare/meta-muse-vs-autolander-vs-carvid/)
 - [Meta Muse for car dealers: getting your listings ready for an AI that shops](https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers/)
 
 ---

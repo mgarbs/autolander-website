@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-27",
+  "generatedAt": "2026-09-28",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -566,8 +566,8 @@
       ],
       "description": "Meta Muse vs AutoLander vs CARVID for car dealers: posting, auto-reply, buyer hunting, teams and price compared, plus what Muse said when we asked it.",
       "suggestedOrder": 28,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-28"
     },
     {
       "slug": "meta-muse-for-car-dealerships",
