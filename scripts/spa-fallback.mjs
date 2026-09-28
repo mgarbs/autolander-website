@@ -70,3 +70,7 @@ writeFileSync(payIndexPath, noindexShell, 'utf8');
 const teamDir = join(distDir, 'team');
 mkdirSync(teamDir, { recursive: true });
 writeFileSync(join(teamDir, 'index.html'), noindexShell, 'utf8');
+// And for /ai-visibility (the free AI Visibility Scan page), on the same terms.
+const aiDir = join(distDir, 'ai-visibility');
+mkdirSync(aiDir, { recursive: true });
+writeFileSync(join(aiDir, 'index.html'), noindexShell, 'utf8');
