@@ -737,6 +737,47 @@
       "publishedAt": null
     },
     {
+      "slug": "high-gas-prices-car-dealers",
+      "kind": "blog",
+      "path": "/blog/high-gas-prices-car-dealers/",
+      "url": "https://autolander.ai/blog/high-gas-prices-car-dealers/",
+      "title": "What High Gas Prices Mean for Car Dealers, New and Used",
+      "h1": "What high gas prices mean for car dealers, new and used: a 30-day plan",
+      "silo": "blog",
+      "siloLabel": "Blog",
+      "primaryKeyword": "what high gas prices mean for car dealers",
+      "secondaryKeywords": [
+        "how gas prices affect car sales",
+        "gas prices and used car sales",
+        "high gas prices car dealers",
+        "gas prices and trade-in values",
+        "fuel prices and new car inventory",
+        "selling trucks when gas prices are high"
+      ],
+      "description": "What high gas prices mean for new and used car dealers: trade appraisals, lot mix, truck-heavy Marketplace data and a 30-day plan for a fuel price spike.",
+      "suggestedOrder": null,
+      "status": "draft",
+      "publishedAt": null,
+      "requestId": "80486a3e-de23-4c7e-8d2b-183fa072bcf4",
+      "updatedAt": "2026-09-28",
+      "validationOk": true,
+      "validationErrors": [],
+      "wordCount": 3137,
+      "outboundLinks": 17,
+      "inboundFrom": [
+        "fed-rate-hike-car-dealers",
+        "how-to-price-used-cars-competitively",
+        "q4-used-car-sales-facebook-marketplace",
+        "used-car-dealer-advertising-on-a-budget",
+        "buy-here-pay-here-marketing"
+      ],
+      "augmentKeys": [
+        "report2026",
+        "sellMore",
+        "mktgHub"
+      ]
+    },
+    {
       "slug": "fed-rate-hike-car-dealers",
       "kind": "blog",
       "path": "/blog/fed-rate-hike-car-dealers/",
