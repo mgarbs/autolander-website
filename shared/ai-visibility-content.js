@@ -8,8 +8,7 @@
 //   worker/src/booking/router.js                                               (role list, consent text + version only)
 //   test/*.test.js                                                             (drift + copy lint)
 //
-// PUBLIC REPO. Customer-facing copy only: never costs, margins, hours, vendor names, placement
-// grades, staffing, commission, internal gates or the old tier names.
+// PUBLIC REPO: customer-facing copy only.
 //
 // MODULE RULES (tests enforce them):
 //   * `export const` data and pure helpers only; no side effects at module scope (no Object.freeze,
@@ -185,7 +184,7 @@ export const SUCCESS = {
   footnote: 'Nothing else to do for now. No logins, nothing to install.',
 };
 
-// ---------- plans (D1, 2026-09-28: three plans, Romeo's names, prices and setup fees) ----------
+// ---------- plans ----------
 // Counts drive the comparison table, the JSON-LD and the .md twin; never restate them in prose elsewhere.
 export const PLANS = [
   {
