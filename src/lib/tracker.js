@@ -38,14 +38,17 @@ async function sendToCapi(event, params, { eventId, userData } = {}) {
       ...(userData || {}),
     });
 
-    await fetch(`${CAPI_URL}/capi/track`, {
+    const response = await fetch(`${CAPI_URL}/capi/track`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
       keepalive: true,
+      // Background telemetry must not hold network-critical-idle open.
+      priority: 'low',
       credentials: 'omit',
       mode: 'cors',
     });
+    try { await response.text(); } catch { /* The response is unused; drain it. */ }
   } catch {
     /* Tracking must never break user flows */
   }

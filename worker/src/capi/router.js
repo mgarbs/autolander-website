@@ -265,14 +265,13 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     return jsonResponse({ ok: true, skipped: 'non_production_meta_origin' }, 200, corsHeaders);
   }
 
-  const limit = await enforceTrackRateLimit(request, env);
+  const limit = await enforceTrackRateLimit(request, env, { deferWrites: true });
   if (!limit.ok) {
     await bumpCounter(env, isoDay(new Date()), 'meta', 'track_rate_limited').catch(() => {});
     return jsonResponse({ ok: false, reason: limit.reason }, limit.status || 429, corsHeaders);
   }
 
   const body = await safeJson(request);
-  const testEventCode = env.ALLOW_QA_TEST_EVENT_CODE === 'true' && /^TEST[A-Za-z0-9]{1,32}$/.test(body.testEventCode) ? body.testEventCode : '';
   const eventName = clean(body.event, 64);
   if (!isAllowedEvent(eventName)) {
     return jsonResponse({ ok: false, reason: 'unsupported_event' }, 400, corsHeaders);
@@ -296,6 +295,31 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   if (!isValidEventId(eventId)) {
     return jsonResponse({ ok: false, reason: 'invalid_event_id' }, 400, corsHeaders);
   }
+
+  const work = recordAndSend({ request, env, body, eventName, eventId, writes: limit.writes });
+  if (ctx?.waitUntil) {
+    ctx.waitUntil(work.catch((error) => console.warn('[capi/track] deferred work failed', error?.message || error)));
+    return jsonResponse({ ok: true, queued: true }, 200, corsHeaders);
+  }
+  const { deduped } = await work;
+  return jsonResponse({ ok: true, deduped }, 200, corsHeaders);
+}
+
+// Telemetry storage is best effort. A KV outage must never suppress a Meta send.
+async function trackBookkeeping(work, fallback = undefined) {
+  try { return await work(); } catch (error) {
+    console.warn('[capi/track] bookkeeping failed', error?.message || error);
+    return fallback;
+  }
+}
+
+async function recordAndSend({ request, env, body, eventName, eventId, writes }) {
+  const safeBumpCounter = (...args) => trackBookkeeping(() => bumpCounter(...args));
+  const testEventCode = env.ALLOW_QA_TEST_EVENT_CODE === 'true' && /^TEST[A-Za-z0-9]{1,32}$/.test(body.testEventCode) ? body.testEventCode : '';
+  await trackBookkeeping(() => writes?.());
+  // Fail open: Meta also deduplicates event_name + event_id.
+  const alreadySeen = await trackBookkeeping(() => wasEventSeen(env, eventId), false);
+  if (alreadySeen) return { deduped: true };
 
   const vid = isValidVid(body.vid) ? body.vid : '';
   const sid = clean(body.sid, 64);
@@ -344,7 +368,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   const today = isoDay(new Date());
 
   const visitorMemory = vid
-    ? await rememberVisitor(env, vid, {
+    ? await trackBookkeeping(() => rememberVisitor(env, vid, {
       fbp,
       fbc,
       sid,
@@ -363,13 +387,11 @@ async function handleTrack(request, env, corsHeaders, ctx) {
       colo,
       asn,
       asOrganization,
-    })
+    }), { isNew: false, existing: null })
     : { isNew: false, existing: null };
 
-  const alreadySeen = await wasEventSeen(env, eventId);
-  if (alreadySeen) return jsonResponse({ ok: true, deduped: true }, 200, corsHeaders);
   if (!alreadySeen) {
-    await markEventSeen(env, eventId);
+    await trackBookkeeping(() => markEventSeen(env, eventId));
     const attributable = isAttributableTraffic(utms, fbclid);
     const metaTraffic = isMetaTraffic(utms, fbclid);
     const isVisitEvent = eventName === 'PageView';
@@ -378,84 +400,84 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     const visitorType = visitorMemory.isNew ? 'new' : 'returning';
     const networkHash = ip ? await sha256Hex(`ip:${ip}`) : '';
     const networkSeenToday =
-      isVisitEvent && networkHash ? await rememberDailySeen(env, today, 'network', networkHash.slice(0, 32)) : false;
+      isVisitEvent && networkHash ? await trackBookkeeping(() => rememberDailySeen(env, today, 'network', networkHash.slice(0, 32)), false) : false;
     const visitorSeenToday =
-      isVisitEvent && vid ? await rememberDailySeen(env, today, 'visitor', vid) : false;
+      isVisitEvent && vid ? await trackBookkeeping(() => rememberDailySeen(env, today, 'visitor', vid), false) : false;
     const sessionSeenToday =
-      isVisitEvent && sid ? await rememberDailySeen(env, today, 'session', sid) : false;
+      isVisitEvent && sid ? await trackBookkeeping(() => rememberDailySeen(env, today, 'session', sid), false) : false;
     await Promise.all([
-      bumpCounter(env, today, 'meta', body.channel === 'server_only' ? 'server_only_events' : 'legacy_pixel_events'),
-      testEventCode ? bumpCounter(env, today, 'meta', 'test_event_code') : null,
-      bumpCounter(env, today, 'event', eventName),
-      bumpCounter(env, today, 'event', `${eventName}:browser`),
-      isVisitEvent && visitorSeenToday ? bumpCounter(env, today, 'audience', 'unique_visitors') : null,
-      isVisitEvent && sessionSeenToday ? bumpCounter(env, today, 'audience', 'unique_sessions') : null,
-      isVisitEvent ? bumpCounter(env, today, 'visitor_type', visitorType) : null,
-      isVisitEvent && networkHash ? bumpCounter(env, today, 'network', networkSeenToday ? 'new_network' : 'repeat_network') : null,
-      isVisitEvent && asOrganization ? bumpCounter(env, today, 'network_org', asOrganization) : null,
-      isVisitEvent && colo ? bumpCounter(env, today, 'edge', colo) : null,
-      isVisitEvent && country ? bumpCounter(env, today, 'country', country) : null,
-      isVisitEvent && region ? bumpCounter(env, today, 'region', `${country || 'unknown'}:${region}`) : null,
-      isVisitEvent && hour ? bumpCounter(env, today, 'hour', hour) : null,
-      eventName === 'Lead' && hour ? bumpCounter(env, today, 'hour_lead', hour) : null,
-      eventName === 'Schedule' && hour ? bumpCounter(env, today, 'hour_schedule', hour) : null,
-      isVisitEvent && weekday ? bumpCounter(env, today, 'weekday', weekday) : null,
-      isVisitEvent && category ? bumpCounter(env, today, 'traffic_category', category) : null,
-      isVisitEvent && intent ? bumpCounter(env, today, 'intent', intent) : null,
-      isVisitEvent && page.referrer_domain ? bumpCounter(env, today, 'referrer_domain', page.referrer_domain) : null,
-      isVisitEvent && page.landing_path ? bumpCounter(env, today, 'landing_page', page.landing_path) : null,
-      isVisitEvent && page.current_path ? bumpCounter(env, today, 'page_path', page.current_path) : null,
-      isVisitEvent && client.browser ? bumpCounter(env, today, 'browser', client.browser) : null,
-      isVisitEvent && client.os ? bumpCounter(env, today, 'os', client.os) : null,
-      isVisitEvent && device.viewport ? bumpCounter(env, today, 'viewport', viewportBucket(device.viewport)) : null,
-      isVisitEvent && device.orientation ? bumpCounter(env, today, 'orientation', device.orientation) : null,
-      isVisitEvent && device.touch ? bumpCounter(env, today, 'touch', device.touch) : null,
-      isVisitEvent && device.connection_type ? bumpCounter(env, today, 'connection', device.connection_type) : null,
-      isVisitEvent && device.timezone ? bumpCounter(env, today, 'timezone', device.timezone) : null,
-      isVisitEvent && device.language ? bumpCounter(env, today, 'language', device.language.toLowerCase()) : null,
-      eventName === 'EngagedVisit' ? bumpCounter(env, today, 'engagement', '15s_plus') : null,
+      safeBumpCounter(env, today, 'meta', body.channel === 'server_only' ? 'server_only_events' : 'legacy_pixel_events'),
+      testEventCode ? safeBumpCounter(env, today, 'meta', 'test_event_code') : null,
+      safeBumpCounter(env, today, 'event', eventName),
+      safeBumpCounter(env, today, 'event', `${eventName}:browser`),
+      isVisitEvent && visitorSeenToday ? safeBumpCounter(env, today, 'audience', 'unique_visitors') : null,
+      isVisitEvent && sessionSeenToday ? safeBumpCounter(env, today, 'audience', 'unique_sessions') : null,
+      isVisitEvent ? safeBumpCounter(env, today, 'visitor_type', visitorType) : null,
+      isVisitEvent && networkHash ? safeBumpCounter(env, today, 'network', networkSeenToday ? 'new_network' : 'repeat_network') : null,
+      isVisitEvent && asOrganization ? safeBumpCounter(env, today, 'network_org', asOrganization) : null,
+      isVisitEvent && colo ? safeBumpCounter(env, today, 'edge', colo) : null,
+      isVisitEvent && country ? safeBumpCounter(env, today, 'country', country) : null,
+      isVisitEvent && region ? safeBumpCounter(env, today, 'region', `${country || 'unknown'}:${region}`) : null,
+      isVisitEvent && hour ? safeBumpCounter(env, today, 'hour', hour) : null,
+      eventName === 'Lead' && hour ? safeBumpCounter(env, today, 'hour_lead', hour) : null,
+      eventName === 'Schedule' && hour ? safeBumpCounter(env, today, 'hour_schedule', hour) : null,
+      isVisitEvent && weekday ? safeBumpCounter(env, today, 'weekday', weekday) : null,
+      isVisitEvent && category ? safeBumpCounter(env, today, 'traffic_category', category) : null,
+      isVisitEvent && intent ? safeBumpCounter(env, today, 'intent', intent) : null,
+      isVisitEvent && page.referrer_domain ? safeBumpCounter(env, today, 'referrer_domain', page.referrer_domain) : null,
+      isVisitEvent && page.landing_path ? safeBumpCounter(env, today, 'landing_page', page.landing_path) : null,
+      isVisitEvent && page.current_path ? safeBumpCounter(env, today, 'page_path', page.current_path) : null,
+      isVisitEvent && client.browser ? safeBumpCounter(env, today, 'browser', client.browser) : null,
+      isVisitEvent && client.os ? safeBumpCounter(env, today, 'os', client.os) : null,
+      isVisitEvent && device.viewport ? safeBumpCounter(env, today, 'viewport', viewportBucket(device.viewport)) : null,
+      isVisitEvent && device.orientation ? safeBumpCounter(env, today, 'orientation', device.orientation) : null,
+      isVisitEvent && device.touch ? safeBumpCounter(env, today, 'touch', device.touch) : null,
+      isVisitEvent && device.connection_type ? safeBumpCounter(env, today, 'connection', device.connection_type) : null,
+      isVisitEvent && device.timezone ? safeBumpCounter(env, today, 'timezone', device.timezone) : null,
+      isVisitEvent && device.language ? safeBumpCounter(env, today, 'language', device.language.toLowerCase()) : null,
+      eventName === 'EngagedVisit' ? safeBumpCounter(env, today, 'engagement', '15s_plus') : null,
       eventName === 'ScrollDepth' && body.customData?.percent
-        ? bumpCounter(env, today, 'scroll_depth', `${Number(body.customData.percent) || 0}%`)
+        ? safeBumpCounter(env, today, 'scroll_depth', `${Number(body.customData.percent) || 0}%`)
         : null,
-      attributable && utms.utm_source ? bumpCounter(env, today, 'source', utms.utm_source) : null,
-      attributable && keys.siteSource ? bumpCounter(env, today, 'site_source', keys.siteSource) : null,
-      attributable && keys.placement ? bumpCounter(env, today, 'placement', keys.placement) : null,
-      attributable && device.device ? bumpCounter(env, today, 'device', device.device) : null,
-      attributable && keys.campaignName ? bumpCounter(env, today, 'campaign', keys.campaignName) : null,
-      attributable && keys.campaignId ? bumpCounter(env, today, 'campaign_id', keys.campaignId) : null,
-      attributable && keys.adName ? bumpCounter(env, today, 'ad', keys.adName) : null,
-      attributable && keys.adId ? bumpCounter(env, today, 'ad_id', keys.adId) : null,
-      attributable && keys.adsetName ? bumpCounter(env, today, 'adset', keys.adsetName) : null,
-      attributable && keys.adsetId ? bumpCounter(env, today, 'adset_id', keys.adsetId) : null,
+      attributable && utms.utm_source ? safeBumpCounter(env, today, 'source', utms.utm_source) : null,
+      attributable && keys.siteSource ? safeBumpCounter(env, today, 'site_source', keys.siteSource) : null,
+      attributable && keys.placement ? safeBumpCounter(env, today, 'placement', keys.placement) : null,
+      attributable && device.device ? safeBumpCounter(env, today, 'device', device.device) : null,
+      attributable && keys.campaignName ? safeBumpCounter(env, today, 'campaign', keys.campaignName) : null,
+      attributable && keys.campaignId ? safeBumpCounter(env, today, 'campaign_id', keys.campaignId) : null,
+      attributable && keys.adName ? safeBumpCounter(env, today, 'ad', keys.adName) : null,
+      attributable && keys.adId ? safeBumpCounter(env, today, 'ad_id', keys.adId) : null,
+      attributable && keys.adsetName ? safeBumpCounter(env, today, 'adset', keys.adsetName) : null,
+      attributable && keys.adsetId ? safeBumpCounter(env, today, 'adset_id', keys.adsetId) : null,
       attributable && keys.campaignName && eventName === 'Lead'
-        ? bumpCounter(env, today, 'campaign_lead', keys.campaignName)
+        ? safeBumpCounter(env, today, 'campaign_lead', keys.campaignName)
         : null,
       attributable && keys.campaignId && eventName === 'Lead'
-        ? bumpCounter(env, today, 'campaign_id_lead', keys.campaignId)
+        ? safeBumpCounter(env, today, 'campaign_id_lead', keys.campaignId)
         : null,
       attributable && keys.campaignName && eventName === 'Schedule'
-        ? bumpCounter(env, today, 'campaign_schedule', keys.campaignName)
+        ? safeBumpCounter(env, today, 'campaign_schedule', keys.campaignName)
         : null,
       attributable && keys.campaignId && eventName === 'Schedule'
-        ? bumpCounter(env, today, 'campaign_id_schedule', keys.campaignId)
+        ? safeBumpCounter(env, today, 'campaign_id_schedule', keys.campaignId)
         : null,
-      attributable && keys.adName && eventName === 'Lead' ? bumpCounter(env, today, 'ad_lead', keys.adName) : null,
-      attributable && keys.adId && eventName === 'Lead' ? bumpCounter(env, today, 'ad_id_lead', keys.adId) : null,
-      attributable && keys.adName && eventName === 'Schedule' ? bumpCounter(env, today, 'ad_schedule', keys.adName) : null,
-      attributable && keys.adId && eventName === 'Schedule' ? bumpCounter(env, today, 'ad_id_schedule', keys.adId) : null,
-      metaTraffic && isVisitEvent ? bumpCounter(env, today, 'meta', 'visits') : null,
-      metaTraffic && isVisitEvent ? bumpCounter(env, today, 'meta', 'utm_meta_visits') : null,
-      fbclid && isVisitEvent ? bumpCounter(env, today, 'meta', 'with_fbclid') : null,
-      metaTraffic && isVisitEvent && keys.campaignId ? bumpCounter(env, today, 'meta', 'with_campaign_id') : null,
-      metaTraffic && isVisitEvent && keys.adId ? bumpCounter(env, today, 'meta', 'with_ad_id') : null,
-      metaTraffic && isVisitEvent && !keys.campaignId ? bumpCounter(env, today, 'meta', 'missing_campaign_id') : null,
-      metaTraffic && isVisitEvent && !keys.adId ? bumpCounter(env, today, 'meta', 'missing_ad_id') : null,
-      metaTraffic && isVisitEvent && !keys.campaignName ? bumpCounter(env, today, 'meta', 'missing_campaign_name') : null,
-      metaTraffic && isVisitEvent && !keys.adName ? bumpCounter(env, today, 'meta', 'missing_ad_name') : null,
-      metaTraffic && isVisitEvent && hasAnyUnresolvedMacro(utms) ? bumpCounter(env, today, 'meta', 'unresolved_macros') : null,
+      attributable && keys.adName && eventName === 'Lead' ? safeBumpCounter(env, today, 'ad_lead', keys.adName) : null,
+      attributable && keys.adId && eventName === 'Lead' ? safeBumpCounter(env, today, 'ad_id_lead', keys.adId) : null,
+      attributable && keys.adName && eventName === 'Schedule' ? safeBumpCounter(env, today, 'ad_schedule', keys.adName) : null,
+      attributable && keys.adId && eventName === 'Schedule' ? safeBumpCounter(env, today, 'ad_id_schedule', keys.adId) : null,
+      metaTraffic && isVisitEvent ? safeBumpCounter(env, today, 'meta', 'visits') : null,
+      metaTraffic && isVisitEvent ? safeBumpCounter(env, today, 'meta', 'utm_meta_visits') : null,
+      fbclid && isVisitEvent ? safeBumpCounter(env, today, 'meta', 'with_fbclid') : null,
+      metaTraffic && isVisitEvent && keys.campaignId ? safeBumpCounter(env, today, 'meta', 'with_campaign_id') : null,
+      metaTraffic && isVisitEvent && keys.adId ? safeBumpCounter(env, today, 'meta', 'with_ad_id') : null,
+      metaTraffic && isVisitEvent && !keys.campaignId ? safeBumpCounter(env, today, 'meta', 'missing_campaign_id') : null,
+      metaTraffic && isVisitEvent && !keys.adId ? safeBumpCounter(env, today, 'meta', 'missing_ad_id') : null,
+      metaTraffic && isVisitEvent && !keys.campaignName ? safeBumpCounter(env, today, 'meta', 'missing_campaign_name') : null,
+      metaTraffic && isVisitEvent && !keys.adName ? safeBumpCounter(env, today, 'meta', 'missing_ad_name') : null,
+      metaTraffic && isVisitEvent && hasAnyUnresolvedMacro(utms) ? safeBumpCounter(env, today, 'meta', 'unresolved_macros') : null,
     ].filter(Boolean));
 
-    await pushRecentEvent(env, {
+    await trackBookkeeping(() => pushRecentEvent(env, {
       at: new Date().toISOString(),
       event: eventName,
       source: 'browser',
@@ -485,7 +507,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
       network_org: asOrganization,
       fbclid: Boolean(fbclid),
       eventId,
-    });
+    }));
   }
 
   const customData = {
@@ -532,17 +554,16 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     const result = await sendEvents(env, [capiEvent], { testEventCode });
     if (result.ok) {
       await Promise.all([
-        bumpCounter(env, today, 'event', `${eventName}:server`),
-        bumpCounter(env, today, 'meta', 'capi_ok'),
+        safeBumpCounter(env, today, 'event', `${eventName}:server`),
+        safeBumpCounter(env, today, 'meta', 'capi_ok'),
       ]);
     } else {
-      await bumpCounter(env, today, 'meta', 'capi_failed');
+      await safeBumpCounter(env, today, 'meta', 'capi_failed');
     }
   })();
-  if (ctx?.waitUntil) ctx.waitUntil(sendPromise);
-  else await sendPromise;
+  await sendPromise;
 
-  return jsonResponse({ ok: true, deduped: alreadySeen }, 200, corsHeaders);
+  return { deduped: false };
 }
 
 async function handleCalendly(request, env, corsHeaders, ctx) {
@@ -869,7 +890,7 @@ function timingSafeEqual(a, b) {
   return result === 0;
 }
 
-async function enforceTrackRateLimit(request, env) {
+async function enforceTrackRateLimit(request, env, { deferWrites = false } = {}) {
   if (env.DISABLE_RATE_LIMITS === 'true') return { ok: true };
   if (!env.CHAT_RATE_LIMITS) {
     return { ok: false, status: 503, reason: 'rate_limit_kv_unavailable' };
@@ -905,7 +926,7 @@ async function enforceTrackRateLimit(request, env) {
     return { ok: false, status: 429, reason: `rate_limited:${blocked}` };
   }
 
-  await Promise.all(
+  const writes = () => Promise.all(
     limits.map((entry, index) =>
       env.CHAT_RATE_LIMITS.put(entry.key, String(Number(counts[index] || 0) + 1), {
         expirationTtl: entry.ttl,
@@ -913,6 +934,8 @@ async function enforceTrackRateLimit(request, env) {
     ),
   );
 
+  if (deferWrites) return { ok: true, writes };
+  await writes();
   return { ok: true };
 }
 

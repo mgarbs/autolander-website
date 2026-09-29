@@ -85,8 +85,19 @@ test('first PageView seeds _fbp and sends one server event', async (t) => {
   assert.equal(requests[0].body.fbp, harness.jar.get('_fbp'));
   assert.equal(requests[0].body.channel, 'server_only');
   assert.equal(requests[0].init.keepalive, true);
+  assert.equal(requests[0].init.priority, 'low');
   assert.equal(harness.listeners.some(([event]) => event === 'scroll'), false);
   assert.deepEqual(harness.timers.map(([, delay]) => delay), [15000]);
+});
+
+test('CAPI response bodies are drained', async (t) => {
+  browser(t);
+  const response = Response.json({ ok: true });
+  t.mock.method(globalThis, 'fetch', async () => response);
+  const { pageView } = await trackerModule();
+  pageView();
+  await new Promise(setImmediate);
+  assert.equal(response.bodyUsed, true);
 });
 
 test('OutboundClick carries the exact stored fbc through browser payload and Worker CAPI', async (t) => {
