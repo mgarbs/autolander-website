@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28",
+  "generatedAt": "2026-09-29",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -588,8 +588,8 @@
       ],
       "description": "How a car dealership should use Meta Muse in 2026: the jobs it runs well, the lot and team work it cannot, and where a feed-driven poster fits in.",
       "suggestedOrder": 29,
-      "status": "draft",
-      "publishedAt": null
+      "status": "published",
+      "publishedAt": "2026-09-29"
     },
     {
       "slug": "meta-muse-for-car-salesmen",
