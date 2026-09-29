@@ -20,7 +20,10 @@ import {
   ReasonsSection,
   ReportSection,
   ShiftSection,
+  WhereBuyersAskSection,
+  ResultsViewSection,
 } from './AiSections.jsx';
+import { ProofSection } from './ProofSection.jsx';
 import { scrollBehavior } from './scroll.js';
 import {
   CAPI_URL,
@@ -299,6 +302,9 @@ export default function AiVisibilityApp() {
       <main id="main-content">
         <AiHero onGo={goToForm} />
         <ShiftSection />
+        <WhereBuyersAskSection />
+        <ResultsViewSection />
+        <ProofSection />
         <ReportSection />
         <ReasonsSection />
         <section ref={formSectionRef} className="al-scan-section scroll-mt-4 py-20 lg:py-28">

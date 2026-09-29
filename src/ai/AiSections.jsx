@@ -9,6 +9,7 @@ import {
   FINAL_CTA,
   FINE_PRINT,
   HERO,
+  ILLUSTRATION_SLOTS,
   HOW,
   HOW_IT_STARTS,
   MOBILE_BAR,
@@ -23,12 +24,14 @@ import {
   RESULTS_CREDIT,
   SERVICE_SUMMARY,
   SHIFT,
+  WHERE_BUYERS_ASK,
+  RESULTS_VIEW,
   comparisonRows,
   fmtUsd,
 } from '../../shared/ai-visibility-content.js';
-import { AI_VISIBILITY_IMAGES } from '../../scripts/seo/data-ai-visibility.mjs';
-
-const [BUYER_IMAGE, ANSWERS_IMAGE, CRAWL_IMAGE, PROFILE_IMAGE, REVIEWS_IMAGE, WALKTHROUGH_IMAGE] = AI_VISIBILITY_IMAGES;
+import { aiImage } from '../../shared/page-images.js';
+import { IMAGE_SIZES } from '../../shared/responsive-images.js';
+import ResponsiveImage from '../components/ResponsiveImage.jsx';
 
 const ArrowRight = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
@@ -40,14 +43,14 @@ export const Grad = ({ children }) => (
   </span>
 );
 
-const Eyebrow = ({ children }) => (
+export const Eyebrow = ({ children }) => (
   <span className="flex max-w-full items-start gap-2.5 font-mono text-[11px] font-semibold uppercase leading-relaxed tracking-[0.28em] text-blue-300/90">
     <span className="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-[2px] bg-blue-400 shadow-[0_0_12px_2px_rgba(96,165,250,0.65)]" />
     <span className="min-w-0">{children}</span>
   </span>
 );
 
-const SectionHeading = ({ children, className = '' }) => (
+export const SectionHeading = ({ children, className = '' }) => (
   <h2 className={`font-display text-[clamp(2rem,9vw,2.25rem)] font-extrabold uppercase italic leading-[0.92] tracking-[-0.01em] text-white sm:text-5xl lg:text-6xl ${className}`}>
     {children}
   </h2>
@@ -60,7 +63,6 @@ export const ScanLink = ({ onGo, className, children }) => (
 );
 
 const PRIMARY_CTA = 'group flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-6 py-5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 active:scale-95 sm:w-auto sm:px-8 sm:text-lg';
-const IMAGE_CLASS = 'w-full rounded-3xl border border-white/10 object-cover shadow-2xl shadow-blue-950/50';
 
 function ReportMock() {
   const cell = {
@@ -70,7 +72,7 @@ function ReportMock() {
   };
   return (
     <div className="relative mt-5 hidden md:block">
-      <div className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-blue-600/20 blur-[80px]" />
+      <div className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-blue-600/20 blur-[80px]" aria-hidden="true" />
       <div className="rounded-3xl border border-white/10 bg-[#0b0d12]/95 p-6 shadow-2xl shadow-blue-950/50">
         <div className="flex items-center justify-between gap-4">
           <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">{REPORT_MOCK.caption}</span>
@@ -126,15 +128,8 @@ export function AiHero({ onGo }) {
         </div>
         <div className="relative min-w-0">
           <div className="absolute -inset-5 -z-10 rounded-[2.5rem] bg-blue-600/20 blur-[70px]" aria-hidden="true" />
-          <img
-            src={BUYER_IMAGE.src}
-            alt={BUYER_IMAGE.alt}
-            width={BUYER_IMAGE.width}
-            height={BUYER_IMAGE.height}
-            decoding="async"
-            fetchPriority="high"
-            className={`${IMAGE_CLASS} aspect-[1600/893]`}
-          />
+          <ResponsiveImage image={aiImage(ILLUSTRATION_SLOTS.hero.image)} sizes={IMAGE_SIZES.aiHero} eager />
+          <p className="mt-3 text-xs leading-relaxed text-slate-400">{ILLUSTRATION_SLOTS.hero.caption}</p>
           <ReportMock />
         </div>
       </div>
@@ -168,6 +163,56 @@ const ReportCard = ({ part }) => (
   </article>
 );
 
+export function WhereBuyersAskSection() {
+  return (
+    <section className="bg-[#050505] py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <Eyebrow>{WHERE_BUYERS_ASK.eyebrow}</Eyebrow>
+        <SectionHeading className="mt-5 max-w-4xl">{WHERE_BUYERS_ASK.h2Lead} <Grad>{WHERE_BUYERS_ASK.h2Grad}</Grad></SectionHeading>
+        <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">{WHERE_BUYERS_ASK.body}</p>
+        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+          {WHERE_BUYERS_ASK.cards.map((card) => (
+            <article key={card.name} className="min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03]">
+              <div className="p-6">
+                <h3 className="font-display text-2xl font-extrabold uppercase italic text-white">{card.name}</h3>
+                <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-blue-300">{card.maker}</p>
+                <p className="mt-3 leading-relaxed text-slate-400">{card.body}</p>
+              </div>
+              <ResponsiveImage image={aiImage(card.image)} sizes={IMAGE_SIZES.aiCard} className="block h-auto w-full" />
+            </article>
+          ))}
+        </div>
+        <p className="mt-5 text-sm leading-relaxed text-slate-400">{WHERE_BUYERS_ASK.caption}</p>
+        <p className="mt-6 rounded-2xl border border-blue-400/20 bg-blue-500/[0.06] px-5 py-4 leading-relaxed text-blue-200">{WHERE_BUYERS_ASK.scanNote}</p>
+      </div>
+    </section>
+  );
+}
+
+export function ResultsViewSection() {
+  return (
+    <section className="border-y border-white/5 bg-[#080808] py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <Eyebrow>{RESULTS_VIEW.eyebrow}</Eyebrow>
+        <SectionHeading className="mt-5 max-w-4xl">{RESULTS_VIEW.h2Lead} <Grad>{RESULTS_VIEW.h2Grad}</Grad></SectionHeading>
+        <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">{RESULTS_VIEW.body}</p>
+        <div className="mt-12 grid gap-8">
+          {RESULTS_VIEW.panels.map((panel) => (
+            <article key={panel.title} className="grid items-center gap-6 lg:grid-cols-[0.34fr_0.66fr]">
+              <div className="rounded-3xl border border-white/10 bg-[#0b0d12] p-6">
+                <h3 className="font-display text-3xl font-extrabold uppercase italic text-white">{panel.title}</h3>
+                <p className="mt-4 leading-relaxed text-slate-400">{panel.body}</p>
+              </div>
+              <ResponsiveImage image={aiImage(panel.image)} sizes={IMAGE_SIZES.aiResults} />
+            </article>
+          ))}
+        </div>
+        <p className="mt-5 text-sm leading-relaxed text-slate-400">{RESULTS_VIEW.caption}</p>
+      </div>
+    </section>
+  );
+}
+
 export function ReportSection() {
   return (
     <section className="py-20 lg:py-32">
@@ -175,15 +220,7 @@ export function ReportSection() {
         <Eyebrow>{REPORT.eyebrow}</Eyebrow>
         <SectionHeading className="mt-5 max-w-4xl">{REPORT.h2Lead} <Grad>{REPORT.h2Grad}</Grad></SectionHeading>
         <div className="mt-12 grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <img
-            src={ANSWERS_IMAGE.src}
-            alt={ANSWERS_IMAGE.alt}
-            loading="lazy"
-            decoding="async"
-            width={ANSWERS_IMAGE.width}
-            height={ANSWERS_IMAGE.height}
-            className={`${IMAGE_CLASS} aspect-[1200/896]`}
-          />
+          <ResponsiveImage image={aiImage(ILLUSTRATION_SLOTS.report.image)} sizes={IMAGE_SIZES.aiReport} />
           <div className="grid items-start gap-4 sm:grid-cols-2">
             {REPORT.parts.slice(0, 2).map((part) => <ReportCard key={part.title} part={part} />)}
           </div>
@@ -192,16 +229,9 @@ export function ReportSection() {
           <div className="grid items-start gap-4 sm:grid-cols-2">
             {REPORT.parts.slice(2).map((part) => <ReportCard key={part.title} part={part} />)}
           </div>
-          <img
-            src={CRAWL_IMAGE.src}
-            alt={CRAWL_IMAGE.alt}
-            loading="lazy"
-            decoding="async"
-            width={CRAWL_IMAGE.width}
-            height={CRAWL_IMAGE.height}
-            className={`${IMAGE_CLASS} aspect-[1200/896]`}
-          />
+          <ResponsiveImage image={aiImage(ILLUSTRATION_SLOTS.vehicle.image)} sizes={IMAGE_SIZES.aiReport} />
         </div>
+        <p className="mt-5 text-sm leading-relaxed text-slate-400">{ILLUSTRATION_SLOTS.reportCaption}</p>
       </div>
     </section>
   );
@@ -243,15 +273,6 @@ export function HowSteps() {
           </li>
         ))}
       </ol>
-      <img
-        src={WALKTHROUGH_IMAGE.src}
-        alt={WALKTHROUGH_IMAGE.alt}
-        loading="lazy"
-        decoding="async"
-        width={WALKTHROUGH_IMAGE.width}
-        height={WALKTHROUGH_IMAGE.height}
-        className={`${IMAGE_CLASS} mt-6 aspect-[1600/893]`}
-      />
     </div>
   );
 }
@@ -259,10 +280,10 @@ export function HowSteps() {
 const LIST_MARKERS = { check: '✓', cross: '✕', dot: '•' };
 const MARKER_CLASS = { check: 'text-blue-400', cross: 'text-slate-500', dot: 'text-slate-500' };
 
-const CheckList = ({ items, ordered = false, marker = 'check' }) => {
+const CheckList = ({ items, ordered = false, marker = 'check', columns = false }) => {
   const Tag = ordered ? 'ol' : 'ul';
   return (
-    <Tag className="m-0 grid list-none gap-3 p-0">
+    <Tag className={`m-0 grid list-none gap-3 p-0 ${columns ? 'lg:grid-cols-2 lg:gap-x-8' : ''}`}>
       {items.map((item, index) => (
         <li key={typeof item === 'string' ? item : item.title} className="flex items-start gap-3 text-sm leading-relaxed text-slate-300">
           <span className={`mt-0.5 shrink-0 font-mono ${ordered ? 'text-blue-400' : MARKER_CLASS[marker]}`} aria-hidden="true">{ordered ? index + 1 : LIST_MARKERS[marker]}</span>
@@ -324,30 +345,10 @@ export function PlansSection({ onGo }) {
           </table>
         </div>
 
-        <div className="mt-12 grid items-start gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="mt-12">
           <div className="self-start rounded-3xl border border-white/10 bg-[#0b0d12] p-6 sm:p-8">
             <h3 className="font-display text-3xl font-extrabold uppercase italic text-white">{PLANS_SECTION.everyPlanHeading}</h3>
-            <div className="mt-6"><CheckList items={EVERY_PLAN_INCLUDES} /></div>
-          </div>
-          <div className="grid items-start gap-5">
-            <img
-              src={PROFILE_IMAGE.src}
-              alt={PROFILE_IMAGE.alt}
-              loading="lazy"
-              decoding="async"
-              width={PROFILE_IMAGE.width}
-              height={PROFILE_IMAGE.height}
-              className={`${IMAGE_CLASS} aspect-[1200/896]`}
-            />
-            <img
-              src={REVIEWS_IMAGE.src}
-              alt={REVIEWS_IMAGE.alt}
-              loading="lazy"
-              decoding="async"
-              width={REVIEWS_IMAGE.width}
-              height={REVIEWS_IMAGE.height}
-              className={`${IMAGE_CLASS} aspect-[1200/896]`}
-            />
+            <div className="mt-6"><CheckList items={EVERY_PLAN_INCLUDES} columns /></div>
           </div>
         </div>
 

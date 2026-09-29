@@ -25,6 +25,9 @@ import {
   ROLE_CHOICES,
   SERVICE_SUMMARY,
   SHIFT,
+  WHERE_BUYERS_ASK,
+  RESULTS_VIEW,
+  ILLUSTRATION_SLOTS,
   SMS_CONSENT,
   comparisonRows,
   fmtUsd,
@@ -34,46 +37,9 @@ export const AI_VISIBILITY_ORIGIN = 'https://autolander.ai';
 export const AI_VISIBILITY_CANONICAL = `${AI_VISIBILITY_ORIGIN}${AI_VISIBILITY_PATH}`;
 export const AI_VISIBILITY_OG_IMAGE = `${AI_VISIBILITY_ORIGIN}/og/ai-visibility.jpg`;
 
-// These descriptions are deliberately scene descriptions. The artwork is illustrative, so none
-// of the alt text presents the people or dealership shown as an AutoLander customer.
-export const AI_VISIBILITY_IMAGES = [
-  {
-    src: '/ai-visibility/buyer-asks-ai.webp',
-    width: 1600,
-    height: 893,
-    alt: 'Car shopper asking an AI assistant where to buy a vehicle in their town',
-  },
-  {
-    src: '/ai-visibility/answer-sources.webp',
-    width: 1200,
-    height: 896,
-    alt: 'Illustrated AI Visibility report showing named dealers and cited answer sources',
-  },
-  {
-    src: '/ai-visibility/site-crawl.webp',
-    width: 1200,
-    height: 896,
-    alt: 'Dealership website being checked for crawler access and readable vehicle details',
-  },
-  {
-    src: '/ai-visibility/google-profile.webp',
-    width: 1200,
-    height: 896,
-    alt: 'Google Business Profile management shown on a tablet beside a dealership',
-  },
-  {
-    src: '/ai-visibility/reviews.webp',
-    width: 1200,
-    height: 896,
-    alt: 'Dealership team preparing policy-compliant customer review requests and replies',
-  },
-  {
-    src: '/ai-visibility/report-walkthrough.webp',
-    width: 1600,
-    height: 893,
-    alt: 'AutoLander specialist walking a dealer through an AI Visibility report',
-  },
-];
+export { AI_VISIBILITY_IMAGES } from '../../shared/page-images.js';
+import { AI_VISIBILITY_IMAGES, aiImage } from '../../shared/page-images.js';
+import { imagePreloadHtml, IMAGE_SIZES } from '../../shared/responsive-images.js';
 
 const escAttr = (value) => String(value)
   .replaceAll('&', '&amp;')
@@ -205,7 +171,8 @@ export function aiVisibilityGraph() {
 
 export function aiVisibilityHead({ preview = false } = {}) {
   const json = JSON.stringify(aiVisibilityGraph()).replaceAll('<', '\\u003c');
-  return `    <meta name="description" content="${escAttr(META.description)}" />
+  return `    ${imagePreloadHtml(aiImage(ILLUSTRATION_SLOTS.hero.image), IMAGE_SIZES.aiHero)}
+    <meta name="description" content="${escAttr(META.description)}" />
 ${preview ? '' : '    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />\n'}    <link rel="canonical" href="${AI_VISIBILITY_CANONICAL}" />
     <link rel="alternate" type="text/markdown" href="/ai-visibility.md" />
     <link rel="describedby" href="/llms.txt" />
@@ -268,12 +235,33 @@ export function renderAiVisibilityMarkdown() {
   paragraph(out, SHIFT.body);
   paragraph(out, `${SHIFT.stat.value} ${SHIFT.stat.text} [${SHIFT.stat.source}](${SHIFT.stat.sourceUrl})`);
 
+  const markdownImage = (slug) => {
+    const image = aiImage(slug);
+    paragraph(out, `![${image.alt}](${AI_VISIBILITY_ORIGIN}${image.base}-1280.webp)`);
+  };
+  markdownImage(ILLUSTRATION_SLOTS.hero.image);
+  paragraph(out, ILLUSTRATION_SLOTS.hero.caption);
+  for (const section of [WHERE_BUYERS_ASK, RESULTS_VIEW]) {
+    heading(out, 2, `${section.h2Lead} ${section.h2Grad}`);
+    paragraph(out, section.body);
+    for (const panel of section.cards || section.panels) {
+      heading(out, 3, panel.name || panel.title);
+      if (panel.maker) paragraph(out, panel.maker);
+      paragraph(out, panel.body);
+      markdownImage(panel.image);
+    }
+    paragraph(out, section.caption);
+    if (section.scanNote) paragraph(out, section.scanNote);
+  }
+
   heading(out, 2, `${REPORT.h2Lead} ${REPORT.h2Grad}`);
   REPORT.parts.forEach(({ title, body }) => {
     heading(out, 3, title);
     paragraph(out, body);
   });
 
+  markdownImage(ILLUSTRATION_SLOTS.report.image);
+  markdownImage(ILLUSTRATION_SLOTS.vehicle.image);
   heading(out, 3, REPORT_MOCK.caption);
   paragraph(out, `${REPORT_MOCK.score}/100. ${REPORT_MOCK.scoreNote}`);
   const reportHead = ['Buyer question', ...REPORT_MOCK.columns];

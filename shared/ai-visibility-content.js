@@ -94,6 +94,40 @@ export const SHIFT = {
   },
 };
 
+export const WHERE_BUYERS_ASK = {
+  eyebrow: 'Where buyers ask',
+  h2Lead: 'This is what',
+  h2Grad: 'an AI answer looks like.',
+  body: 'Buyers now type the whole question, like “where should I buy a Silverado near Toms River,” and get back a short answer that names a few dealers and cites the pages it trusted. It happens in the four places buyers use most.',
+  cards: [
+    { name: 'ChatGPT', maker: 'OpenAI', body: 'Buyers ask in the app or on the web. The answer names a dealer, gives reasons and links the sources it used.', image: 'ai-chat-tablet', alt: "Illustration of a ChatGPT-style answer recommending Frank's Irvine Subaru in Lake Forest, California for a certified pre-owned Subaru Forester" },
+    { name: 'Google AI Overviews and AI Mode', maker: 'Google', body: 'The AI summary above the regular results, and the AI Mode tab, name dealers before a buyer ever scrolls to the links.', image: 'ai-overview-search', alt: 'Illustration of a Google-style AI overview naming Pine Belt Chevrolet in Lakewood, New Jersey for Silverado trucks near Toms River' },
+    { name: 'Claude', maker: 'Anthropic', body: 'Buyers ask it to compare options and plan the visit. It recommends a store and explains why.', image: 'ai-chat-desktop', alt: 'Illustration of a Claude-style answer recommending Westgate Chrysler Jeep Dodge Ram in Raleigh, North Carolina to a Jeep Grand Cherokee shopper in Cary' },
+    { name: 'Perplexity', maker: 'Perplexity', body: 'Every sentence carries a numbered source, so the pages it trusts decide which dealer it names.', image: 'ai-answer-sourced', alt: 'Illustration of a Perplexity-style sourced answer naming Westgate Chrysler Jeep Dodge Ram on Old Westgate Road in Raleigh for new Ram 1500 trucks' },
+  ],
+  caption: 'Illustrations of AI answers. The dealerships shown are AutoLander customers. Real answers change with the buyer, the question and the day.',
+  scanNote: 'Our free scan measures Claude and GPT, the model family behind ChatGPT, each with web search on. What we fix, from crawler access and vehicle-page text to your Google profile, reviews and answer pages, is what these assistants read when they decide who to name.',
+};
+
+export const RESULTS_VIEW = {
+  eyebrow: 'Where you see it',
+  h2Lead: 'Watch for it',
+  h2Grad: 'in your own numbers.',
+  body: 'Two free Google tools show the change from your side. Search Console shows the searches that find your site. Google Analytics shows the visits that arrive from AI assistants like ChatGPT, Perplexity, Gemini, Claude and Copilot, and what those visitors do next.',
+  panels: [
+    { title: 'Search Console', body: 'Clicks, impressions and average position for the searches that find your site, with the exact queries buyers typed.', image: 'search-performance', alt: 'Illustration of a Search Console performance report with clicks and impressions over 16 months' },
+    { title: 'Google Analytics', body: 'Sessions from AI assistants, broken out by the assistant that sent them, with engagement and key events such as leads, calls and test drives.', image: 'ai-referrals', alt: 'Illustration of a Google Analytics report of sessions from ChatGPT, Perplexity, Gemini, Claude and Copilot' },
+  ],
+  caption: 'Illustrations of the Search Console and Google Analytics views. Your numbers depend on your market, your inventory and where you start.',
+};
+
+export const ILLUSTRATION_SLOTS = {
+  hero: { caption: 'Illustration of an AI answer. Frank’s Irvine Subaru is an AutoLander customer.', image: 'ai-chat-phone', alt: "Illustration of an AI assistant on a phone naming Frank's Irvine Subaru first for a used Subaru Outback in Orange County" },
+  report: { image: 'report-preview', alt: 'Illustration of a sample AI Visibility Report with a score of 57 out of 100, answers from Claude and GPT, and the 3 fixes' },
+  vehicle: { image: 'vehicle-page-check', alt: 'Illustration of a vehicle page check showing price, mileage and VIN readable as page text and AI crawlers allowed in robots.txt' },
+  reportCaption: 'AI Visibility Report · sample layout',
+};
+
 // ---------- the free report ----------
 export const REPORT = {
   eyebrow: 'Your free report',

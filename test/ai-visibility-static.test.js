@@ -64,7 +64,6 @@ test('content module keeps the public copy rules and canonical three plan prices
   const copy = strings.join('\n');
   const banned = [
     /[\u2013\u2014]/u,
-    /\bChatGPT\b/i,
     /\bpowered by\b/i,
     /\bearned media\b/i,
     /\bpress coverage\b/i,
@@ -81,13 +80,15 @@ test('content module keeps the public copy rules and canonical three plan prices
     /\bGoogle posts\b/i,
     /\bservice credit\b/i,
     /\bmissed promise\b/i,
-    /\bPerplexity\b/i,
-    /\bGemini\b/i,
-    /\bCopilot\b/i,
     /\bofficial APIs?\b/i,
     /\bnot\b[^.!?]{0,120}[.!?]\s+(?:It|It’s|It's|This|That’s|That's)\b/i,
   ];
   banned.forEach((pattern) => assert.doesNotMatch(copy, pattern));
+
+  for (const [name, content] of Object.entries(AI_CONTENT)) {
+    if (['WHERE_BUYERS_ASK', 'RESULTS_VIEW'].includes(name)) continue;
+    assert.doesNotMatch(collectStrings(content).join('\n'), /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i, name);
+  }
 
   const planTokens = new Set(PLANS.flatMap((plan) => [fmtUsd(plan.monthly), fmtUsd(plan.setup)]));
   const withoutReportIllustration = Object.entries(AI_CONTENT)
@@ -95,6 +96,40 @@ test('content module keeps the public copy rules and canonical three plan prices
     .flatMap(([, value]) => collectStrings(value));
   const dollarTokens = new Set(withoutReportIllustration.join('\n').match(/\$\d{1,3}(?:,\d{3})*/g) || []);
   assert.deepEqual(dollarTokens, planTokens, 'all pricing copy must be derived from PLANS');
+});
+
+test('assistant brand names are restricted to the two approved mirror and twin sections', () => {
+  const approved = [AI_CONTENT.WHERE_BUYERS_ASK, AI_CONTENT.RESULTS_VIEW];
+  const banned = /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i;
+  let removed = 0;
+  const mirror = renderAiVisibilityMirror().replace(/<section\b[\s\S]*?<\/section>/g, (section) => {
+    if (!approved.some(({ h2Lead, h2Grad }) => text(section).includes(`${h2Lead} ${h2Grad}`))) return section;
+    removed += 1;
+    return '';
+  });
+  assert.equal(removed, 2);
+  assert.doesNotMatch(mirror, banned);
+  for (const twin of [renderAiVisibilityMarkdown(), read('public/ai-visibility.md')]) {
+    const sections = twin.split(/(?=^## )/m);
+    const outside = sections.filter((section) => !approved.some(({ h2Lead, h2Grad }) => section.startsWith(`## ${h2Lead} ${h2Grad}\n`)));
+    assert.equal(sections.length - outside.length, 2);
+    assert.doesNotMatch(outside.join('\n'), banned);
+  }
+});
+
+test('AI and team mirrors and their production shells contain no broken text characters', () => {
+  for (const [title, headHtml, mirrorHtml] of [
+    [META.title, aiVisibilityHead(), renderAiVisibilityMirror()],
+    [TEAM_META.title, teamHead(), renderTeamMirror()],
+  ]) {
+    // Check raw mirrors as well as visible shell text. The shell also contains
+    // valid script URLs such as js?id=..., which are not damaged page copy.
+    for (const html of [mirrorHtml, text(productionShell({ title, headHtml, mirrorHtml }))]) {
+      assert.doesNotMatch(html, /\w\?\w|\uFFFD/u, title);
+    }
+    assert.doesNotMatch(productionShell({ title, headHtml, mirrorHtml }), /\uFFFD/u, title);
+  }
+  assert.ok(renderTeamMirror().includes('who’s online'));
 });
 
 test('AI Visibility dedicated shell is indexable and carries only its route graph', () => {
@@ -162,20 +197,6 @@ test('static mirror form uses the native, accessible, agent-readable contract', 
   assert.ok(html.includes('name="submittedVia" value="form"'));
   assert.match(html, /name="smsConsent" type="checkbox" value="true"/);
   assert.ok(!/name="smsConsent"[^>]*\srequired(?:\s|>)/.test(html));
-});
-
-test('static mirror images reserve space and use the required loading priorities', () => {
-  const html = renderAiVisibilityMirror();
-  for (const [index, item] of AI_VISIBILITY_IMAGES.entries()) {
-    const start = html.indexOf(`src="${item.src}"`);
-    assert.notEqual(start, -1, `${item.src} must appear in the mirror`);
-    const tag = html.slice(html.lastIndexOf('<img', start), html.indexOf('/>', start) + 2);
-    assert.ok(tag.includes(`width="${item.width}"`) && tag.includes(`height="${item.height}"`));
-    assert.ok(tag.includes(`alt="${item.alt}"`));
-    assert.ok(tag.includes('decoding="async"'));
-    if (index === 0) assert.ok(tag.includes('fetchpriority="high"') && !tag.includes('loading="lazy"'));
-    else assert.ok(tag.includes('loading="lazy"'));
-  }
 });
 
 test('team gets its own readable noindex shell and metadata', () => {

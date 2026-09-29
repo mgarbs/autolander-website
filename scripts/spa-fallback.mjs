@@ -1,5 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { assertNoUnverifiedProof } from './proof-build-guard.mjs';
 import { loadEnv } from 'vite';
 import { META } from '../shared/ai-visibility-content.js';
 import { TEAM_META } from '../shared/team-content.js';
@@ -102,3 +104,11 @@ writeFileSync(join(aiDir, 'index.html'), buildPageShell(appShell, {
   cssHref: findChunkAsset(distDir, 'AiVisibilityApp', '.css'),
   jsHref: findChunkAsset(distDir, 'AiVisibilityApp', '.js'),
 }), 'utf8');
+
+// The bundler must never read local proof in production. This separate post-build
+// audit reads it only to ensure none of its unverified claims escaped into dist.
+const localProof = join(process.cwd(), 'shared/ai-visibility-proof.local.js');
+if (!preview && existsSync(localProof)) {
+  const { PROOF_ENTRIES } = await import(pathToFileURL(localProof).href);
+  assertNoUnverifiedProof(distDir, PROOF_ENTRIES);
+}

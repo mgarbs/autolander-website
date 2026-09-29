@@ -1,0 +1,169 @@
+{
+  "ai-chat-phone": {
+    "base": "/ai-visibility/ai-chat-phone",
+    "src": "/ai-visibility/ai-chat-phone-1600.webp",
+    "width": 2048,
+    "height": 1536,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  },
+  "ai-chat-tablet": {
+    "base": "/ai-visibility/ai-chat-tablet",
+    "src": "/ai-visibility/ai-chat-tablet-1600.webp",
+    "width": 2048,
+    "height": 1536,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  },
+  "ai-overview-search": {
+    "base": "/ai-visibility/ai-overview-search",
+    "src": "/ai-visibility/ai-overview-search-1600.webp",
+    "width": 2048,
+    "height": 1536,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  },
+  "ai-chat-desktop": {
+    "base": "/ai-visibility/ai-chat-desktop",
+    "src": "/ai-visibility/ai-chat-desktop-1600.webp",
+    "width": 2048,
+    "height": 1536,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  },
+  "ai-answer-sourced": {
+    "base": "/ai-visibility/ai-answer-sourced",
+    "src": "/ai-visibility/ai-answer-sourced-1600.webp",
+    "width": 2048,
+    "height": 1536,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  },
+  "search-performance": {
+    "base": "/ai-visibility/search-performance",
+    "src": "/ai-visibility/search-performance-1600.webp",
+    "width": 2560,
+    "height": 1600,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600,
+      1920
+    ]
+  },
+  "ai-referrals": {
+    "base": "/ai-visibility/ai-referrals",
+    "src": "/ai-visibility/ai-referrals-1600.webp",
+    "width": 2560,
+    "height": 1600,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600,
+      1920
+    ]
+  },
+  "report-preview": {
+    "base": "/ai-visibility/report-preview",
+    "src": "/ai-visibility/report-preview-1600.webp",
+    "width": 2048,
+    "height": 1536,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  },
+  "vehicle-page-check": {
+    "base": "/ai-visibility/vehicle-page-check",
+    "src": "/ai-visibility/vehicle-page-check-1600.webp",
+    "width": 2048,
+    "height": 1536,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  },
+  "sales-hub": {
+    "base": "/team/sales-hub",
+    "src": "/team/sales-hub-1600.webp",
+    "width": 2264,
+    "height": 1116,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600,
+      1920
+    ],
+    "sourceWidth": 2880,
+    "sourceHeight": 1800,
+    "crop": {
+      "left": 552,
+      "top": 684,
+      "width": 2264,
+      "height": 1116
+    }
+  },
+  "dashboard": {
+    "base": "/team/dashboard",
+    "src": "/team/dashboard-1600.webp",
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  },
+  "team-access": {
+    "base": "/team/team-access",
+    "src": "/team/team-access-1600.webp",
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  },
+  "autopilot": {
+    "base": "/team/autopilot",
+    "src": "/team/autopilot-1600.webp",
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      640,
+      960,
+      1280,
+      1600
+    ]
+  }
+}

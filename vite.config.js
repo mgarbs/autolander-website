@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import process from 'node:process'
+import { proofBuildPlugin } from './scripts/proof-build-plugin.mjs'
 
 function htmlTransformPlugin(pixelId, isPreview) {
   return {
@@ -48,6 +49,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [
+      proofBuildPlugin(),
       react(),
       tailwindcss(),
       htmlTransformPlugin(metaPixelId, isPreview),

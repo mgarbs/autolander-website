@@ -1,3 +1,6 @@
+import ResponsiveImage from '../components/ResponsiveImage.jsx';
+import { TEAM_IMAGES } from '../../shared/page-images.js';
+import { IMAGE_CLASS, IMAGE_SIZES } from '../../shared/responsive-images.js';
 import { useEffect, useRef, useState } from 'react';
 import {
   CHIPS,
@@ -31,14 +34,10 @@ const ShieldCheck = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></svg>
 );
 
-// WebP copies (1600px) of /training/manuals/assets/dashboard.png and team.png: 43 KB and 26 KB instead of 377 KB and 223 KB.
-const DASHBOARD_IMG = '/team/dashboard.webp';
-const TEAM_IMG = '/team/team-access.webp';
 // The AutoLander demo video, chapter 07:05-07:35 "Give managers a view of the team".
 const MANAGER_VIEW_EMBED = 'https://www.youtube-nocookie.com/embed/i5uUB5OxIhk?start=425&end=455&autoplay=1&mute=1&rel=0&playsinline=1';
 // The demo's chapter 02:19 'Let AutoPilot handle the ongoing routine' (to 03:20); the poster is its 03:08 frame.
 const AUTOPILOT_EMBED = 'https://www.youtube-nocookie.com/embed/i5uUB5OxIhk?start=139&end=200&autoplay=1&mute=1&rel=0&playsinline=1';
-const AUTOPILOT_IMG = '/team/autopilot.webp';
 
 // Plain-text feed names, exactly as the homepage trust strip lists them (no third-party logos).
 const FEEDS = ['CarGurus', 'Cars.com', 'vAuto', 'DealerCenter', 'DealerTrack', 'VINCue', 'Tekion', 'CDK'];
@@ -147,18 +146,9 @@ export function TeamHero({ headline, sub, onBook, onWarm, onWatch, watch = 'auto
           </div>
         </div>
 
-        {/* The supplied sales-floor visual is the first page image and keeps its intrinsic ratio. */}
         <div className="relative">
           <div className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-blue-600/20 blur-[80px]" aria-hidden="true" />
-          <img
-            src="/team/sales-floor.webp"
-            alt="Illustration of a dealership sales team standing beneath a digital inventory display"
-            width="1600"
-            height="893"
-            decoding="async"
-            fetchPriority="high"
-            className="aspect-[1600/893] w-full rounded-3xl border border-white/10 object-cover shadow-2xl shadow-blue-950/50"
-          />
+          <ResponsiveImage image={TEAM_IMAGES.hero} sizes={IMAGE_SIZES.teamHero} eager />
           <div className="absolute -bottom-5 -left-6 rounded-2xl border border-emerald-400/20 bg-[#0b0d12] px-4 py-3 shadow-xl">
             <p className="font-mono text-[10px] uppercase tracking-widest text-emerald-300">Managers are free</p>
             <p className="mt-0.5 text-sm font-bold text-white">Only salespeople who post take a seat</p>
@@ -310,15 +300,7 @@ export function HowItWorks({ autopilotOn = false, onPlayAutopilot }) {
                 onClick={onPlayAutopilot}
                 className="group absolute inset-0 h-full w-full"
               >
-                <img
-                  src={AUTOPILOT_IMG}
-                  alt="AutoLander AutoPilot controls for scheduling Marketplace vehicle posts"
-                  loading="lazy"
-                  decoding="async"
-                  width="1600"
-                  height="900"
-                  className="h-full w-full object-cover object-top opacity-80 transition group-hover:opacity-100"
-                />
+                <ResponsiveImage image={TEAM_IMAGES.autopilot} sizes={IMAGE_SIZES.teamAutopilot} className="block h-full w-full object-cover object-top opacity-80 transition group-hover:opacity-100" />
                 <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                 <span className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-blue-600 shadow-2xl shadow-blue-600/40 transition group-hover:scale-105">
                   <Play className="ml-1 h-8 w-8 text-white" />
@@ -370,15 +352,7 @@ export function DashboardSection({ videoOn, onPlay }) {
                   onClick={onPlay}
                   className="group absolute inset-0 h-full w-full"
                 >
-                  <img
-                    src={DASHBOARD_IMG}
-                    alt="AutoLander Manager Dashboard showing team posts, active listings and sold vehicles"
-                    loading="lazy"
-                    decoding="async"
-                    width="1920"
-                    height="1080"
-                    className="h-full w-full object-cover object-top opacity-80 transition group-hover:opacity-100"
-                  />
+                  <ResponsiveImage image={TEAM_IMAGES.dashboard} sizes={IMAGE_SIZES.teamDashboard} className="block h-full w-full object-cover object-top opacity-80 transition group-hover:opacity-100" />
                   <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
                   <span className="absolute left-1/2 top-1/2 flex h-20 w-20 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-blue-600 shadow-2xl shadow-blue-600/40 transition group-hover:scale-105">
                     <Play className="ml-1 h-8 w-8 text-white" />
@@ -398,32 +372,15 @@ export function DashboardSection({ videoOn, onPlay }) {
           </ul>
         </div>
 
-        <div className="mt-6 grid items-start gap-6 rounded-3xl border border-emerald-400/15 bg-[#0b0d12] p-5 sm:p-7 lg:grid-cols-[0.72fr_1.28fr]">
+        <div className="mt-6 grid items-start gap-6 rounded-3xl border border-emerald-400/15 bg-[#0b0d12] p-5 sm:p-7 lg:grid-cols-[0.64fr_0.36fr]">
           <div className="relative self-start">
             <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-blue-600/20 blur-[55px]" aria-hidden="true" />
-            <img
-              src="/team/manager-tablet.webp"
-              alt="Illustration of a dealership manager holding a tablet between rows of vehicles"
-              loading="lazy"
-              decoding="async"
-              width="1000"
-              height="1241"
-              className="aspect-[1000/1241] w-full rounded-2xl border border-white/10 object-cover shadow-2xl shadow-blue-950/50"
-            />
+            <ResponsiveImage image={TEAM_IMAGES.access} sizes={IMAGE_SIZES.teamAccess} className={IMAGE_CLASS} />
           </div>
           <div className="self-start">
             <p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-300">Team access</p>
             <h3 className="mt-3 font-display text-3xl font-extrabold uppercase italic leading-tight text-white">Pay per posting seat. <Grad tone="green">Add your managers free.</Grad></h3>
             <p className="mt-3 leading-relaxed text-slate-400">Posting seats and Manager Dashboard access are set separately. Your GM, sales manager or desk can watch the dashboard without taking a seat. When a salesperson leaves, remove them: their seat and your inventory feed stay with the store, so your next hire flips on AutoPilot and posts from the same feed.</p>
-            <img
-              src={TEAM_IMG}
-              alt="AutoLander Team Access screen with posting seats and Manager Dashboard access set per person, with names hidden"
-              loading="lazy"
-              decoding="async"
-              width="1920"
-              height="1080"
-              className="mt-6 w-full rounded-2xl border border-white/10 shadow-xl shadow-blue-950/30"
-            />
           </div>
         </div>
       </div>

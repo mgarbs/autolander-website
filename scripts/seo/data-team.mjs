@@ -1,3 +1,5 @@
+import { TEAM_IMAGES } from '../../shared/page-images.js';
+import { imagePreloadHtml, IMAGE_SIZES } from '../../shared/responsive-images.js';
 import { TEAM_META } from '../../shared/team-content.js';
 
 export const TEAM_CANONICAL = 'https://autolander.ai/team/';
@@ -35,7 +37,8 @@ export function teamGraph() {
 
 export function teamHead({ preview = false } = {}) {
   const json = JSON.stringify(teamGraph()).replaceAll('<', '\\u003c');
-  return `    <meta name="description" content="${escAttr(TEAM_META.description)}" />
+  return `    ${imagePreloadHtml(TEAM_IMAGES.hero, IMAGE_SIZES.teamHero)}
+    <meta name="description" content="${escAttr(TEAM_META.description)}" />
 ${preview ? '' : '    <meta name="robots" content="noindex, follow" />\n'}    <link rel="canonical" href="${TEAM_CANONICAL}" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${TEAM_CANONICAL}" />

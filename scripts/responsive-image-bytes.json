@@ -1,0 +1,662 @@
+[
+  {
+    "slug": "ai-chat-phone",
+    "width": 640,
+    "format": "avif",
+    "bytes": 14772
+  },
+  {
+    "slug": "ai-chat-phone",
+    "width": 640,
+    "format": "webp",
+    "bytes": 19712
+  },
+  {
+    "slug": "ai-chat-phone",
+    "width": 960,
+    "format": "avif",
+    "bytes": 26481
+  },
+  {
+    "slug": "ai-chat-phone",
+    "width": 960,
+    "format": "webp",
+    "bytes": 35004
+  },
+  {
+    "slug": "ai-chat-phone",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 37848
+  },
+  {
+    "slug": "ai-chat-phone",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 52592
+  },
+  {
+    "slug": "ai-chat-phone",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 49554
+  },
+  {
+    "slug": "ai-chat-phone",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 71710
+  },
+  {
+    "slug": "ai-chat-tablet",
+    "width": 640,
+    "format": "avif",
+    "bytes": 14672
+  },
+  {
+    "slug": "ai-chat-tablet",
+    "width": 640,
+    "format": "webp",
+    "bytes": 17746
+  },
+  {
+    "slug": "ai-chat-tablet",
+    "width": 960,
+    "format": "avif",
+    "bytes": 24113
+  },
+  {
+    "slug": "ai-chat-tablet",
+    "width": 960,
+    "format": "webp",
+    "bytes": 31606
+  },
+  {
+    "slug": "ai-chat-tablet",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 35311
+  },
+  {
+    "slug": "ai-chat-tablet",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 47796
+  },
+  {
+    "slug": "ai-chat-tablet",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 45017
+  },
+  {
+    "slug": "ai-chat-tablet",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 62340
+  },
+  {
+    "slug": "ai-overview-search",
+    "width": 640,
+    "format": "avif",
+    "bytes": 25740
+  },
+  {
+    "slug": "ai-overview-search",
+    "width": 640,
+    "format": "webp",
+    "bytes": 36378
+  },
+  {
+    "slug": "ai-overview-search",
+    "width": 960,
+    "format": "avif",
+    "bytes": 47446
+  },
+  {
+    "slug": "ai-overview-search",
+    "width": 960,
+    "format": "webp",
+    "bytes": 65764
+  },
+  {
+    "slug": "ai-overview-search",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 70599
+  },
+  {
+    "slug": "ai-overview-search",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 100164
+  },
+  {
+    "slug": "ai-overview-search",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 96794
+  },
+  {
+    "slug": "ai-overview-search",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 137334
+  },
+  {
+    "slug": "ai-chat-desktop",
+    "width": 640,
+    "format": "avif",
+    "bytes": 15319
+  },
+  {
+    "slug": "ai-chat-desktop",
+    "width": 640,
+    "format": "webp",
+    "bytes": 19322
+  },
+  {
+    "slug": "ai-chat-desktop",
+    "width": 960,
+    "format": "avif",
+    "bytes": 25990
+  },
+  {
+    "slug": "ai-chat-desktop",
+    "width": 960,
+    "format": "webp",
+    "bytes": 35368
+  },
+  {
+    "slug": "ai-chat-desktop",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 38978
+  },
+  {
+    "slug": "ai-chat-desktop",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 52016
+  },
+  {
+    "slug": "ai-chat-desktop",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 49469
+  },
+  {
+    "slug": "ai-chat-desktop",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 68456
+  },
+  {
+    "slug": "ai-answer-sourced",
+    "width": 640,
+    "format": "avif",
+    "bytes": 21426
+  },
+  {
+    "slug": "ai-answer-sourced",
+    "width": 640,
+    "format": "webp",
+    "bytes": 26576
+  },
+  {
+    "slug": "ai-answer-sourced",
+    "width": 960,
+    "format": "avif",
+    "bytes": 38255
+  },
+  {
+    "slug": "ai-answer-sourced",
+    "width": 960,
+    "format": "webp",
+    "bytes": 47818
+  },
+  {
+    "slug": "ai-answer-sourced",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 53063
+  },
+  {
+    "slug": "ai-answer-sourced",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 68522
+  },
+  {
+    "slug": "ai-answer-sourced",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 67156
+  },
+  {
+    "slug": "ai-answer-sourced",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 90476
+  },
+  {
+    "slug": "search-performance",
+    "width": 640,
+    "format": "avif",
+    "bytes": 12412
+  },
+  {
+    "slug": "search-performance",
+    "width": 640,
+    "format": "webp",
+    "bytes": 17246
+  },
+  {
+    "slug": "search-performance",
+    "width": 960,
+    "format": "avif",
+    "bytes": 22947
+  },
+  {
+    "slug": "search-performance",
+    "width": 960,
+    "format": "webp",
+    "bytes": 33420
+  },
+  {
+    "slug": "search-performance",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 33857
+  },
+  {
+    "slug": "search-performance",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 50218
+  },
+  {
+    "slug": "search-performance",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 46086
+  },
+  {
+    "slug": "search-performance",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 68796
+  },
+  {
+    "slug": "search-performance",
+    "width": 1920,
+    "format": "avif",
+    "bytes": 59190
+  },
+  {
+    "slug": "search-performance",
+    "width": 1920,
+    "format": "webp",
+    "bytes": 85816
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 640,
+    "format": "avif",
+    "bytes": 14661
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 640,
+    "format": "webp",
+    "bytes": 18568
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 960,
+    "format": "avif",
+    "bytes": 27202
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 960,
+    "format": "webp",
+    "bytes": 34990
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 40828
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 55044
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 52761
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 72402
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 1920,
+    "format": "avif",
+    "bytes": 65421
+  },
+  {
+    "slug": "ai-referrals",
+    "width": 1920,
+    "format": "webp",
+    "bytes": 92904
+  },
+  {
+    "slug": "report-preview",
+    "width": 640,
+    "format": "avif",
+    "bytes": 17667
+  },
+  {
+    "slug": "report-preview",
+    "width": 640,
+    "format": "webp",
+    "bytes": 23334
+  },
+  {
+    "slug": "report-preview",
+    "width": 960,
+    "format": "avif",
+    "bytes": 29608
+  },
+  {
+    "slug": "report-preview",
+    "width": 960,
+    "format": "webp",
+    "bytes": 39566
+  },
+  {
+    "slug": "report-preview",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 42104
+  },
+  {
+    "slug": "report-preview",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 57658
+  },
+  {
+    "slug": "report-preview",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 55881
+  },
+  {
+    "slug": "report-preview",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 77064
+  },
+  {
+    "slug": "vehicle-page-check",
+    "width": 640,
+    "format": "avif",
+    "bytes": 24651
+  },
+  {
+    "slug": "vehicle-page-check",
+    "width": 640,
+    "format": "webp",
+    "bytes": 35778
+  },
+  {
+    "slug": "vehicle-page-check",
+    "width": 960,
+    "format": "avif",
+    "bytes": 42851
+  },
+  {
+    "slug": "vehicle-page-check",
+    "width": 960,
+    "format": "webp",
+    "bytes": 62756
+  },
+  {
+    "slug": "vehicle-page-check",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 60752
+  },
+  {
+    "slug": "vehicle-page-check",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 90558
+  },
+  {
+    "slug": "vehicle-page-check",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 81670
+  },
+  {
+    "slug": "vehicle-page-check",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 121402
+  },
+  {
+    "slug": "sales-hub",
+    "width": 640,
+    "format": "avif",
+    "bytes": 7147
+  },
+  {
+    "slug": "sales-hub",
+    "width": 640,
+    "format": "webp",
+    "bytes": 9758
+  },
+  {
+    "slug": "sales-hub",
+    "width": 960,
+    "format": "avif",
+    "bytes": 11862
+  },
+  {
+    "slug": "sales-hub",
+    "width": 960,
+    "format": "webp",
+    "bytes": 16244
+  },
+  {
+    "slug": "sales-hub",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 17034
+  },
+  {
+    "slug": "sales-hub",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 24332
+  },
+  {
+    "slug": "sales-hub",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 21426
+  },
+  {
+    "slug": "sales-hub",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 31114
+  },
+  {
+    "slug": "sales-hub",
+    "width": 1920,
+    "format": "avif",
+    "bytes": 26186
+  },
+  {
+    "slug": "sales-hub",
+    "width": 1920,
+    "format": "webp",
+    "bytes": 39112
+  },
+  {
+    "slug": "dashboard",
+    "width": 640,
+    "format": "avif",
+    "bytes": 11654
+  },
+  {
+    "slug": "dashboard",
+    "width": 640,
+    "format": "webp",
+    "bytes": 14502
+  },
+  {
+    "slug": "dashboard",
+    "width": 960,
+    "format": "avif",
+    "bytes": 19988
+  },
+  {
+    "slug": "dashboard",
+    "width": 960,
+    "format": "webp",
+    "bytes": 24206
+  },
+  {
+    "slug": "dashboard",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 28734
+  },
+  {
+    "slug": "dashboard",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 34756
+  },
+  {
+    "slug": "dashboard",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 37231
+  },
+  {
+    "slug": "dashboard",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 44792
+  },
+  {
+    "slug": "team-access",
+    "width": 640,
+    "format": "avif",
+    "bytes": 7150
+  },
+  {
+    "slug": "team-access",
+    "width": 640,
+    "format": "webp",
+    "bytes": 8596
+  },
+  {
+    "slug": "team-access",
+    "width": 960,
+    "format": "avif",
+    "bytes": 11697
+  },
+  {
+    "slug": "team-access",
+    "width": 960,
+    "format": "webp",
+    "bytes": 14966
+  },
+  {
+    "slug": "team-access",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 17317
+  },
+  {
+    "slug": "team-access",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 21220
+  },
+  {
+    "slug": "team-access",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 22255
+  },
+  {
+    "slug": "team-access",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 27962
+  },
+  {
+    "slug": "autopilot",
+    "width": 640,
+    "format": "avif",
+    "bytes": 10317
+  },
+  {
+    "slug": "autopilot",
+    "width": 640,
+    "format": "webp",
+    "bytes": 13078
+  },
+  {
+    "slug": "autopilot",
+    "width": 960,
+    "format": "avif",
+    "bytes": 18664
+  },
+  {
+    "slug": "autopilot",
+    "width": 960,
+    "format": "webp",
+    "bytes": 22884
+  },
+  {
+    "slug": "autopilot",
+    "width": 1280,
+    "format": "avif",
+    "bytes": 26572
+  },
+  {
+    "slug": "autopilot",
+    "width": 1280,
+    "format": "webp",
+    "bytes": 33914
+  },
+  {
+    "slug": "autopilot",
+    "width": 1600,
+    "format": "avif",
+    "bytes": 36405
+  },
+  {
+    "slug": "autopilot",
+    "width": 1600,
+    "format": "webp",
+    "bytes": 45464
+  }
+]
