@@ -33,7 +33,7 @@ test('every indexable static page advertises the blog RSS feed', () => {
 });
 
 test('the SPA navbar, footer and index.html reach /blog/', () => {
-  assert.match(readFileSync(join(ROOT, 'src/App.jsx'), 'utf8'), /href="\/blog\/"/);
-  assert.match(readFileSync(join(ROOT, 'src/sections/DeferredLandingSections.jsx'), 'utf8'), /\/blog\//);
+  assert.match(readFileSync(join(ROOT, 'src/components/SiteNav.jsx'), 'utf8'), /href="\/blog\/"/);
+  assert.match(readFileSync(join(ROOT, 'src/components/SiteFooter.jsx'), 'utf8'), /\/blog\//);
   assert.match(readFileSync(join(ROOT, 'index.html'), 'utf8'), /application\/rss\+xml/);
 });

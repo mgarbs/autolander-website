@@ -1,0 +1,49 @@
+/*
+ * /team only (the dealer-team landing page). Loaded by the lazy TeamApp chunk, never by the homepage.
+ *
+ * Isolation contract: src/index.css carries `@source not "./team"`, so nothing under src/team adds a
+ * single rule to the homepage stylesheet (it stays byte-identical). This file builds the utilities the
+ * team page needs on its own. Fonts, preflight and the base body styles come from index.css, which
+ * every route already loads.
+ *
+ * Cascade: warming the shared demo form makes Vite re-append the homepage stylesheet after this one
+ * (the shell inlines it, so the preload helper can't see it is already there). The page's utilities
+ * therefore live in a later layer, `team`, which nothing in that re-appended `utilities` layer can
+ * outrank. The shared form's classes are built into the same layer, so the form resolves exactly as
+ * on the homepage (the runtime proof compares the two).
+ */
+@layer theme, base, components, utilities, team;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(team) source(none);
+@source "./";
+@source "../components/DemoApplication.jsx";
+@source "../components/SiteNav.jsx";
+@source "../components/SiteFooter.jsx";
+
+/* Same tokens as index.css, so font-display / font-mono resolve identically. */
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Archivo', 'Inter', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+/* The site's "posting beam" divider (the --beam token lives on :root in index.css). */
+.tm-beam {
+  height: 1px;
+  background: var(--beam);
+  opacity: 0.7;
+}
+
+/* Phone speed: the long page below the dashboard renders only as it nears the screen (-376 ms LCP on a
+   throttled phone). Only after #dashboard, so the Watch jumps to #autopilot and #dashboard still land exactly. */
+#dashboard ~ section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* Phones: a focused control is never hidden under the sticky demo bar. */
+@media (max-width: 767px) {
+  html {
+    scroll-padding-bottom: 7rem;
+  }
+}

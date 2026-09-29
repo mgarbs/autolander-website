@@ -76,6 +76,7 @@ Standalone chatbots exist that attempt it — vet them hard on inventory truth a
 
 ## Related
 
+- [AI Visibility for car dealers: free scan and plans](https://autolander.ai/ai-visibility/)
 - [AI chat for car dealers — the honest guide](https://autolander.ai/ai-chat-for-car-dealers/)
 - [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
 - [Facebook AI tools for car dealers](https://autolander.ai/facebook-ai-tools/)

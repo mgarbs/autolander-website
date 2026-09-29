@@ -269,7 +269,7 @@ function siteHeader(crumbActive) {
     <a class="brand" href="${SITE.origin}/">
       <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" />
     </a>
-    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a></nav>
+    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a><details class="navdrop"><summary>Services</summary><span class="navdrop-menu"><a href="/ai-visibility/">AI Audit</a><a href="/team/">Team Plans</a></span></details></nav>
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="${SITE.origin}/">Home</a>
       <span>/</span>
@@ -277,7 +277,8 @@ function siteHeader(crumbActive) {
       <span>/</span>
       <span class="crumb-active">${esc(crumbActive)}</span>
     </nav>
-  </header>`;
+  </header>
+  <script>(()=>{document.addEventListener('click',event=>{document.querySelectorAll('details.navdrop[open]').forEach(menu=>{if(!menu.contains(event.target))menu.removeAttribute('open')})})})()</script>`;
 }
 
 function ctaBlock(heading, sub) {
@@ -802,12 +803,13 @@ function renderGuide() {
     }),
     `  <header class="topbar">
     <a class="brand" href="${SITE.origin}/"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
-    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a></nav>
+    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a><details class="navdrop"><summary>Services</summary><span class="navdrop-menu"><a href="/ai-visibility/">AI Audit</a><a href="/team/">Team Plans</a></span></details></nav>
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="${SITE.origin}/">Home</a><span>/</span><span>Guide</span><span>/</span>
       <span class="crumb-active">Facebook Marketplace automation</span>
     </nav>
-  </header>`,
+  </header>
+  <script>(()=>{document.addEventListener('click',event=>{document.querySelectorAll('details.navdrop[open]').forEach(menu=>{if(!menu.contains(event.target))menu.removeAttribute('open')})})})()</script>`,
     `  <main class="wrap">
     <article>
     <p class="eyebrow">Dealer guide</p>
@@ -938,6 +940,11 @@ max-width:880px;margin:0 auto;padding:18px 22px;border-bottom:1px solid var(--li
 .brand-logo{height:30px;width:auto;display:block}
 .topnav{display:flex;align-items:center;gap:14px;white-space:nowrap}
 .topnav a{color:var(--text);font-size:13px;font-weight:700}
+.navdrop{position:relative;color:var(--text);font-size:13px;font-weight:700}
+.navdrop summary{cursor:pointer;list-style:none}.navdrop summary::-webkit-details-marker{display:none}
+.navdrop summary::after{content:"+";margin-left:5px;color:var(--blue2)}.navdrop[open] summary::after{content:"\\2212"}
+.navdrop-menu{position:absolute;z-index:20;right:0;top:calc(100% + 10px);display:grid;width:150px;gap:2px;padding:7px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,5,.94);box-shadow:0 18px 45px rgba(0,0,0,.5)}
+.navdrop-menu a{display:block;padding:7px 9px;border-radius:9px;color:var(--text);font-size:13px}.navdrop-menu a:hover{background:rgba(255,255,255,.08);text-decoration:none}
 .foot-brand{display:inline-block;margin-bottom:16px}
 .foot-brand .brand-logo{height:34px}
 .crumbs{min-width:0;justify-self:end;font-size:13px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap;align-items:center}

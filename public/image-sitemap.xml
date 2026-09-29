@@ -551,6 +551,37 @@
     </image:image>
   </url>
   <url>
+    <loc>https://autolander.ai/ai-visibility/</loc>
+    <image:image>
+      <image:loc>https://autolander.ai/ai-visibility/buyer-asks-ai.webp</image:loc>
+      <image:title>Car shopper asking an AI assistant where to buy a vehicle in their town</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/ai-visibility/answer-sources.webp</image:loc>
+      <image:title>Illustrated AI Visibility report showing named dealers and cited answer sources</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/ai-visibility/site-crawl.webp</image:loc>
+      <image:title>Dealership website being checked for crawler access and readable vehicle details</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/ai-visibility/google-profile.webp</image:loc>
+      <image:title>Google Business Profile management shown on a tablet beside a dealership</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/ai-visibility/reviews.webp</image:loc>
+      <image:title>Dealership team preparing policy-compliant customer review requests and replies</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/ai-visibility/report-walkthrough.webp</image:loc>
+      <image:title>AutoLander specialist walking a dealer through an AI Visibility report</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/og/ai-visibility.jpg</image:loc>
+      <image:title>AI Visibility Scan and Plans for Car Dealers | AutoLander</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://autolander.ai/blog/</loc>
     <image:image>
       <image:loc>https://autolander.ai/og/blog.png</image:loc>

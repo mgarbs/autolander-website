@@ -477,11 +477,12 @@ export function siteHeader(breadcrumbs) {
     <a class="brand" href="${SITE.origin}/">
       <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" />
     </a>
-    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a></nav>
+    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a><details class="navdrop"><summary>Services</summary><span class="navdrop-menu"><a href="/ai-visibility/">AI Audit</a><a href="/team/">Team Plans</a></span></details></nav>
     <nav class="crumbs" aria-label="Breadcrumb">
       ${crumbs}
     </nav>
-  </header>`;
+  </header>
+  <script>(()=>{document.addEventListener('click',event=>{document.querySelectorAll('details.navdrop[open]').forEach(menu=>{if(!menu.contains(event.target))menu.removeAttribute('open')})})})()</script>`;
 }
 
 export function ctaBlock(heading, sub) {
@@ -896,6 +897,11 @@ export function renderMarkdown(page) {
 export const SEO_STYLES = `/* SEO silo supplemental styles — base in /compare/styles.css */
 .topnav{display:flex;align-items:center;gap:14px;white-space:nowrap}
 .topnav a{color:var(--text);font-size:13px;font-weight:700}
+.navdrop{position:relative;color:var(--text);font-size:13px;font-weight:700}
+.navdrop summary{cursor:pointer;list-style:none}.navdrop summary::-webkit-details-marker{display:none}
+.navdrop summary::after{content:"+";margin-left:5px;color:var(--blue2)}.navdrop[open] summary::after{content:"\\2212"}
+.navdrop-menu{position:absolute;z-index:20;right:0;top:calc(100% + 10px);display:grid;width:150px;gap:2px;padding:7px;border:1px solid var(--line);border-radius:14px;background:rgba(5,5,5,.94);box-shadow:0 18px 45px rgba(0,0,0,.5)}
+.navdrop-menu a{display:block;padding:7px 9px;border-radius:9px;color:var(--text);font-size:13px}.navdrop-menu a:hover{background:rgba(255,255,255,.08);text-decoration:none}
 .prose-block p{font-size:16px;color:var(--text);margin:0 0 14px}
 .qa{margin-top:8px}
 .qa h2{margin-bottom:8px}

@@ -58,7 +58,19 @@ import { PAGES as INVDIST } from './seo/data-inventory-distribution.mjs';
 import { PAGES as RVCLUSTER } from './seo/data-rv-cluster.mjs';
 import { PAGES as AICHATCLUSTER } from './seo/data-aichat-cluster.mjs';
 import { HOME } from './seo/data-home.mjs';
-import { whenToUseSection, agentsMarkdown } from './seo/agent-instructions.mjs';
+import {
+  AI_VISIBILITY_END,
+  AI_VISIBILITY_START,
+  agentsMarkdown,
+  aiVisibilitySection,
+  whenToUseSection,
+} from './seo/agent-instructions.mjs';
+import {
+  AI_VISIBILITY,
+  AI_VISIBILITY_OG_IMAGE,
+  renderAiVisibilityMarkdown,
+} from './seo/data-ai-visibility.mjs';
+import { AI_VISIBILITY_UPDATED } from '../shared/ai-visibility-content.js';
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 
@@ -91,7 +103,7 @@ const BLOG_LASTMOD = PUBLISHED_BLOG_POSTS
 const ARTICLE_PAGES = PUBLISHED_ARTICLES.map((c) => buildArticlePage(c, ARTICLE_CONTENT, PUBLISH_STATE));
 const BLOG_PAGE = blogIndexPage(ARTICLE_CONTENT, PUBLISH_STATE);
 
-const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...POSITIONING, ...INVDIST, ...RVCLUSTER, ...AICHATCLUSTER, BLOG_PAGE, ...ARTICLE_PAGES];
+const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...POSITIONING, ...INVDIST, ...RVCLUSTER, ...AICHATCLUSTER, AI_VISIBILITY, BLOG_PAGE, ...ARTICLE_PAGES];
 
 // Hub pages grow "Keep exploring" links to their silo's PUBLISHED articles. With zero
 // published articles this is a no-op and every existing page renders byte-identical.
@@ -121,6 +133,10 @@ for (const page of ALL) {
   const nav = page.key ? NAV[page.key] : null;
   const urlPath = page.path || (nav && nav.path);
   if (!urlPath) { console.warn('!! page missing path/key:', page.title); continue; }
+  if (page.spa) {
+    renderedPaths.add(urlPath);
+    continue;
+  }
   write(pathToFile(urlPath), renderPage(page));
   renderedPaths.add(urlPath);
 }
@@ -245,7 +261,8 @@ function buildMarkdownTwins() {
     const urlPath = page.path || (nav && nav.path);
     if (!urlPath) continue;
     const rel = mdPathFor(urlPath);
-    write(resolve(PUBLIC_DIR, rel.replace(/^\//, '')), renderMarkdown(page));
+    const markdown = page.key === 'aiVisibility' ? renderAiVisibilityMarkdown() : renderMarkdown(page);
+    write(resolve(PUBLIC_DIR, rel.replace(/^\//, '')), markdown);
     twins.push({ urlPath, md: rel, title: page.h1 || page.title, description: page.description });
   }
   return twins;
@@ -316,6 +333,7 @@ Contact: sales@autolander.ai · (919) 280-0967
       NAV.bulk.path, NAV.automation.path, NAV.safety.path, NAV.pricing.path,
       NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path,
     ]),
+    aiVisibilitySection(),
     // Two deliberate scope decisions, stated as principles. An agent deciding whether to
     // recommend AutoLander should read these before a competitor's feature matrix does the
     // explaining for us.
@@ -349,7 +367,10 @@ ${Object.values(COMPETITORS).map((c) => `- [AutoLander vs ${c.name}](${SITE.orig
 
   // llms-full.txt: every page's Markdown concatenated, for a model that wants the whole corpus
   // in one fetch rather than crawling 45 URLs.
-  const full = ALL.map((page) => renderMarkdown(page)).join('\n\n---\n\n');
+  const full = ALL.map((page) => {
+    if (page.key !== 'aiVisibility') return renderMarkdown(page);
+    return `${AI_VISIBILITY_START}\n${aiVisibilitySection(2, { markers: false })}\n\n${renderAiVisibilityMarkdown()}\n${AI_VISIBILITY_END}`;
+  }).join('\n\n---\n\n');
   write(resolve(PUBLIC_DIR, 'llms-full.txt'), `${header}\n\n---\n\n${full}`);
 }
 
@@ -367,6 +388,7 @@ const expected = [
   NAV.blog.path,
   NAV.whyMarketplaceOnly.path, NAV.whyNoAutoReply.path, NAV.inventoryDist.path,
   NAV.rvSellGuide.path, NAV.rvPhotos.path, NAV.aiChatVendor.path, NAV.responseTime.path,
+  NAV.aiVisibility.path,
   ...INTEGRATIONS.map((s) => integrationPath(s.slug)),
 ];
 const missing = expected.filter((p) => !renderedPaths.has(p));
@@ -374,9 +396,10 @@ if (missing.length) console.warn(`\n!! MISSING ${missing.length} expected page(s
 
 // ---------- unified robots.txt ----------
 function robotsTxt() {
-  const aiBots = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'anthropic-ai',
-    'Claude-Web', 'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'Applebot',
-    'Applebot-Extended', 'Bingbot', 'cohere-ai', 'Amazonbot', 'meta-externalagent'];
+  const aiBots = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-SearchBot',
+    'Claude-User', 'PerplexityBot', 'Perplexity-User', 'Google-Extended', 'Applebot',
+    'Applebot-Extended', 'Bingbot', 'cohere-ai', 'Amazonbot', 'meta-externalagent',
+    'DuckAssistBot', 'MistralAI-User', 'Amzn-SearchBot', 'meta-webindexer'];
   const blocks = aiBots.map((ua) => `User-agent: ${ua}\nAllow: /`).join('\n\n');
   return `# AutoLander robots.txt
 # All crawlers are welcome, including AI search & answer engines.
@@ -412,7 +435,10 @@ function imageSitemapXml() {
         images.push({ loc: abs(s.src), title: s.alt || s.caption || page.h1 });
       }
     }
-    images.push({ loc: ogImageFor(urlPath), title: page.title });
+    images.push({
+      loc: page.key === 'aiVisibility' ? AI_VISIBILITY_OG_IMAGE : ogImageFor(urlPath),
+      title: page.title,
+    });
     if (images.length) entries.push({ loc: SITE.origin + urlPath, images });
   }
   // Homepage: its OG card + the hero preview thumbnails index.html ships.
@@ -439,6 +465,7 @@ function sitemapXml() {
   const competitorSlugs = Object.values(COMPETITORS).map((c) => c.slug);
   const urls = [
     { loc: SITE.origin + '/', pri: '1.0', freq: 'weekly' },
+    { loc: SITE.origin + NAV.aiVisibility.path, pri: '0.8', freq: 'monthly', lastmod: AI_VISIBILITY_UPDATED },
     { loc: SITE.origin + '/terms.html', pri: '0.3', freq: 'yearly' },
     { loc: SITE.origin + '/privacy.html', pri: '0.3', freq: 'yearly' },
     { loc: SITE.origin + NAV.category.path, pri: '0.9', freq: 'weekly' },

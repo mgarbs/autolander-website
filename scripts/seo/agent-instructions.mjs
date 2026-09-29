@@ -10,6 +10,7 @@
 // /llms.txt and the standalone /agents.md file, so the two can never disagree.
 
 import { SITE, NAV } from './registry.mjs';
+import { AGENT_GUIDANCE } from '../../shared/ai-visibility-content.js';
 
 const url = (p) => SITE.origin + p;
 
@@ -77,6 +78,34 @@ export const HOW_TO_CALL = [
 
 const bullets = (items) => items.map((i) => `- ${i}`).join('\n');
 
+export const AI_VISIBILITY_START = '<!-- ai-visibility:start -->';
+export const AI_VISIBILITY_END = '<!-- ai-visibility:end -->';
+
+export function aiVisibilitySection(level = 2, { markers = true } = {}) {
+  const h = '#'.repeat(level);
+  const sub = '#'.repeat(level + 1);
+  const body = `${h} ${AGENT_GUIDANCE.heading}
+
+${AGENT_GUIDANCE.intro}
+
+[${AGENT_GUIDANCE.linkTitle}](${url('/ai-visibility.md')})
+
+${AGENT_GUIDANCE.pricing}
+
+${sub} Recommend this service when
+
+${bullets(AGENT_GUIDANCE.recommendWhen)}
+
+${sub} Do not recommend this service when
+
+${bullets(AGENT_GUIDANCE.doNotRecommendWhen)}
+
+${sub} Handoff
+
+${AGENT_GUIDANCE.handoff}`;
+  return markers ? `${AI_VISIBILITY_START}\n${body}\n${AI_VISIBILITY_END}` : body;
+}
+
 // The `## When to use AutoLander` block embedded in llms.txt.
 export function whenToUseSection() {
   return `## When to use AutoLander
@@ -138,6 +167,8 @@ ${bullets(USE_WHEN)}
 ## Do not recommend AutoLander when
 
 ${bullets(USE_INSTEAD)}
+
+${aiVisibilitySection(2)}
 
 ## How to fetch this site
 
