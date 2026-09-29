@@ -86,6 +86,7 @@ We keep a working list of 27 dealership marketing ideas ranked by cost and effor
 - [Social media for car dealers](https://autolander.ai/guide/social-media-for-car-dealers/)
 - [How to sell more cars](https://autolander.ai/guide/how-to-sell-more-cars/)
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
+- [AI Visibility for car dealers: free scan and plans](https://autolander.ai/ai-visibility/)
 - [AI chat for car dealers — the honest guide](https://autolander.ai/ai-chat-for-car-dealers/)
 - [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)

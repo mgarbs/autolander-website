@@ -6,19 +6,11 @@
 // adds nothing to any other page.
 import { getAttributionPayload } from '../lib/identity.js';
 import { readOrganicAttribution } from '../lib/organic-attribution.js';
+import { SMS_CONSENT } from '../../shared/ai-visibility-content.js';
+export { ROLE_CHOICES } from '../../shared/ai-visibility-content.js';
 
 const RUNTIME_ENV = import.meta.env || {};
-const CAPI_URL = (RUNTIME_ENV.VITE_CAPI_URL || RUNTIME_ENV.VITE_CHAT_API_URL || '').replace(/\/+$/, '');
-
-// The Worker validates against the same list (see the hand-off note).
-export const ROLE_CHOICES = [
-  'Owner / dealer principal',
-  'General manager',
-  'Sales or used-car manager',
-  'Salesperson',
-  'Marketing',
-  'Other',
-];
+export const CAPI_URL = (RUNTIME_ENV.VITE_CAPI_URL || RUNTIME_ENV.VITE_CHAT_API_URL || '').replace(/\/+$/, '');
 
 // Same rules as lib/contact.js (US/Canada numbers, or an explicit +country number).
 const NANP_RE = /^[2-9]\d{2}[2-9]\d{6}$/;
@@ -123,6 +115,7 @@ export async function submitScanRequest({
       email,
       phone,
       smsConsent,
+      smsConsentVersion: SMS_CONSENT.version,
       consentTimestamp,
       submissionId,
       company,
@@ -133,6 +126,7 @@ export async function submitScanRequest({
       referrer_url: referrerUrl,
       current_page: currentPage,
       current_referrer: currentReferrer,
+      submittedVia: 'fetch',
     }),
   });
   const data = await res.json().catch(() => ({ ok: false, reason: 'bad_response' }));

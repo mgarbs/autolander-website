@@ -17,6 +17,8 @@
 @import "tailwindcss/utilities.css" layer(team) source(none);
 @source "./";
 @source "../components/DemoApplication.jsx";
+@source "../components/SiteNav.jsx";
+@source "../components/SiteFooter.jsx";
 
 /* Same tokens as index.css, so font-display / font-mono resolve identically. */
 @theme {

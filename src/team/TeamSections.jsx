@@ -1,5 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import { scrollBehavior } from './scroll.js';
+import {
+  CHIPS,
+  DEMO_LINE,
+  EYEBROW,
+  FAQ,
+  FINAL_CTA,
+  PLAN_LINES,
+  PRICING,
+  TIERS,
+} from '../../shared/team-content.js';
 
 /**
  * Presentational sections for /team (dealer owners, GMs and sales managers).
@@ -25,7 +34,6 @@ const ShieldCheck = ({ className }) => (
 // WebP copies (1600px) of /training/manuals/assets/dashboard.png and team.png: 43 KB and 26 KB instead of 377 KB and 223 KB.
 const DASHBOARD_IMG = '/team/dashboard.webp';
 const TEAM_IMG = '/team/team-access.webp';
-const BLANK_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 // The AutoLander demo video, chapter 07:05-07:35 "Give managers a view of the team".
 const MANAGER_VIEW_EMBED = 'https://www.youtube-nocookie.com/embed/i5uUB5OxIhk?start=425&end=455&autoplay=1&mute=1&rel=0&playsinline=1';
 // The demo's chapter 02:19 'Let AutoPilot handle the ongoing routine' (to 03:20); the poster is its 03:08 frame.
@@ -34,12 +42,6 @@ const AUTOPILOT_IMG = '/team/autopilot.webp';
 
 // Plain-text feed names, exactly as the homepage trust strip lists them (no third-party logos).
 const FEEDS = ['CarGurus', 'Cars.com', 'vAuto', 'DealerCenter', 'DealerTrack', 'VINCue', 'Tekion', 'CDK'];
-
-const TIERS = [
-  { name: 'Starter', price: 39, posts: 5 },
-  { name: 'Growth', price: 59, posts: 10 },
-  { name: 'Pro', price: 79, posts: 15 },
-];
 
 // Verbatim from scripts/seo/data-testimonials.mjs, same attribution. Only customers who are active today (support's
 // health check 09-27: Jim / Cox Chevrolet cancels 10-12 and Jullian / Lexus of Montgomery churned 8-13, so both are
@@ -51,52 +53,6 @@ const QUOTES = [
 ];
 const QUOTE_NOTE = 'Quotes are from customer messages to the AutoLander team, September 2026, reproduced word for '
   + 'word with first names and dealerships only. Results are what those customers reported, not a promise.';
-
-const FAQ = [
-  {
-    q: 'Will my salespeople actually use it?',
-    a: 'They barely have to touch it. One switch turns on AutoPilot, and it posts through their own Facebook profile, updates prices and marks sold units by itself. You’ll see who’s posting in the Manager Dashboard.',
-  },
-  {
-    q: 'How fast can we be live?',
-    a: 'If your cars are on CarGurus or Cars.com, we can set you up right on the demo call. Other feeds connect through your vendor’s export, and we set it up with you.',
-  },
-  {
-    q: 'My salespeople already post on Marketplace. What changes?',
-    a: 'They stop typing listings. AutoPilot works through your whole inventory from your feed, keeps prices current and marks sold units, day and night, and you see who is posting and what is live, rep by rep.',
-  },
-  { q: 'Do I pay for my managers?', a: 'No. Only salespeople who post take a paid seat. Managers see the dashboard free.' },
-  {
-    q: 'Only 1 or 2 salespeople?',
-    a: 'The individual plans ($39, $59 or $79 each) are simpler. The Dealer Plan starts at 3 seats and adds the Manager Dashboard, because that’s where it pays off.',
-  },
-  {
-    q: 'What happens when a salesperson leaves?',
-    a: 'Remove them under Configuration → Team (the trash icon on their row), and their posting seat opens up for your next hire the same day. Free Marketplace vehicle listings are posted from personal profiles, so their existing listings stay on their own profile. We can’t move them.',
-  },
-  {
-    q: 'Does it work with our feed or DMS?',
-    a: 'CarGurus and Cars.com connect directly, and many dealer websites load directly too. Other systems (vAuto, DealerCenter, DealerTrack, VINCue, Tekion, CDK) connect through a dealer-authorized export in a supported format. We confirm yours before you buy.',
-  },
-  {
-    q: 'Where does AutoPilot run?',
-    a: 'In the AutoLander desktop app on each salesperson’s computer, Windows or Mac. Leave AutoLander open and flip on AutoPilot: it keeps the computer awake and keeps working day and night, even after they leave the lot. Laptops stay open and plugged in.',
-  },
-  { q: 'How many cars a day?', a: 'Per salesperson: Starter 5, Growth 10, Pro 15 posts a day. AutoPilot spreads them across the hours you choose.' },
-  {
-    q: 'Will prices and sold cars stay right?',
-    a: 'Yes. AutoPilot updates prices and pulls sold units down from your feed on its own, AutoLander renews eligible listings, and sold units show up as alerts in your dashboard.',
-  },
-  {
-    q: 'Who talks to the buyers?',
-    a: 'Your salespeople, in Messenger. That’s the part that sells cars. AutoPilot does the posting so they spend their time closing, not typing.',
-  },
-  {
-    q: 'Do I drop CarGurus or Cars.com?',
-    a: 'No. AutoLander uses the inventory you already list. Marketplace is one more place your local buyers find it.',
-  },
-  { q: 'Can I cancel?', a: 'Yes. Month to month, no contract. Your demo includes 5 free posts, no card.' },
-];
 
 // Same classes as SectionHeading in sections/StaticUi.jsx. A local copy on purpose: /team imports
 // nothing from the homepage modules, so the homepage chunks build byte-for-byte as before.
@@ -149,54 +105,21 @@ const DemoButton = ({ onBook, onWarm, className, children }) => (
 
 const PRIMARY_CTA = 'group flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-6 py-5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 active:scale-95 sm:w-auto sm:px-8 sm:text-lg';
 
-export function TeamHeader({ onBook, onWarm }) {
-  return (
-    <header className="relative z-30 px-4 pt-4 sm:px-6">
-      <div className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/10 bg-black/60 px-4 py-2.5 backdrop-blur-xl sm:px-5">
-        <button
-          type="button"
-          aria-label="Back to top"
-          className="flex cursor-pointer items-center border-0 bg-transparent p-0"
-          onClick={() => window.scrollTo({ top: 0, behavior: scrollBehavior() })}
-        >
-          <img
-            src="/autolander-logo-240.webp"
-            srcSet="/autolander-logo-200.webp 200w, /autolander-logo-240.webp 240w, /autolander-logo.png 400w"
-            sizes="(min-width: 640px) 133px, 107px"
-            alt="AutoLander"
-            width="400"
-            height="120"
-            decoding="async"
-            className="h-7 w-auto sm:h-8"
-          />
-        </button>
-        <DemoButton
-          onBook={onBook}
-          onWarm={onWarm}
-          className="whitespace-nowrap rounded-xl bg-white px-4 py-2 text-xs font-bold text-black shadow transition-all hover:bg-blue-500 hover:text-white active:scale-95 sm:px-6 sm:py-2.5 sm:text-sm"
-        >
-          Book Team Demo
-        </DemoButton>
-      </div>
-    </header>
-  );
-}
-
 export function TeamHero({ headline, sub, onBook, onWarm, onWatch, watch = 'autopilot' }) {
   return (
-    <section className="relative overflow-hidden pb-14 pt-10 sm:pt-16 lg:pb-24 lg:pt-20">
+    <section className="relative overflow-hidden pb-14 pt-28 sm:pt-32 lg:pb-24 lg:pt-36">
       <div className="pointer-events-none absolute left-1/2 top-0 hidden h-[520px] w-[900px] -translate-x-1/2 rounded-full bg-blue-600/15 blur-[120px] md:block" aria-hidden="true" />
       <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
         <div className="min-w-0 max-w-2xl">
-          <Eyebrow>For dealers, GMs &amp; sales managers · 3+ salespeople</Eyebrow>
+          <Eyebrow>{EYEBROW}</Eyebrow>
           <h1 className="mt-5 font-display text-[clamp(2rem,8.6vw,2.6rem)] font-extrabold uppercase italic leading-[0.92] tracking-[-0.01em] text-white sm:text-6xl lg:text-[3.5rem]">
             {headline}
           </h1>
           <p className="mt-5 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">{sub}</p>
-          <p className="mt-4 max-w-xl text-base font-bold leading-snug text-white sm:text-lg">Free 30-minute demo: we post up to 5 of your own cars while you watch, whether you buy or not.</p>
+          <p className="mt-4 max-w-xl text-base font-bold leading-snug text-white sm:text-lg">{DEMO_LINE}</p>
           <div className="mt-6 flex flex-col items-stretch gap-3 sm:items-start">
             <DemoButton onBook={onBook} onWarm={onWarm} className={PRIMARY_CTA}>
-              Book your free team demo
+              {FINAL_CTA.button}
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </DemoButton>
             <button
@@ -212,45 +135,30 @@ export function TeamHero({ headline, sub, onBook, onWarm, onWatch, watch = 'auto
                 : <>Watch AutoPilot run <span className="text-slate-400">(60 sec)</span></>}
             </button>
           </div>
-          <p className="mt-3 text-xs leading-relaxed text-slate-400">6 quick questions. Then pick your time from the link we send you.</p>
+          <p className="mt-3 text-xs leading-relaxed text-slate-400">{FINAL_CTA.formNote}</p>
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[11px] uppercase tracking-wider text-slate-400">
-            <span className="text-slate-200">More than 200 dealerships on AutoLander</span>
-            <span className="flex items-center gap-1.5"><Zap className="h-3.5 w-3.5 text-blue-400" />5 free posts in your demo</span>
-            <span className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-blue-400" />No credit card</span>
-            <span>Month to month</span>
-            <span className="text-emerald-400">Team plans from $117/mo</span>
+            {CHIPS.map((chip, index) => (
+              <span key={chip} className={`flex items-center gap-1.5 ${index === 0 ? 'text-slate-200' : ''} ${index === CHIPS.length - 1 ? 'text-emerald-400' : ''}`}>
+                {index === 1 && <Zap className="h-3.5 w-3.5 text-blue-400" />}
+                {index === 2 && <ShieldCheck className="h-3.5 w-3.5 text-blue-400" />}
+                {chip}
+              </span>
+            ))}
           </div>
         </div>
 
-        {/* The real Manager Dashboard (desktop only; the phone keeps the fold for the CTA). */}
-        <div className="relative hidden lg:block">
+        {/* The supplied sales-floor visual is the first page image and keeps its intrinsic ratio. */}
+        <div className="relative">
           <div className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-blue-600/20 blur-[80px]" aria-hidden="true" />
-          <figure className="m-0 rounded-3xl border border-white/10 bg-[#0b0d12]/90 p-3 shadow-2xl shadow-blue-950/50">
-            <div className="flex items-center justify-between px-2 pb-2.5">
-              <span className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                </span>
-                Manager Dashboard
-              </span>
-              <span className="rounded-full bg-emerald-500/15 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-emerald-300">Dealer Plan</span>
-            </div>
-            {/* <picture>: phones (where this column is hidden) never download the screenshot. */}
-            <picture>
-              <source media="(min-width: 1024px)" srcSet={DASHBOARD_IMG} />
-              <img
-                src={BLANK_GIF}
-                alt="The AutoLander Manager Dashboard: posts today, active listings across the team, sold on AutoLander, average posts per rep, team presence, team performance and a live activity feed"
-                width="1600"
-                height="900"
-                decoding="async"
-                fetchPriority="high"
-                className="w-full rounded-2xl border border-white/5"
-              />
-            </picture>
-            <figcaption className="px-2 pt-2.5 text-right font-mono text-[10px] uppercase tracking-wider text-slate-400">Real app screen · names hidden</figcaption>
-          </figure>
+          <img
+            src="/team/sales-floor.webp"
+            alt="Illustration of a dealership sales team standing beneath a digital inventory display"
+            width="1600"
+            height="893"
+            decoding="async"
+            fetchPriority="high"
+            className="aspect-[1600/893] w-full rounded-3xl border border-white/10 object-cover shadow-2xl shadow-blue-950/50"
+          />
           <div className="absolute -bottom-5 -left-6 rounded-2xl border border-emerald-400/20 bg-[#0b0d12] px-4 py-3 shadow-xl">
             <p className="font-mono text-[10px] uppercase tracking-widest text-emerald-300">Managers are free</p>
             <p className="mt-0.5 text-sm font-bold text-white">Only salespeople who post take a seat</p>
@@ -329,7 +237,7 @@ export function FloorCheck({ onBook, onWarm }) {
 }
 
 const PROBLEMS = [
-  { tag: '01 · Consistency', title: 'Month one, everyone posts.', body: 'Month three, it’s quiet. Not because your people don’t care. A daily job always loses to the customer standing in front of them.' },
+  { tag: '01 · Consistency', title: 'Month one, everyone posts.', body: 'Month three, it’s quiet. Your people still care, but a daily job always loses to the customer standing in front of them.' },
   { tag: '02 · Visibility', title: 'You stopped asking.', body: 'Who posted this week? Which units are live? The question slowly comes off the meeting agenda, and the lot goes half-listed.' },
   { tag: '03 · Accuracy', title: 'Ghost inventory.', body: 'Sold units still up, pulling messages. The price cut you approved on Tuesday never made it to Marketplace.' },
   { tag: '04 · Turnover', title: 'A rep leaves. So do their listings.', body: 'Free Marketplace vehicle listings live on personal profiles. When a salesperson goes, their listings go with them, and your next hire starts from zero.' },
@@ -340,7 +248,7 @@ export function ProblemSection() {
     <section className="relative py-20 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <Eyebrow>The real problem</Eyebrow>
-        <SectionHeading className="mt-5 max-w-4xl">It’s not a people problem. It’s a <Grad>daily job</Grad> nobody has time for.</SectionHeading>
+        <SectionHeading className="mt-5 max-w-4xl">Posting is a <Grad>daily job</Grad> nobody has time for.</SectionHeading>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">It’s 9 PM. The showroom’s dark, and your buyers are on the couch scrolling Marketplace. Whether they find your cars tonight comes down to who had a spare minute today. Meanwhile your aged units keep aging on floorplan, and the buyer looking for exactly that truck is messaging the store down the road. Keeping a whole lot posted, priced right and cleaned up is a job that rebuilds itself every night.</p>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PROBLEMS.map((p) => (
@@ -367,7 +275,7 @@ export function HowItWorks({ autopilotOn = false, onPlayAutopilot }) {
       <div className="mx-auto max-w-7xl px-6">
         <Eyebrow>How it works</Eyebrow>
         <SectionHeading className="mt-5 max-w-4xl">AutoPilot does the posting. <Grad>Your people do the selling.</Grad></SectionHeading>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">You don’t need better compliance. You need a system that doesn’t depend on anyone’s memory. With AutoPilot, month three looks like month one.</p>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">A system that runs on its own beats a reminder in the sales meeting. With AutoPilot, month three looks like month one.</p>
         <div className="mt-12 grid gap-4 lg:grid-cols-3">
           <div className="rounded-3xl border border-white/10 bg-[#0b0d12] p-7">
             <p className="font-display text-5xl font-extrabold italic text-blue-500/80">01</p>
@@ -404,7 +312,7 @@ export function HowItWorks({ autopilotOn = false, onPlayAutopilot }) {
               >
                 <img
                   src={AUTOPILOT_IMG}
-                  alt=""
+                  alt="AutoLander AutoPilot controls for scheduling Marketplace vehicle posts"
                   loading="lazy"
                   decoding="async"
                   width="1600"
@@ -464,7 +372,7 @@ export function DashboardSection({ videoOn, onPlay }) {
                 >
                   <img
                     src={DASHBOARD_IMG}
-                    alt=""
+                    alt="AutoLander Manager Dashboard showing team posts, active listings and sold vehicles"
                     loading="lazy"
                     decoding="async"
                     width="1920"
@@ -490,21 +398,33 @@ export function DashboardSection({ videoOn, onPlay }) {
           </ul>
         </div>
 
-        <div className="mt-6 grid items-center gap-6 rounded-3xl border border-emerald-400/15 bg-[#0b0d12] p-5 sm:p-7 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
+        <div className="mt-6 grid items-start gap-6 rounded-3xl border border-emerald-400/15 bg-[#0b0d12] p-5 sm:p-7 lg:grid-cols-[0.72fr_1.28fr]">
+          <div className="relative self-start">
+            <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-blue-600/20 blur-[55px]" aria-hidden="true" />
+            <img
+              src="/team/manager-tablet.webp"
+              alt="Illustration of a dealership manager holding a tablet between rows of vehicles"
+              loading="lazy"
+              decoding="async"
+              width="1000"
+              height="1241"
+              className="aspect-[1000/1241] w-full rounded-2xl border border-white/10 object-cover shadow-2xl shadow-blue-950/50"
+            />
+          </div>
+          <div className="self-start">
             <p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-300">Team access</p>
             <h3 className="mt-3 font-display text-3xl font-extrabold uppercase italic leading-tight text-white">Pay per posting seat. <Grad tone="green">Add your managers free.</Grad></h3>
             <p className="mt-3 leading-relaxed text-slate-400">Posting seats and Manager Dashboard access are set separately. Your GM, sales manager or desk can watch the dashboard without taking a seat. When a salesperson leaves, remove them: their seat and your inventory feed stay with the store, so your next hire flips on AutoPilot and posts from the same feed.</p>
+            <img
+              src={TEAM_IMG}
+              alt="AutoLander Team Access screen with posting seats and Manager Dashboard access set per person, with names hidden"
+              loading="lazy"
+              decoding="async"
+              width="1920"
+              height="1080"
+              className="mt-6 w-full rounded-2xl border border-white/10 shadow-xl shadow-blue-950/30"
+            />
           </div>
-          <img
-            src={TEAM_IMG}
-            alt="AutoLander Team Access screen: posting seats and Manager Dashboard access set per person, names hidden"
-            loading="lazy"
-            decoding="async"
-            width="1920"
-            height="1080"
-            className="w-full rounded-2xl border border-white/5"
-          />
         </div>
       </div>
     </section>
@@ -512,7 +432,7 @@ export function DashboardSection({ videoOn, onPlay }) {
 }
 
 const DEMO_STEPS = [
-  { n: '1', title: 'We pull up your inventory', body: 'From your feed or listing site, so you see your own units, not a sample.' },
+  { n: '1', title: 'We pull up your inventory', body: 'From your feed or listing site, so the demo runs on your own units.' },
   { n: '2', title: '5 free posts in your demo', body: 'Your own cars, live on Marketplace from the Facebook profile of whoever is at the computer. Bring a salesperson if you’d rather it’s theirs. No credit card.' },
   { n: '3', title: 'AutoPilot and the Manager Dashboard', body: 'How AutoPilot would run each salesperson’s posting hours, and the screen where you’d see every rep’s posts, live listings and sold units.', green: true },
   { n: '4', title: 'Your team’s price, seat by seat', body: '$39 per sales rep. Month to month, no contract.' },
@@ -630,39 +550,25 @@ function SeatCalculator() {
   );
 }
 
-const PLAN_LINES = [
-  // The homepage Dealer Plan card, word for word…
-  'Everything in Pro',
-  'Minimum 3 Seats — Any Tier Mix',
-  'Starter $39 • Growth $59 • Pro $79 per seat',
-  'Live Manager Dashboard',
-  'Real-Time Team Presence',
-  'Post Attribution + Analytics',
-  'AI Studio welcome credits scale with team size',
-  // …plus two true lines for this buyer.
-  'Managers free: only salespeople who post take a seat',
-  'Month to month, no contract',
-];
-
 export function PricingSection({ onBook, onWarm }) {
   return (
     <section id="pricing" className="py-20 lg:py-32">
       <div className="mx-auto max-w-7xl px-6">
-        <Eyebrow tone="green">Simple team pricing</Eyebrow>
-        <SectionHeading className="mt-5 max-w-4xl">$39 per sales rep. <Grad tone="green">Team plans from $117 a month.</Grad></SectionHeading>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">Pay per posting seat. Your managers watch the dashboard free. Mix plans however your floor works, and add seats anytime.</p>
+        <Eyebrow tone="green">{PRICING.eyebrow}</Eyebrow>
+        <SectionHeading className="mt-5 max-w-4xl">{PRICING.headingLead} <Grad tone="green">{PRICING.headingAccent}</Grad></SectionHeading>
+        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">{PRICING.lead}</p>
 
         <div className="mt-12 grid items-start gap-6 lg:grid-cols-2">
           <div className="relative rounded-[2rem] border border-emerald-400/30 bg-[#06100c] p-7 shadow-[0_0_60px_-20px_rgba(16,185,129,0.45)] sm:p-9">
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-500 px-4 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-black">For teams</span>
-            <p className="font-display text-3xl font-extrabold uppercase italic text-white">Dealer Plan</p>
+            <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-500 px-4 py-1 font-mono text-[10px] font-bold uppercase tracking-widest text-black">{PRICING.badge}</span>
+            <p className="font-display text-3xl font-extrabold uppercase italic text-white">{PRICING.planName}</p>
             <p className="mt-3 flex items-baseline gap-2">
-              <span className="font-mono text-xs font-bold uppercase tracking-widest text-slate-400">From</span>
-              <span className="font-display text-6xl font-extrabold italic text-white">$117</span>
-              <span className="font-mono text-xs font-bold uppercase tracking-widest text-slate-400">/ month</span>
+              <span className="font-mono text-xs font-bold uppercase tracking-widest text-slate-400">{PRICING.from}</span>
+              <span className="font-display text-6xl font-extrabold italic text-white">{PRICING.monthly}</span>
+              <span className="font-mono text-xs font-bold uppercase tracking-widest text-slate-400">{PRICING.perMonth}</span>
             </p>
-            <p className="mt-3 font-bold italic text-emerald-400">Build Your Team — Any Mix of Seats</p>
-            <p className="mt-2 text-sm italic text-slate-400">Build a team that scales with you. Mix tiers, add seats anytime.</p>
+            <p className="mt-3 font-bold italic text-emerald-400">{PRICING.builder}</p>
+            <p className="mt-2 text-sm italic text-slate-400">{PRICING.summary}</p>
             <ul className="m-0 mt-6 grid list-none gap-3 p-0 text-[15px] font-medium text-slate-200">
               {PLAN_LINES.map((line) => (
                 <li key={line} className="flex gap-3"><span className="text-emerald-400" aria-hidden="true">✓</span>{line}</li>
@@ -734,32 +640,21 @@ export function FinalCta({ onBook, onWarm }) {
     <section className="relative overflow-hidden py-20 text-center lg:py-32">
       <div className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[420px] w-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/15 blur-[120px] md:block" aria-hidden="true" />
       <div className="relative mx-auto max-w-3xl px-6">
-        <SectionHeading>Tonight your buyers will scroll Marketplace. <Grad>Make sure they find your cars.</Grad></SectionHeading>
-        <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-slate-300">30 minutes on your own inventory: we post up to 5 of your cars while you watch, walk you through AutoPilot and the Manager Dashboard, and price your team.</p>
+        <SectionHeading>{FINAL_CTA.headingLead} <Grad>{FINAL_CTA.headingAccent}</Grad></SectionHeading>
+        <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-slate-300">{FINAL_CTA.body}</p>
         <div className="mt-9 flex justify-center">
           <DemoButton
             onBook={onBook}
             onWarm={onWarm}
             className="flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-6 py-6 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-2xl shadow-blue-600/30 transition-colors hover:bg-blue-500 active:scale-95 sm:w-auto sm:px-10 sm:text-xl"
           >
-            Book your free team demo
+            {FINAL_CTA.button}
           </DemoButton>
         </div>
-        <p className="mt-4 text-xs leading-relaxed text-slate-400">6 quick questions. Then pick your time from the link we send you.</p>
-        <p className="mt-3 font-mono text-[11px] uppercase tracking-wider text-slate-400">5 free posts in your demo · No credit card · Month to month</p>
+        <p className="mt-4 text-xs leading-relaxed text-slate-400">{FINAL_CTA.formNote}</p>
+        <p className="mt-3 font-mono text-[11px] uppercase tracking-wider text-slate-400">{FINAL_CTA.chips}</p>
       </div>
     </section>
-  );
-}
-
-export function TeamFooter() {
-  return (
-    <footer className="border-t border-white/5 bg-black py-10 pb-28 md:pb-10">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 text-sm text-slate-400 sm:flex-row">
-        <img src="/autolander-logo-240.webp" srcSet="/autolander-logo-200.webp 200w, /autolander-logo-240.webp 240w, /autolander-logo.png 400w" sizes="94px" alt="AutoLander" width="400" height="120" loading="lazy" decoding="async" className="h-7 w-auto opacity-80" />
-        <p>© 2026 AutoLander · <a className="hover:text-slate-300" href="/privacy.html">Privacy</a> · <a className="hover:text-slate-300" href="/terms.html">Terms</a></p>
-      </div>
-    </footer>
   );
 }
 

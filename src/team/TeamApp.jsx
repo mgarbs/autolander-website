@@ -1,14 +1,17 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
+import { HEADLINE_SEGMENTS, SUBS, TEAM_META } from '../../shared/team-content.js';
+import SiteFooter from '../components/SiteFooter.jsx';
+import SiteNav from '../components/SiteNav.jsx';
 import { trackCustom } from '../lib/meta-pixel.js';
 import {
   Beam, DashboardSection, DemoSection, FaqSection, FeedStrip, FinalCta, FloorCheck, Grad, HowItWorks,
-  PricingSection, ProblemSection, ProofSection, TeamFooter, TeamHeader, TeamHero, TeamMobileCtaBar,
+  PricingSection, ProblemSection, ProofSection, TeamHero, TeamMobileCtaBar,
 } from './TeamSections.jsx';
 import { scrollBehavior } from './scroll.js';
 import './team.css';
 
 /**
- * /team — landing page for dealer owners, GMs and sales managers (teams of 3+), built for the
+ * /team landing page for dealer owners, GMs and sales managers (teams of 3+), built for the
  * owner/manager Meta ad set. Not linked from the site, noindex (the shell from
  * scripts/spa-fallback.mjs already carries robots noindex; this component re-asserts it on
  * mount), and not in the sitemap. Same demo form, same tracking contract as the homepage:
@@ -27,18 +30,9 @@ const loadDemoApplication = () => {
 };
 const DemoApplication = lazy(loadDemoApplication);
 
-const HEADLINES = {
-  a: <>Put your <Grad>whole sales floor</Grad> on Marketplace—and <Grad>see it all.</Grad></>,
-  b: <>You stopped asking who posted. <Grad>Put it on AutoPilot.</Grad></>,
-  c: <>Your people <Grad>sell.</Grad> AutoPilot does <Grad>the posting.</Grad></>,
-  d: <>How many of your cars can a buyer <Grad>find tonight?</Grad></>,
-};
-const SUBS = {
-  a: 'Flip on AutoPilot and your inventory posts to Marketplace by itself, day and night: new cars up, prices updated, sold units pulled down. You see it all in one Manager Dashboard. $39 per sales rep.',
-  b: 'The Manager Dashboard shows every rep’s posts, live listings and sold cars, so you never have to ask. AutoPilot does the posting for your whole floor from one inventory feed. $39 per sales rep.',
-  c: 'AutoPilot runs the whole listing cycle for every salesperson on your floor, day and night: new cars posted, prices updated, sold units pulled down. One Manager Dashboard shows you who’s posting. $39 per sales rep.',
-  d: 'Your buyers scroll Marketplace every night. AutoPilot keeps your inventory in front of them through every salesperson on your floor: posted, priced right and cleaned up, day and night. $39 per sales rep.',
-};
+const renderHeadline = (variant) => HEADLINE_SEGMENTS[variant].map((part, index) => (
+  part.accent ? <Grad key={`${variant}-${index}`}>{part.text}</Grad> : <span key={`${variant}-${index}`}>{part.text}</span>
+));
 
 function headlineVariant() {
   if (typeof window === 'undefined') return 'a';
@@ -66,14 +60,14 @@ export default function TeamApp() {
   const openedByKeyRef = useRef(false);
 
   useEffect(() => {
-    document.title = 'AutoLander for Dealerships | Team Plans from $117/mo';
+    document.title = TEAM_META.title;
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) {
       robots = document.createElement('meta');
       robots.setAttribute('name', 'robots');
       document.head.appendChild(robots);
     }
-    robots.setAttribute('content', 'noindex, nofollow, noarchive');
+    robots.setAttribute('content', 'noindex, follow');
   }, []);
 
   const warmDemoApplication = useCallback(() => {
@@ -95,7 +89,7 @@ export default function TeamApp() {
     try {
       if (window.sessionStorage.getItem('al_application_opened') === '1') return;
       window.sessionStorage.setItem('al_application_opened', '1');
-    } catch { /* sessionStorage unavailable — fall through and fire once */ }
+    } catch { /* sessionStorage unavailable, so fall through and fire once */ }
     trackCustom('ApplicationOpened', { content_name: 'demo_application', content_category: 'demo' });
   }, [warmDemoApplication]);
 
@@ -152,10 +146,15 @@ export default function TeamApp() {
     <div className="min-h-dvh bg-[#050505] font-sans text-slate-50 selection:bg-blue-500/30 selection:text-blue-200" data-headline-variant={variant}>
       {/* Everything but the form: inert while the form is open (audit F2). */}
       <div inert={isApplicationOpen}>
-        <TeamHeader onBook={openDemoBooking} onWarm={warmDemoApplication} />
+        <SiteNav
+          page="team"
+          isMobileNavVisible
+          onPrimaryAction={openDemoBooking}
+          onPrimaryWarm={warmDemoApplication}
+        />
         <main id="main-content">
           <TeamHero
-            headline={HEADLINES[variant]}
+            headline={renderHeadline(variant)}
             sub={SUBS[variant]}
             onBook={openDemoBooking}
             onWarm={warmDemoApplication}
@@ -174,7 +173,7 @@ export default function TeamApp() {
           <FaqSection />
           <FinalCta onBook={openDemoBooking} onWarm={warmDemoApplication} />
         </main>
-        <TeamFooter />
+        <SiteFooter mobileCtaPadding />
         <TeamMobileCtaBar onBookDemo={openDemoBooking} onWarmDemo={warmDemoApplication} />
       </div>
       {isApplicationOpen && (

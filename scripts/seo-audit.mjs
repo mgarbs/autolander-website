@@ -1,5 +1,6 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { extname, join, relative, sep } from 'node:path';
+import { SPA_PAGE_PATHS } from './seo/registry.mjs';
 
 const ROOT = process.cwd();
 const PUBLIC = join(ROOT, 'public');
@@ -68,6 +69,14 @@ function label(file) {
 const isVerificationToken = (file) => /[\\/]google[0-9a-f]{16}\.html$/i.test(file);
 const documents = [join(ROOT, 'index.html'), ...walk(PUBLIC).filter((file) => extname(file) === '.html' && !isVerificationToken(file))]
   .map((file) => ({ file, url: fileUrl(file), html: readFileSync(file, 'utf8') }));
+const aiVisibilityShell = join(ROOT, 'dist', 'ai-visibility', 'index.html');
+if (existsSync(aiVisibilityShell)) {
+  documents.push({
+    file: aiVisibilityShell,
+    url: '/ai-visibility/',
+    html: readFileSync(aiVisibilityShell, 'utf8'),
+  });
+}
 
 function isIndexable(html) {
   return !metaContent(html, 'name', 'robots').toLowerCase().includes('noindex');
@@ -162,6 +171,7 @@ for (const document of documents) {
 const dynamicPrefixes = ['/admin', '/pay', '/r/'];
 function internalTargetExists(pathname) {
   if (pathname === '/') return true;
+  if (SPA_PAGE_PATHS.includes(pathname.endsWith('/') ? pathname : `${pathname}/`)) return true;
   if (dynamicPrefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))) return true;
   let decoded;
   try {

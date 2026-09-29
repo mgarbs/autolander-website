@@ -1,5 +1,17 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { loadEnv } from 'vite';
+import { META } from '../shared/ai-visibility-content.js';
+import { TEAM_META } from '../shared/team-content.js';
+import { renderAiVisibilityMirror } from '../src/ai/static-mirror.js';
+import { renderTeamMirror } from '../src/team/static-mirror.js';
+import { aiVisibilityHead } from './seo/data-ai-visibility.mjs';
+import { teamHead } from './seo/data-team.mjs';
+import {
+  buildPageShell,
+  findChunkAsset,
+  isPreviewShell,
+} from './spa-shell.mjs';
 
 const distDir = join(process.cwd(), 'dist');
 const indexPath = join(distDir, 'index.html');
@@ -65,12 +77,28 @@ writeFileSync(adminIndexPath, noindexShell, 'utf8');
 // zero-redirect shell the /admin path already has.
 mkdirSync(payDir, { recursive: true });
 writeFileSync(payIndexPath, noindexShell, 'utf8');
-// Same noindex shell for /team (the dealer-team landing page used by paid ads), so the exact
-// path answers 200 instead of the 404.html fallback. It is not linked and not in the sitemap.
+// Dedicated readable shells for the two exact-path lazy routes. The utility shells above remain
+// empty and noindex; these marketing routes carry their own metadata and crawlable static body.
+const preview = isPreviewShell(appShell);
+const env = loadEnv(preview ? 'preview' : 'production', process.cwd(), '');
+const capiUrl = env.VITE_CAPI_URL || 'https://autolander.ai';
+
 const teamDir = join(distDir, 'team');
 mkdirSync(teamDir, { recursive: true });
-writeFileSync(join(teamDir, 'index.html'), noindexShell, 'utf8');
-// And for /ai-visibility (the free AI Visibility Scan page), on the same terms.
+writeFileSync(join(teamDir, 'index.html'), buildPageShell(appShell, {
+  title: TEAM_META.title,
+  headHtml: teamHead({ preview }),
+  mirrorHtml: renderTeamMirror(),
+  cssHref: findChunkAsset(distDir, 'TeamApp', '.css'),
+  jsHref: findChunkAsset(distDir, 'TeamApp', '.js'),
+}), 'utf8');
+
 const aiDir = join(distDir, 'ai-visibility');
 mkdirSync(aiDir, { recursive: true });
-writeFileSync(join(aiDir, 'index.html'), noindexShell, 'utf8');
+writeFileSync(join(aiDir, 'index.html'), buildPageShell(appShell, {
+  title: META.title,
+  headHtml: aiVisibilityHead({ preview }),
+  mirrorHtml: renderAiVisibilityMirror({ capiUrl }),
+  cssHref: findChunkAsset(distDir, 'AiVisibilityApp', '.css'),
+  jsHref: findChunkAsset(distDir, 'AiVisibilityApp', '.js'),
+}), 'utf8');

@@ -1,24 +1,38 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  AiFaq, AiFinalCta, AiFooter, AiHeader, AiHero, AiMobileCtaBar, HowSteps, NextStep, ReasonsSection,
-  ReportSection, ShiftSection,
+  FOOTER,
+  FORM,
+  META,
+  ROLE_CHOICES,
+  SMS_CONSENT,
+  SUCCESS,
+} from '../../shared/ai-visibility-content.js';
+import SiteFooter from '../components/SiteFooter.jsx';
+import SiteNav from '../components/SiteNav.jsx';
+import {
+  AiFaq,
+  AiFinalCta,
+  AiHero,
+  AiMobileCtaBar,
+  AboutService,
+  HowSteps,
+  PlansSection,
+  ReasonsSection,
+  ReportSection,
+  ShiftSection,
 } from './AiSections.jsx';
 import { scrollBehavior } from './scroll.js';
 import {
-  ROLE_CHOICES, formatPhoneInput, hasFirstAndLastName, isValidEmail, isValidPhone, newSubmissionId,
-  normalizeWebsite, submitScanRequest,
+  CAPI_URL,
+  formatPhoneInput,
+  hasFirstAndLastName,
+  isValidEmail,
+  isValidPhone,
+  newSubmissionId,
+  normalizeWebsite,
+  submitScanRequest,
 } from './scan-request.js';
 import './ai.css';
-
-/**
- * /ai-visibility — the free AI Visibility Scan page for car dealers (the hook of the AI Visibility
- * service). Not linked from the site, noindex (the shell from scripts/spa-fallback.mjs already carries
- * robots noindex; this component re-asserts it on mount), not in the sitemap.
- *
- * The form posts to POST /api/ai-scan (spec in the hand-off note). It never touches /api/apply and
- * never fires a Lead: the Worker sends one server event, AIScanRequest. Deploy this page together
- * with (or after) that Worker route; until the route exists the form shows an honest error.
- */
 
 const initialForm = {
   dealershipName: '',
@@ -29,83 +43,117 @@ const initialForm = {
   email: '',
   phone: '',
   smsConsent: false,
-  company: '', // honeypot (hidden); a real visitor never fills it
+  company: '',
 };
 
 const FIELD = 'mt-2 h-12 w-full rounded-xl border bg-black/40 px-3 text-white outline-none placeholder:text-slate-500 focus:ring-2 focus:ring-blue-500/30';
 const fieldClass = (bad) => `${FIELD} ${bad ? 'border-red-500/70 focus:border-red-500/70' : 'border-white/10 focus:border-blue-500/60'}`;
-
-const REASON_TEXT = {
-  missing_dealership: ['dealershipName', 'Enter your dealership’s name.'],
-  invalid_website: ['website', 'That website does not look right, e.g. yourstore.com.'],
-  missing_location: ['location', 'Enter your city or ZIP code.'],
-  missing_full_name: ['fullName', 'Enter your first and last name.'],
-  missing_role: ['role', 'Choose your role at the dealership.'],
-  invalid_email: ['email', 'That e-mail does not look right. Re-enter it and try again.'],
-  invalid_phone: ['phone', 'That mobile number does not look right. Re-enter it and try again.'],
+const REASON_FIELD = {
+  missing_dealership: 'dealershipName',
+  invalid_website: 'website',
+  missing_location: 'location',
+  missing_full_name: 'fullName',
+  missing_role: 'role',
+  invalid_email: 'email',
+  invalid_phone: 'phone',
 };
 
 function validate(form) {
-  if (!form.dealershipName.trim()) return 'missing_dealership';
-  if (!normalizeWebsite(form.website)) return 'invalid_website';
-  if (!form.location.trim()) return 'missing_location';
-  if (!hasFirstAndLastName(form.fullName)) return 'missing_full_name';
-  if (!ROLE_CHOICES.includes(form.role)) return 'missing_role';
-  if (!isValidEmail(form.email)) return 'invalid_email';
-  if (!isValidPhone(form.phone)) return 'invalid_phone';
-  return '';
+  const errors = {};
+  if (!form.dealershipName.trim()) errors.dealershipName = 'missing_dealership';
+  if (!normalizeWebsite(form.website)) errors.website = 'invalid_website';
+  if (!form.location.trim()) errors.location = 'missing_location';
+  if (!hasFirstAndLastName(form.fullName)) errors.fullName = 'missing_full_name';
+  if (!ROLE_CHOICES.includes(form.role)) errors.role = 'missing_role';
+  if (!isValidEmail(form.email)) errors.email = 'invalid_email';
+  if (!isValidPhone(form.phone)) errors.phone = 'invalid_phone';
+  return errors;
 }
 
+function returnedState() {
+  if (typeof window === 'undefined') return { sent: false, reason: '' };
+  const query = new URLSearchParams(window.location.search);
+  return { sent: query.get('sent') === '1', reason: query.get('error') || '' };
+}
+
+const Hint = ({ id, children }) => children ? <span id={id} className="mt-1 block text-xs leading-relaxed text-slate-400">{children}</span> : null;
+const InlineError = ({ id, reason }) => reason ? <span id={id} className="mt-1 block text-xs leading-relaxed text-red-300">{FORM.errors[reason]}</span> : null;
+
 function ScanForm() {
+  const returned = useMemo(() => returnedState(), []);
   const [form, setForm] = useState(initialForm);
-  const [phase, setPhase] = useState('capture'); // capture | submitting | success
-  const [error, setError] = useState('');
-  const [badField, setBadField] = useState('');
+  const [phase, setPhase] = useState(returned.sent ? 'success' : 'capture');
+  const [fieldErrors, setFieldErrors] = useState(() => {
+    const field = REASON_FIELD[returned.reason];
+    return field ? { [field]: returned.reason } : {};
+  });
+  const [error, setError] = useState(() => returned.reason ? (FORM.errors[returned.reason] || FORM.errors.noJsError) : '');
+  const [agentAssisted, setAgentAssisted] = useState(false);
+  const [reference, setReference] = useState('');
   const submissionId = useMemo(() => newSubmissionId(), []);
   const statusRef = useRef(null);
   const formRef = useRef(null);
   const doneRef = useRef(null);
 
-  // The confirmation is shorter than the form: bring it into view and announce it.
   useEffect(() => {
     if (phase !== 'success' || !doneRef.current) return;
     doneRef.current.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
     doneRef.current.focus({ preventScroll: true });
   }, [phase]);
 
+  const markAgentAssisted = useCallback(() => {
+    setAgentAssisted(true);
+    setForm((current) => ({ ...current, smsConsent: false }));
+  }, []);
+
+  useEffect(() => {
+    const node = formRef.current;
+    const targets = [
+      node,
+      typeof window !== 'undefined' ? window : null,
+      typeof document !== 'undefined' ? document.modelContext : null,
+      typeof navigator !== 'undefined' ? navigator.modelContext : null,
+    ].filter((target, index, all) => target?.addEventListener && all.indexOf(target) === index);
+    targets.forEach((target) => target.addEventListener('toolactivated', markAgentAssisted));
+    return () => targets.forEach((target) => target.removeEventListener('toolactivated', markAgentAssisted));
+  }, [markAgentAssisted]);
+
   const update = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
-    if (badField === key) setBadField('');
+    if (fieldErrors[key]) setFieldErrors((current) => ({ ...current, [key]: undefined }));
+  };
+
+  const focusTarget = (field) => {
+    window.setTimeout(() => {
+      const target = field ? formRef.current?.querySelector(`[name="${field}"]`) : statusRef.current;
+      target?.focus();
+    }, 0);
   };
 
   const fail = (reason) => {
-    const known = REASON_TEXT[reason];
-    if (known) {
-      setBadField(known[0]);
-      setError(known[1]);
-    } else if (reason === 'blocked') {
-      setError('We couldn’t send that from this browser. E-mail sales@autolander.ai with your store’s name and we’ll run your scan.');
-    } else if (reason === 'rate_limited') {
-      setError('Too many requests from this connection. Try again in an hour, or e-mail sales@autolander.ai.');
-    } else {
-      setError('We couldn’t send that just now. Try again in a minute, or e-mail sales@autolander.ai and we’ll run your scan.');
-    }
-    // A field error puts the cursor in that field (its message is tied to it); anything else focuses the message.
-    window.setTimeout(() => {
-      const field = known ? formRef.current?.querySelector(`[name="${known[0]}"]`) : null;
-      (field || statusRef.current)?.focus();
-    }, 0);
+    const field = REASON_FIELD[reason];
+    if (field) setFieldErrors({ [field]: reason });
+    const message = FORM.errors[reason] || FORM.errors.generic;
+    setError(message);
+    focusTarget(field);
   };
 
   const submit = async (event) => {
     event.preventDefault();
-    const reason = validate(form);
-    if (reason) {
-      fail(reason);
+    if (event.nativeEvent?.agentInvoked) {
+      markAgentAssisted();
+      return;
+    }
+    const errors = validate(form);
+    if (Object.keys(errors).length) {
+      setFieldErrors(errors);
+      setError(FORM.errorSummaryTitle);
+      focusTarget(Object.keys(errors)[0]);
       return;
     }
     setPhase('submitting');
     setError('');
+    setFieldErrors({});
     try {
       const res = await submitScanRequest({
         ...form,
@@ -115,6 +163,7 @@ function ScanForm() {
         submissionId,
       });
       if (res.ok) {
+        setReference(res.reference || res.id || '');
         setPhase('success');
         return;
       }
@@ -122,80 +171,111 @@ function ScanForm() {
       fail(res.reason);
     } catch {
       setPhase('capture');
-      fail('network');
+      fail('generic');
     }
   };
 
   if (phase === 'success') {
     return (
-      <div ref={doneRef} tabIndex={-1} className="rounded-[2rem] border border-emerald-400/25 bg-[#0b0d12] p-6 outline-none sm:p-8" role="status">
-        <p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-300">Request received</p>
-        <p className="mt-3 font-display text-2xl font-extrabold uppercase italic text-white">Your scan is on its way.</p>
+      <div id="scan-form" ref={doneRef} tabIndex={-1} className="scroll-mt-24 rounded-[2rem] border border-emerald-400/25 bg-[#0b0d12] p-6 outline-none sm:p-8" role="status">
+        <p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-emerald-300">{SUCCESS.eyebrow}</p>
+        <p className="mt-3 font-display text-2xl font-extrabold uppercase italic text-white">{SUCCESS.heading}</p>
         <p className="mt-4 leading-relaxed text-slate-300">
-          We’ll run {form.dealershipName.trim() || 'your store'}’s scan, and a person on our team reviews the report before it goes out. It comes to {form.email.trim()}, and we’ll set up your 20-minute walkthrough from there.
+          {returned.sent ? SUCCESS.noJsBody : SUCCESS.body(form.dealershipName.trim(), form.email.trim())}
         </p>
-        <p className="mt-4 text-sm leading-relaxed text-slate-400">Nothing else to do for now. No logins, nothing to install.</p>
+        {reference && <p className="mt-4 font-mono text-xs uppercase tracking-wider text-slate-300">{SUCCESS.referenceLabel}: {reference}</p>}
+        <p className="mt-4 text-sm leading-relaxed text-slate-400">{SUCCESS.footnote}</p>
       </div>
     );
   }
 
   const busy = phase === 'submitting';
+  const describedBy = (key, hasHint = false) => [hasHint ? `scan-${key}-hint` : '', fieldErrors[key] ? `scan-${key}-error` : ''].filter(Boolean).join(' ') || undefined;
   return (
-    <form id="scan-form" ref={formRef} onSubmit={submit} noValidate className="rounded-[2rem] border border-white/10 bg-[#0b0d12] p-6 sm:p-8">
-      <p className="font-display text-2xl font-extrabold uppercase italic text-white">Get your free AI Visibility Scan</p>
-      <p className="mt-2 text-sm leading-relaxed text-slate-400">About a minute. A person on our team checks your report before we send it.</p>
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <label className="block sm:col-span-2">
-          <span className="text-sm font-bold text-slate-200">Dealership</span>
-          <input name="dealershipName" aria-required="true" aria-describedby={badField === 'dealershipName' ? 'scan-status' : undefined} autoComplete="organization" value={form.dealershipName} onChange={(e) => update('dealershipName', e.target.value)} aria-invalid={badField === 'dealershipName'} className={fieldClass(badField === 'dealershipName')} />
+    <form
+      id="scan-form"
+      ref={formRef}
+      method="post"
+      action={`${CAPI_URL}/api/ai-scan`}
+      onSubmit={submit}
+      noValidate
+      aria-labelledby="scan-form-title"
+      toolname={FORM.webmcp.toolname}
+      tooldescription={FORM.webmcp.tooldescription}
+      className="scroll-mt-24 rounded-[2rem] border border-white/10 bg-[#0b0d12] p-6 sm:p-8"
+    >
+      <p id="scan-form-title" className="font-display text-2xl font-extrabold uppercase italic text-white">{FORM.title}</p>
+      <p className="mt-2 text-sm leading-relaxed text-slate-400">{FORM.intro}</p>
+      <p className="mt-2 text-xs leading-relaxed text-slate-500">{FORM.requiredNote}</p>
+      {agentAssisted && <p className="mt-4 rounded-xl border border-blue-400/25 bg-blue-500/[0.07] p-3 text-sm leading-relaxed text-blue-100">{FORM.agentBanner}</p>}
+      <input id="scan-submissionId" type="hidden" name="submissionId" value={submissionId} />
+      <input id="scan-submittedVia" type="hidden" name="submittedVia" value="form" />
+      <input id="scan-smsConsentVersion" type="hidden" name="smsConsentVersion" value={SMS_CONSENT.version} />
+      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        <label htmlFor="scan-dealershipName" className="block sm:col-span-2">
+          <span className="text-sm font-bold text-slate-200">{FORM.fields.dealershipName.label}</span>
+          <input id="scan-dealershipName" name="dealershipName" required toolparamdescription={FORM.fields.dealershipName.agentHint} aria-describedby={describedBy('dealershipName', true)} autoComplete={FORM.fields.dealershipName.autocomplete} value={form.dealershipName} onChange={(e) => update('dealershipName', e.target.value)} aria-invalid={Boolean(fieldErrors.dealershipName)} className={fieldClass(fieldErrors.dealershipName)} />
+          <Hint id="scan-dealershipName-hint">{FORM.fields.dealershipName.agentHint}</Hint>
+          <InlineError id="scan-dealershipName-error" reason={fieldErrors.dealershipName} />
         </label>
-        <label className="block">
-          <span className="text-sm font-bold text-slate-200">Website</span>
-          <input name="website" aria-required="true" aria-describedby={badField === 'website' ? 'scan-status' : undefined} inputMode="url" autoComplete="url" placeholder="yourstore.com" value={form.website} onChange={(e) => update('website', e.target.value)} aria-invalid={badField === 'website'} className={fieldClass(badField === 'website')} />
+        <label htmlFor="scan-website" className="block">
+          <span className="text-sm font-bold text-slate-200">{FORM.fields.website.label}</span>
+          <input id="scan-website" name="website" required toolparamdescription={FORM.fields.website.agentHint} aria-describedby={describedBy('website', true)} inputMode="url" autoComplete={FORM.fields.website.autocomplete} autoCapitalize="none" spellCheck={false} placeholder={FORM.fields.website.hint} value={form.website} onChange={(e) => update('website', e.target.value)} aria-invalid={Boolean(fieldErrors.website)} className={fieldClass(fieldErrors.website)} />
+          <Hint id="scan-website-hint">{FORM.fields.website.hint}</Hint>
+          <InlineError id="scan-website-error" reason={fieldErrors.website} />
         </label>
-        <label className="block">
-          <span className="text-sm font-bold text-slate-200">City or ZIP</span>
-          <input name="location" aria-required="true" aria-describedby={badField === 'location' ? 'scan-status' : undefined} autoComplete="postal-code" maxLength={80} value={form.location} onChange={(e) => update('location', e.target.value)} aria-invalid={badField === 'location'} className={fieldClass(badField === 'location')} />
+        <label htmlFor="scan-location" className="block">
+          <span className="text-sm font-bold text-slate-200">{FORM.fields.location.label}</span>
+          <input id="scan-location" name="location" required toolparamdescription={FORM.fields.location.agentHint} aria-describedby={describedBy('location', true)} autoComplete={FORM.fields.location.autocomplete} maxLength={80} value={form.location} onChange={(e) => update('location', e.target.value)} aria-invalid={Boolean(fieldErrors.location)} className={fieldClass(fieldErrors.location)} />
+          <Hint id="scan-location-hint">{FORM.fields.location.hint}</Hint>
+          <InlineError id="scan-location-error" reason={fieldErrors.location} />
         </label>
-        <label className="block">
-          <span className="text-sm font-bold text-slate-200">Your name</span>
-          <input name="fullName" aria-required="true" aria-describedby={badField === 'fullName' ? 'scan-status' : undefined} autoComplete="name" placeholder="First and last name" value={form.fullName} onChange={(e) => update('fullName', e.target.value)} aria-invalid={badField === 'fullName'} className={fieldClass(badField === 'fullName')} />
+        <label htmlFor="scan-fullName" className="block">
+          <span className="text-sm font-bold text-slate-200">{FORM.fields.fullName.label}</span>
+          <input id="scan-fullName" name="fullName" required toolparamdescription={FORM.fields.fullName.agentHint} aria-describedby={describedBy('fullName', true)} autoComplete={FORM.fields.fullName.autocomplete} placeholder={FORM.fields.fullName.hint} value={form.fullName} onChange={(e) => update('fullName', e.target.value)} aria-invalid={Boolean(fieldErrors.fullName)} className={fieldClass(fieldErrors.fullName)} />
+          <Hint id="scan-fullName-hint">{FORM.fields.fullName.hint}</Hint>
+          <InlineError id="scan-fullName-error" reason={fieldErrors.fullName} />
         </label>
-        <label className="block">
-          <span className="text-sm font-bold text-slate-200">Your role</span>
-          <select name="role" aria-required="true" aria-describedby={badField === 'role' ? 'scan-status' : undefined} value={form.role} onChange={(e) => update('role', e.target.value)} aria-invalid={badField === 'role'} className={fieldClass(badField === 'role')}>
-            <option value="">Choose…</option>
-            {ROLE_CHOICES.map((r) => <option key={r} value={r}>{r}</option>)}
+        <label htmlFor="scan-role" className="block">
+          <span className="text-sm font-bold text-slate-200">{FORM.fields.role.label}</span>
+          <select id="scan-role" name="role" required toolparamdescription={FORM.fields.role.agentHint} aria-describedby={describedBy('role', true)} autoComplete={FORM.fields.role.autocomplete} value={form.role} onChange={(e) => update('role', e.target.value)} aria-invalid={Boolean(fieldErrors.role)} className={fieldClass(fieldErrors.role)}>
+            <option value="">{FORM.fields.role.placeholder}</option>
+            {ROLE_CHOICES.map((role) => <option key={role} value={role}>{role}</option>)}
           </select>
+          <Hint id="scan-role-hint">{FORM.fields.role.agentHint}</Hint>
+          <InlineError id="scan-role-error" reason={fieldErrors.role} />
         </label>
-        <label className="block">
-          <span className="text-sm font-bold text-slate-200">E-mail <span className="font-normal text-slate-400">(your report goes here)</span></span>
-          <input name="email" aria-required="true" aria-describedby={badField === 'email' ? 'scan-status' : undefined} type="email" inputMode="email" autoComplete="email" value={form.email} onChange={(e) => update('email', e.target.value)} aria-invalid={badField === 'email'} className={fieldClass(badField === 'email')} />
+        <label htmlFor="scan-email" className="block">
+          <span className="text-sm font-bold text-slate-200">{FORM.fields.email.label} <span className="font-normal text-slate-400">({FORM.fields.email.note})</span></span>
+          <input id="scan-email" name="email" required toolparamdescription={FORM.fields.email.agentHint} aria-describedby={describedBy('email', true)} type="email" inputMode="email" autoComplete={FORM.fields.email.autocomplete} autoCapitalize="none" spellCheck={false} value={form.email} onChange={(e) => update('email', e.target.value)} aria-invalid={Boolean(fieldErrors.email)} className={fieldClass(fieldErrors.email)} />
+          <Hint id="scan-email-hint">{FORM.fields.email.note}</Hint>
+          <InlineError id="scan-email-error" reason={fieldErrors.email} />
         </label>
-        <label className="block">
-          <span className="text-sm font-bold text-slate-200">Mobile <span className="font-normal text-slate-400">(for your 20-minute walkthrough)</span></span>
-          <input name="phone" aria-required="true" aria-describedby={badField === 'phone' ? 'scan-status' : undefined} type="tel" inputMode="tel" autoComplete="tel" placeholder="(212) 555-0123" value={form.phone} onChange={(e) => update('phone', formatPhoneInput(e.target.value))} aria-invalid={badField === 'phone'} className={fieldClass(badField === 'phone')} />
+        <label htmlFor="scan-phone" className="block">
+          <span className="text-sm font-bold text-slate-200">{FORM.fields.phone.label} <span className="font-normal text-slate-400">({FORM.fields.phone.note})</span></span>
+          <input id="scan-phone" name="phone" required toolparamdescription={FORM.fields.phone.agentHint} aria-describedby={describedBy('phone', true)} type="tel" inputMode="tel" autoComplete={FORM.fields.phone.autocomplete} placeholder={FORM.fields.phone.hint} value={form.phone} onChange={(e) => update('phone', formatPhoneInput(e.target.value))} aria-invalid={Boolean(fieldErrors.phone)} className={fieldClass(fieldErrors.phone)} />
+          <Hint id="scan-phone-hint">{FORM.fields.phone.hint}</Hint>
+          <InlineError id="scan-phone-error" reason={fieldErrors.phone} />
         </label>
       </div>
-      {/* Honeypot: hidden from people and screen readers, filled only by bots. A meaningless name and no label,
-          so browser autofill never fills it (the payload key stays `company` for the Worker). */}
       <div className="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
-        <input name="al_hp_x7" tabIndex={-1} autoComplete="off" value={form.company} onChange={(e) => update('company', e.target.value)} />
+        <label htmlFor="scan-company">
+          <span>{FORM.fields.dealershipName.label}</span>
+          <input id="scan-company" name="company" tabIndex={-1} autoComplete="off" value={form.company} onChange={(e) => update('company', e.target.value)} />
+        </label>
       </div>
-      <label className="mt-4 flex items-start gap-3 text-sm text-slate-300">
-        <input name="smsConsent" type="checkbox" checked={form.smsConsent} onChange={(e) => update('smsConsent', e.target.checked)} className="mt-1 h-4 w-4" />
-        <span>Text me when my report is ready. Message and data rates may apply; reply STOP to opt out.</span>
+      <label htmlFor="scan-smsConsent" className="mt-5 flex items-start gap-3 text-sm leading-relaxed text-slate-300">
+        <input id="scan-smsConsent" name="smsConsent" value="true" type="checkbox" aria-describedby="scan-sms-consent-hint" checked={form.smsConsent} onChange={(e) => update('smsConsent', e.target.checked)} className="mt-1 h-4 w-4 shrink-0" />
+        <span id="scan-sms-consent-hint">
+          {SMS_CONSENT.text}{' '}
+          {SMS_CONSENT.links.map((link, index) => <span key={link.href}>{index ? ' · ' : ''}<a className="text-blue-300 underline underline-offset-2 hover:text-blue-200" href={link.href}>{link.label}</a></span>)}
+        </span>
       </label>
-      <button
-        type="submit"
-        data-scan-cta=""
-        disabled={busy}
-        className="mt-5 flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-6 py-5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 disabled:cursor-wait disabled:opacity-70 sm:text-lg"
-      >
-        {busy ? 'Sending…' : 'Run my free scan'}
+      <button type="submit" data-scan-cta="" disabled={busy} className="mt-5 flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-6 py-5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 disabled:cursor-wait disabled:opacity-70 sm:text-lg">
+        {busy ? FORM.submitting : FORM.submit}
       </button>
       <p id="scan-status" ref={statusRef} tabIndex={-1} className={`mt-3 text-sm outline-none ${error ? 'text-red-300' : 'text-slate-400'}`} aria-live="polite">{error}</p>
-      <p className="mt-2 text-xs leading-relaxed text-slate-400">Built for car dealers. We use your details to run your scan, send your report and set up your walkthrough.</p>
+      <p className="mt-2 text-xs leading-relaxed text-slate-400">{FORM.useNote}</p>
     </form>
   );
 }
@@ -204,46 +284,37 @@ export default function AiVisibilityApp() {
   const formSectionRef = useRef(null);
 
   useEffect(() => {
-    document.title = 'Free AI Visibility Scan for Car Dealers | AutoLander';
-    let robots = document.querySelector('meta[name="robots"]');
-    if (!robots) {
-      robots = document.createElement('meta');
-      robots.setAttribute('name', 'robots');
-      document.head.appendChild(robots);
-    }
-    robots.setAttribute('content', 'noindex, nofollow, noarchive');
+    document.title = META.title;
   }, []);
 
-  // Every CTA scrolls to the form and puts the cursor in the first field (no hash left in the URL).
   const goToForm = useCallback((event) => {
     event?.preventDefault?.();
-    const section = formSectionRef.current;
-    if (!section) return;
-    section.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
-    window.setTimeout(() => section.querySelector('input[name="dealershipName"]')?.focus({ preventScroll: true }), 600);
+    const form = document.getElementById('scan-form');
+    if (!form) return;
+    form.querySelector('input[name="dealershipName"]')?.focus({ preventScroll: true });
+    form.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
   }, []);
 
   return (
     <div className="min-h-dvh bg-[#050505] font-sans text-slate-50 selection:bg-blue-500/30 selection:text-blue-200">
-      <AiHeader onGo={goToForm} />
+      <SiteNav page="ai-visibility" isMobileNavVisible onPrimaryAction={goToForm} />
       <main id="main-content">
         <AiHero onGo={goToForm} />
         <ShiftSection />
         <ReportSection />
         <ReasonsSection />
-        <section id="scan" ref={formSectionRef} className="scroll-mt-4 py-20 lg:py-28">
+        <section ref={formSectionRef} className="al-scan-section scroll-mt-4 py-20 lg:py-28">
           <div className="mx-auto grid max-w-7xl items-start gap-10 px-6 lg:grid-cols-2">
-            <HowSteps />
-            <div className="relative">
-              <ScanForm />
-            </div>
+            <div className="order-2 lg:order-1"><HowSteps /></div>
+            <div className="order-1 lg:order-2"><ScanForm /></div>
           </div>
         </section>
-        <NextStep />
+        <PlansSection onGo={goToForm} />
         <AiFaq />
         <AiFinalCta onGo={goToForm} />
+        <AboutService />
       </main>
-      <AiFooter />
+      <SiteFooter extraLine={FOOTER.line} mobileCtaPadding />
       <AiMobileCtaBar onGo={goToForm} formRef={formSectionRef} />
     </div>
   );

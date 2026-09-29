@@ -15,10 +15,10 @@ Allow: /
 User-agent: ClaudeBot
 Allow: /
 
-User-agent: anthropic-ai
+User-agent: Claude-SearchBot
 Allow: /
 
-User-agent: Claude-Web
+User-agent: Claude-User
 Allow: /
 
 User-agent: PerplexityBot
@@ -46,6 +46,18 @@ User-agent: Amazonbot
 Allow: /
 
 User-agent: meta-externalagent
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Amzn-SearchBot
+Allow: /
+
+User-agent: meta-webindexer
 Allow: /
 
 Sitemap: https://autolander.ai/sitemap.xml

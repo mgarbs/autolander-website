@@ -7,7 +7,8 @@ import ExecutionGap from './sections/ExecutionGap.jsx';
 import ComparisonSection from './sections/ComparisonSection.jsx';
 import HomeDetails from './sections/HomeDetails.jsx';
 import MobileCtaBar from './sections/MobileCtaBar.jsx';
-import { CarFront, Gift, Download, Copy } from 'lucide-react';
+import SiteNav from './components/SiteNav.jsx';
+import { Gift, Download, Copy } from 'lucide-react';
 const ChatAssistant = lazy(() => import('./components/ChatAssistant.jsx'));
 let demoApplicationPromise = null;
 const loadDemoApplication = () => {
@@ -29,11 +30,7 @@ const loadDeferredLandingSections = () => {
 };
 
 const DeferredLandingSections = lazy(loadDeferredLandingSections);
-const LandingFooter = lazy(() =>
-  loadDeferredLandingSections().then((module) => ({
-    default: module.LandingFooter,
-  }))
-);
+const SiteFooter = lazy(() => import('./components/SiteFooter.jsx'));
 
 const RELEASE_BASE_URL = "https://github.com/mgarbs/autolander-releases/releases/latest/download";
 const DOWNLOADS = {
@@ -398,62 +395,15 @@ export default function App() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-600/10 rounded-full blur-[120px]" />
       </div>
 
-      {/* Navbar */}
-      <nav className={`fixed top-0 z-50 w-full px-4 py-4 transition-transform duration-300 ease-out motion-reduce:transition-none sm:px-6 ${isMobileNavVisible ? 'translate-y-0' : '-translate-y-full md:translate-y-0'}`}>
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between bg-black/80 md:bg-black/40 md:backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
-          <button
-            type="button"
-            aria-label="Back to top"
-            className="flex shrink-0 cursor-pointer items-center space-x-2 border-0 bg-transparent p-0 text-left sm:space-x-3 group"
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          >
-                <div className="hidden sm:flex w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
-              <CarFront className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            </div>
-            <img
-              src="/autolander-logo-240.webp"
-              srcSet="/autolander-logo-200.webp 200w, /autolander-logo-240.webp 240w, /autolander-logo.png 400w"
-              sizes="(min-width: 640px) 187px, 107px"
-              alt="AutoLander"
-              width="400"
-              height="120"
-              decoding="async"
-              className="h-8 sm:h-14 w-auto group-hover:scale-105 transition-transform duration-300"
-            />
-          </button>
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-             <a href="#how-it-works" onClick={openDeferredSection('how-it-works')} className="text-sm font-semibold text-slate-400 hover:text-white transition-all">How It Works</a>
-             <a href="#features" onClick={openDeferredSection('features')} className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Features</a>
-             <a href="#pricing" onClick={openDeferredSection('pricing')} className="text-sm font-semibold text-slate-400 hover:text-white transition-all">Pricing</a>
-             <a href="#studio" onClick={openDeferredSection('studio')} className="text-sm font-semibold text-slate-400 hover:text-white transition-all">AI Studio</a>
-             <a href="/guide/how-to-sell-cars-on-facebook-marketplace/" className="hidden text-sm font-semibold text-slate-400 transition-all hover:text-white xl:inline">Dealer Guide</a>
-          </div>
-              <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-                <a href="/blog/" className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap">Blog</a>
-                <a href="/training/" className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap">Training</a>
-            {showDownloadButtons && (
-              <button
-                type="button"
-                onClick={() => openDownload({ contentName: 'nav_download' })}
-                className="text-xs sm:text-sm font-bold text-slate-400 hover:text-white transition-colors whitespace-nowrap"
-              >
-                Download
-              </button>
-            )}
-            <button
-              type="button"
-              data-demo-application-trigger="true"
-              onPointerEnter={warmDemoApplication}
-              onPointerDown={openDemoBooking}
-              onFocus={warmDemoApplication}
-              onTouchStart={warmDemoApplication}
-              onClick={openDemoBooking}
-              className="px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold text-xs sm:text-sm hover:bg-blue-500 hover:text-white transition-all active:scale-95 shadow-lg whitespace-nowrap">
-              Book Demo
-            </button>
-          </div>
-        </div>
-      </nav>
+      <SiteNav
+        page="home"
+        isMobileNavVisible={isMobileNavVisible}
+        onSectionNavigate={openDeferredSection}
+        showDownloadButtons={showDownloadButtons}
+        onDownload={() => openDownload({ contentName: 'nav_download' })}
+        onPrimaryAction={openDemoBooking}
+        onPrimaryWarm={warmDemoApplication}
+      />
 
       <main id="main-content">
       {/* Hero Section */}
@@ -569,7 +519,7 @@ export default function App() {
 
       {shouldMountDeferredSections && (
         <Suspense fallback={null}>
-          <LandingFooter />
+          <SiteFooter />
         </Suspense>
       )}
       <MobileCtaBar onBookDemo={openDemoBooking} onWarmDemo={warmDemoApplication} />

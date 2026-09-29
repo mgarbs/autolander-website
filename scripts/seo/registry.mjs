@@ -36,6 +36,7 @@ export const NAV = {
   socialMedia:{ key: 'socialMedia',path: '/guide/social-media-for-car-dealers/',       anchor: 'Social media for car dealers' },
   sellMore:   { key: 'sellMore',   path: '/guide/how-to-sell-more-cars/',              anchor: 'How to sell more cars' },
   aiDealers:  { key: 'aiDealers',  path: '/guide/ai-for-car-dealerships/',             anchor: 'AI for car dealerships: what actually works' },
+  aiVisibility:{ key: 'aiVisibility', path: '/ai-visibility/',                         anchor: 'AI Visibility for car dealers: free scan and plans', spa: true },
   aiChat:     { key: 'aiChat',     path: '/ai-chat-for-car-dealers/',                  anchor: 'AI chat for car dealers — the honest guide' },
   photoEditor:{ key: 'photoEditor',path: '/ai-car-photo-editor/',                      anchor: 'AI car photo editor for dealers' },
   rvDealers:  { key: 'rvDealers',  path: '/rv-dealer-software/',                       anchor: 'RV dealer software for Facebook Marketplace' },
@@ -54,7 +55,7 @@ export const NAV = {
   // link allow-lists (home directory + article tests) that derive from NAV.
   training:   { key: 'training',   path: '/training/',                                 anchor: 'AutoLander training' },
   blog:       { key: 'blog',       path: '/blog/',                                     anchor: 'AutoLander blog: Facebook Marketplace playbooks for car dealers' },
-  // ---- Discovery + cluster pages (2026-09-03, from the GrindstoneSEO diagnostic). ----
+  // ---- Discovery + cluster pages (2026-09-03 SEO diagnostic). ----
   // Two positioning pages turn deliberate scope choices (Marketplace-only, no buyer auto-reply)
   // from feature-matrix absences into stated principles; the inventory page takes the one
   // classical-demand cluster the site can win ("dealer inventory management", KD 3–6) from the
@@ -68,6 +69,13 @@ export const NAV = {
   aiChatVendor:       { key: 'aiChatVendor',       path: '/guide/questions-to-ask-an-ai-chat-vendor/',      anchor: 'Questions to ask any AI chat vendor before you connect your inbox' },
   responseTime:       { key: 'responseTime',       path: '/guide/marketplace-response-time-for-car-dealers/', anchor: 'Marketplace response time: why the first reply wins the appointment' },
 };
+
+// Exact-path SPA marketing pages with dedicated build-time shells. These count as valid internal
+// targets, but the standalone SEO page renderer must never overwrite their route directories.
+export const SPA_PAGE_PATHS = [
+  ...Object.values(NAV).filter((item) => item.spa).map((item) => item.path),
+  '/team/',
+];
 
 // Integration spokes. `system` = how AutoLander connects (honest):
 //   'feed'   -> named, directly supported feed source (CarGurus, Cars.com)
@@ -147,7 +155,7 @@ export function relatedFor(pageKey, opts = {}) {
     // ---- Dealer-growth silo. Hub <-> spokes are bidirectional; every informational spoke
     // descends to at least one money page; money pages link up, across and to pricing. ----
     case 'mktgHub':
-      return [L(N.report2026), L(N.mktgIdeas), L(N.salesLeads), L(N.socialMedia), L(N.sellMore), L(N.aiDealers), L(N.aiChat), L(N.photoEditor), L(N.category), L(N.dealers)];
+      return [L(N.report2026), L(N.mktgIdeas), L(N.salesLeads), L(N.socialMedia), L(N.sellMore), L(N.aiDealers), L(N.aiVisibility), L(N.aiChat), L(N.photoEditor), L(N.category), L(N.dealers)];
     case 'mktgIdeas':
       return [L(N.mktgHub), L(N.socialMedia), L(N.salesLeads), L(N.sellMore), L(N.photoEditor), L(N.category), L(N.dealers)];
     case 'salesLeads':
@@ -157,7 +165,9 @@ export function relatedFor(pageKey, opts = {}) {
     case 'sellMore':
       return [L(N.mktgHub), L(N.salesLeads), L(N.aiChat), L(N.photoEditor), L(N.category), L(N.sellGuide), L(N.dealers)];
     case 'aiDealers':
-      return [L(N.aiChat), L(N.photoEditor), L(N.aiTools), L(N.assistant), L(N.mktgHub), L(N.category), L(N.automation)];
+      return [L(N.aiVisibility), L(N.aiChat), L(N.photoEditor), L(N.aiTools), L(N.assistant), L(N.mktgHub), L(N.category), L(N.automation)];
+    case 'aiVisibility':
+      return [L(N.about), L(N.contact), L(N.aiDealers), L(N.mktgHub)];
     case 'aiChat':
       return [L(N.whyNoAutoReply), L(N.aiChatVendor), L(N.responseTime), L(N.aiDealers), L(N.salesLeads), L(N.assistant), L(N.category), L(N.dealers), L(N.pricing), L(N.mktgHub)];
     case 'photoEditor':
@@ -239,6 +249,7 @@ export const SECTION_LABEL = {
   rvDealers: 'RV dealer software',
   aiChat: 'AI chat for car dealers',
   aiTools: 'Facebook AI tools',
+  aiVisibility: 'AI Visibility for car dealers',
   report2026: 'Original research',
   home: 'AutoLander',
 };
