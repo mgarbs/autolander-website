@@ -271,10 +271,17 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     return jsonResponse({ ok: false, reason: limit.reason }, limit.status || 429, corsHeaders);
   }
 
+  // Rejected requests still consume the same abuse-control budget as before.
+  // Only accepted events defer these writes to the single waitUntil task.
+  const reject = async (payload, status) => {
+    await trackBookkeeping(() => limit.writes?.());
+    return jsonResponse(payload, status, corsHeaders);
+  };
+
   const body = await safeJson(request);
   const eventName = clean(body.event, 64);
   if (!isAllowedEvent(eventName)) {
-    return jsonResponse({ ok: false, reason: 'unsupported_event' }, 400, corsHeaders);
+    return reject({ ok: false, reason: 'unsupported_event' }, 400);
   }
 
   // This endpoint is intentionally open (no auth) so the site can report soft
@@ -283,17 +290,17 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   // here. Lead/Schedule come only from verified backend paths plus the
   // single-use thank-you pixel gate. Refuse them outright.
   if (isInjectionProtectedEvent(eventName)) {
-    return jsonResponse({ ok: false, reason: 'event_not_allowed_here' }, 403, corsHeaders);
+    return reject({ ok: false, reason: 'event_not_allowed_here' }, 403);
   }
 
   if (looksLikeBot(request).bot) {
     await bumpCounter(env, isoDay(new Date()), 'meta', 'track_bot_blocked').catch(() => {});
-    return jsonResponse({ ok: false, reason: 'blocked' }, 403, corsHeaders);
+    return reject({ ok: false, reason: 'blocked' }, 403);
   }
 
   const eventId = clean(body.eventId, 128);
   if (!isValidEventId(eventId)) {
-    return jsonResponse({ ok: false, reason: 'invalid_event_id' }, 400, corsHeaders);
+    return reject({ ok: false, reason: 'invalid_event_id' }, 400);
   }
 
   const work = recordAndSend({ request, env, body, eventName, eventId, writes: limit.writes });
