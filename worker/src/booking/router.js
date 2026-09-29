@@ -1,6 +1,7 @@
 // Demo application backend:
 //   POST /api/apply -> validate lead, upsert contact in GHL, add to workflow,
 //                      send the verified server Lead event, mint thank-you token.
+//   POST /api/ai-scan -> store a scan request, then best-effort CRM + AIScanRequest.
 //
 // The browser never sees the GHL token. The thank-you page only fires the browser
 // Lead pixel after redeeming the single-use token minted here.
@@ -31,12 +32,23 @@ import {
   canonicalMetaExternalId,
   isProductionMetaRequest,
 } from '../../../shared/meta-signal.js';
+import {
+  ROLE_CHOICES as AI_SCAN_ROLE_CHOICES,
+  SMS_CONSENT,
+} from '../../../shared/ai-scan-form.js';
 
 const ROLE_CHOICES = ['Owner', 'Manager', 'Sales Rep'];
 const VEHICLE_COUNT_CHOICES = ['1-50', '51-150', '151+'];
 const APPLY_IP_HOURLY = 12;
 const APPLY_IP_DAILY = 30;
 const APPLY_SUBMISSION_TTL_SECONDS = 30 * 24 * 60 * 60;
+const AI_SCAN_IP_HOURLY = 12;
+const AI_SCAN_IP_DAILY = 30;
+const AI_SCAN_EMAIL_DAILY = 3;
+const AI_SCAN_TTL_SECONDS = 90 * 24 * 60 * 60;
+const AI_SCAN_SUBMISSION_PATTERN = /^sub_[a-z0-9_-]{12,80}$/i;
+const AI_SCAN_FORM_SUCCESS_URL = 'https://autolander.ai/ai-visibility/?sent=1#scan-form';
+const AI_SCAN_FORM_ERROR_URL = 'https://autolander.ai/ai-visibility/?error=';
 const GHL_BASE_URL = 'https://services.leadconnectorhq.com';
 const GHL_VERSION = '2021-07-28';
 
@@ -92,6 +104,30 @@ const CUSTOM_FIELD_KEYS = [
   'submissionId',
 ];
 
+const AI_SCAN_CUSTOM_FIELD_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_content',
+  'utm_term',
+  'campaign_id',
+  'adset_id',
+  'ad_id',
+  'placement',
+  'site_source_name',
+  'fbclid',
+  'fbc',
+  'fbp',
+  'landingPageUrl',
+  'landing_page',
+  'referrer',
+  'referrer_url',
+  'clientIpAddress',
+  'userAgent',
+  'submissionTimestamp',
+  'visitorId',
+];
+
 const CONSENT_TEXT_VERSION = 'demo-sms-consent-v1-2026-06-29';
 
 const DEFAULT_CUSTOM_FIELD_KEY_MAP = {
@@ -127,6 +163,10 @@ export async function handleBooking(request, env, corsHeaders, ctx) {
 
   if (url.pathname === '/api/apply' && request.method === 'POST') {
     return handleApply(request, env, corsHeaders, ctx);
+  }
+
+  if (url.pathname === '/api/ai-scan' && request.method === 'POST') {
+    return handleAiScan(request, env, corsHeaders, ctx);
   }
 
   if (url.pathname === '/api/availability' || url.pathname === '/api/book') {
@@ -167,6 +207,365 @@ export async function handleBooking(request, env, corsHeaders, ctx) {
 // still configured. No calendar cache is needed for the application flow.
 export async function syncAvailability() {
   return { ok: true, disabled: true };
+}
+
+async function handleAiScan(request, env, corsHeaders, ctx) {
+  const formMode = isAiScanFormRequest(request);
+  if (env.AI_SCAN_PUBLIC_ROUTE === 'off') {
+    return aiScanFailure('unavailable', 503, corsHeaders, formMode);
+  }
+
+  const body = await parseAiScanBody(request, formMode);
+  let submissionId = clean(body.submissionId, 96);
+  if (formMode && !AI_SCAN_SUBMISSION_PATTERN.test(submissionId)) {
+    submissionId = newAiScanSubmissionId();
+  }
+
+  const honeypot = clean(body.company, 200)
+    || clean(body.al_hp_q, 200)
+    || clean(body.al_hp_x7, 200);
+  if (honeypot) {
+    if (!AI_SCAN_SUBMISSION_PATTERN.test(submissionId)) {
+      submissionId = newAiScanSubmissionId();
+    }
+    let replay;
+    try {
+      replay = await readAiScanRequest(env, submissionId);
+    } catch {
+      return aiScanFailure('unavailable', 503, corsHeaders, formMode);
+    }
+    const saved = savedAiScanResponse(replay);
+    if (saved) return aiScanSuccess(saved, true, corsHeaders, formMode);
+
+    const receivedAt = new Date().toISOString();
+    const eventId = await aiScanEventId(submissionId);
+    const fields = await collectAiScanFields(body, request, env, formMode, receivedAt);
+    const response = { ok: true, duplicate: false, submissionId, eventId };
+    const record = buildAiScanRecord({
+      fields,
+      submissionId,
+      eventId,
+      receivedAt,
+      status: 'spam',
+      crm: 'skipped',
+      response,
+    });
+    const committed = await commitAiScanRequest(env, record);
+    if (!committed) return aiScanFailure('unavailable', 503, corsHeaders, formMode);
+    return aiScanSuccess(response, false, corsHeaders, formMode);
+  }
+
+  if (!AI_SCAN_SUBMISSION_PATTERN.test(submissionId)) {
+    return aiScanFailure('invalid_submission', 400, corsHeaders, formMode);
+  }
+
+  let replay;
+  try {
+    replay = await readAiScanRequest(env, submissionId);
+  } catch {
+    return aiScanFailure('unavailable', 503, corsHeaders, formMode);
+  }
+  const saved = savedAiScanResponse(replay);
+  if (saved) return aiScanSuccess(saved, true, corsHeaders, formMode);
+
+  const limited = await enforceApplyRateLimit(request, env, {
+    aiScanEmail: clean(body.email, 160),
+  });
+  if (!limited.ok) return aiScanFailure('rate_limited', 429, corsHeaders, formMode);
+
+  const receivedAt = new Date().toISOString();
+  const fields = await collectAiScanFields(body, request, env, formMode, receivedAt);
+  const invalidReason = validateAiScanFields(fields);
+  if (invalidReason) return aiScanFailure(invalidReason, 400, corsHeaders, formMode);
+
+  const eventId = await aiScanEventId(submissionId);
+  const response = { ok: true, duplicate: false, submissionId, eventId };
+  let record = buildAiScanRecord({
+    fields,
+    submissionId,
+    eventId,
+    receivedAt,
+    status: 'received',
+    crm: 'pending',
+    response,
+  });
+  const committed = await commitAiScanRequest(env, record);
+  if (!committed) return aiScanFailure('unavailable', 503, corsHeaders, formMode);
+
+  try {
+    record = await syncAiScanRequestToCrm(env, record);
+  } catch {
+    record = { ...record, crm: 'failed' };
+  }
+  await writeAiScanRequest(env, record).catch(() => {});
+
+  await recordAiScanEvent({ request, env, ctx, record }).catch((err) => {
+    console.error('[api/ai-scan] Meta event failed', String(err?.message || err).slice(0, 120));
+  });
+
+  return aiScanSuccess(response, false, corsHeaders, formMode);
+}
+
+function isAiScanFormRequest(request) {
+  return /^application\/x-www-form-urlencoded(?:\s*;|$)/i.test(
+    request.headers.get('Content-Type') || '',
+  );
+}
+
+async function parseAiScanBody(request, formMode) {
+  if (formMode) {
+    try {
+      return Object.fromEntries(await request.formData());
+    } catch {
+      return {};
+    }
+  }
+  if (!/^application\/json(?:\s*;|$)/i.test(request.headers.get('Content-Type') || '')) {
+    return {};
+  }
+  const parsed = await safeJson(request);
+  return isPlainObject(parsed) ? parsed : {};
+}
+
+function parseAiScanFormObject(value) {
+  if (isPlainObject(value)) return value;
+  if (typeof value !== 'string' || !value) return {};
+  try {
+    const parsed = JSON.parse(value);
+    return isPlainObject(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function aiScanSuccess(saved, duplicate, headers, formMode) {
+  if (formMode) return aiScanRedirect(AI_SCAN_FORM_SUCCESS_URL, headers);
+  return json({ ...saved, duplicate }, 200, headers);
+}
+
+function aiScanFailure(reason, status, headers, formMode) {
+  if (formMode) {
+    const location = `${AI_SCAN_FORM_ERROR_URL}${encodeURIComponent(reason)}#scan-form`;
+    return aiScanRedirect(location, headers);
+  }
+  return json({ ok: false, reason }, status, headers);
+}
+
+function aiScanRedirect(location, headers) {
+  return new Response(null, {
+    status: 303,
+    headers: { ...headers, Location: location, 'Cache-Control': 'no-store' },
+  });
+}
+
+function newAiScanSubmissionId() {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz234567';
+  const bytes = new Uint8Array(24);
+  crypto.getRandomValues(bytes);
+  let suffix = '';
+  for (const byte of bytes) suffix += alphabet[byte & 31];
+  return `sub_${suffix}`;
+}
+
+async function aiScanEventId(submissionId) {
+  return `aiscan_${(await sha256Hex(`ai-scan:${submissionId}`)).slice(0, 32)}`;
+}
+
+async function collectAiScanFields(body, request, env, formMode, receivedAt) {
+  const parsedName = splitFullName({ fullName: body.fullName });
+  const phoneInput = clean(body.phone, 40);
+  const phoneNorm = normalizePhone(phoneInput);
+  const attributionInput = formMode ? parseAiScanFormObject(body.attribution) : body.attribution;
+  const organicInput = formMode
+    ? parseAiScanFormObject(body.organic_attribution)
+    : body.organic_attribution;
+  const attribution = sanitizeAttribution(attributionInput);
+  const organicUtms = cleanUtms(organicInput);
+  const visitor = attribution.vid
+    ? await lookupVisitor(env, attribution.vid).catch(() => null)
+    : null;
+  const mergedUtms = mergeUtms(visitor?.utms, attribution.utms);
+  const ghlUtms = mergeUtms(organicUtms, mergeUtms(attribution.firstTouch, mergedUtms));
+  ghlUtms.utm_source ||= 'direct';
+  ghlUtms.utm_medium ||= 'none';
+  const page = { ...(visitor?.page || {}), ...(attribution.page || {}) };
+  const fbp = attribution.fbp || visitor?.fbp || '';
+  const fbclid = cleanFbclid(attribution.fbclid || visitor?.fbclid);
+  const clickTimestamp = attributionTimestampSeconds(
+    attribution.ts || visitor?.firstTouch?.ts || visitor?.ts,
+  );
+  const visitorFbc = isValidFbc(visitor?.fbc) ? visitor.fbc : '';
+  const fbc = attribution.fbc || visitorFbc || buildFbc(fbclid, clickTimestamp);
+  const currentPage = clean(body.current_page, 500)
+    || clean(page.current_page, 500)
+    || clean(request.headers.get('Referer'), 500);
+  const landingPageUrl = clean(page.landing_page, 500) || currentPage;
+  const referrer = clean(page.referrer, 240);
+  const landingPage = clean(body.landing_page, 500)
+    || clean(organicInput?.landing_page, 500)
+    || clean(attribution.firstTouch?.landing_page, 500)
+    || landingPageUrl;
+  const referrerUrl = clean(body.referrer_url, 1200)
+    || clean(organicInput?.referrer_url, 1200)
+    || clean(attribution.firstTouch?.referrer, 1200)
+    || referrer
+    || clean(body.current_referrer, 1200)
+    || clean(request.headers.get('Referer'), 1200);
+  const smsConsent = formMode
+    ? body.smsConsent === 'on' || body.smsConsent === 'true'
+    : body.smsConsent === true;
+  const country = clean(request.cf?.country, 4).toLowerCase();
+  const region = clean(request.cf?.region, 48).toLowerCase();
+  const regionCode = clean(request.cf?.regionCode, 8);
+  const city = clean(request.cf?.city, 48).toLowerCase();
+  const postalCode = normalizePostalCode(request.cf?.postalCode, country)
+    || normalizePostalCode(visitor?.postalCode, visitor?.country);
+
+  return {
+    dealershipName: clean(body.dealershipName, 160),
+    website: normalizeWebsite(body.website),
+    location: clean(body.location, 80),
+    fullName: parsedName.fullName,
+    firstName: parsedName.firstName,
+    lastName: parsedName.lastName,
+    role: clean(body.role, 80),
+    email: clean(body.email, 160),
+    phone: phoneNorm.ok ? phoneNorm.e164 : phoneInput,
+    phonePretty: phoneNorm.pretty,
+    phoneValid: phoneNorm.ok,
+    smsConsent,
+    ...(smsConsent ? {
+      consent: {
+        text: SMS_CONSENT.text,
+        version: SMS_CONSENT.version,
+        timestamp: normalizeIso(body.consentTimestamp) || receivedAt,
+      },
+    } : {}),
+    userAgent: clean(body.userAgent, 500) || clean(request.headers.get('User-Agent'), 500),
+    submittedVia: clean(body.submittedVia, 80),
+    attribution: {
+      ...attribution,
+      utms: mergedUtms,
+      page,
+      fbp,
+      fbc,
+      fbclid,
+      ts: clickTimestamp,
+    },
+    vid: attribution.vid,
+    organic_attribution: {
+      ...organicUtms,
+      landing_page: clean(organicInput?.landing_page, 500),
+      referrer_url: clean(organicInput?.referrer_url, 1200),
+    },
+    utms: mergedUtms,
+    ghlUtms,
+    fbp,
+    fbc,
+    fbclid,
+    landingPageUrl,
+    landing_page: landingPage,
+    referrer,
+    referrer_url: referrerUrl,
+    current_page: currentPage,
+    current_referrer: clean(body.current_referrer, 1200),
+    clientIpAddress: clean(request.headers.get('CF-Connecting-IP'), 80),
+    receivedAt,
+    submissionTimestamp: receivedAt,
+    country,
+    region,
+    regionCode,
+    city,
+    postalCode,
+  };
+}
+
+function validateAiScanFields(fields) {
+  if (!fields.dealershipName) return 'missing_dealership';
+  if (!fields.website) return 'invalid_website';
+  if (!fields.location) return 'missing_location';
+  if (!fields.fullName || !fields.firstName || !fields.lastName) return 'missing_full_name';
+  if (!AI_SCAN_ROLE_CHOICES.includes(fields.role)) return 'missing_role';
+  if (!isEmail(fields.email)) return 'invalid_email';
+  if (!fields.phoneValid) return 'invalid_phone';
+  return '';
+}
+
+function buildAiScanRecord({ fields, submissionId, eventId, receivedAt, status, crm, response }) {
+  const storedFields = { ...fields };
+  delete storedFields.phoneValid;
+  return {
+    ...storedFields,
+    submissionId,
+    status,
+    crm,
+    eventId,
+    receivedAt,
+    response,
+  };
+}
+
+function savedAiScanResponse(record) {
+  if (!isPlainObject(record) || !isPlainObject(record.response) || !record.response.ok) return null;
+  return {
+    ok: true,
+    duplicate: false,
+    submissionId: clean(record.response.submissionId, 96),
+    eventId: clean(record.response.eventId, 80),
+  };
+}
+
+async function readAiScanRequest(env, submissionId) {
+  if (!env.TRACKING) throw new Error('TRACKING KV binding is missing');
+  if (!submissionId) return null;
+  return env.TRACKING.get(`ai_scan:req:${submissionId}`, 'json');
+}
+
+async function commitAiScanRequest(env, record) {
+  if (!env.TRACKING) return false;
+  try {
+    await writeAiScanRequest(env, record);
+  } catch {
+    return false;
+  }
+
+  try {
+    const day = isoDay(new Date(record.receivedAt));
+    const key = `ai_scan:index:${day}`;
+    const current = await env.TRACKING.get(key, 'json');
+    const submissionIds = Array.isArray(current) ? current.filter((value) => typeof value === 'string') : [];
+    if (!submissionIds.includes(record.submissionId)) submissionIds.push(record.submissionId);
+    await env.TRACKING.put(key, JSON.stringify(submissionIds), {
+      expirationTtl: AI_SCAN_TTL_SECONDS,
+    });
+  } catch {
+    console.error('[api/ai-scan] daily index write failed');
+  }
+  return true;
+}
+
+async function writeAiScanRequest(env, record) {
+  if (!env.TRACKING) throw new Error('TRACKING KV binding is missing');
+  await env.TRACKING.put(`ai_scan:req:${record.submissionId}`, JSON.stringify(record), {
+    expirationTtl: AI_SCAN_TTL_SECONDS,
+  });
+}
+
+async function aiScanRateHash(env, label, value) {
+  const secret = typeof env.AI_SCAN_HASH_KEY === 'string' ? env.AI_SCAN_HASH_KEY : '';
+  if (!secret) return sha256Hex(`ai-scan-rate-fallback:${label}:${value}`);
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(`${label}:${value}`));
+  return [...new Uint8Array(signature)]
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
 }
 
 async function handleApply(request, env, corsHeaders, ctx) {
@@ -456,6 +855,250 @@ async function handleApply(request, env, corsHeaders, ctx) {
   return json(responsePayload, 200, corsHeaders);
 }
 
+async function syncAiScanRequestToCrm(env, record) {
+  const config = ghlConfig(env, { requireWorkflow: false });
+  if (!config.ok) return { ...record, crm: 'skipped' };
+
+  try {
+    const query = new URLSearchParams({
+      locationId: config.locationId,
+      email: record.email,
+      number: record.phone,
+    });
+    const duplicate = await aiScanGhlRequest(
+      env,
+      config,
+      `/contacts/search/duplicate?${query.toString()}`,
+      { method: 'GET' },
+    );
+    if (!duplicate.ok) return aiScanCrmFailed(record, 'duplicate_search', duplicate);
+
+    const classified = classifyAiScanDuplicateSearch(duplicate.body);
+    if (classified.kind === 'unexpected') {
+      console.error('[api/ai-scan] unexpected GHL duplicate response', {
+        status: duplicate.status,
+        keys: classified.keys,
+      });
+      return { ...record, crm: 'needs_review' };
+    }
+
+    let contactId = '';
+    let contactWasCreated = false;
+    let storedPhoneMatches = false;
+    if (classified.kind === 'match') {
+      contactId = classified.contactId;
+      if (classified.hasPhone) {
+        const storedPhone = normalizePhone(classified.phone);
+        storedPhoneMatches = storedPhone.ok && storedPhone.e164 === record.phone;
+      }
+    } else {
+      const payload = {
+        locationId: config.locationId,
+        firstName: record.firstName,
+        lastName: record.lastName,
+        email: record.email,
+        phone: record.phone,
+        website: record.website,
+        companyName: record.dealershipName,
+        source: 'AutoLander AI Visibility scan',
+      };
+      const customFields = buildCustomFields(env, record, AI_SCAN_CUSTOM_FIELD_KEYS);
+      if (customFields.length) payload.customFields = customFields;
+      const created = await aiScanGhlRequest(env, config, '/contacts/', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      if (!created.ok) return aiScanCrmFailed(record, 'create_contact', created);
+      contactId = extractContactId(created.body);
+      if (!contactId) return aiScanCrmFailed(record, 'create_contact_no_id', created);
+      contactWasCreated = true;
+    }
+
+    const next = { ...record, crmContactId: contactId };
+    const tags = ['ai-scan-request'];
+    if (record.smsConsent && (contactWasCreated || storedPhoneMatches)) {
+      tags.push('ai-scan-sms-ok');
+    }
+    const tagged = await aiScanGhlRequest(
+      env,
+      config,
+      `/contacts/${encodeURIComponent(contactId)}/tags`,
+      { method: 'POST', body: JSON.stringify({ tags }) },
+    );
+    if (!tagged.ok) return aiScanCrmFailed(next, 'add_tags', tagged);
+
+    const noted = await aiScanGhlRequest(
+      env,
+      config,
+      `/contacts/${encodeURIComponent(contactId)}/notes`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          body: buildAiScanNoteBody(record, { contactWasCreated, storedPhoneMatches }),
+        }),
+      },
+    );
+    if (!noted.ok) return aiScanCrmFailed(next, 'add_note', noted);
+    return { ...next, crm: 'synced' };
+  } catch (error) {
+    console.error('[api/ai-scan] CRM sync error', { step: 'exception', name: error?.name || 'Error' });
+    return { ...record, crm: 'failed' };
+  }
+}
+
+// Logs only the step and the HTTP status: never a response body, which can carry personal data.
+function aiScanCrmFailed(record, step, result) {
+  console.error('[api/ai-scan] CRM sync failed', { step, status: result?.status ?? 0 });
+  return { ...record, crm: 'failed', crmFailedStep: step };
+}
+
+function classifyAiScanDuplicateSearch(body) {
+  if (!isPlainObject(body)) {
+    const keys = body && typeof body === 'object' ? Object.keys(body) : [];
+    return { kind: 'unexpected', keys };
+  }
+  const keys = Object.keys(body);
+  if (keys.length === 0) return { kind: 'none' };
+  if (keys.length !== 1 || keys[0] !== 'contact') {
+    return { kind: 'unexpected', keys };
+  }
+  if (body.contact === null) return { kind: 'none' };
+  if (!isPlainObject(body.contact)) return { kind: 'unexpected', keys };
+  const contactId = clean(body.contact.id, 120);
+  if (!contactId) return { kind: 'unexpected', keys };
+  const hasPhone = Object.prototype.hasOwnProperty.call(body.contact, 'phone');
+  return {
+    kind: 'match',
+    contactId,
+    hasPhone,
+    phone: hasPhone && typeof body.contact.phone === 'string' ? body.contact.phone : '',
+  };
+}
+
+export async function aiScanGhlRequest(env, config, path, init = {}) {
+  const method = String(init.method || 'GET').toUpperCase();
+  const allowed = (
+    (method === 'GET' && /^\/contacts\/search\/duplicate\?[^#]+$/.test(path))
+    || (method === 'POST' && path === '/contacts/')
+    || (method === 'POST' && /^\/contacts\/[^/?#]+\/(?:tags|notes)$/.test(path))
+  );
+  if (!allowed) throw new Error('ai_scan_route_forbidden');
+  return ghlRequest(env, config, path, { ...init, method });
+}
+
+function buildAiScanNoteBody(record, { contactWasCreated, storedPhoneMatches }) {
+  const utms = record.ghlUtms || record.utms || {};
+  const consent = record.consent;
+  const lines = [
+    'AutoLander AI Visibility scan request',
+    noteLine('CRM contact', contactWasCreated ? 'Created for this request' : 'Matched; contact fields were not changed'),
+    '',
+    'Request',
+    noteLine('Dealership', record.dealershipName),
+    noteLine('Website', record.website),
+    noteLine('City / ZIP', record.location),
+    noteLine('Full name', record.fullName),
+    noteLine('Role', record.role),
+    noteLine('Email', record.email),
+    noteLine('Phone', record.phone),
+    noteLine('Submitted via', record.submittedVia),
+    '',
+    'SMS consent',
+    noteLine('Consent given', record.smsConsent ? 'yes' : 'no'),
+    noteLine('Consent timestamp', consent?.timestamp),
+    noteLine('Consent text version', consent?.version),
+    noteLine('Consent text', consent?.text),
+    ...(record.smsConsent && !contactWasCreated && !storedPhoneMatches
+      ? ['SMS consent was not tagged because the matched contact phone did not match the submitted phone.']
+      : []),
+    '',
+    'Tracking',
+    noteLine('Submission ID', record.submissionId),
+    noteLine('Landing page', record.landing_page || record.landingPageUrl),
+    noteLine('Current page', record.current_page),
+    noteLine('Referrer URL', record.referrer_url),
+    noteLine('Current referrer', record.current_referrer),
+    noteLine('User agent', record.userAgent),
+    noteLine('utm_source', utms.utm_source),
+    noteLine('utm_medium', utms.utm_medium),
+    noteLine('utm_campaign', utms.utm_campaign),
+    noteLine('utm_content', utms.utm_content),
+    noteLine('utm_term', utms.utm_term),
+    noteLine('campaign_id', utms.campaign_id || utms.utm_id),
+    noteLine('adset_id', utms.adset_id),
+    noteLine('ad_id', utms.ad_id),
+    noteLine('campaign_name', utms.campaign_name),
+    noteLine('adset_name', utms.adset_name),
+    noteLine('ad_name', utms.ad_name),
+    noteLine('placement', utms.placement),
+    noteLine('site_source_name', utms.site_source_name),
+  ];
+  return lines.join('\n').slice(0, 8000);
+}
+
+async function recordAiScanEvent({ request, env, ctx, record }) {
+  if (!isProductionMetaRequest(request)) return;
+  const alreadySeen = await wasEventSeen(env, record.eventId).catch(() => false);
+  if (alreadySeen) return;
+  await markEventSeen(env, record.eventId).catch(() => {});
+
+  const today = isoDay(new Date());
+  await Promise.all([
+    bumpCounter(env, today, 'event', 'AIScanRequest'),
+    bumpCounter(env, today, 'event', 'AIScanRequest:server'),
+    pushRecentEvent(env, {
+      at: new Date().toISOString(),
+      event: 'AIScanRequest',
+      source: 'ai_visibility_scan',
+      vid: record.attribution?.vid || '',
+      eventId: record.eventId,
+    }),
+  ]).catch((err) => {
+    console.error('[api/ai-scan] analytics write failed', String(err).slice(0, 120));
+  });
+
+  if (env.SEND_WORKER_AI_SCAN_CAPI === 'false') return;
+  const metaExternalId = canonicalMetaExternalId(env.META_PIXEL_ID, record.attribution?.vid);
+  const userData = await buildUserData({
+    email: record.email,
+    phone: record.phone,
+    firstName: record.firstName,
+    lastName: record.lastName,
+    fbp: record.fbp,
+    fbc: record.fbc,
+    fbclid: record.fbclid,
+    clickTimestamp: record.attribution?.ts,
+    ip: record.clientIpAddress,
+    ua: record.userAgent,
+    country: record.country,
+    region: record.region,
+    regionCode: record.regionCode,
+    city: record.city,
+    postalCode: record.postalCode,
+    externalId: metaExternalId,
+  });
+  const event = buildEvent({
+    name: 'AIScanRequest',
+    eventId: record.eventId,
+    eventTime: Math.floor(Date.now() / 1000),
+    sourceUrl: record.current_page,
+    actionSource: ACTION_SOURCE.website,
+    userData,
+    customData: {
+      content_name: 'ai_visibility_scan_requested',
+      content_category: 'ai_visibility',
+      role: record.role,
+      ...(record.utms || {}),
+    },
+  });
+  const sendPromise = (async () => {
+    const result = await sendEvents(env, [event]);
+    await bumpCounter(env, today, 'meta', result.ok ? 'capi_ok' : 'capi_failed').catch(() => {});
+  })();
+  if (ctx?.waitUntil) ctx.waitUntil(sendPromise);
+  else await sendPromise;
+}
+
 async function upsertGhlContact(env, config, lead) {
   const payload = {
     locationId: config.locationId,
@@ -655,7 +1298,7 @@ function pickAdvancedMatching(userData) {
   return sanitizeAdvancedMatching(userData);
 }
 
-function buildCustomFields(env, lead) {
+function buildCustomFields(env, lead, keys = CUSTOM_FIELD_KEYS) {
   const values = {
     fullName: lead.fullName,
     dealershipName: lead.dealershipName,
@@ -683,7 +1326,7 @@ function buildCustomFields(env, lead) {
   };
   const map = customFieldMap(env);
   const fields = [];
-  for (const key of CUSTOM_FIELD_KEYS) {
+  for (const key of keys) {
     const target = fieldTargetFor(env, map, key);
     const value = values[key];
     if (!target || value === undefined || value === null || value === '') continue;
@@ -844,14 +1487,14 @@ function isAlreadyInWorkflow(detail = '') {
   return /already|duplicate|currently.*workflow|previously.*workflow/i.test(detail);
 }
 
-function ghlConfig(env) {
+function ghlConfig(env, { requireWorkflow = true } = {}) {
   const token = clean(env.GHL_PRIVATE_INTEGRATION_TOKEN || env.GHL_API_TOKEN || env.HIGHLEVEL_API_TOKEN, 800);
   const locationId = clean(env.GHL_LOCATION_ID, 120);
-  const workflowId = clean(env.GHL_WORKFLOW_ID, 120);
+  const workflowId = requireWorkflow ? clean(env.GHL_WORKFLOW_ID, 120) : '';
   const missing = [];
   if (!token) missing.push('GHL_PRIVATE_INTEGRATION_TOKEN');
   if (!locationId) missing.push('GHL_LOCATION_ID');
-  if (!workflowId) missing.push('GHL_WORKFLOW_ID');
+  if (requireWorkflow && !workflowId) missing.push('GHL_WORKFLOW_ID');
   return { ok: missing.length === 0, missing, token, locationId, workflowId };
 }
 
@@ -930,21 +1573,56 @@ function attributionKeys(utms) {
   };
 }
 
-async function enforceApplyRateLimit(request, env) {
+async function enforceApplyRateLimit(request, env, { aiScanEmail = null } = {}) {
   if (env.DISABLE_RATE_LIMITS === 'true' || !env.CHAT_RATE_LIMITS) return { ok: true };
   const now = new Date();
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const day = now.toISOString().slice(0, 10);
   const hour = now.toISOString().slice(0, 13);
+  if (aiScanEmail !== null) {
+    const ipHash = await aiScanRateHash(env, 'ip', ip);
+    const limits = [
+      {
+        key: `ai_scan:ip:${ipHash}:${day}`,
+        limit: AI_SCAN_IP_DAILY,
+        ttl: secondsUntilTomorrow(now),
+      },
+      {
+        key: `ai_scan:ip:${ipHash}:${hour}`,
+        limit: AI_SCAN_IP_HOURLY,
+        ttl: 60 * 60 + 120,
+      },
+    ];
+    const normalizedEmail = clean(aiScanEmail, 160).toLowerCase();
+    if (normalizedEmail) {
+      const emailHash = await aiScanRateHash(env, 'email', normalizedEmail);
+      limits.push({
+        key: `ai_scan:email:${emailHash}:${day}`,
+        limit: AI_SCAN_EMAIL_DAILY,
+        ttl: secondsUntilTomorrow(now),
+      });
+    }
+    return enforceKvRateLimits(env.CHAT_RATE_LIMITS, limits);
+  }
   const fp = await sha256Hex(`apply:${ip}`);
   const limits = [
     { key: `apply:ip:${fp}:${day}`, limit: Number(env.APPLY_IP_DAILY_LIMIT || APPLY_IP_DAILY), ttl: secondsUntilTomorrow(now) },
     { key: `apply:ip:${fp}:${hour}`, limit: Number(env.APPLY_IP_HOURLY_LIMIT || APPLY_IP_HOURLY), ttl: 60 * 60 + 120 },
   ];
-  const counts = await Promise.all(limits.map((l) => env.CHAT_RATE_LIMITS.get(l.key)));
-  if (limits.some((l, i) => Number(counts[i] || 0) >= l.limit)) return { ok: false };
+  return enforceKvRateLimits(env.CHAT_RATE_LIMITS, limits);
+}
+
+async function enforceKvRateLimits(kv, limits) {
+  const counts = await Promise.all(limits.map((limit) => kv.get(limit.key)));
+  if (limits.some((limit, index) => Number(counts[index] || 0) >= limit.limit)) {
+    return { ok: false };
+  }
   await Promise.all(
-    limits.map((l, i) => env.CHAT_RATE_LIMITS.put(l.key, String(Number(counts[i] || 0) + 1), { expirationTtl: l.ttl })),
+    limits.map((limit, index) => kv.put(
+      limit.key,
+      String(Number(counts[index] || 0) + 1),
+      { expirationTtl: limit.ttl },
+    )),
   );
   return { ok: true };
 }
@@ -1020,6 +1698,12 @@ function normalizePhone(raw) {
 function clean(value, max) {
   if (typeof value !== 'string') return '';
   return value.replace(/\s+/g, ' ').trim().slice(0, max);
+}
+
+function isPlainObject(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
 }
 
 function attributionTimestampSeconds(value) {
