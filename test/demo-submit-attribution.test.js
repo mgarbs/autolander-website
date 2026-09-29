@@ -72,7 +72,7 @@ test('submit keeps the existing Meta payload exact and sends organic fields sepa
     innerHeight: 900,
     screen: { width: 1440, height: 900, colorDepth: 24 },
     devicePixelRatio: 1,
-    gtag: (...args) => analyticsCalls.push(args),
+    alTags: { ga: (...args) => analyticsCalls.push(args) },
   };
   const navigator = {
     userAgent: 'Mozilla/5.0 AutoLander submit attribution test',
@@ -118,6 +118,7 @@ test('submit keeps the existing Meta payload exact and sends organic fields sepa
     adset_id: 'set_456',
     ad_id: 'ad_789',
   });
+  assert.equal(submittedBody.test_event_code, undefined);
   assert.equal(submittedBody.attribution.fbclid, 'MiXeD_Click-ID');
   assert.equal(submittedBody.attribution.fbc, 'fb.1.1700000000000.MiXeD_Click-ID');
   assert.equal(submittedBody.attribution.fbp, 'fb.1.1700000000000.123456789');
@@ -125,10 +126,9 @@ test('submit keeps the existing Meta payload exact and sends organic fields sepa
   assert.equal(submittedBody.landing_page, '/guide/page-a/?topic=photos');
   assert.equal(submittedBody.referrer_url, 'https://www.google.com/search?q=car+photos');
   assert.equal(analyticsCalls.length, 1);
-  assert.equal(analyticsCalls[0][0], 'event');
-  assert.equal(analyticsCalls[0][1], 'generate_lead');
-  assert.equal(analyticsCalls[0][2].lead_source, 'facebook');
-  assert.equal(analyticsCalls[0][2].lead_medium, 'paid_social');
+  assert.equal(analyticsCalls[0][0], 'generate_lead');
+  assert.equal(analyticsCalls[0][1].lead_source, 'facebook');
+  assert.equal(analyticsCalls[0][1].lead_medium, 'paid_social');
 });
 
 test('duplicate server responses do not double-count GA4 leads', async (t) => {
@@ -160,7 +160,7 @@ test('duplicate server responses do not double-count GA4 leads', async (t) => {
         innerHeight: 900,
         screen: { width: 1440, height: 900, colorDepth: 24 },
         devicePixelRatio: 1,
-        gtag: (...args) => analyticsCalls.push(args),
+        alTags: { ga: (...args) => analyticsCalls.push(args) },
       },
     },
     document: { configurable: true, value: document },
@@ -212,9 +212,7 @@ test('a throwing analytics shim cannot break a successful CRM submission', async
         innerHeight: 900,
         screen: { width: 1440, height: 900, colorDepth: 24 },
         devicePixelRatio: 1,
-        gtag: () => {
-          throw new Error('blocked analytics');
-        },
+        alTags: { ga: () => { throw new Error('blocked analytics'); } },
       },
     },
     document: { configurable: true, value: document },

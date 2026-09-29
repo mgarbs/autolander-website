@@ -1,5 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { assertNoUnverifiedProof } from './proof-build-guard.mjs';
 import { loadEnv } from 'vite';
 import { META } from '../shared/ai-visibility-content.js';
 import { TEAM_META } from '../shared/team-content.js';
@@ -70,7 +72,10 @@ const noindexShell = stripStaticHome(appShell)
 // with the public marketing pages in search.
 writeFileSync(fallbackPath, noindexShell, 'utf8');
 mkdirSync(adminDir, { recursive: true });
-writeFileSync(adminIndexPath, noindexShell, 'utf8');
+const alTagsTag = /<script\b[^>]*src="\/al-tags-v1\.js"[^>]*><\/script>/;
+if (!alTagsTag.test(noindexShell)) throw new Error('spa-fallback: missing al-tags tag');
+const adminShell = noindexShell.replace(alTagsTag, '');
+writeFileSync(adminIndexPath, adminShell, 'utf8');
 // Same trick for the bare /pay route (self-serve picker). /pay/:token deep
 // links still rely on the 404.html SPA-fallback above — GitHub Pages can't
 // pre-generate a page per token — but the exact /pay path gets this same
@@ -102,3 +107,11 @@ writeFileSync(join(aiDir, 'index.html'), buildPageShell(appShell, {
   cssHref: findChunkAsset(distDir, 'AiVisibilityApp', '.css'),
   jsHref: findChunkAsset(distDir, 'AiVisibilityApp', '.js'),
 }), 'utf8');
+
+// The bundler must never read local proof in production. This separate post-build
+// audit reads it only to ensure none of its unverified claims escaped into dist.
+const localProof = join(process.cwd(), 'shared/ai-visibility-proof.local.js');
+if (!preview && existsSync(localProof)) {
+  const { PROOF_ENTRIES } = await import(pathToFileURL(localProof).href);
+  assertNoUnverifiedProof(distDir, PROOF_ENTRIES);
+}

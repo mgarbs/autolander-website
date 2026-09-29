@@ -412,20 +412,7 @@ export function head({
 <html lang="en">
 <head>
   <script defer src="/al-attribution-v1.js"></script>
-  <!-- Google tag (gtag.js) -->
-  <script>
-    if (location.hostname === 'autolander.ai' || location.hostname === 'www.autolander.ai') {
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function(){window.dataLayer.push(arguments);};
-      window.gtag('js', new Date());
-
-      window.gtag('config', 'G-30H80LZMCH');
-      const script = document.createElement('script');
-      script.async = true;
-      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-30H80LZMCH';
-      document.head.appendChild(script);
-    }
-  </script>
+  <script defer src="/al-tags-v1.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#050505" />

@@ -1,3 +1,4 @@
+import { gaEvent } from './ga.js';
 const STORAGE_KEY = 'al_attrib';
 const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
 
@@ -71,29 +72,24 @@ function landingPath(value) {
   return path.slice(0, 100);
 }
 
-export function trackGoogleLead(attribution, organicAttribution, analytics) {
-  let gtag = analytics;
-  if (!gtag) {
-    try {
-      gtag = typeof window !== 'undefined' ? window.gtag : null;
-    } catch {
-      gtag = null;
-    }
-  }
-  if (typeof gtag !== 'function') return false;
-
+function trackGoogleConversion(name, method, attribution, organicAttribution, analytics) {
   const utms = attribution?.utms || {};
+  const params = {
+    method,
+    lead_source: clean(utms.utm_source, 100),
+    lead_medium: clean(utms.utm_medium, 100),
+    first_landing_page: landingPath(organicAttribution?.landing_page),
+    first_referrer_domain: referrerDomain(organicAttribution?.referrer_url),
+  };
   try {
-    gtag('event', 'generate_lead', {
-      method: 'demo_application',
-      lead_source: clean(utms.utm_source, 100),
-      lead_medium: clean(utms.utm_medium, 100),
-      first_landing_page: landingPath(organicAttribution?.landing_page),
-      first_referrer_domain: referrerDomain(organicAttribution?.referrer_url),
-    });
+    if (typeof analytics !== 'function') return gaEvent(name, params);
+    analytics('event', name, params);
     return true;
-  } catch {
-    // Analytics must never interfere with a completed CRM submission.
-    return false;
-  }
+  } catch { return false; }
+}
+export function trackGoogleLead(attribution, organicAttribution, analytics) {
+  return trackGoogleConversion('generate_lead', 'demo_application', attribution, organicAttribution, analytics);
+}
+export function trackGoogleAiScan(attribution, organicAttribution, analytics) {
+  return trackGoogleConversion('ai_scan_request', 'ai_visibility_scan', attribution, organicAttribution, analytics);
 }

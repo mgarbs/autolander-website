@@ -5,6 +5,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import { PLANS } from '../shared/ai-visibility-content.js';
+import * as AI_CONTENT from '../shared/ai-visibility-content.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(resolve(ROOT, path), 'utf8');
@@ -22,7 +23,6 @@ test('AI Visibility content keeps the owner-approved plans and public copy rules
   const source = read('shared/ai-visibility-content.js');
   const disallowed = [
     /[—–]/,
-    /ChatGPT/i,
     /earned media/i,
     /backlinks?/i,
     /#1/i,
@@ -34,6 +34,14 @@ test('AI Visibility content keeps the owner-approved plans and public copy rules
     /powered by/i,
   ];
   for (const pattern of disallowed) assert.doesNotMatch(source, pattern);
+  const assistantNames = /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i;
+  for (const [name, content] of Object.entries(AI_CONTENT)) {
+    if (typeof content === 'function' || ['WHERE_BUYERS_ASK', 'RESULTS_VIEW'].includes(name)) continue;
+    assert.doesNotMatch(JSON.stringify(content), assistantNames, name);
+  }
+  const sections = read('src/ai/AiSections.jsx').replace(/export function WhereBuyersAskSection\(\)[\s\S]*?(?=export function ReportSection)/, '');
+  assert.doesNotMatch(sections, assistantNames);
+  assert.doesNotMatch(read('src/ai/AiVisibilityApp.jsx'), assistantNames);
 });
 
 test('React scan form exposes native fallback, WebMCP and human-consent controls', () => {
@@ -69,15 +77,7 @@ test('fetch scan request identifies its submission path and consent version', ()
 
 test('React AI page renders required image assets and stable plan anchors', () => {
   const sections = read('src/ai/AiSections.jsx');
-  for (const binding of ['BUYER_IMAGE', 'ANSWERS_IMAGE', 'CRAWL_IMAGE', 'PROFILE_IMAGE', 'REVIEWS_IMAGE', 'WALKTHROUGH_IMAGE']) {
-    const start = sections.indexOf(`src={${binding}.src}`);
-    assert.notEqual(start, -1, `${binding} must be rendered`);
-    const tag = sections.slice(sections.lastIndexOf('<img', start), sections.indexOf('/>', start) + 2);
-    for (const token of [`alt={${binding}.alt}`, `width={${binding}.width}`, `height={${binding}.height}`, 'decoding="async"']) {
-      assert.ok(tag.includes(token), `${binding} is missing ${token}`);
-    }
-  }
-  assert.match(sections, /src=\{BUYER_IMAGE\.src\}[\s\S]*?fetchPriority="high"/);
+  assert.match(sections, /ResponsiveImage image=\{aiImage\(ILLUSTRATION_SLOTS.hero.image\)\} sizes=\{IMAGE_SIZES.aiHero\} eager/);
   assert.match(sections, /id=\{plan\.anchor\}/);
   assert.deepEqual(PLANS.map((plan) => plan.anchor), ['plan-ai-foundation', 'plan-ai-authority', 'plan-market-leader']);
   assert.match(sections, /id="plans"/);
@@ -106,12 +106,13 @@ test('Team copy avoids denial then reveal sentence cadence', () => {
   }
 });
 
-test('Team keeps four headline variants and renders both supplied scenes', () => {
+test('Team keeps four headline variants and uses each real screenshot once', () => {
   const content = read('shared/team-content.js');
   const app = read('src/team/TeamApp.jsx');
   const sections = read('src/team/TeamSections.jsx');
-  for (const variant of ['a', 'b', 'c', 'd']) assert.match(content, new RegExp(`^  ${variant}: \\[`, 'm'));
+  for (const variant of ['a', 'b', 'c', 'd']) assert.ok(content.includes(`  ${variant}: [`));
   assert.match(app, /HEADLINE_SEGMENTS\[variant\]/);
-  assert.match(sections, /src="\/team\/sales-floor\.webp"[\s\S]*?width="1600"[\s\S]*?height="893"[\s\S]*?fetchPriority="high"/);
-  assert.match(sections, /src="\/team\/manager-tablet\.webp"[\s\S]*?loading="lazy"[\s\S]*?width="1000"[\s\S]*?height="1241"/);
+  for (const slot of ['hero', 'access', 'dashboard', 'autopilot']) {
+    assert.equal(sections.split(`image={TEAM_IMAGES.${slot}}`).length - 1, 1);
+  }
 });

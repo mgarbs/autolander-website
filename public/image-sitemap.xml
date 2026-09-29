@@ -553,28 +553,40 @@
   <url>
     <loc>https://autolander.ai/ai-visibility/</loc>
     <image:image>
-      <image:loc>https://autolander.ai/ai-visibility/buyer-asks-ai.webp</image:loc>
-      <image:title>Car shopper asking an AI assistant where to buy a vehicle in their town</image:title>
+      <image:loc>https://autolander.ai/ai-visibility/ai-chat-phone-1600.webp</image:loc>
+      <image:title>Illustration of an AI assistant on a phone naming Frank's Irvine Subaru first for a used Subaru Outback in Orange County</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://autolander.ai/ai-visibility/answer-sources.webp</image:loc>
-      <image:title>Illustrated AI Visibility report showing named dealers and cited answer sources</image:title>
+      <image:loc>https://autolander.ai/ai-visibility/ai-chat-tablet-1600.webp</image:loc>
+      <image:title>Illustration of a ChatGPT-style answer recommending Frank's Irvine Subaru in Lake Forest, California for a certified pre-owned Subaru Forester</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://autolander.ai/ai-visibility/site-crawl.webp</image:loc>
-      <image:title>Dealership website being checked for crawler access and readable vehicle details</image:title>
+      <image:loc>https://autolander.ai/ai-visibility/ai-overview-search-1600.webp</image:loc>
+      <image:title>Illustration of a Google-style AI overview naming Pine Belt Chevrolet in Lakewood, New Jersey for Silverado trucks near Toms River</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://autolander.ai/ai-visibility/google-profile.webp</image:loc>
-      <image:title>Google Business Profile management shown on a tablet beside a dealership</image:title>
+      <image:loc>https://autolander.ai/ai-visibility/ai-chat-desktop-1600.webp</image:loc>
+      <image:title>Illustration of a Claude-style answer recommending Westgate Chrysler Jeep Dodge Ram in Raleigh, North Carolina to a Jeep Grand Cherokee shopper in Cary</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://autolander.ai/ai-visibility/reviews.webp</image:loc>
-      <image:title>Dealership team preparing policy-compliant customer review requests and replies</image:title>
+      <image:loc>https://autolander.ai/ai-visibility/ai-answer-sourced-1600.webp</image:loc>
+      <image:title>Illustration of a Perplexity-style sourced answer naming Westgate Chrysler Jeep Dodge Ram on Old Westgate Road in Raleigh for new Ram 1500 trucks</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://autolander.ai/ai-visibility/report-walkthrough.webp</image:loc>
-      <image:title>AutoLander specialist walking a dealer through an AI Visibility report</image:title>
+      <image:loc>https://autolander.ai/ai-visibility/search-performance-1600.webp</image:loc>
+      <image:title>Illustration of a Search Console performance report with clicks and impressions over 16 months</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/ai-visibility/ai-referrals-1600.webp</image:loc>
+      <image:title>Illustration of a Google Analytics report of sessions from ChatGPT, Perplexity, Gemini, Claude and Copilot</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/ai-visibility/report-preview-1600.webp</image:loc>
+      <image:title>Illustration of a sample AI Visibility Report with a score of 57 out of 100, answers from Claude and GPT, and the 3 fixes</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://autolander.ai/ai-visibility/vehicle-page-check-1600.webp</image:loc>
+      <image:title>Illustration of a vehicle page check showing price, mileage and VIN readable as page text and AI crawlers allowed in robots.txt</image:title>
     </image:image>
     <image:image>
       <image:loc>https://autolander.ai/og/ai-visibility.jpg</image:loc>

@@ -3,8 +3,8 @@
 //                      send the verified server Lead event, mint thank-you token.
 //   POST /api/ai-scan -> store a scan request, then best-effort CRM + AIScanRequest.
 //
-// The browser never sees the GHL token. The thank-you page only fires the browser
-// Lead pixel after redeeming the single-use token minted here.
+// The browser never sees the GHL token. Lead is sent only by this backend;
+// legacy confirmation tokens remain available for cached clients.
 
 import { ACTION_SOURCE, buildEvent, sendEvents } from '../capi/meta-client.js';
 import { hashEmail, hashLowercase, hashName, hashPhone, sha256Hex } from '../capi/hash.js';
@@ -14,6 +14,7 @@ import {
   markEventSeen,
   pushRecentEvent,
   rememberConversionToken,
+  rememberVisitor,
   wasEventSeen,
 } from '../capi/storage.js';
 import { looksLikeBot } from '../security/bot-filter.js';
@@ -959,7 +960,9 @@ function classifyAiScanDuplicateSearch(body) {
   }
   const keys = Object.keys(body);
   if (keys.length === 0) return { kind: 'none' };
-  if (keys.length !== 1 || keys[0] !== 'contact') {
+  // The CRM answers { contact, traceId }. traceId is request metadata; any other key is unexpected.
+  const knownKeys = new Set(['contact', 'traceId']);
+  if (!keys.includes('contact') || keys.some((key) => !knownKeys.has(key))) {
     return { kind: 'unexpected', keys };
   }
   if (body.contact === null) return { kind: 'none' };
@@ -1245,6 +1248,12 @@ async function recordLeadEvent({
 
   const sendPromise = (async () => {
     const result = await sendEvents(env, [capiEvent], { testEventCode: metaTestEventCode });
+    if (result.ok && env.ENRICH_KNOWN_VISITOR_MATCHING === 'true' && lead.vid) {
+      const existing = await lookupVisitor(env, lead.vid).catch(() => null);
+      await rememberVisitor(env, lead.vid, {
+        am: { ...sanitizeAdvancedMatching(existing?.am), ...sanitizeAdvancedMatching(userData) },
+      }).catch(() => {});
+    }
     await bumpCounter(env, today, 'meta', result.ok ? 'capi_ok' : 'capi_failed').catch(() => {});
   })();
 

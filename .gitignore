@@ -64,3 +64,6 @@ dist-preview/
 .last-publish.json
 .blog-context/
 .studio-import/
+
+# Unverified proof drafts (local review only; this repository is public)
+/shared/ai-visibility-proof.local.js

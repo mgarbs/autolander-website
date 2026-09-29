@@ -2,7 +2,7 @@ import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { HEADLINE_SEGMENTS, SUBS, TEAM_META } from '../../shared/team-content.js';
 import SiteFooter from '../components/SiteFooter.jsx';
 import SiteNav from '../components/SiteNav.jsx';
-import { trackCustom } from '../lib/meta-pixel.js';
+import { trackCustom } from '../lib/tags.js';
 import {
   Beam, DashboardSection, DemoSection, FaqSection, FeedStrip, FinalCta, FloorCheck, Grad, HowItWorks,
   PricingSection, ProblemSection, ProofSection, TeamHero, TeamMobileCtaBar,

@@ -149,8 +149,8 @@ export function getFirstTouch() {
 export function getFbCookies() {
   if (!isBrowser) return { fbp: '', fbc: '' };
   let fbp = readCookie('_fbp');
-  // The first server PageView cannot wait for fbevents.js to set its cookie.
-  // Seed the same first-party ID that the Pixel will read when it initializes.
+  // identity.js and al-tags are the only writers of _fbp/_fbc in shared shells.
+  // Seed the first-party ID before the first server PageView.
   if (!/^fb\.\d+\.\d+\.\d+$/.test(fbp)) {
     const random = crypto.getRandomValues(new Uint32Array(1))[0];
     fbp = `fb.1.${Date.now()}.${random}`;

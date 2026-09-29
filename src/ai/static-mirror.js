@@ -23,11 +23,15 @@ import {
   ROLE_CHOICES,
   SERVICE_SUMMARY,
   SHIFT,
+  WHERE_BUYERS_ASK,
+  RESULTS_VIEW,
+  ILLUSTRATION_SLOTS,
   SMS_CONSENT,
   comparisonRows,
   fmtUsd,
 } from '../../shared/ai-visibility-content.js';
-import { AI_VISIBILITY_IMAGES } from '../../scripts/seo/data-ai-visibility.mjs';
+import { aiImage } from '../../shared/page-images.js';
+import { responsiveImageHtml, IMAGE_SIZES } from '../../shared/responsive-images.js';
 
 const esc = (value) => String(value ?? '')
   .replaceAll('&', '&amp;')
@@ -46,10 +50,42 @@ const eyebrow = (value) => `<p class="font-mono text-[11px] font-semibold upperc
 const heading = (lead, grad = '') => `<h2 class="mt-5 font-display text-4xl font-extrabold uppercase italic leading-[0.94] text-white sm:text-5xl">${copy(lead)}${grad ? ` <span class="text-blue-400">${copy(grad)}</span>` : ''}</h2>`;
 const list = (items, className = 'mt-5 space-y-3 text-sm leading-relaxed text-slate-300') => `<ul class="${className}">${items.map((item) => `<li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-400" aria-hidden="true"></span><span>${copy(item)}</span></li>`).join('')}</ul>`;
 
-const image = (index, { eager = false, className = '' } = {}) => {
-  const item = AI_VISIBILITY_IMAGES[index];
-  return `<img src="${esc(item.src)}" width="${item.width}" height="${item.height}" alt="${esc(item.alt)}" decoding="async" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} class="w-full rounded-3xl border border-white/10 object-cover shadow-2xl shadow-blue-950/40 ${className}" />`;
-};
+const image = (slug, sizes, eager = false, className) => responsiveImageHtml(aiImage(slug), { sizes, eager, className });
+
+const reportCard = ({ title, body, accent }) => `<article class="self-start rounded-3xl border p-6 ${accent ? 'border-blue-400/30 bg-blue-500/[0.08]' : 'border-white/10 bg-white/[0.03]'}"><h3 class="font-display text-xl font-extrabold uppercase italic text-white">${copy(title)}</h3><p class="mt-3 text-[15px] leading-relaxed text-slate-400">${copy(body)}</p></article>`;
+
+function reportMock() {
+  const cell = {
+    named: 'rounded bg-emerald-500/25 py-1.5 text-center text-emerald-200',
+    rival: 'rounded bg-rose-500/20 py-1.5 text-center text-rose-200',
+    none: 'rounded bg-white/5 py-1.5 text-center text-slate-400',
+  };
+  return `<div class="relative mt-5 hidden md:block">
+    <div class="absolute -inset-6 -z-10 rounded-[2.5rem] bg-blue-600/20 blur-[80px]" aria-hidden="true"></div>
+    <div class="rounded-3xl border border-white/10 bg-[#0b0d12]/95 p-6 shadow-2xl shadow-blue-950/50">
+      <div class="flex items-center justify-between gap-4"><span class="font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-400">${copy(REPORT_MOCK.caption)}</span><span class="rounded-full bg-white/10 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-slate-300">${copy(REPORT_MOCK.badge)}</span></div>
+      <div class="mt-5 flex items-end gap-4"><p class="font-display text-7xl font-extrabold italic text-white">${copy(REPORT_MOCK.score)}<span class="ml-1 text-2xl text-slate-500">/100</span></p><p class="mb-2 text-sm text-slate-300">${copy(REPORT_MOCK.scoreNote)}</p></div>
+      <div class="mt-5 grid grid-cols-3 gap-1.5 font-mono text-[9px] uppercase tracking-wider text-slate-400"><span></span>${REPORT_MOCK.columns.map((name) => `<span class="text-center">${copy(name)}</span>`).join('')}${REPORT_MOCK.rows.map(([question, ...columns]) => `<div class="contents"><span>${copy(question)}</span>${columns.map((value) => `<span class="${cell[value]}">${copy(REPORT_MOCK.cellLabel[value])}</span>`).join('')}</div>`).join('')}</div>
+      <ol class="m-0 mt-5 grid list-none gap-2 p-0 text-sm">${REPORT_MOCK.fixes.map((fix, index) => `<li class="flex gap-2 text-slate-300"><span class="text-blue-400">${index + 1}</span>${copy(fix)}</li>`).join('')}</ol>
+    </div>
+  </div>`;
+}
+
+function publicIllustrations() {
+  return `<section class="bg-[#050505] py-20 lg:py-28"><div class="mx-auto max-w-7xl px-6">
+    ${eyebrow(WHERE_BUYERS_ASK.eyebrow)}${heading(WHERE_BUYERS_ASK.h2Lead, WHERE_BUYERS_ASK.h2Grad)}
+    <p class="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">${copy(WHERE_BUYERS_ASK.body)}</p>
+    <div class="mt-12 grid gap-6 lg:grid-cols-2">${WHERE_BUYERS_ASK.cards.map((card) => `<article class="min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03]"><div class="p-6"><h3 class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(card.name)}</h3><p class="mt-2 font-mono text-[11px] uppercase tracking-[0.2em] text-blue-300">${copy(card.maker)}</p><p class="mt-3 leading-relaxed text-slate-400">${copy(card.body)}</p></div>${image(card.image, IMAGE_SIZES.aiCard, false, 'block h-auto w-full')}</article>`).join('')}</div>
+    <p class="mt-5 text-sm leading-relaxed text-slate-400">${copy(WHERE_BUYERS_ASK.caption)}</p>
+    <p class="mt-6 rounded-2xl border border-blue-400/20 bg-blue-500/[0.06] px-5 py-4 leading-relaxed text-blue-200">${copy(WHERE_BUYERS_ASK.scanNote)}</p>
+  </div></section>
+  <section class="border-y border-white/5 bg-[#080808] py-20 lg:py-28"><div class="mx-auto max-w-7xl px-6">
+    ${eyebrow(RESULTS_VIEW.eyebrow)}${heading(RESULTS_VIEW.h2Lead, RESULTS_VIEW.h2Grad)}
+    <p class="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">${copy(RESULTS_VIEW.body)}</p>
+    <div class="mt-12 grid gap-8">${RESULTS_VIEW.panels.map((panel) => `<article class="grid items-center gap-6 lg:grid-cols-[0.34fr_0.66fr]"><div class="rounded-3xl border border-white/10 bg-[#0b0d12] p-6"><h3 class="font-display text-3xl font-extrabold uppercase italic text-white">${copy(panel.title)}</h3><p class="mt-4 leading-relaxed text-slate-400">${copy(panel.body)}</p></div>${image(panel.image, IMAGE_SIZES.aiResults)}</article>`).join('')}</div>
+    <p class="mt-5 text-sm leading-relaxed text-slate-400">${copy(RESULTS_VIEW.caption)}</p>
+  </div></section>`;
+}
 
 const fieldErrors = {
   dealershipName: FORM.errors.missing_dealership,
@@ -95,7 +131,6 @@ function scanForm(action) {
         ${eyebrow(HOW.eyebrow)}
         ${heading(HOW.h2Lead, HOW.h2Grad)}
         <ol class="mt-8 space-y-4">${HOW.steps.map((step, index) => `<li class="rounded-2xl border border-white/10 bg-white/[0.03] p-5"><p class="font-display text-2xl font-extrabold italic text-blue-400">${index + 1}</p><h3 class="mt-2 font-bold text-white">${copy(step.title)}</h3><p class="mt-1 text-sm leading-relaxed text-slate-400">${copy(step.body)}</p></li>`).join('')}</ol>
-        <div class="mt-8">${image(5)}</div>
       </div>
       <form id="scan-form" method="post" action="${esc(action)}" aria-labelledby="scan-form-title" toolname="${esc(FORM.webmcp.toolname)}" tooldescription="${esc(FORM.webmcp.tooldescription)}" class="rounded-[2rem] border border-white/10 bg-[#0b0d12] p-6 shadow-2xl shadow-blue-950/30 sm:p-8">
         <h2 id="scan-form-title" class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(FORM.title)}</h2>
@@ -156,10 +191,7 @@ function plansSection() {
         </table>
       </div>
 
-      <div class="mt-14 grid items-start gap-8 lg:grid-cols-[1fr_0.9fr]">
-        <div><h3 class="font-display text-3xl font-extrabold uppercase italic text-white">${copy(PLANS_SECTION.everyPlanHeading)}</h3>${list(EVERY_PLAN_INCLUDES)}</div>
-        <div class="space-y-6">${image(3)}${image(4)}</div>
-      </div>
+      <div class="mt-12 rounded-3xl border border-white/10 bg-[#0b0d12] p-6 sm:p-8"><h3 class="font-display text-3xl font-extrabold uppercase italic text-white">${copy(PLANS_SECTION.everyPlanHeading)}</h3>${list(EVERY_PLAN_INCLUDES, 'mt-6 grid gap-3 text-sm leading-relaxed text-slate-300 lg:grid-cols-2 lg:gap-x-8')}</div>
 
       <div class="mt-16">
         <h3 class="font-display text-3xl font-extrabold uppercase italic text-white">${copy(PLANS_SECTION.promisesHeading)}</h3>
@@ -195,15 +227,20 @@ export function renderAiVisibilityMirror({ capiUrl = 'https://autolander.ai' } =
   return `<!--AL_STATIC_PAGE_START--><div id="al-static-page" class="min-h-dvh bg-[#050505] font-sans text-slate-50">
     <main id="main-content">
       <section class="relative overflow-hidden pb-16 pt-12 lg:pb-24 lg:pt-20">
-        <div class="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2">
+        <div class="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-[1.02fr_0.98fr]">
           <div>${eyebrow(HERO.eyebrow)}<h1 class="mt-5 font-display text-4xl font-extrabold uppercase italic leading-[0.92] text-white sm:text-6xl">${copy(HERO.h1Lead)} <span class="text-blue-400">${copy(HERO.h1Grad)}</span></h1><p class="al-ai-summary mt-5 text-lg leading-relaxed text-slate-300">${copy(HERO.summary)}</p><a href="#scan-form" class="mt-7 inline-flex rounded-2xl bg-blue-600 px-7 py-4 font-display text-base font-extrabold uppercase italic text-white shadow-lg shadow-blue-600/30">${copy(HERO.cta)}</a><div class="mt-5 flex flex-wrap gap-3 font-mono text-[10px] uppercase tracking-wider text-slate-400">${HERO.chips.map((chip) => `<span>${copy(chip)}</span>`).join('')}</div><p class="mt-4 text-sm text-slate-400">${copy(HERO.trustLine)}</p></div>
-          ${image(0, { eager: true })}
+          <div>${image(ILLUSTRATION_SLOTS.hero.image, IMAGE_SIZES.aiHero, true)}<p class="mt-3 text-xs leading-relaxed text-slate-400">${copy(ILLUSTRATION_SLOTS.hero.caption)}</p>${reportMock()}</div>
         </div>
       </section>
 
       <section class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2"><div>${eyebrow(SHIFT.eyebrow)}${heading(SHIFT.h2Lead, SHIFT.h2Grad)}<p class="mt-6 text-lg leading-relaxed text-slate-300">${copy(SHIFT.body)}</p></div><div class="rounded-3xl border border-white/10 bg-[#0b0d12] p-7"><p class="font-display text-6xl font-extrabold italic text-white">${copy(SHIFT.stat.value)}</p><p class="mt-3 text-lg text-slate-300">${copy(SHIFT.stat.text)}</p><a class="mt-4 block text-xs text-blue-300 underline" href="${esc(SHIFT.stat.sourceUrl)}">${copy(SHIFT.stat.source)}</a></div></div></section>
 
-      <section class="py-20"><div class="mx-auto max-w-7xl px-6">${eyebrow(REPORT.eyebrow)}${heading(REPORT.h2Lead, REPORT.h2Grad)}<div class="mt-10 grid items-start gap-8 lg:grid-cols-2"><div class="grid items-start gap-4 sm:grid-cols-2">${REPORT.parts.map(({ title, body, accent }) => `<article class="rounded-3xl border ${accent ? 'border-blue-400/30 bg-blue-500/[0.06]' : 'border-white/10 bg-white/[0.03]'} p-6"><h3 class="font-display text-xl font-extrabold uppercase italic text-white">${copy(title)}</h3><p class="mt-3 text-sm leading-relaxed text-slate-300">${copy(body)}</p></article>`).join('')}</div><div class="space-y-6">${image(1)}${image(2)}</div></div><div class="mt-8 rounded-3xl border border-white/10 bg-[#0b0d12] p-6"><p class="font-mono text-xs uppercase tracking-wider text-slate-400">${copy(REPORT_MOCK.caption)}. ${copy(REPORT_MOCK.badge)}</p><p class="mt-4 font-display text-5xl font-extrabold italic text-white">${copy(REPORT_MOCK.score)}<span class="text-lg text-slate-500">/100</span></p><p class="mt-2 text-slate-300">${copy(REPORT_MOCK.scoreNote)}</p><div class="mt-5 overflow-x-auto"><table class="min-w-[520px] w-full text-left text-xs"><thead><tr><th class="p-2"></th>${REPORT_MOCK.columns.map((column) => `<th scope="col" class="p-2 text-center text-slate-300">${copy(column)}</th>`).join('')}</tr></thead><tbody>${REPORT_MOCK.rows.map(([question, ...cells]) => `<tr class="border-t border-white/10"><th scope="row" class="p-2 font-medium text-slate-300">${copy(question)}</th>${cells.map((cell) => `<td class="p-2 text-center text-slate-400">${copy(REPORT_MOCK.cellLabel[cell])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${list(REPORT_MOCK.fixes)}</div></div></section>
+      ${publicIllustrations()}
+      <section class="py-20 lg:py-32"><div class="mx-auto max-w-7xl px-6">${eyebrow(REPORT.eyebrow)}${heading(REPORT.h2Lead, REPORT.h2Grad)}
+        <div class="mt-12 grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr]">${image(ILLUSTRATION_SLOTS.report.image, IMAGE_SIZES.aiReport)}<div class="grid items-start gap-4 sm:grid-cols-2">${REPORT.parts.slice(0, 2).map(reportCard).join('')}</div></div>
+        <div class="mt-6 grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]"><div class="grid items-start gap-4 sm:grid-cols-2">${REPORT.parts.slice(2).map(reportCard).join('')}</div>${image(ILLUSTRATION_SLOTS.vehicle.image, IMAGE_SIZES.aiReport)}</div>
+        <p class="mt-5 text-sm leading-relaxed text-slate-400">${copy(ILLUSTRATION_SLOTS.reportCaption)}</p>
+      </div></section>
 
       <section class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto max-w-7xl px-6">${eyebrow(REASONS.eyebrow)}${heading(REASONS.h2Lead, REASONS.h2Grad)}<div class="mt-10 grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-4">${REASONS.items.map(({ title, body }) => `<article class="rounded-3xl border border-white/10 bg-[#0b0d12] p-6"><h3 class="font-display text-xl font-extrabold uppercase italic text-white">${copy(title)}</h3><p class="mt-3 text-sm leading-relaxed text-slate-400">${copy(body)}</p></article>`).join('')}</div></div></section>
 
