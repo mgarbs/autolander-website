@@ -1,5 +1,5 @@
 import { readZarazMode } from '../agent/zaraz-tag.js';
-import { ACTION_SOURCE, buildEvent, sendEvents } from './meta-client.js';
+import { ACTION_SOURCE, buildEvent, sendEvents, META_GRAPH_VERSION } from './meta-client.js';
 import { hashEmail, hashLowercase, hashName, hashPhone, sha256Hex } from './hash.js';
 import {
   bumpCounter,
@@ -229,7 +229,7 @@ export async function handleCapi(request, env, corsHeaders, ctx) {
         hasAdminSessionSecret: Boolean(env.ADMIN_SESSION_SECRET),
         hasTrackingKv: Boolean(env.TRACKING),
         testEventCode: env.META_TEST_EVENT_CODE ? String(env.META_TEST_EVENT_CODE) : null,
-        graphVersion: 'v19.0',
+        graphVersion: META_GRAPH_VERSION,
         zarazMode: await readZarazMode(env),
         browserPixel: false,
         sendsWorkerLead: env.SEND_WORKER_LEAD_CAPI !== 'false',

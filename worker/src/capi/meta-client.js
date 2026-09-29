@@ -1,5 +1,5 @@
 import { redactTrackingValue } from '../../../shared/tracking-scope.js';
-const META_GRAPH_VERSION = 'v19.0';
+export const META_GRAPH_VERSION = 'v25.0';
 
 export const ACTION_SOURCE = {
   website: 'website',
