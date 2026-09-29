@@ -438,7 +438,7 @@ async function collectAiScanFields(body, request, env, formMode, receivedAt) {
       consent: {
         text: SMS_CONSENT.text,
         version: SMS_CONSENT.version,
-        timestamp: normalizeIso(body.consentTimestamp),
+        timestamp: normalizeIso(body.consentTimestamp) || receivedAt,
       },
     } : {}),
     userAgent: clean(body.userAgent, 500) || clean(request.headers.get('User-Agent'), 500),
@@ -871,7 +871,7 @@ async function syncAiScanRequestToCrm(env, record) {
       `/contacts/search/duplicate?${query.toString()}`,
       { method: 'GET' },
     );
-    if (!duplicate.ok) return { ...record, crm: 'failed' };
+    if (!duplicate.ok) return aiScanCrmFailed(record, 'duplicate_search', duplicate);
 
     const classified = classifyAiScanDuplicateSearch(duplicate.body);
     if (classified.kind === 'unexpected') {
@@ -908,9 +908,9 @@ async function syncAiScanRequestToCrm(env, record) {
         method: 'POST',
         body: JSON.stringify(payload),
       });
-      if (!created.ok) return { ...record, crm: 'failed' };
+      if (!created.ok) return aiScanCrmFailed(record, 'create_contact', created);
       contactId = extractContactId(created.body);
-      if (!contactId) return { ...record, crm: 'failed' };
+      if (!contactId) return aiScanCrmFailed(record, 'create_contact_no_id', created);
       contactWasCreated = true;
     }
 
@@ -925,7 +925,7 @@ async function syncAiScanRequestToCrm(env, record) {
       `/contacts/${encodeURIComponent(contactId)}/tags`,
       { method: 'POST', body: JSON.stringify({ tags }) },
     );
-    if (!tagged.ok) return { ...next, crm: 'failed' };
+    if (!tagged.ok) return aiScanCrmFailed(next, 'add_tags', tagged);
 
     const noted = await aiScanGhlRequest(
       env,
@@ -938,11 +938,18 @@ async function syncAiScanRequestToCrm(env, record) {
         }),
       },
     );
-    if (!noted.ok) return { ...next, crm: 'failed' };
+    if (!noted.ok) return aiScanCrmFailed(next, 'add_note', noted);
     return { ...next, crm: 'synced' };
-  } catch {
+  } catch (error) {
+    console.error('[api/ai-scan] CRM sync error', { step: 'exception', name: error?.name || 'Error' });
     return { ...record, crm: 'failed' };
   }
+}
+
+// Logs only the step and the HTTP status: never a response body, which can carry personal data.
+function aiScanCrmFailed(record, step, result) {
+  console.error('[api/ai-scan] CRM sync failed', { step, status: result?.status ?? 0 });
+  return { ...record, crm: 'failed', crmFailedStep: step };
 }
 
 function classifyAiScanDuplicateSearch(body) {
