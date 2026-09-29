@@ -75,6 +75,8 @@ test('unsafe configurations refuse duplicates, Meta, secrets, refs, permissions,
   for (const mutate of [
     (live) => { live.tools.a = copy(desired.tools.alGa4); live.tools.b = copy(desired.tools.alGa4); },
     (live) => { live.tools.meta = { component: 'facebook-pixel' }; },
+    (live) => { live.tools.alGa4 = { component: 'unrelated' }; },
+    (live) => { live.tools.alGa4 = { component: 'google-analytics_v4', settings: { tid: 'G-OTHER' } }; },
     (_live, d) => { d.variables.alSecret = { type: 'secret' }; },
     (live) => { live.variables.secret = { type: 'secret' }; },
     (_live, d) => { d.tools.alGa4.actions.alGa4Pageview.firingTriggers = ['missing']; },
@@ -165,4 +167,20 @@ test('CLI verification detects a server that fails to retain managed fields', as
   assert.equal(status, 1);
   assert.equal(calls.filter((method) => method === 'PUT').length, 1);
   assert.match(output.at(-1), /Verification failed/);
+});
+
+test('CLI refuses all backup paths inside the public repository, including dot-prefixed names', async () => {
+  for (const dir of ['.', 'backups', '..backups']) {
+    const calls = [], output = [];
+    const status = await main(['--apply', '--backup-dir', resolve(dir)], {
+      env: { CLOUDFLARE_ZARAZ_API_TOKEN: 'token', CLOUDFLARE_ZONE_ID: 'zone' },
+      log: (s) => output.push(s), error: (s) => output.push(s),
+      fetchImpl: async (url, init) => {
+        calls.push(init.method);
+        return Response.json({ result: url.endsWith('/workflow') ? 'realtime' : fixture });
+      },
+    });
+    assert.equal(status, 1); assert.equal(calls.includes('PUT'), false);
+    assert.match(output.at(-1), /Backup directory must be outside/);
+  }
 });

@@ -2,11 +2,12 @@
 // Git Bash operators should set MSYS_NO_PATHCONV=1; API paths are built here.
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import os from 'node:os';
-import { resolve, join, relative, isAbsolute } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { resolve, join, relative, isAbsolute, sep } from 'node:path';
+import { pathToFileURL, fileURLToPath } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 
 const TID = 'G-30H80LZMCH';
+const REPO_ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const gaTools = (config) => Object.entries(config.tools || {}).filter(([, tool]) => tool.settings?.tid === TID);
 const refs = (value, visit) => {
@@ -65,6 +66,10 @@ export function mergeZarazConfig(live, desired, options = {}) {
     const target = tool.component === 'google-analytics_v4' && tool.settings?.tid === TID
       ? gaTools(live).find(([, t]) => t.component === 'google-analytics_v4')?.[0] || id : id;
     const previous = merged.tools[target] || {};
+    if (merged.tools[target] && (previous.component !== tool.component
+      || (tool.component === 'google-analytics_v4' && previous.settings?.tid !== tool.settings?.tid))) {
+      throw new Error('Managed tool id collides with an unrelated tool');
+    }
     const managedFields = ['settings', 'defaultFields', 'blockingTriggers', 'actions', 'enabled', 'permissions'];
     const next = merged.tools[target]
       ? { ...previous, ...Object.fromEntries(managedFields.filter((key) => Object.hasOwn(tool, key)).map((key) => [key, clone(tool[key])])) }
@@ -161,7 +166,7 @@ export async function main(args = process.argv.slice(2), {
     const merged = opts.enabled === undefined ? mergeZarazConfig(live, desired, opts) : clone(live);
     if (opts.enabled !== undefined) {
       const matches = gaTools(merged);
-      if (matches.length !== 1) throw new Error('GA4 switch requires exactly one existing measurement tool');
+      if (matches.length !== 1 || matches[0][1].component !== 'google-analytics_v4') throw new Error('GA4 switch requires exactly one existing GA4 measurement tool');
       matches[0][1].enabled = opts.enabled;
       validateConfig(live, desired, merged, opts);
     }
@@ -169,8 +174,9 @@ export async function main(args = process.argv.slice(2), {
     for (const line of diff) log(safe(line));
     if (opts.apply) {
       const dir = resolve(opts.backupDir || join(home, '.autolander', 'zaraz-backups'));
-      const inside = relative(resolve('.'), dir);
-      if (!inside || (!inside.startsWith('..') && !isAbsolute(inside))) throw new Error('Backup directory must be outside the public repository');
+      const inside = relative(REPO_ROOT, dir);
+      const outside = inside === '..' || inside.startsWith(`..${sep}`) || isAbsolute(inside);
+      if (!outside) throw new Error('Backup directory must be outside the public repository');
       await mkdir(dir, { recursive: true });
       await writeFile(join(dir, `zaraz-live-${new Date().toISOString().replaceAll(':', '-')}.json`), JSON.stringify(live, null, 2), { mode: 0o600, flag: 'wx' });
       await api('config', 'PUT', merged);
