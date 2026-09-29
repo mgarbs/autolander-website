@@ -674,6 +674,77 @@ test('unexpected duplicate-search shape performs no GHL write and marks needs_re
   assert.equal(serializedLogs.includes('Example Motors'), false);
 });
 
+test('the CRM duplicate reply with traceId and no contact creates, tags and notes', async (t) => {
+  const tracking = new MemoryKv();
+  const calls = [];
+  t.mock.method(globalThis, 'fetch', async (url, init = {}) => {
+    const call = requestDetails(url, init);
+    calls.push(call);
+    if (call.href.includes('/contacts/search/duplicate?')) return Response.json({ contact: null, traceId: 'trace-example' });
+    if (call.href.endsWith('/contacts/')) return Response.json({ contact: { id: 'contact_traced' }, traceId: 'trace-example' });
+    if (call.href.endsWith('/tags')) return Response.json({ tags: ['ai-scan-request'], traceId: 'trace-example' });
+    if (call.href.endsWith('/notes')) return Response.json({ note: { id: 'note_traced' }, traceId: 'trace-example' });
+    throw new Error(`Unexpected request: ${call.method} ${call.href}`);
+  });
+  const id = submissionId(31);
+
+  const response = await handleBooking(jsonRequest(validBody({ submissionId: id })), crmEnv(tracking), {}, {});
+
+  assert.equal(response.status, 200);
+  assert.deepEqual(calls.map(({ method, href }) => `${method} ${new URL(href).pathname.replace(/contact_traced/, ':id')}`), [
+    'GET /contacts/search/duplicate',
+    'POST /contacts/',
+    'POST /contacts/:id/tags',
+    'POST /contacts/:id/notes',
+  ]);
+  const record = await storedRequest(tracking, id);
+  assert.equal(record.crm, 'synced');
+  assert.equal(record.crmContactId, 'contact_traced');
+});
+
+test('the CRM duplicate reply with traceId and a contact only tags and notes that contact', async (t) => {
+  const tracking = new MemoryKv();
+  const calls = [];
+  t.mock.method(globalThis, 'fetch', async (url, init = {}) => {
+    const call = requestDetails(url, init);
+    calls.push(call);
+    if (call.href.includes('/contacts/search/duplicate?')) {
+      return Response.json({ contact: { id: 'contact_existing', phone: '+12125550123' }, traceId: 'trace-example' });
+    }
+    if (call.href.endsWith('/tags')) return Response.json({ ok: true });
+    if (call.href.endsWith('/notes')) return Response.json({ note: { id: 'note_existing' } });
+    throw new Error(`Unexpected request: ${call.method} ${call.href}`);
+  });
+  const id = submissionId(32);
+
+  const response = await handleBooking(jsonRequest(validBody({ submissionId: id })), crmEnv(tracking), {}, {});
+
+  assert.equal(response.status, 200);
+  assert.equal(calls.some(({ href }) => new URL(href).pathname === '/contacts/'), false);
+  assert.equal(calls.some(({ method }) => ['PUT', 'PATCH'].includes(method)), false);
+  assert.equal(calls.some(({ href }) => /upsert|workflow|opportunit/i.test(href)), false);
+  const record = await storedRequest(tracking, id);
+  assert.equal(record.crm, 'synced');
+  assert.equal(record.crmContactId, 'contact_existing');
+});
+
+test('a duplicate reply with an unknown extra key still fails closed', async (t) => {
+  const tracking = new MemoryKv();
+  const calls = [];
+  t.mock.method(console, 'error', () => {});
+  t.mock.method(globalThis, 'fetch', async (url, init = {}) => {
+    calls.push(requestDetails(url, init));
+    return Response.json({ contact: null, traceId: 'trace-example', contacts: [] });
+  });
+  const id = submissionId(33);
+
+  const response = await handleBooking(jsonRequest(validBody({ submissionId: id })), crmEnv(tracking), {}, {});
+
+  assert.equal(response.status, 200);
+  assert.equal(calls.length, 1);
+  assert.equal((await storedRequest(tracking, id)).crm, 'needs_review');
+});
+
 test('GHL failure never changes the success response and records CRM failure', async (t) => {
   const tracking = new MemoryKv();
   const calls = [];

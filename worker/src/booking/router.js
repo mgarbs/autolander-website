@@ -959,7 +959,9 @@ function classifyAiScanDuplicateSearch(body) {
   }
   const keys = Object.keys(body);
   if (keys.length === 0) return { kind: 'none' };
-  if (keys.length !== 1 || keys[0] !== 'contact') {
+  // The CRM answers { contact, traceId }. traceId is request metadata; any other key is unexpected.
+  const knownKeys = new Set(['contact', 'traceId']);
+  if (!keys.includes('contact') || keys.some((key) => !knownKeys.has(key))) {
     return { kind: 'unexpected', keys };
   }
   if (body.contact === null) return { kind: 'none' };
