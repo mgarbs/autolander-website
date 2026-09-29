@@ -7,13 +7,13 @@ import {
   scheduleNextBillingDate,
 } from './lib/support-adjustments.js';
 import {
-  buildBillingBridgeCopy,
-  buildBillingConfirmCopy,
   buildBillingResumeCopy,
+  buildBillingStatusCopy,
   buildBillingSuccessCopy,
   buildPastDueNoticeCopy,
   formatBillingAmount,
   formatBillingDate,
+  hasBillingAmount,
 } from './lib/billing-panel-format.js';
 
 export default function BillingPanel({
@@ -236,7 +236,8 @@ function BillingState({
       : [];
     const unpaidInvoice = openInvoices[0];
     const unpaidInvoiceCount = openInvoices.length;
-    const unpaidAmountCents = unpaidInvoice?.totalCents ?? billingStatus.amountCents;
+    const unpaidAmountCents = unpaidInvoice?.totalCents
+      ?? (hasBillingAmount(billingStatus.amountCents) ? billingStatus.amountCents : undefined);
     const unpaidTotalCents = openInvoices.reduce((total, invoice) => {
       const invoiceTotal = Number(invoice?.totalCents);
       return total + (Number.isFinite(invoiceTotal) ? invoiceTotal : 0);
@@ -280,16 +281,9 @@ function BillingState({
   }
 
   if (mode === 'trial_bridge' || mode === 'scheduled_bridge') {
-    const trialEnd = mode === 'scheduled_bridge'
-      ? billingStatus.scheduledBillingIso || billingStatus.scheduledBillingAt
-      : billingStatus.trialEndIso || billingStatus.trialEnd;
     return (
       <p className="text-sm font-bold leading-relaxed text-slate-200">
-        {buildBillingBridgeCopy({
-          trialEnd,
-          amountCents: billingStatus.amountCents,
-          currency: billingStatus.currency,
-        })}
+        {buildBillingStatusCopy(billingStatus)}
       </p>
     );
   }
@@ -326,14 +320,11 @@ function BillingAction({
     return (
       <div className="rounded-xl border border-blue-400/20 bg-blue-400/[0.08] p-3">
         <p className="text-xs font-bold leading-relaxed text-blue-50">
-          {buildBillingConfirmCopy({
-            mode: billingStatus.mode,
+          {buildBillingStatusCopy(billingStatus, {
             nextBillingDate,
-            amountCents: billingStatus.amountCents,
             unpaidAmountCents,
             unpaidInvoiceCount,
             unpaidTotalCents,
-            currency: billingStatus.currency,
           })}
         </p>
         <div className="mt-3 flex flex-wrap gap-2">

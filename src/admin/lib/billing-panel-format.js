@@ -38,6 +38,13 @@ export function formatBillingDate(value, { includeYear = true } = {}) {
   }).format(date);
 }
 
+export function hasBillingAmount(amountCents) {
+  return amountCents !== undefined
+    && amountCents !== null
+    && amountCents !== ''
+    && Number.isFinite(Number(amountCents));
+}
+
 export function formatBillingAmount(amountCents, currency = 'usd') {
   const cents = Number(amountCents);
   if (!Number.isFinite(cents)) return '—';
@@ -66,8 +73,10 @@ export function buildPastDueNoticeCopy({
     return `They have ${unpaidInvoiceCount} unpaid bills totaling ${unpaidTotal} — the oldest from ${invoiceDate}. Stripe is retrying their card. Posting is paused until this is fixed.`;
   }
 
-  const unpaidAmount = formatBillingAmount(unpaidAmountCents, currency);
-  return `Their ${unpaidAmount} charge on ${invoiceDate} didn't go through — the bill is unpaid and Stripe is retrying their card. Posting is paused until this is fixed.`;
+  const unpaidAmount = hasBillingAmount(unpaidAmountCents)
+    ? `${formatBillingAmount(unpaidAmountCents, currency)} `
+    : '';
+  return `Their ${unpaidAmount}charge on ${invoiceDate} didn't go through — the bill is unpaid and Stripe is retrying their card. Posting is paused until this is fixed.`;
 }
 
 export function buildBillingResumeCopy(resumeTargetDate) {
@@ -79,6 +88,7 @@ export function buildBillingConfirmCopy({
   mode,
   nextBillingDate,
   amountCents,
+  amountBeforeTaxAndDiscounts = false,
   unpaidAmountCents = amountCents,
   unpaidInvoiceCount = 1,
   unpaidTotalCents = unpaidAmountCents,
@@ -86,7 +96,9 @@ export function buildBillingConfirmCopy({
 }) {
   const date = formatBillingDate(nextBillingDate);
   const recurringDate = formatBillingDate(nextBillingDate, { includeYear: false });
-  const charge = formatBillingAmount(amountCents, currency);
+  const charge = hasBillingAmount(amountCents)
+    ? `${formatBillingAmount(amountCents, currency)}${amountBeforeTaxAndDiscounts ? ' (before tax and discounts)' : ''}`
+    : 'Their regular charge';
   const day = billingDayOrdinal(nextBillingDate);
   const clamp = billingDayClampCopy(nextBillingDate);
 
@@ -100,8 +112,10 @@ export function buildBillingConfirmCopy({
       return `Forgive ${unpaidInvoiceCount} unpaid bills totaling ${unpaidTotal} and move billing to ${date}? · The unpaid bills are canceled — they owe nothing today · ${charge} on ${recurringDate}, then the ${day} of every month${clamp} · Posting turns back on right away.`;
     }
 
-    const unpaid = formatBillingAmount(unpaidAmountCents, currency);
-    return `Forgive the unpaid ${unpaid} bill and move billing to ${date}? · The unpaid bill is canceled — they owe nothing today · ${charge} on ${recurringDate}, then the ${day} of every month${clamp} · Posting turns back on right away.`;
+    const unpaid = hasBillingAmount(unpaidAmountCents)
+      ? `${formatBillingAmount(unpaidAmountCents, currency)} `
+      : '';
+    return `Forgive the unpaid ${unpaid}bill and move billing to ${date}? · The unpaid bill is canceled — they owe nothing today · ${charge} on ${recurringDate}, then the ${day} of every month${clamp} · Posting turns back on right away.`;
   }
 
   return '';
@@ -123,13 +137,60 @@ export function buildBillingSuccessCopy({ mode, nextBillingDate }) {
   return '';
 }
 
-export function buildBillingBridgeCopy({ trialEnd, amountCents, currency = 'usd' }) {
+export function buildBillingBridgeCopy({
+  trialEnd,
+  amountCents,
+  currency = 'usd',
+  amountBeforeTaxAndDiscounts = false,
+}) {
   const date = formatBillingDate(trialEnd);
+  if (!hasBillingAmount(amountCents)) {
+    return `A billing-date move is already scheduled: no charge until ${date}, then their regular charge resumes.`;
+  }
+
   const amount = formatBillingAmount(amountCents, currency);
   const day = billingDayOrdinal(trialEnd);
   const clamp = billingDayClampCopy(trialEnd);
+  const qualifier = amountBeforeTaxAndDiscounts ? ', before tax and discounts' : '';
 
-  return `A billing-date move is already scheduled: no charge until ${date}, then ${amount} monthly on the ${day}${clamp}.`;
+  return `A billing-date move is already scheduled: no charge until ${date}, then ${amount} monthly on the ${day}${clamp}${qualifier}.`;
+}
+
+export function buildBillingStatusCopy(billingStatus, {
+  nextBillingDate,
+  unpaidAmountCents,
+  unpaidInvoiceCount,
+  unpaidTotalCents,
+} = {}) {
+  if (billingStatus.requiresBillingReview) {
+    return "Review this subscription's billing settings in Stripe.";
+  }
+
+  const { mode, amountCents, currency } = billingStatus;
+  const amountBeforeTaxAndDiscounts = Boolean(billingStatus.amountBeforeTaxAndDiscounts);
+
+  if (mode === 'trial_bridge' || mode === 'scheduled_bridge') {
+    const trialEnd = mode === 'scheduled_bridge'
+      ? billingStatus.scheduledBillingIso || billingStatus.scheduledBillingAt
+      : billingStatus.trialEndIso || billingStatus.trialEnd;
+    return buildBillingBridgeCopy({
+      trialEnd,
+      amountCents,
+      currency,
+      amountBeforeTaxAndDiscounts,
+    });
+  }
+
+  return buildBillingConfirmCopy({
+    mode,
+    nextBillingDate,
+    amountCents,
+    unpaidAmountCents,
+    unpaidInvoiceCount,
+    unpaidTotalCents,
+    currency,
+    amountBeforeTaxAndDiscounts,
+  });
 }
 
 function billingDayClampCopy(value) {
