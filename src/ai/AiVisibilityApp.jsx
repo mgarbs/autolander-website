@@ -214,8 +214,7 @@ function ScanForm() {
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <label htmlFor="scan-dealershipName" className="block sm:col-span-2">
           <span className="text-sm font-bold text-slate-200">{FORM.fields.dealershipName.label}</span>
-          <input id="scan-dealershipName" name="dealershipName" required toolparamdescription={FORM.fields.dealershipName.agentHint} aria-describedby={describedBy('dealershipName', true)} autoComplete={FORM.fields.dealershipName.autocomplete} value={form.dealershipName} onChange={(e) => update('dealershipName', e.target.value)} aria-invalid={Boolean(fieldErrors.dealershipName)} className={fieldClass(fieldErrors.dealershipName)} />
-          <Hint id="scan-dealershipName-hint">{FORM.fields.dealershipName.agentHint}</Hint>
+          <input id="scan-dealershipName" name="dealershipName" required toolparamdescription={FORM.fields.dealershipName.agentHint} aria-describedby={describedBy('dealershipName')} autoComplete={FORM.fields.dealershipName.autocomplete} value={form.dealershipName} onChange={(e) => update('dealershipName', e.target.value)} aria-invalid={Boolean(fieldErrors.dealershipName)} className={fieldClass(fieldErrors.dealershipName)} />
           <InlineError id="scan-dealershipName-error" reason={fieldErrors.dealershipName} />
         </label>
         <label htmlFor="scan-website" className="block">
@@ -238,11 +237,10 @@ function ScanForm() {
         </label>
         <label htmlFor="scan-role" className="block">
           <span className="text-sm font-bold text-slate-200">{FORM.fields.role.label}</span>
-          <select id="scan-role" name="role" required toolparamdescription={FORM.fields.role.agentHint} aria-describedby={describedBy('role', true)} autoComplete={FORM.fields.role.autocomplete} value={form.role} onChange={(e) => update('role', e.target.value)} aria-invalid={Boolean(fieldErrors.role)} className={fieldClass(fieldErrors.role)}>
+          <select id="scan-role" name="role" required toolparamdescription={FORM.fields.role.agentHint} aria-describedby={describedBy('role')} autoComplete={FORM.fields.role.autocomplete} value={form.role} onChange={(e) => update('role', e.target.value)} aria-invalid={Boolean(fieldErrors.role)} className={fieldClass(fieldErrors.role)}>
             <option value="">{FORM.fields.role.placeholder}</option>
             {ROLE_CHOICES.map((role) => <option key={role} value={role}>{role}</option>)}
           </select>
-          <Hint id="scan-role-hint">{FORM.fields.role.agentHint}</Hint>
           <InlineError id="scan-role-error" reason={fieldErrors.role} />
         </label>
         <label htmlFor="scan-email" className="block">

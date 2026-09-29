@@ -77,7 +77,7 @@ function ReportMock() {
           <span className="rounded-full bg-white/10 px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-widest text-slate-300">{REPORT_MOCK.badge}</span>
         </div>
         <div className="mt-5 flex items-end gap-4">
-          <p className="font-display text-7xl font-extrabold italic text-white">{REPORT_MOCK.score}<span className="ml-2 text-sm text-slate-500">{REPORT.parts[4].title}</span></p>
+          <p className="font-display text-7xl font-extrabold italic text-white">{REPORT_MOCK.score}<span className="ml-1 text-2xl text-slate-500">/100</span></p>
           <p className="mb-2 text-sm text-slate-300">{REPORT_MOCK.scoreNote}</p>
         </div>
         <div className="mt-5 grid grid-cols-3 gap-1.5 font-mono text-[9px] uppercase tracking-wider text-slate-400">
@@ -256,13 +256,16 @@ export function HowSteps() {
   );
 }
 
-const CheckList = ({ items, ordered = false }) => {
+const LIST_MARKERS = { check: '✓', cross: '✕', dot: '•' };
+const MARKER_CLASS = { check: 'text-blue-400', cross: 'text-slate-500', dot: 'text-slate-500' };
+
+const CheckList = ({ items, ordered = false, marker = 'check' }) => {
   const Tag = ordered ? 'ol' : 'ul';
   return (
     <Tag className="m-0 grid list-none gap-3 p-0">
       {items.map((item, index) => (
         <li key={typeof item === 'string' ? item : item.title} className="flex items-start gap-3 text-sm leading-relaxed text-slate-300">
-          <span className="mt-0.5 shrink-0 font-mono text-blue-400" aria-hidden="true">{ordered ? index + 1 : '✓'}</span>
+          <span className={`mt-0.5 shrink-0 font-mono ${ordered ? 'text-blue-400' : MARKER_CLASS[marker]}`} aria-hidden="true">{ordered ? index + 1 : LIST_MARKERS[marker]}</span>
           {typeof item === 'string' ? item : <span><strong className="text-white">{item.title}</strong> {item.body}</span>}
         </li>
       ))}
@@ -369,7 +372,7 @@ export function PlansSection({ onGo }) {
           <div className="mt-6">
             <p className="leading-relaxed text-slate-300">{RESULTS_CREDIT.intro}</p>
             <div className="mt-6"><CheckList items={RESULTS_CREDIT.steps} ordered /></div>
-            <div className="mt-6 border-t border-white/10 pt-6"><CheckList items={RESULTS_CREDIT.conditions} /></div>
+            <div className="mt-6 border-t border-white/10 pt-6"><CheckList items={RESULTS_CREDIT.conditions} marker="dot" /></div>
             <p className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm leading-relaxed text-slate-300">{RESULTS_CREDIT.covers}</p>
           </div>
         </details>
@@ -377,11 +380,11 @@ export function PlansSection({ onGo }) {
         <div className="mt-12 grid items-start gap-6">
           <article className="self-start rounded-3xl border border-white/10 bg-[#0b0d12] p-6 sm:p-8">
             <h3 className="font-display text-3xl font-extrabold uppercase italic text-white">{PLANS_SECTION.neverHeading}</h3>
-            <div className="mt-6"><CheckList items={NEVER_PROMISE} /></div>
+            <div className="mt-6"><CheckList items={NEVER_PROMISE} marker="cross" /></div>
           </article>
           <article className="self-start rounded-3xl border border-white/10 bg-[#0b0d12] p-6 sm:p-8">
             <h3 className="font-display text-3xl font-extrabold uppercase italic text-white">{PLANS_SECTION.notIncludedHeading}</h3>
-            <div className="mt-6"><CheckList items={NOT_INCLUDED} /></div>
+            <div className="mt-6"><CheckList items={NOT_INCLUDED} marker="cross" /></div>
           </article>
         </div>
 
@@ -392,7 +395,7 @@ export function PlansSection({ onGo }) {
           </article>
           <article className="self-start rounded-3xl border border-white/10 bg-[#0b0d12] p-6 sm:p-8">
             <h3 className="font-display text-3xl font-extrabold uppercase italic text-white">{PLANS_SECTION.finePrintHeading}</h3>
-            <div className="mt-6"><CheckList items={FINE_PRINT} /></div>
+            <div className="mt-6"><CheckList items={FINE_PRINT} marker="dot" /></div>
           </article>
         </div>
 
