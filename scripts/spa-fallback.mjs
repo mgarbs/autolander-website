@@ -1,7 +1,8 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync, rmdirSync } from 'node:fs';
+import { join, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { assertNoUnverifiedProof } from './proof-build-guard.mjs';
+import { leanBaseCss, assertClassCoverage } from './route-css.mjs';
 import { loadEnv } from 'vite';
 import { META } from '../shared/ai-visibility-content.js';
 import { TEAM_META } from '../shared/team-content.js';
@@ -11,7 +12,6 @@ import { aiVisibilityHead } from './seo/data-ai-visibility.mjs';
 import { teamHead } from './seo/data-team.mjs';
 import {
   buildPageShell,
-  findChunkAsset,
   isPreviewShell,
 } from './spa-shell.mjs';
 
@@ -87,25 +87,59 @@ writeFileSync(payIndexPath, noindexShell, 'utf8');
 const preview = isPreviewShell(appShell);
 const env = loadEnv(preview ? 'preview' : 'production', process.cwd(), '');
 const capiUrl = env.VITE_CAPI_URL || 'https://autolander.ai';
+const manifest = JSON.parse(readFileSync(join(distDir, '.vite/manifest.json'), 'utf8'));
+const indexCssFiles = new Set(manifest['index.html'].css || []);
+const cssAllowlist = JSON.parse(readFileSync(new URL('./route-css-allowlist.json', import.meta.url), 'utf8'));
+
+// Keep the existing mirrors and React boot. Only these two marketing routes
+// receive lean CSS; the homepage and utility shells retain the full stylesheet.
+function leanRouteShell(moduleId, mirrorHtml) {
+  const entry = manifest[moduleId];
+  if (!entry) throw new Error(`Missing route module: ${moduleId}`);
+  const seen = new Set();
+  const visit = (key) => {
+    if (seen.has(key)) return;
+    seen.add(key);
+    if (!manifest[key]) throw new Error(`Missing manifest import: ${key}`);
+    for (const child of manifest[key].imports || []) visit(child);
+  };
+  visit(moduleId);
+  const cssFiles = [...new Set([...seen].flatMap((key) => manifest[key].css || []))]
+    .filter((file) => !indexCssFiles.has(file));
+  const styles = [...appShell.matchAll(/<style data-inline-app-css>([\s\S]*?)<\/style>/g)];
+  if (styles.length !== 1 || !cssFiles.length) throw new Error('Expected app CSS and route CSS');
+  for (const file of [entry.file, ...cssFiles]) {
+    const path = resolve(distDir, file);
+    if (!path.startsWith(resolve(distDir, 'assets') + sep) || !existsSync(path)) throw new Error(`Missing route asset: ${file}`);
+  }
+  const css = leanBaseCss(styles[0][1]) + cssFiles.map((file) => readFileSync(join(distDir, file), 'utf8')).join('\n');
+  assertClassCoverage(mirrorHtml, css, cssAllowlist);
+  return {
+    shell: appShell.replace(styles[0][0], () => `<style data-inline-route-css>${css.replace(/<\/style/gi, '<\\/style')}</style>`),
+    jsHref: '/' + entry.file,
+  };
+}
 
 const teamDir = join(distDir, 'team');
 mkdirSync(teamDir, { recursive: true });
-writeFileSync(join(teamDir, 'index.html'), buildPageShell(appShell, {
+const teamMirror = renderTeamMirror();
+const teamAssets = leanRouteShell('src/team/TeamApp.jsx', teamMirror);
+writeFileSync(join(teamDir, 'index.html'), buildPageShell(teamAssets.shell, {
   title: TEAM_META.title,
   headHtml: teamHead({ preview }),
-  mirrorHtml: renderTeamMirror(),
-  cssHref: findChunkAsset(distDir, 'TeamApp', '.css'),
-  jsHref: findChunkAsset(distDir, 'TeamApp', '.js'),
+  mirrorHtml: teamMirror,
+  jsHref: teamAssets.jsHref,
 }), 'utf8');
 
 const aiDir = join(distDir, 'ai-visibility');
 mkdirSync(aiDir, { recursive: true });
-writeFileSync(join(aiDir, 'index.html'), buildPageShell(appShell, {
+const aiMirror = renderAiVisibilityMirror({ capiUrl });
+const aiAssets = leanRouteShell('src/ai/AiVisibilityApp.jsx', aiMirror);
+writeFileSync(join(aiDir, 'index.html'), buildPageShell(aiAssets.shell, {
   title: META.title,
   headHtml: aiVisibilityHead({ preview }),
-  mirrorHtml: renderAiVisibilityMirror({ capiUrl }),
-  cssHref: findChunkAsset(distDir, 'AiVisibilityApp', '.css'),
-  jsHref: findChunkAsset(distDir, 'AiVisibilityApp', '.js'),
+  mirrorHtml: aiMirror,
+  jsHref: aiAssets.jsHref,
 }), 'utf8');
 
 // The bundler must never read local proof in production. This separate post-build
@@ -115,3 +149,7 @@ if (!preview && existsSync(localProof)) {
   const { PROOF_ENTRIES } = await import(pathToFileURL(localProof).href);
   assertNoUnverifiedProof(distDir, PROOF_ENTRIES);
 }
+
+// Only remove the two known build-owned paths; leave unexpected contents to fail.
+unlinkSync(join(distDir, '.vite/manifest.json'));
+rmdirSync(join(distDir, '.vite'));

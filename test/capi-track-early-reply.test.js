@@ -68,6 +68,8 @@ test('rate limits and invalid event IDs are decided before waitUntil', async (t)
   assert.equal((await handleCapi(request(), h.env, {}, h.ctx)).status, 429);
   h.limits.values.clear();
   assert.equal((await handleCapi(request({ eventId: '' }), h.env, {}, h.ctx)).status, 400);
+  assert.equal(h.limits.puts.length, 3, 'invalid requests still consume the rate-limit budget');
+  assert.equal((await handleCapi(request(), h.env, {}, h.ctx)).status, 429);
   assert.equal(h.promises.length, 0);
   assert.equal(h.sent.length, 0);
 });

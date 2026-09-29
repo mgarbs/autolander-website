@@ -9,7 +9,6 @@ import {
   PLAN_LINES,
   PRICING,
   SUBS,
-  TEAM_META,
   TIERS,
 } from '../../shared/team-content.js';
 
@@ -30,7 +29,7 @@ export function renderTeamMirror() {
       <section class="py-20"><div class="mx-auto max-w-7xl px-6"><h2 class="font-display text-4xl font-extrabold uppercase italic text-white">AutoPilot does the posting. Your people do the selling.</h2><div class="mx-auto mt-6 max-w-4xl">${responsiveImageHtml(TEAM_IMAGES.autopilot, { sizes: IMAGE_SIZES.teamAutopilot, className: 'block h-auto w-full object-contain' })}</div></div></section>
       <section class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto max-w-7xl px-6"><h2 class="font-display text-4xl font-extrabold uppercase italic text-white">The Manager Dashboard</h2><div class="mt-10 grid items-start gap-6 lg:grid-cols-[1.35fr_0.65fr]">${responsiveImageHtml(TEAM_IMAGES.dashboard, { sizes: IMAGE_SIZES.teamDashboard, className: 'block h-auto w-full object-contain' })}<p class="text-slate-300">Posts, live listings, sold units and who’s online, rep by rep, in the Manager Dashboard. Sold units show up as alerts, so nothing slips.</p></div></div></section>
 
-      <section class="py-20"><div class="mx-auto max-w-7xl px-6"><div class="grid items-start gap-6 rounded-3xl border border-emerald-400/15 bg-[#0b0d12] p-5 sm:p-7 lg:grid-cols-[0.64fr_0.36fr]">${responsiveImageHtml(TEAM_IMAGES.access, { sizes: IMAGE_SIZES.teamAccess })}<div><h2 class="font-display text-4xl font-extrabold uppercase italic text-white">${esc(PRICING.planName)}</h2><p class="mt-5 text-lg leading-relaxed text-slate-300">${esc(TEAM_META.description)}</p><ul class="mt-6 space-y-3">${PLAN_LINES.slice(3).map((item) => `<li class="text-sm text-slate-300">${esc(item)}</li>`).join('')}</ul></div></div></div></section>
+      <section class="py-20"><div class="mx-auto max-w-7xl px-6"><div class="grid items-start gap-6 rounded-3xl border border-emerald-400/15 bg-[#0b0d12] p-5 sm:p-7 lg:grid-cols-[0.64fr_0.36fr]">${responsiveImageHtml(TEAM_IMAGES.access, { sizes: IMAGE_SIZES.teamAccess })}<div><h2 class="font-display text-4xl font-extrabold uppercase italic text-white">${esc(PRICING.planName)}</h2><ul class="mt-6 space-y-3">${PLAN_LINES.slice(3).map((item) => `<li class="text-sm text-slate-300">${esc(item)}</li>`).join('')}</ul></div></div></div></section>
 
       <section class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto max-w-4xl px-6"><h2 class="font-display text-4xl font-extrabold uppercase italic text-white">FAQ</h2><div class="mt-8 space-y-3">${FAQ.map(({ q, a }) => `<details class="rounded-2xl border border-white/10 bg-[#0b0d12] p-5"><summary class="cursor-pointer font-bold text-white">${esc(q)}</summary><p class="mt-3 text-sm leading-relaxed text-slate-300">${esc(a)}</p></details>`).join('')}</div></div></section>
 

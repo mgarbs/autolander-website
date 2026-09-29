@@ -37,8 +37,8 @@ export const AI_VISIBILITY_ORIGIN = 'https://autolander.ai';
 export const AI_VISIBILITY_CANONICAL = `${AI_VISIBILITY_ORIGIN}${AI_VISIBILITY_PATH}`;
 export const AI_VISIBILITY_OG_IMAGE = `${AI_VISIBILITY_ORIGIN}/og/ai-visibility.jpg`;
 
-export { AI_VISIBILITY_IMAGES } from '../../shared/page-images.js';
-import { AI_VISIBILITY_IMAGES, aiImage } from '../../shared/page-images.js';
+export { AI_VISIBILITY_IMAGES } from '../../shared/ai-images.js';
+import { AI_VISIBILITY_IMAGES, aiImage } from '../../shared/ai-images.js';
 import { imagePreloadHtml, IMAGE_SIZES } from '../../shared/responsive-images.js';
 
 const escAttr = (value) => String(value)

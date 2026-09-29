@@ -29,7 +29,7 @@ import {
   comparisonRows,
   fmtUsd,
 } from '../../shared/ai-visibility-content.js';
-import { aiImage } from '../../shared/page-images.js';
+import { aiImage } from '../../shared/ai-images.js';
 import { IMAGE_SIZES } from '../../shared/responsive-images.js';
 import ResponsiveImage from '../components/ResponsiveImage.jsx';
 

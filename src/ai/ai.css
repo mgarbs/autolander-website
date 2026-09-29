@@ -11,6 +11,16 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 @source "./";
+@source "../components/ResponsiveImage.jsx";
+@source "../lib/";
+@source "../../shared/responsive-images.js";
+@source "../../shared/page-images.js";
+@source "../../shared/responsive-image-manifest.json";
+@source "../../shared/tracking-scope.js";
+@source "../../shared/meta-signal.js";
+@source "../../shared/ai-visibility-content.js";
+@source "../../shared/ai-scan-form.js";
+@source "../../shared/ai-images.js";
 @source "../components/SiteNav.jsx";
 @source "../components/SiteFooter.jsx";
 
