@@ -65,3 +65,12 @@ writeFileSync(adminIndexPath, noindexShell, 'utf8');
 // zero-redirect shell the /admin path already has.
 mkdirSync(payDir, { recursive: true });
 writeFileSync(payIndexPath, noindexShell, 'utf8');
+// Same noindex shell for /team (the dealer-team landing page used by paid ads), so the exact
+// path answers 200 instead of the 404.html fallback. It is not linked and not in the sitemap.
+const teamDir = join(distDir, 'team');
+mkdirSync(teamDir, { recursive: true });
+writeFileSync(join(teamDir, 'index.html'), noindexShell, 'utf8');
+// And for /ai-visibility (the free AI Visibility Scan page), on the same terms.
+const aiDir = join(distDir, 'ai-visibility');
+mkdirSync(aiDir, { recursive: true });
+writeFileSync(join(aiDir, 'index.html'), noindexShell, 'utf8');

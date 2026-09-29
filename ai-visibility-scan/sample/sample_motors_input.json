@@ -1,0 +1,27 @@
+{
+  "dealership_name": "Sample Motors",
+  "website_url": "https://www.samplemotors.example/",
+  "city": "Raleigh",
+  "state": "NC",
+  "zip": "27604",
+  "brands": [],
+  "competitors": ["Harborline Motors", "Quillfield Auto Group", "Brightwater Pre-Owned"],
+  "cars_sold_per_month": 45,
+  "avg_gross_per_car": 2400,
+  "inventory_samples": [
+    {"year": 2021, "make": "Ford", "model": "F-150", "trim": "XLT", "url": "https://www.samplemotors.example/inventory/used-2021-ford-f-150-xlt/"},
+    {"year": 2019, "make": "Toyota", "model": "RAV4", "trim": "LE", "url": "https://www.samplemotors.example/inventory/used-2019-toyota-rav4-le/"},
+    {"year": 2020, "make": "Honda", "model": "Accord", "trim": "Sport", "url": "https://www.samplemotors.example/inventory/used-2020-honda-accord-sport/"},
+    {"year": 2018, "make": "Chevrolet", "model": "Silverado 1500", "trim": "LT", "url": "https://www.samplemotors.example/inventory/used-2018-chevrolet-silverado-1500-lt/"},
+    {"year": 2022, "make": "Jeep", "model": "Grand Cherokee", "trim": "Laredo", "url": "https://www.samplemotors.example/inventory/used-2022-jeep-grand-cherokee-laredo/"}
+  ],
+  "google_rating": 4.4,
+  "google_review_count": 312,
+  "competitor_ratings": [
+    {"name": "Harborline Motors", "rating": 4.6, "count": 890},
+    {"name": "Quillfield Auto Group", "rating": 4.2, "count": 540},
+    {"name": "Brightwater Pre-Owned", "rating": 4.7, "count": 205}
+  ],
+  "yelp_claimed": false,
+  "manual_notes": "Fictional sample: a rep asked Google AI Mode for the best used car dealer in Raleigh and saw two competitors listed, not Sample Motors."
+}
