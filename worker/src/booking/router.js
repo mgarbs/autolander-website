@@ -960,8 +960,9 @@ function classifyAiScanDuplicateSearch(body) {
   }
   const keys = Object.keys(body);
   if (keys.length === 0) return { kind: 'none' };
-  // The CRM answers { contact, traceId }. traceId is request metadata; any other key is unexpected.
-  const knownKeys = new Set(['contact', 'traceId']);
+  // The CRM answers { contact, traceId }, plus matchingField ("email" or "phone") when a contact matched.
+  // traceId and matchingField are metadata; any other key is unexpected.
+  const knownKeys = new Set(['contact', 'traceId', 'matchingField']);
   if (!keys.includes('contact') || keys.some((key) => !knownKeys.has(key))) {
     return { kind: 'unexpected', keys };
   }

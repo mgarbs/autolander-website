@@ -728,6 +728,31 @@ test('the CRM duplicate reply with traceId and a contact only tags and notes tha
   assert.equal(record.crmContactId, 'contact_existing');
 });
 
+test('the CRM duplicate reply for a matched contact (contact, matchingField, traceId) tags and notes it', async (t) => {
+  const tracking = new MemoryKv();
+  const calls = [];
+  t.mock.method(globalThis, 'fetch', async (url, init = {}) => {
+    const call = requestDetails(url, init);
+    calls.push(call);
+    if (call.href.includes('/contacts/search/duplicate?')) {
+      return Response.json({ contact: { id: 'contact_matched', phone: '+12125550123' }, matchingField: 'email', traceId: 'trace-example' });
+    }
+    if (call.href.endsWith('/tags')) return Response.json({ tags: ['ai-scan-request'], traceId: 'trace-example' });
+    if (call.href.endsWith('/notes')) return Response.json({ note: { id: 'note_matched' }, traceId: 'trace-example' });
+    throw new Error(`Unexpected request: ${call.method} ${call.href}`);
+  });
+  const id = submissionId(34);
+
+  const response = await handleBooking(jsonRequest(validBody({ submissionId: id })), crmEnv(tracking), {}, {});
+
+  assert.equal(response.status, 200);
+  assert.equal(calls.some(({ href }) => new URL(href).pathname === '/contacts/'), false);
+  assert.equal(calls.some(({ method }) => ['PUT', 'PATCH'].includes(method)), false);
+  const record = await storedRequest(tracking, id);
+  assert.equal(record.crm, 'synced');
+  assert.equal(record.crmContactId, 'contact_matched');
+});
+
 test('a duplicate reply with an unknown extra key still fails closed', async (t) => {
   const tracking = new MemoryKv();
   const calls = [];
