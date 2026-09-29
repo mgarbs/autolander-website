@@ -509,8 +509,8 @@ function SeatCalculator() {
 
 export function PricingSection({ onBook, onWarm }) {
   return (
-    <section id="pricing" className="py-20 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6">
+    <section id="team-pricing" className="py-20 lg:py-32">
+      <div id="pricing" className="mx-auto max-w-7xl px-6">
         <Eyebrow tone="green">{PRICING.eyebrow}</Eyebrow>
         <SectionHeading className="mt-5 max-w-4xl">{PRICING.headingLead} <Grad tone="green">{PRICING.headingAccent}</Grad></SectionHeading>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">{PRICING.lead}</p>
@@ -574,6 +574,7 @@ export function FaqSection() {
   return (
     <section id="faq" className="border-y border-white/5 bg-[#080808] py-20 lg:py-32">
       <div className="mx-auto max-w-4xl px-6">
+        <h2 className="font-display text-3xl font-extrabold uppercase italic text-white">FAQ</h2>
         <Eyebrow>Owner questions</Eyebrow>
         <SectionHeading className="mt-5">Straight answers.</SectionHeading>
         <div className="mt-10 divide-y divide-white/10 rounded-3xl border border-white/10 bg-[#0b0d12]">

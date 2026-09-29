@@ -211,7 +211,7 @@ test('team gets its own readable noindex shell and metadata', () => {
   assert.ok(html.includes('<link rel="canonical" href="https://autolander.ai/team/" />'));
   assert.ok(html.includes('https://autolander.ai/og/team.jpg'));
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
-  assert.ok(text(html).includes(TEAM_META.description));
+  assert.ok(!text(renderTeamMirror()).includes(TEAM_META.description), 'approved removal of the duplicate mirror-only paragraph');
 });
 
 test('plan prices do not drift across renderer and generated agent surfaces', () => {
