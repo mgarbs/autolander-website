@@ -30,7 +30,7 @@ import {
   comparisonRows,
   fmtUsd,
 } from '../../shared/ai-visibility-content.js';
-import { aiImage } from '../../shared/page-images.js';
+import { aiImage } from '../../shared/ai-images.js';
 import { responsiveImageHtml, IMAGE_SIZES } from '../../shared/responsive-images.js';
 
 const esc = (value) => String(value ?? '')
@@ -135,7 +135,7 @@ function scanForm(action) {
       <form id="scan-form" method="post" action="${esc(action)}" aria-labelledby="scan-form-title" toolname="${esc(FORM.webmcp.toolname)}" tooldescription="${esc(FORM.webmcp.tooldescription)}" class="rounded-[2rem] border border-white/10 bg-[#0b0d12] p-6 shadow-2xl shadow-blue-950/30 sm:p-8">
         <h2 id="scan-form-title" class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(FORM.title)}</h2>
         <p class="mt-2 text-sm leading-relaxed text-slate-400">${copy(FORM.intro)}</p>
-        <p class="mt-2 text-xs leading-relaxed text-slate-500">${copy(FORM.requiredNote)}</p>
+        <p class="mt-2 text-xs leading-relaxed text-slate-400">${copy(FORM.requiredNote)}</p>
         <div id="scan-errors" tabindex="-1" class="mt-4 hidden rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200"><p class="font-bold">${copy(FORM.errorSummaryTitle)}</p></div>
         <div class="mt-5 grid gap-4 sm:grid-cols-2">
           <div class="sm:col-span-2">${inputField('dealershipName', fields.dealershipName)}</div>

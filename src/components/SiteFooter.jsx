@@ -141,8 +141,8 @@ export default function SiteFooter({ extraLine = '', mobileCtaPadding = false })
         </div>
 
         <div className="mt-8 border-t border-white/5 pt-6 sm:mt-10 sm:pt-8">
-          {extraLine && <p className="mb-3 max-w-4xl text-xs leading-relaxed text-slate-500">{extraLine}</p>}
-          <p className="text-center text-[10px] font-black uppercase tracking-widest text-slate-500 sm:text-left">© 2026 AutoLander. All rights reserved.</p>
+          {extraLine && <p className="mb-3 max-w-4xl text-xs leading-relaxed text-slate-400">{extraLine}</p>}
+          <p className="text-center text-[10px] font-black uppercase tracking-widest text-slate-400 sm:text-left">© 2026 AutoLander. All rights reserved.</p>
         </div>
       </div>
     </footer>

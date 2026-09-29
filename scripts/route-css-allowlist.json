@@ -1,0 +1,10 @@
+{
+  "group": "Tailwind parent state marker; descendants own the generated selectors.",
+  "peer": "Tailwind sibling state marker; siblings own the generated selectors.",
+  "al-ai-summary": "JSON-LD speakable selector, with visual styles supplied by utilities.",
+  "al-faq-a": "JSON-LD speakable selector, with visual styles supplied by utilities.",
+  "lucide": "Lucide icon identifier; the SVG attributes and utility classes supply its appearance.",
+  "lucide-car-front": "Lucide icon identifier; the SVG attributes and utility classes supply its appearance.",
+  "lucide-chevron-down": "Lucide icon identifier; the SVG attributes and utility classes supply its appearance.",
+  "lucide-menu": "Lucide icon identifier; the SVG attributes and utility classes supply its appearance."
+}

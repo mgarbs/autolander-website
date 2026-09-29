@@ -73,7 +73,7 @@ export function buildPageShell(appShell, {
 
   const assets = [
     cssHref ? `<link rel="stylesheet" crossorigin href="${esc(cssHref)}" />` : '',
-    jsHref ? `<link rel="modulepreload" crossorigin href="${esc(jsHref)}" />` : '',
+    jsHref ? `<link rel="modulepreload" data-al-route-entry crossorigin href="${esc(jsHref)}" />` : '',
   ].filter(Boolean).join('\n    ');
   const insert = `    <title>${esc(title)}</title>\n${headHtml}${assets ? `\n    ${assets}` : ''}\n`;
   if (!/<\/head>/i.test(html)) throw new Error('spa-shell: </head> is missing');

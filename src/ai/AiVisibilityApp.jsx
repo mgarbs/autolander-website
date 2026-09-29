@@ -209,7 +209,7 @@ function ScanForm() {
     >
       <p id="scan-form-title" className="font-display text-2xl font-extrabold uppercase italic text-white">{FORM.title}</p>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">{FORM.intro}</p>
-      <p className="mt-2 text-xs leading-relaxed text-slate-500">{FORM.requiredNote}</p>
+      <p className="mt-2 text-xs leading-relaxed text-slate-400">{FORM.requiredNote}</p>
       {agentAssisted && <p className="mt-4 rounded-xl border border-blue-400/25 bg-blue-500/[0.07] p-3 text-sm leading-relaxed text-blue-100">{FORM.agentBanner}</p>}
       <input id="scan-submissionId" type="hidden" name="submissionId" value={submissionId} />
       <input id="scan-submittedVia" type="hidden" name="submittedVia" value="form" />
