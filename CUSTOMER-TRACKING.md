@@ -3,10 +3,18 @@
 This branch pairs with the app's `codex/customer-attribution-lifecycle` branch.
 The companion desktop release is v3.80.7.
 
-The website removes the ScrollDepth emitter, seeds `_fbp` before the first
-PageView, loads Pixel immediately, and pairs browser/server PageView IDs. Existing
-OutboundClick events use `content_name: download` and preserve the original wording
-in `content_label`; the server receives available `fbc` unchanged.
+GA4 uses the first-party `al-tags-v1.js` facade: `zaraz` mode sends through
+Cloudflare's GA4 tool; `legacy` mode loads gtag on interaction, tab hiding or
+8 seconds after load; `off` sends nothing on previews and excluded paths.
+The Worker controls injection through TRACKING KV `cfg:zaraz_mode`
+(`off` / `canary` / `on`, with a 60-second cache). The default is off.
+
+There is no browser pixel; Meta = `/capi/track` only for browser-originated
+events. Verified Lead and AIScanRequest remain server-owned API events.
+Static SEO pages remain GA-only, while preserving `_fbp`/`_fbc` for later
+SPA events. The GA kill switch never affects Meta. Payment tokens are
+redacted to `/pay/:token` in GA and Meta URLs, paths and referrers.
+Known-visitor matching is implemented but defaults off.
 
 Demo attribution falls back from organic first touch to paid cookie data, then
 submit-time page/referrer and the request Referer. CRM utm_source/utm_medium default

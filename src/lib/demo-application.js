@@ -1,3 +1,4 @@
+import { readQaTestEventCode } from './tracking-qa.js';
 import { getAttributionPayload } from './identity.js';
 import {
   mergeOrganicAttribution,
@@ -50,12 +51,14 @@ export async function submitApplication({
   const referrerUrl = organicAttribution?.referrer_url
     || attribution.firstTouch?.referrer || currentReferrer;
   const analyticsAttribution = mergeOrganicAttribution(attribution, organicAttribution);
+  const testEventCode = readQaTestEventCode();
   const res = await fetch(`${CAPI_URL}/api/apply`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     mode: 'cors',
     credentials: 'omit',
     body: JSON.stringify({
+      ...(testEventCode ? { test_event_code: testEventCode } : {}),
       fullName,
       email,
       phone,

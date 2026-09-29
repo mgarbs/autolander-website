@@ -1,0 +1,177 @@
+{
+  "dataLayer": false,
+  "historyChange": false,
+  "settings": {
+    "autoInjectScript": false,
+    "hideQueryParams": false,
+    "hideExternalReferer": false,
+    "hideIPAddress": false,
+    "hideUserAgent": false
+  },
+  "variables": {},
+  "triggers": {
+    "alBlockHost": {
+      "name": "AL block: non-production host",
+      "description": "Blocks every AutoLander action unless the page host is autolander.ai or www.autolander.ai (covers localhost, autolander-preview.pages.dev, preview.autolander.ai, workers.dev).",
+      "loadRules": [
+        {
+          "id": "alBlockHostR1",
+          "match": "{{ system.page.url.hostname }}",
+          "op": "NOT_MATCH_REGEX",
+          "value": "^(www\\.)?autolander\\.ai$"
+        }
+      ],
+      "excludeRules": [],
+      "clientRules": []
+    },
+    "alBlockPath": {
+      "name": "AL block: untracked paths",
+      "description": "Blocks every AutoLander action on /admin, /download/setup, /demo, /demo-clay, /onboarding and /training (same regex as shared/tracking-scope.js).",
+      "loadRules": [
+        {
+          "id": "alBlockPathR1",
+          "match": "{{ system.page.url.pathname }}",
+          "op": "MATCH_REGEX",
+          "value": "^/(admin|download/setup|demo|demo-clay|onboarding|training)(/|$)"
+        }
+      ],
+      "excludeRules": [],
+      "clientRules": []
+    },
+    "alEvGenerateLead": {
+      "name": "AL event: generate_lead",
+      "description": "zaraz.track('generate_lead') after a successful, non-duplicate /api/apply.",
+      "loadRules": [
+        { "id": "alEvGenerateLeadR1", "match": "{{ client.__zarazTrack }}", "op": "EQUALS", "value": "generate_lead" }
+      ],
+      "excludeRules": [],
+      "clientRules": []
+    },
+    "alEvAiScanRequest": {
+      "name": "AL event: ai_scan_request",
+      "description": "zaraz.track('ai_scan_request') after a successful, non-duplicate /api/ai-scan fetch submit.",
+      "loadRules": [
+        { "id": "alEvAiScanRequestR1", "match": "{{ client.__zarazTrack }}", "op": "EQUALS", "value": "ai_scan_request" }
+      ],
+      "excludeRules": [],
+      "clientRules": []
+    },
+    "alEvApplicationOpened": {
+      "name": "AL event: application_opened",
+      "description": "GA mirror of the Meta ApplicationOpened custom event (once per session).",
+      "loadRules": [
+        { "id": "alEvApplicationOpenedR1", "match": "{{ client.__zarazTrack }}", "op": "EQUALS", "value": "application_opened" }
+      ],
+      "excludeRules": [],
+      "clientRules": []
+    },
+    "alEvOutboundClick": {
+      "name": "AL event: outbound_click",
+      "description": "GA mirror of the Meta OutboundClick custom event (download_installer / open_installed_app).",
+      "loadRules": [
+        { "id": "alEvOutboundClickR1", "match": "{{ client.__zarazTrack }}", "op": "EQUALS", "value": "outbound_click" }
+      ],
+      "excludeRules": [],
+      "clientRules": []
+    },
+    "alEvChatOpened": {
+      "name": "AL event: chat_opened",
+      "description": "GA mirror of the Meta ChatOpened custom event.",
+      "loadRules": [
+        { "id": "alEvChatOpenedR1", "match": "{{ client.__zarazTrack }}", "op": "EQUALS", "value": "chat_opened" }
+      ],
+      "excludeRules": [],
+      "clientRules": []
+    }
+  },
+  "tools": {
+    "alGa4": {
+      "type": "component",
+      "component": "google-analytics_v4",
+      "name": "AutoLander GA4 (G-30H80LZMCH)",
+      "enabled": true,
+      "permissions": ["access_client_kv", "server_network_requests"],
+      "settings": {
+        "tid": "G-30H80LZMCH",
+        "hideOriginalIP": false,
+        "ecommerce": false,
+        "ga-audiences": false
+      },
+      "defaultFields": {
+        "cid": "{{ system.cookies.al_ga_cid }}",
+        "debug_mode": "{{ system.cookies.al_ga_debug }}",
+        "dl": "{{ $replace(system.page.url.href, /\\/pay\\/[^/?#\\s]+/, '/pay/:token') }}",
+        "dr": "{{ $replace(system.page.referrer ? system.page.referrer : '', /\\/pay\\/[^/?#\\s]+/, '/pay/:token') }}"
+      },
+      "blockingTriggers": ["alBlockHost", "alBlockPath"],
+      "actions": {
+        "alGa4Pageview": {
+          "actionType": "pageview",
+          "firingTriggers": ["Pageview"],
+          "blockingTriggers": ["alBlockHost", "alBlockPath"],
+          "data": {}
+        },
+        "alGa4GenerateLead": {
+          "actionType": "event",
+          "firingTriggers": ["alEvGenerateLead"],
+          "blockingTriggers": ["alBlockHost", "alBlockPath"],
+          "data": {
+            "en": "generate_lead",
+            "method": "{{ client.method }}",
+            "lead_source": "{{ client.lead_source }}",
+            "lead_medium": "{{ client.lead_medium }}",
+            "first_landing_page": "{{ client.first_landing_page }}",
+            "first_referrer_domain": "{{ client.first_referrer_domain }}"
+          }
+        },
+        "alGa4AiScanRequest": {
+          "actionType": "event",
+          "firingTriggers": ["alEvAiScanRequest"],
+          "blockingTriggers": ["alBlockHost", "alBlockPath"],
+          "data": {
+            "en": "ai_scan_request",
+            "method": "{{ client.method }}",
+            "lead_source": "{{ client.lead_source }}",
+            "lead_medium": "{{ client.lead_medium }}",
+            "first_landing_page": "{{ client.first_landing_page }}",
+            "first_referrer_domain": "{{ client.first_referrer_domain }}"
+          }
+        },
+        "alGa4ApplicationOpened": {
+          "actionType": "event",
+          "firingTriggers": ["alEvApplicationOpened"],
+          "blockingTriggers": ["alBlockHost", "alBlockPath"],
+          "data": {
+            "en": "application_opened",
+            "content_name": "{{ client.content_name }}",
+            "content_category": "{{ client.content_category }}"
+          }
+        },
+        "alGa4OutboundClick": {
+          "actionType": "event",
+          "firingTriggers": ["alEvOutboundClick"],
+          "blockingTriggers": ["alBlockHost", "alBlockPath"],
+          "data": {
+            "en": "outbound_click",
+            "content_name": "{{ client.content_name }}",
+            "content_label": "{{ client.content_label }}",
+            "content_category": "{{ client.content_category }}",
+            "action": "{{ client.action }}",
+            "destination": "{{ client.destination }}",
+            "os": "{{ client.os }}"
+          }
+        },
+        "alGa4ChatOpened": {
+          "actionType": "event",
+          "firingTriggers": ["alEvChatOpened"],
+          "blockingTriggers": ["alBlockHost", "alBlockPath"],
+          "data": {
+            "en": "chat_opened",
+            "content_name": "{{ client.content_name }}",
+            "content_category": "{{ client.content_category }}"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { redactTrackingValue } from '../../../shared/tracking-scope.js';
 const META_GRAPH_VERSION = 'v19.0';
 
 export const ACTION_SOURCE = {
@@ -49,7 +50,7 @@ export async function sendEvents(env, events, { logger = console, testEventCode 
   const url = new URL(`https://graph.facebook.com/${META_GRAPH_VERSION}/${env.META_PIXEL_ID}/events`);
   url.searchParams.set('access_token', env.META_CAPI_ACCESS_TOKEN);
 
-  const body = { data: events };
+  const body = { data: events.map(redactTrackingValue) };
   const resolvedTestEventCode = String(testEventCode || env.META_TEST_EVENT_CODE || '').trim();
   if (resolvedTestEventCode) body.test_event_code = resolvedTestEventCode;
 

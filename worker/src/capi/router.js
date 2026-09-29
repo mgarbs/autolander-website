@@ -1,3 +1,4 @@
+import { readZarazMode } from '../agent/zaraz-tag.js';
 import { ACTION_SOURCE, buildEvent, sendEvents } from './meta-client.js';
 import { hashEmail, hashLowercase, hashName, hashPhone, sha256Hex } from './hash.js';
 import {
@@ -229,6 +230,9 @@ export async function handleCapi(request, env, corsHeaders, ctx) {
         hasTrackingKv: Boolean(env.TRACKING),
         testEventCode: env.META_TEST_EVENT_CODE ? String(env.META_TEST_EVENT_CODE) : null,
         graphVersion: 'v19.0',
+        zarazMode: await readZarazMode(env),
+        browserPixel: false,
+        sendsWorkerLead: env.SEND_WORKER_LEAD_CAPI !== 'false',
       },
       200,
       corsHeaders,
@@ -263,10 +267,12 @@ async function handleTrack(request, env, corsHeaders, ctx) {
 
   const limit = await enforceTrackRateLimit(request, env);
   if (!limit.ok) {
+    await bumpCounter(env, isoDay(new Date()), 'meta', 'track_rate_limited').catch(() => {});
     return jsonResponse({ ok: false, reason: limit.reason }, limit.status || 429, corsHeaders);
   }
 
   const body = await safeJson(request);
+  const testEventCode = env.ALLOW_QA_TEST_EVENT_CODE === 'true' && /^TEST[A-Za-z0-9]{1,32}$/.test(body.testEventCode) ? body.testEventCode : '';
   const eventName = clean(body.event, 64);
   if (!isAllowedEvent(eventName)) {
     return jsonResponse({ ok: false, reason: 'unsupported_event' }, 400, corsHeaders);
@@ -282,6 +288,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   }
 
   if (looksLikeBot(request).bot) {
+    await bumpCounter(env, isoDay(new Date()), 'meta', 'track_bot_blocked').catch(() => {});
     return jsonResponse({ ok: false, reason: 'blocked' }, 403, corsHeaders);
   }
 
@@ -360,6 +367,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     : { isNew: false, existing: null };
 
   const alreadySeen = await wasEventSeen(env, eventId);
+  if (alreadySeen) return jsonResponse({ ok: true, deduped: true }, 200, corsHeaders);
   if (!alreadySeen) {
     await markEventSeen(env, eventId);
     const attributable = isAttributableTraffic(utms, fbclid);
@@ -376,6 +384,8 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     const sessionSeenToday =
       isVisitEvent && sid ? await rememberDailySeen(env, today, 'session', sid) : false;
     await Promise.all([
+      bumpCounter(env, today, 'meta', body.channel === 'server_only' ? 'server_only_events' : 'legacy_pixel_events'),
+      testEventCode ? bumpCounter(env, today, 'meta', 'test_event_code') : null,
       bumpCounter(env, today, 'event', eventName),
       bumpCounter(env, today, 'event', `${eventName}:browser`),
       isVisitEvent && visitorSeenToday ? bumpCounter(env, today, 'audience', 'unique_visitors') : null,
@@ -449,6 +459,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
       at: new Date().toISOString(),
       event: eventName,
       source: 'browser',
+      ...(testEventCode ? { test: true } : {}),
       vid,
       sid,
       campaign_id: keys.campaignId,
@@ -501,6 +512,12 @@ async function handleTrack(request, env, corsHeaders, ctx) {
     pixelId: env.META_PIXEL_ID,
   });
 
+  if (env.ENRICH_KNOWN_VISITOR_MATCHING === 'true') {
+    const am = sanitizeAdvancedMatching(visitorMemory.existing?.am);
+    for (const key of ['em', 'ph', 'fn', 'ln']) {
+      if (!userData[key] && am[key]) userData[key] = am[key];
+    }
+  }
   const capiEvent = buildEvent({
     name: isCustomEvent(eventName) ? eventName : eventName,
     eventId,
@@ -512,7 +529,7 @@ async function handleTrack(request, env, corsHeaders, ctx) {
   });
 
   const sendPromise = (async () => {
-    const result = await sendEvents(env, [capiEvent]);
+    const result = await sendEvents(env, [capiEvent], { testEventCode });
     if (result.ok) {
       await Promise.all([
         bumpCounter(env, today, 'event', `${eventName}:server`),

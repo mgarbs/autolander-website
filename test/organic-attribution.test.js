@@ -7,6 +7,7 @@ import {
   mergeOrganicAttribution,
   readOrganicAttribution,
   trackGoogleLead,
+  trackGoogleAiScan,
 } from '../src/lib/organic-attribution.js';
 import { handleBooking } from '../worker/src/booking/router.js';
 import { hashLowercase, sha256Hex } from '../worker/src/capi/hash.js';
@@ -326,28 +327,40 @@ test('every indexable HTML landing page loads the shared capture exactly once', 
   }
 });
 
-test('production GA is hostname-gated and the homepage does not miss long non-interactive visits', () => {
+test('every tracked page loads al-tags and no page carries inline gtag', () => {
   const files = [resolve(ROOT, 'index.html'), ...htmlFiles(resolve(ROOT, 'public'))];
-  const hostGate = "location.hostname === 'autolander.ai' || location.hostname === 'www.autolander.ai'";
-  const checked = [];
-
+  let checked = 0;
   for (const file of files) {
     const html = readFileSync(file, 'utf8');
-    if (!html.includes('G-30H80LZMCH')) continue;
-    if (/google-site-verification:/i.test(html)) continue;
-    assert.ok(html.includes(hostGate), file);
-    assert.doesNotMatch(
-      html,
-      /<script\b[^>]*\bsrc=["']https:\/\/www\.googletagmanager\.com\/gtag\/js/i,
-      file,
-    );
-    checked.push(file);
+    assert.doesNotMatch(html, /G-30H80LZMCH|googletagmanager/);
+    if (file.endsWith('thank-you.html') || (!/[/\\](training|previews)[/\\]/.test(file) && !/google-site-verification:/i.test(html) && !/content=["'][^"']*noindex/i.test(html))) {
+      assert.equal((html.match(/<script defer src="\/al-tags-v1.js"/g) || []).length, 1, file);
+      checked++;
+    }
+    if (/[/\\](training|download|demo|demo-clay|onboarding|previews)[/\\]/.test(file)) assert.doesNotMatch(html, /al-tags-v1/);
   }
+  assert.ok(checked >= 50);
+  const tags = readFileSync(resolve(ROOT, 'public/al-tags-v1.js'), 'utf8');
+  assert.ok(tags.includes("location.hostname === 'autolander.ai' || location.hostname === 'www.autolander.ai'"));
+  assert.match(tags, /8000/);
+  assert.match(tags, /G-30H80LZMCH/);
+  assert.match(tags, /NO_TRACK_PATH_SOURCE/);
+  for (const generator of ['scripts/seo/shell.mjs', 'scripts/build-compare-pages.mjs']) {
+    const source = readFileSync(resolve(ROOT, generator), 'utf8');
+    assert.equal((source.match(/al-tags-v1.js/g) || []).length, 1);
+    assert.doesNotMatch(source, /G-30H80LZMCH/);
+  }
+});
 
-  assert.ok(checked.length >= 50, `expected at least 50 GA-enabled entry pages, saw ${checked.length}`);
-  const homepage = readFileSync(resolve(ROOT, 'index.html'), 'utf8');
-  assert.match(homepage, /requestIdleCallback\(load, \{ timeout: 4000 \}\)/);
-  assert.match(homepage, /setTimeout\(load, 2000\)/);
+test('verified scans queue one ai_scan_request with the same normalized attribution', () => {
+  const calls = [];
+  assert.equal(trackGoogleAiScan({ utms: { utm_source: 'google', utm_medium: 'organic' } },
+    { landing_page: '/pay/secret?session_id=secret', referrer_url: 'https://www.google.com/search' },
+    (...args) => calls.push(args)), true);
+  assert.deepEqual(calls, [['event', 'ai_scan_request', {
+    method: 'ai_visibility_scan', lead_source: 'google', lead_medium: 'organic',
+    first_landing_page: '/pay/:token', first_referrer_domain: 'google.com',
+  }]]);
 });
 
 test('GHL receives organic fallback and the two new fields without changing CAPI attribution', async (t) => {

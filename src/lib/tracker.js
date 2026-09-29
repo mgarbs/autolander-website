@@ -1,52 +1,34 @@
+import { isNoTrackPath, redactTrackingValue } from '../../shared/tracking-scope.js';
+import { readQaTestEventCode } from './tracking-qa.js';
 import { getAttributionPayload, getFbCookies, getVisitorId } from './identity.js';
 import {
-  canonicalMetaExternalId,
   isProductionMetaUrl,
 } from '../../shared/meta-signal.js';
 
-export const META_PIXEL_ID = import.meta.env.VITE_META_PIXEL_ID || '';
 const CAPI_URL = (import.meta.env.VITE_CAPI_URL || import.meta.env.VITE_CHAT_API_URL || '').replace(/\/+$/, '');
 const isBrowser = typeof window !== 'undefined';
 
-// Preview builds (preview.autolander.ai) must never emit pixel or CAPI events,
-// and the runtime hostname gate also protects localhost or a production bundle
-// served from any non-production host. Only the canonical website hosts may
-// initialize the production Pixel or call the production CAPI endpoint.
+// Only production trackable pages emit server events.
 const TRACKING_DISABLED =
   import.meta.env.MODE === 'preview'
   || import.meta.env.VITE_DEPLOY_TARGET === 'preview'
   || !isBrowser
+  || isNoTrackPath(window.location.pathname)
   || !isProductionMetaUrl(window.location.href);
-
-let pixelInitialized = false;
-
-export const isPixelEnabled = () =>
-  !TRACKING_DISABLED && Boolean(META_PIXEL_ID) && typeof window.fbq === 'function';
 
 export function newEventId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
-function firePixel(method, event, params, eventId) {
-  if (TRACKING_DISABLED || !isPixelEnabled()) return;
-  try {
-    if (!pixelInitialized) {
-      const externalId = canonicalMetaExternalId(META_PIXEL_ID, getVisitorId());
-      window.fbq('init', META_PIXEL_ID, externalId ? { external_id: externalId } : undefined);
-      pixelInitialized = true;
-    }
-    window.fbq(method, event, params, eventId ? { eventID: eventId } : undefined);
-  } catch {
-    /* Pixel must never break user flows */
-  }
-}
-
 async function sendToCapi(event, params, { eventId, userData } = {}) {
   if (TRACKING_DISABLED || !CAPI_URL || !isBrowser) return;
   try {
     const attribution = getAttributionPayload();
-    const payload = {
+    const testEventCode = readQaTestEventCode();
+    const payload = redactTrackingValue({
+      channel: 'server_only',
+      ...(testEventCode ? { testEventCode } : {}),
       event,
       eventId,
       eventTime: Math.floor(Date.now() / 1000),
@@ -54,7 +36,7 @@ async function sendToCapi(event, params, { eventId, userData } = {}) {
       ...attribution,
       customData: params || {},
       ...(userData || {}),
-    };
+    });
 
     await fetch(`${CAPI_URL}/capi/track`, {
       method: 'POST',
@@ -71,20 +53,18 @@ async function sendToCapi(event, params, { eventId, userData } = {}) {
 
 export function track(event, params = {}, opts = {}) {
   const eventId = opts.eventId || newEventId();
-  firePixel('track', event, params, eventId);
   void sendToCapi(event, params, { eventId, userData: opts.userData });
   return eventId;
 }
 
 export function trackCustom(event, params = {}, opts = {}) {
   const eventId = opts.eventId || newEventId();
-  firePixel('trackCustom', event, params, eventId);
   void sendToCapi(event, params, { eventId, userData: opts.userData });
   return eventId;
 }
 
 export function pageView() {
-  if (!isBrowser) return;
+  if (TRACKING_DISABLED) return;
   getVisitorId();
   getFbCookies();
   track('PageView', {});
@@ -108,7 +88,7 @@ function setSessionFlag(key) {
 }
 
 function installEngagementTracking() {
-  if (!isBrowser) return;
+  if (TRACKING_DISABLED) return;
   const path = window.location.pathname || '/';
   const engagedKey = `al_engaged:${path}`;
   if (!sessionFlag(engagedKey)) {

@@ -1,7 +1,9 @@
+import { isNoTrackPath } from '../../shared/tracking-scope.js';
+import { readZarazMode, zarazEligibility, maybeInjectZaraz } from './agent/zaraz-tag.js';
 import { AUTOLANDER_KNOWLEDGE } from './autolander-knowledge.js';
 import { sha256Hex } from './capi/hash.js';
 import { saveSupportRequest } from './support/storage.js';
-import { handleSiteRequest, isApiPath } from './agent/site.js';
+import { handleSiteRequest, isApiPath, isDocumentPath } from './agent/site.js';
 import { shortLinkResponse } from './agent/short-links.js';
 
 const DEFAULT_ALLOWED_ORIGINS = [
@@ -77,7 +79,17 @@ export default {
       try {
         const shortLink = shortLinkResponse(request, url);
         if (shortLink) return shortLink;
-        return await handleSiteRequest(request, url);
+        const mode = (request.method === 'GET' && isDocumentPath(url.pathname) && !isNoTrackPath(url.pathname))
+          ? await readZarazMode(env) : 'off';
+        const decision = zarazEligibility({ method: request.method, pathname: url.pathname, mode,
+          cookieHeader: request.headers.get('Cookie') });
+        if (decision.eligible) {
+          const headers = new Headers(request.headers);
+          headers.delete('If-None-Match'); headers.delete('If-Modified-Since');
+          request = new Request(request, { headers });
+        }
+        const siteResponse = await handleSiteRequest(request, url);
+        return await maybeInjectZaraz(request, siteResponse, { ...decision, mode });
       } catch (err) {
         try {
           console.error('[worker] agent-layer fallthrough', url.pathname, err?.stack || err);

@@ -1,21 +1,17 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script>
-      if (location.hostname === 'autolander.ai' || location.hostname === 'www.autolander.ai') {
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function(){window.dataLayer.push(arguments);};
-        window.gtag('js', new Date());
-
-        window.gtag('config', 'G-30H80LZMCH');
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-30H80LZMCH';
-        document.head.appendChild(script);
-      }
-    </script>
     <meta charset="UTF-8" />
+    <script>
+      (function () { try {
+        var search = new URLSearchParams(location.search);
+        if (!search.has('bt')) return;
+        search.delete('bt');
+        var rest = search.toString();
+        history.replaceState(history.state, '', location.pathname + (rest ? '?' + rest : '') + location.hash);
+      } catch (e) {} })();
+    </script>
+    <script defer src="/al-tags-v1.js" data-ga-eager></script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,18 +25,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;0,900;1,800;1,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- Meta Pixel Code -->
+    <!-- Meta CAPI PageView -->
     <script>
-      (function () {
-        // Production Meta is a positive allowlist. Localhost, preview.autolander.ai,
-        // Pages previews, workers.dev, and every other host initialize nothing.
+      (function () { try {
         if (location.origin !== 'https://autolander.ai' && location.origin !== 'https://www.autolander.ai') return;
-
-        var PIXEL_ID = '2087440198847151';
         var WORKER = 'https://autolander.ai';
-        var pixelInitialized = false;
         var pageViewId = crypto.randomUUID();
-
         function readCookie(name) {
           var match = document.cookie.split(';').map(function (part) { return part.trim(); })
             .find(function (part) { return part.indexOf(name + '=') === 0; });
@@ -69,107 +59,30 @@
           if (storedAttribution && typeof storedAttribution === 'object' && !Array.isArray(storedAttribution)) firstTouch = storedAttribution;
         } catch (e) {}
 
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
 
-        function initPixel(externalIdOrAdvancedMatching) {
-          if (pixelInitialized) return;
-          if (externalIdOrAdvancedMatching) {
-            var initData = typeof externalIdOrAdvancedMatching === 'string'
-              ? { external_id: externalIdOrAdvancedMatching }
-              : externalIdOrAdvancedMatching;
-            fbq('init', PIXEL_ID, initData);
-          }
-          else fbq('init', PIXEL_ID);
-          fbq('track', 'PageView', {}, { eventID: pageViewId });
-          fetch(WORKER + '/capi/track', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            mode: 'cors',
-            credentials: 'omit',
-            keepalive: true,
-            body: JSON.stringify({
-              event: 'PageView', eventId: pageViewId, eventTime: Math.floor(Date.now() / 1000),
-              sourceUrl: location.href, vid: readCookie('al_vid'), fbp: fbp, fbc: fbc,
-              fbclid: fbclid || firstTouch.fbclid || '', firstTouch: firstTouch, utms: firstTouch,
-              page: { landing_page: firstTouch.landing_page || '', current_page: location.href,
-                referrer: firstTouch.referrer || document.referrer || '' }
-            })
-          }).catch(function () {});
-          pixelInitialized = true;
+        function redact(value) {
+          return String(value || '').replace(/\/pay\/[^/?#\s]+/g, '/pay/:token');
         }
-
-        function externalIdFromVisitorCookie() {
-          var match = document.cookie.match(/(?:^|;\s*)al_vid=([^;]+)/);
-          var vid = match ? decodeURIComponent(match[1]).toLowerCase() : '';
-          return /^v_[a-z0-9]{12,40}$/.test(vid) ? PIXEL_ID + ':' + vid : '';
-        }
-
-        // VERIFIED-APPLICATION GATE for the Lead conversion. The browser event is
-        // allowed only when the server returns the deterministic Lead ID and the
-        // exact external identity used by its matching CAPI event.
-        var browserExternalId = externalIdFromVisitorCookie();
-        var bt = '';
-        try { bt = new URLSearchParams(window.location.search).get('bt') || ''; } catch (e) {}
-        if (!/^[a-f0-9]{32}$/.test(bt)) {
-          initPixel(browserExternalId);
-          return;
-        }
-        fetch(WORKER + '/capi/confirm', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          mode: 'cors',
-          credentials: 'omit',
-          body: JSON.stringify({ bt: bt })
-        })
-          .then(function (r) { return r.ok ? r.json() : null; })
-          .then(function (data) {
-            if (!data || !data.ok || data.eventName !== 'Lead') {
-              initPixel(browserExternalId);
-              return;
-            }
-            var eventId = data.eventId || '';
-            var externalId = (data.externalId || '').toLowerCase();
-            var validEventId = /^lead_[a-f0-9]{32}$/.test(eventId);
-            var validExternalId = new RegExp('^' + PIXEL_ID + ':v_[a-z0-9]{12,40}$').test(externalId);
-            if (!validEventId || !validExternalId) {
-              initPixel(browserExternalId);
-              return;
-            }
-
-            // A redeemed backend proof is authoritative. This keeps both Lead
-            // legs identical even if the long-lived visitor cookie rotated
-            // between application submission and the thank-you redirect.
-            var initData = { external_id: externalId };
-            var advancedMatchingKeys = ['em', 'ph', 'fn', 'ln', 'ct', 'st', 'zp', 'country'];
-            var am = data.am;
-            if (am && typeof am === 'object' && !Array.isArray(am)) {
-              advancedMatchingKeys.forEach(function (key) {
-                var value = am[key];
-                if (typeof value === 'string' && /^[a-f0-9]{64}$/.test(value)) {
-                  initData[key] = value;
-                }
-              });
-            }
-            initPixel(initData);
-            fbq('track', 'Lead', {
-              content_name: 'demo_application_submitted',
-              content_category: 'demo',
-              lead_type: 'website_application'
-            }, { eventID: eventId });
-            // Drop the token from the address bar so a refresh or copy can't replay it.
-            try { window.history.replaceState({}, document.title, window.location.pathname); } catch (e) {}
+        ['landing_page', 'landing_path', 'referrer'].forEach(function (key) {
+          if (firstTouch[key]) firstTouch[key] = redact(firstTouch[key]);
+        });
+        var testEventCode = '';
+        try { testEventCode = sessionStorage.getItem('al_test_event_code') || ''; } catch (e) {}
+        fetch(WORKER + '/capi/track', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          mode: 'cors', credentials: 'omit', keepalive: true,
+          body: JSON.stringify({
+            event: 'PageView', eventId: pageViewId, eventTime: Math.floor(Date.now() / 1000),
+            channel: 'server_only', testEventCode: testEventCode,
+            sourceUrl: redact(location.href), vid: readCookie('al_vid'), fbp: fbp, fbc: fbc,
+            fbclid: fbclid || firstTouch.fbclid || '', firstTouch: firstTouch, utms: firstTouch,
+            page: { landing_page: firstTouch.landing_page || '', current_page: redact(location.href),
+              referrer: redact(firstTouch.referrer || document.referrer || '') }
           })
-          .catch(function () { initPixel(browserExternalId); });
-      })();
+        }).catch(function () {});
+      } catch (e) {} })();
     </script>
-    <!-- End Meta Pixel Code -->
+    <!-- End Meta CAPI PageView -->
 
     <style>
       *,

@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect } from 'react'
 import App from './App.jsx'
-import { pageView } from './lib/tracker.js'
+import { pageView } from './lib/tags.js'
 
 const AdminApp = lazy(() => import('./admin/AdminApp.jsx'))
 const PayApp = lazy(() => import('./pay/PayApp.jsx'))
@@ -33,6 +33,7 @@ function isAiVisibilityPath() {
 
 export default function Root() {
   useEffect(() => {
+    // No-op on /admin and other no-track paths: tracker is disabled there.
     pageView()
   }, [])
 

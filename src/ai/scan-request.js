@@ -5,7 +5,7 @@
 // and change it. The attribution helpers below already live in the main bundle, so importing them
 // adds nothing to any other page.
 import { getAttributionPayload } from '../lib/identity.js';
-import { readOrganicAttribution } from '../lib/organic-attribution.js';
+import { readOrganicAttribution, mergeOrganicAttribution, trackGoogleAiScan } from '../lib/organic-attribution.js';
 import { SMS_CONSENT } from '../../shared/ai-visibility-content.js';
 export { ROLE_CHOICES } from '../../shared/ai-visibility-content.js';
 
@@ -130,5 +130,6 @@ export async function submitScanRequest({
     }),
   });
   const data = await res.json().catch(() => ({ ok: false, reason: 'bad_response' }));
+  if (res.ok && data.ok && !data.duplicate) trackGoogleAiScan(mergeOrganicAttribution(attribution, organicAttribution), organicAttribution);
   return { httpOk: res.ok, status: res.status, ...data, ok: Boolean(res.ok && data.ok) };
 }

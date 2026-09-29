@@ -517,26 +517,13 @@ test('download clicks and landing content emit only truthful Meta signals', asyn
   assert.match(deferredSource, /<section id="features"/);
   assert.match(wranglerSource, /pattern = "www\.autolander\.ai\/\*"/);
 
-  assert.match(thankYouSource, /\^lead_\[a-f0-9\]\{32\}\$/);
-  assert.match(thankYouSource, /data\.eventName !== 'Lead'/);
-  assert.match(thankYouSource, /external_id: externalId/);
-  assert.match(thankYouSource, /data\.am/);
-  assert.match(thankYouSource, /\^\[a-f0-9\]\{64\}\$/);
-  assert.match(thankYouSource, /fbq\('track', 'Lead'/);
-  assert.match(thankYouSource, /\{ eventID: eventId \}/);
-  assert.doesNotMatch(thankYouSource, /browserExternalId !== externalId/);
+  assert.doesNotMatch(thankYouSource, /fbq|fbevents|PIXEL_ID|\/capi\/confirm|'Lead'/);
   assert.match(thankYouSource, /location\.origin !== 'https:\/\/autolander\.ai'/);
   assert.match(thankYouSource, /location\.origin !== 'https:\/\/www\.autolander\.ai'/);
   assert.doesNotMatch(thankYouSource, /vid \|\| bt/);
   assert.doesNotMatch(thankYouSource, /facebook\.com\/tr\?id=/);
 
-  assert.match(trackerSource, /canonicalMetaExternalId/);
   assert.match(trackerSource, /isProductionMetaUrl/);
-  assert.match(viteSource, /window\.location\.origin!=='https:\/\/autolander\.ai'/);
-  assert.match(viteSource, /window\.location\.origin!=='https:\/\/www\.autolander\.ai'/);
-  assert.doesNotMatch(viteSource, /facebook\.com\/tr\?id=/);
-
-  const configuredPixelId = envSource.match(/^VITE_META_PIXEL_ID=(.+)$/m)?.[1]?.trim();
-  const thankYouPixelId = thankYouSource.match(/var PIXEL_ID = '([^']+)'/)?.[1];
-  assert.equal(thankYouPixelId, configuredPixelId);
+  assert.doesNotMatch(trackerSource, /fbq|canonicalMetaExternalId/);
+  assert.doesNotMatch(viteSource, /fbevents|facebook\.com\/tr/);
 });

@@ -60,13 +60,15 @@ async function trackerModule() {
   const source = (await readFile(new URL('../src/lib/tracker.js', import.meta.url), 'utf8'))
     .replace("'./identity.js'", JSON.stringify(identityUrl))
     .replace("'../../shared/meta-signal.js'", JSON.stringify(sharedUrl))
+    .replace("'../../shared/tracking-scope.js'", JSON.stringify(new URL('../shared/tracking-scope.js', import.meta.url).href))
+    .replace("'./tracking-qa.js'", JSON.stringify(new URL('../src/lib/tracking-qa.js', import.meta.url).href))
     .replaceAll('import.meta.env', JSON.stringify({
       MODE: 'production', VITE_META_PIXEL_ID: '123456789', VITE_CAPI_URL: 'https://autolander.ai',
     }));
   return import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
 }
 
-test('first PageView has _fbp before Pixel init and sends browser/server together with one ID', async (t) => {
+test('first PageView seeds _fbp and sends one server event', async (t) => {
   const harness = browser(t);
   const requests = [];
   t.mock.method(globalThis, 'fetch', async (url, init) => {
@@ -77,14 +79,11 @@ test('first PageView has _fbp before Pixel init and sends browser/server togethe
   pageView();
 
   assert.match(harness.jar.get('_fbp'), /^fb\.1\.\d{13}\.\d+$/);
-  assert.equal(harness.pixel.length, 2);
-  assert.equal(harness.pixel[0].args[0], 'init');
-  assert.equal(harness.pixel[0].fbp, harness.jar.get('_fbp'));
-  assert.equal(harness.pixel[1].args[1], 'PageView');
+  assert.equal(harness.pixel.length, 0);
   assert.equal(requests.length, 1, 'server delivery starts synchronously without a timer');
   assert.equal(requests[0].body.event, 'PageView');
-  assert.equal(requests[0].body.fbp, harness.pixel[1].fbp);
-  assert.equal(requests[0].body.eventId, harness.pixel[1].args[3].eventID);
+  assert.equal(requests[0].body.fbp, harness.jar.get('_fbp'));
+  assert.equal(requests[0].body.channel, 'server_only');
   assert.equal(requests[0].init.keepalive, true);
   assert.equal(harness.listeners.some(([event]) => event === 'scroll'), false);
   assert.deepEqual(harness.timers.map(([, delay]) => delay), [15000]);
@@ -104,12 +103,12 @@ test('OutboundClick carries the exact stored fbc through browser payload and Wor
     content_name: 'download', content_label: 'Download for Windows',
     content_category: 'desktop_app', action: 'download_installer', destination: 'github_release',
   };
-  trackCustom('OutboundClick', customData);
+  const eventId = trackCustom('OutboundClick', customData);
   const payload = requests[0].body;
   assert.equal(payload.fbc, fbc);
   assert.equal(payload.fbp, fbp);
   assert.deepEqual(payload.customData, customData);
-  assert.equal(payload.eventId, harness.pixel[1].args[3].eventID);
+  assert.equal(payload.eventId, eventId);
 
   const trackingValues = new Map();
   const response = await handleCapi(new Request('https://autolander.ai/capi/track', {
@@ -204,66 +203,58 @@ test('OutboundClick request.cf diagnostic records presence flags only', async (t
   }
 });
 
-test('the build queues Pixel immediately and keeps the production origin gate', async () => {
+test('the build never injects fbevents.js and preserves preview gating', async () => {
   const source = await readFile(new URL('../vite.config.js', import.meta.url), 'utf8');
-  const script = source.match(/const script = `[\s\S]*?<script>([\s\S]*?)<\/script>/)[1];
-  for (const origin of ['https://autolander.ai', 'https://preview.autolander.ai']) {
-    const inserted = [];
-    const window = { location: { origin } };
-    vm.runInNewContext(script, {
-      window,
-      document: {
-        createElement: () => ({}),
-        getElementsByTagName: () => [{ parentNode: { insertBefore: (element) => inserted.push(element) } }],
-      },
-    });
-    assert.equal(inserted.length, origin === 'https://autolander.ai' ? 1 : 0);
-    if (inserted.length) {
-      assert.equal(inserted[0].async, true);
-      assert.equal(inserted[0].src, 'https://connect.facebook.net/en_US/fbevents.js');
-    }
-  }
+  assert.doesNotMatch(source, /fbevents|connect\.facebook\.net|fbq/);
+  const factory = source.match(/function htmlTransformPlugin[\s\S]*?(?=export default)/)[0];
+  const context = {};
+  vm.runInNewContext(factory + ';this.plugin = htmlTransformPlugin;', context);
+  const html = '<html><head><link href="https://autolander.ai/">  </head></html>';
+  assert.equal(context.plugin(false).transformIndexHtml(html), html);
+  const preview = context.plugin(true).transformIndexHtml(html);
+  assert.match(preview, /autolander-preview.pages.dev/);
+  assert.match(preview, /noindex, nofollow/);
 });
 
-test('thank-you PageView is paired on both channels without weakening verified Lead delivery', async (t) => {
+test('thank-you sends one server PageView and never a browser Lead', async (t) => {
   const harness = browser(t, {
-    url: `https://autolander.ai/thank-you?bt=${'a'.repeat(32)}`,
+    url: `https://autolander.ai/thank-you?bt=${'a'.repeat(32)}&keep=1#done`,
     cookies: { al_vid: 'v_abcdefghijklmnopqrstuv', al_attr: JSON.stringify({
       utm_source: 'meta', utm_medium: 'paid_social', landing_page: 'https://autolander.ai/first',
     }) },
   });
   const html = await readFile(new URL('../public/thank-you.html', import.meta.url), 'utf8');
-  const script = html.match(/<!-- Meta Pixel Code -->\s*<script>([\s\S]*?)<\/script>/)[1];
+  const scrub = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+  assert.ok(html.indexOf('<meta charset') < html.indexOf('<script>'));
+  assert.ok(html.indexOf('<meta charset') < 1024);
+  const script = html.match(/<!-- Meta CAPI PageView -->\s*<script>([\s\S]*?)<\/script>/)[1];
   const requests = [];
-  const expectedLeadId = `lead_${'b'.repeat(32)}`;
   const context = {
     ...window, document, crypto, URLSearchParams, Uint32Array,
-    history: { replaceState: () => {} },
-    fetch: async (url, init) => {
-      requests.push({ url, body: JSON.parse(init.body) });
-      if (url.endsWith('/capi/confirm')) return Response.json({
-        ok: true, eventName: 'Lead', eventId: expectedLeadId,
-        externalId: '2087440198847151:v_abcdefghijklmnopqrstuv', am: { em: 'c'.repeat(64) },
-      });
-      return Response.json({ ok: true });
-    },
+    history: { state: { keep: 1 }, replaceState: (state, title, url) => {
+      assert.deepEqual(state, { keep: 1 });
+      context.location = new URL(url, context.location);
+    } },
+    fetch: async (url, init) => { requests.push({ url, body: JSON.parse(init.body) }); return Response.json({ ok: true }); },
   };
   context.window = context;
+  vm.runInNewContext(scrub, context);
+  assert.equal(context.location.href, 'https://autolander.ai/thank-you?keep=1#done');
   vm.runInNewContext(script, context);
   await new Promise((resolve) => setImmediate(resolve));
-  const pageView = harness.pixel.find(({ args }) => args[1] === 'PageView');
-  const serverPageView = requests.find(({ body }) => body.event === 'PageView').body;
-  assert.equal(pageView.args[3].eventID, serverPageView.eventId);
-  assert.match(pageView.fbp, /^fb\.1\.\d{13}\.\d+$/);
-  assert.equal(serverPageView.fbp, pageView.fbp);
+  assert.equal(requests.length, 1);
+  assert.ok(requests[0].url.endsWith('/capi/track'));
+  const serverPageView = requests[0].body;
+  assert.equal(serverPageView.event, 'PageView');
+  assert.equal(serverPageView.fbp, harness.jar.get('_fbp'));
+  assert.match(serverPageView.fbp, /^fb\.1\.\d{13}\.\d+$/);
   assert.equal(serverPageView.utms.utm_source, 'meta');
   assert.equal(serverPageView.firstTouch.utm_medium, 'paid_social');
   assert.equal(serverPageView.page.landing_page, 'https://autolander.ai/first');
-  const leads = harness.pixel.filter(({ args }) => args[1] === 'Lead');
-  assert.equal(leads.length, 1);
-  assert.equal(leads[0].args[3].eventID, expectedLeadId);
-  const init = harness.pixel.find(({ args }) => args[0] === 'init');
-  assert.equal(init.args[2].em, 'c'.repeat(64));
+  assert.equal(serverPageView.channel, 'server_only');
+  assert.doesNotMatch(serverPageView.sourceUrl, /bt=/);
+  assert.equal(harness.pixel.length, 0);
+  assert.doesNotMatch(html, /fbq|fbevents|PIXEL_ID|\/capi\/confirm|'Lead'/);
 });
 
 const leadBody = {

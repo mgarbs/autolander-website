@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
-import { newEventId, trackCustom } from './lib/meta-pixel.js';
+import { newEventId, trackCustom } from './lib/tags.js';
 import { openSignupHandoff } from './lib/signup-handoff.js';
 import Hero from './sections/Hero.jsx';
 import TrustStrip from './sections/TrustStrip.jsx';
