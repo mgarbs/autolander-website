@@ -296,3 +296,59 @@ test('per-post activity and publish presentation gate conflicting draft actions'
   const revising = request({ mode: 'revise', slug, run: { status: 'in_progress', conclusion: null } });
   assert.equal(isBlogSlugInFlight({ articles: [article], blogRequests: [revising] }, slug, [], now), true);
 });
+
+// 2026-09-30: the Blog Studio group in the Content Publisher collapses, so its summary carries the
+// same kind of pill a silo group does when something inside needs the owner.
+test('blogStudioAttention counts failed and needs-attention work once per post, newest request wins', async () => {
+  const { blogStudioAttention } = await helpers();
+  const now = Date.parse('2026-09-27T12:30:00.000Z');
+  const id = (n) => `${String(n).repeat(8)}-1111-4111-8111-111111111111`;
+  assert.deepEqual(blogStudioAttention(null, now), { failed: 0, needsAttention: 0 });
+  assert.deepEqual(blogStudioAttention({ articles: [], blogRequests: [], blogRuns: [], runs: [] }, now), { failed: 0, needsAttention: 0 });
+
+  const data = {
+    articles: [
+      { kind: 'blog', slug: 'bad-draft', status: 'draft', validationOk: false },
+      { kind: 'blog', slug: 'good-draft', status: 'draft', validationOk: true },
+      { kind: 'blog', slug: 'publish-broke', status: 'draft', validationOk: true },
+      { kind: 'blog', slug: 'live-post', status: 'published', validationOk: false },
+      { kind: 'drip', slug: 'not-a-blog-row', status: 'draft', validationOk: false },
+    ],
+    runs: [
+      { id: 1, title: 'publish: publish-broke', status: 'completed', conclusion: 'failure', createdAt: '2026-09-27T12:10:00.000Z' },
+    ],
+    blogRuns: [],
+    blogRequests: [
+      // failed, and still the newest request for its post
+      request({ requestId: id(1), slug: 'failed-post', status: 'failed', createdAt: '2026-09-27T12:05:00.000Z' }),
+      // needs attention (the same post also fails validation: counted once)
+      request({ requestId: id(2), slug: 'bad-draft', status: 'needs_attention', createdAt: '2026-09-27T12:06:00.000Z' }),
+      // an older failure superseded by a newer drafted request for the same post: not counted
+      request({ requestId: id(3), slug: 'good-draft', status: 'failed', createdAt: '2026-09-27T11:00:00.000Z' }),
+      request({ requestId: id(4), slug: 'good-draft', status: 'drafted', createdAt: '2026-09-27T12:07:00.000Z' }),
+      // a new-post request that failed before it ever had a slug
+      request({ requestId: id(5), status: 'failed', createdAt: '2026-09-27T12:08:00.000Z' }),
+      // still writing: in flight, not a problem
+      request({ requestId: id(6), slug: 'writing-post', createdAt: '2026-09-27T12:29:00.000Z', run: { status: 'in_progress', conclusion: null } }),
+    ],
+  };
+  // failed: failed-post, the slug-less request, publish-broke. needs attention: bad-draft.
+  assert.deepEqual(blogStudioAttention(data, now), { failed: 3, needsAttention: 1 });
+
+  // A post that both failed and needs attention counts as failed only.
+  const both = {
+    ...data,
+    blogRequests: [request({ requestId: id(7), slug: 'bad-draft', status: 'failed', createdAt: '2026-09-27T12:20:00.000Z' })],
+    runs: [],
+  };
+  assert.deepEqual(blogStudioAttention(both, now), { failed: 1, needsAttention: 0 });
+
+  // A workflow run that failed (joined from blogRuns by request id) reads as failed, like the row does.
+  const runFailed = {
+    articles: [],
+    runs: [],
+    blogRuns: [{ requestId: id(8).toUpperCase(), status: 'completed', conclusion: 'failure' }],
+    blogRequests: [request({ requestId: id(8), slug: 'run-failed', createdAt: '2026-09-27T12:25:00.000Z' })],
+  };
+  assert.deepEqual(blogStudioAttention(runFailed, now), { failed: 1, needsAttention: 0 });
+});

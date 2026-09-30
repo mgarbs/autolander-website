@@ -150,3 +150,21 @@ test('ContentPublisher groups are native <details> with remembered, guarded open
   assert.match(publisher, /numberLabel\(nextUp\)/);
   assert.doesNotMatch(publisher, /Confirm — go live/);
 });
+
+// 2026-09-30 fixes: a group collapsed while a filter is active is tracked (unpersisted) so the
+// <details> element and React's `open` prop never disagree, and the Blog Studio summary shows the
+// same failed / needs-attention pills a silo group does. Behaviour is unit-tested in
+// test/content-groups.test.js (groupOpen, withFilterToggle, filterKeyOf) and test/blog-studio.test.js
+// (blogStudioAttention); this pins the wiring.
+test('ContentPublisher keeps filtered groups in sync and flags Blog Studio problems on its summary', () => {
+  assert.match(publisher, /const isOpen = \(id\) => groupOpen\(id, \{ filterKey, filterOpen, openMap, defaults \}\)/);
+  assert.match(publisher, /setFilterOpen\(\(cur\) => withFilterToggle\(cur, filterKey, id, next\)\)/);
+  assert.match(publisher, /if \(!filterKeyOf\(nextQuery, nextStatus\)\) setFilterOpen\(null\)/);
+  // no early return that ignores a toggle while filtering (the stuck-closed bug)
+  assert.doesNotMatch(publisher, /if \(filtering && id !== BLOG_STUDIO_GROUP_ID\) return;/);
+  const blogSummary = publisher.match(/<details[^>]*BLOG_STUDIO_GROUP_ID[\s\S]*?<\/summary>/)?.[0] || '';
+  assert.match(blogSummary, /<GroupPills group=\{blogAttention\} \/>/);
+  assert.match(publisher, /blogStudioAttention\(data, loadedAt\)/);
+  assert.match(publisher, /needs' : 'need'\} attention/);
+  assert.doesNotMatch(publisher, /[—–]\s*go live/);
+});

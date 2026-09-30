@@ -2,10 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import BlogStudio from './BlogStudio.jsx';
 import { ApiError, apiGet, apiPost } from './lib/api.js';
-import { filterDripArticles, isBlogActivityInFlight } from './lib/blog-studio.js';
+import { blogStudioAttention, filterDripArticles, isBlogActivityInFlight } from './lib/blog-studio.js';
 import {
-  BLOG_STUDIO_GROUP_ID, STATUS_FILTERS, allGroupIds, defaultOpenState, filterGroups,
-  groupDripArticles, matchesQuery, matchesStatus, numberLabel, readStoredOpenState, writeStoredOpenState,
+  BLOG_STUDIO_GROUP_ID, STATUS_FILTERS, allGroupIds, defaultOpenState, filterGroups, filterKeyOf, groupOpen,
+  groupDripArticles, matchesQuery, matchesStatus, numberLabel, readStoredOpenState, withFilterToggle,
+  writeStoredOpenState,
 } from './lib/content-groups.js';
 
 // Content Publisher — the Avalanche article drip console.
@@ -62,6 +63,11 @@ function GroupPills({ group }) {
           {group.failed} failed
         </span>
       )}
+      {group.needsAttention > 0 && (
+        <span className="shrink-0 rounded-full border border-amber-400/30 bg-amber-500/15 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest text-amber-200">
+          {group.needsAttention} {group.needsAttention === 1 ? 'needs' : 'need'} attention
+        </span>
+      )}
     </>
   );
 }
@@ -78,6 +84,9 @@ export default function ContentPublisher({ onUnauthorized }) {
   const [openMap, setOpenMap] = useState(() => readStoredOpenState(browserStorage()));
   const [query, setQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  // Groups the owner collapsed WHILE a filter is active: { key: filterKey, map: { id: open } }.
+  // Never persisted; keeps each <details> and its React `open` prop in step (see content-groups.js).
+  const [filterOpen, setFilterOpen] = useState(null);
   const timerRef = useRef(null);
 
   const load = useCallback(async ({ silent = false } = {}) => {
@@ -182,19 +191,21 @@ export default function ContentPublisher({ onUnauthorized }) {
   const stateOf = useCallback((row) => effective.get(row.slug)?.state || 'draft', [effective]);
   const groups = useMemo(() => groupDripArticles(dripArticles, stateOf), [dripArticles, stateOf]);
   const defaults = useMemo(() => defaultOpenState(groups, nextUp?.slug), [groups, nextUp]);
-  const filtering = Boolean(query.trim()) || statusFilter !== 'all';
+  const filterKey = filterKeyOf(query, statusFilter);
+  const filtering = Boolean(filterKey);
   const view = useMemo(
     () => filterGroups(groups, (row) => matchesQuery(row, query) && matchesStatus(stateOf(row), statusFilter)),
     [groups, query, stateOf, statusFilter],
   );
   const blogInFlight = blogBusy || isBlogActivityInFlight(data);
+  // Failed / needs-attention pills on the Blog Studio summary, visible while it is collapsed.
+  const blogAttention = useMemo(() => blogStudioAttention(data, loadedAt), [data, loadedAt]);
 
-  // While a filter is active every matching group is forced open and nothing is persisted, so
-  // clearing the filter restores exactly the layout the owner left.
-  const isOpen = (id) => {
-    if (filtering && id !== BLOG_STUDIO_GROUP_ID) return true;
-    return openMap[id] ?? defaults[id] ?? false;
-  };
+  // While a filter is active every matching group opens and nothing is persisted, so clearing the
+  // filter restores exactly the layout the owner left. A group collapsed during the filter is
+  // tracked in filterOpen, so React's `open` always matches the element (no group comes back stuck
+  // closed when the filter clears).
+  const isOpen = (id) => groupOpen(id, { filterKey, filterOpen, openMap, defaults });
   const setOpen = useCallback((entries) => {
     setOpenMap((cur) => ({ ...cur, ...entries }));
     writeStoredOpenState(browserStorage(), entries);
@@ -203,9 +214,19 @@ export default function ContentPublisher({ onUnauthorized }) {
   // on this element is recorded (React also hands a nested group's toggle to its parent).
   const onToggleFor = (id) => (event) => {
     if (event.target !== event.currentTarget) return;
-    if (filtering && id !== BLOG_STUDIO_GROUP_ID) return;
     const next = event.currentTarget.open;
-    if (next !== isOpen(id)) setOpen({ [id]: next });
+    if (next === isOpen(id)) return;
+    if (filtering && id !== BLOG_STUDIO_GROUP_ID) {
+      setFilterOpen((cur) => withFilterToggle(cur, filterKey, id, next));
+      return;
+    }
+    setOpen({ [id]: next });
+  };
+  // Clearing the filter also forgets what was collapsed under it, so the next filter starts open.
+  const changeFilter = (nextQuery, nextStatus) => {
+    setQuery(nextQuery);
+    setStatusFilter(nextStatus);
+    if (!filterKeyOf(nextQuery, nextStatus)) setFilterOpen(null);
   };
   const setAllOpen = (value) => {
     setOpen(Object.fromEntries(allGroupIds(groups).map((id) => [id, value])));
@@ -301,6 +322,7 @@ export default function ContentPublisher({ onUnauthorized }) {
           {blogInFlight && (
             <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-amber-400" title="Blog Studio is working" aria-label="Blog Studio is working" />
           )}
+          <GroupPills group={blogAttention} />
           <ChevronDown size={16} aria-hidden="true" className="ml-auto shrink-0 text-slate-500 transition-transform group-open/blog:rotate-180" />
         </summary>
         <div className="px-2 pb-2 sm:px-3 sm:pb-3">
@@ -340,14 +362,14 @@ export default function ContentPublisher({ onUnauthorized }) {
           type="search"
           aria-label="Filter articles"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => changeFilter(event.target.value, statusFilter)}
           placeholder="Filter: title, keyword, slug, cluster or #"
           className="min-h-9 min-w-0 flex-1 basis-56 rounded-lg border border-white/10 bg-slate-950/70 px-3 py-1.5 text-xs text-white outline-none placeholder:text-slate-600 focus:border-blue-400/60"
         />
         <select
           aria-label="Status filter"
           value={statusFilter}
-          onChange={(event) => setStatusFilter(event.target.value)}
+          onChange={(event) => changeFilter(query, event.target.value)}
           className="min-h-9 rounded-lg border border-white/10 bg-slate-950/70 px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-blue-400/60"
         >
           {STATUS_FILTERS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}

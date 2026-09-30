@@ -151,6 +151,38 @@ export function defaultOpenState(groups, nextUpSlug) {
   return open;
 }
 
+// ---- open state while a filter is active ----
+// A filter forces every matching group open and persists nothing, so clearing it restores the
+// layout the owner left. The owner can still collapse a group WHILE filtering; that choice goes
+// into a separate, unpersisted map tied to the filter it was made under (filterKey). Without it,
+// React's `open` prop would stay true while the native <details> sat closed, and a group whose
+// stored state is open came back stuck closed once the filter cleared (React saw no prop change,
+// so it never reopened the element). With it, the prop always equals what the element shows.
+
+// '' when no filter is active; otherwise a key that changes whenever the filter does.
+export function filterKeyOf(query, status) {
+  const q = String(query || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  const s = status && status !== 'all' ? String(status) : '';
+  return q || s ? `${s}|${q}` : '';
+}
+
+// Is group `id` open? Filtering (Blog Studio excepted): the owner's choice under THIS filter, else
+// open. Not filtering: the remembered state, else the default, else closed.
+export function groupOpen(id, { filterKey = '', filterOpen = null, openMap = {}, defaults = {} } = {}) {
+  if (filterKey && id !== BLOG_STUDIO_GROUP_ID) {
+    const own = filterOpen && filterOpen.key === filterKey ? filterOpen.map?.[id] : undefined;
+    return typeof own === 'boolean' ? own : true;
+  }
+  if (typeof openMap?.[id] === 'boolean') return openMap[id];
+  return Boolean(defaults?.[id]);
+}
+
+// Record a toggle made while filtering. A toggle under a different filter starts a fresh map.
+export function withFilterToggle(filterOpen, filterKey, id, open) {
+  const map = filterOpen && filterOpen.key === filterKey ? filterOpen.map : {};
+  return { key: filterKey, map: { ...map, [id]: Boolean(open) } };
+}
+
 // Every group id on screen (for Expand all / Collapse all).
 export function allGroupIds(groups) {
   return [BLOG_STUDIO_GROUP_ID, ...groups.flatMap((group) => [group.id, ...group.clusters.map((c) => c.id)])];

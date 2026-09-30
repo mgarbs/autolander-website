@@ -4,9 +4,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  BLOG_STUDIO_GROUP_ID, allGroupIds, clusterGroupId, contentOpenKey, defaultOpenState, filterGroups,
-  groupDripArticles, matchesQuery, matchesStatus, numberLabel, readStoredOpenState, siloGroupId,
-  writeStoredOpenState,
+  BLOG_STUDIO_GROUP_ID, allGroupIds, clusterGroupId, contentOpenKey, defaultOpenState, filterGroups, filterKeyOf,
+  groupDripArticles, groupOpen, matchesQuery, matchesStatus, numberLabel, readStoredOpenState, siloGroupId,
+  withFilterToggle, writeStoredOpenState,
 } from '../src/admin/lib/content-groups.js';
 
 const row = (slug, silo, extra = {}) => ({
@@ -156,4 +156,115 @@ test('open state round-trips through storage under al_admin_content_open:* and s
   assert.deepEqual(readStoredOpenState(throwing), {});
   assert.doesNotThrow(() => writeStoredOpenState(throwing, { a: true }));
   assert.deepEqual(readStoredOpenState(null), {});
+});
+
+// ---- open state while filtering (2026-09-30 fix) ----------------------------------------------
+// A model of one <details> group in ContentPublisher.jsx: React sets the element's `open` only when
+// the prop it renders CHANGES; a click flips the element and fires `toggle`, which runs the panel's
+// handler (the same code as ContentPublisher's onToggleFor, over the real helpers). The invariant the
+// panel needs: after every step the element shows exactly what React renders.
+function panel({ stored = {}, defaults = {} } = {}) {
+  const s = { query: '', status: 'all', openMap: { ...stored }, filterOpen: null, dom: {}, prop: {} };
+  const key = () => filterKeyOf(s.query, s.status);
+  const isOpen = (id) => groupOpen(id, { filterKey: key(), filterOpen: s.filterOpen, openMap: s.openMap, defaults });
+  const render = (ids) => {
+    for (const id of ids) {
+      const next = isOpen(id);
+      if (s.prop[id] !== next) s.dom[id] = next; // React writes `open` only on a prop change
+      s.prop[id] = next;
+    }
+  };
+  const onToggle = (id) => {
+    const next = s.dom[id];
+    if (next === isOpen(id)) return;
+    if (key() && id !== BLOG_STUDIO_GROUP_ID) s.filterOpen = withFilterToggle(s.filterOpen, key(), id, next);
+    else s.openMap[id] = next;
+  };
+  return {
+    s,
+    render,
+    click(id, ids) { s.dom[id] = !s.dom[id]; onToggle(id); render(ids); },
+    filter(query, status, ids) {
+      s.query = query;
+      s.status = status;
+      if (!filterKeyOf(query, status)) s.filterOpen = null;
+      render(ids);
+    },
+  };
+}
+
+test('filterKeyOf: empty when no filter, and changes with the query or the status filter', () => {
+  assert.equal(filterKeyOf('', 'all'), '');
+  assert.equal(filterKeyOf('   ', undefined), '');
+  assert.notEqual(filterKeyOf('chatgpt', 'all'), '');
+  assert.equal(filterKeyOf(' ChatGPT  crawler ', 'all'), filterKeyOf('chatgpt crawler', 'all'));
+  assert.notEqual(filterKeyOf('chatgpt', 'all'), filterKeyOf('chatgpt', 'draft'));
+  assert.notEqual(filterKeyOf('', 'draft'), '');
+});
+
+test('groupOpen: stored, then default, then closed; filtering opens every group except Blog Studio unless collapsed under this filter', () => {
+  const silo = siloGroupId('aeoGeo');
+  assert.equal(groupOpen(silo, { openMap: { [silo]: false }, defaults: { [silo]: true } }), false);
+  assert.equal(groupOpen(silo, { openMap: {}, defaults: { [silo]: true } }), true);
+  assert.equal(groupOpen(silo, {}), false);
+  const key = filterKeyOf('chatgpt', 'all');
+  assert.equal(groupOpen(silo, { filterKey: key, openMap: { [silo]: false } }), true, 'forced open while filtering');
+  assert.equal(groupOpen(BLOG_STUDIO_GROUP_ID, { filterKey: key, openMap: { [BLOG_STUDIO_GROUP_ID]: false } }), false, 'Blog Studio is never forced');
+  const toggled = withFilterToggle(null, key, silo, false);
+  assert.deepEqual(toggled, { key, map: { [silo]: false } });
+  assert.equal(groupOpen(silo, { filterKey: key, filterOpen: toggled }), false, 'collapsed under this filter');
+  assert.equal(groupOpen(silo, { filterKey: filterKeyOf('claude', 'all'), filterOpen: toggled }), true, 'a new filter starts open');
+  assert.deepEqual(withFilterToggle(toggled, filterKeyOf('claude', 'all'), 'x', true), { key: filterKeyOf('claude', 'all'), map: { x: true } });
+});
+
+test('collapsing a group while filtering keeps <details> and React in sync; nothing is stuck closed when the filter clears', () => {
+  const silo = siloGroupId('aeoGeo');
+  const cluster = clusterGroupId('aeoGeo', 'website');
+  const ids = [BLOG_STUDIO_GROUP_ID, silo, cluster];
+  const synced = (p, label) => {
+    for (const id of ids) assert.equal(p.s.dom[id], p.s.prop[id], `${label}: ${id} shows ${p.s.dom[id]} but React renders ${p.s.prop[id]}`);
+  };
+
+  // The owner left the silo OPEN and the cluster CLOSED (stored), then filters.
+  const p = panel({ stored: { [silo]: true, [cluster]: false }, defaults: { [BLOG_STUDIO_GROUP_ID]: true } });
+  p.render(ids);
+  assert.equal(p.s.dom[silo], true);
+  p.filter('website', 'all', ids);
+  assert.equal(p.s.dom[cluster], true, 'filtering opens matching groups');
+  synced(p, 'filter on');
+
+  // Collapse the silo and the cluster while filtering: the element and React agree, nothing is stored.
+  p.click(silo, ids);
+  p.click(cluster, ids);
+  assert.equal(p.s.dom[silo], false);
+  synced(p, 'collapsed while filtering');
+  assert.deepEqual(p.s.openMap, { [silo]: true, [cluster]: false }, 'filter toggles are never persisted');
+
+  // Clear the filter: the silo is open again (its stored state), the cluster closed (its stored state).
+  p.filter('', 'all', ids);
+  assert.equal(p.s.dom[silo], true, 'the silo must not come back stuck closed');
+  assert.equal(p.s.dom[cluster], false);
+  synced(p, 'filter cleared');
+  assert.equal(p.s.filterOpen, null);
+
+  // A new filter starts with every matching group open again.
+  p.filter('engines', 'draft', ids);
+  assert.equal(p.s.dom[silo], true);
+  synced(p, 'new filter');
+  // Changing the filter while a group is collapsed under the old one reopens it too.
+  p.click(silo, ids);
+  p.filter('engines two', 'draft', ids);
+  assert.equal(p.s.dom[silo], true);
+  synced(p, 'filter changed');
+
+  // Blog Studio is never forced by a filter, and its toggles are remembered as usual.
+  p.click(BLOG_STUDIO_GROUP_ID, ids);
+  assert.equal(p.s.openMap[BLOG_STUDIO_GROUP_ID], false);
+  synced(p, 'blog studio');
+
+  // Without a filter, a click is persisted and stays in sync.
+  p.filter('', 'all', ids);
+  p.click(silo, ids);
+  assert.equal(p.s.openMap[silo], false);
+  synced(p, 'plain toggle');
 });

@@ -295,3 +295,39 @@ export function isBlogActivityInFlight(data, optimistic = false, now = Date.now(
 
   return false;
 }
+
+// What the Blog Studio summary flags while the group is collapsed (the silo groups' "failed" pill,
+// for blog work). failed: the newest request for a post ended failed (or a request that never got a
+// post failed), or a post's newest publish run failed. needsAttention: the newest request for a post
+// ended needs_attention, or a draft fails validation. Each post counts once, under failed first.
+// Same presentation rules as the rows BlogStudio renders; `now` comes from the caller.
+export function blogStudioAttention(data, now = Date.now()) {
+  const safeNow = Number.isFinite(now) ? now : Date.now();
+  const runs = new Map((Array.isArray(data?.blogRuns) ? data.blogRuns : [])
+    .filter((run) => typeof run?.requestId === 'string')
+    .map((run) => [run.requestId.toLowerCase(), run]));
+  const requests = (Array.isArray(data?.blogRequests) ? data.blogRequests : [])
+    .filter((request) => request && typeof request === 'object')
+    .map((request) => {
+      const requestId = typeof request.requestId === 'string' ? request.requestId.toLowerCase() : '';
+      return request.run || !runs.has(requestId) ? request : { ...request, run: runs.get(requestId) };
+    });
+  const failed = new Set();
+  const attention = new Set();
+  const current = [
+    ...newestRequestsBySlug(requests).values(),
+    ...requests.filter((request) => typeof request.slug !== 'string' || !request.slug),
+  ];
+  for (const request of current) {
+    const key = request.slug || `request:${request.requestId}`;
+    const { state } = requestPresentation(request, safeNow);
+    if (state === 'failed') failed.add(key);
+    else if (state === 'needs_attention') attention.add(key);
+  }
+  for (const article of articlesFor(data)) {
+    if (publishPresentation(data, article, safeNow).state === 'failed') failed.add(article.slug);
+    else if (article.status !== 'published' && article.validationOk === false) attention.add(article.slug);
+  }
+  for (const key of failed) attention.delete(key);
+  return { failed: failed.size, needsAttention: attention.size };
+}
