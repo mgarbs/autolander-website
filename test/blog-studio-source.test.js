@@ -123,3 +123,30 @@ test('BlogStudio stays mobile-safe and follows the UI copy and privacy constrain
   assert.doesNotMatch(studio, /\b(?:answers?|routes?|replies? to) (?:buyer|customer) messages\b/i);
   assert.doesNotMatch(studio, /localStorage|sessionStorage|console\./);
 });
+
+// 2026-09-30: the Content Publisher is collapsible (Blog Studio + one group per silo + one per
+// cluster), filterable, and remembers its layout in localStorage. The collapse state lives in
+// ContentPublisher, never in BlogStudio (BlogStudio stays free of storage; asserted above).
+test('ContentPublisher groups are native <details> with remembered, guarded open state', () => {
+  assert.match(publisher, /<details\b/);
+  assert.ok((publisher.match(/<details\b/g) || []).length >= 3, 'Blog Studio, silo and cluster groups');
+  assert.match(publisher, /onToggle=\{/);
+  assert.match(publisher, /Expand all/);
+  assert.match(publisher, /Collapse all/);
+  assert.match(publisher, /aria-label="Filter articles"/);
+  assert.match(publisher, /aria-label="Status filter"/);
+  assert.match(publisher, /readStoredOpenState\(browserStorage\(\)\)/);
+  assert.match(publisher, /writeStoredOpenState\(browserStorage\(\)/);
+  // every direct localStorage touch in the panel sits inside a try block
+  const storageFn = publisher.match(/function browserStorage\(\)[\s\S]*?\n\}/)?.[0] || '';
+  assert.match(storageFn, /try \{[\s\S]*window\.localStorage[\s\S]*\} catch/);
+  assert.equal((publisher.match(/window\.localStorage/g) || []).length, 1, 'window.localStorage is touched only inside browserStorage()');
+  // Blog Studio is wrapped in its own <details>, still above Next up
+  const blogDetails = publisher.lastIndexOf('<details', publisher.indexOf('<BlogStudio'));
+  assert.ok(blogDetails >= 0 && blogDetails < publisher.indexOf('<BlogStudio'));
+  assert.ok(publisher.indexOf('</details>', publisher.indexOf('<BlogStudio')) < publisher.indexOf('{nextUp &&'));
+  // the silo publish number is shown on rows and in Next up
+  assert.match(publisher, /numberLabel\(a\)/);
+  assert.match(publisher, /numberLabel\(nextUp\)/);
+  assert.doesNotMatch(publisher, /Confirm — go live/);
+});
