@@ -145,7 +145,8 @@ test('the page beacon loads after load (1.5 s or first interaction), once, only 
   const s = run.appended[0];
   assert.equal(s.src, 'https://static.cloudflareinsights.com/beacon.min.js');
   assert.equal(s.defer, true);
-  assert.deepEqual(JSON.parse(s.attrs['data-cf-beacon']), { token: CF_WEB_ANALYTICS_TOKEN, spa: 2 });
+  // The edge's own settings: `version` makes it report to the zone's same-origin /cdn-cgi/rum.
+  assert.deepEqual(JSON.parse(s.attrs['data-cf-beacon']), { version: '2024.11.0', token: CF_WEB_ANALYTICS_TOKEN, r: 1, spa: 2 });
   run.timers.at(-1).fn();
   run.fire('pointerdown');
   assert.equal(run.appended.length, 1, 'once');
