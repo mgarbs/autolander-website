@@ -370,8 +370,9 @@ export const ARTICLES = [
           + 'up, which is why keeping the profile, your website and every listing in agreement is a core '
           + 'part of [AEO and GEO for car dealers](/aeo-geo-for-car-dealers/).',
           'This article covers what AI answers take from a profile that already exists. For building one '
-          + 'from scratch, from verification and categories to hours and photos, start with [our Google '
-          + 'Business Profile setup guide for car dealerships](@google-business-profile-for-car-dealers).',
+          + 'from scratch, from verification and categories to hours and photos, start with our Google '
+          + 'Business Profile setup guide for car dealerships, linked under Keep exploring at the end of '
+          + 'this article.',
         ],
       },
       {
