@@ -18,7 +18,18 @@ test('route shells carry covered inline CSS and preserve full CSS on the shared 
     const html = read(`dist/${route}/index.html`);
     const styles = [...html.matchAll(/<style data-inline-route-css>([\s\S]*?)<\/style>/g)];
     assert.equal(styles.length, 1, route);
-    assert.doesNotMatch(html, /<link\b[^>]*rel="stylesheet"[^>]*href="\/assets\//);
+    // No stylesheet is fetched: the only /assets/ stylesheet link is the disabled placeholder that stops
+    // Vite's preload helper from re-downloading the inlined route CSS.
+    const cssLinks = [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)].map((m) => m[0]);
+    assert.equal(cssLinks.length, 1, `${route}: one route CSS placeholder`);
+    assert.match(cssLinks[0], /href="\/assets\/(TeamApp|AiVisibilityApp)-[\w-]+\.css" disabled data-al-inlined-css/);
+    // Nothing is preloaded at parse time: the post-paint loader requests the route chunk and its static imports.
+    assert.doesNotMatch(html, /<link rel="modulepreload"/, `${route}: no parse-time modulepreload`);
+    const preloads = (html.match(/<script data-al-boot[^>]*data-al-preload="([^"]+)"/)?.[1] || '').split(' ');
+    assert.match(preloads[0], route === 'team' ? /^\/assets\/TeamApp-[\w-]+\.js$/ : /^\/assets\/AiVisibilityApp-[\w-]+\.js$/);
+    assert.ok(preloads.some((href) => /\/assets\/SiteFooter-/.test(href)), `${route}: SiteFooter chunk preloaded`);
+    assert.ok(!preloads.some((href) => /\/assets\/index-/.test(href)), `${route}: entry chunk is not preloaded twice`);
+    for (const href of preloads) assert.ok(existsSync(`dist${href}`), `${route}: ${href} exists`);
     const root = html.match(/<!--AL_STATIC_PAGE_START-->([\s\S]*?)<!--AL_STATIC_PAGE_END-->/)[1];
     assertClassCoverage(root, styles[0][1], allowlist);
     assertClassCoverage(route === 'team' ? renderTeam() : renderAiVisibility(), styles[0][1], allowlist);
@@ -33,8 +44,8 @@ test('route shells carry covered inline CSS and preserve full CSS on the shared 
 
 test('team static JS import closure contains no AI page copy or AI image descriptions', { skip: !hasDist }, () => {
   const shell = read('dist/team/index.html');
-  const entry = shell.match(/<link rel="modulepreload" data-al-route-entry[^>]*href="([^"]+)"/)?.[1];
-  assert.ok(entry, 'the manifest-selected route entry is preloaded');
+  const entry = shell.match(/<script data-al-boot[^>]*data-al-route-entry="([^"]+)"/)?.[1];
+  assert.ok(entry, 'the manifest-selected route entry is named by the boot loader');
   const files = new Set();
   const visit = (file) => {
     if (files.has(file)) return;
@@ -51,12 +62,30 @@ test('team static JS import closure contains no AI page copy or AI image descrip
   for (const file of files) for (const phrase of forbidden) assert.ok(!read(file).includes(phrase), `${file}: AI copy leaked into team closure`);
 });
 
-test('Phase 2 fallback keeps native mirrors and the established React boot, with no hydration sender', { skip: !hasDist }, () => {
-  for (const route of ['team', 'ai-visibility']) {
+test('prerendered routes ship React markup in #root, the mirror as one island, and boot after the first paint', { skip: !hasDist }, () => {
+  for (const [route, island] of [['team', 'team-rest'], ['ai-visibility', 'ai-rest']]) {
     const html = read(`dist/${route}/index.html`);
-    assert.match(html, /id="al-static-page"/);
-    assert.match(html, /<script type="module"[^>]*src="\/assets\//);
-    assert.doesNotMatch(html, /data-al-route-boot|data-al-route-pageview|data-al-layout-fence/);
+    // Hydration adopts #root's children, so React's first element must be #root's first child (no whitespace).
+    assert.match(html, new RegExp(`<!--AL_STATIC_PAGE_START--><div id="root" data-al-hydrate="${route}"><div class="min-h-dvh`));
+    assert.match(html, /<\/div><\/div><!--AL_STATIC_PAGE_END-->/);
+    assert.equal((html.match(/data-al-island="/g) || []).length, 1, route);
+    assert.equal((html.match(new RegExp(`data-al-island="${island}"`, 'g')) || []).length, 1, route);
+    assert.equal((html.match(/<h1\b/g) || []).length, 1, route);
+    // No entry module in <head>: one post-paint loader at the end of <body> names the entry chunk.
+    assert.doesNotMatch(html, /<script type="module"/, route);
+    assert.equal((html.match(/<script data-al-boot data-al-entry="\/assets\/index-[\w-]+\.js"/g) || []).length, 1, route);
+    assert.ok(html.indexOf('data-al-boot') > html.indexOf('<!--AL_STATIC_PAGE_END-->'), `${route}: loader after the page`);
+    assert.doesNotMatch(html, /data-al-route-pageview|data-al-layout-fence|rel="preload" href="\/fonts\//);
+  }
+  const home = read('dist/index.html');
+  assert.doesNotMatch(home, /<script type="module"/);
+  assert.equal((home.match(/<script data-al-boot data-al-entry="\/assets\/index-[\w-]+\.js">/g) || []).length, 1);
+  assert.doesNotMatch(home, /data-al-hydrate/);
+  // App shells with nothing static to show keep Vite's head entry and never hydrate.
+  for (const route of ['404.html', 'admin/index.html', 'pay/index.html']) {
+    const html = read(`dist/${route}`);
+    assert.equal((html.match(/<script type="module" crossorigin src="\/assets\/index-[\w-]+\.js"><\/script>/g) || []).length, 1, route);
+    assert.doesNotMatch(html, /data-al-hydrate|data-al-boot/, route);
   }
 });
 

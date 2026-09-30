@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { StrictMode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { hydrateRoot } from 'react-dom/client';
 import {
   FOOTER,
   FORM,
@@ -25,6 +26,9 @@ import {
 } from './AiSections.jsx';
 import { ProofSection } from './ProofSection.jsx';
 import { scrollBehavior } from './scroll.js';
+import StaticIsland from '../components/StaticIsland.jsx';
+import { HYDRATE_OPTIONS, islandHtml } from '../lib/boot.js';
+import { useLive } from '../lib/use-live.js';
 import {
   CAPI_URL,
   formatPhoneInput,
@@ -281,8 +285,14 @@ function ScanForm() {
   );
 }
 
-export default function AiVisibilityApp() {
+/**
+ * `prerendered` is the build-time/hydration mode (scripts/prerender.mjs, main.jsx): the nav and hero are React's,
+ * everything below the hero is the static mirror (`restHtml`) until the page goes live after hydration. With no
+ * props (dev, Root's lazy route) it renders the whole live page exactly as before.
+ */
+export default function AiVisibilityApp({ prerendered = false, restHtml = '' }) {
   const formSectionRef = useRef(null);
+  const [live, ensureLive] = useLive(prerendered);
 
   useEffect(() => {
     document.title = META.title;
@@ -290,36 +300,54 @@ export default function AiVisibilityApp() {
 
   const goToForm = useCallback((event) => {
     event?.preventDefault?.();
+    ensureLive();
     const form = document.getElementById('scan-form');
     if (!form) return;
     form.querySelector('input[name="dealershipName"]')?.focus({ preventScroll: true });
     form.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
-  }, []);
+  }, [ensureLive]);
 
   return (
     <div className="min-h-dvh bg-[#050505] font-sans text-slate-50 selection:bg-blue-500/30 selection:text-blue-200">
       <SiteNav page="ai-visibility" isMobileNavVisible onPrimaryAction={goToForm} />
       <main id="main-content">
         <AiHero onGo={goToForm} />
-        <ShiftSection />
-        <WhereBuyersAskSection />
-        <ResultsViewSection />
-        <ProofSection />
-        <ReportSection />
-        <ReasonsSection />
-        <section ref={formSectionRef} className="al-scan-section scroll-mt-4 py-20 lg:py-28">
-          <div className="mx-auto grid max-w-7xl items-start gap-10 px-6 lg:grid-cols-2">
-            <div className="order-2 lg:order-1"><HowSteps /></div>
-            <div className="order-1 lg:order-2"><ScanForm /></div>
-          </div>
-        </section>
-        <PlansSection onGo={goToForm} />
-        <AiFaq />
-        <AiFinalCta onGo={goToForm} />
-        <AboutService />
+        {live ? (
+          <>
+            <ShiftSection />
+            <WhereBuyersAskSection />
+            <ResultsViewSection />
+            <ProofSection />
+            <ReportSection />
+            <ReasonsSection />
+            <section ref={formSectionRef} className="al-scan-section scroll-mt-4 py-20 lg:py-28">
+              <div className="mx-auto grid max-w-7xl items-start gap-10 px-6 lg:grid-cols-2">
+                <div className="order-2 lg:order-1"><HowSteps /></div>
+                <div className="order-1 lg:order-2"><ScanForm /></div>
+              </div>
+            </section>
+            <PlansSection onGo={goToForm} />
+            <AiFaq />
+            <AiFinalCta onGo={goToForm} />
+            <AboutService />
+          </>
+        ) : <StaticIsland name="ai-rest" html={restHtml} />}
       </main>
-      <SiteFooter extraLine={FOOTER.line} mobileCtaPadding />
-      <AiMobileCtaBar onGo={goToForm} formRef={formSectionRef} />
+      {live && <SiteFooter extraLine={FOOTER.line} mobileCtaPadding />}
+      {live && <AiMobileCtaBar onGo={goToForm} formRef={formSectionRef} />}
     </div>
   );
+}
+
+// eslint-disable-next-line react-refresh/only-export-components -- boot helpers live with the page they boot
+export const aiVisibilityElement = (props) => (
+  <StrictMode>
+    <AiVisibilityApp {...props} />
+  </StrictMode>
+);
+
+// main.jsx: adopt the prerendered nav + hero and the static island as they are.
+// eslint-disable-next-line react-refresh/only-export-components
+export function hydrateAiVisibility(container) {
+  return hydrateRoot(container, aiVisibilityElement({ prerendered: true, restHtml: islandHtml(container, 'ai-rest') }), HYDRATE_OPTIONS);
 }

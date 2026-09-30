@@ -223,17 +223,33 @@ function plansSection() {
 }
 
 export function renderAiVisibilityMirror({ capiUrl = 'https://autolander.ai' } = {}) {
-  const action = `${String(capiUrl).replace(/\/+$/, '')}/api/ai-scan`;
   return `<!--AL_STATIC_PAGE_START--><div id="al-static-page" class="min-h-dvh bg-[#050505] font-sans text-slate-50">
     <main id="main-content">
-      <section class="relative overflow-hidden pb-16 pt-12 lg:pb-24 lg:pt-20">
+      ${heroSection()}
+
+      ${renderAiVisibilityMirrorRest({ capiUrl })}
+    </main>
+  </div><!--AL_STATIC_PAGE_END-->`;
+}
+
+function heroSection() {
+  return `<section class="relative overflow-hidden pb-16 pt-12 lg:pb-24 lg:pt-20">
         <div class="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-[1.02fr_0.98fr]">
           <div>${eyebrow(HERO.eyebrow)}<h1 class="mt-5 font-display text-4xl font-extrabold uppercase italic leading-[0.92] text-white sm:text-6xl">${copy(HERO.h1Lead)} <span class="text-blue-400">${copy(HERO.h1Grad)}</span></h1><p class="al-ai-summary mt-5 text-lg leading-relaxed text-slate-300">${copy(HERO.summary)}</p><a href="#scan-form" class="mt-7 inline-flex rounded-2xl bg-blue-600 px-7 py-4 font-display text-base font-extrabold uppercase italic text-white shadow-lg shadow-blue-600/30">${copy(HERO.cta)}</a><div class="mt-5 flex flex-wrap gap-3 font-mono text-[10px] uppercase tracking-wider text-slate-400">${HERO.chips.map((chip) => `<span>${copy(chip)}</span>`).join('')}</div><p class="mt-4 text-sm text-slate-400">${copy(HERO.trustLine)}</p></div>
           <div>${image(ILLUSTRATION_SLOTS.hero.image, IMAGE_SIZES.aiHero, true)}<p class="mt-3 text-xs leading-relaxed text-slate-400">${copy(ILLUSTRATION_SLOTS.hero.caption)}</p>${reportMock()}</div>
         </div>
-      </section>
+      </section>`;
+}
 
-      <section class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2"><div>${eyebrow(SHIFT.eyebrow)}${heading(SHIFT.h2Lead, SHIFT.h2Grad)}<p class="mt-6 text-lg leading-relaxed text-slate-300">${copy(SHIFT.body)}</p></div><div class="rounded-3xl border border-white/10 bg-[#0b0d12] p-7"><p class="font-display text-6xl font-extrabold italic text-white">${copy(SHIFT.stat.value)}</p><p class="mt-3 text-lg text-slate-300">${copy(SHIFT.stat.text)}</p><a class="mt-4 block text-xs text-blue-300 underline" href="${esc(SHIFT.stat.sourceUrl)}">${copy(SHIFT.stat.source)}</a></div></div></section>
+/**
+ * Everything the static mirror carries below its hero: the crawlable no-JS body (scan form with its native
+ * POST action and WebMCP attributes, plans, FAQ, closing sections). The production shell ships it inside
+ * React's prerendered page as an inert island right after the hydrated hero (src/components/StaticIsland.jsx);
+ * React swaps in the live sections after the first paint.
+ */
+export function renderAiVisibilityMirrorRest({ capiUrl = 'https://autolander.ai' } = {}) {
+  const action = `${String(capiUrl).replace(/\/+$/, '')}/api/ai-scan`;
+  return `<section class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2"><div>${eyebrow(SHIFT.eyebrow)}${heading(SHIFT.h2Lead, SHIFT.h2Grad)}<p class="mt-6 text-lg leading-relaxed text-slate-300">${copy(SHIFT.body)}</p></div><div class="rounded-3xl border border-white/10 bg-[#0b0d12] p-7"><p class="font-display text-6xl font-extrabold italic text-white">${copy(SHIFT.stat.value)}</p><p class="mt-3 text-lg text-slate-300">${copy(SHIFT.stat.text)}</p><a class="mt-4 block text-xs text-blue-300 underline" href="${esc(SHIFT.stat.sourceUrl)}">${copy(SHIFT.stat.source)}</a></div></div></section>
 
       ${publicIllustrations()}
       <section class="py-20 lg:py-32"><div class="mx-auto max-w-7xl px-6">${eyebrow(REPORT.eyebrow)}${heading(REPORT.h2Lead, REPORT.h2Grad)}
@@ -250,7 +266,5 @@ export function renderAiVisibilityMirror({ capiUrl = 'https://autolander.ai' } =
       <section id="faq" class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto max-w-4xl space-y-3 px-6">${FAQ.map(({ q, a }) => `<details class="rounded-2xl border border-white/10 bg-[#0b0d12] p-5"><summary class="cursor-pointer font-bold text-white">${copy(q)}</summary><div class="al-faq-a mt-3 text-sm leading-relaxed text-slate-300">${copy(a)}</div></details>`).join('')}</div></section>
 
       <section class="py-20 text-center"><div class="mx-auto max-w-4xl px-6"><h2 class="font-display text-4xl font-extrabold uppercase italic text-white sm:text-5xl">${copy(FINAL_CTA.h2Lead)} <span class="text-blue-400">${copy(FINAL_CTA.h2Grad)}</span></h2><a href="#scan-form" class="mt-7 inline-flex rounded-2xl bg-blue-600 px-7 py-4 font-display text-base font-extrabold uppercase italic text-white">${copy(FINAL_CTA.cta)}</a><p class="mt-4 font-mono text-xs uppercase tracking-wider text-slate-400">${copy(FINAL_CTA.note)}</p></div></section>
-      <section class="border-t border-white/5 py-10"><div class="mx-auto max-w-7xl px-6"><p class="text-sm leading-relaxed text-slate-400">${copy(SERVICE_SUMMARY)}</p><p class="mt-4 text-sm leading-relaxed text-slate-400">${copy(FOOTER.line)}</p><nav class="mt-4 flex flex-wrap gap-4" aria-label="${esc(FOOTER.line)}">${FOOTER.links.map((link) => `<a class="text-sm text-blue-300" href="${esc(link.href)}">${copy(link.label)}</a>`).join('')}</nav></div></section>
-    </main>
-  </div><!--AL_STATIC_PAGE_END-->`;
+      <section class="border-t border-white/5 py-10"><div class="mx-auto max-w-7xl px-6"><p class="text-sm leading-relaxed text-slate-400">${copy(SERVICE_SUMMARY)}</p><p class="mt-4 text-sm leading-relaxed text-slate-400">${copy(FOOTER.line)}</p><nav class="mt-4 flex flex-wrap gap-4" aria-label="${esc(FOOTER.line)}">${FOOTER.links.map((link) => `<a class="text-sm text-blue-300" href="${esc(link.href)}">${copy(link.label)}</a>`).join('')}</nav></div></section>`;
 }

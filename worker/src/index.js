@@ -1,5 +1,6 @@
 import { isNoTrackPath } from '../../shared/tracking-scope.js';
 import { readZarazMode, zarazEligibility, maybeInjectZaraz } from './agent/zaraz-tag.js';
+import { NO_TRANSFORM_PATHS, readNoTransformMode, withoutEdgeRewrites } from './agent/no-transform.js';
 import { AUTOLANDER_KNOWLEDGE } from './autolander-knowledge.js';
 import { sha256Hex } from './capi/hash.js';
 import { saveSupportRequest } from './support/storage.js';
@@ -79,8 +80,11 @@ export default {
       try {
         const shortLink = shortLinkResponse(request, url);
         if (shortLink) return shortLink;
-        const mode = (request.method === 'GET' && isDocumentPath(url.pathname) && !isNoTrackPath(url.pathname))
-          ? await readZarazMode(env) : 'off';
+        const [mode, edgeMode] = await Promise.all([
+          (request.method === 'GET' && isDocumentPath(url.pathname) && !isNoTrackPath(url.pathname))
+            ? readZarazMode(env) : 'off',
+          (request.method === 'GET' && NO_TRANSFORM_PATHS.has(url.pathname)) ? readNoTransformMode(env) : 'off',
+        ]);
         const decision = zarazEligibility({ method: request.method, pathname: url.pathname, mode,
           cookieHeader: request.headers.get('Cookie') });
         if (decision.eligible) {
@@ -89,7 +93,9 @@ export default {
           request = new Request(request, { headers });
         }
         const siteResponse = await handleSiteRequest(request, url);
-        return await maybeInjectZaraz(request, siteResponse, { ...decision, mode });
+        const page = await maybeInjectZaraz(request, siteResponse, { ...decision, mode });
+        // The prerendered pages load Web Analytics themselves; keep the edge from rewriting them (no-transform.js).
+        return withoutEdgeRewrites(request, url, page, { mode: edgeMode });
       } catch (err) {
         try {
           console.error('[worker] agent-layer fallthrough', url.pathname, err?.stack || err);

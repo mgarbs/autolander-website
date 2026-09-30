@@ -4,14 +4,17 @@ import { pathToFileURL } from 'node:url';
 import { assertNoUnverifiedProof } from './proof-build-guard.mjs';
 import { leanBaseCss, assertClassCoverage } from './route-css.mjs';
 import { loadEnv } from 'vite';
-import { META } from '../shared/ai-visibility-content.js';
-import { TEAM_META } from '../shared/team-content.js';
-import { renderAiVisibilityMirror } from '../src/ai/static-mirror.js';
-import { renderTeamMirror } from '../src/team/static-mirror.js';
+import { HERO, META } from '../shared/ai-visibility-content.js';
+import { HEADLINES, TEAM_META } from '../shared/team-content.js';
+import { renderAiVisibilityMirrorRest } from '../src/ai/static-mirror.js';
+import { renderTeamMirrorRest } from '../src/team/static-mirror.js';
 import { aiVisibilityHead } from './seo/data-ai-visibility.mjs';
 import { teamHead } from './seo/data-team.mjs';
+import { cleanSsr, loadPrerender } from './prerender.mjs';
 import {
+  appendBeaconLoader,
   buildPageShell,
+  deferEntryToPaint,
   isPreviewShell,
 } from './spa-shell.mjs';
 
@@ -91,9 +94,9 @@ const manifest = JSON.parse(readFileSync(join(distDir, '.vite/manifest.json'), '
 const indexCssFiles = new Set(manifest['index.html'].css || []);
 const cssAllowlist = JSON.parse(readFileSync(new URL('./route-css-allowlist.json', import.meta.url), 'utf8'));
 
-// Keep the existing mirrors and React boot. Only these two marketing routes
-// receive lean CSS; the homepage and utility shells retain the full stylesheet.
-function leanRouteShell(moduleId, mirrorHtml) {
+// Only these two marketing routes receive lean CSS; the homepage and utility shells retain the full
+// stylesheet. `rootHtml` is the markup the route ships (checked for class coverage against the lean CSS).
+function leanRouteShell(moduleId, rootHtml) {
   const entry = manifest[moduleId];
   if (!entry) throw new Error(`Missing route module: ${moduleId}`);
   const seen = new Set();
@@ -113,34 +116,85 @@ function leanRouteShell(moduleId, mirrorHtml) {
     if (!path.startsWith(resolve(distDir, 'assets') + sep) || !existsSync(path)) throw new Error(`Missing route asset: ${file}`);
   }
   const css = leanBaseCss(styles[0][1]) + cssFiles.map((file) => readFileSync(join(distDir, file), 'utf8')).join('\n');
-  assertClassCoverage(mirrorHtml, css, cssAllowlist);
+  assertClassCoverage(rootHtml, css, cssAllowlist);
+  // The route's static imports other than the entry chunk (e.g. SiteFooter, page-images): preloading them
+  // together with the route chunk, instead of when the route module is imported, takes one hop off the boot chain.
+  const entryFile = manifest['index.html'].file;
+  const modulePreloadHrefs = [...new Set([...seen].filter((key) => key !== moduleId).map((key) => manifest[key].file))]
+    .filter((file) => file !== entryFile && file.endsWith('.js'))
+    .map((file) => '/' + file);
+  const disabledCssHrefs = cssFiles.map((file) => '/' + file);
+  assertPreloadHelperDedupe([...modulePreloadHrefs, ...disabledCssHrefs]);
   return {
     shell: appShell.replace(styles[0][0], () => `<style data-inline-route-css>${css.replace(/<\/style/gi, '<\\/style')}</style>`),
     jsHref: '/' + entry.file,
+    modulePreloadHrefs,
+    disabledCssHrefs,
   };
 }
 
-const teamDir = join(distDir, 'team');
-mkdirSync(teamDir, { recursive: true });
-const teamMirror = renderTeamMirror();
-const teamAssets = leanRouteShell('src/team/TeamApp.jsx', teamMirror);
-writeFileSync(join(teamDir, 'index.html'), buildPageShell(teamAssets.shell, {
+// The route CSS is already inlined above, but Vite's preload helper (in the entry chunk) appends
+// <link rel="stylesheet" href="/assets/<Route>-*.css"> when the route chunk is imported and waits for it
+// to load before running the route module: a duplicate VeryHigh request on the boot path. The helper
+// skips any dependency for which `link[href="<dep>"]` (plus `[rel="stylesheet"]` for CSS) already exists,
+// so each route shell carries a *disabled* placeholder (never fetched, never applied), and its boot loader
+// modulepreloads every JS dependency. Fail the build if a Vite upgrade changes that contract or the list drifts.
+function assertPreloadHelperDedupe(hrefs) {
+  const entry = readFileSync(join(distDir, manifest['index.html'].file), 'utf8');
+  if (!entry.includes('document.querySelector(`link[href="${') || !entry.includes('[rel="stylesheet"]')) {
+    throw new Error('spa-fallback: the Vite preload helper no longer dedupes by link[href]; the inlined route CSS would be fetched twice');
+  }
+  const deps = entry.match(/m\.f=\[([^\]]*)\]/)?.[1] || '';
+  for (const href of hrefs) {
+    if (!deps.includes(`"${href.slice(1)}"`)) throw new Error(`spa-fallback: ${href} is not a preload-helper dependency`);
+  }
+}
+
+// /ai-visibility/ and /team/ ship React's own nav + hero, rendered at build time (scripts/prerender.mjs), followed
+// by the static mirror of everything below the hero as an inert island. The client hydrates that markup instead of
+// replacing it (src/main.jsx), so the first paint is final and stays the largest one; the app itself loads after
+// that paint (deferEntryToPaint). The noscript/agent layer is unchanged: the island is the same mirror as before.
+const prerender = await loadPrerender({ mode: preview ? 'preview' : 'production', env: { VITE_CAPI_URL: capiUrl } });
+const appShellHead = appShell.match(/<head>([\s\S]*?)<\/head>/)[1];
+
+function prerenderedRoute(moduleId, { dir, title, headHtml, hydrate, island, h1Text, rootHtml }) {
+  const root = cleanSsr(rootHtml, { island, h1Text, headHtml: appShellHead });
+  const assets = leanRouteShell(moduleId, root);
+  const shell = buildPageShell(assets.shell, {
+    title, headHtml, hydrate, rootHtml: root, disabledCssHrefs: assets.disabledCssHrefs,
+  });
+  mkdirSync(join(distDir, dir), { recursive: true });
+  writeFileSync(join(distDir, dir, 'index.html'), appendBeaconLoader(deferEntryToPaint(shell, {
+    preloadHrefs: [assets.jsHref, ...assets.modulePreloadHrefs],
+    routeEntryHref: assets.jsHref,
+  })), 'utf8');
+}
+
+prerenderedRoute('src/team/TeamApp.jsx', {
+  dir: 'team',
   title: TEAM_META.title,
   headHtml: teamHead({ preview }),
-  mirrorHtml: teamMirror,
-  jsHref: teamAssets.jsHref,
-}), 'utf8');
+  hydrate: 'team',
+  island: 'team-rest',
+  h1Text: HEADLINES.a,
+  rootHtml: prerender.renderTeam({ restHtml: renderTeamMirrorRest(), variant: 'a' }),
+});
 
-const aiDir = join(distDir, 'ai-visibility');
-mkdirSync(aiDir, { recursive: true });
-const aiMirror = renderAiVisibilityMirror({ capiUrl });
-const aiAssets = leanRouteShell('src/ai/AiVisibilityApp.jsx', aiMirror);
-writeFileSync(join(aiDir, 'index.html'), buildPageShell(aiAssets.shell, {
+prerenderedRoute('src/ai/AiVisibilityApp.jsx', {
+  dir: 'ai-visibility',
   title: META.title,
   headHtml: aiVisibilityHead({ preview }),
-  mirrorHtml: aiMirror,
-  jsHref: aiAssets.jsHref,
-}), 'utf8');
+  hydrate: 'ai-visibility',
+  island: 'ai-rest',
+  h1Text: `${HERO.h1Lead} ${HERO.h1Grad}`,
+  rootHtml: prerender.renderAiVisibility({ restHtml: renderAiVisibilityMirrorRest({ capiUrl }) }),
+});
+
+// The homepage's first screen is its static home block (index.html), so its app also loads after the first paint.
+// 404.html, /admin and /pay keep the head entry script: they are app pages with nothing static to show first.
+// These three pages are also the ones the Worker serves with Cache-Control: no-transform, so they load Cloudflare
+// Web Analytics themselves (appendBeaconLoader); worker-no-transform.test.js keeps the two lists identical.
+writeFileSync(indexPath, appendBeaconLoader(deferEntryToPaint(appShell)), 'utf8');
 
 // The bundler must never read local proof in production. This separate post-build
 // audit reads it only to ensure none of its unverified claims escaped into dist.

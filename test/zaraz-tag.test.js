@@ -106,8 +106,12 @@ test('worker only reads KV on trackable GET documents and strips conditionals on
     await worker.fetch(r, env, {}); assert.equal(reads.length, 0); assert.equal(calls.at(-1).headers.get('If-None-Match'), 'old');
   }
   await worker.fetch(new Request('https://autolander.ai/', { headers: { 'If-None-Match': 'old', 'If-Modified-Since': 'old' } }), env, {});
-  assert.equal(reads.length, 1);
+  // One Zaraz-mode read per trackable document; the homepage (a no-transform page, worker/src/agent/no-transform.js)
+  // also reads its edge-rewrite switch. Nothing else reads KV.
+  assert.deepEqual(reads.map(([key]) => key).sort(), [ZARAZ_MODE_KEY, 'cfg:html_no_transform'].sort());
   for (const name of ['If-None-Match', 'If-Modified-Since']) assert.equal(calls.at(-1).headers.get(name), null);
+  await worker.fetch(new Request('https://autolander.ai/contact/'), env, {});
+  assert.deepEqual(reads.slice(2).map(([key]) => key), [ZARAZ_MODE_KEY]);
   await worker.fetch(new Request('https://autolander.ai/', { headers: { Cookie: 'al_zaraz=0', 'If-None-Match': 'old' } }), env, {});
   assert.equal(calls.at(-1).headers.get('If-None-Match'), 'old');
   const noKv = await worker.fetch(req, {}, {}); assert.equal(noKv.headers.get('X-AL-Zaraz'), 'skip:mode_off');

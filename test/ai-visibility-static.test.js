@@ -22,8 +22,8 @@ import {
 } from '../scripts/seo/data-ai-visibility.mjs';
 import { teamHead } from '../scripts/seo/data-team.mjs';
 import { buildPageShell } from '../scripts/spa-shell.mjs';
-import { renderAiVisibilityMirror } from '../src/ai/static-mirror.js';
-import { renderTeamMirror } from '../src/team/static-mirror.js';
+import { renderAiVisibilityMirror, renderAiVisibilityMirrorRest } from '../src/ai/static-mirror.js';
+import { renderTeamMirror, renderTeamMirrorRest } from '../src/team/static-mirror.js';
 import { HTMLParser } from './helpers/html-text.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -277,7 +277,11 @@ test('built dedicated shells match generator metadata when dist exists', { skip:
   const team = read('dist/team/index.html');
   assert.ok(ai.includes(`<title>${META.title}</title>`));
   assert.ok(ai.includes('content="index, follow, max-image-preview:large, max-snippet:-1"'));
-  assert.ok(ai.includes('id="al-static-page"') && ai.includes('id="scan-form"'));
+  assert.ok(ai.includes('<div id="root" data-al-hydrate="ai-visibility">') && ai.includes('id="scan-form"'));
+  // The no-JS agent layer ships unchanged: the static mirror below the hero is the page's island, byte for byte.
+  assert.ok(ai.includes(`<div data-al-island="ai-rest">${renderAiVisibilityMirrorRest()}</div>`));
+  assert.ok(team.includes(`<div data-al-island="team-rest">${renderTeamMirrorRest()}</div>`));
+  assert.equal((ai.match(/<form id="scan-form" method="post" action="https:\/\/autolander\.ai\/api\/ai-scan"/g) || []).length, 1);
 
   const planSection = /<section id="plans"[\s\S]*?<\/section>/.exec(ai)?.[0] || '';
   const expectedPrices = new Set(PLANS.flatMap((plan) => [fmtUsd(plan.monthly), fmtUsd(plan.setup)]));

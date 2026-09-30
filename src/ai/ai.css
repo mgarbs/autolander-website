@@ -12,6 +12,7 @@
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 @source "./";
 @source "../components/ResponsiveImage.jsx";
+@source "../components/StaticIsland.jsx";
 @source "../lib/";
 @source "../../shared/responsive-images.js";
 @source "../../shared/page-images.js";
@@ -26,8 +27,8 @@
 
 /* Same tokens as index.css, so font-display / font-mono resolve identically. */
 @theme {
-  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Archivo', 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter', 'Inter Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Archivo', 'Archivo Fallback', 'Inter', 'Inter Fallback', system-ui, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
 }
 
@@ -40,6 +41,13 @@
 }
 
 .al-scan-section ~ section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* The static island below the hero (the build-time mirror, until the page goes live): laid out only as it
+   nears the screen, so the first paint lays out the nav and hero alone. */
+[data-al-island] > section {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
