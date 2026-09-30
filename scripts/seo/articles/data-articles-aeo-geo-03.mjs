@@ -32,10 +32,10 @@ export const ARTICLES = [
     primaryKeyword: 'aeo vs seo for car dealers',
     secondaryKeywords: [
       'difference between aeo and seo',
-      'is aeo replacing seo',
-      'do car dealers still need seo',
       'aeo vs geo vs seo',
       'seo vs geo for dealerships',
+      'aeo and seo budget split',
+      'how aeo changes dealer seo work',
     ],
     alsoRelated: [
       'measure-dealership-ai-visibility',
@@ -48,17 +48,17 @@ export const ARTICLES = [
     augmentKeys: ['aiDealers', 'mktgHub'],
     title: 'AEO vs SEO for Car Dealers: What Changes, What Stays',
     description:
-      'AEO vs SEO for car dealers in plain terms: what Google, OpenAI and Microsoft say '
-      + 'changed, what still counts, and where a dealership should start.',
+      'AEO vs SEO for car dealers in practice: what changes in the work, how to split the '
+      + 'budget, what stays the same and where a dealership should start.',
     eyebrow: 'AEO and GEO for car dealers',
     h1: 'AEO vs SEO for car dealers: what changes and what stays the same',
     tldr:
       'AEO vs SEO for car dealers comes down to the finish line. SEO earns your pages a place '
       + 'in the list of search results, AEO makes those pages easy for an AI assistant to '
       + 'quote, and GEO builds the kind of trust across the web that leads ChatGPT, Claude or '
-      + 'Google AI Overviews to name a store. Google says optimizing for its AI search is still '
-      + 'SEO, so keep your SEO and add the pieces most programs skip: AI crawler access, '
-      + 'vehicle facts as text and trust on other sites.',
+      + 'Google AI Overviews to name a store. In practice the SEO floor stays, a short list of '
+      + 'new work gets added (AI crawler access, vehicle facts as text and trust on other '
+      + 'sites), and the budget follows the gaps your current program leaves open.',
     sections: [
       {
         type: 'qa',
@@ -84,16 +84,14 @@ export const ARTICLES = [
         q: 'What does Google say about AEO and GEO?',
         a: [
           'Google says that, from its point of view, optimizing for generative AI search is '
-            + 'optimizing for the search experience, “and thus still SEO.” Its AI features sit '
-            + 'on its core ranking and quality systems, and it says no special files or markup '
-            + 'are needed to appear in them. AEO and GEO are industry labels, not Google’s '
-            + 'own terms.',
-          'The details are in Google’s [guide to optimizing for its generative AI '
-            + 'features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide). '
-            + 'It describes those features as “rooted in our core Search ranking and quality '
-            + 'systems,” and it tells site owners to weigh outside AEO and GEO advice against '
-            + 'its own guidance. Google’s [page on AI features and your '
-            + 'website](https://developers.google.com/search/docs/appearance/ai-features) adds '
+            + 'optimizing for the search experience, “and thus still SEO.” It says no special '
+            + 'files or markup are needed to appear in its AI features, and it asks site owners '
+            + 'to test outside advice against its guidance. AEO and GEO are industry labels, '
+            + 'not Google’s own terms.',
+          'Both points come from Google’s own documentation: its [guide to optimizing for its '
+            + 'generative AI features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) '
+            + 'and its [page on AI features and your '
+            + 'website](https://developers.google.com/search/docs/appearance/ai-features), which says '
             + 'that you do not need new machine-readable files, AI text files or special markup '
             + 'to show up in AI Overviews or AI Mode, and that no additional requirements apply '
             + 'beyond regular search.',
@@ -105,26 +103,21 @@ export const ARTICLES = [
       },
       {
         type: 'qa',
-        id: 'is-aeo-replacing-seo',
-        q: 'Is AEO replacing SEO?',
+        id: 'what-stays-the-same',
+        q: 'What stays the same when a dealership adds AEO?',
         a: [
-          'No. Google’s AI answers pull pages from the same search index its regular '
-            + 'results use, and Bing says Microsoft Copilot runs on the same crawling, indexing '
-            + 'and ranking foundation as traditional search. A page Google cannot index and '
-            + 'show with a snippet cannot appear as a link in AI Overviews or AI Mode at all.',
-          'Google describes its AI answers as grounded: its ranking systems retrieve '
-            + 'relevant, current pages from the index, the model reviews them, and the answer '
-            + 'shows “prominent, clickable links to relevant web pages” ([Google Search '
-            + 'Central](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)). '
-            + 'Google says a page must be “indexed and eligible to be shown in Google Search '
-            + 'with a snippet” to appear in those features ([Google Search '
-            + 'Central](https://developers.google.com/search/docs/appearance/ai-features)).',
-          'Bing’s [Webmaster '
-            + 'Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) '
-            + 'say Bing and Copilot search experiences “rely on the same core crawling, '
-            + 'indexing, and ranking foundation as traditional search.” A dealer who drops SEO '
-            + 'to pay for AEO has it backwards: AEO and GEO sit on top of a crawlable, indexed '
-            + 'site full of pages worth showing.',
+          'Most of the SEO work stays exactly as it is. [Google '
+            + 'says](https://developers.google.com/search/docs/appearance/ai-features) a page '
+            + 'must be “indexed and eligible to be shown in Google Search with a snippet” to '
+            + 'appear in AI Overviews or AI Mode, so crawlable pages, technical health, a page '
+            + 'for every car and a complete Business Profile remain the floor.',
+          'In practice the jobs your website vendor or SEO agency already runs keep running: '
+            + 'sitemaps that list every vehicle page, clean redirects, pages that load quickly '
+            + 'on a phone, titles that say what each page is about, and the same name, address '
+            + 'and phone on every listing. If those slip, the AI layer has nothing to stand on.',
+          'What changes is the checklist on top. Classic SEO reports rarely look at AI crawler '
+            + 'access, at whether vehicle facts are readable text, or at whether an assistant '
+            + 'names the store at all, so those checks get added alongside the old ones.',
         ],
       },
       {
@@ -215,6 +208,26 @@ export const ARTICLES = [
             + 'grounding or citations in AI experiences” ([Bing Webmaster '
             + 'Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a)). '
             + 'Treat any program that claims otherwise with care.',
+        ],
+      },
+      {
+        type: 'qa',
+        id: 'aeo-seo-budget-split',
+        q: 'How should a dealership split budget between SEO and AEO?',
+        a: [
+          'Fund the SEO floor first, then pay for the AEO and GEO gaps your current program '
+            + 'leaves open. Many first fixes cost staff time more than money: a robots.txt check, '
+            + 'price and VIN as text, matching store facts and review replies. Outside help earns '
+            + 'its fee on the ongoing work of content, listings, reviews and measurement.',
+          'Before you move money, list what the current SEO budget buys and ask which line '
+            + 'items anyone acts on. Reports nobody reads are the usual place to find room; the '
+            + 'technical work that keeps vehicle pages indexed is the last place to cut. [Google '
+            + 'says](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) '
+            + 'no third-party tool has access to its internal ranking or AI systems, so a line item '
+            + 'for a tool that claims that access buys nothing real.',
+          'Then compare any AEO and GEO provider against the list in the section above, and get '
+            + 'plan prices and terms in writing. Ours are listed with the [plans on our AEO and GEO '
+            + 'page](/aeo-geo-for-car-dealers/#plans), and every AutoLander plan is month to month.',
         ],
       },
       {
@@ -315,11 +328,12 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Do car dealers still need SEO if they invest in AEO?',
-        'Yes. Google says its AI features are rooted in its core ranking systems, and a page '
-        + 'has to be indexed and eligible for a snippet before it can appear as a link in AI '
-        + 'Overviews or AI Mode. Keep the SEO your website vendor runs and add the AEO and GEO '
-        + 'work on top of it.'],
+      ['How much of the AEO work can our own staff do?',
+        'More than most dealers expect. Checking robots.txt, reading three vehicle pages for '
+        + 'price, mileage and VIN, matching store facts across listings and replying to reviews '
+        + 'all fit into a normal week. Answer pages, listing upkeep and asking the assistants your '
+        + 'buyers’ questions every month take steadier time, which is where outside help usually '
+        + 'earns its fee.'],
       ['Is GEO the same thing as AEO?',
         'They overlap, and people often use the words interchangeably. AEO usually means '
         + 'shaping your own pages so an assistant can quote a short, direct answer. GEO usually '
@@ -824,46 +838,26 @@ export const ARTICLES = [
       },
       {
         type: 'qa',
-        id: 'keep-doing-and-add',
-        q: 'What should a dealership keep doing, and what should it add?',
+        id: 'measure-seo-beyond-clicks',
+        q: 'What should a dealer measure besides clicks?',
         a: [
-          'Keep the SEO basics: pages search engines can crawl and index, sound technical '
-            + 'health, a page for every car and a complete Business Profile. Add the AI layer: '
-            + 'open the site to AI search crawlers, put vehicle facts on the page as text, '
-            + 'write pages that answer buyer questions first, and build trust on other sites.',
-          'The comparison in [AEO vs SEO for car dealers](@aeo-vs-seo-for-car-dealers) lays '
-            + 'the two lists side by side. Before you cut a line from the SEO budget, check '
-            + 'what the AI layer depends on: nearly all of it assumes the SEO floor is already '
-            + 'in place.',
+          'Measure the whole path from search to showroom, since a shopper can now learn about '
+            + 'your store without clicking. Track impressions next to clicks, the pages Google '
+            + 'and Bing count as cited in AI answers, calls and direction requests from your '
+            + 'Business Profile, and the leads that organic visits produce.',
+          'Two reports help with the AI side. Bing Webmaster Tools has an [AI Performance '
+            + 'report](https://blogs.bing.com/webmaster/February-2026/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview) '
+            + 'that counts citations across Microsoft Copilot and Bing’s AI summaries, and '
+            + 'Search Console’s generative AI report counts impressions from AI Overviews and AI '
+            + 'Mode by page. In Google Analytics 4, visits from AI Overviews and AI Mode land in '
+            + 'Organic Search, while visits from assistants such as ChatGPT land in the AI '
+            + 'Assistant channel ([Google Analytics '
+            + 'Help](https://support.google.com/analytics/answer/9756891)).',
+          'Fewer clicks with steady impressions and steady leads usually means buyers are '
+            + 'reading answers on the results page, which calls for a different scorecard more '
+            + 'than a different website. For what changes in the work and the budget, see [the '
+            + 'practical AEO vs SEO comparison for dealers](@aeo-vs-seo-for-car-dealers).',
         ],
-      },
-      {
-        type: 'twocol',
-        left: {
-          h2: 'Keep doing',
-          items: [
-            'Indexable pages: every vehicle, every model you carry, and service and finance '
-              + 'pages that Google can crawl and show with a snippet.',
-            'Technical health: working sitemaps, clean redirects and pages that load '
-              + 'without errors on a phone.',
-            'Your Google Business Profile: correct categories, hours, services and photos, '
-              + 'with every review answered.',
-            'Local consistency: the same name, address and phone number everywhere your '
-              + 'store is listed.',
-          ],
-        },
-        right: {
-          h2: 'Add now',
-          items: [
-            'AI search crawler access: OAI-SearchBot, Claude-SearchBot and PerplexityBot '
-              + 'allowed in robots.txt and through your security service.',
-            'Facts as text: price, mileage and the full VIN readable on every vehicle page.',
-            'Answer-first pages: one buyer question per page, answered in the first '
-              + 'sentence with your store’s own facts.',
-            'Trust from other sites: reviews you answer, accurate listings and mentions on '
-              + 'the sites assistants already cite.',
-          ],
-        },
       },
       {
         type: 'bullets',
@@ -890,20 +884,26 @@ export const ARTICLES = [
             + 'Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a)',
           '[Microsoft Bing Search blog: the role of grounding, February 12, '
             + '2026](https://blogs.bing.com/search/February-2026/Elevating-the-Role-of-Grounding-on-the-AI-Web)',
+          '[Bing Webmaster Blog: AI Performance in Bing Webmaster '
+            + 'Tools](https://blogs.bing.com/webmaster/February-2026/Introducing-AI-Performance-in-Bing-Webmaster-Tools-Public-Preview)',
+          '[Search Console Help: generative AI '
+            + 'report](https://support.google.com/webmasters/answer/16984139)',
+          '[Google Analytics Help: default channel '
+            + 'group](https://support.google.com/analytics/answer/9756891)',
         ],
       },
     ],
     faq: [
-      ['Should a dealership cut its SEO budget because of AI?',
-        'Not as a first move. Google and Bing both say their AI answers rest on the same '
-        + 'crawling, indexing and ranking systems as search, so the SEO floor still matters. '
-        + 'Review what the budget buys, drop reports nobody acts on, and move money toward '
-        + 'crawler access, answer pages and reviews.'],
-      ['What is a zero-click search?',
-        'A search the person finishes on the results page without visiting a website, because '
-        + 'an AI summary, a map or a quick answer gave them enough. In March 2025 browsing '
-        + 'data, Pew found people clicked a traditional result on 8% of Google visits with an '
-        + 'AI summary, against 15% without one.'],
+      ['Should a dealership still track Google rankings?',
+        'Yes, and read them next to impressions, AI citations and leads. Google’s AI answers '
+        + 'pull their links from the pages its ranking systems retrieve, so a page that ranks '
+        + 'well can lose clicks to an AI summary and still be the page that summary links. A '
+        + 'ranking with fewer clicks can still be doing its job.'],
+      ['Why are my clicks down while my impressions are up?',
+        'Usually because more buyers get their answer on the results page. Pew found people '
+        + 'clicked a traditional result on 8% of Google visits with an AI summary, against 15% '
+        + 'without one. Check Search Console’s generative AI report for the pages earning AI '
+        + 'Overviews and AI Mode impressions, and compare leads before you blame the site.'],
       ['Do clicks from AI Overviews convert better?',
         'Google says clicks from results pages with AI Overviews are higher quality, meaning '
         + 'people are more likely to spend more time on the site. Treat that as Google’s claim '
