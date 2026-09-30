@@ -218,6 +218,7 @@ AutoLander starts at $39 a month per seat, month-to-month, with a Dealer Plan fr
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
 - [Meta Muse for car dealerships: what to hand it and what to keep](https://autolander.ai/compare/meta-muse-for-car-dealerships/)
 - [Meta Muse for car salesmen: the rep’s guide to using it well](https://autolander.ai/compare/meta-muse-for-car-salesmen/)
+- [Facebook Marketplace auto-reply for car dealers: every option compared](https://autolander.ai/compare/facebook-marketplace-auto-reply-for-car-dealers/)
 - [Meta Muse for car dealers: getting your listings ready for an AI that shops](https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers/)
 - [The Facebook Seller app for car dealers: what it does and where it fits](https://autolander.ai/guide/facebook-seller-app-for-car-dealers/)
 

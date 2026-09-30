@@ -105,6 +105,7 @@ Meta’s Terms prohibit accessing its products by automated means without prior 
 - [Meta Muse vs AutoLander vs CARVID: which one a car dealer actually needs](https://autolander.ai/compare/meta-muse-vs-autolander-vs-carvid/)
 - [Meta Muse for car dealerships: what to hand it and what to keep](https://autolander.ai/compare/meta-muse-for-car-dealerships/)
 - [Meta Muse for car salesmen: the rep’s guide to using it well](https://autolander.ai/compare/meta-muse-for-car-salesmen/)
+- [Facebook Marketplace auto-reply for car dealers: every option compared](https://autolander.ai/compare/facebook-marketplace-auto-reply-for-car-dealers/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

@@ -197,6 +197,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [Meta Muse vs AutoLander vs CARVID: which one a car dealer actually needs](https://autolander.ai/compare/meta-muse-vs-autolander-vs-carvid.md): Meta Muse vs AutoLander vs CARVID for car dealers: posting, auto-reply, buyer hunting, teams and price compared, plus what Muse said when we asked it.
 - [Meta Muse at a car dealership: what to hand it, and what to keep off its plate](https://autolander.ai/compare/meta-muse-for-car-dealerships.md): How a car dealership should use Meta Muse in 2026: the jobs it runs well, the lot and team work it cannot, and where a feed-driven poster fits in.
 - [Meta Muse for car salesmen: let it sell with you, and let something else post](https://autolander.ai/compare/meta-muse-for-car-salesmen.md): A car salesman’s guide to Meta Muse: 12 ways it helps you sell, why posting your cars through it wastes it, and why a $39 feed-driven poster does that job better.
+- [Facebook Marketplace auto-reply for car dealers: every option, and the one thing they all depend on](https://autolander.ai/compare/facebook-marketplace-auto-reply-for-car-dealers.md): Facebook Marketplace auto-reply for car dealers compared: Meta’s built-in availability reply, Meta Muse, CARVID’s AI Inbox and RelayAuto, and what each one depends on.
 
 ## Buyer guides
 

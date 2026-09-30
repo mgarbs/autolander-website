@@ -58,6 +58,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - Meta Muse vs AutoLander vs CARVID for Car Dealers (2026)
 - Meta Muse for Car Dealerships: What It Runs, Where It Stops
 - Meta Muse for Car Salesmen: How Reps Should Use It (2026)
+- Facebook Marketplace Auto-Reply for Car Dealers (2026 Guide)
 
 ## Evergreen hubs
 
