@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import {
+  AEO_GEO,
   AI_VISIBILITY_UPDATED,
   AI_VISIBILITY_UPDATED_HUMAN,
   BRAND_SCAN,
   ENGINES,
   EVERY_PLAN_INCLUDES,
   FAQ,
+  FAQ_HEADING,
   FINAL_CTA,
   FINE_PRINT,
   HERO,
@@ -17,11 +19,15 @@ import {
   NOT_INCLUDED,
   PLANS,
   PLANS_SECTION,
+  PLANS_UPDATED,
+  PLANS_UPDATED_HUMAN,
   PROMISES,
   REASONS,
+  RELATED,
   REPORT,
   REPORT_MOCK,
   RESULTS_CREDIT,
+  REVIEW,
   SERVICE_SUMMARY,
   SHIFT,
   WHERE_BUYERS_ASK,
@@ -111,7 +117,10 @@ export function AiHero({ onGo }) {
       <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-start gap-12 px-6 lg:grid-cols-[1.02fr_0.98fr] lg:gap-10">
         <div className="min-w-0 max-w-2xl lg:pt-5">
           <Eyebrow>{HERO.eyebrow}</Eyebrow>
-          <h1 className="mt-5 font-display text-[clamp(2.15rem,9vw,3rem)] font-extrabold uppercase italic leading-[0.92] tracking-[-0.01em] text-white sm:text-6xl lg:text-[4rem]">
+          {/* max-w-[9.2em]: the line box scales with the font, so the H1 wraps the same way in the metric-matched
+              fallback and in Archivo at every width (no layout shift when the web font swaps in). Re-check with the
+              fallback-vs-webfont wrap sweep if the H1 copy or size changes. */}
+          <h1 className="mt-5 max-w-[9.2em] font-display text-[clamp(2.15rem,9vw,3rem)] font-extrabold uppercase italic leading-[0.92] tracking-[-0.01em] text-white sm:text-6xl lg:text-[4rem]">
             {HERO.h1Lead} <Grad>{HERO.h1Grad}</Grad>
           </h1>
           <p className="al-ai-summary mt-6 max-w-xl text-lg font-medium leading-relaxed text-slate-300 lg:text-xl">{HERO.summary}</p>
@@ -131,6 +140,89 @@ export function AiHero({ onGo }) {
           <ResponsiveImage image={aiImage(ILLUSTRATION_SLOTS.hero.image)} sizes={IMAGE_SIZES.aiHero} eager />
           <p className="mt-3 text-xs leading-relaxed text-slate-400">{ILLUSTRATION_SLOTS.hero.caption}</p>
           <ReportMock />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const AEO_CARD = 'self-start rounded-3xl border border-white/10 bg-white/[0.03] p-6';
+const AEO_CARD_TITLE = 'font-display text-xl font-extrabold uppercase italic text-white';
+
+const TermText = ({ term }) => (
+  <p className="mt-3 text-[15px] leading-relaxed text-slate-400"><span className="al-aeo-def">{term.definition}</span> {term.detail}</p>
+);
+
+// "What do AEO and GEO mean for a car dealership?" The first section below the hero and the page's main citation
+// target: every word is plain visible text (nothing collapsed), from the same AEO_GEO export as the mirror and twin.
+export function AeoGeoSection() {
+  const byId = Object.fromEntries(AEO_GEO.terms.map((term) => [term.id, term]));
+  const { table } = AEO_GEO;
+  return (
+    <section id={AEO_GEO.anchor} className="scroll-mt-24 border-y border-white/5 bg-[#080808] py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6">
+        <Eyebrow>{AEO_GEO.eyebrow}</Eyebrow>
+        <SectionHeading className="mt-5 max-w-4xl">{AEO_GEO.h2Lead} <Grad>{AEO_GEO.h2Grad}</Grad></SectionHeading>
+        <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">
+          {AEO_GEO.updatedLabel} <time dateTime={AI_VISIBILITY_UPDATED}>{AI_VISIBILITY_UPDATED_HUMAN}</time>
+          {REVIEW.enabled && <>{' · '}{REVIEW.label} <a className="text-blue-300 underline underline-offset-4" href={REVIEW.href}>{REVIEW.name}</a>, {REVIEW.role}</>}
+        </p>
+        <p className="al-aeo-lead mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">{AEO_GEO.lead}</p>
+        <div className="mt-12 grid items-start gap-6 lg:grid-cols-2">
+          {[byId.aeo, byId.geo].map((term) => (
+            <article key={term.id} id={`term-${term.id}`} className={`scroll-mt-24 ${AEO_CARD}`}>
+              <h3 className={AEO_CARD_TITLE}>{term.question}</h3>
+              <TermText term={term} />
+            </article>
+          ))}
+        </div>
+        <div id="term-seo" className="mt-12 scroll-mt-24">
+          <h3 className="font-display text-2xl font-extrabold uppercase italic text-white">{byId.seo.question}</h3>
+          <div className="max-w-3xl"><TermText term={byId.seo} /></div>
+          <div className="mt-6 overflow-x-auto rounded-3xl border border-white/10 bg-[#0b0d12]">
+            <table className="w-full min-w-[720px] border-collapse text-left text-sm text-slate-300">
+              <caption className="border-b border-white/10 p-5 text-left font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-blue-300">{table.caption}</caption>
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th scope="col" className="p-4"><span className="sr-only">{table.rowHeaderLabel}</span></th>
+                  {table.columns.map((column) => <th key={column} scope="col" className="p-4 font-display text-lg font-extrabold uppercase italic text-white">{column}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {table.rows.map(([label, ...values]) => (
+                  <tr key={label} className="border-b border-white/5 align-top last:border-0">
+                    <th scope="row" className="w-[22%] p-4 font-bold text-white">{label}</th>
+                    {values.map((value, index) => <td key={`${label}-${table.columns[index]}`} className="w-[26%] p-4 leading-relaxed">{value}</td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p className="mt-8 max-w-3xl text-lg leading-relaxed text-slate-300">{AEO_GEO.foundation}</p>
+        <p className="mt-6 rounded-2xl border border-blue-400/20 bg-blue-500/[0.06] px-5 py-4 leading-relaxed text-blue-200">{AEO_GEO.scanNote}</p>
+        <div className="mt-12 grid items-start gap-6 lg:grid-cols-2">
+          <div className="self-start rounded-3xl border border-white/10 bg-[#0b0d12] p-6 sm:p-8">
+            <h3 className={AEO_CARD_TITLE}>{AEO_GEO.glossaryHeading}</h3>
+            <dl className="mt-6 grid gap-4">
+              {AEO_GEO.glossary.map(({ term, body }) => (
+                <div key={term}>
+                  <dt className="font-bold text-white">{term}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-slate-400">{body}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div className="self-start rounded-3xl border border-white/10 bg-[#0b0d12] p-6 sm:p-8">
+            <h3 className={AEO_CARD_TITLE}>{AEO_GEO.sourcesHeading}</h3>
+            <ul className="m-0 mt-6 grid list-none gap-2 p-0">
+              {AEO_GEO.sources.map((source) => (
+                <li key={source.url}>
+                  <a className="inline-block py-1 text-sm leading-relaxed text-blue-300 underline decoration-blue-400/40 underline-offset-4 hover:text-blue-200" href={source.url} target="_blank" rel="noreferrer">{source.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -159,6 +251,7 @@ export function ShiftSection() {
 const ReportCard = ({ part }) => (
   <article className={`self-start rounded-3xl border p-6 ${part.accent ? 'border-blue-400/30 bg-blue-500/[0.08]' : 'border-white/10 bg-white/[0.03]'}`}>
     <h3 className="font-display text-xl font-extrabold uppercase italic text-white">{part.title}</h3>
+    {part.tag && <p className="mt-2 font-mono text-[10px] font-bold uppercase tracking-widest text-blue-300">{part.tag}</p>}
     <p className="mt-3 text-[15px] leading-relaxed text-slate-400">{part.body}</p>
   </article>
 );
@@ -219,6 +312,7 @@ export function ReportSection() {
       <div className="mx-auto max-w-7xl px-6">
         <Eyebrow>{REPORT.eyebrow}</Eyebrow>
         <SectionHeading className="mt-5 max-w-4xl">{REPORT.h2Lead} <Grad>{REPORT.h2Grad}</Grad></SectionHeading>
+        <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">{REPORT.lead}</p>
         <div className="mt-12 grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <ResponsiveImage image={aiImage(ILLUSTRATION_SLOTS.report.image)} sizes={IMAGE_SIZES.aiReport} />
           <div className="grid items-start gap-4 sm:grid-cols-2">
@@ -406,7 +500,7 @@ export function PlansSection({ onGo }) {
         </aside>
 
         <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">
-          Prices and plans updated <time dateTime={AI_VISIBILITY_UPDATED}>{AI_VISIBILITY_UPDATED_HUMAN}</time>
+          Prices and plans updated <time dateTime={PLANS_UPDATED}>{PLANS_UPDATED_HUMAN}</time>
         </p>
       </div>
     </section>
@@ -417,7 +511,9 @@ export function AiFaq() {
   return (
     <section id="faq" className="py-20 lg:py-32">
       <div className="mx-auto max-w-4xl px-6">
-        <div className="divide-y divide-white/10 rounded-3xl border border-white/10 bg-[#0b0d12]">
+        <Eyebrow>{FAQ_HEADING.eyebrow}</Eyebrow>
+        <SectionHeading className="mt-5">{FAQ_HEADING.h2Lead} <Grad>{FAQ_HEADING.h2Grad}</Grad></SectionHeading>
+        <div className="mt-10 divide-y divide-white/10 rounded-3xl border border-white/10 bg-[#0b0d12]">
           {FAQ.map((item, index) => (
             <details key={item.q} className="group p-6" open={index === 0} {...(item.allow ? { 'data-claims-allow': '' } : {})}>
               <summary className="flex cursor-pointer list-none items-start justify-between gap-4 font-bold text-white [&::-webkit-details-marker]:hidden">
@@ -452,7 +548,15 @@ export function AboutService() {
   return (
     <section className="py-10">
       <div className="mx-auto max-w-5xl px-6 text-center text-sm leading-relaxed text-slate-400">
-        {SERVICE_SUMMARY}
+        <nav aria-label={RELATED.heading} className="mb-8">
+          <h2 className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">{RELATED.heading}</h2>
+          <ul className="m-0 mt-3 flex list-none flex-wrap justify-center gap-x-6 gap-y-1 p-0">
+            {RELATED.links.map((link) => (
+              <li key={link.href}><a className="inline-block py-1 text-blue-300 underline decoration-blue-400/40 underline-offset-4 hover:text-blue-200" href={link.href}>{link.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+        <p>{SERVICE_SUMMARY}</p>
       </div>
     </section>
   );

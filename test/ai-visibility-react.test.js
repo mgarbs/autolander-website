@@ -21,6 +21,11 @@ test('AI Visibility content keeps the owner-approved plans and public copy rules
   );
 
   const source = read('shared/ai-visibility-content.js');
+  // One FAQ question may say "guarantee" (dealers type it); its answer starts with "No." (static test pins that).
+  const guaranteeQuestions = AI_CONTENT.FAQ.filter((item) => /guarantee/i.test(item.q));
+  assert.equal(guaranteeQuestions.length, 1);
+  assert.equal(guaranteeQuestions[0].allow, true);
+  const allowQ = guaranteeQuestions[0].q;
   const disallowed = [
     /[—–]/,
     /earned media/i,
@@ -33,11 +38,16 @@ test('AI Visibility content keeps the owner-approved plans and public copy rules
     /missed promise/i,
     /powered by/i,
   ];
-  for (const pattern of disallowed) assert.doesNotMatch(source, pattern);
+  for (const pattern of disallowed) {
+    const haystack = String(pattern) === String(/guarantee/i) ? source.replaceAll(allowQ, '') : source;
+    assert.doesNotMatch(haystack, pattern);
+  }
   const assistantNames = /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i;
   for (const [name, content] of Object.entries(AI_CONTENT)) {
-    if (typeof content === 'function' || ['WHERE_BUYERS_ASK', 'RESULTS_VIEW'].includes(name)) continue;
-    assert.doesNotMatch(JSON.stringify(content), assistantNames, name);
+    if (typeof content === 'function' || ['WHERE_BUYERS_ASK', 'RESULTS_VIEW', 'AEO_GEO'].includes(name)) continue;
+    // FAQ items marked `names: true` are the only FAQ entries allowed to name an assistant brand.
+    const checked = name === 'FAQ' ? content.filter((item) => !item.names) : content;
+    assert.doesNotMatch(JSON.stringify(checked), assistantNames, name);
   }
   const sections = read('src/ai/AiSections.jsx').replace(/export function WhereBuyersAskSection\(\)[\s\S]*?(?=export function ReportSection)/, '');
   assert.doesNotMatch(sections, assistantNames);
@@ -78,6 +88,8 @@ test('fetch scan request identifies its submission path and consent version', ()
 test('React AI page renders required image assets and stable plan anchors', () => {
   const sections = read('src/ai/AiSections.jsx');
   assert.match(sections, /ResponsiveImage image=\{aiImage\(ILLUSTRATION_SLOTS.hero.image\)\} sizes=\{IMAGE_SIZES.aiHero\} eager/);
+  // The H1's em-based max width keeps its line breaks identical in the fallback font and Archivo (no font-swap CLS).
+  assert.match(sections, /<h1 className="mt-5 max-w-\[9\.2em\] /);
   assert.match(sections, /id=\{plan\.anchor\}/);
   assert.deepEqual(PLANS.map((plan) => plan.anchor), ['plan-ai-foundation', 'plan-ai-authority', 'plan-market-leader']);
   assert.match(sections, /id="plans"/);

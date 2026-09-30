@@ -1,9 +1,11 @@
 import {
+  AEO_GEO,
   AI_VISIBILITY_UPDATED,
   AI_VISIBILITY_UPDATED_HUMAN,
   BRAND_SCAN,
   EVERY_PLAN_INCLUDES,
   FAQ,
+  FAQ_HEADING,
   FINAL_CTA,
   FINE_PRINT,
   FOOTER,
@@ -15,11 +17,15 @@ import {
   NOT_INCLUDED,
   PLANS,
   PLANS_SECTION,
+  PLANS_UPDATED,
+  PLANS_UPDATED_HUMAN,
   PROMISES,
   REASONS,
+  RELATED,
   REPORT,
   REPORT_MOCK,
   RESULTS_CREDIT,
+  REVIEW,
   ROLE_CHOICES,
   SERVICE_SUMMARY,
   SHIFT,
@@ -52,7 +58,34 @@ const list = (items, className = 'mt-5 space-y-3 text-sm leading-relaxed text-sl
 
 const image = (slug, sizes, eager = false, className) => responsiveImageHtml(aiImage(slug), { sizes, eager, className });
 
-const reportCard = ({ title, body, accent }) => `<article class="self-start rounded-3xl border p-6 ${accent ? 'border-blue-400/30 bg-blue-500/[0.08]' : 'border-white/10 bg-white/[0.03]'}"><h3 class="font-display text-xl font-extrabold uppercase italic text-white">${copy(title)}</h3><p class="mt-3 text-[15px] leading-relaxed text-slate-400">${copy(body)}</p></article>`;
+const reportCard = ({ title, tag, body, accent }) => `<article class="self-start rounded-3xl border p-6 ${accent ? 'border-blue-400/30 bg-blue-500/[0.08]' : 'border-white/10 bg-white/[0.03]'}"><h3 class="font-display text-xl font-extrabold uppercase italic text-white">${copy(title)}</h3>${tag ? `<p class="mt-2 font-mono text-[10px] font-bold uppercase tracking-widest text-blue-300">${copy(tag)}</p>` : ''}<p class="mt-3 text-[15px] leading-relaxed text-slate-400">${copy(body)}</p></article>`;
+
+// "What do AEO and GEO mean for a car dealership?" Same export, content and order as AeoGeoSection in
+// AiSections.jsx and the twin section; one <section> with no nested <section> (the brand-name test splits on it).
+function aeoGeoSection() {
+  const byId = Object.fromEntries(AEO_GEO.terms.map((term) => [term.id, term]));
+  const { table } = AEO_GEO;
+  const termText = (term) => `<p class="mt-3 text-[15px] leading-relaxed text-slate-400"><span class="al-aeo-def">${copy(term.definition)}</span> ${copy(term.detail)}</p>`;
+  const card = (term) => `<article id="term-${esc(term.id)}" class="scroll-mt-24 self-start rounded-3xl border border-white/10 bg-white/[0.03] p-6"><h3 class="font-display text-xl font-extrabold uppercase italic text-white">${copy(term.question)}</h3>${termText(term)}</article>`;
+  const review = REVIEW.enabled
+    ? ` · ${copy(REVIEW.label)} <a class="text-blue-300 underline" href="${esc(REVIEW.href)}">${copy(REVIEW.name)}</a>, ${copy(REVIEW.role)}`
+    : '';
+  return `<section id="${esc(AEO_GEO.anchor)}" class="scroll-mt-24 border-y border-white/5 bg-[#080808] py-20 lg:py-28"><div class="mx-auto max-w-7xl px-6">
+    ${eyebrow(AEO_GEO.eyebrow)}${heading(AEO_GEO.h2Lead, AEO_GEO.h2Grad)}
+    <p class="mt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">${copy(AEO_GEO.updatedLabel)} <time datetime="${esc(AI_VISIBILITY_UPDATED)}">${copy(AI_VISIBILITY_UPDATED_HUMAN)}</time>${review}</p>
+    <p class="al-aeo-lead mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">${copy(AEO_GEO.lead)}</p>
+    <div class="mt-12 grid items-start gap-6 lg:grid-cols-2">${[byId.aeo, byId.geo].map(card).join('')}</div>
+    <div id="term-seo" class="mt-12 scroll-mt-24"><h3 class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(byId.seo.question)}</h3><div class="max-w-3xl">${termText(byId.seo)}</div>
+      <div class="mt-6 overflow-x-auto rounded-3xl border border-white/10 bg-[#0b0d12]"><table class="min-w-[720px] w-full border-collapse text-left text-sm text-slate-300"><caption class="p-5 text-left font-bold text-white">${copy(table.caption)}</caption><thead><tr><th scope="col" class="border-t border-white/10 p-4"><span class="sr-only">${copy(table.rowHeaderLabel)}</span></th>${table.columns.map((column) => `<th scope="col" class="border-t border-white/10 p-4 text-white">${copy(column)}</th>`).join('')}</tr></thead><tbody>${table.rows.map(([label, ...cells]) => `<tr class="border-t border-white/10"><th scope="row" class="p-4 align-top font-semibold text-white">${copy(label)}</th>${cells.map((cell) => `<td class="p-4 align-top leading-relaxed">${copy(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+    </div>
+    <p class="mt-8 max-w-3xl text-lg leading-relaxed text-slate-300">${copy(AEO_GEO.foundation)}</p>
+    <p class="mt-6 rounded-2xl border border-blue-400/20 bg-blue-500/[0.06] px-5 py-4 leading-relaxed text-blue-200">${copy(AEO_GEO.scanNote)}</p>
+    <div class="mt-12 grid items-start gap-6 lg:grid-cols-2">
+      <div class="rounded-3xl border border-white/10 bg-[#0b0d12] p-6"><h3 class="font-display text-xl font-extrabold uppercase italic text-white">${copy(AEO_GEO.glossaryHeading)}</h3><dl class="mt-6 grid gap-4">${AEO_GEO.glossary.map(({ term, body }) => `<div><dt class="font-bold text-white">${copy(term)}</dt><dd class="mt-1 text-sm leading-relaxed text-slate-400">${copy(body)}</dd></div>`).join('')}</dl></div>
+      <div class="rounded-3xl border border-white/10 bg-[#0b0d12] p-6"><h3 class="font-display text-xl font-extrabold uppercase italic text-white">${copy(AEO_GEO.sourcesHeading)}</h3><ul class="mt-6 space-y-3">${AEO_GEO.sources.map(({ label, url }) => `<li><a class="text-sm leading-relaxed text-blue-300 underline" href="${esc(url)}">${copy(label)}</a></li>`).join('')}</ul></div>
+    </div>
+  </div></section>`;
+}
 
 function reportMock() {
   const cell = {
@@ -216,7 +249,7 @@ function plansSection() {
         <article class="rounded-3xl border border-white/10 bg-[#0b0d12] p-6"><h3 class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(PLANS_SECTION.howItStartsHeading)}</h3><ol class="mt-5 space-y-4">${HOW_IT_STARTS.map(({ title, body }, index) => `<li><h4 class="font-bold text-white">${index + 1}. ${copy(title)}</h4><p class="mt-1 text-sm leading-relaxed text-slate-300">${copy(body)}</p></li>`).join('')}</ol></article>
         <article class="rounded-3xl border border-white/10 bg-[#0b0d12] p-6"><h3 class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(PLANS_SECTION.finePrintHeading)}</h3>${list(FINE_PRINT)}</article>
       </div>
-      <p class="mt-8 font-mono text-xs uppercase tracking-wider text-slate-400">Prices and plans updated <time datetime="${esc(AI_VISIBILITY_UPDATED)}">${copy(AI_VISIBILITY_UPDATED_HUMAN)}</time></p>
+      <p class="mt-8 font-mono text-xs uppercase tracking-wider text-slate-400">Prices and plans updated <time datetime="${esc(PLANS_UPDATED)}">${copy(PLANS_UPDATED_HUMAN)}</time></p>
       <article class="mt-10 rounded-3xl border border-blue-400/20 bg-blue-500/[0.06] p-6"><h3 class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(BRAND_SCAN.heading)}</h3><p class="mt-3 leading-relaxed text-slate-300">${copy(BRAND_SCAN.body)}</p></article>
     </div>
   </section>`;
@@ -249,10 +282,13 @@ function heroSection() {
  */
 export function renderAiVisibilityMirrorRest({ capiUrl = 'https://autolander.ai' } = {}) {
   const action = `${String(capiUrl).replace(/\/+$/, '')}/api/ai-scan`;
-  return `<section class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2"><div>${eyebrow(SHIFT.eyebrow)}${heading(SHIFT.h2Lead, SHIFT.h2Grad)}<p class="mt-6 text-lg leading-relaxed text-slate-300">${copy(SHIFT.body)}</p></div><div class="rounded-3xl border border-white/10 bg-[#0b0d12] p-7"><p class="font-display text-6xl font-extrabold italic text-white">${copy(SHIFT.stat.value)}</p><p class="mt-3 text-lg text-slate-300">${copy(SHIFT.stat.text)}</p><a class="mt-4 block text-xs text-blue-300 underline" href="${esc(SHIFT.stat.sourceUrl)}">${copy(SHIFT.stat.source)}</a></div></div></section>
+  return `${aeoGeoSection()}
+
+      <section class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-2"><div>${eyebrow(SHIFT.eyebrow)}${heading(SHIFT.h2Lead, SHIFT.h2Grad)}<p class="mt-6 text-lg leading-relaxed text-slate-300">${copy(SHIFT.body)}</p></div><div class="rounded-3xl border border-white/10 bg-[#0b0d12] p-7"><p class="font-display text-6xl font-extrabold italic text-white">${copy(SHIFT.stat.value)}</p><p class="mt-3 text-lg text-slate-300">${copy(SHIFT.stat.text)}</p><a class="mt-4 block text-xs text-blue-300 underline" href="${esc(SHIFT.stat.sourceUrl)}">${copy(SHIFT.stat.source)}</a></div></div></section>
 
       ${publicIllustrations()}
       <section class="py-20 lg:py-32"><div class="mx-auto max-w-7xl px-6">${eyebrow(REPORT.eyebrow)}${heading(REPORT.h2Lead, REPORT.h2Grad)}
+        <p class="mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">${copy(REPORT.lead)}</p>
         <div class="mt-12 grid items-start gap-6 lg:grid-cols-[0.9fr_1.1fr]">${image(ILLUSTRATION_SLOTS.report.image, IMAGE_SIZES.aiReport)}<div class="grid items-start gap-4 sm:grid-cols-2">${REPORT.parts.slice(0, 2).map(reportCard).join('')}</div></div>
         <div class="mt-6 grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr]"><div class="grid items-start gap-4 sm:grid-cols-2">${REPORT.parts.slice(2).map(reportCard).join('')}</div>${image(ILLUSTRATION_SLOTS.vehicle.image, IMAGE_SIZES.aiReport)}</div>
         <p class="mt-5 text-sm leading-relaxed text-slate-400">${copy(ILLUSTRATION_SLOTS.reportCaption)}</p>
@@ -263,8 +299,8 @@ export function renderAiVisibilityMirrorRest({ capiUrl = 'https://autolander.ai'
       ${scanForm(action)}
       ${plansSection()}
 
-      <section id="faq" class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto max-w-4xl space-y-3 px-6">${FAQ.map(({ q, a }) => `<details class="rounded-2xl border border-white/10 bg-[#0b0d12] p-5"><summary class="cursor-pointer font-bold text-white">${copy(q)}</summary><div class="al-faq-a mt-3 text-sm leading-relaxed text-slate-300">${copy(a)}</div></details>`).join('')}</div></section>
+      <section id="faq" class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto max-w-4xl px-6">${eyebrow(FAQ_HEADING.eyebrow)}${heading(FAQ_HEADING.h2Lead, FAQ_HEADING.h2Grad)}<div class="mt-10 space-y-3">${FAQ.map(({ q, a }) => `<details class="rounded-2xl border border-white/10 bg-[#0b0d12] p-5"><summary class="cursor-pointer font-bold text-white">${copy(q)}</summary><div class="al-faq-a mt-3 text-sm leading-relaxed text-slate-300">${copy(a)}</div></details>`).join('')}</div></div></section>
 
       <section class="py-20 text-center"><div class="mx-auto max-w-4xl px-6"><h2 class="font-display text-4xl font-extrabold uppercase italic text-white sm:text-5xl">${copy(FINAL_CTA.h2Lead)} <span class="text-blue-400">${copy(FINAL_CTA.h2Grad)}</span></h2><a href="#scan-form" class="mt-7 inline-flex rounded-2xl bg-blue-600 px-7 py-4 font-display text-base font-extrabold uppercase italic text-white">${copy(FINAL_CTA.cta)}</a><p class="mt-4 font-mono text-xs uppercase tracking-wider text-slate-400">${copy(FINAL_CTA.note)}</p></div></section>
-      <section class="border-t border-white/5 py-10"><div class="mx-auto max-w-7xl px-6"><p class="text-sm leading-relaxed text-slate-400">${copy(SERVICE_SUMMARY)}</p><p class="mt-4 text-sm leading-relaxed text-slate-400">${copy(FOOTER.line)}</p><nav class="mt-4 flex flex-wrap gap-4" aria-label="${esc(FOOTER.line)}">${FOOTER.links.map((link) => `<a class="text-sm text-blue-300" href="${esc(link.href)}">${copy(link.label)}</a>`).join('')}</nav></div></section>`;
+      <section class="border-t border-white/5 py-10"><div class="mx-auto max-w-7xl px-6"><nav aria-label="${esc(RELATED.heading)}" class="mb-8"><h2 class="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">${copy(RELATED.heading)}</h2><ul class="mt-3 flex flex-wrap gap-x-6 gap-y-1">${RELATED.links.map(({ label, href }) => `<li><a class="inline-block py-1 text-sm text-blue-300 underline" href="${esc(href)}">${copy(label)}</a></li>`).join('')}</ul></nav><p class="text-sm leading-relaxed text-slate-400">${copy(SERVICE_SUMMARY)}</p><p class="mt-4 text-sm leading-relaxed text-slate-400">${copy(FOOTER.line)}</p><nav class="mt-4 flex flex-wrap gap-4" aria-label="${esc(FOOTER.line)}">${FOOTER.links.map((link) => `<a class="text-sm text-blue-300" href="${esc(link.href)}">${copy(link.label)}</a>`).join('')}</nav></div></section>`;
 }

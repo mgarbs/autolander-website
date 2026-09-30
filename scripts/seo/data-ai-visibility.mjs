@@ -1,10 +1,14 @@
 import {
+  AEO_GEO,
   AI_VISIBILITY_PATH,
+  AI_VISIBILITY_PUBLISHED,
+  AI_VISIBILITY_PUBLISHED_HUMAN,
   AI_VISIBILITY_UPDATED,
   AI_VISIBILITY_UPDATED_HUMAN,
   BRAND_SCAN,
   EVERY_PLAN_INCLUDES,
   FAQ,
+  FAQ_HEADING,
   FINAL_CTA,
   FINE_PRINT,
   FOOTER,
@@ -17,11 +21,14 @@ import {
   NOT_INCLUDED,
   PLANS,
   PLANS_SECTION,
+  PLANS_UPDATED_HUMAN,
   PROMISES,
   REASONS,
+  RELATED,
   REPORT,
   REPORT_MOCK,
   RESULTS_CREDIT,
+  REVIEW,
   ROLE_CHOICES,
   SERVICE_SUMMARY,
   SHIFT,
@@ -32,10 +39,22 @@ import {
   comparisonRows,
   fmtUsd,
 } from '../../shared/ai-visibility-content.js';
+import { AI_VISIBILITY_MD_PATH } from '../../shared/ai-visibility-route.js';
+import { ORG_ID, PERSON_ID, orgLd, personLd } from './shell.mjs';
+import { legacyRedirectHtml } from '../spa-shell.mjs';
 
 export const AI_VISIBILITY_ORIGIN = 'https://autolander.ai';
 export const AI_VISIBILITY_CANONICAL = `${AI_VISIBILITY_ORIGIN}${AI_VISIBILITY_PATH}`;
 export const AI_VISIBILITY_OG_IMAGE = `${AI_VISIBILITY_ORIGIN}/og/ai-visibility.jpg`;
+
+// The build-time stub at each retired URL (dist/ai-visibility/index.html, written by scripts/spa-fallback.mjs).
+export const AI_VISIBILITY_MOVED = {
+  title: 'Moved: AEO and GEO for Car Dealers | AutoLander',
+  label: 'AEO and GEO for car dealers',
+};
+export function aiVisibilityLegacyStubHtml() {
+  return legacyRedirectHtml({ target: AI_VISIBILITY_PATH, canonical: AI_VISIBILITY_CANONICAL, ...AI_VISIBILITY_MOVED });
+}
 
 export { AI_VISIBILITY_IMAGES } from '../../shared/ai-images.js';
 import { AI_VISIBILITY_IMAGES, aiImage } from '../../shared/ai-images.js';
@@ -46,6 +65,22 @@ const escAttr = (value) => String(value)
   .replaceAll('"', '&quot;')
   .replaceAll('<', '&lt;')
   .replaceAll('>', '&gt;');
+
+// Structured-data plumbing (not copy): each DefinedTerm points at its Wikidata item, plus Wikipedia where the
+// article is about the term itself. Checked 2026-09-30. en.wikipedia only redirects AEO to GEO, so AEO has no
+// Wikipedia link.
+export const TERM_SAME_AS = {
+  aeo: ['https://www.wikidata.org/wiki/Q97171941'],
+  geo: ['https://www.wikidata.org/wiki/Q134083964', 'https://en.wikipedia.org/wiki/Generative_engine_optimization'],
+  seo: ['https://www.wikidata.org/wiki/Q180711', 'https://en.wikipedia.org/wiki/Search_engine_optimization'],
+};
+
+// A shared entity node from shell.mjs, embedded in this page's single @graph (which carries the one @context).
+function graphNode(node) {
+  const copy = { ...node };
+  delete copy['@context'];
+  return copy;
+}
 
 const availabilityUrl = (availability) => (
   availability === 'open'
@@ -96,6 +131,8 @@ export function aiVisibilityGraph() {
   const webpageId = `${AI_VISIBILITY_CANONICAL}#webpage`;
   const serviceId = `${AI_VISIBILITY_CANONICAL}#service`;
   const breadcrumbId = `${AI_VISIBILITY_CANONICAL}#breadcrumb`;
+  const termSetId = `${AI_VISIBILITY_CANONICAL}#aeo-geo-terms`;
+  const termId = (id) => `${AI_VISIBILITY_CANONICAL}#term-${id}`;
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -105,12 +142,15 @@ export function aiVisibilityGraph() {
         url: AI_VISIBILITY_CANONICAL,
         name: META.title,
         description: META.description,
+        datePublished: AI_VISIBILITY_PUBLISHED,
         dateModified: AI_VISIBILITY_UPDATED,
         inLanguage: 'en-US',
         isPartOf: { '@id': `${AI_VISIBILITY_ORIGIN}/#website` },
-        about: { '@id': serviceId },
+        about: [{ '@id': serviceId }, ...AEO_GEO.terms.map(({ id }) => ({ '@id': termId(id) }))],
         mainEntity: { '@id': serviceId },
-        publisher: { '@id': `${AI_VISIBILITY_ORIGIN}/#organization` },
+        author: { '@id': ORG_ID },
+        publisher: { '@id': ORG_ID },
+        ...(REVIEW.enabled ? { reviewedBy: { '@id': PERSON_ID }, lastReviewed: REVIEW.date } : {}),
         breadcrumb: { '@id': breadcrumbId },
         primaryImageOfPage: {
           '@type': 'ImageObject',
@@ -120,23 +160,51 @@ export function aiVisibilityGraph() {
         },
         speakable: {
           '@type': 'SpeakableSpecification',
-          cssSelector: ['.al-ai-summary', '.al-faq-a'],
+          cssSelector: ['.al-ai-summary', '.al-aeo-lead', '.al-aeo-def', '.al-faq-a'],
         },
       },
       {
         '@type': 'Service',
         '@id': serviceId,
-        name: 'AutoLander AI Visibility for Car Dealers',
+        name: 'AutoLander AEO and GEO for Car Dealers',
+        alternateName: [
+          'AutoLander AI Visibility',
+          'AI Visibility for car dealers',
+          'AI search optimization for car dealerships',
+          'Answer engine optimization for car dealerships',
+          'Generative engine optimization for car dealerships',
+        ],
+        serviceType: 'Answer engine optimization and generative engine optimization for car dealers',
+        url: AI_VISIBILITY_CANONICAL,
+        termsOfService: `${AI_VISIBILITY_ORIGIN}/terms.html`,
         description: SERVICE_SUMMARY,
-        provider: { '@id': `${AI_VISIBILITY_ORIGIN}/#organization` },
+        provider: { '@id': ORG_ID },
         areaServed: { '@type': 'Country', name: 'United States' },
-        audience: { '@type': 'BusinessAudience', name: 'Car dealerships' },
+        audience: { '@type': 'BusinessAudience', audienceType: 'Automotive dealers', name: 'US franchise and independent car dealerships' },
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
           '@id': `${AI_VISIBILITY_CANONICAL}#plans`,
           name: PLANS_SECTION.eyebrow,
           itemListElement: PLANS.map(offerFor),
         },
+      },
+      {
+        '@type': 'DefinedTermSet',
+        '@id': termSetId,
+        name: 'SEO, AEO and GEO for car dealers',
+        url: `${AI_VISIBILITY_CANONICAL}#${AEO_GEO.anchor}`,
+        hasDefinedTerm: AEO_GEO.terms.map((term) => ({
+          '@type': 'DefinedTerm',
+          '@id': termId(term.id),
+          url: termId(term.id),
+          name: term.name,
+          alternateName: term.abbr,
+          termCode: term.abbr,
+          // Byte-identical to the visible .al-aeo-def text of the matching card.
+          description: term.definition,
+          inDefinedTermSet: { '@id': termSetId },
+          sameAs: TERM_SAME_AS[term.id],
+        })),
       },
       {
         '@type': 'FAQPage',
@@ -165,6 +233,17 @@ export function aiVisibilityGraph() {
           },
         ],
       },
+      // The dedicated shell strips the homepage graph, so the entities this page references (provider,
+      // publisher, author, seller, isPartOf) are declared here to resolve on the page itself.
+      graphNode(orgLd),
+      {
+        '@type': 'WebSite',
+        '@id': `${AI_VISIBILITY_ORIGIN}/#website`,
+        url: `${AI_VISIBILITY_ORIGIN}/`,
+        name: 'AutoLander',
+        publisher: { '@id': ORG_ID },
+      },
+      ...(REVIEW.enabled ? [graphNode(personLd)] : []),
     ],
   };
 }
@@ -174,13 +253,13 @@ export function aiVisibilityHead({ preview = false } = {}) {
   return `    ${imagePreloadHtml(aiImage(ILLUSTRATION_SLOTS.hero.image), IMAGE_SIZES.aiHero)}
     <meta name="description" content="${escAttr(META.description)}" />
 ${preview ? '' : '    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />\n'}    <link rel="canonical" href="${AI_VISIBILITY_CANONICAL}" />
-    <link rel="alternate" type="text/markdown" href="/ai-visibility.md" />
+    <link rel="alternate" type="text/markdown" href="${AI_VISIBILITY_MD_PATH}" />
     <link rel="describedby" href="/llms.txt" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${AI_VISIBILITY_CANONICAL}" />
     <meta property="og:site_name" content="AutoLander" />
-    <meta property="og:title" content="${escAttr(META.title)}" />
-    <meta property="og:description" content="${escAttr(META.description)}" />
+    <meta property="og:title" content="${escAttr(META.ogTitle)}" />
+    <meta property="og:description" content="${escAttr(META.ogDescription)}" />
     <meta property="og:image" content="${AI_VISIBILITY_OG_IMAGE}" />
     <meta property="og:image:secure_url" content="${AI_VISIBILITY_OG_IMAGE}" />
     <meta property="og:image:type" content="image/jpeg" />
@@ -188,8 +267,8 @@ ${preview ? '' : '    <meta name="robots" content="index, follow, max-image-prev
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="${escAttr(META.ogImageAlt)}" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${escAttr(META.title)}" />
-    <meta name="twitter:description" content="${escAttr(META.description)}" />
+    <meta name="twitter:title" content="${escAttr(META.ogTitle)}" />
+    <meta name="twitter:description" content="${escAttr(META.ogDescription)}" />
     <meta name="twitter:image" content="${AI_VISIBILITY_OG_IMAGE}" />
     <meta name="twitter:image:alt" content="${escAttr(META.ogImageAlt)}" />
     <script type="application/ld+json">${json}</script>`;
@@ -225,11 +304,30 @@ export function renderAiVisibilityMarkdown() {
   paragraph(out, `> ${META.description}`);
   line(out, `Source: ${AI_VISIBILITY_CANONICAL}`);
   line(out, 'Author: The AutoLander team');
+  if (REVIEW.enabled) line(out, `${REVIEW.label}: ${REVIEW.name}, co-founder, AutoLander`);
+  line(out, `Published: ${AI_VISIBILITY_PUBLISHED_HUMAN}`);
   line(out, `Updated: ${AI_VISIBILITY_UPDATED_HUMAN}`);
   line(out);
   paragraph(out, `**Short answer:** ${HERO.summary}`);
   bullets(out, HERO.chips);
   paragraph(out, HERO.trustLine);
+
+  heading(out, 2, `${AEO_GEO.h2Lead} ${AEO_GEO.h2Grad}`);
+  paragraph(out, AEO_GEO.lead);
+  AEO_GEO.terms.forEach((term) => {
+    heading(out, 3, term.question);
+    paragraph(out, `${term.definition} ${term.detail}`);
+  });
+  line(out, `| | ${AEO_GEO.table.columns.join(' | ')} |`);
+  line(out, `| ${['', ...AEO_GEO.table.columns].map(() => '---').join(' | ')} |`);
+  AEO_GEO.table.rows.forEach((row) => line(out, `| ${row.join(' | ')} |`));
+  line(out);
+  paragraph(out, AEO_GEO.foundation);
+  paragraph(out, AEO_GEO.scanNote);
+  heading(out, 3, AEO_GEO.glossaryHeading);
+  bullets(out, AEO_GEO.glossary.map(({ term, body }) => `**${term}:** ${body}`));
+  heading(out, 3, AEO_GEO.sourcesHeading);
+  bullets(out, AEO_GEO.sources.map(({ label, url }) => `[${label}](${url})`));
 
   heading(out, 2, `${SHIFT.h2Lead} ${SHIFT.h2Grad}`);
   paragraph(out, SHIFT.body);
@@ -255,8 +353,9 @@ export function renderAiVisibilityMarkdown() {
   }
 
   heading(out, 2, `${REPORT.h2Lead} ${REPORT.h2Grad}`);
-  REPORT.parts.forEach(({ title, body }) => {
-    heading(out, 3, title);
+  paragraph(out, REPORT.lead);
+  REPORT.parts.forEach(({ title, tag, body }) => {
+    heading(out, 3, tag ? `${title} (${tag})` : title);
     paragraph(out, body);
   });
 
@@ -342,16 +441,19 @@ export function renderAiVisibilityMarkdown() {
 
   heading(out, 2, PLANS_SECTION.finePrintHeading);
   bullets(out, FINE_PRINT);
-  paragraph(out, `Prices and plans updated ${AI_VISIBILITY_UPDATED_HUMAN}.`);
+  paragraph(out, `Prices and plans updated ${PLANS_UPDATED_HUMAN}.`);
 
   heading(out, 2, BRAND_SCAN.heading);
   paragraph(out, BRAND_SCAN.body);
 
-  heading(out, 2, 'Frequently asked questions');
+  heading(out, 2, `${FAQ_HEADING.h2Lead} ${FAQ_HEADING.h2Grad}`);
   FAQ.forEach(({ q, a }) => {
     heading(out, 3, q);
     paragraph(out, a);
   });
+
+  heading(out, 2, RELATED.heading);
+  bullets(out, RELATED.links.map(({ label, href }) => `[${label}](${AI_VISIBILITY_ORIGIN}${href})`));
 
   heading(out, 2, `${FINAL_CTA.h2Lead} ${FINAL_CTA.h2Grad}`);
   paragraph(out, `${FINAL_CTA.cta}. ${FINAL_CTA.note}`);

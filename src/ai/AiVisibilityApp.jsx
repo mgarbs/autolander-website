@@ -11,6 +11,7 @@ import {
 import SiteFooter from '../components/SiteFooter.jsx';
 import SiteNav from '../components/SiteNav.jsx';
 import {
+  AeoGeoSection,
   AiFaq,
   AiFinalCta,
   AiHero,
@@ -314,6 +315,7 @@ export default function AiVisibilityApp({ prerendered = false, restHtml = '' }) 
         <AiHero onGo={goToForm} />
         {live ? (
           <>
+            <AeoGeoSection />
             <ShiftSection />
             <WhereBuyersAskSection />
             <ResultsViewSection />
