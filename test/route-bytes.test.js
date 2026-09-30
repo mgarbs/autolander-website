@@ -18,7 +18,15 @@ test('route shells carry covered inline CSS and preserve full CSS on the shared 
     const html = read(`dist/${route}/index.html`);
     const styles = [...html.matchAll(/<style data-inline-route-css>([\s\S]*?)<\/style>/g)];
     assert.equal(styles.length, 1, route);
-    assert.doesNotMatch(html, /<link\b[^>]*rel="stylesheet"[^>]*href="\/assets\//);
+    // No stylesheet is fetched: the only /assets/ stylesheet link is the disabled placeholder that stops
+    // Vite's preload helper from re-downloading the inlined route CSS.
+    const cssLinks = [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)].map((m) => m[0]);
+    assert.equal(cssLinks.length, 1, `${route}: one route CSS placeholder`);
+    assert.match(cssLinks[0], /href="\/assets\/(TeamApp|AiVisibilityApp)-[\w-]+\.css" disabled data-al-inlined-css/);
+    const preloads = [...html.matchAll(/<link rel="modulepreload"[^>]*href="([^"]+)"/g)].map((m) => m[1]);
+    assert.ok(preloads.some((href) => /\/assets\/SiteFooter-/.test(href)), `${route}: SiteFooter chunk preloaded`);
+    assert.ok(preloads.some((href) => /\/assets\/page-images-/.test(href)), `${route}: page-images chunk preloaded`);
+    assert.ok(!preloads.some((href) => /\/assets\/index-/.test(href)), `${route}: entry chunk is not preloaded twice`);
     const root = html.match(/<!--AL_STATIC_PAGE_START-->([\s\S]*?)<!--AL_STATIC_PAGE_END-->/)[1];
     assertClassCoverage(root, styles[0][1], allowlist);
     assertClassCoverage(route === 'team' ? renderTeam() : renderAiVisibility(), styles[0][1], allowlist);

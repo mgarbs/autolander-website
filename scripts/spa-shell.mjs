@@ -58,6 +58,8 @@ export function buildPageShell(appShell, {
   mirrorHtml,
   cssHref,
   jsHref,
+  modulePreloadHrefs = [],
+  disabledCssHrefs = [],
   noscriptHtml = '<noscript></noscript>',
 }) {
   let html = appShell;
@@ -65,7 +67,7 @@ export function buildPageShell(appShell, {
   if (homeMatches.length !== 1) {
     throw new Error(`spa-shell: expected exactly one static homepage block, found ${homeMatches.length}`);
   }
-  html = html.replace(STATIC_HOME_BLOCK, mirrorHtml);
+  html = html.replace(STATIC_HOME_BLOCK, () => mirrorHtml);
 
   for (const [name, pattern] of Object.entries(HEAD_PATTERNS)) {
     html = removeExactlyOnce(html, name, pattern);
@@ -74,6 +76,10 @@ export function buildPageShell(appShell, {
   const assets = [
     cssHref ? `<link rel="stylesheet" crossorigin href="${esc(cssHref)}" />` : '',
     jsHref ? `<link rel="modulepreload" data-al-route-entry crossorigin href="${esc(jsHref)}" />` : '',
+    ...modulePreloadHrefs.map((href) => `<link rel="modulepreload" crossorigin href="${esc(href)}" />`),
+    // Already inlined: `disabled` keeps it from being fetched or applied, and its presence stops Vite's
+    // preload helper from appending (and waiting on) a second copy when the route chunk loads.
+    ...disabledCssHrefs.map((href) => `<link rel="stylesheet" href="${esc(href)}" disabled data-al-inlined-css />`),
   ].filter(Boolean).join('\n    ');
   const insert = `    <title>${esc(title)}</title>\n${headHtml}${assets ? `\n    ${assets}` : ''}\n`;
   if (!/<\/head>/i.test(html)) throw new Error('spa-shell: </head> is missing');

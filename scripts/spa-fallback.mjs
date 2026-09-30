@@ -114,10 +114,37 @@ function leanRouteShell(moduleId, mirrorHtml) {
   }
   const css = leanBaseCss(styles[0][1]) + cssFiles.map((file) => readFileSync(join(distDir, file), 'utf8')).join('\n');
   assertClassCoverage(mirrorHtml, css, cssAllowlist);
+  // The route's static imports other than the entry chunk (e.g. SiteFooter, page-images): preloading them
+  // at parse time instead of when the route module is requested takes one hop off the boot chain.
+  const entryFile = manifest['index.html'].file;
+  const modulePreloadHrefs = [...new Set([...seen].filter((key) => key !== moduleId).map((key) => manifest[key].file))]
+    .filter((file) => file !== entryFile && file.endsWith('.js'))
+    .map((file) => '/' + file);
+  const disabledCssHrefs = cssFiles.map((file) => '/' + file);
+  assertPreloadHelperDedupe([...modulePreloadHrefs, ...disabledCssHrefs]);
   return {
     shell: appShell.replace(styles[0][0], () => `<style data-inline-route-css>${css.replace(/<\/style/gi, '<\\/style')}</style>`),
     jsHref: '/' + entry.file,
+    modulePreloadHrefs,
+    disabledCssHrefs,
   };
+}
+
+// The route CSS is already inlined above, but Vite's preload helper (in the entry chunk) appends
+// <link rel="stylesheet" href="/assets/<Route>-*.css"> when the route chunk is imported and waits for it
+// to load before running the route module: a duplicate VeryHigh request on the boot path. The helper
+// skips any dependency for which `link[href="<dep>"]` (plus `[rel="stylesheet"]` for CSS) already exists,
+// so each route shell carries a *disabled* placeholder (never fetched, never applied) and a modulepreload
+// per JS dependency. Fail the build if a Vite upgrade changes that contract or the dependency list drifts.
+function assertPreloadHelperDedupe(hrefs) {
+  const entry = readFileSync(join(distDir, manifest['index.html'].file), 'utf8');
+  if (!entry.includes('document.querySelector(`link[href="${') || !entry.includes('[rel="stylesheet"]')) {
+    throw new Error('spa-fallback: the Vite preload helper no longer dedupes by link[href]; the inlined route CSS would be fetched twice');
+  }
+  const deps = entry.match(/m\.f=\[([^\]]*)\]/)?.[1] || '';
+  for (const href of hrefs) {
+    if (!deps.includes(`"${href.slice(1)}"`)) throw new Error(`spa-fallback: ${href} is not a preload-helper dependency`);
+  }
 }
 
 const teamDir = join(distDir, 'team');
@@ -129,6 +156,8 @@ writeFileSync(join(teamDir, 'index.html'), buildPageShell(teamAssets.shell, {
   headHtml: teamHead({ preview }),
   mirrorHtml: teamMirror,
   jsHref: teamAssets.jsHref,
+  modulePreloadHrefs: teamAssets.modulePreloadHrefs,
+  disabledCssHrefs: teamAssets.disabledCssHrefs,
 }), 'utf8');
 
 const aiDir = join(distDir, 'ai-visibility');
@@ -140,6 +169,8 @@ writeFileSync(join(aiDir, 'index.html'), buildPageShell(aiAssets.shell, {
   headHtml: aiVisibilityHead({ preview }),
   mirrorHtml: aiMirror,
   jsHref: aiAssets.jsHref,
+  modulePreloadHrefs: aiAssets.modulePreloadHrefs,
+  disabledCssHrefs: aiAssets.disabledCssHrefs,
 }), 'utf8');
 
 // The bundler must never read local proof in production. This separate post-build
