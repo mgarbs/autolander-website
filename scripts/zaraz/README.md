@@ -54,7 +54,7 @@ Deployment-only checks remain necessary:
   Monitor `capi_ok`, `capi_failed`, transition counters and rate/bot loss counters.
 - Check i.js behavior with the GA tool disabled, custom-ID acceptance, defer
   initialization, GA server 2xx, and the optional Cloudflare Web Analytics beacon.
-- PSI mobile on `/`, `/ai-visibility`, `/team`, `/pricing`, and a guide page is a
+- PSI mobile on `/`, `/aeo-geo-for-car-dealers/`, `/team`, `/pricing`, and a guide page is a
   rollout check; performance work beyond this migration belongs to the next lane.
 
 Rollback is the operator setting `cfg:zaraz_mode=off`; Meta stays server-only.

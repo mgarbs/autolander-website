@@ -6,6 +6,7 @@
 // Anchors are descriptive + keyword-rich (used as visible anchor text in the silo).
 
 import { SITE } from '../compare-data.mjs';
+import { AI_VISIBILITY_PATH } from '../../shared/ai-visibility-route.js';
 
 export { SITE };
 
@@ -36,7 +37,8 @@ export const NAV = {
   socialMedia:{ key: 'socialMedia',path: '/guide/social-media-for-car-dealers/',       anchor: 'Social media for car dealers' },
   sellMore:   { key: 'sellMore',   path: '/guide/how-to-sell-more-cars/',              anchor: 'How to sell more cars' },
   aiDealers:  { key: 'aiDealers',  path: '/guide/ai-for-car-dealerships/',             anchor: 'AI for car dealerships: what actually works' },
-  aiVisibility:{ key: 'aiVisibility', path: '/ai-visibility/',                         anchor: 'AI Visibility for car dealers: free scan and plans', spa: true },
+  // The AEO and GEO page (was /ai-visibility/, which now 301s here; the URL lives in shared/ai-visibility-route.js).
+  aiVisibility:{ key: 'aiVisibility', path: AI_VISIBILITY_PATH,                          anchor: 'AEO and GEO for car dealers: free AI Visibility Scan and plans', spa: true },
   aiChat:     { key: 'aiChat',     path: '/ai-chat-for-car-dealers/',                  anchor: 'AI chat for car dealers — the honest guide' },
   photoEditor:{ key: 'photoEditor',path: '/ai-car-photo-editor/',                      anchor: 'AI car photo editor for dealers' },
   rvDealers:  { key: 'rvDealers',  path: '/rv-dealer-software/',                       anchor: 'RV dealer software for Facebook Marketplace' },
@@ -141,7 +143,7 @@ export function relatedFor(pageKey, opts = {}) {
       return [L(N.sellGuide), L(N.category), L(N.whyMarketplaceOnly), L(N.whyNoAutoReply), L(N.listingSw), L(N.bulk), L(N.inventory), L(N.inventoryDist), L(N.safety), L(N.compareHub), L(N.pricing), L(N.mktgHub), L(N.aiChat)];
     // ---- educational hub (aiTools) pushes DOWN to every commercial page; commercial pages link up + across ----
     case 'aiTools':
-      return [L(N.category), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.fbListing), L(N.dealers), L(N.bulk), L(N.inventory), L(N.compareHub), L(N.photoEditor), L(N.aiChat), L(N.aiDealers)];
+      return [L(N.category), L(N.listingSw), L(N.automation), L(N.assistant), L(N.autoposter), L(N.fbListing), L(N.dealers), L(N.bulk), L(N.inventory), L(N.compareHub), L(N.photoEditor), L(N.aiChat), L(N.aiDealers), L(N.aiVisibility)];
     case 'automation':
       return [L(N.category), L(N.aiTools), L(N.assistant), L(N.autoposter), L(N.bulk), L(N.safety), L(N.guide), L(N.sellGuide), L(N.compareHub), L(N.pricing)];
     case 'assistant':
@@ -169,7 +171,7 @@ export function relatedFor(pageKey, opts = {}) {
     case 'aiVisibility':
       return [L(N.about), L(N.contact), L(N.aiDealers), L(N.mktgHub)];
     case 'aiChat':
-      return [L(N.whyNoAutoReply), L(N.aiChatVendor), L(N.responseTime), L(N.aiDealers), L(N.salesLeads), L(N.assistant), L(N.category), L(N.dealers), L(N.pricing), L(N.mktgHub)];
+      return [L(N.whyNoAutoReply), L(N.aiChatVendor), L(N.responseTime), L(N.aiDealers), L(N.aiVisibility), L(N.salesLeads), L(N.assistant), L(N.category), L(N.dealers), L(N.pricing), L(N.mktgHub)];
     case 'photoEditor':
       return [L(N.aiDealers), L(N.aiTools), L(N.category), L(N.listingSw), L(N.mktgHub), L(N.bulk), L(N.pricing)];
     case 'rvDealers':
@@ -249,7 +251,7 @@ export const SECTION_LABEL = {
   rvDealers: 'RV dealer software',
   aiChat: 'AI chat for car dealers',
   aiTools: 'Facebook AI tools',
-  aiVisibility: 'AI Visibility for car dealers',
+  aiVisibility: 'AEO and GEO for car dealers',
   report2026: 'Original research',
   home: 'AutoLander',
 };

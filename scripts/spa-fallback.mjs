@@ -5,10 +5,11 @@ import { assertNoUnverifiedProof } from './proof-build-guard.mjs';
 import { leanBaseCss, assertClassCoverage } from './route-css.mjs';
 import { loadEnv } from 'vite';
 import { HERO, META } from '../shared/ai-visibility-content.js';
+import { AI_VISIBILITY_DIR, AI_VISIBILITY_LEGACY_PATHS, AI_VISIBILITY_PATH } from '../shared/ai-visibility-route.js';
 import { HEADLINES, TEAM_META } from '../shared/team-content.js';
 import { renderAiVisibilityMirrorRest } from '../src/ai/static-mirror.js';
 import { renderTeamMirrorRest } from '../src/team/static-mirror.js';
-import { aiVisibilityHead } from './seo/data-ai-visibility.mjs';
+import { aiVisibilityHead, aiVisibilityLegacyStubHtml } from './seo/data-ai-visibility.mjs';
 import { teamHead } from './seo/data-team.mjs';
 import { cleanSsr, loadPrerender } from './prerender.mjs';
 import {
@@ -150,7 +151,8 @@ function assertPreloadHelperDedupe(hrefs) {
   }
 }
 
-// /ai-visibility/ and /team/ ship React's own nav + hero, rendered at build time (scripts/prerender.mjs), followed
+// The AEO and GEO page (AI_VISIBILITY_PATH, internal id 'ai-visibility') and /team/ ship React's own nav + hero,
+// rendered at build time (scripts/prerender.mjs), followed
 // by the static mirror of everything below the hero as an inert island. The client hydrates that markup instead of
 // replacing it (src/main.jsx), so the first paint is final and stays the largest one; the app itself loads after
 // that paint (deferEntryToPaint). The noscript/agent layer is unchanged: the island is the same mirror as before.
@@ -181,7 +183,7 @@ prerenderedRoute('src/team/TeamApp.jsx', {
 });
 
 prerenderedRoute('src/ai/AiVisibilityApp.jsx', {
-  dir: 'ai-visibility',
+  dir: AI_VISIBILITY_DIR,
   title: META.title,
   headHtml: aiVisibilityHead({ preview }),
   hydrate: 'ai-visibility',
@@ -189,6 +191,19 @@ prerenderedRoute('src/ai/AiVisibilityApp.jsx', {
   h1Text: `${HERO.h1Lead} ${HERO.h1Grad}`,
   rootHtml: prerender.renderAiVisibility({ restHtml: renderAiVisibilityMirrorRest({ capiUrl }) }),
 });
+
+// The page's retired URLs. The Worker 301s them (worker/src/agent/moved-pages.js); this build-time stub forwards
+// visitors when the Worker is not in front (fail-open, switched off, Pages preview). Vite already created the folder
+// for the page images that stay there (public/ai-visibility/*.avif|webp), so only index.html is added. Never commit
+// the stub to public/: it is generated here, with no tracking and no beacon loader.
+for (const legacy of AI_VISIBILITY_LEGACY_PATHS) {
+  const legacyDir = legacy.replace(/^\/+|\/+$/g, '');
+  if (!legacyDir || legacy === AI_VISIBILITY_PATH || legacyDir === AI_VISIBILITY_DIR) {
+    throw new Error(`spa-fallback: legacy path ${legacy} would overwrite the live page`);
+  }
+  mkdirSync(join(distDir, legacyDir), { recursive: true });
+  writeFileSync(join(distDir, legacyDir, 'index.html'), aiVisibilityLegacyStubHtml(), 'utf8');
+}
 
 // The homepage's first screen is its static home block (index.html), so its app also loads after the first paint.
 // 404.html, /admin and /pay keep the head entry script: they are app pages with nothing static to show first.

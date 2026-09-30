@@ -17,6 +17,7 @@
 // pre-render, not cloaking.
 
 import { NAV } from './registry.mjs';
+import { AI_VISIBILITY_PATH } from '../../shared/ai-visibility-route.js';
 import {
   SILOS, SUGGESTED_ORDER, isBlog, isPublished, articlePath,
 } from './articles/article-system.mjs';
@@ -74,6 +75,7 @@ const EVERGREEN_GROUPS = [
     ['/guide/car-dealership-marketing/', 'Dealership marketing playbook'],
     ['/guide/car-sales-leads/', 'Car sales leads'],
     ['/guide/ai-for-car-dealerships/', 'AI for dealerships'],
+    [AI_VISIBILITY_PATH, 'AEO and GEO for car dealers'],
     ['/facebook-ai-tools/', 'Facebook AI tools for dealers'],
     ['/ai-chat-for-car-dealers/', 'AI chat for car dealers'],
     ['/guide/how-to-sell-rvs-on-facebook-marketplace/', 'How to sell RVs on Marketplace'],

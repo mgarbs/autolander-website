@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { extname, join, relative, sep } from 'node:path';
 import { SPA_PAGE_PATHS } from './seo/registry.mjs';
+import { AI_VISIBILITY_DIR, AI_VISIBILITY_PATH } from '../shared/ai-visibility-route.js';
 
 const ROOT = process.cwd();
 const PUBLIC = join(ROOT, 'public');
@@ -69,11 +70,11 @@ function label(file) {
 const isVerificationToken = (file) => /[\\/]google[0-9a-f]{16}\.html$/i.test(file);
 const documents = [join(ROOT, 'index.html'), ...walk(PUBLIC).filter((file) => extname(file) === '.html' && !isVerificationToken(file))]
   .map((file) => ({ file, url: fileUrl(file), html: readFileSync(file, 'utf8') }));
-const aiVisibilityShell = join(ROOT, 'dist', 'ai-visibility', 'index.html');
+const aiVisibilityShell = join(ROOT, 'dist', AI_VISIBILITY_DIR, 'index.html');
 if (existsSync(aiVisibilityShell)) {
   documents.push({
     file: aiVisibilityShell,
-    url: '/ai-visibility/',
+    url: AI_VISIBILITY_PATH,
     html: readFileSync(aiVisibilityShell, 'utf8'),
   });
 }

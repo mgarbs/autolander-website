@@ -4,7 +4,9 @@ import { dirname, resolve } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-import { siteHeader } from '../scripts/seo/shell.mjs';
+import { siteHeader, siteFooter } from '../scripts/seo/shell.mjs';
+import { NAV } from '../scripts/seo/registry.mjs';
+import { AI_VISIBILITY_NAV_LABEL, AI_VISIBILITY_PATH } from '../shared/ai-visibility-route.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (relativePath) => readFileSync(resolve(ROOT, relativePath), 'utf8');
@@ -16,9 +18,14 @@ test('SiteNav defines the Services disclosure with exactly the two owner-approve
     .map((match) => ({ href: match[1], label: match[2] }));
 
   assert.deepEqual(services, [
-    { href: '/ai-visibility/', label: 'AI Audit' },
+    { href: AI_VISIBILITY_PATH, label: AI_VISIBILITY_NAV_LABEL },
     { href: '/team/', label: 'Team Plans' },
   ]);
+  // Literals on purpose (SiteNav never imports the copy module); pinned to the one route module here.
+  assert.equal(AI_VISIBILITY_PATH, '/aeo-geo-for-car-dealers/');
+  assert.equal(AI_VISIBILITY_NAV_LABEL, 'AEO & GEO');
+  assert.equal(NAV.aiVisibility.path, AI_VISIBILITY_PATH);
+  assert.doesNotMatch(source, /AI\s+Audit|\/ai-visibility\//);
   assert.match(source, /aria-expanded=\{desktopServicesOpen\}/);
   assert.match(source, /aria-controls=\{desktopServicesId\}/);
   assert.match(source, /event\.key !== 'Escape'/);
@@ -47,15 +54,21 @@ test('the static homepage mirror exposes both Services destinations without Java
   const end = html.indexOf('<!--AL_STATIC_HOME_END-->');
   assert.ok(start >= 0 && end > start, 'static homepage markers must exist');
   const mirror = html.slice(start, end);
-  assert.match(mirror, /<a href="\/ai-visibility\/">AI Audit<\/a>/);
+  assert.ok(mirror.includes('<a href="/aeo-geo-for-car-dealers/">AEO and GEO for car dealers</a>'));
   assert.match(mirror, /<a href="\/team\/">Team Plans<\/a>/);
+  assert.doesNotMatch(html, /AI\s+Audit|href="\/ai-visibility\/"/);
+});
+
+test('the React and SEO-shell footers link the AEO and GEO page', () => {
+  assert.ok(read('src/components/SiteFooter.jsx').includes('<a href="/aeo-geo-for-car-dealers/" className="block py-1 transition-colors hover:text-blue-500">AEO & GEO for Dealers</a>'));
+  assert.ok(siteFooter().includes('<a href="/aeo-geo-for-car-dealers/">AEO and GEO for car dealers</a>'));
 });
 
 test('the SEO shell topnav has a no-JavaScript Services details menu', () => {
   const html = siteHeader([{ name: 'Example', url: '/example/' }]);
   const menu = html.match(/<details class="navdrop">[\s\S]*?<\/details>/)?.[0] || '';
   assert.match(menu, /<summary>Services<\/summary>/);
-  assert.match(menu, /<a href="\/ai-visibility\/">AI Audit<\/a>/);
+  assert.ok(menu.includes('<a href="/aeo-geo-for-car-dealers/">AEO &amp; GEO</a>'));
   assert.match(menu, /<a href="\/team\/">Team Plans<\/a>/);
   assert.equal((menu.match(/<a /g) || []).length, 2);
 });
@@ -63,6 +76,9 @@ test('the SEO shell topnav has a no-JavaScript Services details menu', () => {
 test('the independent comparison-page header carries the same Services menu', () => {
   const source = read('scripts/build-compare-pages.mjs');
   assert.match(source, /<details class="navdrop"><summary>Services<\/summary>/);
-  assert.match(source, /<a href="\/ai-visibility\/">AI Audit<\/a>/);
-  assert.match(source, /<a href="\/team\/">Team Plans<\/a>/);
+  assert.equal(source.split('<a href="${NAV.aiVisibility.path}">${esc(AI_VISIBILITY_NAV_LABEL)}</a><a href="/team/">Team Plans</a>').length - 1, 2, 'both compare headers');
+  assert.doesNotMatch(source, /AI\s+Audit|href="\/ai-visibility\/"/);
+  // The rendered compare pages carry the same escaped label.
+  const rendered = read('public/compare/carvid/index.html');
+  assert.ok(rendered.includes('<a href="/aeo-geo-for-car-dealers/">AEO &amp; GEO</a><a href="/team/">Team Plans</a>'));
 });
