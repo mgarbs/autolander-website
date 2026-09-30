@@ -1043,6 +1043,75 @@ function billingCurrency(item) {
   return text(item?.price?.currency, 20).toLowerCase();
 }
 
+function recurringBillingSummary(subscription, items) {
+  const rows = items.filter((item) => item && !item.deleted);
+  const currency = rows.length > 0 ? billingCurrency(rows[0]) : '';
+  const amountBeforeTaxAndDiscounts = Boolean(
+    activeDiscounts(subscription?.discounts)
+    || subscription?.discount
+    || subscription?.automatic_tax?.enabled
+    || nonEmptyArray(subscription?.default_tax_rates)
+    || rows.some((item) => activeDiscounts(item.discounts) || nonEmptyArray(item.tax_rates))
+  );
+  const requiresBillingReview = Boolean(
+    subscription?.cancel_at_period_end === true
+    || subscription?.cancel_at
+    || subscription?.pause_collection
+    || subscription?.schedule
+    || subscription?.pending_update
+    || subscription?.collection_method === 'send_invoice'
+    || ['cancel', 'pause'].includes(subscription?.trial_settings?.end_behavior?.missing_payment_method)
+  );
+  const unknown = { amountCents: null, currency, amountBeforeTaxAndDiscounts, requiresBillingReview };
+  if (
+    rows.length === 0
+    || subscription?.items?.has_more === true
+    || requiresBillingReview
+  ) return unknown;
+
+  let amountCents = 0;
+  for (const item of rows) {
+    const price = item.price;
+    const recurring = price?.recurring;
+    const quantity = item.quantity ?? 1;
+    if (
+      !price
+      || typeof price !== 'object'
+      || !recurring
+      || recurring.interval !== 'month'
+      || Number(recurring.interval_count || 1) !== 1
+      || (recurring.usage_type && recurring.usage_type !== 'licensed')
+      || recurring.meter
+      || (price.billing_scheme && price.billing_scheme !== 'per_unit')
+      || price.tiers_mode
+      || price.transform_quantity
+      || price.custom_unit_amount
+      || !Number.isSafeInteger(price.unit_amount)
+      || price.unit_amount < 0
+      || !Number.isSafeInteger(quantity)
+      || quantity < 0
+      || !currency
+      || billingCurrency(item) !== currency
+    ) return unknown;
+
+    const itemAmount = price.unit_amount * quantity;
+    if (!Number.isSafeInteger(itemAmount)) return unknown;
+    amountCents += itemAmount;
+    if (!Number.isSafeInteger(amountCents)) return unknown;
+  }
+
+  return { amountCents, currency, amountBeforeTaxAndDiscounts };
+}
+
+function recurringAmountFields(summary) {
+  return {
+    ...(summary.amountCents !== null ? { amountCents: summary.amountCents } : {}),
+    currency: summary.currency,
+    ...(summary.requiresBillingReview ? { requiresBillingReview: true } : {}),
+    ...(summary.amountBeforeTaxAndDiscounts ? { amountBeforeTaxAndDiscounts: true } : {}),
+  };
+}
+
 async function readOpenBillingInvoices(key, subscriptionId) {
   const read = await stripeRequest(
     key,
@@ -1264,12 +1333,10 @@ export async function handleBillingStatus(_request, url, env) {
     const invoicesRead = await readOpenBillingInvoices(key, subscriptionId);
     if (invoicesRead.error) return invoicesRead.error;
     if (invoicesRead.openInvoices.length > 0) {
-      const activeItem = items[0] || item;
       return result(200, {
         ok: true,
         mode: 'past_due',
-        amountCents: billingAmount(activeItem),
-        currency: billingCurrency(activeItem),
+        ...recurringAmountFields(recurringBillingSummary(subscription, items)),
         openInvoices: invoicesRead.openInvoices,
         minDate: nextUtcDateOnly(now),
         maxDate: utcDateOnly(addUtcMonths(now, 1)),
@@ -1284,8 +1351,7 @@ export async function handleBillingStatus(_request, url, env) {
       mode: 'trial_bridge',
       trialEnd: subscription.trial_end,
       trialEndIso: iso(subscription.trial_end),
-      amountCents: billingAmount(item),
-      currency: billingCurrency(item),
+      ...recurringAmountFields(recurringBillingSummary(subscription, items)),
     });
   }
 
