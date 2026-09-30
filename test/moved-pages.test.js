@@ -7,7 +7,9 @@
 //   • the redirect swallowing the page images that stay under /ai-visibility/ (or any other path),
 //   • a loop (a legacy key equal to a live path) or a two-hop chain,
 //   • Markdown negotiation, Zaraz or no-transform answering the old URL instead of the 301,
-//   • the Worker map and the static fallback stub drifting apart, or the stub carrying tracking.
+//   • the Worker map and the static fallback stub drifting apart, or the stub carrying tracking,
+//   • the hollow /aeo-geo/ parent (2026-09-30) redirecting anything but its two exact paths: every AEO and GEO
+//     article under /aeo-geo/<slug>/ must reach the origin.
 
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -22,6 +24,7 @@ import {
 } from '../worker/src/agent/moved-pages.js';
 import { NO_TRANSFORM_KEY } from '../worker/src/agent/no-transform.js';
 import {
+  AEO_GEO_ARTICLE_BASE,
   AI_VISIBILITY_DIR,
   AI_VISIBILITY_LEGACY_PATHS,
   AI_VISIBILITY_MD_PATH,
@@ -29,6 +32,8 @@ import {
 } from '../shared/ai-visibility-route.js';
 import { AI_VISIBILITY_CANONICAL, aiVisibilityLegacyStubHtml } from '../scripts/seo/data-ai-visibility.mjs';
 import { legacyRedirectHtml } from '../scripts/spa-shell.mjs';
+import { SILOS, articlePath } from '../scripts/seo/articles/article-system.mjs';
+import { DRIP_ARTICLES } from '../scripts/seo/articles/drip-articles.mjs';
 
 const NEW_URL = 'https://autolander.ai/aeo-geo-for-car-dealers/';
 const NEW_MD = 'https://autolander.ai/aeo-geo-for-car-dealers.md';
@@ -66,13 +71,15 @@ async function call(url, { method = 'GET', headers = {} } = {}, origin = makeOri
 
 // ---------------------------------------------------------------- the map itself
 
-test('the moved-page map is exactly the four retired URLs, each one hop to the live page', () => {
+test('the moved-page map is exactly the four retired URLs and the two /aeo-geo parent paths, each one hop to the live page', () => {
   assert.deepEqual(AI_VISIBILITY_LEGACY_PATHS, ['/ai-visibility/']);
   assert.deepEqual({ ...MOVED_PAGES }, {
     '/ai-visibility': AI_VISIBILITY_PATH,
     '/ai-visibility/': AI_VISIBILITY_PATH,
     '/ai-visibility/index.html': AI_VISIBILITY_PATH,
     '/ai-visibility.md': AI_VISIBILITY_MD_PATH,
+    '/aeo-geo': AI_VISIBILITY_PATH,
+    '/aeo-geo/': AI_VISIBILITY_PATH,
   });
   assert.ok(Object.isFrozen(MOVED_PAGES));
   assert.equal(MOVED_PAGE_STATUS, 301);
@@ -204,6 +211,79 @@ test('the redirect runs in the Worker entry after the short-links and before the
   const zarazAt = source.indexOf('readZarazMode(env)');
   const siteAt = source.indexOf('await handleSiteRequest(request, url)');
   assert.ok(shortAt !== -1 && movedAt > shortAt && movedAt < zarazAt && movedAt < siteAt);
+});
+
+// ---------------------------------------------------------------- the hollow /aeo-geo/ parent
+
+test('the AEO and GEO article family base is the one silo basePath, and every article sits under it', () => {
+  assert.equal(AEO_GEO_ARTICLE_BASE, '/aeo-geo/');
+  assert.equal(SILOS.aeoGeo.basePath, AEO_GEO_ARTICLE_BASE);
+  const aeo = DRIP_ARTICLES.filter((a) => a.silo === 'aeoGeo');
+  assert.ok(aeo.length > 0);
+  for (const a of aeo) {
+    const path = articlePath(a);
+    assert.ok(path.startsWith(AEO_GEO_ARTICLE_BASE) && path.length > AEO_GEO_ARTICLE_BASE.length, path);
+    // The parent redirect never catches an article, its index.html or its Markdown twin.
+    for (const variant of [path, path.slice(0, -1), `${path}index.html`, `${path.slice(0, -1)}.md`, path.toUpperCase()]) {
+      assert.equal(movedPageTarget(variant), null, variant);
+    }
+  }
+});
+
+test('exactly /aeo-geo and /aeo-geo/ 301 to the AEO and GEO page with the query kept; nothing under it does', async () => {
+  for (const path of ['/aeo-geo', '/aeo-geo/', '/AEO-GEO/']) {
+    assert.equal(movedPageTarget(path), AI_VISIBILITY_PATH, path);
+    const origin = makeOrigin();
+    const res = await call(`https://autolander.ai${path}`, { headers: { Accept: BROWSER_ACCEPT } }, origin);
+    assert.equal(res.status, 301, path);
+    assert.equal(res.headers.get('Location'), NEW_URL, path);
+    assert.equal(res.headers.get('X-AL-Moved'), '1', path);
+    assert.deepEqual(origin.seen, [], `${path}: no origin fetch`);
+  }
+  const query = '?utm_source=chatgpt.com&utm_medium=referral&x=1+2';
+  const withQuery = await call(`https://autolander.ai/aeo-geo/${query}`);
+  assert.equal(withQuery.headers.get('Location'), `${NEW_URL}${query}`);
+  const noSlash = await call(`https://autolander.ai/aeo-geo${query}`);
+  assert.equal(noSlash.headers.get('Location'), `${NEW_URL}${query}`);
+  const bare = await call('https://autolander.ai/aeo-geo?');
+  assert.equal(bare.headers.get('Location'), NEW_URL);
+  const head = await call('https://autolander.ai/aeo-geo/', { method: 'HEAD' });
+  assert.equal(head.status, 301);
+  const post = await call('https://autolander.ai/aeo-geo/', { method: 'POST' });
+  assert.notEqual(post.status, 301);
+
+  for (const path of ['/aeo-geo/index.html', '/aeo-geo.md', '/aeo-geo//', '/aeo-geo-foo/', '/guide/aeo-geo/', '/aeo-geo/x']) {
+    assert.equal(movedPageTarget(path), null, path);
+  }
+});
+
+test('an article URL under /aeo-geo/ is served by the origin, never redirected (browser, Markdown twin, www)', async () => {
+  const article = DRIP_ARTICLES.find((a) => a.silo === 'aeoGeo');
+  const path = articlePath(article);
+  const md = `${path.slice(0, -1)}.md`;
+  const files = {
+    [path]: { body: '<!doctype html><html><head></head><body>article</body></html>', type: 'text/html; charset=utf-8' },
+    [md]: { body: '# article', type: 'text/markdown; charset=utf-8' },
+  };
+  for (const target of [path, `${path}?utm_source=x`, md]) {
+    const origin = makeOrigin(files);
+    const res = await call(`https://autolander.ai${target}`, { headers: { Accept: BROWSER_ACCEPT } }, origin);
+    assert.equal(res.status, 200, target);
+    assert.equal(res.headers.get('X-AL-Moved'), null, target);
+    assert.equal(res.headers.get('Location'), null, target);
+    assert.ok(origin.seen.includes(target.replace(/\?.*$/, '')), `${target} reached the origin`);
+  }
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => { throw new Error('the origin must not be fetched for a www redirect'); };
+  try {
+    const www = await worker.fetch(new Request(`https://www.autolander.ai${path}?q=1`), {}, {});
+    assert.equal(www.status, 308);
+    assert.equal(www.headers.get('Location'), `https://autolander.ai${path}?q=1`, 'www keeps the article path');
+    const parent = await worker.fetch(new Request('https://www.autolander.ai/aeo-geo/?q=1'), {}, {});
+    assert.equal(parent.headers.get('Location'), `${NEW_URL}?q=1`, 'www parent goes straight to the page in one hop');
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 // ---------------------------------------------------------------- the static fallback stub
