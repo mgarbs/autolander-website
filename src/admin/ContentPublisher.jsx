@@ -375,7 +375,7 @@ export default function ContentPublisher({ onUnauthorized }) {
           <summary className={`${summaryClass} border-b border-white/10 bg-white/[0.03] px-4 py-2`}>
             <span className="text-[10px] font-black uppercase tracking-widest text-slate-300">{group.label}</span>
             <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-              {group.live}/{group.total} live{group.drafts ? ` · ${group.drafts} drafts` : ''}
+              {group.live}/{group.total} live{group.drafts ? ` · ${group.drafts} draft${group.drafts === 1 ? '' : 's'}` : ''}
             </span>
             <GroupPills group={group} />
             {group.nextDraft && (
