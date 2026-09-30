@@ -2,6 +2,7 @@ import { StrictMode, useCallback, useEffect, useMemo, useRef, useState } from 'r
 import { hydrateRoot } from 'react-dom/client';
 import {
   FOOTER,
+  FOOTER_NAV,
   FORM,
   META,
   ROLE_CHOICES,
@@ -341,7 +342,7 @@ export default function AiVisibilityApp({ prerendered = false, restHtml = '' }) 
           </>
         ) : <StaticIsland name="ai-rest" html={restHtml} />}
       </main>
-      {live && <SiteFooter extraLine={FOOTER.line} mobileCtaPadding />}
+      {live && <SiteFooter extraLine={FOOTER.line} mobileCtaPadding columns={FOOTER_NAV} />}
       {live && <AiMobileCtaBar onGo={goToForm} formRef={formSectionRef} />}
     </div>
   );
