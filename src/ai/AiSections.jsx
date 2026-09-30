@@ -10,6 +10,7 @@ import {
   FAQ_HEADING,
   FINAL_CTA,
   FINE_PRINT,
+  GUIDES,
   HERO,
   ILLUSTRATION_SLOTS,
   HOW,
@@ -37,6 +38,7 @@ import {
 import { aiImage } from '../../shared/ai-images.js';
 import { IMAGE_SIZES } from '../../shared/responsive-images.js';
 import ResponsiveImage from '../components/ResponsiveImage.jsx';
+import { AEO_GEO_GUIDES } from '../generated/aeo-geo-guides.js';
 
 const ArrowRight = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
@@ -525,6 +527,35 @@ export function AiFinalCta({ onGo }) {
           <ScanLink onGo={onGo} className={PRIMARY_CTA}>{FINAL_CTA.cta}<ArrowRight className="h-5 w-5" /></ScanLink>
         </div>
         <p className="mt-4 font-mono text-[11px] uppercase tracking-wider text-slate-400">{FINAL_CTA.note}</p>
+      </div>
+    </section>
+  );
+}
+
+// "AEO and GEO guides for dealers": the published AEO and GEO articles by cluster, each cluster's pillar first.
+// The list is generated at build time from the publish state (src/generated/aeo-geo-guides.js), so render is
+// deterministic (no window, no fetch) and matches the static mirror's guidesSection. Nothing while it is empty.
+export function AeoGuidesSection({ groups = AEO_GEO_GUIDES }) {
+  if (!Array.isArray(groups) || !groups.length) return null;
+  return (
+    <section id={GUIDES.id} className="scroll-mt-24 border-t border-white/5 py-16">
+      <div className="mx-auto max-w-7xl px-6">
+        <h2 className="font-display text-3xl font-extrabold uppercase italic text-white sm:text-4xl">{GUIDES.heading}</h2>
+        <p className="mt-4 max-w-3xl leading-relaxed text-slate-300">{GUIDES.intro}</p>
+        <div className="mt-10 grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {groups.map((group) => (
+            <nav key={group.key} aria-label={group.label}>
+              <h3 className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">{group.label}</h3>
+              <ul className="m-0 mt-3 list-none space-y-2 p-0">
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <a className={`text-sm leading-relaxed text-blue-300 underline decoration-blue-400/40 underline-offset-4 hover:text-blue-200${link.pillar ? ' font-semibold' : ''}`} href={link.href}>{link.text}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+        </div>
       </div>
     </section>
   );

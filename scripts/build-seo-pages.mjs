@@ -24,6 +24,7 @@ import { COMPETITORS, GUIDE } from './compare-data.mjs';
 import {
   buildArticlePage, hubAugmentLinks, contentStatusJson, articleSitemapEntries,
   loadPublishState, isPublished, articlePath, gatePageLinks, siloNumberingProblems, SUGGESTED_ORDER,
+  publishedClusterGuides, aeoGeoGuidesModule, AEO_GEO_GUIDES_MODULE,
 } from './seo/articles/article-system.mjs';
 import { loadBlogPosts } from './seo/articles/blog-loader.mjs';
 import { STUDIO_IMAGES } from './seo/articles/image-usage.mjs';
@@ -119,6 +120,11 @@ const ARTICLE_PAGES = PUBLISHED_ARTICLES.map((c) => buildArticlePage(c, ARTICLE_
   onUnlinked: (event) => UNLINKED.push({ page: articlePath(c), ...event }),
 }));
 const BLOG_PAGE = blogIndexPage(ARTICLE_CONTENT, PUBLISH_STATE);
+// Money page down-links: the published AEO and GEO articles by cluster, from THIS build's publish
+// state. The twin below renders them directly (never the committed module, which this very build
+// may be about to rewrite), and src/generated/aeo-geo-guides.js carries them to React and the
+// static mirror for the next `npm run build`.
+const AEO_GEO_GUIDES = publishedClusterGuides('aeoGeo', ARTICLE_CONTENT, PUBLISH_STATE);
 
 const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...POSITIONING, ...INVDIST, ...RVCLUSTER, ...AICHATCLUSTER, AI_VISIBILITY, BLOG_PAGE, ...ARTICLE_PAGES];
 
@@ -285,6 +291,21 @@ write(
   console.log(`Homepage directory: ${groups.length} groups, ${groups.reduce((n, g) => n + g.links.length, 0)} links.`);
 }
 
+// ---------- AEO and GEO page guides block (src/generated/aeo-geo-guides.js) ----------
+// The money page is an SPA route, so its "AEO and GEO guides for dealers" block reads a generated
+// module (React section + static mirror at `npm run build`). It lives outside public/ like the
+// homepage directory, under src/generated/, which the publish workflow already commits. Written
+// only when it changes, so a build with no AEO publish leaves the file untouched.
+{
+  const genPath = resolve(OUT_ROOT, AEO_GEO_GUIDES_MODULE);
+  mkdirSync(dirname(genPath), { recursive: true });
+  const source = aeoGeoGuidesModule(AEO_GEO_GUIDES);
+  let prev = null;
+  try { prev = readFileSync(genPath, 'utf8'); } catch { /* first build */ }
+  if (prev !== source) { writeFileSync(genPath, source, 'utf8'); console.log(`wrote ${AEO_GEO_GUIDES_MODULE}`); }
+  console.log(`AEO and GEO page guides: ${AEO_GEO_GUIDES.length} cluster(s), ${AEO_GEO_GUIDES.reduce((n, g) => n + g.links.length, 0)} published article(s).`);
+}
+
 // ---------- draft preview (LOCAL ONLY — never into public/) ----------
 // ARTICLE_DRAFT_PREVIEW=1 renders draft articles into dist-preview/ so Michael can read
 // them in a browser before publishing. dist-preview/ is gitignored; nothing here can leak.
@@ -315,7 +336,7 @@ function buildMarkdownTwins() {
     const urlPath = page.path || (nav && nav.path);
     if (!urlPath) continue;
     const rel = mdPathFor(urlPath);
-    const markdown = page.key === 'aiVisibility' ? renderAiVisibilityMarkdown() : renderMarkdown(page);
+    const markdown = page.key === 'aiVisibility' ? renderAiVisibilityMarkdown({ guides: AEO_GEO_GUIDES }) : renderMarkdown(page);
     write(resolve(PUBLIC_DIR, rel.replace(/^\//, '')), markdown);
     twins.push({ urlPath, md: rel, title: page.h1 || page.title, description: page.description });
   }
@@ -430,7 +451,7 @@ ${Object.values(COMPETITORS).map((c) => `- [AutoLander vs ${c.name}](${SITE.orig
   // in one fetch rather than crawling 45 URLs.
   const full = ALL.map((page) => {
     if (page.key !== 'aiVisibility') return renderMarkdown(page);
-    return `${AI_VISIBILITY_START}\n${aiVisibilitySection(2, { markers: false })}\n\n${renderAiVisibilityMarkdown()}\n${AI_VISIBILITY_END}`;
+    return `${AI_VISIBILITY_START}\n${aiVisibilitySection(2, { markers: false })}\n\n${renderAiVisibilityMarkdown({ guides: AEO_GEO_GUIDES })}\n${AI_VISIBILITY_END}`;
   }).join('\n\n---\n\n');
   write(resolve(PUBLIC_DIR, 'llms-full.txt'), `${header}\n\n---\n\n${full}`);
 }

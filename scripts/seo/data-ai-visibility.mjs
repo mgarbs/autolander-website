@@ -13,6 +13,7 @@ import {
   FINE_PRINT,
   FOOTER,
   FORM,
+  GUIDES,
   HERO,
   HOW,
   HOW_IT_STARTS,
@@ -39,6 +40,9 @@ import {
   fmtUsd,
 } from '../../shared/ai-visibility-content.js';
 import { AI_VISIBILITY_MD_PATH } from '../../shared/ai-visibility-route.js';
+// The committed, generated list of published AEO and GEO articles (build-seo-pages.mjs). The build
+// passes its own fresh list to renderAiVisibilityMarkdown; this is the default for everyone else.
+import { AEO_GEO_GUIDES } from '../../src/generated/aeo-geo-guides.js';
 import { ORG_ID, PERSON_ID, orgLd, personLd } from './shell.mjs';
 import { legacyRedirectHtml } from '../spa-shell.mjs';
 
@@ -297,7 +301,9 @@ const paragraph = (out, value) => { line(out, value); line(out); };
 const bullets = (out, values) => { values.forEach((value) => line(out, `- ${value}`)); line(out); };
 const heading = (out, level, value) => { line(out, `${'#'.repeat(level)} ${value}`); line(out); };
 
-export function renderAiVisibilityMarkdown() {
+// `guides`: the published AEO and GEO articles by cluster (publishedClusterGuides). build-seo-pages passes
+// the list for the state it is building; the default is the committed generated module.
+export function renderAiVisibilityMarkdown({ guides = AEO_GEO_GUIDES } = {}) {
   const out = [];
   heading(out, 1, `${HERO.h1Lead} ${HERO.h1Grad}`);
   paragraph(out, `> ${META.description}`);
@@ -443,6 +449,16 @@ export function renderAiVisibilityMarkdown() {
     heading(out, 3, q);
     paragraph(out, a);
   });
+
+  // Hub to spokes: every published AEO and GEO article, by cluster. Absent while none is published.
+  if (guides.length) {
+    heading(out, 2, GUIDES.heading);
+    paragraph(out, GUIDES.intro);
+    guides.forEach((group) => {
+      heading(out, 3, group.label);
+      bullets(out, group.links.map(({ text, href }) => `[${text}](${AI_VISIBILITY_ORIGIN}${href})`));
+    });
+  }
 
   heading(out, 2, RELATED.heading);
   bullets(out, RELATED.links.map(({ label, href }) => `[${label}](${AI_VISIBILITY_ORIGIN}${href})`));

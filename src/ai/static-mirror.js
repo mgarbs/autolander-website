@@ -11,6 +11,7 @@ import {
   FOOTER,
   FOOTER_NAV,
   FORM,
+  GUIDES,
   HERO,
   HOW,
   HOW_IT_STARTS,
@@ -38,6 +39,7 @@ import {
 } from '../../shared/ai-visibility-content.js';
 import { aiImage } from '../../shared/ai-images.js';
 import { responsiveImageHtml, IMAGE_SIZES } from '../../shared/responsive-images.js';
+import { AEO_GEO_GUIDES } from '../generated/aeo-geo-guides.js';
 
 const esc = (value) => String(value ?? '')
   .replaceAll('&', '&amp;')
@@ -85,6 +87,17 @@ function aeoGeoSection() {
       <div class="rounded-3xl border border-white/10 bg-[#0b0d12] p-6"><h3 class="font-display text-xl font-extrabold uppercase italic text-white">${copy(AEO_GEO.sourcesHeading)}</h3><ul class="mt-6 space-y-3">${AEO_GEO.sources.map(({ label, url }) => `<li><a class="text-sm leading-relaxed text-blue-300 underline" href="${esc(url)}">${copy(label)}</a></li>`).join('')}</ul></div>
     </div>
   </div></section>`;
+}
+
+// "AEO and GEO guides for dealers": the published articles by cluster, each cluster's pillar first
+// (src/generated/aeo-geo-guides.js, written by scripts/build-seo-pages.mjs from the publish state). Same list,
+// order and copy as AeoGuidesSection in AiSections.jsx and the twin. Nothing at all (not even whitespace) while
+// the list is empty, so the mirror stays byte-identical until the first AEO publish.
+function guidesSection(groups) {
+  if (!Array.isArray(groups) || !groups.length) return '';
+  const link = ({ href, text, pillar }) => `<li><a class="text-sm leading-relaxed text-blue-300 underline${pillar ? ' font-semibold' : ''}" href="${esc(href)}">${copy(text)}</a></li>`;
+  return `
+      <section id="${esc(GUIDES.id)}" class="scroll-mt-24 border-t border-white/5 py-16"><div class="mx-auto max-w-7xl px-6"><h2 class="font-display text-3xl font-extrabold uppercase italic text-white sm:text-4xl">${copy(GUIDES.heading)}</h2><p class="mt-4 max-w-3xl leading-relaxed text-slate-300">${copy(GUIDES.intro)}</p><div class="mt-10 grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-3">${groups.map((group) => `<nav aria-label="${esc(group.label)}"><h3 class="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">${copy(group.label)}</h3><ul class="mt-3 space-y-2">${group.links.map(link).join('')}</ul></nav>`).join('')}</div></div></section>`;
 }
 
 function reportMock() {
@@ -247,12 +260,12 @@ function plansSection() {
   </section>`;
 }
 
-export function renderAiVisibilityMirror({ capiUrl = 'https://autolander.ai' } = {}) {
+export function renderAiVisibilityMirror({ capiUrl = 'https://autolander.ai', guides = AEO_GEO_GUIDES } = {}) {
   return `<!--AL_STATIC_PAGE_START--><div id="al-static-page" class="min-h-dvh bg-[#050505] font-sans text-slate-50">
     <main id="main-content">
       ${heroSection()}
 
-      ${renderAiVisibilityMirrorRest({ capiUrl })}
+      ${renderAiVisibilityMirrorRest({ capiUrl, guides })}
     </main>
   </div><!--AL_STATIC_PAGE_END-->`;
 }
@@ -270,9 +283,10 @@ function heroSection() {
  * Everything the static mirror carries below its hero: the crawlable no-JS body (scan form with its native
  * POST action and WebMCP attributes, plans, FAQ, closing sections). The production shell ships it inside
  * React's prerendered page as an inert island right after the hydrated hero (src/components/StaticIsland.jsx);
- * React swaps in the live sections after the first paint.
+ * React swaps in the live sections after the first paint. `guides` defaults to the committed generated list of
+ * published AEO and GEO articles; tests pass their own.
  */
-export function renderAiVisibilityMirrorRest({ capiUrl = 'https://autolander.ai' } = {}) {
+export function renderAiVisibilityMirrorRest({ capiUrl = 'https://autolander.ai', guides = AEO_GEO_GUIDES } = {}) {
   const action = `${String(capiUrl).replace(/\/+$/, '')}/api/ai-scan`;
   return `${aeoGeoSection()}
 
@@ -293,6 +307,6 @@ export function renderAiVisibilityMirrorRest({ capiUrl = 'https://autolander.ai'
 
       <section id="faq" class="border-y border-white/5 bg-[#080808] py-20"><div class="mx-auto max-w-4xl px-6">${eyebrow(FAQ_HEADING.eyebrow)}${heading(FAQ_HEADING.h2Lead, FAQ_HEADING.h2Grad)}<div class="mt-10 space-y-3">${FAQ.map(({ q, a }) => `<details class="rounded-2xl border border-white/10 bg-[#0b0d12] p-5"><summary class="cursor-pointer font-bold text-white">${copy(q)}</summary><div class="al-faq-a mt-3 text-sm leading-relaxed text-slate-300">${copy(a)}</div></details>`).join('')}</div></div></section>
 
-      <section class="py-20 text-center"><div class="mx-auto max-w-4xl px-6"><h2 class="font-display text-4xl font-extrabold uppercase italic text-white sm:text-5xl">${copy(FINAL_CTA.h2Lead)} <span class="text-blue-400">${copy(FINAL_CTA.h2Grad)}</span></h2><a href="#scan-form" class="mt-7 inline-flex rounded-2xl bg-blue-600 px-7 py-4 font-display text-base font-extrabold uppercase italic text-white">${copy(FINAL_CTA.cta)}</a><p class="mt-4 font-mono text-xs uppercase tracking-wider text-slate-400">${copy(FINAL_CTA.note)}</p></div></section>
+      <section class="py-20 text-center"><div class="mx-auto max-w-4xl px-6"><h2 class="font-display text-4xl font-extrabold uppercase italic text-white sm:text-5xl">${copy(FINAL_CTA.h2Lead)} <span class="text-blue-400">${copy(FINAL_CTA.h2Grad)}</span></h2><a href="#scan-form" class="mt-7 inline-flex rounded-2xl bg-blue-600 px-7 py-4 font-display text-base font-extrabold uppercase italic text-white">${copy(FINAL_CTA.cta)}</a><p class="mt-4 font-mono text-xs uppercase tracking-wider text-slate-400">${copy(FINAL_CTA.note)}</p></div></section>${guidesSection(guides)}
       <section class="border-t border-white/5 py-10"><div class="mx-auto max-w-7xl px-6"><nav aria-label="${esc(RELATED.heading)}" class="mb-8"><h2 class="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">${copy(RELATED.heading)}</h2><ul class="mt-3 flex flex-wrap gap-x-6 gap-y-1">${RELATED.links.map(({ label, href }) => `<li><a class="inline-block py-1 text-sm text-blue-300 underline" href="${esc(href)}">${copy(label)}</a></li>`).join('')}</ul></nav><p class="text-sm leading-relaxed text-slate-400">${copy(SERVICE_SUMMARY)}</p><p class="mt-4 text-sm leading-relaxed text-slate-400">${copy(FOOTER.line)}</p><div class="mt-6 grid gap-6 sm:grid-cols-3">${FOOTER_NAV.map((column) => `<nav aria-label="${esc(column.heading)}"><h2 class="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300">${copy(column.heading)}</h2><ul class="mt-2 space-y-1">${column.links.map((link) => `<li><a class="text-sm text-blue-300" href="${esc(link.href)}">${copy(link.label)}</a></li>`).join('')}</ul></nav>`).join('')}</div></div></section>`;
 }
