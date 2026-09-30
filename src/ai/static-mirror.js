@@ -24,7 +24,6 @@ import {
   RELATED,
   REPORT,
   REPORT_MOCK,
-  RESULTS_CREDIT,
   REVIEW,
   ROLE_CHOICES,
   SERVICE_SUMMARY,
@@ -231,14 +230,6 @@ function plansSection() {
         <p class="mt-3 text-slate-300">${copy(PLANS_SECTION.promisesIntro)}</p>
         <div class="mt-6 overflow-x-auto rounded-3xl border border-white/10 bg-[#0b0d12]"><table class="min-w-[720px] w-full border-collapse text-left text-sm"><tbody>${PROMISES.map(({ promise, step }) => `<tr class="border-t border-white/10 first:border-t-0"><th scope="row" class="w-1/2 p-4 align-top font-semibold text-white">${copy(promise)}</th><td class="p-4 align-top leading-relaxed text-slate-300">${copy(step)}</td></tr>`).join('')}</tbody></table></div>
       </div>
-
-      <details id="${esc(RESULTS_CREDIT.anchor)}" class="mt-10 rounded-3xl border border-white/10 bg-[#0b0d12] p-6">
-        <summary class="cursor-pointer font-display text-2xl font-extrabold uppercase italic text-white">${copy(RESULTS_CREDIT.heading)}</summary>
-        <p class="mt-4 leading-relaxed text-slate-300">${copy(RESULTS_CREDIT.intro)}</p>
-        <ol class="mt-5 space-y-4">${RESULTS_CREDIT.steps.map(({ title, body }, index) => `<li><h4 class="font-bold text-white">${index + 1}. ${copy(title)}</h4><p class="mt-1 text-sm leading-relaxed text-slate-300">${copy(body)}</p></li>`).join('')}</ol>
-        ${list(RESULTS_CREDIT.conditions)}
-        <p class="mt-5 text-sm leading-relaxed text-slate-300">${copy(RESULTS_CREDIT.covers)}</p>
-      </details>
 
       <div class="mt-10 grid items-start gap-5 lg:grid-cols-2">
         <article class="rounded-3xl border border-white/10 bg-[#0b0d12] p-6"><h3 class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(PLANS_SECTION.neverHeading)}</h3>${list(NEVER_PROMISE)}</article>

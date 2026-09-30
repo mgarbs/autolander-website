@@ -65,7 +65,7 @@ for (const route of ['ai', 'team']) {
     const react = root.replace(/<div data-al-island="[^"]+">[\s\S]*<\/div><\/main>/, '</main>');
     assert.doesNotMatch(react, /<link\b|<script\b|<!--\$|<!--\/\$/, 'no stray resource tags or Suspense boundaries');
     assert.doesNotMatch(react, /@autolander\.ai/, 'no raw address outside the email_off-protected island');
-    assert.doesNotMatch(react, /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i, 'assistant brands stay in their approved sections');
+    assert.doesNotMatch(react, /(?<!Chat)\bGPT\b/, 'say ChatGPT, never the bare model name GPT (Michael, 2026-09-30)');
     assert.doesNotMatch(text(root), /\w\?\w|�/u, 'no broken characters');
     // Only the nav logo may be hoisted, and only because the head already preloads it.
     assert.throws(() => cleanSsr(renders[route](), { ...shape[route], headHtml: '' }), /not already in the head/);

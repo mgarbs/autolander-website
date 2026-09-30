@@ -42,16 +42,14 @@ test('AI Visibility content keeps the owner-approved plans and public copy rules
     const haystack = String(pattern) === String(/guarantee/i) ? source.replaceAll(allowQ, '') : source;
     assert.doesNotMatch(haystack, pattern);
   }
-  const assistantNames = /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i;
-  for (const [name, content] of Object.entries(AI_CONTENT)) {
-    if (typeof content === 'function' || ['WHERE_BUYERS_ASK', 'RESULTS_VIEW', 'AEO_GEO'].includes(name)) continue;
-    // FAQ items marked `names: true` are the only FAQ entries allowed to name an assistant brand.
-    const checked = name === 'FAQ' ? content.filter((item) => !item.names) : content;
-    assert.doesNotMatch(JSON.stringify(checked), assistantNames, name);
+  // Michael, 2026-09-30: name every major assistant in the copy (Google Gemini, ChatGPT, Claude, Perplexity),
+  // never the bare model name "GPT"; the free scan itself is described as ChatGPT and Claude only.
+  const allCopy = JSON.stringify(Object.fromEntries(Object.entries(AI_CONTENT).filter(([, value]) => typeof value !== 'function')));
+  assert.doesNotMatch(allCopy, /(?<!Chat)\bGPT\b/, 'say ChatGPT, never the bare model name');
+  for (const brand of ['Gemini', 'ChatGPT', 'Claude', 'Perplexity']) {
+    assert.ok(AI_CONTENT.HERO.summary.includes(brand), `hero names ${brand}`);
+    assert.ok(AI_CONTENT.META.description.includes(brand), `meta names ${brand}`);
   }
-  const sections = read('src/ai/AiSections.jsx').replace(/export function WhereBuyersAskSection\(\)[\s\S]*?(?=export function ReportSection)/, '');
-  assert.doesNotMatch(sections, assistantNames);
-  assert.doesNotMatch(read('src/ai/AiVisibilityApp.jsx'), assistantNames);
 });
 
 test('React scan form exposes native fallback, WebMCP and human-consent controls', () => {
@@ -93,7 +91,8 @@ test('React AI page renders required image assets and stable plan anchors', () =
   assert.match(sections, /id=\{plan\.anchor\}/);
   assert.deepEqual(PLANS.map((plan) => plan.anchor), ['plan-ai-foundation', 'plan-ai-authority', 'plan-market-leader']);
   assert.match(sections, /id="plans"/);
-  assert.match(sections, /id=\{RESULTS_CREDIT\.anchor\}/);
+  // Michael, 2026-09-30: the page never offers a credit of any kind.
+  assert.doesNotMatch(sections, /RESULTS_CREDIT|results-credit/);
 });
 
 test('AI and Team JSX sources contain no em dash or en dash characters', () => {

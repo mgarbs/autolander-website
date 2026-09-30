@@ -1,13 +1,13 @@
 # AEO and GEO for car dealers. Is your store in the AI answer?
 
-> AEO and GEO for car dealers: see if Claude and GPT name your store when local buyers ask. Free scan, then plans from $997 a month, month to month.
+> AEO and GEO for car dealers. Help Google Gemini, ChatGPT, Claude and Perplexity find, trust and name your store. Free AI scan, plans from $997/mo.
 
 Source: https://autolander.ai/aeo-geo-for-car-dealers/
 Author: The AutoLander team
 Published: September 28, 2026
 Updated: September 30, 2026
 
-**Short answer:** A buyer asks AI where to buy a car in your town. AEO and GEO help AI find, trust and name your store. Our free scan asks Claude and GPT, web search on, up to 20 local buyer questions, 3 times each, and shows who they name, what they cite and the 3 fixes to make first.
+**Short answer:** A buyer asks AI where to buy a car in your town. AEO and GEO help Google Gemini, ChatGPT, Claude and Perplexity find, trust and name your store. Our free scan asks ChatGPT and Claude, web search on, up to 20 local buyer questions, 3 times each, and shows who they name, what they cite and the 3 fixes to make first.
 
 - Free
 - No logins needed
@@ -41,7 +41,7 @@ SEO, search engine optimization, is the work that helps your pages rank high in 
 
 They share one foundation. Google says there are “no additional requirements to appear in AI Overviews or AI Mode”: to show up as a link there, a page has to be indexed and eligible for a snippet in Google Search, which is everyday SEO work. Keep the SEO your website vendor already does, and add what AI tools need on top.
 
-Our free scan measures two of these tools, Claude and GPT, each with web search on. It doesn’t measure the others or Google’s AI Overviews.
+Our free scan measures two of these tools, ChatGPT and Claude, each with web search on. The work itself, from crawler access to reviews and answer pages, is what Google Gemini, AI Overviews and Perplexity read too.
 
 ### Words you will hear
 
@@ -107,7 +107,7 @@ Every sentence carries a numbered source, so the pages it trusts decide which de
 
 Illustrations of AI answers. The dealerships shown are AutoLander customers. Real answers change with the buyer, the question and the day.
 
-Our free scan measures Claude and GPT, the model family behind ChatGPT, each with web search on. What we fix, from crawler access and vehicle-page text to your Google profile, reviews and answer pages, is what these assistants read when they decide who to name.
+Our free scan measures ChatGPT and Claude, each with web search on. What we fix, from crawler access and vehicle-page text to your Google profile, reviews and answer pages, is what Google Gemini, ChatGPT, Claude and Perplexity read when they decide who to name.
 
 ## How can you see AI in your own numbers?
 
@@ -129,11 +129,11 @@ Illustrations of the Search Console and Google Analytics views. Your numbers dep
 
 ## What does the free AI scan check?
 
-It checks whether Claude and GPT name your store for local buyer questions, which sources they cite, whether AI can read your site and vehicle pages, and the 3 fixes to make first. Each part is tagged AEO, GEO or both.
+It checks whether ChatGPT and Claude name your store for local buyer questions, which sources they cite, whether AI can read your site and vehicle pages, and the 3 fixes to make first. Each part is tagged AEO, GEO or both.
 
 ### Who gets named (GEO)
 
-The dealers Claude and GPT name for buyer questions in your town, question by question, and how often each one comes up.
+The dealers ChatGPT and Claude name for buyer questions in your town, question by question, and how often each one comes up.
 
 ### The sources they cite (GEO)
 
@@ -155,7 +155,7 @@ Built from how often you are named, the sources that cite you, your reviews and 
 
 The three changes we would make first, written plainly enough to hand to your website vendor.
 
-![Illustration of a sample AI Visibility Report with a score of 57 out of 100, answers from Claude and GPT, and the 3 fixes](https://autolander.ai/ai-visibility/report-preview-1280.webp)
+![Illustration of a sample AI Visibility Report with a score of 57 out of 100, answers from ChatGPT and Claude, and the 3 fixes](https://autolander.ai/ai-visibility/report-preview-1280.webp)
 
 ![Illustration of a vehicle page check showing price, mileage and VIN readable as page text and AI crawlers allowed in robots.txt](https://autolander.ai/ai-visibility/vehicle-page-check-1280.webp)
 
@@ -163,7 +163,7 @@ The three changes we would make first, written plainly enough to hand to your we
 
 57/100. Named in some answers, missing from most.
 
-| Buyer question | Claude | GPT |
+| Buyer question | Claude | ChatGPT |
 | --- | --- | --- |
 | Best used car dealer | named | rival |
 | Trucks under $30k | no | named |
@@ -194,7 +194,7 @@ When price, mileage and VIN aren’t on the page as text, an answer can’t desc
 ## How does the free scan work?
 
 1. **You tell us where you sell:** Your store, website and city or ZIP. No logins, nothing to install.
-2. **We ask what your buyers ask:** Up to 20 questions a buyer in your town would ask (finding a dealer, specific cars, reputation, trade-ins), put to Claude and GPT with web search on, 3 times each, because answers change from run to run. Every question names your city or ZIP. If we can’t find cars on your site, we skip the car questions and say so in your report.
+2. **We ask what your buyers ask:** Up to 20 questions a buyer in your town would ask (finding a dealer, specific cars, reputation, trade-ins), put to ChatGPT and Claude with web search on, 3 times each, because answers change from run to run. Every question names your city or ZIP. If we can’t find cars on your site, we skip the car questions and say so in your report.
 3. **You get the report and a walkthrough:** A person on our team checks every match and your report before it goes out, e-mails it to you and walks you through it in 20 minutes. No obligation.
 
 ## Get your free AI Visibility Scan
@@ -263,7 +263,7 @@ Everything in AI Foundation, with 4 answer pages and 1 sponsored publication pla
 
 High-volume franchise stores that want brand exclusivity in their market.
 
-Everything in AI Authority, with 8 answer pages, 4 sponsored publication placements and 2 video answers a month, brand exclusivity in your market and a measured results credit. By application.
+Everything in AI Authority, with 8 answer pages, 4 sponsored publication placements and 2 video answers a month, and brand exclusivity in your market. By application.
 
 - Everything in AI Authority.
 - 8 answer pages a month. Each is a new buyer question, or a refresh of an earlier page when its facts change.
@@ -272,7 +272,6 @@ Everything in AI Authority, with 8 answer pages, 4 sponsored publication placeme
 - A quarterly competitor teardown on top of the weekly watch.
 - A monthly review call and a quarterly planning meeting.
 - Brand exclusivity, by application. While you are subscribed, we sell no AI Visibility plan to another dealer of your brand in your territory: 25 miles in a straight line from your rooftop by default, confirmed in writing before you sign. A group’s same-brand rooftops count as one dealer, and we tell you before you sign about any same-brand dealer we already serve nearby. Exclusivity covers our AI Visibility plans only, and AI assistants may still name other dealers.
-- The Market Leader results credit (full terms below).
 
 AutoLander customers pay no setup fee.
 
@@ -297,12 +296,11 @@ AutoLander customers pay no setup fee.
 | Google review replies | Within 2 business days | Within 1 business day | Within 1 business day |
 | Review calls | Kickoff, then every quarter | Kickoff, then a 30-minute call every month | Kickoff, a monthly call and a quarterly planning meeting |
 | Brand exclusivity in your market | No | No | Yes |
-| Results credit | No | No | Yes, measured on months 4 to 6 |
 | How it starts | Written agreement after your walkthrough | Application after your walkthrough, answered within 1 business day | Application, answered within 1 business day |
 
 ## Every plan includes
 
-- A monthly AI Visibility scan and report by business day 5: when Claude and GPT name you on a fixed set of buyer questions, who they name instead, the sources behind every answer (each labelled by the assistant it came from), the cars AI can find, what we did this month with links to every piece of work, and what comes next.
+- A monthly AI Visibility scan and report by business day 5: when ChatGPT and Claude name you on a fixed set of buyer questions, who they name instead, the sources behind every answer (each labelled by the assistant it came from), the cars AI can find, what we did this month with links to every piece of work, and what comes next.
 - A website fix list for your website vendor, sent with your written authorization, chased every week and re-checked until each fix is live. It covers AI search crawler access in your robots.txt and your CDN or firewall (you can still block crawlers that collect training data), price, mileage and the full VIN as plain text on every vehicle page, and dealer and vehicle structured data where your platform doesn’t already add it.
 - Your Google Business Profile run for you as a manager while you stay the owner: categories, services, description, hours, attributes and photos kept current, and every change we make e-mailed to you within 48 hours. Vehicles are never added as Google products, because Google’s rules exclude them.
 - Core listings claimed, completed and kept consistent: Bing Places, Apple Business Connect, Yelp (claim and complete only), your Facebook Page, DealerRater, and your Cars.com, CarGurus and Autotrader dealer profiles.
@@ -330,25 +328,6 @@ Each promise is a step we control, with a date you can check in your report.
 | Your monthly report arrives by business day 5. | It links to every piece of work and shows the raw answers, each labelled by the assistant it came from, with a short note on how we measure. |
 | If you leave, our access is removed within 5 business days. | We delete your scan data and reports within 30 days and confirm it in writing. You keep every profile, listing, page and video. |
 
-## Market Leader results credit
-
-This credit comes with Market Leader only. We offer it once our pilot scans have measured how much answers normally vary from run to run.
-
-1. **The questions:** At kickoff we agree 15 buyer questions for your market in writing. None of them names a dealer or a specific car, and at least 10 must not name your store in your first starting scan. The list is then frozen for the life of your agreement.
-2. **How we ask:** Each question is asked 3 times of Claude (Anthropic) and of GPT (OpenAI), with web search on and the model versions fixed. That gives 30 question-and-assistant pairs per scan. A pair counts as naming you when that assistant names your store in at least 2 of its 3 runs, and a person checks every match.
-3. **Your starting count:** The average count from two scans run at least 3 days apart during kickoff.
-4. **The margin for normal variation:** Whichever is largest: 3 pairs, the gap between your two starting scans, or the variation measured in our pilot scans. Your report shows it.
-5. **Your result:** The average count across your monthly scans in months 4, 5 and 6. You also get a progress readout at day 90.
-6. **The credit:** If your result is not above your starting count plus the margin, we credit one full month’s fee on your next invoice. There is one credit per agreement.
-
-- You stay subscribed and paid through month 6.
-- Google Business Profile manager access is granted within 10 business days of kickoff.
-- Your approver answers answer-page drafts and placement topics within 10 business days.
-- If your website vendor has not let AI search crawlers in by day 60, measurement moves to the three monthly scans after the fix is live, and we confirm the new dates in writing.
-- If a provider retires a model we use, we re-run your starting scans on its replacement that month. If we can’t, that assistant is left out of both your starting count and your result.
-
-The credit covers a measured change in how often Claude and GPT name you on the agreed questions. It does not cover which answers name you, any position in an answer, traffic, leads or sales, or whether competitors are named.
-
 ## What we never promise
 
 - A top spot, or any position, in the answers of any AI assistant, AI Overview or search engine.
@@ -373,11 +352,11 @@ The credit covers a measured change in how often Claude and GPT name you on the 
 - Logging into your DMS or CRM, or holding your customer lists.
 - Your passwords. We use manager roles and user invites only.
 - Photo or video shoots at your store. Market Leader videos are made from footage and photos you already have.
-- Measurement of AI assistants other than Claude and GPT, or of Google’s AI Overviews.
+- Measurement of AI assistants other than ChatGPT and Claude, such as Google Gemini, Google’s AI Overviews or Perplexity.
 
 ## How it starts
 
-1. **Free scan:** Tell us your store, website and city or ZIP. We ask Claude and GPT up to 20 questions a buyer in your town would ask, 3 times each, with web search on.
+1. **Free scan:** Tell us your store, website and city or ZIP. We ask ChatGPT and Claude up to 20 questions a buyer in your town would ask, 3 times each, with web search on.
 2. **Walkthrough:** 20 minutes on your report with our team, including the 3 fixes we would make first.
 3. **Agreement:** AI Foundation starts with a written agreement, month to month. AI Authority and Market Leader start with an application, and we reply within 1 business day. For Market Leader we also confirm whether your territory is available.
 4. **Kickoff within 5 business days:** We agree the questions we measure. You give us Google Business Profile manager access, name who approves pages and bad-review replies, authorize our note to your website vendor and connect your inventory feed (already done if you use AutoLander).
@@ -391,13 +370,13 @@ The credit covers a measured change in how often Claude and GPT name you on the 
 - Dealer groups are priced per rooftop from the same table, and each rooftop can be on a different plan.
 - For plans, answer pages and the cars AI can find check come from a live inventory feed: your AutoLander feed, or a CSV, XML or SFTP file from your inventory provider, set up at kickoff. The free scan may read up to five vehicle pages from your site.
 - Google Business Profile is free from Google. Our fee is for our service.
-- AutoLander is not affiliated with or endorsed by OpenAI, Anthropic, Google or any AI company. Claude is made by Anthropic and GPT by OpenAI; product names belong to their owners.
+- AutoLander is not affiliated with or endorsed by OpenAI, Anthropic, Google, Perplexity or any AI company. ChatGPT is made by OpenAI, Claude by Anthropic, Gemini by Google and Perplexity by Perplexity AI; product names belong to their owners.
 
 Prices and plans updated September 29, 2026.
 
 ## Selling nationally instead of from one lot?
 
-For national and category brands, such as auto brands, online car retailers, marketplaces and dealer software companies, we run a brand scan with no location. It follows a buyer from the first questions to the final choice and shows whether Claude and GPT name your brand for category questions, and which sources they cite. For now we scan English-language markets only. Brand scans and brand plans are priced by quote: e-mail sales@autolander.ai with your brand and website and we reply with the scope and a quote.
+For national and category brands, such as auto brands, online car retailers, marketplaces and dealer software companies, we run a brand scan with no location. It follows a buyer from the first questions to the final choice and shows whether ChatGPT and Claude name your brand for category questions, and which sources they cite. For now we scan English-language markets only. Brand scans and brand plans are priced by quote: e-mail sales@autolander.ai with your brand and website and we reply with the scope and a quote.
 
 ## Questions dealers ask about AEO and GEO.
 
@@ -415,7 +394,7 @@ Yes. AEO and GEO build on SEO and don’t replace it. Google says a page must be
 
 ### Can you guarantee my dealership shows up in ChatGPT?
 
-No. No one can honestly promise what ChatGPT or any other AI assistant will say, and we don’t. We fix what keeps assistants from reading and trusting your store, do the work every month and show you the raw answers. Our scan measures Claude and GPT, the model family behind ChatGPT.
+No. No one can honestly promise what ChatGPT or any other AI assistant will say, and we don’t. We fix what keeps assistants from reading and trusting your store, do the work every month and show you the raw answers. Our scan measures ChatGPT and Claude.
 
 ### How long do AEO and GEO take?
 
@@ -423,7 +402,7 @@ There is no fixed timeline, and no one can promise when an AI assistant will nam
 
 ### What does the free scan check?
 
-It asks Claude and GPT, each with web search on, up to 20 questions a buyer in your town would ask, 3 times each. Your report shows who gets named, the sources cited, whether your vehicle pages and robots.txt let AI read your site, a score out of 100 with a margin, and the 3 fixes to make first.
+It asks ChatGPT and Claude, each with web search on, up to 20 questions a buyer in your town would ask, 3 times each. Your report shows who gets named, the sources cited, whether your vehicle pages and robots.txt let AI read your site, a score out of 100 with a margin, and the 3 fixes to make first.
 
 ### What do AEO and GEO plans cost?
 
@@ -431,11 +410,11 @@ The scan and the walkthrough are free. Plans are $997, $2,497 or $5,997 a month,
 
 ### Which AI assistants do you check?
 
-Two: Claude, made by Anthropic, and GPT, made by OpenAI, each with web search on. Your report labels every answer with its assistant and the sources it cited. We ask through the tools Anthropic and OpenAI publish for developers, so their chat apps may answer a shopper differently. We don’t measure other assistants or Google’s AI Overviews.
+Two: ChatGPT, made by OpenAI, and Claude, made by Anthropic, each with web search on. Your report labels every answer with its assistant and the sources it cited. We ask through the tools OpenAI and Anthropic publish for developers, so their chat apps may answer a shopper differently. The scan doesn’t measure Google Gemini, AI Overviews or Perplexity, but the fixes we make are what those assistants read too.
 
 ### How do you measure whether AI names my store?
 
-A single check can mislead, because answers change from run to run. We ask every question 3 times of Claude and of GPT, a person checks every match, and your score comes with a margin. On your site we read only robots.txt, your homepage, your sitemap when needed and up to five vehicle pages.
+A single check can mislead, because answers change from run to run. We ask every question 3 times of ChatGPT and of Claude, a person checks every match, and your score comes with a margin. On your site we read only robots.txt, your homepage, your sitemap when needed and up to five vehicle pages.
 
 ### Is my website blocking AI?
 
@@ -459,7 +438,7 @@ We take a limited number of AI Authority and Market Leader stores at a time, so 
 
 ### We sell nationally, not from one store. Can you scan a brand?
 
-For national and category brands, such as auto brands, online car retailers, marketplaces and dealer software companies, we run a brand scan with no location. It follows a buyer from the first questions to the final choice and shows whether Claude and GPT name your brand for category questions, and which sources they cite. For now we scan English-language markets only. Brand scans and brand plans are priced by quote: e-mail sales@autolander.ai with your brand and website and we reply with the scope and a quote.
+For national and category brands, such as auto brands, online car retailers, marketplaces and dealer software companies, we run a brand scan with no location. It follows a buyer from the first questions to the final choice and shows whether ChatGPT and Claude name your brand for category questions, and which sources they cite. For now we scan English-language markets only. Brand scans and brand plans are priced by quote: e-mail sales@autolander.ai with your brand and website and we reply with the scope and a quote.
 
 ### Can an AI assistant fill in the form for me?
 
@@ -472,11 +451,11 @@ An assistant can bring you to this page and fill in your store’s details. You 
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander](https://autolander.ai/about/)
 
-## Find out if Claude and GPT name your store.
+## Find out if ChatGPT and Claude name your store.
 
 Get my free scan. Free · No logins needed · Checked by a person · 20-minute walkthrough
 
-AI Visibility is AutoLander LLC's AEO and GEO service (answer engine optimization and generative engine optimization) for US car dealerships. It measures whether Claude (Anthropic) and GPT (OpenAI), each with web search on, name a dealership when local buyers ask where to buy a car, then fixes what keeps assistants from finding and trusting the store: website crawler access and vehicle-page text, the Google Business Profile, listings, reviews and answer pages. It starts with a free scan. Plans are $997, $2,497 and $5,997 a month plus setup, month to month. It is separate from AutoLander's Facebook Marketplace software.
+AI Visibility is AutoLander LLC's AEO and GEO service (answer engine optimization and generative engine optimization) for US car dealerships. It measures whether ChatGPT (OpenAI) and Claude (Anthropic), each with web search on, name a dealership when local buyers ask where to buy a car, then fixes what keeps AI assistants, including Google Gemini and Perplexity, from finding and trusting the store: website crawler access and vehicle-page text, the Google Business Profile, listings, reviews and answer pages. It starts with a free scan. Plans are $997, $2,497 and $5,997 a month plus setup, month to month. It is separate from AutoLander's Facebook Marketplace software.
 
 - [Privacy](https://autolander.ai/privacy.html)
 - [Terms](https://autolander.ai/terms.html)

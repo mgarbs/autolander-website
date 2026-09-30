@@ -70,7 +70,7 @@ If all of that is clean, remember that map results are local by design: you appe
 
 It can. Google’s advice for doing well in its AI search features includes keeping your Business Profile information up to date, and AI assistants that search the web draw on the same public sources a buyer checks: your website, your profiles, your reviews and the listing sites. When those sources agree, an assistant has less reason to doubt your store.
 
-Making your store easy for AI tools to find and trust is the job of AEO and GEO for car dealers. A free scan shows whether Claude and GPT name your store when local buyers ask, and which sources they cite.
+Making your store easy for AI tools to find and trust is the job of AEO and GEO for car dealers. A free scan shows whether ChatGPT and Claude name your store when local buyers ask, and which sources they cite.
 
 ## The honest part
 

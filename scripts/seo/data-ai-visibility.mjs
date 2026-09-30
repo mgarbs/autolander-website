@@ -27,7 +27,6 @@ import {
   RELATED,
   REPORT,
   REPORT_MOCK,
-  RESULTS_CREDIT,
   REVIEW,
   ROLE_CHOICES,
   SERVICE_SUMMARY,
@@ -277,8 +276,8 @@ ${preview ? '' : '    <meta name="robots" content="index, follow, max-image-prev
 const imageSections = AI_VISIBILITY_IMAGES.map((image) => ({ type: 'image', ...image }));
 
 // This page object registers the SPA with the existing SEO graph. Its Markdown is rendered by the
-// purpose-built function below because this page has plan cards, nested promises and credit terms
-// that the generic article renderer cannot represent without losing content.
+// purpose-built function below because this page has plan cards, nested promises and a plan
+// comparison table that the generic article renderer cannot represent without losing content.
 export const AI_VISIBILITY = {
   key: 'aiVisibility',
   path: AI_VISIBILITY_PATH,
@@ -422,13 +421,6 @@ export function renderAiVisibilityMarkdown() {
   line(out, '| --- | --- |');
   PROMISES.forEach(({ promise, step }) => line(out, `| ${promise} | ${step} |`));
   line(out);
-
-  heading(out, 2, RESULTS_CREDIT.heading);
-  paragraph(out, RESULTS_CREDIT.intro);
-  RESULTS_CREDIT.steps.forEach(({ title, body }, index) => line(out, `${index + 1}. **${title}:** ${body}`));
-  line(out);
-  bullets(out, RESULTS_CREDIT.conditions);
-  paragraph(out, RESULTS_CREDIT.covers);
 
   heading(out, 2, PLANS_SECTION.neverHeading);
   bullets(out, NEVER_PROMISE);

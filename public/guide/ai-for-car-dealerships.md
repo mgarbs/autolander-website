@@ -30,7 +30,7 @@ The useful evaluation question is never "should we use AI" — it is "which job 
 
 They already name dealers. Cox Automotive found that 19% of car buyers used AI websites or AI-generated overviews while they shopped, and those answers name a few stores and cite the pages they used. Whether yours is one of them depends on what those tools can read and trust about your store.
 
-That work has two names: AEO, which shapes your pages into short, direct answers, and GEO, which builds the trust that gets a store named and cited. See AEO and GEO for car dealers for a free scan of what Claude and GPT say about your store. No one can promise what an AI will say.
+That work has two names: AEO, which shapes your pages into short, direct answers, and GEO, which builds the trust that gets a store named and cited. See AEO and GEO for car dealers for a free scan of what ChatGPT and Claude say about your store. No one can promise what an AI will say.
 
 ## What does AI photo enhancement do for a dealership?
 
