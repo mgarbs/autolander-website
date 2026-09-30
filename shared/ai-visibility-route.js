@@ -13,3 +13,6 @@ export const AI_VISIBILITY_DIR = 'aeo-geo-for-car-dealers';
 export const AI_VISIBILITY_MD_PATH = '/aeo-geo-for-car-dealers.md';
 export const AI_VISIBILITY_LEGACY_PATHS = ['/ai-visibility/'];
 export const AI_VISIBILITY_NAV_LABEL = 'AEO & GEO';
+// The AEO and GEO article family (/aeo-geo/<slug>/, SILOS.aeoGeo.basePath). The bare parent has no page of
+// its own, so the Worker 301s exactly /aeo-geo and /aeo-geo/ to AI_VISIBILITY_PATH (never an article URL).
+export const AEO_GEO_ARTICLE_BASE = '/aeo-geo/';

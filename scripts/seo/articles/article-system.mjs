@@ -37,8 +37,9 @@
 // hrefs. They use the publish-aware token [anchor text](@sibling-slug): the builder turns it
 // into a real link once the target is published and prints the anchor text as plain text
 // until then (resolveBodyLinks below). Any hand-written internal href whose target is an
-// unpublished article (or a path the site does not serve) is also printed as plain text, so
-// no publish order can ever produce a dead link.
+// unpublished article (or a path the site does not serve), root-relative or absolute
+// (https://autolander.ai/...), is also printed as plain text, so no publish order can ever
+// produce a dead link.
 // The builder below adds: path, breadcrumbs, byline/author, Article JSON-LD with the
 // REAL publish date from publish-state, and the publish-aware related links. Writers
 // stay on pure content and cannot break the silo graph.
@@ -49,8 +50,12 @@ import { fileURLToPath } from 'node:url';
 
 import { SITE, NAV } from '../registry.mjs';
 import { collectText } from './content-rules.mjs';
-// Pure constants (no side effects): the money page's own CTA words, reused by the aeoGeo silo CTA.
-import { FINAL_CTA } from '../../../shared/ai-visibility-content.js';
+// Pure constants (no side effects): the money page's own CTA words and footer columns, reused by
+// the aeoGeo silo CTA and its on-topic footer, and the article family's URL root.
+import {
+  FINAL_CTA, FOOTER as AEO_FOOTER, FOOTER_NAV as AEO_FOOTER_NAV,
+} from '../../../shared/ai-visibility-content.js';
+import { AEO_GEO_ARTICLE_BASE } from '../../../shared/ai-visibility-route.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const BLOG_REQUEST_ID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -116,7 +121,8 @@ export const SILOS = {
   aeoGeo: {
     label: 'AEO and GEO for car dealers',
     hubKey: 'aiVisibility',
-    basePath: '/aeo-geo/',
+    // '/aeo-geo/', shared with the Worker (it 301s exactly /aeo-geo and /aeo-geo/ to the money page).
+    basePath: AEO_GEO_ARTICLE_BASE,
     crumb: { name: 'AEO and GEO for car dealers', url: SITE.origin + NAV.aiVisibility.path },
     related: [L(NAV.aiVisibility), L(NAV.aiDealers), L(NAV.mktgHub), L(NAV.about)],
     augmentKeys: [],
@@ -146,6 +152,19 @@ export const SILOS = {
       { '@id': `${SITE.origin}${NAV.aiVisibility.path}#term-aeo` },
       { '@id': `${SITE.origin}${NAV.aiVisibility.path}#term-geo` },
     ],
+    // On-topic footer (shell.mjs siteFooter), mirroring the money page's own FOOTER_NAV columns
+    // (AEO & GEO, AutoLander, Company) and footer line instead of the Marketplace product footer.
+    // siloFooter() puts the money page itself first in the AEO & GEO column and appends the
+    // PUBLISHED cluster pillars after the page's own anchors, so a draft is never linked.
+    footer: {
+      hub: { label: 'AEO and GEO for car dealers', href: NAV.aiVisibility.path },
+      columns: AEO_FOOTER_NAV,
+      line: AEO_FOOTER.line,
+      pillars: true,
+    },
+    // The NAV page whose "AEO and GEO guides for dealers" block lists this silo's published
+    // articles (publishedClusterGuides below). Publishing an article re-pings it (changedUrlsFor).
+    guidesOn: 'aiVisibility',
   },
   blog: {
     label: 'Blog',
@@ -283,6 +302,81 @@ export const clusterLabel = (silo, cluster) => {
   return i === null ? null : SILOS[silo].clusters[i][1];
 };
 
+const suggestedRank = () => {
+  const orderIndex = new Map(SUGGESTED_ORDER.map((slug, i) => [slug, i]));
+  return (a) => orderIndex.get(a.slug) ?? Infinity;
+};
+
+// Each cluster's pillar, in the silo's cluster order: the cluster's first article in
+// SUGGESTED_ORDER (for aeoGeo, publish numbers #1 to #9). Drafts included; callers gate.
+export function clusterPillars(siloKey, articles) {
+  const rank = suggestedRank();
+  return (SILOS[siloKey]?.clusters || [])
+    .map(([key]) => articles
+      .filter((a) => a.silo === siloKey && a.cluster === key)
+      .sort((a, b) => rank(a) - rank(b) || a.slug.localeCompare(b.slug))[0])
+    .filter(Boolean);
+}
+
+// Hub -> spokes: a clustered silo's PUBLISHED articles, grouped by cluster in cluster order,
+// each cluster's pillar first and then publish order. [] while nothing is published. The money
+// page's "AEO and GEO guides for dealers" block renders this (build-seo-pages.mjs writes it to
+// src/generated/aeo-geo-guides.js for React and the static mirror, and hands it to the twin).
+export function publishedClusterGuides(siloKey, articles, state) {
+  const rank = suggestedRank();
+  const pillars = new Set(clusterPillars(siloKey, articles).map((a) => a.slug));
+  return (SILOS[siloKey]?.clusters || [])
+    .map(([key, label]) => ({
+      key,
+      label,
+      links: articles
+        .filter((a) => a.silo === siloKey && a.cluster === key && isPublished(state, a.slug))
+        .sort((a, b) => Number(pillars.has(b.slug)) - Number(pillars.has(a.slug))
+          || rank(a) - rank(b) || a.slug.localeCompare(b.slug))
+        .map((a) => ({ href: articlePath(a), text: a.anchor, ...(pillars.has(a.slug) ? { pillar: true } : {}) })),
+    }))
+    .filter((group) => group.links.length);
+}
+
+// src/generated/aeo-geo-guides.js: the module React (AiSections.jsx) and the static mirror import.
+// A plain ES module rather than JSON so Node (spa-fallback.mjs, tests) and Vite both import it
+// without import attributes. Deterministic: same state, same bytes.
+export const AEO_GEO_GUIDES_MODULE = 'src/generated/aeo-geo-guides.js';
+export function aeoGeoGuidesModule(groups) {
+  return `// GENERATED by scripts/build-seo-pages.mjs from scripts/seo/articles/publish-state.json. Do not edit.
+// The PUBLISHED AEO and GEO articles, grouped by cluster (each cluster's pillar first), for the
+// "AEO and GEO guides for dealers" block on /aeo-geo-for-car-dealers/ (React, static mirror and
+// Markdown twin). Empty until an article is published, and the block is absent while it is empty.
+export const AEO_GEO_GUIDES = ${JSON.stringify(groups, null, 2)};
+`;
+}
+
+// The footer a silo's article pages render instead of the site-wide Marketplace footer, or null
+// (every other silo keeps shell.mjs's default footer, byte for byte). Publish-aware: only
+// PUBLISHED cluster pillars are listed, so the footer can never link a draft.
+export function siloFooter(siloKey, articles, state) {
+  const footer = SILOS[siloKey]?.footer;
+  if (!footer) return null;
+  const pillars = footer.pillars
+    ? clusterPillars(siloKey, articles)
+      .filter((a) => isPublished(state, a.slug))
+      .map((a) => ({ label: a.crumb, href: articlePath(a) }))
+    : [];
+  const [first, ...rest] = footer.columns;
+  return {
+    line: footer.line,
+    columns: [
+      { heading: first.heading, links: [...(footer.hub ? [footer.hub] : []), ...first.links, ...pillars] },
+      ...rest,
+    ].map((column) => ({
+      heading: column.heading,
+      // `mail` links (the React support e-mail picker) are plain /contact/ links in static HTML,
+      // like the money page's no-JS mirror: no raw address ever reaches the markup.
+      links: column.links.map(({ label, href }) => ({ label, href })),
+    })),
+  };
+}
+
 // The silo publish number: the slug's 1-based position among its silo's slugs in
 // SUGGESTED_ORDER. For aeoGeo it equals the content's own `publishOrder` (tests pin that), and
 // it is what the admin shows as "#N". null for a slug outside SUGGESTED_ORDER (blog posts).
@@ -320,9 +414,13 @@ export const ADMIN_SILO_ORDER = ['aeoGeo', 'compare', 'metaTools', 'marketplace'
 // `isLinkablePath(path)` decides (build-seo-pages passes the site's real path set), and an
 // href whose path is an article's URL always follows that article's publish state. The href
 // charset matches shell.mjs `linkify`, so exactly the links that would render are gated.
+// An ABSOLUTE link to this site (https://autolander.ai/... or https://www.autolander.ai/...) is
+// an internal link too and goes through the same gate as its root-relative form; the link keeps
+// its absolute href when it passes. Look-alike hosts (autolander.ai.example.com) are external.
 export const SIBLING_TOKEN_RE = /\[([^\]]+)\]\(@([a-z0-9][a-z0-9-]{2,80})\)/g;
-const INTERNAL_MD_LINK_RE = /\[([^\]]+)\]\((\/[A-Za-z0-9\-/#?=&.]*)\)/g;
-export const hrefPath = (href) => String(href).replace(/[?#].*$/, '') || '/';
+const SITE_ORIGIN_RE = /^https:\/\/(?:www\.)?autolander\.ai(?=[/?#]|$)/i;
+const INTERNAL_MD_LINK_RE = /\[([^\]]+)\]\((\/[A-Za-z0-9\-/#?=&.]*|https:\/\/(?:www\.)?autolander\.ai(?:[/?#][^\s)]*)?)\)/gi;
+export const hrefPath = (href) => String(href).replace(SITE_ORIGIN_RE, '').replace(/[?#].*$/, '') || '/';
 
 export function resolveBodyLinks(value, { articles, state, isLinkablePath = null, onUnlinked = null }) {
   const bySlug = new Map(articles.map((a) => [a.slug, a]));
@@ -491,6 +589,9 @@ export function buildArticlePage(content, articles, state, { previewDate, onUnli
     // its own heading + sub. Other silos pass the article's cta through untouched.
     cta: silo.cta ? { ...silo.cta, ...content.cta } : content.cta,
     ...(silo.ogFallback ? { ogFallback: silo.ogFallback } : {}),
+    // aeoGeo: the on-topic AEO & GEO footer (published pillars only). Other silos: no key, so
+    // shell.mjs renders the site-wide footer exactly as before.
+    ...(silo.footer ? { footer: siloFooter(content.silo, articles, state) } : {}),
     related: relatedForArticle(content, articles, state),
     relatedHeading: 'Keep exploring',
   };

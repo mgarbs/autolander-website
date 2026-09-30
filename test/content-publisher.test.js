@@ -135,6 +135,62 @@ test('hand-written internal hrefs to a draft article render as text; a site-awar
   assert.equal(page.tldr, value[0]);
 });
 
+test('absolute https://autolander.ai/<draft>/ hrefs are gated exactly like their root-relative form', () => {
+  const draftAeo = aeo(AEO_1, 'website');
+  const draftGuide = art('renew-facebook-marketplace-car-listings', 'marketplace');
+  const articles = [draftAeo, draftGuide];
+  const value = [
+    `A [draft AEO guide](https://autolander.ai/aeo-geo/${AEO_1}/) and [www form](https://www.autolander.ai/aeo-geo/${AEO_1}/#faq)`,
+    'and [a draft guide](https://autolander.ai/guide/renew-facebook-marketplace-car-listings/?utm_source=x)',
+    'and [the money page](https://autolander.ai/aeo-geo-for-car-dealers/#scan-form) and [home](https://autolander.ai)',
+    'and [a typo](https://autolander.ai/guid/nope/) and [a look-alike](https://autolander.ai.example.com/aeo-geo/x/)',
+    'and [an outside source](https://example.com/aeo-geo/x/).',
+  ];
+  const events = [];
+  const isLinkablePath = (path) => ['/', '/aeo-geo-for-car-dealers/'].includes(path);
+  const gated = resolveBodyLinks(value, {
+    articles,
+    state: state([]),
+    isLinkablePath,
+    onUnlinked: (event) => events.push(`${event.kind} ${event.target}`),
+  });
+  assert.deepEqual(gated, [
+    'A draft AEO guide and www form',
+    'and a draft guide',
+    'and [the money page](https://autolander.ai/aeo-geo-for-car-dealers/#scan-form) and [home](https://autolander.ai)',
+    'and a typo and [a look-alike](https://autolander.ai.example.com/aeo-geo/x/)',
+    'and [an outside source](https://example.com/aeo-geo/x/).',
+  ]);
+  assert.deepEqual(events, [
+    `draft-href https://autolander.ai/aeo-geo/${AEO_1}/`,
+    `draft-href https://www.autolander.ai/aeo-geo/${AEO_1}/#faq`,
+    'draft-href https://autolander.ai/guide/renew-facebook-marketplace-car-listings/?utm_source=x',
+    'unknown-href https://autolander.ai/guid/nope/',
+  ]);
+
+  // Same verdict as the root-relative form, link for link.
+  const relative = resolveBodyLinks(`A [x](/aeo-geo/${AEO_1}/) b`, { articles, state: state([]), isLinkablePath });
+  const absolute = resolveBodyLinks(`A [x](https://autolander.ai/aeo-geo/${AEO_1}/) b`, { articles, state: state([]), isLinkablePath });
+  assert.equal(relative, 'A x b');
+  assert.equal(absolute, relative);
+
+  // Once the target is published, the absolute href stays a link and keeps its absolute form.
+  const live = resolveBodyLinks(value[0], { articles, state: state([AEO_1]), isLinkablePath });
+  assert.equal(live, value[0]);
+  // And the article page builder applies it to tldr, sections and FAQ.
+  const source = aeo(AEO_2, 'engines', {
+    tldr: `Start with [the website check](https://autolander.ai/aeo-geo/${AEO_1}/).`,
+    sections: [{ type: 'prose', paras: [`Read [it](https://autolander.ai/aeo-geo/${AEO_1}/).`] }],
+    faq: [['Q?', `See [it](https://autolander.ai/aeo-geo/${AEO_1}/).`]],
+  });
+  const draftPage = buildArticlePage(source, [draftAeo, source], state([AEO_2]));
+  assert.equal(draftPage.tldr, 'Start with the website check.');
+  assert.deepEqual(draftPage.sections[0].paras, ['Read it.']);
+  assert.equal(draftPage.faq[0][1], 'See it.');
+  const livePage = buildArticlePage(source, [draftAeo, source], state([AEO_1, AEO_2]));
+  assert.equal(livePage.tldr, source.tldr);
+});
+
 test('clustered siblings: same-cluster published siblings come first in "Keep exploring"', () => {
   const articles = [
     aeo(AEO_1, 'website'), aeo(AEO_2, 'engines'), aeo(AEO_3, 'buyers'),

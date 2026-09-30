@@ -19,6 +19,7 @@ import {
 import { ARTICLES as AEO } from '../scripts/seo/articles/data-articles-aeo-geo.mjs';
 import { DRIP_ARTICLES } from '../scripts/seo/articles/drip-articles.mjs';
 import { NAV } from '../scripts/seo/registry.mjs';
+import { PLANS, fmtUsd } from '../shared/ai-visibility-content.js';
 
 const MONEY = NAV.aiVisibility.path; // /aeo-geo-for-car-dealers/
 const BY_SLUG = new Map(AEO.map((a) => [a.slug, a]));
@@ -128,12 +129,14 @@ test('no hand-written href to an article: only live NAV pages, money-page anchor
     ...['#scan-form', '#plans', '#faq', '#what-is-aeo-geo'].map((hash) => MONEY + hash),
   ]);
   const articlePaths = new Set(DRIP_ARTICLES.map((a) => articlePath(a)));
+  // An absolute link to this site is an internal link written the long way: same rules.
+  const OWN_SITE = /^https?:\/\/(?:www\.)?autolander\.ai(?=[/?#]|$)/i;
   for (const a of AEO) {
     for (const text of collectText(a)) {
       for (const m of String(text).matchAll(/\]\(([^)\s]+)\)/g)) {
-        const href = m[1];
+        const href = OWN_SITE.test(m[1]) ? (m[1].replace(OWN_SITE, '') || '/') : m[1];
         if (href.startsWith('@')) continue;
-        if (href.startsWith('https://')) continue;
+        if (href.startsWith('https://') || href.startsWith('http://')) continue;
         assert.ok(live.has(href), `${a.slug}: internal href ${href} is not a live page`);
         assert.ok(!articlePaths.has(href.replace(/[#?].*$/, '')), `${a.slug}: hand-written article href ${href}`);
       }
@@ -283,11 +286,15 @@ test('scan honesty: a sentence naming the free scan with another assistant says 
 });
 
 test('plan prices: only the published plan figures appear next to a plan name', () => {
-  const allowed = new Set(['$997', '$2,497', '$5,997', '$2,997']);
+  // Read from the money page's own PLANS, so a price or plan-name change there is checked here without a
+  // second edit (fmtUsd is the same formatter the page uses: $997, $2,497 ...).
+  const allowed = new Set(PLANS.flatMap((plan) => [fmtUsd(plan.monthly), fmtUsd(plan.setup)]));
+  assert.ok(PLANS.length >= 3 && allowed.size >= 3, 'PLANS supplies the monthly and setup figures');
+  const planName = new RegExp(PLANS.map((plan) => plan.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'));
   for (const a of AEO) {
     for (const text of collectText(a)) {
       for (const s of sentences(text)) {
-        if (!/(AI Foundation|AI Authority|Market Leader)/.test(s)) continue;
+        if (!planName.test(s)) continue;
         for (const price of s.match(/\$[\d,]+/g) || []) assert.ok(allowed.has(price), `${a.slug}: ${price} in "${s}"`);
       }
     }
