@@ -95,6 +95,7 @@ With process: Messenger notifications on a phone, a named owner per shift, and l
 - [Questions to ask any AI chat vendor before you connect your inbox](https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/)
 - [Marketplace response time: why the first reply wins the appointment](https://autolander.ai/guide/marketplace-response-time-for-car-dealers/)
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
+- [AEO and GEO for car dealers: free AI Visibility Scan and plans](https://autolander.ai/aeo-geo-for-car-dealers/)
 - [How to get more car sales leads](https://autolander.ai/guide/car-sales-leads/)
 - [Facebook Marketplace assistant](https://autolander.ai/facebook-marketplace-assistant/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)
