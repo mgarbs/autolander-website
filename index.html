@@ -10,8 +10,9 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://autolander.ai" crossorigin />
-    <link rel="preload" href="/fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/archivo-latin-italic-var.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- No font preloads on purpose: a preloaded font holds back the first paint until it arrives. The first
+         screen paints at once in the metric-matched fallbacks (src/index.css) and swaps to Inter / Archivo
+         without moving (font-display: swap). -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
     <meta name="facebook-domain-verification" content="y3cf43655kr1mfxdak6k4hy45mppyx" />
@@ -255,7 +256,7 @@
               and tracks which posts generate buyer conversations.
             </p>
             <div class="mt-9 flex flex-col gap-4 sm:flex-row">
-              <button type="button" class="group flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 px-9 py-5 font-display text-lg font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 active:scale-95 sm:w-auto">
+              <button type="button" data-demo-application-trigger="true" class="group flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 px-9 py-5 font-display text-lg font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 active:scale-95 sm:w-auto">
                 Book Demo
               </button>
             </div>
@@ -319,8 +320,9 @@
       </section>
 
       <!-- Below the fold pre-hydration; React replaces it with the live sections. Nothing here is
-           hidden from a human — it is the same product summary the page states further down. -->
-      <section class="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:pb-24">
+           hidden from a human — it is the same product summary the page states further down.
+           content-visibility: laid out only as it nears the screen, so the first paint lays out the hero alone. -->
+      <section class="relative z-10 mx-auto max-w-7xl px-6 pb-16 lg:pb-24" style="content-visibility:auto;contain-intrinsic-size:auto 900px">
         <h2 class="font-display text-3xl font-extrabold uppercase italic tracking-tight text-white">Facebook Marketplace software for car dealers</h2>
         <p class="mt-6 max-w-3xl text-lg font-medium leading-relaxed text-slate-300">
           AutoLander is a native desktop application, paired with a cloud service, that car dealerships and
@@ -369,7 +371,7 @@
            copy, the same link map. React replaces this subtree with the live component on mount, so
            a human who opens a row reads exactly what a crawler read here. Headings are h2/h3 only.
            KEEP IN STEP with HomeDetails.jsx (HOME_DETAIL_FAQ + HOME_LINK_GROUPS). -->
-      <section id="details" aria-labelledby="details-heading" class="relative z-10 border-y border-white/5 bg-[#070707] py-16 lg:py-24">
+      <section id="details" aria-labelledby="details-heading" class="relative z-10 border-y border-white/5 bg-[#070707] py-16 lg:py-24" style="content-visibility:auto;contain-intrinsic-size:auto 900px">
         <div class="mx-auto max-w-4xl px-6">
           <p class="font-mono text-[11px] font-semibold uppercase tracking-[0.28em] text-blue-300/90">The short version, if you want it</p>
           <h2 id="details-heading" class="mt-4 font-display text-2xl font-black uppercase italic tracking-tight text-white sm:text-3xl">What AutoLander does, exactly</h2>

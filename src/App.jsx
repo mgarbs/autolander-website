@@ -320,6 +320,16 @@ export default function App() {
     trackCustom('ApplicationOpened', { content_name: 'demo_application', content_category: 'demo' });
   }, [warmDemoApplication]);
 
+  // A tap on the static shell's Book Demo button before the app was up (remembered by the shell's boot
+  // loader, scripts/spa-shell.mjs) opens the form now.
+  useEffect(() => {
+    window.__alHydrated = true;
+    if (!window.__alPendingDemo) return undefined;
+    window.__alPendingDemo = false;
+    const id = window.setTimeout(() => openDemoBooking(), 0);
+    return () => window.clearTimeout(id);
+  }, [openDemoBooking]);
+
   const closeDemoApplication = useCallback(() => {
     if (Date.now() - applicationOpenedAtRef.current < 450) return;
     setIsApplicationOpen(false);
