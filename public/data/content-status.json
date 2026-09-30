@@ -980,8 +980,8 @@
       "siloLabel": "AEO and GEO for car dealers",
       "primaryKeyword": "how car buyers use chatgpt",
       "secondaryKeywords": [
-        "chatgpt car buying",
-        "ai car buying",
+        "car buyers using chatgpt",
+        "ai in the car buying journey",
         "car buyers using ai statistics",
         "which ai do car shoppers use"
       ],
@@ -1059,12 +1059,12 @@
       "primaryKeyword": "aeo vs seo for car dealers",
       "secondaryKeywords": [
         "difference between aeo and seo",
-        "is aeo replacing seo",
-        "do car dealers still need seo",
         "aeo vs geo vs seo",
-        "seo vs geo for dealerships"
+        "seo vs geo for dealerships",
+        "aeo and seo budget split",
+        "how aeo changes dealer seo work"
       ],
-      "description": "AEO vs SEO for car dealers in plain terms: what Google, OpenAI and Microsoft say changed, what still counts, and where a dealership should start.",
+      "description": "AEO vs SEO for car dealers in practice: what changes in the work, how to split the budget, what stays the same and where a dealership should start.",
       "suggestedOrder": 42,
       "status": "draft",
       "publishedAt": null,
@@ -1109,12 +1109,13 @@
       "h1": "AI search for independent used car dealers: how a small lot gets into the answer",
       "silo": "aeoGeo",
       "siloLabel": "AEO and GEO for car dealers",
-      "primaryKeyword": "ai search for used car dealers",
+      "primaryKeyword": "ai search for independent dealers",
       "secondaryKeywords": [
         "independent dealership and chatgpt",
         "small car lot marketing with ai",
         "used car dealer ai visibility",
-        "franchise vs independent ai search"
+        "franchise vs independent ai search",
+        "ai search for used car dealers"
       ],
       "description": "How AI search works for independent used car dealers: what used-car shoppers ask, what a small lot controls, and the first fixes that cost nothing.",
       "suggestedOrder": 44,
@@ -1210,17 +1211,17 @@
       "path": "/aeo-geo/google-business-profile-ai-answers/",
       "url": "https://autolander.ai/aeo-geo/google-business-profile-ai-answers/",
       "title": "Google Business Profile for AI Answers: What AI Reads",
-      "h1": "Google Business Profile for AI answers: the fields that matter for a dealership",
+      "h1": "How your Google Business Profile feeds AI answers about your dealership",
       "silo": "aeoGeo",
       "siloLabel": "AEO and GEO for car dealers",
       "primaryKeyword": "google business profile ai search",
       "secondaryKeywords": [
         "business profile for ai overviews",
-        "dealership departments on google",
-        "business profile hours for car dealers",
-        "business profile categories for dealers"
+        "does google business profile affect ai answers",
+        "business profile attributes for dealerships",
+        "consistent business listings for ai"
       ],
-      "description": "The Google Business Profile fields that feed AI answers for car dealers: categories, hours, departments, Q&A and reviews, and Google’s rules.",
+      "description": "How a dealership’s Google Business Profile feeds AI answers: the facts AI Overviews and Maps draw on, listing consistency, reviews as evidence, Q&A and attributes.",
       "suggestedOrder": 48,
       "status": "draft",
       "publishedAt": null,
@@ -1241,8 +1242,8 @@
       "siloLabel": "AEO and GEO for car dealers",
       "primaryKeyword": "questions car buyers ask ai",
       "secondaryKeywords": [
-        "chatgpt car buying prompt",
-        "what to ask chatgpt when buying a car",
+        "car buyer prompts dealers should answer",
+        "ai questions about car dealerships",
         "ai car shopping questions",
         "local buyer questions for dealerships"
       ],
@@ -1270,7 +1271,7 @@
         "dealership faq examples",
         "car sales faq",
         "faq schema for dealerships",
-        "what to ask a car dealership"
+        "faq page for car dealers"
       ],
       "description": "A car dealership FAQ page built for buyers and AI tools: 40 questions to answer across sales, trade-ins, financing and service, and how to write each.",
       "suggestedOrder": 50,
@@ -1319,8 +1320,8 @@
       "siloLabel": "AEO and GEO for car dealers",
       "primaryKeyword": "buy here pay here ai search",
       "secondaryKeywords": [
-        "best car dealerships near me for bad credit",
-        "no credit check car lots",
+        "bad credit car shoppers and ai",
+        "buy here pay here reputation online",
         "in-house financing page",
         "bhph reviews"
       ],
@@ -1422,9 +1423,9 @@
       "h1": "How Claude answers local car-buying questions and which sources it cites",
       "silo": "aeoGeo",
       "siloLabel": "AEO and GEO for car dealers",
-      "primaryKeyword": "how does claude cite sources",
+      "primaryKeyword": "how claude cites local businesses",
       "secondaryKeywords": [
-        "claude web search",
+        "claude web search for local businesses",
         "how to get cited by claude",
         "claude-searchbot",
         "claudebot vs claude-user"
@@ -1477,8 +1478,8 @@
       "primaryKeyword": "best car dealership near me ai",
       "secondaryKeywords": [
         "who does chatgpt recommend for car dealers",
-        "best used car dealerships near me",
-        "honest car dealerships near me",
+        "near me searches in ai assistants",
+        "ai local recommendations for dealerships",
         "ai local recommendations"
       ],
       "description": "When a buyer asks AI for the best car dealership near me, how ChatGPT, Google and others build the answer, and what decides which stores get named.",
@@ -1505,7 +1506,7 @@
         "fixed ops seo",
         "service department seo",
         "service hours in ai answers",
-        "recall check at a dealership"
+        "recall questions in ai answers"
       ],
       "description": "What owners ask AI about your service department, from hours and recalls to loaners and prices, and how fixed ops pages and profiles should answer.",
       "suggestedOrder": 59,
@@ -1555,9 +1556,9 @@
       "primaryKeyword": "rv dealer ai search",
       "secondaryKeywords": [
         "rv dealer seo",
-        "chatgpt rv buying",
-        "best rv dealer near me",
-        "rv floor plan comparisons"
+        "rv buyers using chatgpt",
+        "rv dealer near me in ai answers",
+        "rv floor plan comparison pages"
       ],
       "description": "How RV dealers show up when buyers ask ChatGPT and other AI tools about campers and motorhomes, and the specs, pages and profiles that matter.",
       "suggestedOrder": 61,
@@ -1736,8 +1737,8 @@
       "siloLabel": "AEO and GEO for car dealers",
       "primaryKeyword": "dealership trade-in page",
       "secondaryKeywords": [
-        "chatgpt trade in value",
-        "how much is my car worth ai",
+        "trade-in questions buyers ask chatgpt",
+        "trade-in value questions for dealers",
         "instant cash offer page",
         "trade in questions ai"
       ],
@@ -1790,7 +1791,7 @@
       "secondaryKeywords": [
         "powersports seo",
         "motorcycle dealer and chatgpt",
-        "side by side dealer near me",
+        "powersports dealer near me in ai answers",
         "boat dealer ai"
       ],
       "description": "How powersports dealers selling ATVs, UTVs, motorcycles and boats can show up in AI answers, with the pages, specs and profiles that matter most.",
@@ -1892,11 +1893,11 @@
       "h1": "Gemini in Google Maps (Ask Maps): what it reads about your dealership",
       "silo": "aeoGeo",
       "siloLabel": "AEO and GEO for car dealers",
-      "primaryKeyword": "google ask maps",
+      "primaryKeyword": "ask maps business profile",
       "secondaryKeywords": [
         "gemini in google maps",
         "ask maps reviews",
-        "ask maps business profile",
+        "google ask maps for car dealers",
         "business profile q and a changes"
       ],
       "description": "Ask Maps brings Gemini into Google Maps. What it reads about your dealership, how Business Profile answers and reviews feed it, and what to update.",
@@ -1944,11 +1945,11 @@
       "h1": "Car financing questions in AI answers: how dealers should answer them honestly",
       "silo": "aeoGeo",
       "siloLabel": "AEO and GEO for car dealers",
-      "primaryKeyword": "dealer financing questions",
+      "primaryKeyword": "dealership financing page",
       "secondaryKeywords": [
-        "how does dealer financing work",
-        "dealer vs bank financing",
-        "first time buyer car loan questions",
+        "finance questions car buyers ask ai",
+        "how to explain dealer financing on a website",
+        "first-time buyer financing page",
         "financing faq for dealership website"
       ],
       "description": "What car buyers ask AI about dealer financing, and how a dealership’s financing page and FAQ should answer honestly, with no rate or approval claims.",
@@ -2001,7 +2002,7 @@
         "what is llms.txt",
         "llms.txt example",
         "does google use llms.txt",
-        "llms.txt generator"
+        "llms.txt for dealer websites"
       ],
       "description": "What llms.txt is, what Google says about it, whether a car dealership needs one, and what to put in it if you decide to publish one anyway.",
       "suggestedOrder": 78,
@@ -2050,11 +2051,11 @@
       "siloLabel": "AEO and GEO for car dealers",
       "primaryKeyword": "car dealer review sites",
       "secondaryKeywords": [
-        "dealerrater reviews",
-        "cars.com dealer reviews",
-        "cargurus dealer rating",
-        "yelp car dealerships",
-        "bbb car dealer"
+        "dealerrater profile for dealers",
+        "cars.com dealer reviews for dealers",
+        "cargurus dealer rating for dealers",
+        "review sites ai cites for dealerships",
+        "dealer listings consistency"
       ],
       "description": "The car dealer review sites that matter as AI sources, from DealerRater, Cars.com and CarGurus to Yelp and BBB, and how to keep them consistent.",
       "suggestedOrder": 80,
