@@ -238,14 +238,18 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Does the report show which searches triggered an AI Overview?',
-        'No. Google’s help page lists page, country, date and device as the ways to filter it, and no search-term view. The regular Performance report has search terms, but Google counts AI Overviews and AI Mode inside its Web totals there, so you can’t split AI results from regular ones by search term.'],
+      ['Can I see AI Overviews impressions for a single vehicle page?',
+        'Yes, when that page has earned enough impressions: the report filters by page and groups '
+        + 'data by canonical URL. Vehicle pages sell and change quickly, so most stores learn more from '
+        + 'model, service and finance pages that stay live for months.'],
       ['Do I need to opt in to see the generative AI report?',
         'No. Google says the Search generative AI setting is on by default for every property, and that the report rolled out to all websites as of Aug 31, 2026. If yours is empty, the likely causes are too few AI impressions so far or a setting someone changed to exclude the site.'],
       ['Does Search Console show ChatGPT visibility?',
         'No. Search Console covers Google Search only. GA4’s AI Assistant channel shows visits that came from ChatGPT and other assistants, and OpenAI says ChatGPT adds utm_source=chatgpt.com to the links it sends. To see whether ChatGPT names your store when nobody clicks, you have to ask it, which our free scan does for ChatGPT and Claude.'],
-      ['Why can’t I see the generative AI report for my site?',
-        'Check three things: that you are in the property for the host name your pages live on, that the Search generative AI setting has not been switched to exclude, and that your site has enough AI impressions for Google to show data. Google’s help page says the report needs enough impressions to show anything.'],
+      ['How often should a dealer check the generative AI report?',
+        'Monthly suits most stores: the same pages and the same date range, so each month compares '
+        + 'cleanly with the last. Look again after any big change, such as a redesign, a new inventory '
+        + 'platform or a change to the Search generative AI setting.'],
     ],
     cta: {
       heading: 'See what ChatGPT and Claude say about your store',
@@ -739,8 +743,10 @@ export const ARTICLES = [
         'Assistants answer inside the chat, so a buyer can get a shortlist of stores without clicking any of them. On top of that, assistant visits that arrive with no referrer can count as Direct, and clicks from Google’s AI Overviews count as Organic Search. Read the AI Assistant row as a floor, not the full count.'],
       ['Does ChatGPT tag the links it sends?',
         'Yes. OpenAI says ChatGPT adds utm_source=chatgpt.com to referral URLs, so its visits carry a clear source label in GA4. Filter session source for chatgpt.com to see them.'],
-      ['Are AI Overviews clicks counted as AI Assistant traffic in GA4?',
-        'No. Google’s GA4 channel definitions put AI Overviews and AI Mode in Organic Search and exclude them from the AI Assistant channel. Use Search Console’s generative AI report to see how often those features showed your pages.'],
+      ['How long should I wait before judging AI traffic?',
+        'A few months. AI visits are usually a small slice of traffic, so one week can swing on a '
+        + 'handful of sessions. Compare the same months year over year once you have them, and read the '
+        + 'trend next to your Search Console and Bing numbers.'],
     ],
     cta: {
       heading: 'See the answers behind the visits',
@@ -1011,8 +1017,12 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Does Google still show vehicle listing rich results?',
-        'No. Google removed the vehicle listing structured data documentation on Sept 9, 2025 because the feature no longer appears in Google Search results. Vehicle markup can still help machines read a page, but it no longer produces that rich result.'],
+      ['Should sold vehicles keep their markup?',
+        'Not as a car for sale. If the page stays up briefly with a sold notice, change the Offer’s '
+        + 'availability or remove the Offer so the markup matches the page; if the page redirects, the '
+        + 'markup goes with it. [Bing '
+        + 'says](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) markup must '
+        + 'accurately reflect visible content.'],
       ['Is JSON-LD better than Microdata for a dealer website?',
         'Google recommends JSON-LD and says Microdata and RDFa are equally fine if valid. JSON-LD sits in one block per template, which makes it easier for a website vendor to keep in sync with the page and easier for you to check.'],
       ['Should the service department have its own markup?',
@@ -1258,8 +1268,12 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Are Google vehicle ads free?',
-        'No. Google’s Merchant Center help describes vehicle ads as a paid, feed-based format for dealers, retailers, aggregators and manufacturers. Their landing-page and price rules are still a useful standard for your vehicle pages, even if you never run them.'],
+      ['Who fixes a wrong price in my inventory feed?',
+        'Start where the price is entered, usually your inventory system, since the feed and the '
+        + 'website both draw from it. [Google’s vehicle ads '
+        + 'policy](https://support.google.com/merchants/answer/11544533) requires the feed price to '
+        + 'match the landing page exactly, so fix it once at the source and check both after the next '
+        + 'update.'],
       ['Do I need a Google Business Profile for vehicle ads?',
         'Yes. Google requires a linked Business Profile for vehicle ads, and each vehicle is tied to its dealership location through the store_code attribute. The VIN attribute is required in Merchant Center as well.'],
       ['How fast should sold cars come off my website?',

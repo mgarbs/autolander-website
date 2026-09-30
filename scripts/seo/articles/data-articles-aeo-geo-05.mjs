@@ -326,8 +326,13 @@ export const ARTICLES = [
         'No. [Google says](https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers) Google-Extended controls whether content it crawls may be used to train future Gemini models and to ground answers in Gemini Apps and Vertex AI, and that it does not affect a site’s inclusion in Google Search. AI Overviews are part of Search, so the preview controls and the Search Console setting are the levers there.'],
       ['Do I need schema markup to show in AI Overviews?',
         'No. [Google says](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) structured data isn’t required for generative AI search and there is no special schema.org markup to add. AutoDealer and vehicle markup can still help machines read your pages, and on its own it will not get a page cited.'],
-      ['How do I keep my dealership pages out of AI Overviews?',
-        'Use nosnippet, data-nosnippet or max-snippet on specific pages, noindex to drop a page from Search entirely, or the Search Console setting that excludes the whole site from Search generative AI features, which Google says generally takes a few days. Most dealers are better served staying in, because the questions AI Overviews answer are the research questions buyers ask before they choose a store.'],
+      ['Can AI Overviews show my dealership’s hours or address?',
+        'They can. [Google '
+        + 'says](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) AI '
+        + 'responses can include information about local businesses and that Business Profiles can help '
+        + 'businesses show up in them. Keep hours and address current on the profile and the website '
+        + 'alike, and check what AI Overviews say about your store now and then, since Google tells '
+        + 'searchers they can make mistakes.'],
       ['Why doesn’t the free scan measure Google AI Overviews?',
         'The free scan checks ChatGPT and Claude only, each with web search on, and it does not measure Google AI Overviews, AI Mode or Gemini. Google’s own generative AI report in Search Console shows your impressions there. The fixes the scan finds, such as crawler access and prices and VINs as page text, are basics Google’s guidance asks for too.'],
     ],
@@ -459,8 +464,10 @@ export const ARTICLES = [
     faq: [
       ['Should my dealership block ClaudeBot?',
         'That depends on how you feel about AI training. [Anthropic says](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler) blocking ClaudeBot signals that your content should be excluded from future training, and it describes Claude-SearchBot and Claude-User as the bots tied to search and retrieval. Whatever you decide about ClaudeBot, keep those two allowed, since Anthropic says blocking them reduces visibility.'],
-      ['Does Claude use Google search?',
-        'Anthropic does not say which search engine or index Claude uses, so treat any claim either way as a guess. What it does publish is how its own bots crawl and fetch pages, and that is where a dealership has control.'],
+      ['Do I need separate pages written for Claude?',
+        'No. Nothing Anthropic publishes asks for special content. The same crawlable pages, facts in '
+        + 'plain text and consistent store details that help every assistant are what Claude’s search '
+        + 'can read and cite, as long as Claude-SearchBot and Claude-User can reach them.'],
       ['Can Claude read vehicle pages built with JavaScript?',
         'Plan as if it cannot. A [2024 Vercel analysis](https://vercel.com/blog/the-rise-of-the-ai-crawler) found that ClaudeBot did not render JavaScript at the time, and we have found no Anthropic statement saying its bots render it now. Put price, mileage, VIN and store details in the HTML your server sends, and check by viewing the page source.'],
       ['Does the free scan check Claude?',
@@ -595,6 +602,7 @@ export const ARTICLES = [
           '[Google Analytics Help: Default channel group](https://support.google.com/analytics/answer/9756891)',
           '[Google: The Gemini app passes 1 billion monthly users, August 11, 2026](https://blog.google/innovation-and-ai/products/gemini-app/one-billion-monthly-users/)',
           '[Google Search Central: Google’s common crawlers, including Google-Extended](https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers)',
+          '[Search Console Help: the Search generative AI setting](https://support.google.com/webmasters/answer/16908024)',
         ],
       },
     ],
@@ -603,8 +611,11 @@ export const ARTICLES = [
         '[Google said](https://blog.google/products/search/google-search-ai-mode-update/) on May 20, 2025 that AI Mode would start rolling out to everyone in the US that day. It lives inside Google Search, so a buyer needs no separate app to use it.'],
       ['Should I write a page for every fan-out question?',
         'No. [Google’s guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) says creating separate content for every variation of how people search, including fan-out queries, mainly to manipulate rankings or AI responses, violates its scaled content abuse policy. Cover the real sub-questions on one strong page per topic instead.'],
-      ['Does AI Mode traffic show in Search Console?',
-        'Yes. AI Mode data has counted toward Performance report totals since June 16, 2025, and the generative AI performance report shows impressions from AI Overviews and AI Mode on their own.'],
+      ['Can a dealer opt out of AI Mode but stay in AI Overviews?',
+        'Not with one switch. [Google’s Search generative AI '
+        + 'setting](https://support.google.com/webmasters/answer/16908024) in Search Console covers AI '
+        + 'Overviews, AI Mode and generative AI features in Discover together, and the page-level '
+        + 'preview controls such as nosnippet apply across Google’s AI features and regular results.'],
       ['Is Google AI Mode the same thing as the Gemini app?',
         'No. AI Mode is a mode inside Google Search, grounded in the Search index. The Gemini app is a separate assistant, which [Google says](https://blog.google/innovation-and-ai/products/gemini-app/one-billion-monthly-users/) passed 1 billion monthly users in August 2026. The controls differ too: [Google-Extended](https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers) affects Gemini Apps grounding and model training, and Google says it does not affect inclusion in Google Search.'],
     ],
@@ -736,16 +747,22 @@ export const ARTICLES = [
           '[Google Maps User Contributed Content Policy](https://support.google.com/contributionpolicy/answer/7400114)',
           '[Google: The Gemini app passes 1 billion monthly users, August 11, 2026](https://blog.google/innovation-and-ai/products/gemini-app/one-billion-monthly-users/)',
           '[Google Search Central: Google’s common crawlers, including Google-Extended](https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers)',
+          '[Google Business Profile Help: tips to get more reviews](https://support.google.com/business/answer/3474122)',
         ],
       },
     ],
     faq: [
       ['Is Ask Maps available to every Google Maps user?',
         'At launch it was not. [Google said](https://blog.google/products-and-platforms/products/maps/ask-maps-immersive-navigation/) on March 12, 2026 that Ask Maps was starting to roll out in the US and India on Android and iOS, with desktop coming soon. Check the Maps app on your own phone to see whether it has reached you, and remember your buyers may get it before you do.'],
-      ['Can I still answer questions on my Business Profile?',
-        'Yes, in a new form. [Google says](https://support.google.com/business/thread/392024106) businesses now answer aggregated customer questions, and those answers are used for similar questions asked in Maps, while older Q&A answers still inform Google’s understanding. Third-party tools can no longer post Q&A through the discontinued My Business Q&A API, so the answering happens in your profile.'],
-      ['Do reviews change what Ask Maps says about my store?',
-        'They can feed it. Google says instant answers in Maps are based on a business’s answers and relevant reviews, and that Ask Maps draws on reviews from its contributors. Nobody outside Google can promise how a given review will be used, so ask every customer for an honest review and reply to them all.'],
+      ['Can I see what Ask Maps says about my store?',
+        'Ask it yourself on a phone where it is available, using the kinds of questions buyers ask, '
+        + 'and note what it says and which reviews or answers it seems to draw on. The free scan does '
+        + 'not check Ask Maps, so this one has to be done by hand.'],
+      ['Should I reply to reviews differently because of Ask Maps?',
+        'No new style is needed. Reply by name, promptly and without promotion, as [Google’s review '
+        + 'tips](https://support.google.com/business/answer/3474122) ask, and correct wrong facts '
+        + 'politely, since relevant reviews feed Maps’ instant answers and your replies sit right '
+        + 'beside them.'],
       ['Why doesn’t the free scan check Gemini or Ask Maps?',
         'The free scan checks ChatGPT and Claude only, each with web search on, and it does not measure Gemini, Ask Maps or Google’s AI Overviews. According to Google, answers in Maps draw on your Business Profile and reviews, which you can check directly in the profile. The Business Profile work included in every AI Visibility plan is the same profile Maps reads.'],
     ],

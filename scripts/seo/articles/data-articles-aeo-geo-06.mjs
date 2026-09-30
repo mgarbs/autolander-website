@@ -334,12 +334,12 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['What percentage of car buyers use AI to shop?',
-          'It depends on the study. Cox Automotive’s 2025 Car Buyer Journey Study found 19% of '
-          + 'all recent buyers and 25% of new-vehicle buyers used AI websites or AI overviews '
-          + 'while shopping. Cars.com found 44% of its November 2025 survey respondents had used '
-          + 'AI car search tools, and CarGurus found 26% of recent buyers and sellers already '
-          + 'use AI. Each defines AI use differently.'],
+      ['How many websites does a car buyer visit before buying?',
+        'In [Cox Automotive’s 2025 Car Buyer Journey '
+        + 'Study](https://www.coxautoinc.com/wp-content/uploads/2026/01/2025-Cox-Automotive-Car-Buyer-Journey-Press-Release.pdf), '
+        + 'buyers visited 4.6 websites on average. Third-party sites were used by 75%, dealership sites '
+        + 'by 59% and AI sites by 12%, a category Cox tracked for the first time that year. AI is one '
+        + 'stop among several, so your store needs to look the same at each one.'],
       ['Do car buyers use ChatGPT more than Google’s AI?',
           'None of the studies here splits that out for car buyers. Among all US adults, Pew '
           + 'found 44% use ChatGPT and 24% use Gemini. For local business recommendations, '
@@ -1019,15 +1019,16 @@ export const ARTICLES = [
           'Roughly. OpenAI says ChatGPT may estimate your general location from your IP '
           + 'address and share that general location with search providers to localize results. '
           + 'Sharing your device’s precise location is optional and off by default.'],
-      ['Why does ChatGPT name different dealers each time?',
-          'Each answer is written fresh, often from a new search, and small changes in wording '
-          + 'or location change what the search returns. OpenAI also says search results and '
-          + 'citations can be incomplete, outdated or incorrect. A fair read asks the same '
-          + 'question several times and counts how often each store comes up.'],
-      ['Can a dealership pay to be recommended by AI?',
-          'No. Google says there is no way to request or pay for a better local ranking, '
-          + 'OpenAI says ads do not influence ChatGPT’s answers, and OpenAI’s help page says '
-          + 'placement is not guaranteed, so no one can sell a dealership a recommendation.'],
+      ['Do AI assistants favor big dealer groups?',
+        'No assistant we know of has published a rule that favors size. What an assistant can find '
+        + 'shapes the answer: Business Profiles, reviews, listings and pages that state a store’s facts '
+        + 'plainly. A single-rooftop store with current facts everywhere gives an assistant plenty to '
+        + 'work with.'],
+      ['Should our website say we are the best dealer in town?',
+        'Only if an outside source says it and you can link to it. A [2025 preprint '
+        + 'study](https://arxiv.org/abs/2509.08919) found AI search services lean heavily toward '
+        + 'third-party sources over a brand’s own pages, so a claim of “best” with nothing behind it '
+        + 'gives an assistant little to repeat. A specific, real review quote carries more weight.'],
       ['Does Google Maps use my reviews in its AI answers?',
           'Google says so for customer questions. After its change to Business Profile Q&A, a '
           + 'customer who asks a question in Google Maps gets an instant answer based on the '
@@ -1274,14 +1275,16 @@ export const ARTICLES = [
           'Perplexity says changes can take up to 24 hours to be reflected for PerplexityBot. '
           + 'Perplexity-User, which fetches pages for a user’s live question, generally ignores '
           + 'robots.txt, so a robots.txt change does not reliably control it.'],
-      ['Does Perplexity show where its answers come from?',
-          'Yes. Perplexity says every answer includes numbered citations linking to the '
-          + 'original sources, so a reader can open the page behind each claim.'],
-      ['What does a Trusted label on a Perplexity source mean?',
-          'Trusted is one of three labels, with Government and Academic, that Perplexity puts '
-          + 'on some cited domains after reviewing the whole site against questions such as '
-          + 'whether it corrects its mistakes and says who wrote each piece. Perplexity says '
-          + 'payments do not affect labels, and most domains carry no label at all.'],
+      ['Which AI models does Perplexity use?',
+        '[Perplexity '
+        + 'says](https://www.perplexity.ai/help-center/en/articles/10352895-how-does-perplexity-work) '
+        + 'it uses models such as GPT-5 and Claude to interpret questions, and it searches the web in '
+        + 'real time for each one. For a dealer the search side matters more than the model: your pages '
+        + 'have to be reachable and clear for Perplexity to cite them.'],
+      ['Can I see Perplexity visits in GA4?',
+        'Usually. GA4 records the visit, but Google’s channel definitions do not name Perplexity '
+        + 'among the AI Assistant examples, so add session source to your traffic report and look for '
+        + 'perplexity.ai to see which channel its visits land in.'],
       ['Can I check how my store shows up in Perplexity?',
           'By hand, yes: ask Perplexity a few local buyer questions that name your city and '
           + 'open the numbered sources. AutoLander’s free scan does not measure Perplexity; it '
@@ -1554,10 +1557,12 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Does Microsoft Copilot use Google results?',
-          'Microsoft documents that Copilot, with web search on, fetches information from the '
-          + 'Bing search service. Bing is the source Microsoft names, so your Bing presence, '
-          + 'including Bing Places and how Bing indexes your site, matters on its own.'],
+      ['What is Citation Share in Bing Webmaster Tools?',
+        'A [June 2026 '
+        + 'addition](https://blogs.bing.com/search/June-2026/New-AI-Visibility-Insights-in-Bing-Webmaster-Tools-Intents-Topics-Citation-Share-Compare) '
+        + 'that shows how much of the citation space your site receives for a grounding query. Bing '
+        + 'added it alongside Intents, which groups grounding queries into categories including Local, '
+        + 'plus Topics and a Compare view for earlier periods.'],
       ['Does Google use IndexNow?',
           'Google does not appear among IndexNow’s participating engines, which include Bing, '
           + 'Yandex, Naver, Seznam.cz, Amazon and Yep. IndexNow reaches Bing, which Copilot draws '
@@ -1567,11 +1572,11 @@ export const ARTICLES = [
           + 'responses and grounding results, and NOCACHE limits Copilot to the URL, title and '
           + 'snippet. Make sure neither is on pages you want cited, such as vehicle pages and '
           + 'answer pages.'],
-      ['Do I need Bing Webmaster Tools to see Copilot citations?',
-          'Yes, for your own site’s numbers. The AI Performance report in Bing Webmaster Tools '
-          + 'shows citations across Microsoft Copilot, AI summaries in Bing and some partner '
-          + 'integrations, with the grounding queries and cited pages behind them. Your site has '
-          + 'to be set up in Bing Webmaster Tools to see it.'],
+      ['Does Copilot show which searches it ran?',
+        'In Copilot Chat, yes, for a short time. [Microsoft '
+        + 'says](https://learn.microsoft.com/en-us/microsoft-365/copilot/manage-public-web-access) web '
+        + 'search query citations show the exact queries Copilot sent to Bing, and they stay available '
+        + 'in the thread for 24 hours.'],
     ],
     cta: {
       heading: 'See what ChatGPT and Claude say about your store',

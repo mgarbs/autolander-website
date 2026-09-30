@@ -621,6 +621,8 @@ export const ARTICLES = [
           '[Bing Webmaster Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a).',
           '[Google Search Central, guidance on generative AI search](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide), updated July 10, 2026.',
           '[Google Business Profile Community, announcement on Q&A changes](https://support.google.com/business/thread/392024106), December 3, 2025.',
+          '[Google Search Central Blog, changes to HowTo and FAQ rich results](https://developers.google.com/search/blog/2023/08/howto-faq-changes), August 8, 2023.',
+          '[Google Search Central, documentation updates](https://developers.google.com/search/updates), May 8 and June 15, 2026 entries on the FAQ rich result.',
         ],
       },
     ],
@@ -634,9 +636,13 @@ export const ARTICLES = [
         + 'department, and put the longer service or finance FAQs on those department pages. When a '
         + 'question appears in both places, use the same answer word for word so nothing conflicts.'],
       ['Will FAQ schema give my dealership rich results?',
-        'No one can promise that. Google says structured data is not required for its AI search '
-        + 'features, and Bing says markup does not assure visibility. Add FAQ markup only if it matches '
-        + 'the visible text exactly, and judge the page by how well it answers buyers.'],
+        'No. In [August 2023, Google limited FAQ rich '
+        + 'results](https://developers.google.com/search/blog/2023/08/howto-faq-changes) to well-known, '
+        + 'authoritative government and health websites, which leaves car dealers out. Google has since '
+        + 'gone further: its [documentation updates log](https://developers.google.com/search/updates) '
+        + 'says the FAQ rich result stopped appearing in Google Search on May 7, 2026. Add FAQ markup '
+        + 'only if it matches the visible text exactly, and judge the page by how well it answers '
+        + 'buyers.'],
       ['How often should a dealership update its FAQ page?',
         'Whenever a fact changes, and on a set schedule such as every quarter. Hours, fees, holiday '
         + 'closures and service policies drift. [Bing '
@@ -1423,17 +1429,14 @@ export const ARTICLES = [
         + 'payment required to win. If you must pay to win or to display the badge, treat it as '
         + 'advertising and label it that way. An award anyone can buy adds little trust and can mislead '
         + 'buyers.'],
-      ['Do sponsored articles need a label?',
-        'Yes. The [FTC’s native advertising '
-        + 'guidance](https://www.ftc.gov/business-guidance/resources/native-advertising-guide-businesses) '
-        + 'says an ad should not suggest it is anything other than an ad, lists labels such as '
-        + '“Advertisement” and “Sponsored Advertising Content,” and says logos alone are likely not '
-        + 'enough. Every AutoLander placement is labeled as sponsored.'],
-      ['Does a sponsored link pass SEO value?',
-        'Plan as if it does not. Google asks for paid links to be tagged rel="sponsored" or '
-        + 'rel="nofollow" and treats links bought for ranking as link spam. Buy a sponsored article for '
-        + 'its readers and the mention, if at all, and know that AutoLander never promises a placement '
-        + 'will pass search value.'],
+      ['How do I find the local sites AI already cites?',
+        'Ask ChatGPT and Claude the questions buyers ask about dealers in your town, and open the '
+        + 'sources each answer cites. Local news sites, community pages and review sites that show up '
+        + 'more than once are the places worth reaching first.'],
+      ['Should a dealer sponsor local community events?',
+        'If the store would support them anyway, yes. A real sponsorship can earn mentions on local '
+        + 'news and community pages that assistants read, but plan it for the community, since no one '
+        + 'can promise it changes an AI answer.'],
       ['Can a press release get my dealership into AI answers?',
         'No one can promise that. A press release is the store’s own words, and the 2025 study of AI '
         + 'search services found a strong preference for third-party sources over brand-owned content. '

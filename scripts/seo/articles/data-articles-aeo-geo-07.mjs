@@ -269,6 +269,7 @@ export const ARTICLES = [
           + 'study](https://www.cargurus.com/press/2025_consumer_insights.html)',
           '[Microsoft Bing search blog: the evolving role of the index, May '
           + '2026](https://blogs.bing.com/search/May-2026/Evolving-role-of-the-index-From-ranking-pages-to-supporting-answers)',
+          '[Google Search Central: LocalBusiness structured data](https://developers.google.com/search/docs/appearance/structured-data/local-business)',
         ],
       },
     ],
@@ -285,15 +286,19 @@ export const ARTICLES = [
         + 'negative ones, a practice often called review gating. Send the same request to every sold and '
         + 'service customer, and handle the unhappy ones by fixing the problem and replying to what they '
         + 'write.'],
-      ['Do replies to reviews help a dealership?',
-        'They help with shoppers: BrightLocal found 89% of consumers expect owners to respond, and '
-        + 'Google’s own tips ask owners to reply promptly and by name. No one can promise that replies '
-        + 'change an AI answer, so write them for the next person reading.'],
-      ['How recent do a dealership’s reviews need to be?',
-        'Neither Google nor any AI assistant has published a recency cut-off that we know of. The useful '
-        + 'benchmark comes from shoppers: BrightLocal found 74% of consumers look for reviews from the '
-        + 'last three months. A store that adds a few honest reviews every month always has something '
-        + 'recent for a shopper, or a summary, to read.'],
+      ['Can our employees leave reviews for the store?',
+        'No. The [Google Maps content '
+        + 'policy](https://support.google.com/contributionpolicy/answer/7400114) bars reviews based on '
+        + 'conflicts of interest, such as current or former employment, and the [FTC’s rule on consumer '
+        + 'reviews](https://www.ftc.gov/news-events/news/press-releases/2024/08/federal-trade-commission-announces-final-rule-banning-fake-reviews-testimonials) '
+        + 'bans undisclosed insider reviews. Reviews should come from real sold and service customers, '
+        + 'asked the same neutral way.'],
+      ['Should we show our Google reviews on our own website?',
+        'You can show real reviews, but do not mark up your own star rating. [Google’s LocalBusiness '
+        + 'documentation](https://developers.google.com/search/docs/appearance/structured-data/local-business) '
+        + 'says review rating markup is only for sites that capture reviews about other businesses. '
+        + 'Link to your Business Profile and review pages so a shopper, or an assistant, can check the '
+        + 'originals.'],
     ],
     cta: {
       heading: 'See which sources AI uses for your store',
@@ -822,11 +827,11 @@ export const ARTICLES = [
         + 'help page links privacy statements from Microsoft and Shopify as providers, so ChatGPT may be '
         + 'reading other sources entirely. Fix the Business Profile, your website, Bing Places and your '
         + 'main listings together so every source says the same thing.'],
-      ['How do I know which page an AI answer used?',
-        'In ChatGPT, open the Sources view on an answer that used web search; OpenAI says it lists cited '
-        + 'sources and other relevant links. In Google’s AI Overviews, open the linked pages. The free '
-        + 'scan lists the sources behind every ChatGPT and Claude answer about your store, and it does not '
-        + 'measure Google’s AI Overviews.'],
+      ['What if the wrong fact comes from a site I don’t control?',
+        'Ask that site to correct it through its business listing tools or support contact, and fix '
+        + 'every source you do control so the correct version outnumbers the wrong one. Bing says '
+        + 'clear, consistent naming of organizations and locations improves citation accuracy, so '
+        + 'matching facts across many sources helps even while one stays wrong.'],
     ],
     cta: {
       heading: 'Find the source behind every wrong answer',
@@ -1319,26 +1324,27 @@ export const ARTICLES = [
           + '2026](https://openai.com/index/our-approach-to-advertising-and-expanding-access/)',
           '[Google Search Help: AI Overviews and AI responses in '
           + 'Search](https://support.google.com/websearch/answer/14901683)',
+          '[Pew Research Center: Americans and AI 2026, June 17, 2026](https://www.pewresearch.org/internet/2026/06/17/americans-and-ai-2026-chatbots-smart-devices-and-views-on-impact/)',
+          '[Google Business Profile Help: tips to get more reviews](https://support.google.com/business/answer/3474122)',
         ],
       },
     ],
     faq: [
-      ['Do buyers believe what ChatGPT says about dealerships?',
-        'Many trust AI tools, with a check. In the Cars.com survey released November 20, 2025, 71% of '
-        + 'respondents had at least a moderate amount of trust in AI tools for vehicle information, and '
-        + 'BrightLocal found 97% of AI users sometimes double-check AI recommendations against real '
-        + 'reviews. Both figures describe AI tools broadly rather than ChatGPT alone, so treat an '
-        + 'assistant’s mention as the start of a buyer’s research.'],
-      ['Do shoppers check reviews after an AI recommendation?',
-        'Yes. BrightLocal found 97% of AI users sometimes double-check AI recommendations against real '
-        + 'reviews, and its 2026 survey found 74% of consumers look for reviews from the last three months. '
-        + 'Recent, answered reviews are what that shopper should find.'],
-      ['Are AI car recommendations biased?',
-        'Shoppers worry that they might be: Cars.com found 63% of shoppers were concerned AI tools could '
-        + 'recommend cars in a biased way. OpenAI says ads do not influence ChatGPT’s answers and that '
-        + 'ChatGPT ranks search results using multiple factors, but no one outside the AI companies can see '
-        + 'exactly how an answer is chosen. A store can make sure the sources an assistant reads are '
-        + 'accurate.'],
+      ['Which AI assistants do US adults use most?',
+        'ChatGPT leads by a wide margin. [Pew Research Center’s February 2026 '
+        + 'survey](https://www.pewresearch.org/internet/2026/06/17/americans-and-ai-2026-chatbots-smart-devices-and-views-on-impact/) '
+        + 'found 44% of US adults use ChatGPT, 24% Gemini, 17% Copilot, 14% Meta AI, 8% Grok and 6% '
+        + 'Claude. Car shoppers may differ, so ask your own buyers which one they used.'],
+      ['Do buyers who use AI still want to visit the dealership?',
+        'Most do. [Cox Automotive’s 2025 buyer '
+        + 'study](https://www.coxautoinc.com/wp-content/uploads/2026/01/2025-Cox-Automotive-Car-Buyer-Journey-Press-Release.pdf) '
+        + 'found 53% of buyers completed every step at the dealership and 63% said the ideal experience '
+        + 'mixes online and in-person steps. Cox says shoppers use AI to arrive prepared, and the visit '
+        + 'is still part of their plan.'],
+      ['Should salespeople ask buyers whether they used AI?',
+        'It is worth adding to your intake questions. Knowing which assistant a buyer used and what '
+        + 'it said shows which sources shape your market, and it gives the salesperson a chance to '
+        + 'correct anything the answer got wrong.'],
       ['Should a dealer worry about AI mistakes about their store?',
         'Worry less and check more. Google says AI Overviews can and will make mistakes, and OpenAI says '
         + 'ChatGPT search results can be outdated or incorrect. Ask the questions your buyers ask, open the '

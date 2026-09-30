@@ -264,6 +264,7 @@ export const ARTICLES = [
           '[Microsoft Bing Webmaster Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a).',
           '[Google Business Profile Help: local ranking](https://support.google.com/business/answer/7091), [review tips](https://support.google.com/business/answer/3474122) and the [Maps user content policy](https://support.google.com/contributionpolicy/answer/7400114).',
           '[FTC: final rule on fake reviews and testimonials](https://www.ftc.gov/news-events/news/press-releases/2024/08/federal-trade-commission-announces-final-rule-banning-fake-reviews-testimonials) and the [native advertising guide](https://www.ftc.gov/business-guidance/resources/native-advertising-guide-businesses).',
+          '[OpenAI: overview of OpenAI crawlers](https://developers.openai.com/api/docs/bots)',
         ],
       },
     ],
@@ -526,10 +527,11 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Can you pay to be recommended by ChatGPT?',
-        'No. OpenAI says ads do not influence the answers ChatGPT gives, and that ads are kept separate '
-        + 'and clearly labeled. You may be able to buy an ad slot where OpenAI offers ads, and nobody can '
-        + 'sell you a spot inside the answer itself.'],
+      ['How do I check an agency’s claimed results?',
+        'Ask for the raw answers behind any before-and-after claim: the questions, the assistants, '
+        + 'the number of runs and the dates. The same question can name different stores from one run '
+        + 'to the next, so a single screenshot proves very little. If the agency will not show its '
+        + 'method, treat the result as a story.'],
       ['Are AI-written pages against Google’s rules?',
         'Not by themselves. Google’s guidance on generative AI content asks for accuracy, quality and '
         + 'relevance, and says generating many pages without adding value for users may violate its scaled '
@@ -768,10 +770,10 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Can I buy a spot in ChatGPT’s answer?',
-        'No. OpenAI says ads do not influence the answers ChatGPT gives, and its help page on ChatGPT '
-        + 'search says placement is not guaranteed, which means no one can sell you a spot in the answer. '
-        + 'An ad, where OpenAI offers them, is a separate, labeled slot.'],
+      ['How should a dealer measure a ChatGPT ad test?',
+        'Use the ad platform’s reporting and your own campaign tags on the ad’s link, then compare '
+        + 'leads from those visits with your other channels. Keep ad visits in their own tags so they '
+        + 'never mix with the organic visits ChatGPT’s answers send.'],
       ['Do ChatGPT Plus users see ads?',
         'Not under the plan OpenAI announced on January 16, 2026. It said Plus, Pro, Business and '
         + 'Enterprise do not include ads, and that the test would cover logged-in US adults on the Free and '
@@ -1056,10 +1058,9 @@ export const ARTICLES = [
         + 'once. AutoLander customers pay no setup fee once their AutoLander subscription at that rooftop '
         + 'has been active and paid for the prior 60 days. Other providers set their own terms, so ask what '
         + 'the setup fee covers.'],
-      ['Can I cancel an AEO plan any time?',
-        'AutoLander plans are month to month: cancel any time before your next billing date. You keep '
-        + 'every profile, listing, page and video, our access is removed within 5 business days, and your '
-        + 'scan data and reports are deleted within 30 days.'],
+      ['What does the free scan cost?',
+        'Nothing. It asks ChatGPT and Claude, each with web search on, up to 20 local buyer questions '
+        + '3 times each, and a person walks you through the result and the 3 fixes in 20 minutes.'],
       ['Do AutoLander Marketplace customers pay a setup fee?',
         'Not after 60 days. AutoLander customers pay no setup fee on any AEO and GEO plan once their '
         + 'AutoLander subscription at that rooftop has been active and paid for the prior 60 days. The '

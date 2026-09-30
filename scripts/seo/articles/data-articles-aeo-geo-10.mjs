@@ -558,10 +558,11 @@ export const ARTICLES = [
         + 'describes. If down payments vary by vehicle or application, say that and explain what they '
         + 'depend on. A number no real deal matches misleads buyers, and it can keep circulating in AI '
         + 'answers long after you change the page.'],
-      ['How should we reply to a repossession complaint online?',
-        'Briefly and calmly, with no account details at all. Acknowledge the frustration, say you never '
-        + 'discuss accounts in public, and give the name of the person to call. Settle the specifics on '
-        + 'the phone or in the office, where you can confirm who you are talking to.'],
+      ['How often should the in-house financing page be updated?',
+        'Whenever a term changes, and on a set review date otherwise, with that date shown on the '
+        + 'page. A stale down payment or payment schedule is the kind of out-of-date fact that turns '
+        + 'into a misleading answer; Microsoft researchers writing on the Bing search blog say '
+        + 'freshness is critical for AI answers for exactly that reason.'],
       ['Do AI assistants recommend buy here pay here lots?',
         'Sometimes, depending on the question, the town and the day, and no one can promise that any '
         + 'assistant will name your store. When a shopper asks where to buy a car with bad credit, an '
@@ -828,11 +829,11 @@ export const ARTICLES = [
         + 'guidelines allow separate profiles for departments like that, and the example Google gives is '
         + 'a car dealer’s service and parts department. If your service bay shares the showroom door and '
         + 'phone, one profile with accurate service hours is the cleaner choice.'],
-      ['Does schema markup work for RVs?',
-        'It works as labeling for facts already on the page. schema.org has no RV subtype, so use the '
-        + 'general Vehicle type with properties that match the page text. Google says structured data is '
-        + 'not required for its generative AI search, and Bing says it may help clearer grounding but does '
-        + 'not guarantee visibility.'],
+      ['Should an RV dealer say which trucks can tow a unit?',
+        'Be careful. Publish each unit’s weights from the manufacturer, such as dry weight, GVWR and '
+        + 'hitch weight, and tell buyers to check their own truck’s tow rating in its manual or with '
+        + 'its maker. A page that says a given truck can tow a trailer takes on a claim the dealer '
+        + 'cannot check for every configuration.'],
     ],
     cta: {
       heading: 'See if AI names your RV store',
@@ -1066,11 +1067,11 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Is there schema markup for motorcycle dealers?',
-        'Yes. [schema.org has a MotorcycleDealer type](https://schema.org/AutomotiveBusiness) under '
-        + 'AutomotiveBusiness, next to AutoDealer and MotorcycleRepair, and a Motorcycle type under Vehicle '
-        + 'for the units. Use markup to label facts already visible on the page; Google says structured '
-        + 'data is not required for its generative AI search.'],
+      ['Should we publish demo ride or rental details?',
+        'If you offer demo rides or rentals, say so on a page with the rules: age and license '
+        + 'requirements, gear, booking and cost. Buyers ask assistants who offers them nearby, and a '
+        + 'plain page gives the answer a fact to repeat. If you do not offer them, one line saying so '
+        + 'stops the guesswork.'],
       ['Should boats and ATVs have separate pages?',
         'Yes. A boat buyer and an ATV buyer ask different questions: hull, engine and trailer on one side, '
         + 'seats, payload and trail use on the other. Give each line its own category page with a short '

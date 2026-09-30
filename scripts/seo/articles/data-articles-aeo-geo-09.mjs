@@ -290,13 +290,10 @@ export const ARTICLES = [
         + 'Google’s rules for dealers, so if service shares that profile, the website service page is '
         + 'where Saturday service hours must be spelled out. Either way, use the same hours on your '
         + 'website service page and your scheduler.'],
-      ['Should service and sales share one Business Profile?',
-        'Share one when they operate as one place with one entrance. [Google '
-        + 'allows](https://support.google.com/business/answer/3038177) a separate profile for a '
-        + 'department that works as a distinct entity, such as a service and parts department with its '
-        + 'own entrance and categories. Never create a second profile just to add keywords: [Google '
-        + 'says](https://support.google.com/business/answer/3038177) a profile name must match the '
-        + 'real-world name.'],
+      ['Should we list service specials online?',
+        'Only the ones you honor at every visit, with the end date shown. A special that outlives its '
+        + 'date is a stale fact an assistant can repeat, and an owner who arrives expecting it becomes '
+        + 'the next review.'],
     ],
     cta: {
       heading: 'See whether AI answers in your town name your store',
@@ -543,16 +540,15 @@ export const ARTICLES = [
         + 'title, or the lender and payoff details if there is a loan, current registration, photo ID '
         + 'for everyone on the title, and every key and remote. Tell buyers what to do if something is '
         + 'missing.'],
-      ['Can AI give an accurate trade-in value?',
-        'No assistant can give an exact trade-in value for a car it has never seen. It can repeat '
-        + 'estimates from valuation and marketplace sites, and [OpenAI '
-        + 'itself](https://help.openai.com/en/articles/9237897-searching-the-web-with-chatgpt) warns that '
-        + 'search results and citations can be incomplete, outdated or incorrect. The appraisal decides '
-        + 'the number.'],
-      ['Should we say we buy cars even if the owner doesn’t buy from us?',
-        'Say it only if it is true, and say it first. If you buy outright, state it in the opening '
-        + 'sentence and explain how to start. If you only take trades toward a purchase, say that just '
-        + 'as plainly. Either answer beats silence, which leaves the assistant to guess.'],
+      ['Should a trade-in page compare trading in with selling privately?',
+        'It can, honestly. Explain what a trade-in saves the owner in time and paperwork, how a '
+        + 'payoff is handled and whether your state reduces sales tax on a trade, and never claim a '
+        + 'trade-in beats a private sale on price. A page that admits the tradeoff reads as more '
+        + 'trustworthy than one that hides it.'],
+      ['How often should a trade-in page be updated?',
+        'Whenever the process changes: new appraisal hours, a new offer window, new documents to '
+        + 'bring. Values on valuation sites move constantly, which is one more reason to describe your '
+        + 'process on the page and leave live numbers to the appraisal.'],
     ],
     cta: {
       heading: 'See what AI tells trade-in buyers in your town',

@@ -621,11 +621,10 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Can I measure my dealership’s AI visibility myself?',
-        'Yes. Write 15 to 20 local buyer questions, ask each one three times of ChatGPT and '
-        + 'of Claude with web search on, and log who is named and what is cited. Add the Search '
-        + 'Console, Bing Webmaster Tools and GA4 reports. The hard part is doing it the same '
-        + 'way every month.'],
+      ['Should we track competitors in the same answers?',
+        'Yes. Log every store each answer names, along with yours, and the sources cited for each '
+        + 'one. The pattern shows who appears in your place and which review sites, listings or pages '
+        + 'back them, which often points to the gap worth fixing first.'],
       ['Why did ChatGPT give my sales manager a different answer than me?',
         'Answers vary from run to run, and OpenAI says ChatGPT may estimate a user’s general '
         + 'location from their IP address to localize results. Two people in different places, '
@@ -1488,10 +1487,10 @@ export const ARTICLES = [
         + 'your site is; it never measures buyers, leads or sales, and no one can promise that '
         + 'a higher number brings more of them. Track leads and sales in your CRM and GA4, and '
         + 'read them next to the score.'],
-      ['Which assistants go into the free scan’s score?',
-        'ChatGPT and Claude, each with web search on, for up to 20 local buyer questions, 3 '
-        + 'runs each. The free scan does not measure Google Gemini, AI Overviews, AI Mode, '
-        + 'Perplexity or Microsoft Copilot, so its score says nothing about them.'],
+      ['Can two dealers compare their scores?',
+        'Only when both came from the same method: the same assistants, questions, runs and dates. '
+        + 'Scores from different tools or different question sets measure different things, so compare '
+        + 'the raw answers instead.'],
     ],
     cta: {
       heading: 'See your own score, with its margin',

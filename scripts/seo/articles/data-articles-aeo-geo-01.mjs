@@ -305,11 +305,11 @@ export const ARTICLES = [
         + 'about 24 hours. That covers the crawl rule only. Whether ChatGPT then names or cites your store depends '
         + 'on many other signals, and no one can promise when or whether that happens. Re-check the file the next '
         + 'day, then test a few buyer questions over the following weeks.'],
-      ['Do I need to allow GPTBot for ChatGPT search?',
-        'No. OpenAI describes GPTBot as the crawler for model training and treats blocking it as separate from '
-        + 'OAI-SearchBot, which surfaces sites in ChatGPT search. You can block GPTBot and still allow '
-        + 'OAI-SearchBot. Anthropic works the same way: ClaudeBot is for training, while Claude-SearchBot and '
-        + 'Claude-User handle search and retrieval.'],
+      ['Does ChatGPT-User follow my robots.txt?',
+        'Not always. [OpenAI says](https://developers.openai.com/api/docs/bots) ChatGPT-User handles '
+        + 'certain actions a person starts inside ChatGPT, and because those are user actions, '
+        + 'robots.txt rules may not apply to it. Whether your store can appear in ChatGPT search '
+        + 'depends on OAI-SearchBot, so that is the crawler to check first.'],
       ['What if my website vendor controls robots.txt?',
         'Many dealers are in that spot. Send the vendor a written request naming the exact crawlers to allow, the '
         + 'CDN or firewall setting to check, and how you will test it, then open robots.txt again the next day. '
@@ -1096,11 +1096,10 @@ export const ARTICLES = [
         + 'search is letting OAI-SearchBot crawl your site and letting its published IP addresses through your '
         + 'host or CDN. We found no official OpenAI statement committing to use llms.txt, so get crawler access '
         + 'right first.'],
-      ['Can llms.txt hurt my Google rankings?',
-        '[Google says](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) no: Google '
-        + 'Search does not use llms.txt, and creating one will neither harm nor help your visibility or rankings '
-        + 'there. The real risk is a file that lists wrong hours or dead pages, which can mislead any tool that '
-        + 'does read it.'],
+      ['Should llms.txt list every vehicle?',
+        'No. Inventory changes daily, and a file that lists last week’s cars hands AI tools stale '
+        + 'facts. Point to your inventory page and key store pages instead, and leave hours and '
+        + 'addresses out unless someone will update the file with every change.'],
       ['Does my dealer website platform create llms.txt for me?',
         'Ask your provider. Platforms differ, and some may generate a file automatically while others leave it to '
         + 'you. Open yoursite.com/llms.txt to see whether one exists, and if it does, read it for wrong or outdated '
@@ -1365,6 +1364,7 @@ export const ARTICLES = [
           '[Google Search Central: LocalBusiness structured data](https://developers.google.com/search/docs/appearance/structured-data/local-business)',
           '[Google Search Central: optimizing for generative AI features](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)',
           '[Schema.org: Vehicle](https://schema.org/Vehicle)',
+          '[Google Search Central: AI features and your website](https://developers.google.com/search/docs/appearance/ai-features)',
         ],
       },
     ],
