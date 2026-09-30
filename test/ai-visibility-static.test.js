@@ -111,6 +111,8 @@ test('content module keeps the public copy rules and canonical three plan prices
     /\bAI-proof\b/i,
     /\bGoogle posts\b/i,
     /\bservice credit\b/i,
+    // Michael, 2026-09-30: no credit of any kind is offered on this page (results credit removed).
+    /\bcredit(?:s|ed)?\b(?! card)/i,
     /\bmissed promise\b/i,
     /\bofficial APIs?\b/i,
     /\bnot\b[^.!?]{0,120}[.!?]\s+(?:It|It’s|It's|This|That’s|That's)\b/i,
@@ -131,13 +133,10 @@ test('content module keeps the public copy rules and canonical three plan prices
     }
   }
 
-  const assistantNames = /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i;
-  for (const [name, content] of Object.entries(AI_CONTENT)) {
-    if (['WHERE_BUYERS_ASK', 'RESULTS_VIEW', 'AEO_GEO'].includes(name)) continue;
-    const checked = name === 'FAQ' ? content.filter((item) => !item.names) : content;
-    assert.doesNotMatch(collectStrings(checked).join('\n'), assistantNames, name);
-  }
-  assert.equal(FAQ.filter((item) => item.names).length, 2, 'exactly two FAQ items may name an assistant');
+  // Michael, 2026-09-30: assistants are named throughout the copy, but the free scan is described honestly.
+  const scanScope = FAQ.find((item) => item.q === 'Which AI assistants do you check?');
+  assert.match(scanScope.a, /^Two: ChatGPT, made by OpenAI, and Claude, made by Anthropic/);
+  assert.match(scanScope.a, /doesn’t measure Google Gemini, AI Overviews or Perplexity/);
 
   const planTokens = new Set(PLANS.flatMap((plan) => [fmtUsd(plan.monthly), fmtUsd(plan.setup)]));
   const withoutReportIllustration = Object.entries(AI_CONTENT)
@@ -157,38 +156,12 @@ test('title and H1 lead with the niche, and the FAQ has 16 questions', () => {
   assert.equal(FAQ[0].q, 'What is AEO for car dealers?');
 });
 
-test('assistant brand names are restricted to the three approved mirror and twin sections and two FAQ items', () => {
-  const approved = [AI_CONTENT.AEO_GEO, AI_CONTENT.WHERE_BUYERS_ASK, AI_CONTENT.RESULTS_VIEW];
-  const named = FAQ.filter((item) => item.names);
-  const banned = /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i;
-  let removed = 0;
-  let strippedDetails = 0;
-  const mirror = renderAiVisibilityMirror()
-    .replace(/<details\b[\s\S]*?<\/details>/g, (block) => {
-      const summary = text(/<summary[^>]*>([\s\S]*?)<\/summary>/.exec(block)?.[1] || '').trim();
-      if (!named.some(({ q }) => q === summary)) return block;
-      strippedDetails += 1;
-      return '';
-    })
-    .replace(/<section\b[\s\S]*?<\/section>/g, (section) => {
-      if (!approved.some(({ h2Lead, h2Grad }) => text(section).includes(`${h2Lead} ${h2Grad}`))) return section;
-      removed += 1;
-      return '';
-    });
-  assert.equal(strippedDetails, 2);
-  assert.equal(removed, 3);
-  assert.doesNotMatch(mirror, banned);
-  for (const source of [renderAiVisibilityMarkdown(), read(TWIN_FILE)]) {
-    let twin = source;
-    for (const { q, a } of named) {
-      const block = `### ${q}\n\n${a}\n\n`;
-      assert.ok(twin.includes(block), q);
-      twin = twin.replace(block, '');
-    }
-    const sections = twin.split(/(?=^## )/m);
-    const outside = sections.filter((section) => !approved.some(({ h2Lead, h2Grad }) => section.startsWith(`## ${h2Lead} ${h2Grad}\n`)));
-    assert.equal(sections.length - outside.length, 3);
-    assert.doesNotMatch(outside.join('\n'), banned);
+test('the page names Google Gemini, ChatGPT, Claude and Perplexity and never the bare model name GPT', () => {
+  // Michael, 2026-09-30: name every major assistant; keep the meta description short enough to show whole.
+  assert.ok(META.description.length <= 150, `meta description is ${META.description.length} chars`);
+  for (const source of [renderAiVisibilityMirror(), renderAiVisibilityMarkdown(), read(TWIN_FILE)]) {
+    for (const brand of ['Gemini', 'ChatGPT', 'Claude', 'Perplexity']) assert.match(source, new RegExp(String.raw`\b${brand}\b`), brand);
+    assert.doesNotMatch(source, /(?<!Chat)\bGPT\b(?!-)/, 'no bare GPT');
   }
 });
 

@@ -26,7 +26,6 @@ import {
   RELATED,
   REPORT,
   REPORT_MOCK,
-  RESULTS_CREDIT,
   REVIEW,
   SERVICE_SUMMARY,
   SHIFT,
@@ -458,19 +457,6 @@ export function PlansSection({ onGo }) {
             ))}
           </div>
         </div>
-
-        <details id={RESULTS_CREDIT.anchor} className="group mt-12 scroll-mt-24 rounded-3xl border border-blue-400/25 bg-blue-500/[0.06] p-6 sm:p-8">
-          <summary className="flex cursor-pointer list-none items-start justify-between gap-4 font-display text-2xl font-extrabold uppercase italic text-white [&::-webkit-details-marker]:hidden">
-            {RESULTS_CREDIT.heading}
-            <span className="text-blue-300 transition group-open:rotate-45" aria-hidden="true">+</span>
-          </summary>
-          <div className="mt-6">
-            <p className="leading-relaxed text-slate-300">{RESULTS_CREDIT.intro}</p>
-            <div className="mt-6"><CheckList items={RESULTS_CREDIT.steps} ordered /></div>
-            <div className="mt-6 border-t border-white/10 pt-6"><CheckList items={RESULTS_CREDIT.conditions} marker="dot" /></div>
-            <p className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-sm leading-relaxed text-slate-300">{RESULTS_CREDIT.covers}</p>
-          </div>
-        </details>
 
         <div className="mt-12 grid items-start gap-6">
           <article className="self-start rounded-3xl border border-white/10 bg-[#0b0d12] p-6 sm:p-8">

@@ -929,7 +929,7 @@ export const ARTICLES = [
           + 'sources a buyer checks: your website, your profiles, your reviews and the listing sites. When those '
           + 'sources agree, an assistant has less reason to doubt your store.',
           'Making your store easy for AI tools to find and trust is the job of '
-          + '[AEO and GEO for car dealers](/aeo-geo-for-car-dealers/). A free scan shows whether Claude and GPT '
+          + '[AEO and GEO for car dealers](/aeo-geo-for-car-dealers/). A free scan shows whether ChatGPT and Claude '
           + 'name your store when local buyers ask, and which sources they cite.',
         ],
       },
