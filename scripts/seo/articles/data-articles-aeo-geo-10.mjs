@@ -366,7 +366,7 @@ export const ARTICLES = [
           + 'find. A free [AI visibility scan for car dealers](/aeo-geo-for-car-dealers/#scan-form) asks '
           + 'ChatGPT and Claude the questions buyers in your town ask, 3 times each, and shows whether '
           + 'your store gets named and which sources get cited. For how buyers phrase these questions in '
-          + 'general, see [the questions car buyers ask AI](@questions-car-buyers-ask-ai).',
+          + 'general, see [common car buyer questions for AI](@questions-car-buyers-ask-ai).',
         ],
       },
       {
@@ -516,7 +516,7 @@ export const ARTICLES = [
           + 'business name; [Google says](https://support.google.com/business/answer/3038177) names should '
           + 'match the real-world name without added keywords.',
           'The same facts on your website, your profile and the listing sites. The basics every lot '
-          + 'shares are in [AI search for independent used car dealers](@ai-search-for-independent-dealers).',
+          + 'shares are in [the independent dealer guide](@ai-search-for-independent-dealers).',
         ],
       },
       {
@@ -896,8 +896,7 @@ export const ARTICLES = [
           + 'specs and store details, and both have to be readable on your own site.',
           'A free [AI visibility scan for car dealers](/aeo-geo-for-car-dealers/#scan-form) asks ChatGPT '
           + 'and Claude up to 20 local buyer questions, 3 times each, and shows which dealers get named and '
-          + 'which sources get cited. The groundwork is the same as for any lot, covered in [AI search for '
-          + 'independent used car dealers](@ai-search-for-independent-dealers), and the spec-heavy side '
+          + 'which sources get cited. The groundwork is the same as for any lot, covered in [our guide for independent lots](@ai-search-for-independent-dealers), and the spec-heavy side '
           + 'looks a lot like [AI search for RV dealers](@rv-dealer-ai-search).',
         ],
       },
@@ -947,8 +946,7 @@ export const ARTICLES = [
           'Condition notes for used units in plain words: what your shop checked and what it replaced.',
           '[Bing says](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) pages are more '
           + 'likely to be selected for grounding and citations when important information is visible on '
-          + 'the page itself. The rules for [vehicle detail pages AI can '
-          + 'read](@vehicle-detail-page-ai-readable) apply to a UTV just as they do to a car.',
+          + 'the page itself. The rules for [VDPs that AI tools can read](@vehicle-detail-page-ai-readable) apply to a UTV just as they do to a car.',
         ],
       },
       {
@@ -1150,8 +1148,7 @@ export const ARTICLES = [
           + 'by the family name and sharing one BDC number. A buyer asks which store nearby has used trucks. '
           + 'The assistant finds a group page listing both addresses, a Business Profile with the shared '
           + 'number and reviews that mention “the dealership” without saying which one. It can easily mix '
-          + 'the two up. The fix starts with the basics every store needs, the same ones in [AI search for '
-          + 'independent used car dealers](@ai-search-for-independent-dealers), applied rooftop by rooftop.',
+          + 'the two up. The fix starts with the basics every store needs, the same ones in [AI search basics for independent dealers](@ai-search-for-independent-dealers), applied rooftop by rooftop.',
           '[AutoLander’s AEO and GEO service](/aeo-geo-for-car-dealers/) works the same way for groups: '
           + 'one rooftop at a time, each with its own free scan and its own plan.',
         ],
@@ -1204,8 +1201,7 @@ export const ARTICLES = [
           'No shared markup across stores. Copying one rooftop’s markup onto another page, or stacking '
           + 'several stores’ addresses in one block, recreates the blur the page exists to fix.',
           'One main source per rooftop. If each store also runs its own website, decide which page is the '
-          + 'main source, link the two both ways and keep the facts identical. The details are in [schema '
-          + 'markup for car dealerships](@car-dealership-schema-markup).',
+          + 'main source, link the two both ways and keep the facts identical. The details are in [our dealership schema guide](@car-dealership-schema-markup).',
         ],
       },
       {
@@ -1278,8 +1274,7 @@ export const ARTICLES = [
           + 'request, with no incentives and no filtering. [Google Maps’ content '
           + 'policy](https://support.google.com/contributionpolicy/answer/7400114) bars selectively asking '
           + 'for positive reviews and asking staff to collect a set number of them, so leave review quotas '
-          + 'out of pay plans. The mechanics of a good reply are in [how to respond to dealership '
-          + 'reviews](@how-to-respond-to-car-dealership-reviews).',
+          + 'out of pay plans. The mechanics of a good reply are in [our review reply guide](@how-to-respond-to-car-dealership-reviews).',
         ],
       },
       {

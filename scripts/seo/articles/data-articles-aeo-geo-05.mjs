@@ -302,7 +302,7 @@ export const ARTICLES = [
         a: [
           'Search Console’s generative AI performance report shows organic impressions from AI Overviews and AI Mode over time, filterable by page, country, date and device, and [Google says](https://support.google.com/webmasters/answer/16984139) it reached all websites worldwide by August 31, 2026. The regular Performance report also counts this traffic, mixed into the Web search type totals.',
           'The generative AI report is built on impressions and needs enough of them to show data, so a single rooftop may see little at first. Look at which pages appear: service explainers and model research pages are the ones most likely to match the long, question-style searches where Pew found summaries most often.',
-          'For the full picture, including the chat assistants Google’s tools cannot see, read [how to measure AI visibility](@measure-dealership-ai-visibility). Our free scan does not measure AI Overviews; it asks ChatGPT and Claude your buyers’ questions, and its crawler and vehicle-page fixes are the same basics Google’s guidance asks for.',
+          'For the full picture, including the chat assistants Google’s tools cannot see, read [a repeatable way to measure AI visibility](@measure-dealership-ai-visibility). Our free scan does not measure AI Overviews; it asks ChatGPT and Claude your buyers’ questions, and its crawler and vehicle-page fixes are the same basics Google’s guidance asks for.',
         ],
       },
       {
@@ -581,7 +581,7 @@ export const ARTICLES = [
         q: 'How do you see AI Mode traffic?',
         a: [
           'Search Console counts AI Mode: [since June 16, 2025](https://developers.google.com/search/updates), its data has counted toward the totals in the Performance report, mixed in with regular web results. The generative AI performance report, which [Google says](https://support.google.com/webmasters/answer/16984139) reached all websites by August 31, 2026, breaks out organic impressions from AI Overviews and AI Mode.',
-          'Our walkthrough of [Search Console’s generative AI report](@search-console-ai-report-dealers) covers what those numbers mean for a single rooftop. In Google Analytics, [Google’s channel definitions](https://support.google.com/analytics/answer/9756891) put visits from AI Overviews and AI Mode in Organic Search, outside the AI Assistant channel.',
+          'Our walkthrough of [the Search Console AI report](@search-console-ai-report-dealers) covers what those numbers mean for a single rooftop. In Google Analytics, [Google’s channel definitions](https://support.google.com/analytics/answer/9756891) put visits from AI Overviews and AI Mode in Organic Search, outside the AI Assistant channel.',
           'Our free scan does not test AI Mode. It asks ChatGPT and Claude your buyers’ questions, and the crawler, page and profile fixes it names are ones Google’s guidance asks for too.',
         ],
       },

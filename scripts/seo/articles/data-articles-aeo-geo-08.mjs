@@ -132,7 +132,7 @@ export const ARTICLES = [
           + '(August 2026) says shoppers now often start with a question to an AI tool, and it '
           + 'recommends dealers publish content that answers those questions.',
           'What buyers ask your people. Read a month of BDC call notes, chat transcripts and '
-          + 'service-drive questions. Our guide to [how car buyers use ChatGPT](@how-car-buyers-use-chatgpt) '
+          + 'service-drive questions. Our guide to [how car shoppers use AI tools](@how-car-buyers-use-chatgpt) '
           + 'shows the research buyers now do before they call.',
           'Questions only your store can answer, such as “Do you service hybrids from other brands?” '
           + 'No national site can answer those for you.',
@@ -388,8 +388,7 @@ export const ARTICLES = [
           + 'policies, so a buyer, or an AI assistant, finds the right answer fast.',
           'The questions come from the same places your answer pages do: BDC call notes, chat logs, '
           + 'the questions service advisors hear at the write-up counter, and the questions buyers now '
-          + 'type into AI assistants. Our list of [the questions car buyers ask '
-          + 'AI](@questions-car-buyers-ask-ai) is a good cross-check against your own.',
+          + 'type into AI assistants. Our list of [common car buyer questions for AI](@questions-car-buyers-ask-ai) is a good cross-check against your own.',
           'An FAQ page is one of the simplest pieces of [AEO for car '
           + 'dealerships](/aeo-geo-for-car-dealers/): it puts your store’s answers on your own site, '
           + 'in plain text, where search engines and AI assistants can read them. Adapt the 40 '
@@ -833,8 +832,7 @@ export const ARTICLES = [
           + 'schemes, keyword stuffing, artificially engineered language meant to trigger citations '
           + 'and prompt injection aimed at its language models among the practices that reduce '
           + 'visibility. A vendor offering to seed threads or sell upvotes is selling manipulation, and '
-          + 'the risk lands on your store’s name. Our list of [AEO red '
-          + 'flags](@aeo-agency-red-flags) covers how to spot these offers.',
+          + 'the risk lands on your store’s name. Our list of [warning signs in AEO pitches](@aeo-agency-red-flags) covers how to spot these offers.',
         ],
       },
       {
@@ -1099,7 +1097,7 @@ export const ARTICLES = [
           + 'rest as time allows.',
           'A reply is written for the next buyer as much as for the reviewer: thank them, address the '
           + 'specific point, state facts without arguing and give a direct way to reach a manager. Our '
-          + 'guide on [how to respond to dealership reviews](@how-to-respond-to-car-dealership-reviews) '
+          + 'guide on [replying to dealership reviews](@how-to-respond-to-car-dealership-reviews) '
           + 'has examples by situation.',
           'On AutoLander’s plans, every Google review gets a reply within 2 business days on AI '
           + 'Foundation, or 1 business day on AI Authority and Market Leader, and a person approves '
@@ -1394,7 +1392,7 @@ export const ARTICLES = [
           + 'language meant to trigger citations and prompt injection aimed at its language models as '
           + 'practices that reduce visibility.',
           'Vendors selling spots in AI answers. No one can promise what an assistant says. Our list of '
-          + '[AEO red flags](@aeo-agency-red-flags) covers how to spot these offers.',
+          + '[red flags in AI search vendors](@aeo-agency-red-flags) covers how to spot these offers.',
         ],
       },
       {

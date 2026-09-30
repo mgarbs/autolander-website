@@ -786,8 +786,7 @@ export const ARTICLES = [
           'For a store, a zero-click answer that names you with the right hours and a line '
             + 'about your reviews can still send a buyer to your lot, your phone or your '
             + 'Business Profile. A zero-click answer that names the store across the street '
-            + 'does the opposite. You can watch the Google side of this in [Search Console’s '
-            + 'generative AI report](@search-console-ai-report-dealers), which counts '
+            + 'does the opposite. You can watch the Google side of this in [Google’s generative AI report in Search Console](@search-console-ai-report-dealers), which counts '
             + 'impressions from AI Overviews and AI Mode.',
         ],
       },
@@ -978,7 +977,7 @@ export const ARTICLES = [
             + 'Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a)).',
           'So the honest answer splits the work by how fast each part can be read, then '
             + 'measures on a fixed schedule. For where this work sits next to regular search, '
-            + 'see [AEO vs SEO for car dealers](@aeo-vs-seo-for-car-dealers). For what a '
+            + 'see [how AEO and SEO work together](@aeo-vs-seo-for-car-dealers). For what a '
             + 'monthly program covers, see [AEO for car '
             + 'dealerships](/aeo-geo-for-car-dealers/).',
         ],
@@ -1137,7 +1136,7 @@ export const ARTICLES = [
             + 'about tools that claim to use internal Google metrics, since “No third-party '
             + 'tool has access to our internal ranking or AI systems.”',
           'A vendor who names a date for your first ChatGPT mention is guessing or selling. '
-            + 'The warning signs are listed in [AEO red flags](@aeo-agency-red-flags). What an '
+            + 'The warning signs are listed in [AEO agency red flags](@aeo-agency-red-flags). What an '
             + 'honest provider can commit to is the work: dates for fixes, profiles, listings '
             + 'and pages, each one checkable in a report.',
         ],
@@ -1168,8 +1167,7 @@ export const ARTICLES = [
           'Fewer wrong facts. Watch whether old hours or a closed department drop out of '
             + 'the answers once the sources they cited are corrected.',
           'A method that stays the same. All of this only means something if the questions '
-            + 'and runs stay fixed; [how to measure AI '
-            + 'visibility](@measure-dealership-ai-visibility) sets out the method.',
+            + 'and runs stay fixed; [measuring your store’s AI visibility](@measure-dealership-ai-visibility) sets out the method.',
         ],
       },
       {
@@ -1279,8 +1277,7 @@ export const ARTICLES = [
           'Every provider builds its score differently, so two scores from two tools rarely '
             + 'compare. What matters is the method behind the number: which assistants were '
             + 'asked, which questions, how many runs, and who checked the matches. The method '
-            + 'itself is laid out in [how to measure AI '
-            + 'visibility](@measure-dealership-ai-visibility).',
+            + 'itself is laid out in [our AI visibility measurement guide](@measure-dealership-ai-visibility).',
           'A score is a starting point for the work in [AEO and GEO for car '
             + 'dealers](/aeo-geo-for-car-dealers/), where the goal is to fix what keeps '
             + 'assistants from reading and trusting your store, then measure again the same '
@@ -1339,8 +1336,7 @@ export const ARTICLES = [
         items: [
           'Assistants it did not test. AutoLander’s free scan measures ChatGPT and Claude '
             + 'only. It does not measure Google AI Overviews, AI Mode, Gemini, Perplexity or '
-            + 'Microsoft Copilot, so for Google’s AI features use [Search Console’s generative '
-            + 'AI report](@search-console-ai-report-dealers).',
+            + 'Microsoft Copilot, so for Google’s AI features use [the Search Console AI report](@search-console-ai-report-dealers).',
           'What happens inside Google. Google says “No third-party tool has access to our '
             + 'internal ranking or AI systems” ([Google Search '
             + 'Central](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)). '

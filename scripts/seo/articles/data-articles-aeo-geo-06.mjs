@@ -422,7 +422,7 @@ export const ARTICLES = [
           + 'asks which car first, then where to buy it, then what it should cost and what the '
           + 'trade is worth, then whether the store can be trusted, and later where to get it '
           + 'serviced. The numbers behind that journey, including which assistants buyers use, '
-          + 'are in [how car buyers use ChatGPT](@how-car-buyers-use-chatgpt).',
+          + 'are in [our look at car buyers and AI](@how-car-buyers-use-chatgpt).',
           'You can see which of these questions name your store with an [AI visibility scan '
           + 'for car dealers](/aeo-geo-for-car-dealers/#scan-form), which asks ChatGPT and '
           + 'Claude up to 20 local buyer questions, 3 times each, with web search on.',
@@ -660,8 +660,7 @@ export const ARTICLES = [
           + 'ZIP in each, and ask them in ChatGPT and Claude with web search on. Write down '
           + 'every store named and every source cited. The pattern that matters is repetition: '
           + 'when a competitor is named in most runs, the sources cited next to its name show '
-          + 'you where your own work starts. For a repeatable method, see [how to '
-          + 'measure AI visibility](@measure-dealership-ai-visibility).',
+          + 'you where your own work starts. For a repeatable method, see [our AI visibility measurement guide](@measure-dealership-ai-visibility).',
           'The scan does the same thing at scale and adds the technical checks: whether your '
           + 'robots.txt and the security service in front of your site let AI crawlers in, '
           + 'whether up to five of your vehicle pages show price, mileage and VIN as text, a '
@@ -1125,8 +1124,7 @@ export const ARTICLES = [
           + 'foundation models, and it costs the chance to be linked.',
           'Check two places. Your robots.txt should not disallow PerplexityBot, and the '
           + 'security service in front of your site, such as a CDN or firewall with bot rules, '
-          + 'should not challenge it. For a crawler-by-crawler decision, see [which AI crawlers '
-          + 'to block and which to allow](@should-dealers-block-ai-crawlers).',
+          + 'should not challenge it. For a crawler-by-crawler decision, see [whether dealers should block AI crawlers](@should-dealers-block-ai-crawlers).',
         ],
       },
       {

@@ -358,8 +358,7 @@ export const ARTICLES = [
           + 'questions are the ones your used-car manager hears at the desk: “Can I trade in a car I '
           + 'still owe money on?” “Do I need my title?” “Will a dealer near me buy my car if I don’t buy '
           + 'one of theirs?” “How long does an appraisal take?”',
-          'Trade-in questions sit alongside [the questions car buyers ask '
-          + 'AI](@questions-car-buyers-ask-ai) about models, prices and stores, and a buyer who asks '
+          'Trade-in questions sit alongside [the other questions shoppers ask AI](@questions-car-buyers-ask-ai) about models, prices and stores, and a buyer who asks '
           + 'about the process is often already thinking about a visit. [Cox makes the same '
           + 'point](https://www.coxautoinc.com/insights/how-ai-is-influencing-vehicle-discovery-and-what-dealers-can-do-about-it/) '
           + 'about shoppers in general: they use AI to research, compare and prepare for the dealership '
@@ -500,8 +499,7 @@ export const ARTICLES = [
         items: [
           'Trade-in to financing. One sentence on how trade equity, or a payoff larger than the offer, '
           + 'affects the deal, then a link to your financing page for the rest.',
-          'Trade-in to FAQ. The short trade-in answers belong on [a dealership FAQ '
-          + 'page](@car-dealership-faq-page) too, in the same words, so the two pages never drift apart.',
+          'Trade-in to FAQ. The short trade-in answers belong on [your dealership FAQ page](@car-dealership-faq-page) too, in the same words, so the two pages never drift apart.',
           'Trade-in to inventory. A buyer ready to trade is usually shopping a specific car, so link to '
           + 'your inventory and make sure your [vehicle detail pages AI can '
           + 'read](@vehicle-detail-page-ai-readable) show price, mileage and the VIN as text.',
@@ -687,7 +685,7 @@ export const ARTICLES = [
           {
             title: 'The FAQ says the same thing',
             body:
-              'Put the short version of each step on [a dealership FAQ page](@car-dealership-faq-page) '
+              'Put the short version of each step on [your dealership FAQ page](@car-dealership-faq-page) '
               + 'in the same words, so the financing page and the FAQ never disagree.',
           },
         ],
@@ -1191,7 +1189,7 @@ export const ARTICLES = [
           + 'work, filmed at your service drive.',
           'Feature how-tos on models you sell. Pairing a phone, folding the third row, setting up '
           + 'driver-assistance features, or charging at home if you sell EVs.',
-          'Questions from your FAQ. Every entry on [a dealership FAQ page](@car-dealership-faq-page) '
+          'Questions from your FAQ. Every entry on [your FAQ page for car buyers](@car-dealership-faq-page) '
           + 'that people also ask on the phone every week is a candidate for a short video answer.',
           'Leave out price quotes, rates and anything that changes weekly. Those belong on the page, '
           + 'where they are easy to update.',

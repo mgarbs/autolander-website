@@ -1040,7 +1040,7 @@ export const ARTICLES = [
           + 'and Offer markup on vehicle pages, with the same price a buyer sees. '
           + '[Google says](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) '
           + 'structured data is not required for its generative AI search, so treat it as a clarity aid. See '
-          + '[schema markup for car dealerships](@car-dealership-schema-markup) for what to include.',
+          + '[structured data for dealer websites](@car-dealership-schema-markup) for what to include.',
           'Consistent store facts. Use the same name, address, phone and hours on your website, Google Business '
           + 'Profile, Bing Places, Apple Business Connect, DealerRater and the listing sites. '
           + '[Bing says](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) clear entity '
@@ -1064,7 +1064,7 @@ export const ARTICLES = [
           + 'that you can measure. A good answer names specific tools that read the file. A weak answer mentions '
           + 'Google rankings or AI Overviews.',
           'The same test applies to any AI search vendor: the pitch should match what Google, OpenAI and Anthropic '
-          + 'actually document. Our list of [AEO red flags](@aeo-agency-red-flags) covers the other promises no '
+          + 'actually document. Our list of [warning signs in AEO pitches](@aeo-agency-red-flags) covers the other promises no '
           + 'one can keep.',
         ],
       },
@@ -1188,7 +1188,7 @@ export const ARTICLES = [
           + 'and answers rely on.',
           'Can training crawlers such as GPTBot and ClaudeBot be set separately, so the store decides on training '
           + 'without touching search? Our breakdown of '
-          + '[which AI crawlers to block and which to allow](@should-dealers-block-ai-crawlers) explains the '
+          + '[robots.txt rules for AI crawlers](@should-dealers-block-ai-crawlers) explains the '
           + 'difference.',
           'Can we edit robots.txt ourselves, or does every change go through a support ticket? If it is a ticket, '
           + 'how long does one usually take?',
@@ -1232,7 +1232,7 @@ export const ARTICLES = [
           + 'view source. [Bing says](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) '
           + 'important information should be visible on the URL itself and warns against hiding critical content '
           + 'behind client-side rendering. Our checklist for '
-          + '[vehicle detail pages AI can read](@vehicle-detail-page-ai-readable) covers the rest of the page.',
+          + '[readable vehicle detail pages](@vehicle-detail-page-ai-readable) covers the rest of the page.',
           'Do payment calculators, price badges or incentive banners stand in for the actual price in the text? '
           + 'A price that only exists inside a script or an image is invisible to a crawler that reads text.',
           'Is the price on the vehicle page the same price in the inventory feed and in any structured data? '
@@ -1263,7 +1263,7 @@ export const ARTICLES = [
           + 'the two drift apart.',
           '[Google says](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) structured '
           + 'data is not required for its generative AI search, so a missing field is a clarity issue rather than '
-          + 'an emergency. Our guide to [schema markup for car dealerships](@car-dealership-schema-markup) covers '
+          + 'an emergency. Our guide to [car dealership schema markup](@car-dealership-schema-markup) covers '
           + 'what to include.',
         ],
       },

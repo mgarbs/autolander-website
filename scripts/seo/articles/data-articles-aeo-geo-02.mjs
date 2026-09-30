@@ -216,7 +216,7 @@ export const ARTICLES = [
           'ChatGPT, Claude, Perplexity and Microsoft Copilot. None of them report into Search Console. '
           + 'GA4 catches some of their visits, Bing’s AI Performance report covers Copilot citations, '
           + 'and the rest takes asking the assistants.',
-          'For a method that covers all of these, see [how to measure AI visibility](@measure-dealership-ai-visibility): '
+          'For a method that covers all of these, see [a repeatable way to measure AI visibility](@measure-dealership-ai-visibility): '
           + 'repeated questions to the assistants on one side, these traffic reports on the other.',
         ],
       },
@@ -314,7 +314,7 @@ export const ARTICLES = [
           'Buyers bring exactly those questions to assistants. '
           + '[Cox Automotive wrote in August 2026](https://www.coxautoinc.com/insights/how-ai-is-influencing-vehicle-discovery-and-what-dealers-can-do-about-it/) '
           + 'that shoppers now often start with a question to an AI tool instead of a marketplace or '
-          + 'dealer site, and our guide on [how car buyers use ChatGPT](@how-car-buyers-use-chatgpt) '
+          + 'dealer site, and our guide on [how shoppers use AI to buy cars](@how-car-buyers-use-chatgpt) '
           + 'covers what they ask. When an assistant opens your VDP to answer, it can only use what it '
           + 'can read.',
           'That makes the vehicle page the most practical part of '
@@ -1187,7 +1187,7 @@ export const ARTICLES = [
           'Dealer comments with first-hand notes from reconditioning.',
           'Location: which rooftop has the car, for dealer groups.',
           'Every field in the feed should land on the page as text, which '
-          + '[vehicle detail pages AI can read](@vehicle-detail-page-ai-readable) covers in detail.',
+          + '[our vehicle page guide](@vehicle-detail-page-ai-readable) covers in detail.',
         ],
       },
       {

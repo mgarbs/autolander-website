@@ -105,8 +105,7 @@ export const ARTICLES = [
           + 'between years.',
           'Two habits stand out for a dealership. Shoppers now meet your reviews twice, once as the raw '
           + 'text and once as a summary written by software, and both are built from the same words. '
-          + 'And AI has become one more place a shopper starts; [how car buyers use '
-          + 'ChatGPT](@how-car-buyers-use-chatgpt) covers what that looks like for vehicle shopping in '
+          + 'And AI has become one more place a shopper starts; [how shoppers use AI to buy cars](@how-car-buyers-use-chatgpt) covers what that looks like for vehicle shopping in '
           + 'particular.',
         ],
       },
@@ -1172,7 +1171,7 @@ export const ARTICLES = [
           'Use is already broad. The same Cars.com release says 44% of the consumers it surveyed used '
           + 'AI-powered car search tools on marketplaces such as Cars.com, and among AI users, 97% say AI '
           + 'will impact their purchase decisions. For the wider '
-          + 'picture, see [how car buyers use ChatGPT](@how-car-buyers-use-chatgpt), and our [AI visibility '
+          + 'picture, see [our look at car buyers and AI](@how-car-buyers-use-chatgpt), and our [AI visibility '
           + 'scan for car dealers](/aeo-geo-for-car-dealers/#scan-form) shows what ChatGPT and Claude tell '
           + 'those buyers about your store.',
         ],
@@ -1292,8 +1291,7 @@ export const ARTICLES = [
           + 'an AI answer, each of these should confirm it within a click or two, on your own site and your '
           + 'profiles.',
         items: [
-          'Price as text on every vehicle page, matching what your listings show; [vehicle detail pages AI '
-          + 'can read](@vehicle-detail-page-ai-readable) covers how to set that up.',
+          'Price as text on every vehicle page, matching what your listings show; [our vehicle page guide](@vehicle-detail-page-ai-readable) covers how to set that up.',
           'Mileage and the full VIN as text, next to the price.',
           'Fees stated plainly: your documentation fee and any add-ons, so the number a buyer hears later '
           + 'matches the one they read.',

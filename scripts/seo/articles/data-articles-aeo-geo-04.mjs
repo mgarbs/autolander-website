@@ -67,7 +67,7 @@ export const ARTICLES = [
           + 'and eligible for a snippet, which is the SEO your website vendor already sells. An AEO agency '
           + 'adds what assistants read and repeat: robots.txt rules for OAI-SearchBot, Claude-SearchBot and '
           + 'PerplexityBot, prices and mileage as text on every VDP, and the same store facts on every '
-          + 'listing. Our explainer on [AEO vs SEO for car dealers](@aeo-vs-seo-for-car-dealers) draws the '
+          + 'listing. Our explainer on [the difference between AEO and SEO](@aeo-vs-seo-for-car-dealers) draws the '
           + 'line between the two.',
           'For a dealership the jobs have dealer names: the sales and service Business Profiles, DealerRater '
           + 'and the marketplace dealer profiles, review requests from your own CRM or DMS, and a fix list '
@@ -374,7 +374,7 @@ export const ARTICLES = [
           + 'when the method is shown and the margin is honest.',
           'Treat a dashboard as a red flag when it shows a score with no raw answers, no count of runs '
           + 'per question and no margin. A secret method is a method you cannot check. Our guide on '
-          + '[how to measure AI visibility](@measure-dealership-ai-visibility) shows a method your own '
+          + '[measuring your store’s AI visibility](@measure-dealership-ai-visibility) shows a method your own '
           + 'team can run and compare against any vendor’s numbers.',
         ],
       },
@@ -752,7 +752,7 @@ export const ARTICLES = [
           + 'down which stores it names and which sources it cites. That baseline is what an ad test gets '
           + 'judged against.',
           'If you hire help, hold them to the questions in our guide on '
-          + '[how to choose an AEO agency](@how-to-choose-an-aeo-agency), and keep ad spend and answer work '
+          + '[picking an AEO agency](@how-to-choose-an-aeo-agency), and keep ad spend and answer work '
           + 'on separate lines of the budget.',
         ],
       },
@@ -974,7 +974,7 @@ export const ARTICLES = [
           + 'bans buying positive or negative reviews, and Google prohibits offering incentives for them.',
           'A fee for inside Google data. [Google says](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) '
           + 'no third-party tool has access to its internal ranking or AI systems.',
-          'If a proposal includes any of these, our list of [AEO red flags](@aeo-agency-red-flags) explains '
+          'If a proposal includes any of these, our list of [AEO agency red flags](@aeo-agency-red-flags) explains '
           + 'what to ask next.',
         ],
       },
@@ -1203,7 +1203,7 @@ export const ARTICLES = [
           + 'markup must accurately reflect visible content, and '
           + '[Google says](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) '
           + 'structured data is not required for generative AI search. Our guide to '
-          + '[vehicle detail pages AI can read](@vehicle-detail-page-ai-readable) covers the fields.',
+          + '[VDPs that AI tools can read](@vehicle-detail-page-ai-readable) covers the fields.',
         ],
       },
       {
@@ -1338,7 +1338,7 @@ export const ARTICLES = [
             body:
               'Start with the questions your fixed question set shows you missing from, answer each on its '
               + 'own page, and watch GA4 and Search Console. If you would rather hand the monthly work to '
-              + 'someone, use our guide on [how to choose an AEO agency](@how-to-choose-an-aeo-agency) to '
+              + 'someone, use our guide on [choosing an AEO partner](@how-to-choose-an-aeo-agency) to '
               + 'vet them.',
           },
         ],
