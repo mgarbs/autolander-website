@@ -65,11 +65,26 @@ const MailLink = ({ email = 'sales@autolander.ai', subject = 'AutoLander support
   );
 };
 
-export default function SiteFooter({ extraLine = '', mobileCtaPadding = false }) {
+const FOOTER_LINK = 'block py-1 transition-colors hover:text-blue-500';
+
+// `columns` replaces the site-wide link columns with a page's own (e.g. the AEO and GEO page keeps
+// its footer on topic). Each column: { heading, links: [{ label, href, mail? }] }.
+function PageColumns({ columns }) {
+  return columns.map((column) => (
+    <nav key={column.heading} aria-label={column.heading} className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
+      <h3 className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">{column.heading}</h3>
+      {column.links.map((link) => (link.mail
+        ? <MailLink key={link.label} className={FOOTER_LINK}>{link.label}</MailLink>
+        : <a key={link.label} href={link.href} className={FOOTER_LINK}>{link.label}</a>))}
+    </nav>
+  ));
+}
+
+export default function SiteFooter({ extraLine = '', mobileCtaPadding = false, columns = null }) {
   return (
     <footer className={`border-t border-white/5 bg-black py-12 sm:py-16 lg:py-20 ${mobileCtaPadding ? 'pb-28 md:pb-16 lg:pb-20' : ''}`}>
       <div className="mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 sm:gap-x-8 sm:gap-y-10 lg:grid-cols-5">
+        <div className={`grid grid-cols-2 gap-x-6 gap-y-8 sm:gap-x-8 sm:gap-y-10 ${columns ? 'sm:grid-cols-4' : 'sm:grid-cols-4 lg:grid-cols-5'}`}>
           <div className="col-span-2 flex items-center space-x-3 sm:col-span-4 lg:col-span-1">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20">
               <CarFront className="h-6 w-6 text-white" />
@@ -87,6 +102,7 @@ export default function SiteFooter({ extraLine = '', mobileCtaPadding = false })
             />
           </div>
 
+          {columns ? <PageColumns columns={columns} /> : (<>
           <nav aria-label="Product" className="flex flex-col items-start gap-1 text-[13px] font-semibold text-slate-400">
             <h3 className="mb-2 text-[10px] font-black uppercase tracking-widest text-slate-400">Product</h3>
             <a href="/facebook-marketplace-auto-poster/" className="block py-1 transition-colors hover:text-blue-500">Auto Poster</a>
@@ -139,6 +155,7 @@ export default function SiteFooter({ extraLine = '', mobileCtaPadding = false })
             <a href="/privacy.html" className="block py-1 transition-colors hover:text-blue-500">Privacy</a>
             <a href="/terms.html" className="block py-1 transition-colors hover:text-blue-500">Terms</a>
           </nav>
+          </>)}
         </div>
 
         <div className="mt-8 border-t border-white/5 pt-6 sm:mt-10 sm:pt-8">

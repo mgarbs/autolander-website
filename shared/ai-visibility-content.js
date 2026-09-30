@@ -533,6 +533,41 @@ export const FOOTER = {
   ],
 };
 
+// Page-specific footer columns (Michael, 2026-09-30): this page's footer keeps its links on the AEO and
+// GEO topic plus a short path back to AutoLander, instead of the site-wide Marketplace product footer.
+// One list feeds the React footer and the no-JS page, so they cannot drift. `mail: true` renders the
+// support e-mail picker in React and a link to /contact/ in the no-JS page (no raw address in HTML).
+export const FOOTER_NAV = [
+  {
+    heading: 'AEO & GEO',
+    links: [
+      { label: 'Free AI visibility scan', href: `${AI_VISIBILITY_PATH}#scan-form` },
+      { label: 'What AEO and GEO mean', href: `${AI_VISIBILITY_PATH}#what-is-aeo-geo` },
+      { label: 'Plans and pricing', href: `${AI_VISIBILITY_PATH}#plans` },
+      { label: 'AEO and GEO questions', href: `${AI_VISIBILITY_PATH}#faq` },
+    ],
+  },
+  {
+    heading: 'AutoLander',
+    links: [
+      { label: 'Facebook Marketplace software', href: '/facebook-marketplace-for-car-dealers/' },
+      { label: 'Team plans', href: '/team/' },
+      { label: 'Marketplace pricing', href: '/facebook-marketplace-auto-poster-pricing/' },
+      { label: 'About AutoLander', href: '/about/' },
+    ],
+  },
+  {
+    heading: 'Company',
+    links: [
+      { label: 'Blog', href: '/blog/' },
+      { label: 'Contact', href: '/contact/' },
+      { label: 'Support', href: '/contact/', mail: true },
+      { label: 'Privacy', href: '/privacy.html' },
+      { label: 'Terms', href: '/terms.html' },
+    ],
+  },
+];
+
 // One-paragraph service description (Service.description in JSON-LD, llms.txt, agents.md, twin tldr).
 export const SERVICE_SUMMARY = `AI Visibility is AutoLander LLC's AEO and GEO service (answer engine optimization and generative engine optimization) for US car dealerships. It measures whether ChatGPT (OpenAI) and Claude (Anthropic), each with web search on, name a dealership when local buyers ask where to buy a car, then fixes what keeps AI assistants, including Google Gemini and Perplexity, from finding and trusting the store: website crawler access and vehicle-page text, the Google Business Profile, listings, reviews and answer pages. It starts with a free scan. Plans are ${fmtUsd(F.monthly)}, ${fmtUsd(A.monthly)} and ${fmtUsd(M.monthly)} a month plus setup, month to month. It is separate from AutoLander's Facebook Marketplace software.`;
 
