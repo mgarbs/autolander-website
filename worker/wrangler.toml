@@ -28,8 +28,9 @@ routes = [
 ZARAZ_MODE = "off"
 # Cache-Control: no-transform (+ Worker-side compression) on /, /aeo-geo-for-car-dealers/, /team/ so the edge does not
 # inject the Web Analytics beacon there (those pages load it after `load`). src/agent/no-transform.js.
-# TRACKING KV cfg:html_no_transform ('on'|'off') overrides this (60s cache) - the no-deploy kill switch.
-HTML_NO_TRANSFORM = "on"
+# Ships OFF: TRACKING KV cfg:html_no_transform ('on'|'off', 60s cache) overrides this. Flip the KV to 'on' after
+# the deploy and run the GET checks in no-transform.js; flip it back to 'off' on any failure (no deploy needed).
+HTML_NO_TRANSFORM = "off"
 ENRICH_KNOWN_VISITOR_MATCHING = "false"
 ALLOWED_ORIGINS = "https://autolander.ai,https://www.autolander.ai,https://book.autolander.ai,https://preview.autolander.ai,https://autolander-preview.pages.dev,https://mgarbs.github.io,http://localhost:5173,http://localhost:5174,http://localhost:5176,http://127.0.0.1:5173,http://127.0.0.1:5174,http://127.0.0.1:5176,http://localhost:4173,http://127.0.0.1:4173"
 OPENAI_MODEL = "gpt-5.4-mini"
