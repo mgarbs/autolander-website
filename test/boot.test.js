@@ -117,6 +117,20 @@ test('the boot loader remembers a demo tap before the app is up, and only then',
   assert.equal(run.window.__alPendingDemo, false, 'after mount the app handles its own taps');
 });
 
+test('the boot loader notes input since the last fragment navigation (lib/use-live.js reads it)', () => {
+  const run = runLoader();
+  for (const type of ['wheel', 'touchstart', 'keydown', 'pointerdown']) {
+    assert.equal(JSON.stringify(run.listeners[type].capture), '{"capture":true,"passive":true}', type); // vm-realm object
+  }
+  assert.equal(run.window.__alInput, undefined);
+  run.listeners.touchstart.fn({});
+  assert.equal(run.window.__alInput, 1);
+  run.listeners.hashchange.fn({});
+  assert.equal(run.window.__alInput, 0, 'a followed fragment link is where the visitor wants to be');
+  run.listeners.wheel.fn({});
+  assert.equal(run.window.__alInput, 1);
+});
+
 test('deferEntryToPaint moves the one head entry script to a loader at the end of <body>', () => {
   const shell = '<html><head><script defer src="/al-tags-v1.js"></script>\n    <script type="module" crossorigin src="/assets/index-Ab_1.js"></script>\n</head><body><div id="root"></div>\n  </body></html>';
   const out = deferEntryToPaint(shell, { preloadHrefs: ['/assets/R-1.js'], routeEntryHref: '/assets/R-1.js' });

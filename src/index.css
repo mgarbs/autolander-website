@@ -33,12 +33,20 @@
 
 /*
  * Metric-matched local fallbacks, used only while Inter / Archivo are still loading (font-display: swap).
- * Measured from public/fonts/*.woff2 (Inter: UPM 2048, typo=hhea 1984/-494/0, USE_TYPO_METRICS; Archivo:
- * UPM 1000, typo=hhea 878/-210/0, USE_TYPO_METRICS) against Arial (Liberation Sans has identical widths).
- * size-adjust = web advance / Arial advance on the real hero copy, rounded up so the fallback is never
- * narrower; ascent/descent = (web metric + 0.15em per side) / size-adjust, so the baseline and every line box
- * stay put (all line-heights are explicit) and a fallback text box is never smaller than the web-font one.
- * When local() misses (no Arial or Liberation Sans) the family is skipped and the stack falls through as before.
+ * Two sets, because a phone may have neither font of the other set:
+ *   'Inter Fallback' / 'Archivo Fallback'               Arial (Windows, macOS, iOS) or Liberation Sans (Linux).
+ *   'Inter Fallback Roboto' / 'Archivo Fallback Roboto'  Roboto: Android (and ChromeOS), which has no Arial or
+ *       Liberation Sans, so without this set it painted first in unadjusted system-ui. Static Roboto names first
+ *       (Android 11 and older); then 'Roboto' itself, the variable Roboto of Android 12+.
+ * A family whose local() fonts are all missing is skipped, so each device uses the first set it has.
+ * size-adjust: chosen on the real first screens of /, /ai-visibility/ and /team/ (JS off, web fonts blocked, with a
+ * browser that has neither Inter installed nor, for the Roboto set, Arial) so that every first-screen block wraps
+ * into the same number of lines as with the web font at 360-430 px and 768-1440 px (Roboto: 360-432 px and 768 px),
+ * and the largest block is never smaller: the swap to the web font moves nothing and adds no larger LCP candidate.
+ * Each value sits inside the range that met that (narrowest: Arial 451-599, 107.75-108%); faces with no first-screen
+ * text use the width ratio measured on all the pages' text (Archivo upright: none on these pages, so estimated).
+ * ascent/descent = (web metric + 0.15em per side) / size-adjust (Inter: UPM 2048, typo=hhea 1984/-494/0; Archivo:
+ * UPM 1000, typo=hhea 878/-210/0), so the baseline and every line box stay put (all line-heights are explicit).
  * Top level on purpose (outside every @layer): leanBaseCss keeps them in the inline route CSS too.
  */
 @font-face {
@@ -47,8 +55,8 @@
   font-weight: 100 450;
   src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans');
   size-adjust: 107.8%;
-  ascent-override: 103.79%;
-  descent-override: 36.30%;
+  ascent-override: 103.78%;
+  descent-override: 36.29%;
   line-gap-override: 0%;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -58,9 +66,9 @@
   font-style: normal;
   font-weight: 451 599;
   src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans');
-  size-adjust: 109%;
-  ascent-override: 102.64%;
-  descent-override: 35.90%;
+  size-adjust: 107.9%;
+  ascent-override: 103.68%;
+  descent-override: 36.26%;
   line-gap-override: 0%;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -71,8 +79,8 @@
   font-weight: 600 749;
   src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold');
   size-adjust: 103.3%;
-  ascent-override: 108.31%;
-  descent-override: 37.88%;
+  ascent-override: 108.30%;
+  descent-override: 37.87%;
   line-gap-override: 0%;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -82,9 +90,9 @@
   font-style: normal;
   font-weight: 750 1000;
   src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold');
-  size-adjust: 104.5%;
-  ascent-override: 107.06%;
-  descent-override: 37.44%;
+  size-adjust: 90.6%;
+  ascent-override: 123.48%;
+  descent-override: 43.18%;
   line-gap-override: 0%;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -107,7 +115,7 @@
   font-weight: 851 1000;
   src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold');
   size-adjust: 109%;
-  ascent-override: 94.32%;
+  ascent-override: 94.31%;
   descent-override: 33.03%;
   line-gap-override: 0%;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -118,9 +126,9 @@
   font-style: italic;
   font-weight: 1 850;
   src: local('Arial Bold Italic'), local('Arial-BoldItalicMT'), local('Liberation Sans Bold Italic'), local('LiberationSans-BoldItalic');
-  size-adjust: 103.8%;
-  ascent-override: 99.04%;
-  descent-override: 34.69%;
+  size-adjust: 105.5%;
+  ascent-override: 97.44%;
+  descent-override: 34.12%;
   line-gap-override: 0%;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -130,9 +138,105 @@
   font-style: italic;
   font-weight: 851 1000;
   src: local('Arial Bold Italic'), local('Arial-BoldItalicMT'), local('Liberation Sans Bold Italic'), local('LiberationSans-BoldItalic');
-  size-adjust: 109%;
-  ascent-override: 94.32%;
-  descent-override: 33.03%;
+  size-adjust: 97.2%;
+  ascent-override: 105.76%;
+  descent-override: 37.04%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter Fallback Roboto';
+  font-style: normal;
+  font-weight: 100 450;
+  src: local('Roboto Regular'), local('Roboto'), local('Roboto-Regular');
+  size-adjust: 108%;
+  ascent-override: 103.59%;
+  descent-override: 36.22%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter Fallback Roboto';
+  font-style: normal;
+  font-weight: 451 599;
+  src: local('Roboto Medium'), local('Roboto-Medium'), local('Roboto'), local('Roboto-Regular');
+  size-adjust: 107.5%;
+  ascent-override: 104.07%;
+  descent-override: 36.39%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter Fallback Roboto';
+  font-style: normal;
+  font-weight: 600 749;
+  src: local('Roboto Bold'), local('Roboto-Bold'), local('Roboto'), local('Roboto-Regular');
+  size-adjust: 109.5%;
+  ascent-override: 102.17%;
+  descent-override: 35.73%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter Fallback Roboto';
+  font-style: normal;
+  font-weight: 750 1000;
+  src: local('Roboto Black'), local('Roboto-Black'), local('Roboto'), local('Roboto-Regular');
+  size-adjust: 106%;
+  ascent-override: 105.54%;
+  descent-override: 36.91%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Archivo Fallback Roboto';
+  font-style: normal;
+  font-weight: 1 850;
+  src: local('Roboto Bold'), local('Roboto-Bold'), local('Roboto'), local('Roboto-Regular');
+  size-adjust: 110%;
+  ascent-override: 93.45%;
+  descent-override: 32.73%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Archivo Fallback Roboto';
+  font-style: normal;
+  font-weight: 851 1000;
+  src: local('Roboto Black'), local('Roboto-Black'), local('Roboto'), local('Roboto-Regular');
+  size-adjust: 116%;
+  ascent-override: 88.62%;
+  descent-override: 31.03%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Archivo Fallback Roboto';
+  font-style: italic;
+  font-weight: 1 850;
+  src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), local('Roboto'), local('Roboto-Regular');
+  size-adjust: 117.25%;
+  ascent-override: 87.68%;
+  descent-override: 30.70%;
+  line-gap-override: 0%;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Archivo Fallback Roboto';
+  font-style: italic;
+  font-weight: 851 1000;
+  src: local('Roboto Black Italic'), local('Roboto-BlackItalic'), local('Roboto'), local('Roboto-Regular');
+  size-adjust: 120.8%;
+  ascent-override: 85.10%;
+  descent-override: 29.80%;
   line-gap-override: 0%;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -144,8 +248,8 @@
  * clean body, monospace "dealer-data" HUD) and the posting-engine signature.
  */
 @theme {
-  --font-sans: 'Inter', 'Inter Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Archivo', 'Archivo Fallback', 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  --font-sans: 'Inter', 'Inter Fallback', 'Inter Fallback Roboto', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Archivo', 'Archivo Fallback', 'Archivo Fallback Roboto', 'Inter', 'Inter Fallback', 'Inter Fallback Roboto', system-ui, sans-serif;
   --font-mono: ui-monospace, 'SF Mono', 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
 
   --color-ink: #050505;

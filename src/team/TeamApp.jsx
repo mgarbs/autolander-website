@@ -145,8 +145,11 @@ export default function TeamApp({ prerendered = false, restHtml = '', variant: p
   useEffect(() => {
     window.__alHydrated = true;
     if (!window.__alPendingDemo) return undefined;
-    window.__alPendingDemo = false;
-    const id = window.setTimeout(() => openDemoBooking(), 0);
+    // Cleared when it fires, not before: a cancelled run (StrictMode, a re-render) leaves it for the next one.
+    const id = window.setTimeout(() => {
+      window.__alPendingDemo = false;
+      openDemoBooking();
+    }, 0);
     return () => window.clearTimeout(id);
   }, [openDemoBooking]);
 

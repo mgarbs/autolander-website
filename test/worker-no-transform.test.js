@@ -4,7 +4,7 @@ import test from 'node:test';
 import vm from 'node:vm';
 import worker from '../worker/src/index.js';
 import {
-  NO_TRANSFORM_KEY, NO_TRANSFORM_PATHS, pickContentEncoding, readNoTransformMode, withoutEdgeRewrites,
+  NO_TRANSFORM_KEY, NO_TRANSFORM_PATHS, clientAcceptEncoding, pickContentEncoding, readNoTransformMode, withoutEdgeRewrites,
 } from '../worker/src/agent/no-transform.js';
 import { beaconLoaderHtml, CF_WEB_ANALYTICS_TOKEN } from '../scripts/spa-shell.mjs';
 import { AI_VISIBILITY_DIR, AI_VISIBILITY_PATH } from '../shared/ai-visibility-route.js';
@@ -26,6 +26,49 @@ test('content coding follows the client: br, then gzip, else identity; q=0 means
   assert.equal(pickContentEncoding(null), '');
   assert.equal(pickContentEncoding('*'), 'br');
   assert.equal(pickContentEncoding('*;q=0, gzip'), 'gzip');
+  // The client's order of preference counts; br wins only a tie.
+  assert.equal(pickContentEncoding('br;q=0.1, gzip;q=1'), 'gzip');
+  assert.equal(pickContentEncoding('gzip;q=0.5, br;q=0.5'), 'br');
+  assert.equal(pickContentEncoding('gzip, *;q=0.2'), 'gzip');
+});
+
+// A production request: Cloudflare hands the Worker a rewritten header ("gzip, br", workerd#5289) and keeps the
+// client's own value in cf.clientAcceptEncoding. Node's Request has no cf, so it is attached here.
+const edgeGet = (path, cf, header = 'gzip, br') => {
+  const request = new Request(`https://autolander.ai${path}`, { headers: { Accept: 'text/html', 'Accept-Encoding': header } });
+  Object.defineProperty(request, 'cf', { value: cf, enumerable: true });
+  return request;
+};
+
+test('in production the coding follows cf.clientAcceptEncoding, never the rewritten header', async () => {
+  assert.equal(clientAcceptEncoding(edgeGet('/', { clientAcceptEncoding: 'gzip, deflate' })), 'gzip, deflate');
+  assert.equal(clientAcceptEncoding(edgeGet('/', { clientAcceptEncoding: '' })), '');
+  assert.equal(clientAcceptEncoding(edgeGet('/', { country: 'US' })), undefined, 'unknown, not the header');
+  assert.equal(clientAcceptEncoding(get('/', { 'Accept-Encoding': 'gzip' })), 'gzip', 'no cf object (Node): the header');
+  assert.equal(clientAcceptEncoding(new Request('https://autolander.ai/')), '');
+
+  const url = new URL('https://autolander.ai/aeo-geo-for-car-dealers/');
+  const gzip = withoutEdgeRewrites(edgeGet('/aeo-geo-for-car-dealers/', { clientAcceptEncoding: 'gzip, deflate' }), url, page(), { mode: 'on' });
+  assert.equal(gzip.headers.get('Content-Encoding'), 'gzip', 'curl --compressed / python-requests without brotli');
+  assert.equal(gzip.headers.get('X-AL-Edge'), 'no-transform:gzip');
+  const none = withoutEdgeRewrites(edgeGet('/aeo-geo-for-car-dealers/', { clientAcceptEncoding: '' }), url, page(), { mode: 'on' });
+  assert.equal(none.headers.get('Content-Encoding'), null, 'plain curl / Go net/http without compression: identity');
+  assert.equal(none.headers.get('X-AL-Edge'), 'no-transform:identity');
+  assert.equal(await none.text(), html);
+  const br = withoutEdgeRewrites(edgeGet('/aeo-geo-for-car-dealers/', { clientAcceptEncoding: 'gzip, deflate, br' }), url, page(), { mode: 'on' });
+  assert.equal(br.headers.get('Content-Encoding'), 'br');
+
+  // No cf.clientAcceptEncoding: the client's value is unknown, so the edge keeps encoding (and injecting) as before.
+  const unknown = withoutEdgeRewrites(edgeGet('/aeo-geo-for-car-dealers/', { country: 'US' }), url, page(), { mode: 'on' });
+  assert.equal(unknown.headers.get('Cache-Control'), 'max-age=600', 'no no-transform');
+  assert.equal(unknown.headers.get('Content-Encoding'), 'gzip', 'origin coding untouched');
+  assert.equal(unknown.headers.get('ETag'), '"abc"');
+  assert.equal(unknown.headers.get('X-AL-Edge'), 'skip:client-accept-encoding');
+  assert.equal(await unknown.text(), html);
+
+  // An explicit value (index.js passes the one it read before re-creating the request) wins over the request's.
+  const explicit = withoutEdgeRewrites(get('/'), new URL('https://autolander.ai/'), page(), { mode: 'on', acceptEncoding: 'gzip' });
+  assert.equal(explicit.headers.get('Content-Encoding'), 'gzip');
 });
 
 test('the three prerendered pages get no-transform and a Worker-chosen encoding; headers are otherwise kept', async () => {
@@ -86,7 +129,7 @@ test('mode: KV overrides the deployed default, failures fall back to it', async 
   assert.equal(await readNoTransformMode({ TRACKING: { get() { throw new Error('KV down'); } }, HTML_NO_TRANSFORM: 'on' }), 'on');
   assert.equal(await readNoTransformMode({}), 'off');
   const toml = readFileSync('worker/wrangler.toml', 'utf8');
-  assert.match(toml, /^HTML_NO_TRANSFORM = "on"$/m, 'deployed default');
+  assert.match(toml, /^HTML_NO_TRANSFORM = "off"$/m, 'ships off: the KV turns it on after the deploy (staged rollout)');
 });
 
 test('the Worker applies it end to end on the homepage and nowhere else, keeping the Zaraz injection', async (t) => {
@@ -99,6 +142,21 @@ test('the Worker applies it end to end on the homepage and nowhere else, keeping
   assert.equal(home.headers.get('Content-Encoding'), 'br');
   assert.equal(home.headers.get('X-AL-Zaraz'), 'injected:on');
   assert.ok((await home.text()).includes('data-al-zaraz'), 'Zaraz still injected');
+  // Production shape: the Worker sees "gzip, br" but the client sent "gzip, deflate". The Zaraz path re-creates the
+  // request (dropping cf in Node), so this also proves the client's value is read before that.
+  const edgeHome = await worker.fetch(edgeGet('/', { clientAcceptEncoding: 'gzip, deflate' }), env, { waitUntil() {} });
+  assert.equal(edgeHome.headers.get('Content-Encoding'), 'gzip');
+  assert.equal(edgeHome.headers.get('X-AL-Zaraz'), 'injected:on');
+  const edgePlain = await worker.fetch(edgeGet('/team/', { clientAcceptEncoding: '' }), env, { waitUntil() {} });
+  assert.equal(edgePlain.headers.get('Content-Encoding'), null);
+  assert.match(await edgePlain.text(), /^<!doctype html>/);
+  const edgeUnknown = await worker.fetch(edgeGet('/', {}), env, { waitUntil() {} });
+  assert.doesNotMatch(edgeUnknown.headers.get('Cache-Control') || '', /no-transform/);
+  assert.equal(edgeUnknown.headers.get('X-AL-Edge'), 'skip:client-accept-encoding');
+  const head = await worker.fetch(new Request('https://autolander.ai/', { method: 'HEAD', headers: { Accept: 'text/html' } }), env, { waitUntil() {} });
+  assert.equal(head.headers.get('X-AL-Edge'), null, 'HEAD is never given no-transform: verify with GET');
+  const off = await worker.fetch(edgeGet('/', { clientAcceptEncoding: 'br' }), { TRACKING: { get: async (key) => ({ 'cfg:zaraz_mode': 'on' })[key] ?? null } }, { waitUntil() {} });
+  assert.equal(off.headers.get('X-AL-Edge'), null, 'KV unset: the shipped default is off');
   const contact = await worker.fetch(new Request('https://autolander.ai/contact/', { headers: { Accept: 'text/html', 'Accept-Encoding': 'gzip, br' } }), env, { waitUntil() {} });
   assert.doesNotMatch(contact.headers.get('Cache-Control') || '', /no-transform/, 'every other page keeps the edge features');
   assert.equal(contact.headers.get('X-AL-Edge'), null);

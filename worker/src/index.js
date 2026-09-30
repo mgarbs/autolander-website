@@ -1,6 +1,8 @@
 import { isNoTrackPath } from '../../shared/tracking-scope.js';
 import { readZarazMode, zarazEligibility, maybeInjectZaraz } from './agent/zaraz-tag.js';
-import { NO_TRANSFORM_PATHS, readNoTransformMode, withoutEdgeRewrites } from './agent/no-transform.js';
+import {
+  NO_TRANSFORM_PATHS, clientAcceptEncoding, readNoTransformMode, withoutEdgeRewrites,
+} from './agent/no-transform.js';
 import { AUTOLANDER_KNOWLEDGE } from './autolander-knowledge.js';
 import { sha256Hex } from './capi/hash.js';
 import { saveSupportRequest } from './support/storage.js';
@@ -94,6 +96,8 @@ export default {
             ? readZarazMode(env) : 'off',
           (request.method === 'GET' && NO_TRANSFORM_PATHS.has(url.pathname)) ? readNoTransformMode(env) : 'off',
         ]);
+        // The client's own Accept-Encoding (request.cf), read before the request may be re-created below.
+        const acceptEncoding = clientAcceptEncoding(request);
         const decision = zarazEligibility({ method: request.method, pathname: url.pathname, mode,
           cookieHeader: request.headers.get('Cookie') });
         if (decision.eligible) {
@@ -104,7 +108,7 @@ export default {
         const siteResponse = await handleSiteRequest(request, url);
         const page = await maybeInjectZaraz(request, siteResponse, { ...decision, mode });
         // The prerendered pages load Web Analytics themselves; keep the edge from rewriting them (no-transform.js).
-        return withoutEdgeRewrites(request, url, page, { mode: edgeMode });
+        return withoutEdgeRewrites(request, url, page, { mode: edgeMode, acceptEncoding });
       } catch (err) {
         try {
           console.error('[worker] agent-layer fallthrough', url.pathname, err?.stack || err);
