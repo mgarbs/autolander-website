@@ -59,8 +59,10 @@ try {
 } catch (err) {
   console.warn('!! could not read og/manifest.json, falling back to /og-image.jpg —', err.message);
 }
-export const ogImageFor = (urlPath) =>
-  SITE.origin + (OG_MANIFEST[urlPath] || '/og-image.jpg');
+// `fallback` lets a silo without per-page cards use its own shared card (aeoGeo: the AEO card)
+// instead of the Marketplace /og-image.jpg. Omitted, the behaviour is unchanged.
+export const ogImageFor = (urlPath, fallback) =>
+  SITE.origin + (OG_MANIFEST[urlPath] || fallback || '/og-image.jpg');
 
 export const esc = (s) => String(s)
   .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
@@ -248,7 +250,7 @@ export const personLd = {
 // declaring itself part of itself is noise.
 export const articleLd = ({
   title, canonical, description, datePublished, dateModified, image, pillar,
-  type = 'Article', isPartOf,
+  type = 'Article', isPartOf, about,
 }) => ({
   '@context': 'https://schema.org', '@type': type,
   '@id': canonical + '#article',
@@ -277,6 +279,8 @@ export const articleLd = ({
   image: image || SITE.origin + '/og-image.jpg',
   inLanguage: 'en-US',
   isAccessibleForFree: true,
+  // What the article is about, by @id (aeoGeo: the money page's AEO and GEO DefinedTerm nodes).
+  ...(about && about.length ? { about } : {}),
 });
 
 // Dataset node — the strongest available signal that a page carries original measured data.
@@ -475,7 +479,17 @@ export function siteHeader(breadcrumbs) {
   <script>(()=>{document.addEventListener('click',event=>{document.querySelectorAll('details.navdrop[open]').forEach(menu=>{if(!menu.contains(event.target))menu.removeAttribute('open')})})})()</script>`;
 }
 
-export function ctaBlock(heading, sub) {
+// `opts.href` (a silo CTA, e.g. aeoGeo's free scan) swaps the button and the fine print. Without
+// it the block is the exact Marketplace CTA every other page has always rendered.
+export function ctaBlock(heading, sub, opts = {}) {
+  if (opts.href) {
+    return `  <section class="cta">
+    <h2>${esc(heading)}</h2>
+    <p>${esc(sub)}</p>
+    <a class="btn" href="${esc(opts.href)}">${esc(opts.button)} &rarr;</a>
+    <p class="cta-fine">${esc(opts.fine)}</p>
+  </section>`;
+  }
   return `  <section class="cta">
     <h2>${esc(heading)}</h2>
     <p>${esc(sub)}</p>
@@ -484,7 +498,12 @@ export function ctaBlock(heading, sub) {
   </section>`;
 }
 
-export function siteFooter() {
+// A page that carries its own `footer` ({ columns: [{ heading, links: [{ label, href }] }], line })
+// gets an on-topic column footer: the aeoGeo articles, whose footer mirrors the AEO and GEO money
+// page's FOOTER_NAV (article-system.mjs siloFooter, publish-aware). Every other page passes nothing
+// and renders the site-wide footer below, byte for byte.
+export function siteFooter(footer = null) {
+  if (footer && Array.isArray(footer.columns) && footer.columns.length) return columnFooter(footer);
   return `  <footer class="foot">
     <a href="${SITE.origin}/" class="foot-brand"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
     <nav class="foot-links">
@@ -519,6 +538,22 @@ export function siteFooter() {
       Facebook and Facebook Marketplace are trademarks of Meta Platforms, Inc. AutoLander does not
       override Meta eligibility, listing limits or terms &mdash; see our <a href="${NAV.guide.path}">policy and safety guide</a>.
     </p>
+    <p class="copyright">&copy; 2026 AutoLander. Last updated ${esc(updatedHuman())}.</p>
+  </footer>
+</body>
+</html>`;
+}
+
+function columnFooter({ columns, line }) {
+  const column = ({ heading, links }) => `      <nav class="foot-col" aria-label="${esc(heading)}">
+        <h2 class="foot-h">${esc(heading)}</h2>
+        ${links.map(({ label, href }) => `<a href="${esc(href)}">${esc(label)}</a>`).join('\n        ')}
+      </nav>`;
+  return `  <footer class="foot">
+    <a href="${SITE.origin}/" class="foot-brand"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
+    <div class="foot-cols">
+${columns.map(column).join('\n')}
+    </div>${line ? `\n    <p class="disclaimer">${esc(line)}</p>` : ''}
     <p class="copyright">&copy; 2026 AutoLander. Last updated ${esc(updatedHuman())}.</p>
   </footer>
 </body>
@@ -658,7 +693,7 @@ export function renderPage(page) {
   const nav = page.key ? NAV[page.key] : null;
   const path = page.path || (nav && nav.path);
   const canonical = SITE.origin + path;
-  const ogImage = ogImageFor(path);
+  const ogImage = ogImageFor(path, page.ogFallback);
   const pillar = pillarFor(page);
   const jsonLdBlocks = [];
   jsonLdBlocks.push(jsonld(webPageLd(page.title, canonical, page.description, ogImage, page.updated, {
@@ -686,6 +721,7 @@ export function renderPage(page) {
       pillar,
       type: page.article.type,
       isPartOf: page.article.isPartOf,
+      about: page.article.about,
     })));
     // Mirrored onto the OpenGraph layer (article:*). Same source values as the JSON-LD above so
     // the two can never disagree about when a page was published or who wrote it.
@@ -750,11 +786,11 @@ ${sectionsHtml}
 
 ${page.faq && page.faq.length ? faqSection(page.faq, page.faqHeading) : ''}
 `,
-    ctaBlock(page.cta.heading, page.cta.sub),
+    ctaBlock(page.cta.heading, page.cta.sub, page.cta),
     `${related.length ? relatedNav(related, page.relatedHeading || 'Keep exploring') : ''}
     </article>
   </main>`,
-    siteFooter(),
+    siteFooter(page.footer),
   ].join('\n');
 
   return [
@@ -871,6 +907,12 @@ export function renderMarkdown(page) {
     page.faq.forEach(([q, a]) => { out.push(`### ${q}`); out.push(''); out.push(stripmd(a)); out.push(''); });
   }
 
+  // A silo CTA with its own destination (aeoGeo: the free scan) reaches the twin too, since the
+  // .md is what answer engines read. Pages without cta.href render exactly as before.
+  if (page.cta?.href) {
+    out.push(`**${page.cta.button}:** ${page.cta.href}`); out.push('');
+  }
+
   const related = page.related || (page.key ? relatedFor(page.key) : []);
   if (related.length) {
     out.push('## Related'); out.push('');
@@ -879,7 +921,9 @@ export function renderMarkdown(page) {
   }
 
   out.push('---');
-  out.push(`AutoLander — Facebook Marketplace software for car dealers. ${SITE.origin}/`);
+  out.push(page.cta?.href
+    ? `AutoLander: AEO and GEO for car dealers. ${SITE.origin}${NAV.aiVisibility.path}`
+    : `AutoLander — Facebook Marketplace software for car dealers. ${SITE.origin}/`);
   out.push('');
   return out.join('\n');
 }
@@ -936,5 +980,10 @@ border:1px solid var(--line);border-radius:14px;padding:14px 18px;text-decoratio
 .download-list a:hover{border-color:var(--blue2)}
 .dl-fmt{font-weight:800;color:var(--blue2);font-size:14.5px}
 .dl-desc{color:var(--muted);font-size:14px}
-@media(max-width:640px){.topnav{gap:10px}.topnav a{font-size:12px}.feature-grid{grid-template-columns:1fr}}
+/* column footer (pages with their own footer, e.g. the AEO and GEO articles) */
+.foot-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 28px;margin:0 0 20px}
+.foot-col{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0}
+.foot-h{margin:0 0 3px;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.foot-col a{font-size:13px;font-weight:700;color:var(--muted)}
+@media(max-width:640px){.topnav{gap:10px}.topnav a{font-size:12px}.feature-grid{grid-template-columns:1fr}.foot-cols{grid-template-columns:1fr 1fr}}
 `;

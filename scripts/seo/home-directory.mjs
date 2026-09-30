@@ -87,7 +87,9 @@ const EVERGREEN_GROUPS = [
 
 // Order the article groups appear in, after the evergreen groups. The newest topic goes
 // first: it is the one people are searching for this month.
-export const DIRECTORY_SILO_ORDER = ['compare', 'metaTools', 'marketplace', 'photos', 'growth'];
+// 2026-09-30: aeoGeo (AEO and GEO for car dealers) is the newest topic. Its box appears only once
+// an AEO article is published, and lists the published ones in publish-number order.
+export const DIRECTORY_SILO_ORDER = ['aeoGeo', 'compare', 'metaTools', 'marketplace', 'photos', 'growth'];
 
 // Silos whose published articles belong INSIDE an evergreen group instead of a box of their
 // own. The /compare/ articles are comparison pages, so they sit in the Compare box right under

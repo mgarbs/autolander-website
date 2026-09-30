@@ -22,13 +22,14 @@ import { ARTICLES as P } from '../scripts/seo/articles/data-articles-photos.mjs'
 import { ARTICLES as G } from '../scripts/seo/articles/data-articles-growth.mjs';
 import { ARTICLES as M } from '../scripts/seo/articles/data-articles-meta-tools.mjs';
 import { ARTICLES as C } from '../scripts/seo/articles/data-articles-compare.mjs';
+import { ARTICLES as AEO } from '../scripts/seo/articles/data-articles-aeo-geo.mjs';
 import { loadBlogPosts } from '../scripts/seo/articles/blog-loader.mjs';
 import { SPA_PAGE_PATHS } from '../scripts/seo/registry.mjs';
 import { AI_VISIBILITY_DIR, AI_VISIBILITY_PATH } from '../shared/ai-visibility-route.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(resolve(ROOT, p), 'utf8');
-const REAL = [...A, ...B, ...P, ...G, ...M, ...C, ...loadBlogPosts()];
+const REAL = [...A, ...B, ...P, ...G, ...M, ...C, ...AEO, ...loadBlogPosts()];
 
 const fake = (slug, silo) => ({ slug, silo, anchor: `Anchor ${slug}`, crumb: `Crumb ${slug}` });
 const state = (published) => Object.fromEntries(
@@ -103,7 +104,7 @@ test('directory count labels use singular and plural nouns', () => {
 });
 
 test('every drip silo in DIRECTORY_SILO_ORDER exists, and every drip silo is listed', () => {
-  assert.deepEqual(DIRECTORY_SILO_ORDER, ['compare', 'metaTools', 'marketplace', 'photos', 'growth']);
+  assert.deepEqual(DIRECTORY_SILO_ORDER, ['aeoGeo', 'compare', 'metaTools', 'marketplace', 'photos', 'growth']);
   assert.deepEqual([...DIRECTORY_SILO_ORDER].sort(), Object.keys(SILOS).filter((key) => key !== 'blog').sort());
 });
 

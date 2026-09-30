@@ -42,7 +42,7 @@ const ADMIN_SECTIONS = [
   {
     slug: 'content-publisher',
     title: 'Content Publisher',
-    subtitle: 'Drip-publish the prepared SEO article library, one click per article',
+    subtitle: 'Drip-publish the article library (Marketplace guides and the numbered AEO and GEO series), one click per article',
     defaultOpen: false,
   },
 ];

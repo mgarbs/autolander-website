@@ -18,10 +18,12 @@ import { ARTICLES as P } from '../scripts/seo/articles/data-articles-photos.mjs'
 import { ARTICLES as G } from '../scripts/seo/articles/data-articles-growth.mjs';
 import { ARTICLES as M } from '../scripts/seo/articles/data-articles-meta-tools.mjs';
 import { ARTICLES as C } from '../scripts/seo/articles/data-articles-compare.mjs';
+import { ARTICLES as AEO } from '../scripts/seo/articles/data-articles-aeo-geo.mjs';
+import { DRIP_ARTICLES } from '../scripts/seo/articles/drip-articles.mjs';
 import { COMPETITORS } from '../scripts/compare-data.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const ALL = [...A, ...B, ...P, ...G, ...M, ...C];
+const ALL = [...A, ...B, ...P, ...G, ...M, ...C, ...AEO];
 
 // Inline links may point only at evergreen pages (drafts would 404). Sibling links are
 // injected by the build system, never hand-written.
@@ -29,18 +31,25 @@ const WHITELIST = new Set([
   ...Object.values(NAV).map((n) => n.path),
   ...Object.values(COMPETITORS).map((c) => `/compare/${c.slug}/`),
   '/', '/#pricing', '/compare/',
+  // The AEO money page's stable in-page anchors (ids in src/ai/static-mirror.js + AiSections.jsx).
+  ...['#scan-form', '#plans', '#faq', '#what-is-aeo-geo'].map((hash) => NAV.aiVisibility.path + hash),
 ]);
 
-test('all 36 articles exist, slugs match the drip order exactly', () => {
-  assert.equal(ALL.length, 36);
+test('all 86 articles exist, slugs match the drip order exactly', () => {
+  assert.equal(ALL.length, 86);
   assert.deepEqual(ALL.map((a) => a.slug).sort(), [...SUGGESTED_ORDER].sort());
+  assert.deepEqual(DRIP_ARTICLES.map((a) => a.slug).sort(), ALL.map((a) => a.slug).sort(),
+    'drip-articles.mjs aggregates every content module');
 });
 
-// House style for the 2026-09-12 Meta-tools and 2026-09-26 comparison articles (Michael): no
-// em-dashes or en-dashes, and none of the "that's not X. It's Y." negation-then-reveal cadence.
-test('the Meta-tools and comparison articles carry no em-dashes, en-dashes, or negation-reveal cadence', () => {
-  for (const art of [...M, ...C]) {
-    const body = [art.title, art.description, art.h1, ...collectText(art)].join('\n');
+// House style for the 2026-09-12 Meta-tools, 2026-09-26 comparison and 2026-09-30 AEO and GEO
+// articles (Michael): no em-dashes or en-dashes, and none of the "that's not X. It's Y."
+// negation-then-reveal cadence.
+test('the Meta-tools, comparison and AEO articles carry no em-dashes, en-dashes, or negation-reveal cadence', () => {
+  for (const art of [...M, ...C, ...AEO]) {
+    const body = [
+      art.title, art.description, art.h1, art.anchor, art.crumb, ...collectText(art), art.cta?.heading, art.cta?.sub,
+    ].filter(Boolean).join('\n');
     assert.ok(!EM_DASH_RE.test(body), `${art.slug}: contains an em-dash or en-dash`);
     assert.ok(!CONTRAST_TIC_RE.test(body), `${art.slug}: "not X. It's Y." cadence at ${body.match(CONTRAST_TIC_RE)?.[0]}`);
   }
@@ -65,6 +74,8 @@ test('every article carries the required fields and a valid silo', () => {
 // list touched — the 2026-09-03 guides had silently fallen off the old hardcoded version.
 const EVERGREEN_GUIDE_PATHS = new Set(Object.values(NAV).map((n) => n.path).filter((p) => p.startsWith('/guide/')));
 const COMPARE_ARTICLE_PATHS = new Set(C.map((a) => `/compare/${a.slug}/`));
+// AEO articles live under /aeo-geo/ and reach each other ONLY through publish-aware (@slug) tokens.
+const AEO_ARTICLE_PATHS = new Set(AEO.map((a) => `/aeo-geo/${a.slug}/`));
 
 test('inline links stay on the evergreen whitelist (no hand-written sibling links)', () => {
   for (const art of ALL) {
@@ -76,6 +87,8 @@ test('inline links stay on the evergreen whitelist (no hand-written sibling link
           `${art.slug}: links a sibling article directly (${href})`);
         assert.ok(!COMPARE_ARTICLE_PATHS.has(href),
           `${art.slug}: links a sibling article directly (${href})`);
+        assert.ok(!AEO_ARTICLE_PATHS.has(href) && !href.startsWith('/aeo-geo/'),
+          `${art.slug}: links an AEO article directly (${href}); use [anchor](@slug)`);
       }
     }
   }

@@ -582,6 +582,16 @@ export const RELATED = {
   ],
 };
 
+// Down-links to the PUBLISHED AEO and GEO articles (hub to spokes), low on the page after the final CTA. The
+// links are not written here: scripts/build-seo-pages.mjs generates them from the publish state into
+// src/generated/aeo-geo-guides.js (grouped by cluster, each cluster's pillar first), and React, the static
+// mirror and the twin render that list. While nothing is published the list is empty and the block is absent.
+export const GUIDES = {
+  id: 'aeo-geo-guides',
+  heading: 'AEO and GEO guides for dealers',
+  intro: 'Plain-language guides from our team on how AI assistants find, trust and name car dealerships, grouped by topic.',
+};
+
 // Agent-facing guidance (llms.txt section + agents.md section). Same facts as the page, addressed to
 // an assistant. Never names or links the /api/ai-scan endpoint.
 export const AGENT_GUIDANCE = {

@@ -10,12 +10,7 @@ import { fileURLToPath } from 'node:url';
 import { COMPETITORS } from '../compare-data.mjs';
 import { articlePath } from '../seo/articles/article-system.mjs';
 import { loadBlogPosts } from '../seo/articles/blog-loader.mjs';
-import { ARTICLES as COMPARE_ARTICLES } from '../seo/articles/data-articles-compare.mjs';
-import { ARTICLES as GROWTH_ARTICLES } from '../seo/articles/data-articles-growth.mjs';
-import { ARTICLES as MARKETPLACE_A_ARTICLES } from '../seo/articles/data-articles-marketplace-a.mjs';
-import { ARTICLES as MARKETPLACE_B_ARTICLES } from '../seo/articles/data-articles-marketplace-b.mjs';
-import { ARTICLES as META_TOOLS_ARTICLES } from '../seo/articles/data-articles-meta-tools.mjs';
-import { ARTICLES as PHOTO_ARTICLES } from '../seo/articles/data-articles-photos.mjs';
+import { DRIP_ARTICLES } from '../seo/articles/drip-articles.mjs';
 import {
   imageUsage, PAGE_STUDIO_USAGES, studioPairsAt, unusedStudioPairs,
 } from '../seo/articles/image-usage.mjs';
@@ -25,14 +20,6 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const DEFAULT_ROOT = resolve(HERE, '..', '..');
 const ORIGIN = 'https://autolander.ai';
 const BLOG_RELATIVE_DIR = join('scripts', 'seo', 'articles', 'blog');
-const DRIP_ARTICLES = [
-  ...MARKETPLACE_A_ARTICLES,
-  ...MARKETPLACE_B_ARTICLES,
-  ...PHOTO_ARTICLES,
-  ...GROWTH_ARTICLES,
-  ...META_TOOLS_ARTICLES,
-  ...COMPARE_ARTICLES,
-];
 
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const posixPath = (value) => value.split(sep).join('/');

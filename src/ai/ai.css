@@ -25,6 +25,8 @@
 @source "../../shared/ai-images.js";
 @source "../components/SiteNav.jsx";
 @source "../components/SiteFooter.jsx";
+/* Generated list of published AEO and GEO articles (the guides block); data only, no class names. */
+@source "../generated/aeo-geo-guides.js";
 
 /* Same tokens as index.css, so font-display / font-mono resolve identically. */
 @theme {

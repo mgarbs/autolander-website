@@ -14,19 +14,13 @@ import {
 import { loadBlogPosts } from '../seo/articles/blog-loader.mjs';
 import { buildArticlePage } from '../seo/articles/article-system.mjs';
 import { renderPage } from '../seo/shell.mjs';
-import { ARTICLES as MARKETPLACE_A } from '../seo/articles/data-articles-marketplace-a.mjs';
-import { ARTICLES as MARKETPLACE_B } from '../seo/articles/data-articles-marketplace-b.mjs';
-import { ARTICLES as PHOTOS } from '../seo/articles/data-articles-photos.mjs';
-import { ARTICLES as GROWTH } from '../seo/articles/data-articles-growth.mjs';
-import { ARTICLES as META_TOOLS } from '../seo/articles/data-articles-meta-tools.mjs';
-import { ARTICLES as COMPARE } from '../seo/articles/data-articles-compare.mjs';
+import { DRIP_ARTICLES } from '../seo/articles/drip-articles.mjs';
 
 const MODULE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{2,80}$/;
 const REQUEST_ID_RE = /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/;
 const ERROR_KINDS = new Set(['usage_limit', 'auth', 'model_unavailable', 'no_output', 'validation', 'other']);
 const SECRET_LIKE_PATTERN = /sk-ant-[A-Za-z0-9_-]{8,}|CLAUDE_CODE_OAUTH_TOKEN|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|x-access-token|AUTHORIZATION:|-----BEGIN [A-Z ]*PRIVATE KEY-----/;
-const DRIP_ARTICLES = [...MARKETPLACE_A, ...MARKETPLACE_B, ...PHOTOS, ...GROWTH, ...META_TOOLS, ...COMPARE];
 const POST_FIELDS = [
   'slug', 'silo', 'anchor', 'crumb', 'primaryKeyword', 'secondaryKeywords', 'title', 'description',
   'eyebrow', 'h1', 'tldr', 'sections', 'faq', 'cta', 'alsoRelated', 'augmentKeys',

@@ -12,27 +12,25 @@
 // Run AFTER build-compare-pages.mjs (or alone — both now emit the full sitemap):
 //   node scripts/build-compare-pages.mjs && node scripts/build-seo-pages.mjs
 
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
+import { dirname, isAbsolute, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { renderPage, renderMarkdown, SEO_STYLES, SITE, ogImageFor } from './seo/shell.mjs';
-import { NAV, INTEGRATIONS, integrationPath, integrationUrl, relatedFor } from './seo/registry.mjs';
+import {
+  NAV, INTEGRATIONS, SPA_PAGE_PATHS, integrationPath, integrationUrl, relatedFor,
+} from './seo/registry.mjs';
 import { COMPETITORS, GUIDE } from './compare-data.mjs';
 import {
   buildArticlePage, hubAugmentLinks, contentStatusJson, articleSitemapEntries,
-  loadPublishState, isPublished, articlePath,
+  loadPublishState, isPublished, articlePath, gatePageLinks, siloNumberingProblems, SUGGESTED_ORDER,
+  publishedClusterGuides, aeoGeoGuidesModule, AEO_GEO_GUIDES_MODULE,
 } from './seo/articles/article-system.mjs';
 import { loadBlogPosts } from './seo/articles/blog-loader.mjs';
 import { STUDIO_IMAGES } from './seo/articles/image-usage.mjs';
 import { blogIndexPage, blogRss, publishedBlogPosts } from './seo/blog-pages.mjs';
 import { buildHomeDirectory, injectHomeDirectory } from './seo/home-directory.mjs';
-import { ARTICLES as ART_MKT_A } from './seo/articles/data-articles-marketplace-a.mjs';
-import { ARTICLES as ART_MKT_B } from './seo/articles/data-articles-marketplace-b.mjs';
-import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs';
-import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
-import { ARTICLES as ART_META } from './seo/articles/data-articles-meta-tools.mjs';
-import { ARTICLES as ART_COMPARE } from './seo/articles/data-articles-compare.mjs';
+import { DRIP_ARTICLES } from './seo/articles/drip-articles.mjs';
 
 import { PAGES as CATEGORY } from './seo/data-category.mjs';
 import { PAGES as PRICING } from './seo/data-pricing.mjs';
@@ -72,15 +70,26 @@ import {
 } from './seo/data-ai-visibility.mjs';
 import { AI_VISIBILITY_UPDATED } from '../shared/ai-visibility-content.js';
 
-const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
+const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+// The committed static assets (studio images, the compare cluster, the training mirror, data
+// files). Always the repo's own public/: the link gate below checks targets against it.
+const SOURCE_PUBLIC_DIR = resolve(REPO_ROOT, 'public');
+// Sandbox mode, for tests only (test/dead-links.test.js): AL_SEO_OUT_DIR sends EVERY write
+// (public/, index.html, src/generated/) to another root, and AL_SEO_STATE_FILE builds from a
+// simulated publish state, so a test can build "the first N articles published" without
+// touching the working tree. Unset (every real build), both are the repo's own paths.
+const OUT_ROOT = process.env.AL_SEO_OUT_DIR ? resolve(process.env.AL_SEO_OUT_DIR) : REPO_ROOT;
+const PUBLIC_DIR = resolve(OUT_ROOT, 'public');
 
 // ---------- Avalanche article layer (drip-published; see seo/articles/article-system.mjs) ----------
 // publish-state.json is the gate: draft articles are rendered NOWHERE (no HTML, no sitemap,
 // no llms.txt, no hub links). Publishing an article and rebuilding is what reveals it — and
 // also re-renders every hub/sibling so earlier pages pick up links to the newly live spoke.
 const BLOG_POSTS = loadBlogPosts();
-const ARTICLE_CONTENT = [...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META, ...ART_COMPARE, ...BLOG_POSTS];
-const PUBLISH_STATE = loadPublishState();
+const ARTICLE_CONTENT = [...DRIP_ARTICLES, ...BLOG_POSTS];
+const PUBLISH_STATE = process.env.AL_SEO_STATE_FILE
+  ? JSON.parse(readFileSync(resolve(process.env.AL_SEO_STATE_FILE), 'utf8'))
+  : loadPublishState();
 {
   const known = new Set(Object.keys(PUBLISH_STATE));
   const competitorSlugs = new Set(Object.values(COMPETITORS).map((c) => c.slug));
@@ -92,6 +101,10 @@ const PUBLISH_STATE = loadPublishState();
   if (compareCollisions.length) {
     throw new Error(`compare article slugs collide with versus pages: ${compareCollisions.map((d) => d.slug).join(', ')}`);
   }
+  // A silo that numbers its articles (aeoGeo #1..#50) must agree with SUGGESTED_ORDER, or the
+  // admin's "#N" and the backward-only link rule would describe two different orders.
+  const numbering = siloNumberingProblems(ARTICLE_CONTENT);
+  if (numbering.length) throw new Error(`silo publish numbers drift from SUGGESTED_ORDER:\n  ${numbering.join('\n  ')}`);
 }
 const PUBLISHED_ARTICLES = ARTICLE_CONTENT.filter((c) => isPublished(PUBLISH_STATE, c.slug));
 const PUBLISHED_BLOG_POSTS = publishedBlogPosts(ARTICLE_CONTENT, PUBLISH_STATE);
@@ -100,8 +113,18 @@ const BLOG_LASTMOD = PUBLISHED_BLOG_POSTS
   .filter(Boolean)
   .sort()
   .at(-1) || SITE.updated;
-const ARTICLE_PAGES = PUBLISHED_ARTICLES.map((c) => buildArticlePage(c, ARTICLE_CONTENT, PUBLISH_STATE));
+// Every in-body link the publish gate holds back as plain text (a (@slug) token or href to an
+// unpublished article, or an internal path the site does not serve), for the build summary.
+const UNLINKED = [];
+const ARTICLE_PAGES = PUBLISHED_ARTICLES.map((c) => buildArticlePage(c, ARTICLE_CONTENT, PUBLISH_STATE, {
+  onUnlinked: (event) => UNLINKED.push({ page: articlePath(c), ...event }),
+}));
 const BLOG_PAGE = blogIndexPage(ARTICLE_CONTENT, PUBLISH_STATE);
+// Money page down-links: the published AEO and GEO articles by cluster, from THIS build's publish
+// state. The twin below renders them directly (never the committed module, which this very build
+// may be about to rewrite), and src/generated/aeo-geo-guides.js carries them to React and the
+// static mirror for the next `npm run build`.
+const AEO_GEO_GUIDES = publishedClusterGuides('aeoGeo', ARTICLE_CONTENT, PUBLISH_STATE);
 
 const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...POSITIONING, ...INVDIST, ...RVCLUSTER, ...AICHATCLUSTER, AI_VISIBILITY, BLOG_PAGE, ...ARTICLE_PAGES];
 
@@ -115,6 +138,43 @@ const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG
       page.related = [...(page.related || relatedFor(page.key)), ...extra];
     }
   }
+}
+
+// ---------- dead-link safety net: publish-aware body links on EVERY page ----------
+// Any in-body markdown link (and any (@slug) token) whose target is an unpublished article, or
+// an internal path this site does not serve, renders as its plain anchor text instead of an
+// <a>. It comes back as a link on the build that publishes the target, because every publish
+// rebuilds every page. So no publish order, and no hand-written href, can ship a dead link.
+// A served path = a page this build renders, a file in public/ (static assets, the compare
+// cluster, the training mirror), or an exact-path SPA shell. test/dead-links.test.js crawls
+// the output for the current state and for simulated publish states.
+const pagePathOf = (page) => page.path || (page.key && NAV[page.key] ? NAV[page.key].path : null);
+const BUILT_PATHS = new Set(ALL.map(pagePathOf).filter(Boolean));
+const SPA_SHELL_PATHS = new Set(['/', ...SPA_PAGE_PATHS]);
+function servedStaticPath(urlPath) {
+  let rel;
+  try { rel = decodeURIComponent(urlPath).replace(/^\/+/, ''); } catch { return false; }
+  const file = resolve(SOURCE_PUBLIC_DIR, rel);
+  const inside = relative(SOURCE_PUBLIC_DIR, file);
+  if (inside.startsWith('..') || isAbsolute(inside)) return false;
+  if (existsSync(file) && statSync(file).isFile()) return true;
+  return existsSync(resolve(file, 'index.html'));
+}
+const isServedPath = (urlPath) => SPA_SHELL_PATHS.has(urlPath) || BUILT_PATHS.has(urlPath) || servedStaticPath(urlPath);
+for (let i = 0; i < ALL.length; i += 1) {
+  const pagePath = pagePathOf(ALL[i]);
+  ALL[i] = gatePageLinks(ALL[i], {
+    articles: ARTICLE_CONTENT,
+    state: PUBLISH_STATE,
+    isLinkablePath: isServedPath,
+    onUnlinked: (event) => UNLINKED.push({ page: pagePath, ...event }),
+  });
+}
+{
+  const unknown = UNLINKED.filter((u) => u.kind.startsWith('unknown'));
+  for (const u of unknown) console.warn(`!! ${u.page}: "${u.text}" -> ${u.target} is not a page this site serves; rendered as plain text`);
+  const held = UNLINKED.length - unknown.length;
+  if (held) console.log(`Link gate: ${held} in-body link(s) to unpublished articles held as plain text until the target is published.`);
 }
 
 function write(path, contents) {
@@ -214,21 +274,36 @@ write(
 //   • src/generated/home-directory.json — what HomeDetails.jsx renders after React mounts.
 // Both live OUTSIDE public/, so the publish workflow must `git add` them (it does).
 {
-  const ROOT_DIR = resolve(PUBLIC_DIR, '..');
   const groups = buildHomeDirectory(ARTICLE_CONTENT, PUBLISH_STATE);
 
-  const genPath = resolve(ROOT_DIR, 'src', 'generated', 'home-directory.json');
+  const genPath = resolve(OUT_ROOT, 'src', 'generated', 'home-directory.json');
   mkdirSync(dirname(genPath), { recursive: true });
   const genJson = JSON.stringify({ groups }, null, 2) + '\n';
   let prevJson = null;
   try { prevJson = readFileSync(genPath, 'utf8'); } catch { /* first build */ }
   if (prevJson !== genJson) { writeFileSync(genPath, genJson, 'utf8'); console.log('wrote src/generated/home-directory.json'); }
 
-  const indexPath = resolve(ROOT_DIR, 'index.html');
-  const before = readFileSync(indexPath, 'utf8');
+  const indexPath = resolve(OUT_ROOT, 'index.html');
+  const indexExists = existsSync(indexPath);
+  const before = readFileSync(indexExists ? indexPath : resolve(REPO_ROOT, 'index.html'), 'utf8');
   const after = injectHomeDirectory(before, groups);
-  if (after !== before) { writeFileSync(indexPath, after, 'utf8'); console.log('wrote index.html (homepage directory)'); }
+  if (after !== before || !indexExists) { writeFileSync(indexPath, after, 'utf8'); console.log('wrote index.html (homepage directory)'); }
   console.log(`Homepage directory: ${groups.length} groups, ${groups.reduce((n, g) => n + g.links.length, 0)} links.`);
+}
+
+// ---------- AEO and GEO page guides block (src/generated/aeo-geo-guides.js) ----------
+// The money page is an SPA route, so its "AEO and GEO guides for dealers" block reads a generated
+// module (React section + static mirror at `npm run build`). It lives outside public/ like the
+// homepage directory, under src/generated/, which the publish workflow already commits. Written
+// only when it changes, so a build with no AEO publish leaves the file untouched.
+{
+  const genPath = resolve(OUT_ROOT, AEO_GEO_GUIDES_MODULE);
+  mkdirSync(dirname(genPath), { recursive: true });
+  const source = aeoGeoGuidesModule(AEO_GEO_GUIDES);
+  let prev = null;
+  try { prev = readFileSync(genPath, 'utf8'); } catch { /* first build */ }
+  if (prev !== source) { writeFileSync(genPath, source, 'utf8'); console.log(`wrote ${AEO_GEO_GUIDES_MODULE}`); }
+  console.log(`AEO and GEO page guides: ${AEO_GEO_GUIDES.length} cluster(s), ${AEO_GEO_GUIDES.reduce((n, g) => n + g.links.length, 0)} published article(s).`);
 }
 
 // ---------- draft preview (LOCAL ONLY — never into public/) ----------
@@ -236,7 +311,7 @@ write(
 // them in a browser before publishing. dist-preview/ is gitignored; nothing here can leak.
 if (process.env.ARTICLE_DRAFT_PREVIEW === '1' || process.argv.includes('--draft-preview')) {
   const previewDate = new Date().toISOString().slice(0, 10);
-  const PREVIEW_DIR = resolve(PUBLIC_DIR, '..', 'dist-preview');
+  const PREVIEW_DIR = resolve(OUT_ROOT, 'dist-preview');
   // Preview pretends every article is published so sibling links render fully.
   const pretendState = Object.fromEntries(Object.entries(PUBLISH_STATE).map(([slug, st]) => [
     slug, st.status === 'published' ? st : { status: 'published', publishedAt: previewDate },
@@ -261,7 +336,7 @@ function buildMarkdownTwins() {
     const urlPath = page.path || (nav && nav.path);
     if (!urlPath) continue;
     const rel = mdPathFor(urlPath);
-    const markdown = page.key === 'aiVisibility' ? renderAiVisibilityMarkdown() : renderMarkdown(page);
+    const markdown = page.key === 'aiVisibility' ? renderAiVisibilityMarkdown({ guides: AEO_GEO_GUIDES }) : renderMarkdown(page);
     write(resolve(PUBLIC_DIR, rel.replace(/^\//, '')), markdown);
     twins.push({ urlPath, md: rel, title: page.h1 || page.title, description: page.description });
   }
@@ -334,6 +409,13 @@ Contact: sales@autolander.ai · (919) 280-0967
       NAV.aiChat.path, NAV.photoEditor.path, NAV.rvDealers.path,
     ]),
     aiVisibilitySection(),
+    // AEO and GEO drip library: its own group, right after the service it supports and OUTSIDE
+    // the ai-visibility markers. group() returns '' while nothing is published, so llms.txt is
+    // byte-identical until the first AEO publish.
+    group('AEO and GEO guides for car dealers', PUBLISHED_ARTICLES
+      .filter((c) => c.silo === 'aeoGeo')
+      .sort((a, b) => SUGGESTED_ORDER.indexOf(a.slug) - SUGGESTED_ORDER.indexOf(b.slug))
+      .map((c) => articlePath(c))),
     // Two deliberate scope decisions, stated as principles. An agent deciding whether to
     // recommend AutoLander should read these before a competitor's feature matrix does the
     // explaining for us.
@@ -345,7 +427,7 @@ Contact: sales@autolander.ai · (919) 280-0967
     ]),
     // Drip-published long-tail library — only articles that are actually live.
     group('Deep-dive dealer guides', PUBLISHED_ARTICLES
-      .filter((c) => c.silo !== 'compare' && c.silo !== 'blog')
+      .filter((c) => c.silo !== 'compare' && c.silo !== 'blog' && c.silo !== 'aeoGeo')
       .map((c) => articlePath(c))),
     group('Blog', [NAV.blog.path, ...PUBLISHED_BLOG_POSTS.map((c) => articlePath(c))]),
     group('Integrations', [NAV.integHub.path, ...INTEGRATIONS.map((s) => integrationPath(s.slug))]),
@@ -369,7 +451,7 @@ ${Object.values(COMPETITORS).map((c) => `- [AutoLander vs ${c.name}](${SITE.orig
   // in one fetch rather than crawling 45 URLs.
   const full = ALL.map((page) => {
     if (page.key !== 'aiVisibility') return renderMarkdown(page);
-    return `${AI_VISIBILITY_START}\n${aiVisibilitySection(2, { markers: false })}\n\n${renderAiVisibilityMarkdown()}\n${AI_VISIBILITY_END}`;
+    return `${AI_VISIBILITY_START}\n${aiVisibilitySection(2, { markers: false })}\n\n${renderAiVisibilityMarkdown({ guides: AEO_GEO_GUIDES })}\n${AI_VISIBILITY_END}`;
   }).join('\n\n---\n\n');
   write(resolve(PUBLIC_DIR, 'llms-full.txt'), `${header}\n\n---\n\n${full}`);
 }
@@ -436,7 +518,7 @@ function imageSitemapXml() {
       }
     }
     images.push({
-      loc: page.key === 'aiVisibility' ? AI_VISIBILITY_OG_IMAGE : ogImageFor(urlPath),
+      loc: page.key === 'aiVisibility' ? AI_VISIBILITY_OG_IMAGE : ogImageFor(urlPath, page.ogFallback),
       title: page.title,
     });
     if (images.length) entries.push({ loc: SITE.origin + urlPath, images });

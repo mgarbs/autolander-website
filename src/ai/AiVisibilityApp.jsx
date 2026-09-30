@@ -13,6 +13,7 @@ import SiteFooter from '../components/SiteFooter.jsx';
 import SiteNav from '../components/SiteNav.jsx';
 import {
   AeoGeoSection,
+  AeoGuidesSection,
   AiFaq,
   AiFinalCta,
   AiHero,
@@ -338,6 +339,7 @@ export default function AiVisibilityApp({ prerendered = false, restHtml = '' }) 
             <PlansSection onGo={goToForm} />
             <AiFaq />
             <AiFinalCta onGo={goToForm} />
+            <AeoGuidesSection />
             <AboutService />
           </>
         ) : <StaticIsland name="ai-rest" html={restHtml} />}

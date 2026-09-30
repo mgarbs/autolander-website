@@ -19,8 +19,15 @@
 //
 // MIRRORED BY dist/ai-visibility/index.html, the build-time stub (scripts/spa-fallback.mjs) GitHub Pages serves
 // when the Worker fails open or is off. test/moved-pages.test.js pins the two together.
+//
+// ALSO HERE (2026-09-30): the hollow parent of the AEO and GEO article family. The articles live at
+// /aeo-geo/<slug>/ (shared/ai-visibility-route.js AEO_GEO_ARTICLE_BASE) and the bare /aeo-geo/ has no page, so
+// exactly /aeo-geo and /aeo-geo/ 301 to the service page, query kept, under the same rules as above. Every
+// article URL under it (/aeo-geo/<slug>/, /aeo-geo/<slug>.md) is a different key and falls through untouched.
+// No static stub: with the Worker off, /aeo-geo/ is a plain 404, the same as /guide/.
 
 import {
+  AEO_GEO_ARTICLE_BASE,
   AI_VISIBILITY_LEGACY_PATHS,
   AI_VISIBILITY_MD_PATH,
   AI_VISIBILITY_PATH,
@@ -29,15 +36,21 @@ import {
 export const MOVED_PAGE_STATUS = 301;
 export const MOVED_PAGE_ORIGIN = 'https://autolander.ai';
 
-export const MOVED_PAGES = Object.freeze(Object.fromEntries(AI_VISIBILITY_LEGACY_PATHS.flatMap((legacy) => {
-  const base = legacy.toLowerCase().replace(/\/$/, '');
-  return [
-    [base, AI_VISIBILITY_PATH],
-    [`${base}/`, AI_VISIBILITY_PATH],
-    [`${base}/index.html`, AI_VISIBILITY_PATH],
-    [`${base}.md`, AI_VISIBILITY_MD_PATH],
-  ];
-})));
+const ARTICLE_FAMILY_PARENT = AEO_GEO_ARTICLE_BASE.toLowerCase().replace(/\/$/, '');
+
+export const MOVED_PAGES = Object.freeze(Object.fromEntries([
+  ...AI_VISIBILITY_LEGACY_PATHS.flatMap((legacy) => {
+    const base = legacy.toLowerCase().replace(/\/$/, '');
+    return [
+      [base, AI_VISIBILITY_PATH],
+      [`${base}/`, AI_VISIBILITY_PATH],
+      [`${base}/index.html`, AI_VISIBILITY_PATH],
+      [`${base}.md`, AI_VISIBILITY_MD_PATH],
+    ];
+  }),
+  [ARTICLE_FAMILY_PARENT, AI_VISIBILITY_PATH],
+  [`${ARTICLE_FAMILY_PARENT}/`, AI_VISIBILITY_PATH],
+]));
 
 // Loop guard: test/moved-pages.test.js fails if any key above is also a live path (the page would redirect to
 // itself). It is a test, not a module-load throw, because a throw here would take down every Worker route.

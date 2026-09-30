@@ -819,6 +819,6 @@ test('a full drip publish rebuild succeeds with malformed blog JSON present', (t
   assert.match(result.stderr, /Skipping blog file bad-json\.json: invalid JSON/);
   assert.equal(readJson(resolve(root, 'scripts', 'seo', 'articles', 'publish-state.json'))[slug].status, 'published');
   const status = readJson(resolve(root, 'public', 'data', 'content-status.json'));
-  assert.equal(status.articles.filter((row) => row.kind === 'drip').length, 36);
+  assert.equal(status.articles.filter((row) => row.kind === 'drip').length, 86);
   assert.equal(status.articles.find((row) => row.slug === slug).status, 'published');
 });

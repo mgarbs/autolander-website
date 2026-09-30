@@ -16,12 +16,7 @@ import {
 import {
   collectText, CONTRAST_TIC_RE, EM_DASH_RE, FORBIDDEN_CLAIMS, MUSE_TIER_RE,
 } from '../seo/articles/content-rules.mjs';
-import { ARTICLES as MARKETPLACE_A } from '../seo/articles/data-articles-marketplace-a.mjs';
-import { ARTICLES as MARKETPLACE_B } from '../seo/articles/data-articles-marketplace-b.mjs';
-import { ARTICLES as PHOTOS } from '../seo/articles/data-articles-photos.mjs';
-import { ARTICLES as GROWTH } from '../seo/articles/data-articles-growth.mjs';
-import { ARTICLES as META_TOOLS } from '../seo/articles/data-articles-meta-tools.mjs';
-import { ARTICLES as COMPARE_ARTICLES } from '../seo/articles/data-articles-compare.mjs';
+import { DRIP_ARTICLES } from '../seo/articles/drip-articles.mjs';
 import { NAV } from '../seo/registry.mjs';
 import {
   isStructurallyRenderable, structuralErrorsForPost,
@@ -35,14 +30,6 @@ export const SECTION_TYPES = [
   'prose', 'qa', 'bullets', 'features', 'steps', 'table', 'callout', 'quotes', 'twocol', 'figure', 'image',
 ];
 
-const DRIP_ARTICLES = [
-  ...MARKETPLACE_A,
-  ...MARKETPLACE_B,
-  ...PHOTOS,
-  ...GROWTH,
-  ...META_TOOLS,
-  ...COMPARE_ARTICLES,
-];
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{2,80}$/;
 const ALL_LINK_RE = /\]\(([^)\s]+)\)/g;
 const REPORT_PATH = '/facebook-marketplace-used-car-report-2026/';
@@ -168,7 +155,7 @@ export function buildValidationContext({ root = ROOT, selfSlug = '' } = {}) {
   };
 }
 
-const ownPaths = (slug) => new Set([`/blog/${slug}/`, `/guide/${slug}/`, `/compare/${slug}/`]);
+const ownPaths = (slug) => new Set([`/blog/${slug}/`, `/guide/${slug}/`, `/compare/${slug}/`, `/aeo-geo/${slug}/`]);
 
 function validateRequired(post, errors) {
   for (const field of ['slug', 'silo', 'anchor', 'crumb', 'primaryKeyword', 'title', 'description', 'eyebrow', 'h1', 'tldr']) {
