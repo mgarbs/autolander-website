@@ -58,7 +58,7 @@ test('all three stylesheets try the Arial set, then the Roboto set, before syste
 });
 
 test('the built pages carry both fallback sets (the inline route CSS too)', { skip: !existsSync('dist/index.html') }, () => {
-  for (const file of ['dist/ai-visibility/index.html', 'dist/team/index.html']) {
+  for (const file of ['dist/aeo-geo-for-car-dealers/index.html', 'dist/team/index.html']) {
     const html = readFileSync(file, 'utf8');
     const inline = html.match(/<style data-inline-route-css>([\s\S]*?)<\/style>/)?.[1] || '';
     for (const family of ['Inter Fallback', 'Archivo Fallback', 'Inter Fallback Roboto', 'Archivo Fallback Roboto']) {

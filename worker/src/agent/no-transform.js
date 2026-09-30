@@ -35,7 +35,7 @@
 // -------------------------------------
 // Only GET 200 text/html responses on exactly these paths; everything else is returned untouched.
 // TRACKING KV `cfg:html_no_transform` ('on' | 'off', 60 s cache) overrides env HTML_NO_TRANSFORM, which ships
-// 'off'. Deploy the Worker, then set the KV to 'on' and, within the 60 s cache window, check / and /ai-visibility/
+// 'off'. Deploy the Worker, then set the KV to 'on' and, within the 60 s cache window, check / and /aeo-geo-for-car-dealers/
 // with GETs (never `curl -I`: a HEAD is never given no-transform and gets X-AL-Zaraz skip:method):
 //   curl -s -D - -o b.raw -H 'Accept: text/html' -H 'Accept-Encoding:' URL  -> no Content-Encoding, b.raw starts
 //        with <!doctype html> (X-AL-Edge no-transform:identity, or skip:client-accept-encoding if the edge gave the

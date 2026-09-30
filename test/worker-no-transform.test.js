@@ -47,19 +47,19 @@ test('in production the coding follows cf.clientAcceptEncoding, never the rewrit
   assert.equal(clientAcceptEncoding(get('/', { 'Accept-Encoding': 'gzip' })), 'gzip', 'no cf object (Node): the header');
   assert.equal(clientAcceptEncoding(new Request('https://autolander.ai/')), '');
 
-  const url = new URL('https://autolander.ai/ai-visibility/');
-  const gzip = withoutEdgeRewrites(edgeGet('/ai-visibility/', { clientAcceptEncoding: 'gzip, deflate' }), url, page(), { mode: 'on' });
+  const url = new URL('https://autolander.ai/aeo-geo-for-car-dealers/');
+  const gzip = withoutEdgeRewrites(edgeGet('/aeo-geo-for-car-dealers/', { clientAcceptEncoding: 'gzip, deflate' }), url, page(), { mode: 'on' });
   assert.equal(gzip.headers.get('Content-Encoding'), 'gzip', 'curl --compressed / python-requests without brotli');
   assert.equal(gzip.headers.get('X-AL-Edge'), 'no-transform:gzip');
-  const none = withoutEdgeRewrites(edgeGet('/ai-visibility/', { clientAcceptEncoding: '' }), url, page(), { mode: 'on' });
+  const none = withoutEdgeRewrites(edgeGet('/aeo-geo-for-car-dealers/', { clientAcceptEncoding: '' }), url, page(), { mode: 'on' });
   assert.equal(none.headers.get('Content-Encoding'), null, 'plain curl / Go net/http without compression: identity');
   assert.equal(none.headers.get('X-AL-Edge'), 'no-transform:identity');
   assert.equal(await none.text(), html);
-  const br = withoutEdgeRewrites(edgeGet('/ai-visibility/', { clientAcceptEncoding: 'gzip, deflate, br' }), url, page(), { mode: 'on' });
+  const br = withoutEdgeRewrites(edgeGet('/aeo-geo-for-car-dealers/', { clientAcceptEncoding: 'gzip, deflate, br' }), url, page(), { mode: 'on' });
   assert.equal(br.headers.get('Content-Encoding'), 'br');
 
   // No cf.clientAcceptEncoding: the client's value is unknown, so the edge keeps encoding (and injecting) as before.
-  const unknown = withoutEdgeRewrites(edgeGet('/ai-visibility/', { country: 'US' }), url, page(), { mode: 'on' });
+  const unknown = withoutEdgeRewrites(edgeGet('/aeo-geo-for-car-dealers/', { country: 'US' }), url, page(), { mode: 'on' });
   assert.equal(unknown.headers.get('Cache-Control'), 'max-age=600', 'no no-transform');
   assert.equal(unknown.headers.get('Content-Encoding'), 'gzip', 'origin coding untouched');
   assert.equal(unknown.headers.get('ETag'), '"abc"');
