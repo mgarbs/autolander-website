@@ -10,8 +10,9 @@ import {
 const AI_SCAN_TTL_SECONDS = 90 * 24 * 60 * 60;
 const PREVIEW_URL = 'https://preview.autolander.ai/api/ai-scan';
 const PRODUCTION_URL = 'https://autolander.ai/api/ai-scan';
-const FORM_SUCCESS = 'https://autolander.ai/ai-visibility/?sent=1#scan-form';
-const FORM_ERROR = 'https://autolander.ai/ai-visibility/?error=';
+// The no-JS form lands on the page's current URL in one hop (never the retired /ai-visibility/, which 301s).
+const FORM_SUCCESS = 'https://autolander.ai/aeo-geo-for-car-dealers/?sent=1#scan-form';
+const FORM_ERROR = 'https://autolander.ai/aeo-geo-for-car-dealers/?error=';
 
 class MemoryKv {
   constructor() {
