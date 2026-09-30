@@ -436,8 +436,8 @@ export const ARTICLES = [
           + 'prohibits](https://support.google.com/business/answer/3474122) offering incentives for '
           + 'reviews, and the [Google Maps content '
           + 'policy](https://support.google.com/contributionpolicy/answer/7400114) bars review gating and '
-          + 'asking staff to collect a set number. A reply is also the fastest public place to correct a '
-          + 'wrong fact a reviewer wrote, such as old hours.',
+          + 'asking staff to collect a set number. Replies count as well: a polite reply is a public place '
+          + 'to correct a wrong fact a reviewer wrote, such as old hours.',
         ],
       },
       {
