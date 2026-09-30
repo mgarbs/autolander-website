@@ -119,13 +119,15 @@ export function buildPageShell(appShell, {
 // /aeo-geo-for-car-dealers/ and /team/, the static home block on /), so no script is on the path to it: the entry module
 // (and the route chunks it will import) are requested once the browser has painted, or after 3 s at the latest
 // (a background tab never paints). Taps on a demo button before the app is up are remembered and replayed by
-// the app on mount (App.jsx, TeamApp.jsx).
+// the app on mount (App.jsx, TeamApp.jsx). Input (scroll, touch, key) since the page's last fragment navigation is
+// noted in __alInput, so the app does not scroll a visitor who has moved back to that fragment (lib/use-live.js).
 const BOOT_SCRIPT = `(function(){var s=document.currentScript,d=document,w=window,done=0;`
   + `function go(){if(done)return;done=1;var h=d.head,p=(s.getAttribute('data-al-preload')||'').split(' ');`
   + `for(var i=0;i<p.length;i++)if(p[i]){var l=d.createElement('link');l.rel='modulepreload';l.crossOrigin='';l.href=p[i];h.appendChild(l)}`
   + `var e=d.createElement('script');e.type='module';e.crossOrigin='';e.src=s.getAttribute('data-al-entry');h.appendChild(e)}`
   + `function soon(){setTimeout(go,0)}`
   + `w.addEventListener('click',function(v){var t=v.target;if(!w.__alHydrated&&t&&t.closest&&t.closest('[data-demo-application-trigger]'))w.__alPendingDemo=true},true);`
+  + `var ev=['wheel','touchstart','keydown','pointerdown'];for(var j=0;j<ev.length;j++)w.addEventListener(ev[j],function(){w.__alInput=1},{capture:true,passive:true});w.addEventListener('hashchange',function(){w.__alInput=0});`
   + `try{if((PerformanceObserver.supportedEntryTypes||[]).indexOf('paint')<0)throw 0;`
   + `new PerformanceObserver(function(l,o){if(l.getEntriesByName('first-contentful-paint').length){o.disconnect();soon()}}).observe({type:'paint',buffered:true})}`
   + `catch(x){requestAnimationFrame(soon)}setTimeout(go,3000)})();`;

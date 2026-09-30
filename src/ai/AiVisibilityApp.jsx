@@ -29,7 +29,7 @@ import { ProofSection } from './ProofSection.jsx';
 import { scrollBehavior } from './scroll.js';
 import StaticIsland from '../components/StaticIsland.jsx';
 import { HYDRATE_OPTIONS, islandHtml } from '../lib/boot.js';
-import { useLive } from '../lib/use-live.js';
+import { carryValues, useLive } from '../lib/use-live.js';
 import {
   CAPI_URL,
   formatPhoneInput,
@@ -87,9 +87,15 @@ function returnedState() {
 const Hint = ({ id, children }) => children ? <span id={id} className="mt-1 block text-xs leading-relaxed text-slate-400">{children}</span> : null;
 const InlineError = ({ id, reason }) => reason ? <span id={id} className="mt-1 block text-xs leading-relaxed text-red-300">{FORM.errors[reason]}</span> : null;
 
-function ScanForm() {
+// Starts from what a visitor typed into the static island's copy of this form before the page went live.
+function carriedForm(values) {
+  const form = carryValues(initialForm, values);
+  return form.phone ? { ...form, phone: formatPhoneInput(form.phone) } : form;
+}
+
+function ScanForm({ initialValues = null }) {
   const returned = useMemo(() => returnedState(), []);
-  const [form, setForm] = useState(initialForm);
+  const [form, setForm] = useState(() => carriedForm(initialValues));
   const [phase, setPhase] = useState(returned.sent ? 'success' : 'capture');
   const [fieldErrors, setFieldErrors] = useState(() => {
     const field = REASON_FIELD[returned.reason];
@@ -293,7 +299,7 @@ function ScanForm() {
  */
 export default function AiVisibilityApp({ prerendered = false, restHtml = '' }) {
   const formSectionRef = useRef(null);
-  const [live, ensureLive] = useLive(prerendered);
+  const [live, ensureLive, carried] = useLive(prerendered);
 
   useEffect(() => {
     document.title = META.title;
@@ -325,7 +331,7 @@ export default function AiVisibilityApp({ prerendered = false, restHtml = '' }) 
             <section ref={formSectionRef} className="al-scan-section scroll-mt-4 py-20 lg:py-28">
               <div className="mx-auto grid max-w-7xl items-start gap-10 px-6 lg:grid-cols-2">
                 <div className="order-2 lg:order-1"><HowSteps /></div>
-                <div className="order-1 lg:order-2"><ScanForm /></div>
+                <div className="order-1 lg:order-2"><ScanForm initialValues={carried} /></div>
               </div>
             </section>
             <PlansSection onGo={goToForm} />
