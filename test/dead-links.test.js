@@ -16,9 +16,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import {
+  dirname, join, relative, resolve, sep,
+} from 'node:path';
 import { env as processEnv, execPath } from 'node:process';
 import { fileURLToPath } from 'node:url';
 
@@ -45,20 +49,59 @@ const DIST_ONLY = new Set(['/', ...SPA_PAGE_PATHS, '/admin/', '/pay/', ...AI_VIS
 
 const describeDead = (dead) => dead.slice(0, 15).map((d) => `  ${d.page} -> ${d.href}`).join('\n');
 const TEXT_FILE_RE = /\.(html?|md|txt|xml|json)$/i;
+// The generated list of published AEO articles the money page renders (React + static mirror).
+const GUIDES_MODULE = join('src', 'generated', 'aeo-geo-guides.js');
+
+// build-og-cards.mjs renders a card for EVERY article while it is still a draft (so a later publish
+// needs no Playwright) and records it in og/manifest.json as "<article path>": "/og/<slugFor>.png".
+// That exact entry is the generator's existing behaviour, and it is the only thing exempted: a
+// draft's entry is dropped from the parsed manifest only when key AND value are exactly that pair,
+// and the rest of the file is scanned like any other. A draft named under another key or with any
+// other value, a manifest that is not the root og/manifest.json, or an unparseable one still leaks.
+const ogCardSlug = (urlPath) => urlPath.replace(/^\/|\/$/g, '').replaceAll('/', '-'); // = build-og-cards slugFor
+function withoutOgCardEntries(root, file, text, drafts) {
+  if (relative(root, file).split(sep).join('/') !== 'og/manifest.json') return text;
+  let manifest;
+  try { manifest = JSON.parse(text); } catch { return text; }
+  if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) return text;
+  const rest = { ...manifest };
+  for (const a of drafts) {
+    const path = articlePath(a);
+    if (rest[path] === `/og/${ogCardSlug(path)}.png`) delete rest[path];
+  }
+  return JSON.stringify(rest, null, 2);
+}
 
 // Every file a visitor or crawler can fetch that must not mention a draft. content-status.json is
-// the admin's own list (drafts included by design), so it is the one exception.
+// the admin's own list (drafts included by design), so it is the one exception, plus the OG
+// generator's exact per-draft manifest entry (withoutOgCardEntries above).
 function draftLeaks(root, drafts, { extraFiles = [] } = {}) {
   const files = [...listFiles(root).filter((f) => TEXT_FILE_RE.test(f)), ...extraFiles]
     .filter((f) => !/[\\/]data[\\/]content-status\.json$/.test(f));
   const leaks = [];
   for (const file of files) {
-    const text = readFileSync(file, 'utf8');
+    const text = withoutOgCardEntries(root, file, readFileSync(file, 'utf8'), drafts);
     for (const a of drafts) {
       if (text.includes(`/aeo-geo/${a.slug}`) || text.includes(a.slug)) leaks.push(`${file}: ${a.slug}`);
     }
   }
   return leaks;
+}
+
+// dist/ is a production build of SOME earlier tree. When public/ has been regenerated since (every
+// content build rewrites public/data/content-status.json), dist/ describes an older site, so its
+// checks would fail on stale output or pass on output that no longer ships. They skip with this
+// reason instead (null = dist/ is present and at least as new as the generated site).
+function distSkipReason() {
+  const index = resolve(DIST, 'index.html');
+  if (!existsSync(index)) return 'no dist/ build (run npm run build)';
+  const status = resolve(PUBLIC, 'data', 'content-status.json');
+  if (!existsSync(status)) return null;
+  const built = statSync(index).mtimeMs;
+  const generated = statSync(status).mtimeMs;
+  if (built >= generated) return null;
+  return `dist/ is stale: dist/index.html (${new Date(built).toISOString()}) is older than `
+    + `public/data/content-status.json (${new Date(generated).toISOString()}); run npm run build to check the production build`;
 }
 
 // ---- sandbox builds -------------------------------------------------------------------------
@@ -128,18 +171,23 @@ test('committed public/ and index.html carry no dead internal links', () => {
   assert.deepEqual(dead, [], `dead internal links:\n${describeDead(dead)}`);
 });
 
-test('a production build in dist/ (when present) carries no dead internal links', (t) => {
-  if (!existsSync(resolve(DIST, 'index.html'))) {
-    t.skip('no dist/ build (run npm run build)');
+test('a production build in dist/ (when present and current) carries no dead internal links', (t) => {
+  const skip = distSkipReason();
+  if (skip) {
+    t.skip(skip);
     return;
   }
   const dead = crawl(crawlableFiles(DIST), (path) => path === '/' || servedBy(DIST, path));
   assert.deepEqual(dead, [], `dead internal links in dist/:\n${describeDead(dead)}`);
 });
 
-test('draft AEO articles render nowhere public: no page, sitemap, llms, home directory or mention', (t) => {
+const committedDrafts = () => {
   const state = loadPublishState();
-  const drafts = AEO.filter((a) => state[a.slug]?.status !== 'published');
+  return AEO.filter((a) => state[a.slug]?.status !== 'published');
+};
+
+test('draft AEO articles render nowhere public: no page, sitemap, llms, home directory, guides list or mention', (t) => {
+  const drafts = committedDrafts();
   if (!drafts.length) {
     t.skip('every AEO article is published');
     return;
@@ -148,16 +196,67 @@ test('draft AEO articles render nowhere public: no page, sitemap, llms, home dir
     assert.ok(!existsSync(resolve(PUBLIC, 'aeo-geo', a.slug)), `public/aeo-geo/${a.slug}/ exists while draft`);
   }
   const leaks = draftLeaks(PUBLIC, drafts, {
-    extraFiles: [resolve(ROOT, 'index.html'), resolve(ROOT, 'src', 'generated', 'home-directory.json')],
+    extraFiles: [
+      resolve(ROOT, 'index.html'),
+      resolve(ROOT, 'src', 'generated', 'home-directory.json'),
+      resolve(ROOT, GUIDES_MODULE),
+    ],
   });
   assert.deepEqual(leaks, [], `draft articles leak into public output:\n  ${leaks.slice(0, 15).join('\n  ')}`);
-  if (existsSync(resolve(DIST, 'index.html'))) {
-    const distLeaks = draftLeaks(DIST, drafts);
-    assert.deepEqual(distLeaks, [], `draft articles leak into dist/:\n  ${distLeaks.slice(0, 15).join('\n  ')}`);
-  }
   // The admin list is the one place drafts belong.
   const status = JSON.parse(readFileSync(resolve(PUBLIC, 'data', 'content-status.json'), 'utf8'));
   for (const a of drafts) assert.ok(status.articles.some((row) => row.slug === a.slug), `${a.slug} missing from the admin list`);
+});
+
+test('draft AEO articles do not leak into a production build in dist/ (when present and current)', (t) => {
+  const drafts = committedDrafts();
+  const skip = drafts.length ? distSkipReason() : 'every AEO article is published';
+  if (skip) {
+    t.skip(skip);
+    return;
+  }
+  const distLeaks = draftLeaks(DIST, drafts);
+  assert.deepEqual(distLeaks, [], `draft articles leak into dist/:\n  ${distLeaks.slice(0, 15).join('\n  ')}`);
+});
+
+test('draftLeaks exempts ONLY the OG generator\'s exact manifest entry for a draft, never a real leak', (t) => {
+  const draft = AEO.at(-1);
+  const path = articlePath(draft);
+  const card = `/og/${ogCardSlug(path)}.png`;
+  assert.equal(card, `/og/aeo-geo-${draft.slug}.png`, 'same naming as build-og-cards.mjs slugFor');
+  const site = (files) => {
+    const dir = mkdtempSync(join(tmpdir(), 'al-draftleaks-'));
+    t.after(() => rmSync(dir, { recursive: true, force: true }));
+    for (const [rel, text] of Object.entries(files)) {
+      mkdirSync(dirname(join(dir, rel)), { recursive: true });
+      writeFileSync(join(dir, rel), text);
+    }
+    return dir;
+  };
+  const manifest = (entries) => `${JSON.stringify({ '/': '/og/home.png', ...entries }, null, 2)}\n`;
+
+  // The generator's own entry (what build-og-cards.mjs writes for a draft) is not a leak.
+  assert.deepEqual(draftLeaks(site({ 'og/manifest.json': manifest({ [path]: card }) }), [draft]), []);
+  // Everything else still is.
+  const leaky = [
+    { 'og/manifest.json': manifest({ [path]: '/og/other.png' }) }, // right key, wrong value
+    { 'og/manifest.json': manifest({ '/somewhere/': card }) }, // the draft's card under another page
+    { 'og/manifest.json': manifest({ [path]: card, '/x/': `mentions ${draft.slug}` }) }, // a second mention
+    { 'og/manifest.json': `{ "${path}": "${card}", ` }, // not a parseable manifest
+    { 'data/manifest.json': manifest({ [path]: card }) }, // not the OG manifest
+    { 'og/manifest.json': manifest({ [path]: card }), 'llms.txt': `- [x](https://autolander.ai${path})\n` }, // a real link elsewhere
+  ];
+  for (const files of leaky) {
+    assert.ok(draftLeaks(site(files), [draft]).length > 0, `must leak: ${JSON.stringify(Object.keys(files))} ${JSON.stringify(files).slice(0, 160)}`);
+  }
+  // The real committed manifest is scanned under the same rule (no draft card entry today is a leak).
+  const committed = resolve(PUBLIC, 'og', 'manifest.json');
+  if (existsSync(committed)) {
+    const text = readFileSync(committed, 'utf8');
+    const drafts = committedDrafts();
+    const rest = withoutOgCardEntries(PUBLIC, committed, text, drafts);
+    for (const a of drafts) assert.ok(!rest.includes(a.slug), `public/og/manifest.json names draft ${a.slug} outside its card entry`);
+  }
 });
 
 // ---- 2. simulated publish states ---------------------------------------------------------------
@@ -189,13 +288,20 @@ for (const n of [1, 5, 17, 50]) {
       assert.ok(!existsSync(join(build.pub, 'aeo-geo', a.slug)), `draft #${a.publishOrder} ${a.slug} rendered`);
     }
     const leaks = draftLeaks(build.pub, drafts, {
-      extraFiles: [join(build.out, 'index.html'), join(build.out, 'src', 'generated', 'home-directory.json')],
+      extraFiles: [join(build.out, 'index.html'), join(build.out, 'src', 'generated', 'home-directory.json'), join(build.out, GUIDES_MODULE)],
     });
     assert.deepEqual(leaks, [], `drafts leak with the first ${n} published:\n  ${leaks.slice(0, 15).join('\n  ')}`);
 
     const sitemap = readFileSync(join(build.pub, 'sitemap.xml'), 'utf8');
     const listed = AEO.filter((a) => sitemap.includes(`https://autolander.ai/aeo-geo/${a.slug}/`));
     assert.deepEqual(listed.map((a) => a.slug), published.map((a) => a.slug), 'sitemap lists exactly the published AEO articles');
+    // The money page's guides list (module + twin) carries exactly the published articles.
+    const guides = readFileSync(join(build.out, GUIDES_MODULE), 'utf8');
+    const twin = readFileSync(join(build.pub, 'aeo-geo-for-car-dealers.md'), 'utf8');
+    for (const a of published) {
+      assert.ok(guides.includes(`"href": "${articlePath(a)}"`), `guides module lists #${a.publishOrder}`);
+      assert.ok(twin.includes(`(https://autolander.ai${articlePath(a)})`), `money page twin lists #${a.publishOrder}`);
+    }
   });
 }
 
@@ -209,7 +315,7 @@ for (const [seed, size] of [[20260930, 12], [7, 25], [314159, 38]]) {
     assert.doesNotMatch(build.stderr, /is not a page this site serves/, build.stderr);
     const drafts = AEO.filter((a) => !slugs.includes(a.slug));
     const leaks = draftLeaks(build.pub, drafts, {
-      extraFiles: [join(build.out, 'index.html'), join(build.out, 'src', 'generated', 'home-directory.json')],
+      extraFiles: [join(build.out, 'index.html'), join(build.out, 'src', 'generated', 'home-directory.json'), join(build.out, GUIDES_MODULE)],
     });
     assert.deepEqual(leaks, [], `drafts leak (seed ${seed}):\n  ${leaks.slice(0, 15).join('\n  ')}`);
   });
@@ -245,6 +351,22 @@ test('publishing #1 (in a copy of the state) adds it with its silo links, hub, b
   const llms = readFileSync(join(build.pub, 'llms.txt'), 'utf8');
   assert.match(llms, /## AEO and GEO guides for car dealers\n\n- \[/);
   assert.ok(llms.includes(`https://autolander.ai/aeo-geo/${first.slug}.md`), 'llms.txt entry');
+
+  // On-topic footer: the AEO & GEO / AutoLander / Company columns, #1 (a published pillar) listed.
+  const footer = html.slice(html.indexOf('<footer'));
+  assert.deepEqual([...footer.matchAll(/<nav class="foot-col" aria-label="([^"]+)"/g)].map((m) => m[1]),
+    ['AEO &amp; GEO', 'AutoLander', 'Company']);
+  assert.ok(footer.includes(`<a href="${path}">`), 'the published pillar is in the footer');
+  assert.ok(!footer.includes('href="/bulk-post-cars-to-facebook-marketplace/"'), 'no Marketplace product footer');
+  assert.doesNotMatch(footer, /[\w.+-]+@autolander\.ai/, 'no raw e-mail address in the footer');
+
+  // Money page down-links: the generated module and the Markdown twin list #1 under its cluster.
+  const guides = readFileSync(join(build.out, GUIDES_MODULE), 'utf8');
+  assert.ok(guides.includes(`"href": "${path}"`) && guides.includes('"pillar": true'), 'guides module');
+  const twin = readFileSync(join(build.pub, 'aeo-geo-for-car-dealers.md'), 'utf8');
+  assert.ok(twin.includes('## AEO and GEO guides for dealers\n'), 'twin guides heading');
+  assert.ok(twin.includes(`(https://autolander.ai${path})`), 'twin guides entry');
+  assert.ok(twin.indexOf('## AEO and GEO guides for dealers') < twin.indexOf('## Related guides for dealers'));
   // The committed files are untouched by a sandbox build.
   assert.ok(!existsSync(resolve(PUBLIC, 'aeo-geo', first.slug)), 'sandbox wrote into the repo public/');
 });
