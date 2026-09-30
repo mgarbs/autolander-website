@@ -7,6 +7,7 @@ import {
   NO_TRANSFORM_KEY, NO_TRANSFORM_PATHS, pickContentEncoding, readNoTransformMode, withoutEdgeRewrites,
 } from '../worker/src/agent/no-transform.js';
 import { beaconLoaderHtml, CF_WEB_ANALYTICS_TOKEN } from '../scripts/spa-shell.mjs';
+import { AI_VISIBILITY_DIR, AI_VISIBILITY_PATH } from '../shared/ai-visibility-route.js';
 
 const html = '<html><head><script defer src="/al-tags-v1.js"></script></head><body>OK</body></html>';
 const page = (headers = {}, status = 200) => new Response(html, { status, headers: {
@@ -47,6 +48,12 @@ test('the three prerendered pages get no-transform and a Worker-chosen encoding;
   assert.equal(identity.headers.get('Vary'), 'Accept, Accept-Encoding');
   const already = withoutEdgeRewrites(get('/'), new URL('https://autolander.ai/'), page({ 'Cache-Control': 'public, no-transform' }), { mode: 'on' });
   assert.equal(already.headers.get('Cache-Control'), 'public, no-transform');
+});
+
+test('the no-transform list carries the AEO and GEO page and never its retired URL', () => {
+  assert.ok(NO_TRANSFORM_PATHS.has('/aeo-geo-for-car-dealers/'));
+  assert.ok(!NO_TRANSFORM_PATHS.has('/ai-visibility/'));
+  assert.ok(!NO_TRANSFORM_PATHS.has('/ai-visibility'));
 });
 
 test('everything else is returned as the very same response', () => {
@@ -98,7 +105,7 @@ test('the Worker applies it end to end on the homepage and nowhere else, keeping
 });
 
 test('the built no-transform pages are exactly the pages that load Web Analytics themselves', { skip: !existsSync('dist/index.html') }, () => {
-  const files = { '/': 'dist/index.html', '/index.html': 'dist/index.html', '/ai-visibility/': 'dist/ai-visibility/index.html', '/team/': 'dist/team/index.html' };
+  const files = { '/': 'dist/index.html', '/index.html': 'dist/index.html', [AI_VISIBILITY_PATH]: `dist/${AI_VISIBILITY_DIR}/index.html`, '/team/': 'dist/team/index.html' };
   assert.deepEqual([...NO_TRANSFORM_PATHS].sort(), Object.keys(files).sort());
   for (const [path, file] of Object.entries(files)) {
     const built = readFileSync(file, 'utf8');
@@ -108,7 +115,7 @@ test('the built no-transform pages are exactly the pages that load Web Analytics
     assert.doesNotMatch(visible, /[\w.%+-]+@[\w-]+\.[\w.-]+/, `${path}: an address the edge used to obfuscate`);
     assert.doesNotMatch(built, /G-30H80LZMCH|googletagmanager|fbq\(|fbevents|beacon\.min\.js\/v/, path);
   }
-  for (const file of ['dist/404.html', 'dist/admin/index.html', 'dist/pay/index.html', 'dist/contact/index.html']) {
+  for (const file of ['dist/404.html', 'dist/admin/index.html', 'dist/pay/index.html', 'dist/contact/index.html', 'dist/ai-visibility/index.html']) {
     if (existsSync(file)) assert.doesNotMatch(readFileSync(file, 'utf8'), /data-al-cf-beacon-loader/, file);
   }
 });

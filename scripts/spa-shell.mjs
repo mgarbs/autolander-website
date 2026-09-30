@@ -116,7 +116,7 @@ export function buildPageShell(appShell, {
 }
 
 // Loads the app after the first paint. The shell's HTML is the finished first screen (prerendered React on
-// /ai-visibility/ and /team/, the static home block on /), so no script is on the path to it: the entry module
+// /aeo-geo-for-car-dealers/ and /team/, the static home block on /), so no script is on the path to it: the entry module
 // (and the route chunks it will import) are requested once the browser has painted, or after 3 s at the latest
 // (a background tab never paints). Taps on a demo button before the app is up are remembered and replayed by
 // the app on mount (App.jsx, TeamApp.jsx).
@@ -164,6 +164,36 @@ const BEACON_SCRIPT = `(function(w,d){if(location.hostname!=='autolander.ai')ret
 
 export function beaconLoaderHtml() {
   return `<script data-al-cf-beacon-loader>${BEACON_SCRIPT}</script>`;
+}
+
+// A retired marketing URL (shared/ai-visibility-route.js AI_VISIBILITY_LEGACY_PATHS) as a static page. The Worker
+// answers the old URL with a 301 (worker/src/agent/moved-pages.js) before GitHub Pages is asked; this page only serves
+// when the Worker fails open or is off, and on the Pages preview. It forwards at once, keeping ?query and #hash, with a
+// no-JS meta refresh and a visible link. The target is relative, so the preview stays on its own host; the canonical
+// names the new URL. Deliberately no al-tags, Zaraz, beacon loader, email address or robots noindex: a redirect is
+// not a page view, and the canonical carries the signal.
+export function legacyRedirectHtml({ target, canonical, title, label }) {
+  if (!/^\/[a-z0-9-]+\/$/.test(String(target))) throw new Error(`spa-shell: legacy redirect target must be a site path, got ${target}`);
+  const script = `(function(){var d='${target}'+(location.search||'')+(location.hash||'');try{location.replace(d)}catch(e){location.href=d}})();`;
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${esc(title)}</title>
+  <link rel="canonical" href="${esc(canonical)}" />
+  <script>${script}</script>
+  <noscript><meta http-equiv="refresh" content="0; url=${esc(target)}" /></noscript>
+  <style>body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#050505;color:#f8fafc;font:16px/1.6 system-ui,sans-serif}a{color:#93c5fd}</style>
+</head>
+<body>
+  <main>
+    <p><a id="moved-link" href="${esc(target)}">This page moved: ${esc(label)}</a></p>
+  </main>
+  <script>(function(){var a=document.getElementById('moved-link');if(a)a.href=a.getAttribute('href')+(location.search||'')+(location.hash||'');})();</script>
+</body>
+</html>
+`;
 }
 
 export function appendBeaconLoader(html) {

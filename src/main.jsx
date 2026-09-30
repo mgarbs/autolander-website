@@ -22,7 +22,7 @@ if (boot === 'spa') {
     </StrictMode>,
   )
 } else {
-  // Prerendered /ai-visibility/ and /team/ (see lib/boot.js). Root is not mounted on this path, so its one
+  // Prerendered /aeo-geo-for-car-dealers/ and /team/ (see lib/boot.js). Root is not mounted on this path, so its one
   // PageView is sent here instead. If the route chunk fails to load, the static page stays fully usable.
   pageView()
   const route = boot === 'ai-visibility'

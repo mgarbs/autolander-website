@@ -9,7 +9,7 @@ const SECTION_LINKS = [
 ];
 
 const SERVICES = [
-  ['/ai-visibility/', 'AI Audit'],
+  ['/aeo-geo-for-car-dealers/', 'AEO & GEO'],
   ['/team/', 'Team Plans'],
 ];
 

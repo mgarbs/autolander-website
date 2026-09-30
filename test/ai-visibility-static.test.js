@@ -1,21 +1,32 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { existsSync, readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
+  AEO_GEO,
+  AI_VISIBILITY_PUBLISHED,
   AI_VISIBILITY_UPDATED,
   FAQ,
+  HERO,
   META,
   PLANS,
+  PLANS_UPDATED,
+  REVIEW,
   SMS_CONSENT,
   fmtUsd,
 } from '../shared/ai-visibility-content.js';
 import * as AI_CONTENT from '../shared/ai-visibility-content.js';
+import {
+  AI_VISIBILITY_DIR,
+  AI_VISIBILITY_MD_PATH,
+  AI_VISIBILITY_PATH,
+} from '../shared/ai-visibility-route.js';
 import { TEAM_META } from '../shared/team-content.js';
 import {
   AI_VISIBILITY_IMAGES,
+  TERM_SAME_AS,
   aiVisibilityGraph,
   aiVisibilityHead,
   renderAiVisibilityMarkdown,
@@ -29,6 +40,12 @@ import { HTMLParser } from './helpers/html-text.js';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (path) => readFileSync(resolve(ROOT, path), 'utf8');
 const text = (html) => new HTMLParser().textOf(html);
+const CANONICAL = 'https://autolander.ai/aeo-geo-for-car-dealers/';
+const TWIN_URL = 'https://autolander.ai/aeo-geo-for-car-dealers.md';
+const TWIN_FILE = `public${AI_VISIBILITY_MD_PATH}`;
+// The retired page URL in any form (absolute, or a relative href/Markdown link), never the images that stay in
+// the old folder (/ai-visibility/<slug>-<w>.<fmt>) or the OG card (/og/ai-visibility.jpg).
+const OLD_PAGE_URL = /(?:autolander\.ai|["'(])\/ai-visibility(?:\.md|\/?(?![\w/.-]))/;
 
 function collectStrings(value, into = []) {
   if (typeof value === 'string') into.push(value);
@@ -53,6 +70,16 @@ function productionShell({ title, headHtml, mirrorHtml }) {
   });
 }
 
+const sectionById = (html, id) => new RegExp(`<section id="${id}"[\\s\\S]*?</section>`).exec(html)?.[0] || '';
+
+test('the page URL lives in one route module and the content module re-exports it', () => {
+  assert.equal(AI_VISIBILITY_PATH, '/aeo-geo-for-car-dealers/');
+  assert.equal(AI_VISIBILITY_DIR, 'aeo-geo-for-car-dealers');
+  assert.equal(AI_VISIBILITY_MD_PATH, '/aeo-geo-for-car-dealers.md');
+  assert.equal(AI_CONTENT.AI_VISIBILITY_PATH, AI_VISIBILITY_PATH);
+  assert.ok(AI_CONTENT.AGENT_GUIDANCE.handoff.includes(`${CANONICAL}#scan-form`));
+});
+
 test('content module keeps the public copy rules and canonical three plan prices', () => {
   assert.deepEqual(PLANS.map(({ name, monthly, setup, availability }) => ({ name, monthly, setup, availability })), [
     { name: 'AI Foundation', monthly: 997, setup: 997, availability: 'open' },
@@ -62,6 +89,11 @@ test('content module keeps the public copy rules and canonical three plan prices
 
   const strings = collectStrings(AI_CONTENT);
   const copy = strings.join('\n');
+  // Only the "guarantee" pattern skips the allow-listed FAQ questions; every other pattern (dashes, cadence and the
+  // rest) still runs over every string, those questions included.
+  const allowedQuestions = new Set(FAQ.filter((item) => item.allow).map((item) => item.q));
+  const copyForGuarantee = strings.filter((value) => !allowedQuestions.has(value)).join('\n');
+  const guarantee = /\bguarantee\b/i;
   const banned = [
     /[\u2013\u2014]/u,
     /\bpowered by\b/i,
@@ -73,7 +105,7 @@ test('content module keeps the public copy rules and canonical three plan prices
     /\bauthority links?\b/i,
     /\blink building\b/i,
     /\b#1\b/i,
-    /\bguarantee\b/i,
+    guarantee,
     /\bdominate\b/i,
     /\bown your market\b/i,
     /\bAI-proof\b/i,
@@ -82,13 +114,30 @@ test('content module keeps the public copy rules and canonical three plan prices
     /\bmissed promise\b/i,
     /\bofficial APIs?\b/i,
     /\bnot\b[^.!?]{0,120}[.!?]\s+(?:It|It’s|It's|This|That’s|That's)\b/i,
+    // Michael is "co-founder", never "founder".
+    /(?<!co-)\bfounder\b/i,
   ];
-  banned.forEach((pattern) => assert.doesNotMatch(copy, pattern));
+  banned.forEach((pattern) => assert.doesNotMatch(pattern === guarantee ? copyForGuarantee : copy, pattern));
 
-  for (const [name, content] of Object.entries(AI_CONTENT)) {
-    if (['WHERE_BUYERS_ASK', 'RESULTS_VIEW'].includes(name)) continue;
-    assert.doesNotMatch(collectStrings(content).join('\n'), /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i, name);
+  // The one "guarantee" question is answered with a plain No, and no answer anywhere uses the word.
+  const guaranteeItems = FAQ.filter((item) => /guarantee/i.test(item.q));
+  assert.equal(guaranteeItems.length, 1);
+  assert.ok(guaranteeItems.every((item) => item.allow && item.a.startsWith('No.')));
+  FAQ.forEach((item) => assert.doesNotMatch(item.a, /guarantee/i, item.q));
+  // No ranking or placement promises in any answer: every "promise" is a "no one can promise" style denial.
+  for (const item of FAQ) {
+    for (const match of item.a.matchAll(/[^.!?]*\bpromise\b[^.!?]*[.!?]/gi)) {
+      assert.match(match[0], /\b(?:no one|nobody|can’t|cannot|never)\b/i, `${item.q}: ${match[0]}`);
+    }
   }
+
+  const assistantNames = /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i;
+  for (const [name, content] of Object.entries(AI_CONTENT)) {
+    if (['WHERE_BUYERS_ASK', 'RESULTS_VIEW', 'AEO_GEO'].includes(name)) continue;
+    const checked = name === 'FAQ' ? content.filter((item) => !item.names) : content;
+    assert.doesNotMatch(collectStrings(checked).join('\n'), assistantNames, name);
+  }
+  assert.equal(FAQ.filter((item) => item.names).length, 2, 'exactly two FAQ items may name an assistant');
 
   const planTokens = new Set(PLANS.flatMap((plan) => [fmtUsd(plan.monthly), fmtUsd(plan.setup)]));
   const withoutReportIllustration = Object.entries(AI_CONTENT)
@@ -98,21 +147,47 @@ test('content module keeps the public copy rules and canonical three plan prices
   assert.deepEqual(dollarTokens, planTokens, 'all pricing copy must be derived from PLANS');
 });
 
-test('assistant brand names are restricted to the two approved mirror and twin sections', () => {
-  const approved = [AI_CONTENT.WHERE_BUYERS_ASK, AI_CONTENT.RESULTS_VIEW];
+test('title and H1 lead with the niche, and the FAQ has 16 questions', () => {
+  assert.ok(META.title.length <= 60, META.title);
+  assert.ok(!META.title.includes('&'));
+  assert.ok(META.description.length <= 155);
+  assert.match(META.title, /^AEO and GEO for car dealers/i);
+  assert.match(`${HERO.h1Lead} ${HERO.h1Grad}`, /^AEO and GEO for car dealers/i);
+  assert.equal(FAQ.length, 16);
+  assert.equal(FAQ[0].q, 'What is AEO for car dealers?');
+});
+
+test('assistant brand names are restricted to the three approved mirror and twin sections and two FAQ items', () => {
+  const approved = [AI_CONTENT.AEO_GEO, AI_CONTENT.WHERE_BUYERS_ASK, AI_CONTENT.RESULTS_VIEW];
+  const named = FAQ.filter((item) => item.names);
   const banned = /\b(?:ChatGPT|Perplexity|Gemini|Copilot)\b/i;
   let removed = 0;
-  const mirror = renderAiVisibilityMirror().replace(/<section\b[\s\S]*?<\/section>/g, (section) => {
-    if (!approved.some(({ h2Lead, h2Grad }) => text(section).includes(`${h2Lead} ${h2Grad}`))) return section;
-    removed += 1;
-    return '';
-  });
-  assert.equal(removed, 2);
+  let strippedDetails = 0;
+  const mirror = renderAiVisibilityMirror()
+    .replace(/<details\b[\s\S]*?<\/details>/g, (block) => {
+      const summary = text(/<summary[^>]*>([\s\S]*?)<\/summary>/.exec(block)?.[1] || '').trim();
+      if (!named.some(({ q }) => q === summary)) return block;
+      strippedDetails += 1;
+      return '';
+    })
+    .replace(/<section\b[\s\S]*?<\/section>/g, (section) => {
+      if (!approved.some(({ h2Lead, h2Grad }) => text(section).includes(`${h2Lead} ${h2Grad}`))) return section;
+      removed += 1;
+      return '';
+    });
+  assert.equal(strippedDetails, 2);
+  assert.equal(removed, 3);
   assert.doesNotMatch(mirror, banned);
-  for (const twin of [renderAiVisibilityMarkdown(), read('public/ai-visibility.md')]) {
+  for (const source of [renderAiVisibilityMarkdown(), read(TWIN_FILE)]) {
+    let twin = source;
+    for (const { q, a } of named) {
+      const block = `### ${q}\n\n${a}\n\n`;
+      assert.ok(twin.includes(block), q);
+      twin = twin.replace(block, '');
+    }
     const sections = twin.split(/(?=^## )/m);
     const outside = sections.filter((section) => !approved.some(({ h2Lead, h2Grad }) => section.startsWith(`## ${h2Lead} ${h2Grad}\n`)));
-    assert.equal(sections.length - outside.length, 2);
+    assert.equal(sections.length - outside.length, 3);
     assert.doesNotMatch(outside.join('\n'), banned);
   }
 });
@@ -142,9 +217,14 @@ test('AI Visibility dedicated shell is indexable and carries only its route grap
 
   assert.match(html, new RegExp(`<title>${META.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</title>`));
   assert.ok(html.includes(`<meta name="description" content="${META.description}" />`));
-  assert.ok(html.includes('<link rel="canonical" href="https://autolander.ai/ai-visibility/" />'));
+  assert.ok(html.includes(`<link rel="canonical" href="${CANONICAL}" />`));
   assert.ok(html.includes('<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />'));
-  assert.ok(html.includes('<link rel="alternate" type="text/markdown" href="/ai-visibility.md" />'));
+  assert.ok(html.includes('<link rel="alternate" type="text/markdown" href="/aeo-geo-for-car-dealers.md" />'));
+  assert.ok(html.includes(`<meta property="og:url" content="${CANONICAL}" />`));
+  assert.ok(html.includes(`<meta property="og:title" content="${META.ogTitle}" />`));
+  assert.ok(html.includes(`<meta property="og:description" content="${META.ogDescription}" />`));
+  assert.ok(html.includes(`<meta name="twitter:title" content="${META.ogTitle}" />`));
+  assert.ok(!html.includes('/ai-visibility.md') && !html.includes('https://autolander.ai/ai-visibility/"'));
   assert.equal((html.match(/<meta name="robots"/g) || []).length, 1);
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.ok(html.includes('<form id="scan-form" method="post" action="https://forms.example/api/ai-scan"'));
@@ -153,8 +233,9 @@ test('AI Visibility dedicated shell is indexable and carries only its route grap
   assert.equal(blocks.length, 1, 'the homepage JSON-LD must be removed before route JSON-LD is inserted');
   const graph = blocks[0]['@graph'];
   const types = graph.map((node) => node['@type']);
-  assert.deepEqual(types, ['WebPage', 'Service', 'FAQPage', 'BreadcrumbList']);
+  assert.deepEqual(types, ['WebPage', 'Service', 'DefinedTermSet', 'FAQPage', 'BreadcrumbList', 'Organization', 'WebSite', ...(REVIEW.enabled ? ['Person'] : [])]);
   assert.ok(!types.includes('Product') && !types.includes('AggregateRating') && !types.includes('Review'));
+  assert.ok(graph.every((node) => !('@context' in node)), 'one @context, on the graph');
 
   const service = graph.find((node) => node['@type'] === 'Service');
   const offers = service.hasOfferCatalog.itemListElement;
@@ -164,8 +245,98 @@ test('AI Visibility dedicated shell is indexable and carries only its route grap
     const components = offer.priceSpecification.priceComponent;
     assert.equal(Number(components[0].price), PLANS[index].monthly);
     assert.equal(Number(components[1].price), PLANS[index].setup);
+    assert.ok(offer.url.startsWith(`${CANONICAL}#plan-`));
   });
-  assert.equal(graph.find((node) => node['@type'] === 'WebPage').dateModified, AI_VISIBILITY_UPDATED);
+  assert.match(service.name, /AEO and GEO/);
+  assert.match(service.serviceType, /answer engine optimization and generative engine optimization/i);
+  assert.equal(service.url, CANONICAL);
+
+  const webpage = graph.find((node) => node['@type'] === 'WebPage');
+  assert.equal(webpage['@id'], `${CANONICAL}#webpage`);
+  assert.equal(webpage.url, CANONICAL);
+  assert.equal(webpage.dateModified, AI_VISIBILITY_UPDATED);
+  assert.equal(webpage.datePublished, AI_VISIBILITY_PUBLISHED);
+  assert.ok(webpage.speakable.cssSelector.includes('.al-aeo-def'));
+  assert.ok(webpage.speakable.cssSelector.includes('.al-aeo-lead'));
+  assert.deepEqual(webpage.about.map((ref) => ref['@id']), [`${CANONICAL}#service`, `${CANONICAL}#term-aeo`, `${CANONICAL}#term-geo`, `${CANONICAL}#term-seo`]);
+
+  // Every @id this page references resolves inside its own graph.
+  const ids = new Set(graph.flatMap((node) => [node['@id'], ...(node.hasDefinedTerm || []).map((term) => term['@id'])]));
+  for (const ref of JSON.stringify(graph).matchAll(/\{"@id":"([^"]+)"\}/g)) {
+    assert.ok(ids.has(ref[1]), `dangling reference ${ref[1]}`);
+  }
+  const breadcrumb = graph.find((node) => node['@type'] === 'BreadcrumbList');
+  assert.deepEqual(breadcrumb.itemListElement.map((item) => [item.name, item.item]), [['Home', 'https://autolander.ai/'], [META.breadcrumb, CANONICAL]]);
+  const org = graph.find((node) => node['@type'] === 'Organization');
+  assert.equal(org['@id'], 'https://autolander.ai/#organization');
+  assert.ok(org.knowsAbout.includes('Answer engine optimization (AEO) for car dealers'));
+});
+
+test('SEO, AEO and GEO are defined once, verbatim, in the visible section, the twin and the DefinedTermSet', () => {
+  const mirror = renderAiVisibilityMirror();
+  const section = sectionById(mirror, AEO_GEO.anchor);
+  assert.ok(section, 'the mirror carries the AEO and GEO section');
+  assert.equal((mirror.match(/<section id="what-is-aeo-geo"/g) || []).length, 1);
+  assert.doesNotMatch(section.slice(1), /<section\b/, 'no nested <section>');
+  const twin = read(TWIN_FILE);
+  const graph = aiVisibilityGraph()['@graph'];
+  const set = graph.find((node) => node['@type'] === 'DefinedTermSet');
+  assert.equal(set['@id'], `${CANONICAL}#aeo-geo-terms`);
+  assert.equal(set.url, `${CANONICAL}#what-is-aeo-geo`);
+  assert.deepEqual(set.hasDefinedTerm.map((term) => term['@id']), ['aeo', 'geo', 'seo'].map((id) => `${CANONICAL}#term-${id}`));
+  const visibleDefs = [...section.matchAll(/<span class="al-aeo-def">([\s\S]*?)<\/span>/g)].map((match) => text(match[1]));
+  assert.deepEqual(visibleDefs, AEO_GEO.terms.map(({ definition }) => definition));
+  for (const term of AEO_GEO.terms) {
+    assert.ok(text(section).includes(term.definition), `${term.id}: mirror`);
+    assert.ok(twin.includes(`### ${term.question}\n\n${term.definition} ${term.detail}\n`), `${term.id}: twin`);
+    assert.ok(section.includes(`id="term-${term.id}"`), `${term.id}: anchor`);
+    const node = set.hasDefinedTerm.find((defined) => defined['@id'] === `${CANONICAL}#term-${term.id}`);
+    assert.equal(node.description, term.definition, `${term.id}: DefinedTerm description`);
+    assert.equal(node.termCode, term.abbr);
+    assert.deepEqual(node.sameAs, TERM_SAME_AS[term.id]);
+    assert.ok(node.sameAs.every((url) => url.startsWith('https://www.wikidata.org/wiki/Q') || url.startsWith('https://en.wikipedia.org/wiki/')));
+    assert.deepEqual(node.inDefinedTermSet, { '@id': set['@id'] });
+  }
+  // The comparison is a real table: one, with a row header per row, and the same rows in the twin.
+  assert.equal((section.match(/<table\b/g) || []).length, 1);
+  assert.equal((section.match(/<th scope="row"/g) || []).length, AEO_GEO.table.rows.length);
+  assert.equal(AEO_GEO.table.rows.length, 4);
+  assert.ok(section.includes(`<caption class="p-5 text-left font-bold text-white">${AEO_GEO.table.caption}</caption>`));
+  for (const row of AEO_GEO.table.rows) assert.ok(twin.includes(`| ${row.join(' | ')} |`), row[0]);
+  assert.ok(twin.includes('| | SEO | AEO | GEO |'));
+  // Plain visible text: nothing collapsed.
+  assert.doesNotMatch(section, /<details\b/);
+  for (const { url } of AEO_GEO.sources) assert.ok(section.includes(`href="${url}"`) && twin.includes(`(${url})`), url);
+  // The section is first below the hero, in the mirror, the React tree and the twin.
+  assert.ok(renderAiVisibilityMirrorRest().startsWith('<section id="what-is-aeo-geo"'));
+  const app = read('src/ai/AiVisibilityApp.jsx');
+  assert.match(app, /<>\s*<AeoGeoSection \/>\s*<ShiftSection \/>/);
+  assert.ok(twin.indexOf(`## ${AEO_GEO.h2Lead} ${AEO_GEO.h2Grad}`) < twin.indexOf(`## ${AI_CONTENT.SHIFT.h2Lead}`));
+});
+
+test('dates: the page shows when it was updated, and the prices line keeps its own date', () => {
+  const mirror = renderAiVisibilityMirror();
+  assert.ok(sectionById(mirror, AEO_GEO.anchor).includes(`datetime="${AI_VISIBILITY_UPDATED}"`));
+  assert.ok(sectionById(mirror, 'plans').includes(`datetime="${PLANS_UPDATED}"`));
+  assert.ok(!sectionById(mirror, 'plans').includes(`datetime="${AI_VISIBILITY_UPDATED}"`) || PLANS_UPDATED === AI_VISIBILITY_UPDATED);
+  assert.ok(AI_VISIBILITY_PUBLISHED <= PLANS_UPDATED && PLANS_UPDATED <= AI_VISIBILITY_UPDATED);
+  const twin = read(TWIN_FILE);
+  assert.match(twin, /\nPublished: September 28, 2026\nUpdated: /);
+  const sections = read('src/ai/AiSections.jsx');
+  assert.match(sections, /Prices and plans updated <time dateTime=\{PLANS_UPDATED\}>\{PLANS_UPDATED_HUMAN\}<\/time>/);
+});
+
+test('the co-founder byline ships only when REVIEW is enabled', () => {
+  assert.equal(REVIEW.enabled, false, 'D2: off until Michael confirms he reviewed the page');
+  const graph = aiVisibilityGraph()['@graph'];
+  const webpage = graph.find((node) => node['@type'] === 'WebPage');
+  assert.ok(!('reviewedBy' in webpage) && !('lastReviewed' in webpage));
+  assert.ok(!graph.some((node) => node['@type'] === 'Person'));
+  assert.deepEqual(webpage.author, { '@id': 'https://autolander.ai/#organization' });
+  for (const surface of [renderAiVisibilityMirror(), renderAiVisibilityMarkdown(), JSON.stringify(graph)]) {
+    assert.doesNotMatch(surface, /Reviewed by/);
+  }
+  assert.match(REVIEW.role, /^co-founder\b/);
 });
 
 test('FAQPage answers are byte-identical to the crawlable visible FAQ answers', () => {
@@ -178,6 +349,21 @@ test('FAQPage answers are byte-identical to the crawlable visible FAQ answers', 
   assert.deepEqual(visible, FAQ.map(({ a }) => a));
   assert.deepEqual(schema.map((item) => item.name), FAQ.map(({ q }) => q));
   assert.deepEqual(schema.map((item) => item.acceptedAnswer.text), FAQ.map(({ a }) => a));
+  // The FAQ has a visible heading in the mirror and the twin.
+  const faq = sectionById(mirror, 'faq');
+  assert.ok(text(faq).includes(`${AI_CONTENT.FAQ_HEADING.h2Lead} ${AI_CONTENT.FAQ_HEADING.h2Grad}`));
+  assert.equal((faq.match(/<h2\b/g) || []).length, 1);
+  assert.ok(read(TWIN_FILE).includes(`## ${AI_CONTENT.FAQ_HEADING.h2Lead} ${AI_CONTENT.FAQ_HEADING.h2Grad}\n`));
+});
+
+test('related guides are linked from the page bottom in the mirror and the twin', () => {
+  const mirror = renderAiVisibilityMirror();
+  const twin = read(TWIN_FILE);
+  for (const { label, href } of AI_CONTENT.RELATED.links) {
+    assert.ok(mirror.includes(`href="${href}">${label}</a>`), href);
+    assert.ok(twin.includes(`- [${label}](https://autolander.ai${href})`), href);
+  }
+  assert.ok(twin.indexOf('## Related guides for dealers') > twin.indexOf(`## ${AI_CONTENT.FAQ_HEADING.h2Lead}`));
 });
 
 test('static mirror form uses the native, accessible, agent-readable contract', () => {
@@ -225,7 +411,7 @@ test('plan prices do not drift across renderer and generated agent surfaces', ()
   assert.deepEqual(graphOffers.map((offer) => [Number(offer.price), Number(offer.priceSpecification.priceComponent[1].price)]),
     PLANS.map((plan) => [plan.monthly, plan.setup]));
 
-  const twin = read('public/ai-visibility.md');
+  const twin = read(TWIN_FILE);
   assert.equal(twin, renderAiVisibilityMarkdown());
   const llms = read('public/llms.txt');
   const block = /<!-- ai-visibility:start -->([\s\S]*?)<!-- ai-visibility:end -->/.exec(llms)?.[1] || '';
@@ -239,7 +425,8 @@ test('plan prices do not drift across renderer and generated agent surfaces', ()
 });
 
 test('agent files exclude the form endpoint and index only AI Visibility', () => {
-  for (const file of ['public/ai-visibility.md', 'public/llms.txt', 'public/llms-full.txt', 'public/agents.md']) {
+  assert.ok(!existsSync(resolve(ROOT, 'public/ai-visibility.md')), 'the old twin is removed (the Worker 301s its URL)');
+  for (const file of [TWIN_FILE, 'public/llms.txt', 'public/llms-full.txt', 'public/agents.md']) {
     const contents = read(file);
     assert.ok(!contents.includes('/api/ai-scan'), `${file} must not expose the form endpoint`);
   }
@@ -248,13 +435,36 @@ test('agent files exclude the form endpoint and index only AI Visibility', () =>
     const contents = read(file);
     assert.equal((contents.match(/<!-- ai-visibility:start -->/g) || []).length, 1, `${file} start marker`);
     assert.equal((contents.match(/<!-- ai-visibility:end -->/g) || []).length, 1, `${file} end marker`);
+    assert.ok(contents.includes(TWIN_URL), `${file} links the new Markdown twin`);
+    assert.doesNotMatch(contents, OLD_PAGE_URL, `${file} still points at the retired URL`);
   }
 
   const sitemap = read('public/sitemap.xml');
-  assert.ok(sitemap.includes('<loc>https://autolander.ai/ai-visibility/</loc>'));
+  assert.ok(sitemap.includes(`<loc>${CANONICAL}</loc>`));
+  assert.ok(!sitemap.includes('<loc>https://autolander.ai/ai-visibility/</loc>'));
+  assert.match(sitemap, new RegExp(`<loc>${CANONICAL}</loc>\\s*<lastmod>${AI_VISIBILITY_UPDATED}</lastmod>`));
   assert.ok(!sitemap.includes('<loc>https://autolander.ai/team/</loc>'));
   for (const file of ['public/llms.txt', 'public/llms-full.txt', 'public/agents.md']) {
     assert.ok(!read(file).includes('https://autolander.ai/team/'), `${file} must omit /team/`);
+  }
+});
+
+test('no generated page or agent file links the retired /ai-visibility/ page URL', () => {
+  const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const path = join(dir, entry.name);
+    return entry.isDirectory() ? walk(path) : [path];
+  });
+  const files = walk(resolve(ROOT, 'public'))
+    .filter((file) => /\.(?:html|md|txt|xml|json)$/.test(file) && !/[\\/]public[\\/]ai-visibility[\\/]/.test(file));
+  files.push(resolve(ROOT, 'index.html'));
+  assert.ok(files.length > 100, 'walked the generated site');
+  for (const file of files) assert.doesNotMatch(readFileSync(file, 'utf8'), OLD_PAGE_URL, file);
+  // Sanity: the pattern catches the old forms and spares the images that stay in the old folder.
+  for (const bad of ['https://autolander.ai/ai-visibility/', 'https://autolander.ai/ai-visibility.md', 'href="/ai-visibility/"', '(https://autolander.ai/ai-visibility/#scan-form)', '<loc>https://autolander.ai/ai-visibility/</loc>']) {
+    assert.match(bad, OLD_PAGE_URL, bad);
+  }
+  for (const ok of ['https://autolander.ai/ai-visibility/ai-chat-phone-1600.webp', 'src="/ai-visibility/report-preview-640.avif"', 'https://autolander.ai/og/ai-visibility.jpg', '<!-- ai-visibility:start -->']) {
+    assert.doesNotMatch(ok, OLD_PAGE_URL, ok);
   }
 });
 
@@ -267,16 +477,21 @@ test('robots and image sitemap carry the generated AI crawler additions', () => 
   assert.ok(!robots.includes('User-agent: Claude-Web'));
 
   const images = read('public/image-sitemap.xml');
+  // The page moved; its images did not.
+  assert.ok(images.includes(`<loc>${CANONICAL}</loc>`));
+  assert.ok(!images.includes('<loc>https://autolander.ai/ai-visibility/</loc>'));
   for (const item of AI_VISIBILITY_IMAGES) {
     assert.ok(images.includes(`https://autolander.ai${item.src}`));
+    assert.ok(item.src.startsWith('/ai-visibility/'), item.src);
   }
 });
 
-test('built dedicated shells match generator metadata when dist exists', { skip: !existsSync(resolve(ROOT, 'dist/ai-visibility/index.html')) }, () => {
-  const ai = read('dist/ai-visibility/index.html');
+test('built dedicated shells match generator metadata when dist exists', { skip: !existsSync(resolve(ROOT, `dist/${AI_VISIBILITY_DIR}/index.html`)) }, () => {
+  const ai = read(`dist/${AI_VISIBILITY_DIR}/index.html`);
   const team = read('dist/team/index.html');
   assert.ok(ai.includes(`<title>${META.title}</title>`));
   assert.ok(ai.includes('content="index, follow, max-image-preview:large, max-snippet:-1"'));
+  assert.ok(ai.includes(`<link rel="canonical" href="${CANONICAL}" />`));
   assert.ok(ai.includes('<div id="root" data-al-hydrate="ai-visibility">') && ai.includes('id="scan-form"'));
   // The no-JS agent layer ships unchanged: the static mirror below the hero is the page's island, byte for byte.
   assert.ok(ai.includes(`<div data-al-island="ai-rest">${renderAiVisibilityMirrorRest()}</div>`));
@@ -287,7 +502,8 @@ test('built dedicated shells match generator metadata when dist exists', { skip:
   const expectedPrices = new Set(PLANS.flatMap((plan) => [fmtUsd(plan.monthly), fmtUsd(plan.setup)]));
   assert.deepEqual(new Set(planSection.match(/\$\d{1,3}(?:,\d{3})*/g) || []), expectedPrices);
 
-  const service = jsonLdFrom(ai)[0]['@graph'].find((node) => node['@type'] === 'Service');
+  const graph = jsonLdFrom(ai)[0]['@graph'];
+  const service = graph.find((node) => node['@type'] === 'Service');
   assert.deepEqual(
     service.hasOfferCatalog.itemListElement.map((offer) => [
       Number(offer.price),
@@ -295,6 +511,8 @@ test('built dedicated shells match generator metadata when dist exists', { skip:
     ]),
     PLANS.map((plan) => [plan.monthly, plan.setup]),
   );
+  assert.ok(graph.some((node) => node['@type'] === 'DefinedTermSet'));
+  assert.ok(graph.some((node) => node['@type'] === 'FAQPage'));
 
   assert.ok(team.includes(`<title>${TEAM_META.title}</title>`));
   assert.ok(team.includes('content="noindex, follow"'));

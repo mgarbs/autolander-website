@@ -2,15 +2,21 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import vm from 'node:vm';
 import { pickBoot } from '../src/lib/boot.js';
+import { AI_VISIBILITY_PATH } from '../shared/ai-visibility-route.js';
 import { bootLoaderHtml, deferEntryToPaint } from '../scripts/spa-shell.mjs';
 
 test('pickBoot hydrates only the prerendered page it was built for', () => {
-  assert.equal(pickBoot('ai-visibility', '/ai-visibility/'), 'ai-visibility');
-  assert.equal(pickBoot('ai-visibility', '/ai-visibility'), 'ai-visibility');
+  assert.equal(AI_VISIBILITY_PATH, '/aeo-geo-for-car-dealers/');
+  assert.equal(pickBoot('ai-visibility', '/aeo-geo-for-car-dealers/'), 'ai-visibility');
+  assert.equal(pickBoot('ai-visibility', '/aeo-geo-for-car-dealers'), 'ai-visibility');
   assert.equal(pickBoot('team', '/team/'), 'team');
   assert.equal(pickBoot('team', '/team'), 'team');
+  // The retired URL never hydrates (it is a 301 or a redirect stub).
+  assert.equal(pickBoot('ai-visibility', '/ai-visibility/'), 'spa');
+  assert.equal(pickBoot('ai-visibility', '/ai-visibility'), 'spa');
+  assert.equal(pickBoot('ai-visibility', '/aeo-geo-for-car-dealers/extra'), 'spa');
   // The attribute on the wrong path (a shell served for another URL) and every other page: client render.
-  assert.equal(pickBoot('team', '/ai-visibility/'), 'spa');
+  assert.equal(pickBoot('team', '/aeo-geo-for-car-dealers/'), 'spa');
   assert.equal(pickBoot('ai-visibility', '/team/'), 'spa');
   assert.equal(pickBoot('team', '/team/extra'), 'spa');
   assert.equal(pickBoot(null, '/'), 'spa');

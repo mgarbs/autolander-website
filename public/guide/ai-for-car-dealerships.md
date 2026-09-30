@@ -21,9 +21,16 @@ The useful evaluation question is never "should we use AI" — it is "which job 
 | AI vehicle photos | Replaces cluttered lot backgrounds with showroom or branded-storefront scenes; keeps the actual car untouched | Immediate — better photos lift clicks on every listing | AI Photo Studio in AutoLander |
 | AI chat on the sales inbox | Standalone tools converse with buyers automatically; quality varies wildly | Only safe with inventory-true answers and instant human handoff — vet hard | Standalone tools only — AutoLander has no inbox feature; your people answer |
 | AI listing descriptions | Writes an accurate, VIN-specific description for every unit | High — hours of copy work disappear; listings stop sounding identical | Built into AutoLander listings |
+| Showing up in AI answers (AEO and GEO) | Checks and fixes what AI assistants read about your store: crawler access, vehicle-page text, profiles, listings and reviews | Slow and measured: re-ask the same buyer questions every month; no one can promise a placement | AutoLander AI Visibility service |
 | AI walkaround video | Generates a short video per vehicle from photos | Solid — motion content without a videographer | Optional per-vehicle in AutoLander |
 | AI pricing / appraisal tools | Suggests prices from market comps | Useful as an input; dangerous as an autopilot — local knowledge still prices the car | Standalone tools |
 | Generic "AI transformation" platforms | Unclear by design | Ask which specific job it does; if the answer is a slide, pass | — |
+
+## Can AI assistants recommend my dealership?
+
+They already name dealers. Cox Automotive found that 19% of car buyers used AI websites or AI-generated overviews while they shopped, and those answers name a few stores and cite the pages they used. Whether yours is one of them depends on what those tools can read and trust about your store.
+
+That work has two names: AEO, which shapes your pages into short, direct answers, and GEO, which builds the trust that gets a store named and cited. See AEO and GEO for car dealers for a free scan of what Claude and GPT say about your store. No one can promise what an AI will say.
 
 ## What does AI photo enhancement do for a dealership?
 
@@ -76,7 +83,7 @@ Standalone chatbots exist that attempt it — vet them hard on inventory truth a
 
 ## Related
 
-- [AI Visibility for car dealers: free scan and plans](https://autolander.ai/ai-visibility/)
+- [AEO and GEO for car dealers: free AI Visibility Scan and plans](https://autolander.ai/aeo-geo-for-car-dealers/)
 - [AI chat for car dealers — the honest guide](https://autolander.ai/ai-chat-for-car-dealers/)
 - [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
 - [Facebook AI tools for car dealers](https://autolander.ai/facebook-ai-tools/)

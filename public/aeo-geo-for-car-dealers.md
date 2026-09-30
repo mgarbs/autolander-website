@@ -1,23 +1,67 @@
-# A buyer asks AI where to buy a car in your town. Is your store in the answer?
+# AEO and GEO for car dealers. Is your store in the AI answer?
 
-> Find out if Claude and GPT name your dealership when buyers ask. Free AI Visibility Scan, then plans from $997 a month, month to month.
+> AEO and GEO for car dealers: see if Claude and GPT name your store when local buyers ask. Free scan, then plans from $997 a month, month to month.
 
-Source: https://autolander.ai/ai-visibility/
+Source: https://autolander.ai/aeo-geo-for-car-dealers/
 Author: The AutoLander team
-Updated: September 29, 2026
+Published: September 28, 2026
+Updated: September 30, 2026
 
-**Short answer:** We ask Claude and GPT, each with web search on, up to 20 questions a buyer in your town would ask, 3 times each. You see when they name you, who they name instead, the sources behind every answer and the 3 fixes we would make first.
+**Short answer:** A buyer asks AI where to buy a car in your town. AEO and GEO help AI find, trust and name your store. Our free scan asks Claude and GPT, web search on, up to 20 local buyer questions, 3 times each, and shows who they name, what they cite and the 3 fixes to make first.
 
 - Free
 - No logins needed
 - Checked by a person
 - 20-minute walkthrough
 
-AI Visibility is a service from AutoLander, the Facebook Marketplace software for car dealers.
+AI Visibility is the AEO and GEO service from AutoLander, the Facebook Marketplace software for car dealers.
 
-## More buyers ask an AI assistant before they visit.
+## What do AEO and GEO mean for a car dealership?
 
-A search results page lists ten links, and your store can be one of them. An AI answer names a few dealers and explains why. If your store isn’t one of them, that buyer may never see it.
+AEO and GEO help a dealership show up in AI answers. AEO shapes your pages so AI tools can lift a short, direct answer from them. GEO builds the trust and clear facts that lead AI chat tools to name and cite your store. Both build on SEO, and nobody can promise what an AI will say.
+
+### What is AEO?
+
+AEO, answer engine optimization, is formatting your content so AI tools and search features can pull out a short, direct answer: voice assistants, featured snippets and the direct answers at the top of a search. For a dealership, that means buyer questions answered in plain sentences, with price, mileage, VIN and hours on your pages as text.
+
+### What is GEO?
+
+GEO, generative engine optimization, is building the trust, authority and clear structure that lead AI chat tools such as ChatGPT, Gemini and Claude to reference and cite your brand. For a dealership, that means the same store facts everywhere, reviews you answer, a site AI crawlers can open and mentions on the sites assistants already cite.
+
+### How are AEO and GEO different from SEO?
+
+SEO, search engine optimization, is the work that helps your pages rank high in the list of search results. AEO and GEO build on the same foundation and aim at different spots on the screen: AEO at the quick, direct answer, and GEO at the AI answer that names a store and cites its sources.
+
+| | SEO | AEO | GEO |
+| --- | --- | --- | --- |
+| Main goal | Rank high in search results lists | Give a quick, direct answer | Become the cited source |
+| Where it shows up | Traditional search results pages and map results | Voice assistants, featured snippets and direct answers | AI chat tools and generative summaries, such as ChatGPT, Gemini, Claude, Perplexity and Google’s AI Overviews |
+| What it takes for a dealership | A site search engines can crawl, a page for every car and a complete Google Business Profile | Pages that answer buyer questions in the first sentence, with price, mileage, VIN and hours as page text | The same store facts everywhere, answered reviews, open doors for AI search crawlers and mentions on sites assistants cite |
+| How you check it | Rankings, clicks and queries in Google Search Console | Search Console, which counts featured snippets and Google’s AI features with regular results | Repeated questions to AI assistants, like our free scan |
+
+They share one foundation. Google says there are “no additional requirements to appear in AI Overviews or AI Mode”: to show up as a link there, a page has to be indexed and eligible for a snippet in Google Search, which is everyday SEO work. Keep the SEO your website vendor already does, and add what AI tools need on top.
+
+Our free scan measures two of these tools, Claude and GPT, each with web search on. It doesn’t measure the others or Google’s AI Overviews.
+
+### Words you will hear
+
+- **AI Overviews:** The AI summary Google shows above the regular results for some searches, with links to the pages it drew on.
+- **Citation:** A source link inside an AI answer. It shows which page the answer drew on, and whether that page was yours.
+- **AI search crawler:** A bot that reads web pages so an AI tool can answer with them, such as OAI-SearchBot from OpenAI and Claude-SearchBot from Anthropic. Training crawlers such as GPTBot and ClaudeBot are separate, and you can block them without blocking search.
+- **robots.txt:** A small file on your website that tells each crawler what it may read. One wrong line can keep AI search crawlers out of your whole site.
+- **Structured data:** Labels in a page’s code, such as schema.org AutoDealer and vehicle offers, that tell machines what each fact on the page is. It helps assistants read a page, and on its own it won’t get a store named.
+- **Answer page:** A page on your own website that answers one buyer question in its first sentence, using only your store’s facts.
+
+### Sources
+
+- [Google Search Central: AI features and your website](https://developers.google.com/search/docs/appearance/ai-features)
+- [OpenAI: overview of its crawlers, including OAI-SearchBot for ChatGPT search](https://developers.openai.com/api/docs/bots)
+- [Anthropic: how Claude’s crawlers work and how site owners control them](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler)
+- [Aggarwal and others, “GEO: Generative Engine Optimization” (KDD 2024), the paper that named GEO](https://arxiv.org/abs/2311.09735)
+
+## How do car buyers use AI to pick a dealer?
+
+They ask an AI assistant the questions they used to ask a friend: which dealer, which car, is the store any good. The answer names a few dealers and says why, where a search results page lists ten links. If your store isn’t in that answer, the buyer may never see it.
 
 19% of all car buyers used AI websites or AI-generated overviews while they shopped. [Cox Automotive, 2025 Car Buyer Journey Study, released January 2026](https://www.coxautoinc.com/insights/cox-automotive-car-buyer-journey-study-finds-efficiency-digital-tools-and-ai-drive-record-satisfaction/)
 
@@ -25,7 +69,7 @@ A search results page lists ten links, and your store can be one of them. An AI 
 
 Illustration of an AI answer. Frank’s Irvine Subaru is an AutoLander customer.
 
-## This is what an AI answer looks like.
+## What does an AI answer look like to a buyer?
 
 Buyers now type the whole question, like “where should I buy a Silverado near Toms River,” and get back a short answer that names a few dealers and cites the pages it trusted. It happens in the four places buyers use most.
 
@@ -65,7 +109,7 @@ Illustrations of AI answers. The dealerships shown are AutoLander customers. Rea
 
 Our free scan measures Claude and GPT, the model family behind ChatGPT, each with web search on. What we fix, from crawler access and vehicle-page text to your Google profile, reviews and answer pages, is what these assistants read when they decide who to name.
 
-## Watch for it in your own numbers.
+## How can you see AI in your own numbers?
 
 Two free Google tools show the change from your side. Search Console shows the searches that find your site. Google Analytics shows the visits that arrive from AI assistants like ChatGPT, Perplexity, Gemini, Claude and Copilot, and what those visitors do next.
 
@@ -83,29 +127,31 @@ Sessions from AI assistants, broken out by the assistant that sent them, with en
 
 Illustrations of the Search Console and Google Analytics views. Your numbers depend on your market, your inventory and where you start.
 
-## What your free report shows.
+## What does the free AI scan check?
 
-### Who gets named
+It checks whether Claude and GPT name your store for local buyer questions, which sources they cite, whether AI can read your site and vehicle pages, and the 3 fixes to make first. Each part is tagged AEO, GEO or both.
+
+### Who gets named (GEO)
 
 The dealers Claude and GPT name for buyer questions in your town, question by question, and how often each one comes up.
 
-### The sources they cite
+### The sources they cite (GEO)
 
 The pages each answer cites, as links you can click, so you can see where the assistants learn about dealers near you.
 
-### Your vehicle pages
+### Your vehicle pages (AEO)
 
 We open up to five vehicle pages on your website and check whether price, mileage and VIN are on the page as plain text an assistant can read.
 
-### Your site’s front door
+### Your site’s front door (AEO and GEO)
 
 Whether your robots.txt lets AI search crawlers in, and whether the security service in front of your site challenges automated visitors. If our own check is blocked, the block goes in your report as a finding.
 
-### A score out of 100
+### A score out of 100 (AEO and GEO)
 
 Built from how often you are named, the sources that cite you, your reviews and your site’s technical readiness. Answers vary from run to run, so the score comes with a margin.
 
-### The 3 fixes
+### The 3 fixes (AEO and GEO)
 
 The three changes we would make first, written plainly enough to hand to your website vendor.
 
@@ -127,7 +173,7 @@ The three changes we would make first, written plainly enough to hand to your we
 - Fewer Google reviews than the dealers around you
 - Vehicle pages don’t show price and mileage as text
 
-## What keeps good stores out of the answers.
+## Why do AI answers leave good stores out?
 
 ### The door is locked
 
@@ -145,7 +191,7 @@ Your reviews, and how you answer them, are part of what an assistant sees about 
 
 When price, mileage and VIN aren’t on the page as text, an answer can’t describe the car on your lot.
 
-## Tell us your store. We ask up to 120 times.
+## How does the free scan work?
 
 1. **You tell us where you sell:** Your store, website and city or ZIP. No logins, nothing to install.
 2. **We ask what your buyers ask:** Up to 20 questions a buyer in your town would ask (finding a dealer, specific cars, reputation, trade-ins), put to Claude and GPT with web search on, 3 times each, because answers change from run to run. Every question names your city or ZIP. If we can’t find cars on your site, we skip the car questions and say so in your report.
@@ -176,11 +222,11 @@ We use your details to run your scan, send your report and set up your walkthrou
 
 Text me about my AI Visibility Scan. I agree to receive text messages from AutoLander at the mobile number above about my scan request and walkthrough, up to 4 messages per request. Consent is not a condition of any purchase. Message and data rates may apply. Reply STOP to opt out or HELP for help. [Privacy Policy](https://autolander.ai/privacy.html) [Terms](https://autolander.ai/terms.html)
 
-Request the free scan at https://autolander.ai/ai-visibility/#scan-form. The dealer reviews and sends the form.
+Request the free scan at https://autolander.ai/aeo-geo-for-car-dealers/#scan-form. The dealer reviews and sends the form.
 
-## Fix it yourself, or let us run it.
+## What do AEO and GEO plans cost?
 
-The 3 fixes in your report are yours to keep, whether or not you hire us. If you want the work done every month, there are three plans. Every plan starts with the free scan and a 20-minute walkthrough.
+The scan is free, and the 3 fixes in your report are yours to keep whether or not you hire us. If you want the work done every month, plans are $997, $2,497 or $5,997 a month plus a one-time setup fee, month to month. Every plan starts with the free scan and a 20-minute walkthrough.
 
 ### AI Foundation
 
@@ -230,7 +276,7 @@ Everything in AI Authority, with 8 answer pages, 4 sponsored publication placeme
 
 AutoLander customers pay no setup fee.
 
-### AI Visibility plans compared. Prices in US dollars, month to month.
+### AEO and GEO plans compared. Prices in US dollars, month to month.
 
 |  | AI Foundation | AI Authority | Market Leader |
 | --- | --- | --- | --- |
@@ -353,27 +399,55 @@ Prices and plans updated September 29, 2026.
 
 For national and category brands, such as auto brands, online car retailers, marketplaces and dealer software companies, we run a brand scan with no location. It follows a buyer from the first questions to the final choice and shows whether Claude and GPT name your brand for category questions, and which sources they cite. For now we scan English-language markets only. Brand scans and brand plans are priced by quote: e-mail sales@autolander.ai with your brand and website and we reply with the scope and a quote.
 
-## Frequently asked questions
+## Questions dealers ask about AEO and GEO.
+
+### What is AEO for car dealers?
+
+For a car dealer, AEO means making your website easy for AI tools to quote. Each common buyer question gets a clear answer in its first sentence, every vehicle page shows price, mileage and VIN as text, and your hours and address match everywhere. That is how a short, direct answer can come from your site.
+
+### What is GEO for car dealerships?
+
+For a dealership, GEO is the work that helps AI assistants trust your store enough to name it and cite your pages. It covers your Google Business Profile, your listings on sites like Cars.com, CarGurus and DealerRater, your reviews and replies, and crawler access, so every source an assistant reads tells the same story about your store.
+
+### Do I still need SEO?
+
+Yes. AEO and GEO build on SEO and don’t replace it. Google says a page must be indexed and eligible for a snippet to show as a link in its AI Overviews, which is plain SEO work. Keep the SEO program your website vendor runs, and add the answer-first pages and trust work AI tools look for.
+
+### Can you guarantee my dealership shows up in ChatGPT?
+
+No. No one can honestly promise what ChatGPT or any other AI assistant will say, and we don’t. We fix what keeps assistants from reading and trusting your store, do the work every month and show you the raw answers. Our scan measures Claude and GPT, the model family behind ChatGPT.
+
+### How long do AEO and GEO take?
+
+There is no fixed timeline, and no one can promise when an AI assistant will name your store. Some fixes are read quickly: OpenAI says its search systems adjust to a robots.txt change in about 24 hours. Reviews, listings and answer pages build over months, so every plan re-asks the same questions each month and shows you the raw answers.
+
+### What does the free scan check?
+
+It asks Claude and GPT, each with web search on, up to 20 questions a buyer in your town would ask, 3 times each. Your report shows who gets named, the sources cited, whether your vehicle pages and robots.txt let AI read your site, a score out of 100 with a margin, and the 3 fixes to make first.
+
+### What do AEO and GEO plans cost?
+
+The scan and the walkthrough are free. Plans are $997, $2,497 or $5,997 a month, plus a one-time setup fee of $997, $997 or $2,997. Every plan is month to month.
 
 ### Which AI assistants do you check?
 
-Two: Claude, made by Anthropic, and GPT, made by OpenAI, each with web search on. Every answer in your report is labelled with the assistant it came from and shows the sources it cited. We don’t measure other assistants or Google’s AI Overviews. AutoLander is not affiliated with any AI company. We ask through the tools Anthropic and OpenAI publish for developers, so the consumer chat apps may answer a shopper differently.
+Two: Claude, made by Anthropic, and GPT, made by OpenAI, each with web search on. Your report labels every answer with its assistant and the sources it cited. We ask through the tools Anthropic and OpenAI publish for developers, so their chat apps may answer a shopper differently. We don’t measure other assistants or Google’s AI Overviews.
 
-### Is this just SEO with a new name?
+### How do you measure whether AI names my store?
 
-It shares a lot with SEO. The question it answers is narrower: whether an AI assistant can read your site and match it to what Google, the listing sites and your reviews say about you. The scan checks AI search crawler access, the sources the answers cite and whether your vehicle pages show price, mileage and VIN as text.
+A single check can mislead, because answers change from run to run. We ask every question 3 times of Claude and of GPT, a person checks every match, and your score comes with a margin. On your site we read only robots.txt, your homepage, your sitemap when needed and up to five vehicle pages.
 
-### Do you need my logins?
+### Is my website blocking AI?
 
-No. The free scan uses public information only: your website, your public listings and what the assistants say. If you choose a plan, we work through manager roles and user invites you control, never your passwords.
+It might be. Check two places: your robots.txt, which should let AI search crawlers such as OAI-SearchBot and Claude-SearchBot in, and the security service in front of your site, which can challenge automated visitors. OpenAI says sites that opt out of OAI-SearchBot won’t be shown in ChatGPT search answers. The free scan checks both.
 
-### Can you make AI recommend my store first?
+### Can I do AEO and GEO myself?
 
-No one can honestly promise what an AI assistant will say, and we don’t. We fix what keeps assistants from reading and trusting your store, do the work every month and show you the raw answers so you can judge the results yourself.
+Yes. Let AI search crawlers in through your robots.txt and security settings, put price, mileage and VIN on every vehicle page as text, keep your name, address, phone and hours the same on Google, Bing, Apple and Yelp, and answer every review. The 3 fixes in your free report are yours to keep either way.
 
-### What does it cost?
+### Do I have to switch website vendors or give you logins?
 
-The scan and the walkthrough are free. Plans are $997, $2,497 or $5,997 a month, plus a one-time setup fee of $997, $997 or $2,997. Every plan is month to month.
+No to both. We send a plain fix list to the website vendor you already have, with your written authorization, and re-check your site until each fix is live. The free scan uses public information only, and plans work through manager roles and user invites you control, never your passwords.
 
 ### I’m already an AutoLander customer.
 
@@ -383,10 +457,6 @@ Your store details are already on file, and your walkthrough can happen on your 
 
 We take a limited number of AI Authority and Market Leader stores at a time, so both start with an application, answered within 1 business day. Market Leader also includes brand exclusivity: while you are subscribed, we sell no AI Visibility plan to another dealer of your brand in your territory, 25 miles in a straight line from your rooftop by default, and we confirm whether your territory is available.
 
-### How do you measure?
-
-Answers change from run to run, so every question is asked 3 times of each assistant and your score comes with a margin. Questions about cars in stock are reported separately, as "cars AI can find". In a dealer scan we read your robots.txt, your homepage, your sitemap when we need it and up to five vehicle pages, and nothing more. If your site blocks us, we report the block as a finding.
-
 ### We sell nationally, not from one store. Can you scan a brand?
 
 For national and category brands, such as auto brands, online car retailers, marketplaces and dealer software companies, we run a brand scan with no location. It follows a buyer from the first questions to the final choice and shows whether Claude and GPT name your brand for category questions, and which sources they cite. For now we scan English-language markets only. Brand scans and brand plans are priced by quote: e-mail sales@autolander.ai with your brand and website and we reply with the scope and a quote.
@@ -395,15 +465,22 @@ For national and category brands, such as auto brands, online car retailers, mar
 
 An assistant can bring you to this page and fill in your store’s details. You review the form and press the button yourself, and only you can tick the text-message box.
 
+## Related guides for dealers
+
+- [Google Business Profile for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
+- [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
+- [About AutoLander](https://autolander.ai/about/)
+
 ## Find out if Claude and GPT name your store.
 
 Get my free scan. Free · No logins needed · Checked by a person · 20-minute walkthrough
 
-AI Visibility is a monthly service from AutoLander LLC for US car dealerships. It measures whether Claude (Anthropic) and GPT (OpenAI), each with web search on, name a dealership when local buyers ask where to buy a car, then fixes what keeps assistants from finding and trusting the store: website crawler access and vehicle-page text, the Google Business Profile, listings, reviews and answer pages. It starts with a free scan. Plans are $997, $2,497 and $5,997 a month plus setup, month to month. It is separate from AutoLander's Facebook Marketplace software.
+AI Visibility is AutoLander LLC's AEO and GEO service (answer engine optimization and generative engine optimization) for US car dealerships. It measures whether Claude (Anthropic) and GPT (OpenAI), each with web search on, name a dealership when local buyers ask where to buy a car, then fixes what keeps assistants from finding and trusting the store: website crawler access and vehicle-page text, the Google Business Profile, listings, reviews and answer pages. It starts with a free scan. Plans are $997, $2,497 and $5,997 a month plus setup, month to month. It is separate from AutoLander's Facebook Marketplace software.
 
 - [Privacy](https://autolander.ai/privacy.html)
 - [Terms](https://autolander.ai/terms.html)
 - [AutoLander home](https://autolander.ai/)
 
 ---
-AI Visibility is a service from AutoLander LLC, separate from our Facebook Marketplace software. Not affiliated with OpenAI, Anthropic, Google or any AI company; product names belong to their owners. https://autolander.ai/ai-visibility/
+AI Visibility, the AEO and GEO service for car dealers, comes from AutoLander LLC and is separate from our Facebook Marketplace software. Not affiliated with OpenAI, Anthropic, Google or any AI company; product names belong to their owners. https://autolander.ai/aeo-geo-for-car-dealers/

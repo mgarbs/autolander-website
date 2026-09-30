@@ -2,10 +2,11 @@
 //
 // WHY
 // ---
-// /, /ai-visibility/ and /team/ ship a finished first screen and load their app after the first paint.
+// /, the AEO and GEO page (/aeo-geo-for-car-dealers/, shared/ai-visibility-route.js) and /team/ ship a finished
+// first screen and load their app after the first paint.
 // Cloudflare Web Analytics (RUM) is auto-injected at the edge as a High-priority <script type="module">
 // from a third-party origin (static.cloudflareinsights.com) plus a /cdn-cgi/rum call; it lands on the
-// critical path of those pages (lab FCP ~1.4 s -> ~2.0 s on /ai-visibility/ and /team/). Cloudflare
+// critical path of those pages (lab FCP ~1.4 s -> ~2.0 s on the AEO and GEO page and /team/). Cloudflare
 // documents exactly one response-level switch that stops the injection: `Cache-Control: no-transform`
 // ("the Beacon script will not be automatically injected", developers.cloudflare.com/web-analytics/faq/).
 // These pages load the same beacon themselves after the load event instead (scripts/spa-shell.mjs,
@@ -29,7 +30,10 @@
 // 'off' the edge injects the beacon as before and the page's own loader stands down (it dedupes).
 // Any error returns the response unchanged.
 
-export const NO_TRANSFORM_PATHS = new Set(['/', '/index.html', '/ai-visibility/', '/team/']);
+import { AI_VISIBILITY_PATH } from '../../../shared/ai-visibility-route.js';
+
+// The retired /ai-visibility/ is not listed: the Worker answers it with a 301 (moved-pages.js) before this runs.
+export const NO_TRANSFORM_PATHS = new Set(['/', '/index.html', AI_VISIBILITY_PATH, '/team/']);
 export const NO_TRANSFORM_KEY = 'cfg:html_no_transform';
 
 export async function readNoTransformMode(env) {

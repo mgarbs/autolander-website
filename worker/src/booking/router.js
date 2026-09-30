@@ -18,6 +18,7 @@ import {
   wasEventSeen,
 } from '../capi/storage.js';
 import { looksLikeBot } from '../security/bot-filter.js';
+import { AI_VISIBILITY_PATH } from '../../../shared/ai-visibility-route.js';
 import {
   buildFbc,
   cleanFbclid,
@@ -48,8 +49,9 @@ const AI_SCAN_IP_DAILY = 30;
 const AI_SCAN_EMAIL_DAILY = 3;
 const AI_SCAN_TTL_SECONDS = 90 * 24 * 60 * 60;
 const AI_SCAN_SUBMISSION_PATTERN = /^sub_[a-z0-9_-]{12,80}$/i;
-const AI_SCAN_FORM_SUCCESS_URL = 'https://autolander.ai/ai-visibility/?sent=1#scan-form';
-const AI_SCAN_FORM_ERROR_URL = 'https://autolander.ai/ai-visibility/?error=';
+// The no-JS form's 303 targets: the page's current URL, so a native POST lands in one hop.
+const AI_SCAN_FORM_SUCCESS_URL = `https://autolander.ai${AI_VISIBILITY_PATH}?sent=1#scan-form`;
+const AI_SCAN_FORM_ERROR_URL = `https://autolander.ai${AI_VISIBILITY_PATH}?error=`;
 const GHL_BASE_URL = 'https://services.leadconnectorhq.com';
 const GHL_VERSION = '2021-07-28';
 

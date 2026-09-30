@@ -6,6 +6,7 @@ import { sha256Hex } from './capi/hash.js';
 import { saveSupportRequest } from './support/storage.js';
 import { handleSiteRequest, isApiPath, isDocumentPath } from './agent/site.js';
 import { shortLinkResponse } from './agent/short-links.js';
+import { movedPageResponse, movedPageTarget } from './agent/moved-pages.js';
 
 const DEFAULT_ALLOWED_ORIGINS = [
   'https://autolander.ai',
@@ -54,6 +55,9 @@ export default {
       url.protocol = 'https:';
       url.hostname = 'autolander.ai';
       url.port = '';
+      // A moved page goes straight to its new URL (one hop, not www 308 then apex 301). GET/HEAD only, like the
+      // apex 301; the query string is kept either way.
+      if (request.method === 'GET' || request.method === 'HEAD') url.pathname = movedPageTarget(url.pathname) || url.pathname;
       return Response.redirect(url.toString(), 308);
     }
 
@@ -73,13 +77,18 @@ export default {
     // straight back into this Worker and loop until Cloudflare killed the subrequest chain.
     //
     // The vanity booking links (/onboarding, /demo, /demo-clay — see agent/short-links.js) are
-    // answered first, with a 302 to go.autolander.ai and no origin fetch. Exact paths only (GET/
+    // answered first, with a 302 to go.autolander.ai and no origin fetch. Then the moved pages (the
+    // retired /ai-visibility URLs — see agent/moved-pages.js) answer a 301 to their new URL, also with
+    // no origin fetch and ahead of Zaraz, no-transform and Markdown negotiation. Exact paths only (GET/
     // HEAD); every other request reaches handleSiteRequest exactly as before, and a throw here
-    // still falls through to GitHub Pages, whose static public/<slug>/ page redirects too.
+    // still falls through to GitHub Pages, whose static redirect pages (public/<slug>/ for the
+    // short-links, the build-time dist/ai-visibility/ stub for the moved page) redirect too.
     if (url.hostname.toLowerCase() === 'autolander.ai' && !isApiPath(url.pathname)) {
       try {
         const shortLink = shortLinkResponse(request, url);
         if (shortLink) return shortLink;
+        const moved = movedPageResponse(request, url);
+        if (moved) return moved;
         const [mode, edgeMode] = await Promise.all([
           (request.method === 'GET' && isDocumentPath(url.pathname) && !isNoTrackPath(url.pathname))
             ? readZarazMode(env) : 'off',

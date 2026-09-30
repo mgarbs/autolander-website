@@ -1,5 +1,5 @@
 /*
- * /ai-visibility only (the free AI Visibility Scan page). Loaded by the lazy AiVisibilityApp chunk,
+ * /aeo-geo-for-car-dealers/ only (the AEO and GEO page with the free AI Visibility Scan). Loaded by the lazy AiVisibilityApp chunk,
  * never by the homepage.
  *
  * Isolation contract (same as src/team/team.css): src/index.css carries `@source not "./ai"`, so
@@ -20,6 +20,7 @@
 @source "../../shared/tracking-scope.js";
 @source "../../shared/meta-signal.js";
 @source "../../shared/ai-visibility-content.js";
+@source "../../shared/ai-visibility-route.js";
 @source "../../shared/ai-scan-form.js";
 @source "../../shared/ai-images.js";
 @source "../components/SiteNav.jsx";

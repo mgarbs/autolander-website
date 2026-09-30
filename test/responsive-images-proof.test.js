@@ -11,6 +11,7 @@ import { TEAM_IMAGES } from '../shared/page-images.js';
 import { AI_VISIBILITY_IMAGES } from '../shared/ai-images.js';
 import { IMAGE_SIZES, responsiveImageHtml, imageSrcSet } from '../shared/responsive-images.js';
 import { WHERE_BUYERS_ASK, RESULTS_VIEW, ENGINES, ILLUSTRATION_SLOTS } from '../shared/ai-visibility-content.js';
+import { AI_VISIBILITY_MD_PATH } from '../shared/ai-visibility-route.js';
 import { PROOF, PROOF_ENTRIES, proofEntriesFor } from '../shared/ai-visibility-proof.js';
 import { includesUnverifiedProof, proofModuleSource, proofBuildPlugin } from '../scripts/proof-build-plugin.mjs';
 import { assertNoUnverifiedProof } from '../scripts/proof-build-guard.mjs';
@@ -160,7 +161,7 @@ test('team mirror images are fully visible and the hero uses only the Sales Hub 
 
 test('public headings, captions, alt text and scan scope agree across surfaces', () => {
   const mirror = renderAiVisibilityMirror();
-  const twin = read('public/ai-visibility.md');
+  const twin = read(`public${AI_VISIBILITY_MD_PATH}`);
   for (const section of [WHERE_BUYERS_ASK, RESULTS_VIEW]) {
     for (const value of [section.h2Lead, section.h2Grad, section.caption]) {
       assert.ok(mirror.includes(escaped(value)));
@@ -202,7 +203,7 @@ test('unverified proof is bundled only for local dev and the noindex preview bui
 test('unverified proof is absent from all public text and every built file, including JS', () => {
   const forbidden = [...FIXTURE.map(({ quote }) => quote), FIXTURE[0].metrics[0].after, PROOF.h2Lead];
   const surfaces = [renderAiVisibilityMirror(), JSON.stringify(aiVisibilityGraph()), proofModuleSource({ entries: FIXTURE }),
-    ...['public/ai-visibility.md', 'public/llms.txt', 'public/llms-full.txt', 'public/agents.md', 'public/sitemap.xml', 'public/image-sitemap.xml'].map(read)];
+    ...[`public${AI_VISIBILITY_MD_PATH}`, 'public/llms.txt', 'public/llms-full.txt', 'public/agents.md', 'public/sitemap.xml', 'public/image-sitemap.xml'].map(read)];
   if (existsSync('dist')) for (const file of filesIn('dist')) surfaces.push(readFileSync(file));
   for (const surface of surfaces) for (const value of forbidden) assert.ok(!surface.includes(value), value);
 });

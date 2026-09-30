@@ -41,6 +41,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { SITE, NAV, relatedFor, pillarFor, SECTION_LABEL } from './registry.mjs';
+import { AI_VISIBILITY_NAV_LABEL } from '../../shared/ai-visibility-route.js';
 
 export { SITE, NAV };
 
@@ -178,6 +179,8 @@ export const orgLd = {
     'Vehicle inventory feeds',
     'Dealer management systems',
     'Used car pricing',
+    'Answer engine optimization (AEO) for car dealers',
+    'Generative engine optimization (GEO) for car dealers',
   ],
   contactPoint: [
     {
@@ -464,7 +467,7 @@ export function siteHeader(breadcrumbs) {
     <a class="brand" href="${SITE.origin}/">
       <img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" />
     </a>
-    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a><details class="navdrop"><summary>Services</summary><span class="navdrop-menu"><a href="/ai-visibility/">AI Audit</a><a href="/team/">Team Plans</a></span></details></nav>
+    <nav class="topnav" aria-label="Site"><a href="${NAV.blog.path}">Blog</a><a href="${NAV.blog.path}#guides">Guides</a><a href="/#pricing">Pricing</a><details class="navdrop"><summary>Services</summary><span class="navdrop-menu"><a href="${NAV.aiVisibility.path}">${esc(AI_VISIBILITY_NAV_LABEL)}</a><a href="/team/">Team Plans</a></span></details></nav>
     <nav class="crumbs" aria-label="Breadcrumb">
       ${crumbs}
     </nav>
@@ -496,6 +499,7 @@ export function siteFooter() {
       <a href="${NAV.report2026.path}">2026 Marketplace Report</a>
       <a href="${NAV.aiChat.path}">AI chat for dealers</a>
       <a href="${NAV.photoEditor.path}">AI car photo editor</a>
+      <a href="${NAV.aiVisibility.path}">AEO and GEO for car dealers</a>
       <a href="${NAV.rvDealers.path}">RV dealer software</a>
       <a href="${NAV.sellGuide.path}">How to sell cars</a>
       <a href="${NAV.guide.path}">Guide</a>

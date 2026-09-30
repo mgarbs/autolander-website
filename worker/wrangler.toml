@@ -26,7 +26,7 @@ routes = [
 [vars]
 # TRACKING KV cfg:zaraz_mode overrides this fallback (60s cache).
 ZARAZ_MODE = "off"
-# Cache-Control: no-transform (+ Worker-side compression) on /, /ai-visibility/, /team/ so the edge does not
+# Cache-Control: no-transform (+ Worker-side compression) on /, /aeo-geo-for-car-dealers/, /team/ so the edge does not
 # inject the Web Analytics beacon there (those pages load it after `load`). src/agent/no-transform.js.
 # TRACKING KV cfg:html_no_transform ('on'|'off') overrides this (60s cache) - the no-deploy kill switch.
 HTML_NO_TRANSFORM = "on"

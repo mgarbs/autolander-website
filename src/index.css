@@ -1,7 +1,7 @@
 @import "tailwindcss";
 /* The /team landing page builds its own stylesheet (src/team/team.css); keep it out of this one. */
 @source not "./team";
-/* Same for the /ai-visibility page (src/ai/ai.css). */
+/* Same for the AEO and GEO page, /aeo-geo-for-car-dealers/ (src/ai/ai.css). */
 @source not "./ai";
 
 @font-face {

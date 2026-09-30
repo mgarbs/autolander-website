@@ -23,6 +23,8 @@ import { ARTICLES as G } from '../scripts/seo/articles/data-articles-growth.mjs'
 import { ARTICLES as M } from '../scripts/seo/articles/data-articles-meta-tools.mjs';
 import { ARTICLES as C } from '../scripts/seo/articles/data-articles-compare.mjs';
 import { loadBlogPosts } from '../scripts/seo/articles/blog-loader.mjs';
+import { SPA_PAGE_PATHS } from '../scripts/seo/registry.mjs';
+import { AI_VISIBILITY_DIR, AI_VISIBILITY_PATH } from '../shared/ai-visibility-route.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(resolve(ROOT, p), 'utf8');
@@ -163,9 +165,17 @@ test('every published drip article is in the directory and every draft is absent
 
 test('every directory link resolves to a page the site builds', () => {
   const groups = buildHomeDirectory(REAL, loadPublishState());
+  // The prerendered SPA pages are built into dist/ by scripts/spa-fallback.mjs, not into public/.
+  const spaBuilt = { [AI_VISIBILITY_PATH]: AI_VISIBILITY_DIR };
   for (const g of groups) {
     for (const { href } of g.links) {
       assert.ok(href.startsWith('/') && href.endsWith('/'), `${href}: directory links are root-relative with a trailing slash`);
+      if (spaBuilt[href]) {
+        assert.ok(SPA_PAGE_PATHS.includes(href), `${href}: a registered SPA page`);
+        const built = resolve(ROOT, 'dist', spaBuilt[href], 'index.html');
+        if (existsSync(resolve(ROOT, 'dist', 'index.html'))) assert.ok(existsSync(built), `${href}: no dist/${spaBuilt[href]}/index.html (run npm run build)`);
+        continue;
+      }
       const file = resolve(ROOT, 'public', href.replace(/^\/|\/$/g, ''), 'index.html');
       assert.ok(existsSync(file), `${href}: no public${href}index.html (run npm run seo:pages)`);
     }

@@ -8,8 +8,16 @@ const keyLocation = `https://${host}/${key}.txt`;
 // Default: submit every URL in the sitemap (full re-ping after a content deploy).
 // --changed: submit only the URLs recorded by the last scripts/publish-article.mjs run
 // (.last-publish.json) plus the sitemap itself — the per-article drip-publish ping.
+// --urls <comma list>: submit exactly these URLs (absolute, or site paths such as /aeo-geo-for-car-dealers/),
+// e.g. after a page move so Bing re-crawls the new URL and sees the old one's 301. Same host check as below.
 let urlList;
-if (process.argv.includes('--changed')) {
+const urlsFlag = process.argv.indexOf('--urls');
+if (urlsFlag !== -1) {
+  const raw = process.argv[urlsFlag + 1] || '';
+  if (!raw || raw.startsWith('--')) throw new Error('--urls needs a comma-separated list of URLs or site paths.');
+  urlList = [...new Set(raw.split(',').map((item) => item.trim()).filter(Boolean)
+    .map((item) => (item.startsWith('/') ? `https://${host}${item}` : item)))];
+} else if (process.argv.includes('--changed')) {
   const p = join(process.cwd(), '.last-publish.json');
   if (!existsSync(p)) throw new Error('--changed given but .last-publish.json not found — run scripts/publish-article.mjs first.');
   const last = JSON.parse(readFileSync(p, 'utf8'));

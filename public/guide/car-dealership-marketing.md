@@ -23,6 +23,7 @@ Rank channels by buyer intent first, cost second. High intent + low cost is wher
 | Facebook Marketplace | Very high — people filter by car, price, distance | Free to list | Puts every unit in front of local ready-to-buy shoppers |
 | Google Business Profile + reviews | High — "used car dealer near me" searches | Free | Wins the trust check almost every buyer runs on your name |
 | Your website + SEO | High — buyers verify the car and the store | Low | Converts lookers into calls, texts and credit apps |
+| AI assistants and AI Overviews | High: buyers ask which dealer to visit and get a few stores named | Free (organic answers) | Gets your store named when a buyer asks AI where to buy |
 | Listing portals (CarGurus, Cars.com, AutoTrader) | Very high | Paid packages | Reach beyond your zip code; price-competition pressure |
 | Paid social & search ads | Medium — interrupts rather than answers | Paid, auction | Retargeting lot visitors and pushing aged units |
 | Email / SMS to your own list | Medium-high — past customers and leads | Near zero | Repeat sales, service-to-sales, referrals |
@@ -70,6 +71,10 @@ Spend follows leaks, not formulas. Before adding paid budget, max out the free c
 
 Yes — it remains the largest free source of local, in-market used-car shoppers, and dealers who post inventory consistently with good photos and fast replies get a steady flow of messages. The work is volume and consistency, which is what Facebook Marketplace software for dealers automates.
 
+### How do car dealers show up in AI answers?
+
+Make the store easy for AI tools to read and trust: let AI search crawlers in, put price, mileage and VIN on vehicle pages as text, keep your name, address and hours the same everywhere, and answer your reviews. That work is called AEO and GEO; see AEO and GEO for car dealers for a free scan. No one can promise what an AI will say.
+
 ### Do I need a marketing agency for my dealership?
 
 Not to start. The plays that move metal first — Marketplace coverage, photos, reviews, response speed — are software problems, not agency problems. An agency earns its fee later, on paid media strategy and creative, once the fundamentals run themselves.
@@ -86,7 +91,7 @@ We keep a working list of 27 dealership marketing ideas ranked by cost and effor
 - [Social media for car dealers](https://autolander.ai/guide/social-media-for-car-dealers/)
 - [How to sell more cars](https://autolander.ai/guide/how-to-sell-more-cars/)
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
-- [AI Visibility for car dealers: free scan and plans](https://autolander.ai/ai-visibility/)
+- [AEO and GEO for car dealers: free AI Visibility Scan and plans](https://autolander.ai/aeo-geo-for-car-dealers/)
 - [AI chat for car dealers — the honest guide](https://autolander.ai/ai-chat-for-car-dealers/)
 - [AI car photo editor for dealers](https://autolander.ai/ai-car-photo-editor/)
 - [Facebook Marketplace auto poster for car dealers](https://autolander.ai/facebook-marketplace-auto-poster/)

@@ -11,6 +11,7 @@
 
 import { SITE, NAV } from './registry.mjs';
 import { AGENT_GUIDANCE } from '../../shared/ai-visibility-content.js';
+import { AI_VISIBILITY_MD_PATH } from '../../shared/ai-visibility-route.js';
 
 const url = (p) => SITE.origin + p;
 
@@ -88,7 +89,7 @@ export function aiVisibilitySection(level = 2, { markers = true } = {}) {
 
 ${AGENT_GUIDANCE.intro}
 
-[${AGENT_GUIDANCE.linkTitle}](${url('/ai-visibility.md')})
+[${AGENT_GUIDANCE.linkTitle}](${url(AI_VISIBILITY_MD_PATH)})
 
 ${AGENT_GUIDANCE.pricing}
 

@@ -1,4 +1,4 @@
-// /ai-visibility form -> POST /api/ai-scan (the Worker route specified in Mike's hand-off note).
+// AEO and GEO page (/aeo-geo-for-car-dealers/) form -> POST /api/ai-scan (the Worker route specified in Mike's hand-off note).
 //
 // Local copies of the contact rules (lib/contact.js) and the submission id (lib/demo-application.js)
 // on purpose: importing those files from this chunk would split them out of the demo form's chunk

@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect } from 'react'
 import App from './App.jsx'
 import { pageView } from './lib/tags.js'
+import { AI_VISIBILITY_PATH } from '../shared/ai-visibility-route.js'
 
 const AdminApp = lazy(() => import('./admin/AdminApp.jsx'))
 const PayApp = lazy(() => import('./pay/PayApp.jsx'))
@@ -24,11 +25,12 @@ function isTeamPath() {
   return path === '/team' || path === '/team/'
 }
 
-// Exact /ai-visibility only (the free AI Visibility Scan page), for the same reason.
+// Exact AI_VISIBILITY_PATH only (the AEO and GEO page with the free AI Visibility Scan), for the same reason.
+// The retired /ai-visibility/ is a 301 (Worker) or a build-time redirect stub, never this app.
 function isAiVisibilityPath() {
   if (typeof window === 'undefined') return false
   const path = window.location.pathname
-  return path === '/ai-visibility' || path === '/ai-visibility/'
+  return path === AI_VISIBILITY_PATH || path === AI_VISIBILITY_PATH.slice(0, -1)
 }
 
 export default function Root() {
