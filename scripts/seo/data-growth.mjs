@@ -53,6 +53,7 @@ export const PAGES = [
           ['Facebook Marketplace', 'Very high — people filter by car, price, distance', 'Free to list', 'Puts every unit in front of local ready-to-buy shoppers'],
           ['Google Business Profile + reviews', 'High — "used car dealer near me" searches', 'Free', 'Wins the trust check almost every buyer runs on your name'],
           ['Your website + SEO', 'High — buyers verify the car and the store', 'Low', 'Converts lookers into calls, texts and credit apps'],
+          ['AI assistants and AI Overviews', 'High: buyers ask which dealer to visit and get a few stores named', 'Free (organic answers)', 'Gets your store named when a buyer asks AI where to buy'],
           ['Listing portals (CarGurus, Cars.com, AutoTrader)', 'Very high', 'Paid packages', 'Reach beyond your zip code; price-competition pressure'],
           ['Paid social & search ads', 'Medium — interrupts rather than answers', 'Paid, auction', 'Retargeting lot visitors and pushing aged units'],
           ['Email / SMS to your own list', 'Medium-high — past customers and leads', 'Near zero', 'Repeat sales, service-to-sales, referrals'],
@@ -109,6 +110,8 @@ export const PAGES = [
         'Spend follows leaks, not formulas. Before adding paid budget, max out the free channels: full Marketplace coverage, Google Business Profile, review flow and fast follow-up. Most independents find their cheapest incremental sales there, then add portal or ad spend for aged units and conquest.'],
       ['Is Facebook Marketplace still worth it for car dealers in 2026?',
         'Yes — it remains the largest free source of local, in-market used-car shoppers, and dealers who post inventory consistently with good photos and fast replies get a steady flow of messages. The work is volume and consistency, which is what [Facebook Marketplace software for dealers](/facebook-marketplace-auto-poster/) automates.'],
+      ['How do car dealers show up in AI answers?',
+        'Make the store easy for AI tools to read and trust: let AI search crawlers in, put price, mileage and VIN on vehicle pages as text, keep your name, address and hours the same everywhere, and answer your reviews. That work is called AEO and GEO; see [AEO and GEO for car dealers](/aeo-geo-for-car-dealers/) for a free scan. No one can promise what an AI will say.'],
       ['Do I need a marketing agency for my dealership?',
         'Not to start. The plays that move metal first — Marketplace coverage, photos, reviews, response speed — are software problems, not agency problems. An agency earns its fee later, on paid media strategy and creative, once the fundamentals run themselves.'],
       ['What are the best car dealership marketing ideas?',
@@ -128,6 +131,7 @@ export const PAGES = [
         { name: 'AI for car dealerships: what actually works', url: SITE.origin + NAV.aiDealers.path },
         { name: 'AI chat for car dealers', url: SITE.origin + NAV.aiChat.path },
         { name: 'AI car photo editor for dealers', url: SITE.origin + NAV.photoEditor.path },
+        { name: 'AEO and GEO for car dealers', url: SITE.origin + NAV.aiVisibility.path },
       ],
     },
   },
@@ -544,9 +548,22 @@ export const PAGES = [
           ['AI vehicle photos', 'Replaces cluttered lot backgrounds with showroom or branded-storefront scenes; keeps the actual car untouched', 'Immediate — better photos lift clicks on every listing', 'AI Photo Studio in AutoLander'],
           ['AI chat on the sales inbox', 'Standalone tools converse with buyers automatically; quality varies wildly', 'Only safe with inventory-true answers and instant human handoff — vet hard', 'Standalone tools only — AutoLander has no inbox feature; your people answer'],
           ['AI listing descriptions', 'Writes an accurate, VIN-specific description for every unit', 'High — hours of copy work disappear; listings stop sounding identical', 'Built into AutoLander listings'],
+          ['Showing up in AI answers (AEO and GEO)', 'Checks and fixes what AI assistants read about your store: crawler access, vehicle-page text, profiles, listings and reviews', 'Slow and measured: re-ask the same buyer questions every month; no one can promise a placement', 'AutoLander AI Visibility service'],
           ['AI walkaround video', 'Generates a short video per vehicle from photos', 'Solid — motion content without a videographer', 'Optional per-vehicle in AutoLander'],
           ['AI pricing / appraisal tools', 'Suggests prices from market comps', 'Useful as an input; dangerous as an autopilot — local knowledge still prices the car', 'Standalone tools'],
           ['Generic "AI transformation" platforms', 'Unclear by design', 'Ask which specific job it does; if the answer is a slide, pass', '—'],
+        ],
+      },
+      {
+        type: 'qa',
+        q: 'Can AI assistants recommend my dealership?',
+        a: [
+          'They already name dealers. Cox Automotive found that 19% of car buyers used AI websites or '
+          + 'AI-generated overviews while they shopped, and those answers name a few stores and cite the pages '
+          + 'they used. Whether yours is one of them depends on what those tools can read and trust about your store.',
+          'That work has two names: AEO, which shapes your pages into short, direct answers, and GEO, which builds '
+          + 'the trust that gets a store named and cited. See [AEO and GEO for car dealers](/aeo-geo-for-car-dealers/) '
+          + 'for a free scan of what Claude and GPT say about your store. No one can promise what an AI will say.',
         ],
       },
       {
@@ -626,6 +643,7 @@ export const PAGES = [
         { name: 'AI car photo editor for dealers', url: SITE.origin + NAV.photoEditor.path },
         { name: 'Facebook AI tools for car dealers', url: SITE.origin + NAV.aiTools.path },
         { name: 'Facebook Marketplace assistant', url: SITE.origin + NAV.assistant.path },
+        { name: 'AEO and GEO for car dealers', url: SITE.origin + NAV.aiVisibility.path },
       ],
     },
   },
