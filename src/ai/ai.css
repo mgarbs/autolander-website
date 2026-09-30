@@ -12,6 +12,7 @@
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 @source "./";
 @source "../components/ResponsiveImage.jsx";
+@source "../components/StaticIsland.jsx";
 @source "../lib/";
 @source "../../shared/responsive-images.js";
 @source "../../shared/page-images.js";
@@ -40,6 +41,13 @@
 }
 
 .al-scan-section ~ section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* The static island below the hero (the build-time mirror, until the page goes live): laid out only as it
+   nears the screen, so the first paint lays out the nav and hero alone. */
+[data-al-island] > section {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }

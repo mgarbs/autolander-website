@@ -67,3 +67,4 @@ dist-preview/
 
 # Unverified proof drafts (local review only; this repository is public)
 /shared/ai-visibility-proof.local.js
+.ssr/

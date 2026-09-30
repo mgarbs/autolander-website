@@ -1,4 +1,5 @@
-import { Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
+import { StrictMode, Suspense, lazy, useCallback, useEffect, useRef, useState } from 'react';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { HEADLINE_SEGMENTS, SUBS, TEAM_META } from '../../shared/team-content.js';
 import SiteFooter from '../components/SiteFooter.jsx';
 import SiteNav from '../components/SiteNav.jsx';
@@ -8,6 +9,10 @@ import {
   PricingSection, ProblemSection, ProofSection, TeamHero, TeamMobileCtaBar,
 } from './TeamSections.jsx';
 import { scrollBehavior } from './scroll.js';
+import { teamVariantFromSearch } from './variant.js';
+import StaticIsland from '../components/StaticIsland.jsx';
+import { HYDRATE_OPTIONS, islandHtml } from '../lib/boot.js';
+import { useLive } from '../lib/use-live.js';
 import './team.css';
 
 /**
@@ -36,8 +41,7 @@ const renderHeadline = (variant) => HEADLINE_SEGMENTS[variant].map((part, index)
 
 function headlineVariant() {
   if (typeof window === 'undefined') return 'a';
-  const v = (new URLSearchParams(window.location.search).get('v') || '').toLowerCase();
-  return ['a', 'b', 'c', 'd'].includes(v) ? v : 'a';
+  return teamVariantFromSearch(window.location.search);
 }
 
 const DemoApplicationFallback = ({ onClose }) => (
@@ -49,8 +53,14 @@ const DemoApplicationFallback = ({ onClose }) => (
   </div>
 );
 
-export default function TeamApp() {
-  const [variant] = useState(headlineVariant);
+/**
+ * `prerendered` is the build-time/hydration mode (scripts/prerender.mjs, main.jsx): the nav and hero are React's,
+ * everything below the hero is the static mirror (`restHtml`) until the page goes live after hydration. `variant`
+ * pins the headline (the build renders 'a'); with no props (dev, Root's lazy route) it reads ?v= as before.
+ */
+export default function TeamApp({ prerendered = false, restHtml = '', variant: pinnedVariant } = {}) {
+  const [variant] = useState(() => pinnedVariant ?? headlineVariant());
+  const [live, ensureLive] = useLive(prerendered);
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const [videoOn, setVideoOn] = useState(false);
   const [autopilotOn, setAutopilotOn] = useState(false);
@@ -131,16 +141,27 @@ export default function TeamApp() {
     };
   }, [isApplicationOpen, closeDemoApplication]);
 
+  // A tap that landed on a demo button before hydration (recorded by the shell's inline script) opens the form now.
+  useEffect(() => {
+    window.__alHydrated = true;
+    if (!window.__alPendingDemo) return undefined;
+    window.__alPendingDemo = false;
+    const id = window.setTimeout(() => openDemoBooking(), 0);
+    return () => window.clearTimeout(id);
+  }, [openDemoBooking]);
+
   const watchManagerView = useCallback(() => {
+    ensureLive();
     document.getElementById('dashboard')?.scrollIntoView({ behavior: scrollBehavior() });
     window.setTimeout(() => setVideoOn(true), 500);
-  }, []);
+  }, [ensureLive]);
 
   // ?v=b sells 'who posted', so its hero button keeps the manager view; a / c / d show AutoPilot running.
   const watchAutopilot = useCallback(() => {
+    ensureLive();
     document.getElementById('autopilot')?.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
     window.setTimeout(() => setAutopilotOn(true), 500);
-  }, []);
+  }, [ensureLive]);
 
   return (
     <div className="min-h-dvh bg-[#050505] font-sans text-slate-50 selection:bg-blue-500/30 selection:text-blue-200" data-headline-variant={variant}>
@@ -161,20 +182,24 @@ export default function TeamApp() {
             onWatch={variant === 'b' ? watchManagerView : watchAutopilot}
             watch={variant === 'b' ? 'manager' : 'autopilot'}
           />
-          <FeedStrip />
-          <FloorCheck onBook={openDemoBooking} onWarm={warmDemoApplication} />
-          <ProblemSection />
-          <Beam />
-          <HowItWorks autopilotOn={autopilotOn} onPlayAutopilot={() => setAutopilotOn(true)} />
-          <DashboardSection videoOn={videoOn} onPlay={() => setVideoOn(true)} />
-          <ProofSection />
-          <DemoSection onBook={openDemoBooking} onWarm={warmDemoApplication} />
-          <PricingSection onBook={openDemoBooking} onWarm={warmDemoApplication} />
-          <FaqSection />
-          <FinalCta onBook={openDemoBooking} onWarm={warmDemoApplication} />
+          {live ? (
+            <>
+              <FeedStrip />
+              <FloorCheck onBook={openDemoBooking} onWarm={warmDemoApplication} />
+              <ProblemSection />
+              <Beam />
+              <HowItWorks autopilotOn={autopilotOn} onPlayAutopilot={() => setAutopilotOn(true)} />
+              <DashboardSection videoOn={videoOn} onPlay={() => setVideoOn(true)} />
+              <ProofSection />
+              <DemoSection onBook={openDemoBooking} onWarm={warmDemoApplication} />
+              <PricingSection onBook={openDemoBooking} onWarm={warmDemoApplication} />
+              <FaqSection />
+              <FinalCta onBook={openDemoBooking} onWarm={warmDemoApplication} />
+            </>
+          ) : <StaticIsland name="team-rest" html={restHtml} />}
         </main>
-        <SiteFooter mobileCtaPadding />
-        <TeamMobileCtaBar onBookDemo={openDemoBooking} onWarmDemo={warmDemoApplication} />
+        {live && <SiteFooter mobileCtaPadding />}
+        {live && <TeamMobileCtaBar onBookDemo={openDemoBooking} onWarmDemo={warmDemoApplication} />}
       </div>
       {isApplicationOpen && (
         <div ref={dialogRef} role="dialog" aria-modal="true" aria-label="Book your free team demo" tabIndex={-1} className="outline-none">
@@ -185,4 +210,24 @@ export default function TeamApp() {
       )}
     </div>
   );
+}
+
+// eslint-disable-next-line react-refresh/only-export-components -- boot helpers live with the page they boot
+export const teamElement = (props) => (
+  <StrictMode>
+    <TeamApp {...props} />
+  </StrictMode>
+);
+
+// main.jsx: variant a (the default and the one the build prerenders) adopts the prerendered nav + hero and the
+// static island. The ad variants b / c / d render on the client, as before, so their headline is theirs.
+// eslint-disable-next-line react-refresh/only-export-components
+export function bootTeam(container) {
+  const variant = teamVariantFromSearch(window.location.search);
+  if (variant === 'a') {
+    return hydrateRoot(container, teamElement({ prerendered: true, variant, restHtml: islandHtml(container, 'team-rest') }), HYDRATE_OPTIONS);
+  }
+  const root = createRoot(container);
+  root.render(teamElement({ variant }));
+  return root;
 }
