@@ -498,7 +498,12 @@ export function ctaBlock(heading, sub, opts = {}) {
   </section>`;
 }
 
-export function siteFooter() {
+// A page that carries its own `footer` ({ columns: [{ heading, links: [{ label, href }] }], line })
+// gets an on-topic column footer: the aeoGeo articles, whose footer mirrors the AEO and GEO money
+// page's FOOTER_NAV (article-system.mjs siloFooter, publish-aware). Every other page passes nothing
+// and renders the site-wide footer below, byte for byte.
+export function siteFooter(footer = null) {
+  if (footer && Array.isArray(footer.columns) && footer.columns.length) return columnFooter(footer);
   return `  <footer class="foot">
     <a href="${SITE.origin}/" class="foot-brand"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
     <nav class="foot-links">
@@ -533,6 +538,22 @@ export function siteFooter() {
       Facebook and Facebook Marketplace are trademarks of Meta Platforms, Inc. AutoLander does not
       override Meta eligibility, listing limits or terms &mdash; see our <a href="${NAV.guide.path}">policy and safety guide</a>.
     </p>
+    <p class="copyright">&copy; 2026 AutoLander. Last updated ${esc(updatedHuman())}.</p>
+  </footer>
+</body>
+</html>`;
+}
+
+function columnFooter({ columns, line }) {
+  const column = ({ heading, links }) => `      <nav class="foot-col" aria-label="${esc(heading)}">
+        <h2 class="foot-h">${esc(heading)}</h2>
+        ${links.map(({ label, href }) => `<a href="${esc(href)}">${esc(label)}</a>`).join('\n        ')}
+      </nav>`;
+  return `  <footer class="foot">
+    <a href="${SITE.origin}/" class="foot-brand"><img src="/autolander-logo.png" alt="AutoLander" width="400" height="120" class="brand-logo" /></a>
+    <div class="foot-cols">
+${columns.map(column).join('\n')}
+    </div>${line ? `\n    <p class="disclaimer">${esc(line)}</p>` : ''}
     <p class="copyright">&copy; 2026 AutoLander. Last updated ${esc(updatedHuman())}.</p>
   </footer>
 </body>
@@ -769,7 +790,7 @@ ${page.faq && page.faq.length ? faqSection(page.faq, page.faqHeading) : ''}
     `${related.length ? relatedNav(related, page.relatedHeading || 'Keep exploring') : ''}
     </article>
   </main>`,
-    siteFooter(),
+    siteFooter(page.footer),
   ].join('\n');
 
   return [
@@ -959,5 +980,10 @@ border:1px solid var(--line);border-radius:14px;padding:14px 18px;text-decoratio
 .download-list a:hover{border-color:var(--blue2)}
 .dl-fmt{font-weight:800;color:var(--blue2);font-size:14.5px}
 .dl-desc{color:var(--muted);font-size:14px}
-@media(max-width:640px){.topnav{gap:10px}.topnav a{font-size:12px}.feature-grid{grid-template-columns:1fr}}
+/* column footer (pages with their own footer, e.g. the AEO and GEO articles) */
+.foot-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 28px;margin:0 0 20px}
+.foot-col{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0}
+.foot-h{margin:0 0 3px;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.foot-col a{font-size:13px;font-weight:700;color:var(--muted)}
+@media(max-width:640px){.topnav{gap:10px}.topnav a{font-size:12px}.feature-grid{grid-template-columns:1fr}.foot-cols{grid-template-columns:1fr 1fr}}
 `;
