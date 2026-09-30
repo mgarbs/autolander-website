@@ -6,6 +6,8 @@ import {
   SILOS, SUGGESTED_ORDER, articlePath, loadPublishState, isPublished,
   relatedForArticle, buildArticlePage, hubAugmentLinks, contentStatusJson,
   articleSitemapEntries, compareHubLinks, versusPageLinks, backlinkedFrom,
+  ADMIN_SILO_ORDER, resolveBodyLinks, gatePageLinks, siloPublishNumber, siloNumberingProblems,
+  clusterLabel, clusterIndex,
 } from '../scripts/seo/articles/article-system.mjs';
 import { loadBlogPosts } from '../scripts/seo/articles/blog-loader.mjs';
 import { handleContentList, handleContentPublish } from '../worker/src/admin/content.js';
@@ -43,7 +45,148 @@ test('publish-state.json covers exactly the drip and blog slugs', () => {
   const st = loadPublishState();
   const expected = [...SUGGESTED_ORDER, ...loadBlogPosts().map((post) => post.slug)];
   assert.deepEqual(Object.keys(st).sort(), expected.sort());
-  assert.equal(SUGGESTED_ORDER.length, 36);
+  assert.equal(SUGGESTED_ORDER.length, 86);
+});
+
+// ---- 2026-09-30 aeoGeo silo: clusters, publish-aware (@slug) tokens, silo CTA, admin rows ----
+
+const aeo = (slug, cluster, extra = {}) => art(slug, 'aeoGeo', { cluster, ...extra });
+// Real aeoGeo slugs so SUGGESTED_ORDER positions are the real ones (#1, #2, #3, #10, #11).
+const AEO_1 = 'can-chatgpt-see-my-dealer-website'; // #1 website
+const AEO_2 = 'how-chatgpt-recommends-car-dealerships'; // #2 engines
+const AEO_3 = 'how-car-buyers-use-chatgpt'; // #3 buyers
+const AEO_10 = 'cloudflare-ai-bots-dealer-websites'; // #10 website
+const AEO_11 = 'google-ai-overviews-for-car-dealers'; // #11 engines
+
+test('ADMIN_SILO_ORDER lists every drip silo exactly once', () => {
+  assert.deepEqual([...ADMIN_SILO_ORDER].sort(), Object.keys(SILOS).filter((key) => key !== 'blog').sort());
+  assert.equal(ADMIN_SILO_ORDER[0], 'aeoGeo');
+});
+
+test('aeoGeo articles live under /aeo-geo/, breadcrumb to the money page and end on the free scan', () => {
+  const content = aeo(AEO_1, 'website');
+  const page = buildArticlePage(content, [content], state([AEO_1]));
+  assert.equal(page.path, `/aeo-geo/${AEO_1}/`);
+  assert.equal(articlePath(content), `/aeo-geo/${AEO_1}/`);
+  assert.equal(page.breadcrumbs[1].url, 'https://autolander.ai/aeo-geo-for-car-dealers/');
+  assert.equal(page.cta.heading, 'CTA');
+  assert.equal(page.cta.sub, 'Sub.');
+  assert.equal(page.cta.href, 'https://autolander.ai/aeo-geo-for-car-dealers/#scan-form');
+  assert.equal(page.cta.button, 'Get my free scan');
+  assert.equal(page.ogFallback, '/og/ai-visibility.jpg');
+  assert.deepEqual(page.article.about.map((node) => node['@id']), [
+    'https://autolander.ai/aeo-geo-for-car-dealers/#term-aeo',
+    'https://autolander.ai/aeo-geo-for-car-dealers/#term-geo',
+  ]);
+  // Other silos keep the article's own CTA object and no OG fallback.
+  const mkt = buildArticlePage(ARTS[0], ARTS, state([ARTS[0].slug]));
+  assert.deepEqual(mkt.cta, ARTS[0].cta);
+  assert.equal(mkt.ogFallback, undefined);
+  assert.equal(mkt.article.about, undefined);
+});
+
+test('(@slug) tokens link a published target and print plain text for a draft or unknown target', () => {
+  const target = aeo(AEO_1, 'website');
+  const source = aeo(AEO_2, 'engines', {
+    tldr: 'See [the website check](@can-chatgpt-see-my-dealer-website).',
+    sections: [{ type: 'qa', q: 'Q?', a: ['Read [the check](@can-chatgpt-see-my-dealer-website) and [a ghost](@no-such-article-slug).'] }],
+    faq: [['Q?', 'Answer with [the check](@can-chatgpt-see-my-dealer-website).']],
+  });
+  const articles = [target, source];
+
+  const draft = buildArticlePage(source, articles, state([AEO_2]));
+  assert.equal(draft.tldr, 'See the website check.');
+  assert.deepEqual(draft.sections[0].a, ['Read the check and a ghost.']);
+  assert.equal(draft.faq[0][1], 'Answer with the check.');
+
+  const live = buildArticlePage(source, articles, state([AEO_1, AEO_2]));
+  assert.equal(live.tldr, `See [the website check](/aeo-geo/${AEO_1}/).`);
+  assert.deepEqual(live.sections[0].a, [`Read [the check](/aeo-geo/${AEO_1}/) and a ghost.`]);
+  // the content module itself is never mutated
+  assert.match(source.tldr, /\(@can-chatgpt-see-my-dealer-website\)/);
+});
+
+test('hand-written internal hrefs to a draft article render as text; a site-aware gate drops unknown paths', () => {
+  const draftTarget = art('renew-facebook-marketplace-car-listings', 'marketplace');
+  const value = [
+    'A [draft guide](/guide/renew-facebook-marketplace-car-listings/) and [the money page](/aeo-geo-for-car-dealers/#scan-form)',
+    'and [a typo](/guid/nope/) and [an outside source](https://example.com/x).',
+  ];
+  const events = [];
+  const gated = resolveBodyLinks(value, {
+    articles: [draftTarget],
+    state: state([]),
+    isLinkablePath: (path) => path === '/aeo-geo-for-car-dealers/',
+    onUnlinked: (event) => events.push(event.kind),
+  });
+  assert.deepEqual(gated, [
+    'A draft guide and [the money page](/aeo-geo-for-car-dealers/#scan-form)',
+    'and a typo and [an outside source](https://example.com/x).',
+  ]);
+  assert.deepEqual(events, ['draft-href', 'unknown-href']);
+  // Published target: the hand-written href stays a link.
+  const live = resolveBodyLinks(value[0], { articles: [draftTarget], state: state([draftTarget.slug]) });
+  assert.equal(live, value[0]);
+  // gatePageLinks returns a new page object and leaves the input alone
+  const page = { title: 'T', tldr: value[0], sections: [{ type: 'prose', paras: [value[1]] }], faq: [] };
+  const out = gatePageLinks(page, { articles: [draftTarget], state: state([]), isLinkablePath: () => false });
+  assert.notEqual(out, page);
+  assert.equal(out.tldr, 'A draft guide and the money page');
+  assert.equal(page.tldr, value[0]);
+});
+
+test('clustered siblings: same-cluster published siblings come first in "Keep exploring"', () => {
+  const articles = [
+    aeo(AEO_1, 'website'), aeo(AEO_2, 'engines'), aeo(AEO_3, 'buyers'),
+    aeo(AEO_10, 'website'), aeo(AEO_11, 'engines'),
+  ];
+  const related = relatedForArticle(articles[1], articles, state([AEO_1, AEO_2, AEO_3, AEO_10, AEO_11]));
+  const siblings = related.slice(SILOS.aeoGeo.related.length).map((link) => link.href);
+  assert.deepEqual(siblings.slice(0, 1), [`/aeo-geo/${AEO_11}/`], 'the only other engines article leads');
+  assert.equal(siblings.length, 4);
+  assert.ok(siblings.every((href) => href.startsWith('/aeo-geo/')));
+  // drafts never appear
+  const onlyOne = relatedForArticle(articles[1], articles, state([AEO_2]));
+  assert.deepEqual(onlyOne, SILOS.aeoGeo.related);
+});
+
+test('backlinkedFrom also finds (@slug) token back-linkers', () => {
+  const articles = [
+    aeo(AEO_1, 'website'),
+    aeo(AEO_2, 'engines', { tldr: 'See [it](@can-chatgpt-see-my-dealer-website).' }),
+    aeo(AEO_3, 'buyers', { alsoRelated: [AEO_1] }),
+    aeo(AEO_10, 'website'),
+  ];
+  assert.deepEqual(backlinkedFrom(AEO_1, articles), [AEO_2, AEO_3]);
+});
+
+test('contentStatusJson drip rows carry silo order, cluster and the silo publish number', () => {
+  const rows = contentStatusJson([
+    aeo(AEO_2, 'engines', { publishOrder: 2 }),
+    ARTS[0],
+  ], state([])).articles;
+  const row = rows.find((r) => r.slug === AEO_2);
+  assert.equal(row.siloOrder, ADMIN_SILO_ORDER.indexOf('aeoGeo'));
+  assert.equal(row.cluster, 'engines');
+  assert.equal(row.clusterLabel, 'How each AI assistant picks a dealer');
+  assert.equal(row.clusterOrder, 1);
+  assert.equal(row.publishNumber, 2);
+  assert.equal(row.path, `/aeo-geo/${AEO_2}/`);
+  const mkt = rows.find((r) => r.slug === ARTS[0].slug);
+  assert.equal(mkt.cluster, null);
+  assert.equal(mkt.clusterLabel, null);
+  assert.equal(mkt.publishNumber, null);
+  assert.equal(mkt.siloOrder, ADMIN_SILO_ORDER.indexOf('marketplace'));
+});
+
+test('silo publish numbers are positions in SUGGESTED_ORDER and drift is reported', () => {
+  const articles = [aeo(AEO_1, 'website', { publishOrder: 1 }), aeo(AEO_2, 'engines', { publishOrder: 2 })];
+  assert.equal(siloPublishNumber(articles[1], articles), 2);
+  assert.deepEqual(siloNumberingProblems(articles), []);
+  const drifted = [aeo(AEO_1, 'website', { publishOrder: 2 }), aeo(AEO_2, 'engines', { publishOrder: 2 })];
+  assert.equal(siloNumberingProblems(drifted).length, 1);
+  assert.equal(clusterLabel('aeoGeo', 'nope'), null);
+  assert.equal(clusterIndex('marketplace', 'website'), null);
 });
 
 test('articlePath keeps string callers under /guide/ and routes compare article objects', () => {

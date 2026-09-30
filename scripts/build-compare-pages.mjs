@@ -22,12 +22,7 @@ import { AI_VISIBILITY_NAV_LABEL } from '../shared/ai-visibility-route.js';
 import {
   compareHubLinks, versusPageLinks, loadPublishState,
 } from './seo/articles/article-system.mjs';
-import { ARTICLES as ART_MKT_A } from './seo/articles/data-articles-marketplace-a.mjs';
-import { ARTICLES as ART_MKT_B } from './seo/articles/data-articles-marketplace-b.mjs';
-import { ARTICLES as ART_PHOTOS } from './seo/articles/data-articles-photos.mjs';
-import { ARTICLES as ART_GROWTH } from './seo/articles/data-articles-growth.mjs';
-import { ARTICLES as ART_META } from './seo/articles/data-articles-meta-tools.mjs';
-import { ARTICLES as ART_COMPARE } from './seo/articles/data-articles-compare.mjs';
+import { DRIP_ARTICLES } from './seo/articles/drip-articles.mjs';
 import { loadBlogPosts } from './seo/articles/blog-loader.mjs';
 import {
   SITE, DIMENSIONS, AUTOLANDER, AUTOLANDER_WINS_GLOBAL, SESSION_FAQ,
@@ -36,10 +31,7 @@ import {
 
 const PUBLIC_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public');
 const COMPARE_DIR = resolve(PUBLIC_DIR, 'compare');
-const ARTICLE_CONTENT = [
-  ...ART_MKT_A, ...ART_MKT_B, ...ART_PHOTOS, ...ART_GROWTH, ...ART_META, ...ART_COMPARE,
-  ...loadBlogPosts(),
-];
+const ARTICLE_CONTENT = [...DRIP_ARTICLES, ...loadBlogPosts()];
 const PUBLISH_STATE = loadPublishState();
 const VERSUS_ARTICLE_LINKS = versusPageLinks(ARTICLE_CONTENT, PUBLISH_STATE);
 

@@ -59,8 +59,10 @@ try {
 } catch (err) {
   console.warn('!! could not read og/manifest.json, falling back to /og-image.jpg —', err.message);
 }
-export const ogImageFor = (urlPath) =>
-  SITE.origin + (OG_MANIFEST[urlPath] || '/og-image.jpg');
+// `fallback` lets a silo without per-page cards use its own shared card (aeoGeo: the AEO card)
+// instead of the Marketplace /og-image.jpg. Omitted, the behaviour is unchanged.
+export const ogImageFor = (urlPath, fallback) =>
+  SITE.origin + (OG_MANIFEST[urlPath] || fallback || '/og-image.jpg');
 
 export const esc = (s) => String(s)
   .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
@@ -248,7 +250,7 @@ export const personLd = {
 // declaring itself part of itself is noise.
 export const articleLd = ({
   title, canonical, description, datePublished, dateModified, image, pillar,
-  type = 'Article', isPartOf,
+  type = 'Article', isPartOf, about,
 }) => ({
   '@context': 'https://schema.org', '@type': type,
   '@id': canonical + '#article',
@@ -277,6 +279,8 @@ export const articleLd = ({
   image: image || SITE.origin + '/og-image.jpg',
   inLanguage: 'en-US',
   isAccessibleForFree: true,
+  // What the article is about, by @id (aeoGeo: the money page's AEO and GEO DefinedTerm nodes).
+  ...(about && about.length ? { about } : {}),
 });
 
 // Dataset node — the strongest available signal that a page carries original measured data.
@@ -475,7 +479,17 @@ export function siteHeader(breadcrumbs) {
   <script>(()=>{document.addEventListener('click',event=>{document.querySelectorAll('details.navdrop[open]').forEach(menu=>{if(!menu.contains(event.target))menu.removeAttribute('open')})})})()</script>`;
 }
 
-export function ctaBlock(heading, sub) {
+// `opts.href` (a silo CTA, e.g. aeoGeo's free scan) swaps the button and the fine print. Without
+// it the block is the exact Marketplace CTA every other page has always rendered.
+export function ctaBlock(heading, sub, opts = {}) {
+  if (opts.href) {
+    return `  <section class="cta">
+    <h2>${esc(heading)}</h2>
+    <p>${esc(sub)}</p>
+    <a class="btn" href="${esc(opts.href)}">${esc(opts.button)} &rarr;</a>
+    <p class="cta-fine">${esc(opts.fine)}</p>
+  </section>`;
+  }
   return `  <section class="cta">
     <h2>${esc(heading)}</h2>
     <p>${esc(sub)}</p>
@@ -658,7 +672,7 @@ export function renderPage(page) {
   const nav = page.key ? NAV[page.key] : null;
   const path = page.path || (nav && nav.path);
   const canonical = SITE.origin + path;
-  const ogImage = ogImageFor(path);
+  const ogImage = ogImageFor(path, page.ogFallback);
   const pillar = pillarFor(page);
   const jsonLdBlocks = [];
   jsonLdBlocks.push(jsonld(webPageLd(page.title, canonical, page.description, ogImage, page.updated, {
@@ -686,6 +700,7 @@ export function renderPage(page) {
       pillar,
       type: page.article.type,
       isPartOf: page.article.isPartOf,
+      about: page.article.about,
     })));
     // Mirrored onto the OpenGraph layer (article:*). Same source values as the JSON-LD above so
     // the two can never disagree about when a page was published or who wrote it.
@@ -750,7 +765,7 @@ ${sectionsHtml}
 
 ${page.faq && page.faq.length ? faqSection(page.faq, page.faqHeading) : ''}
 `,
-    ctaBlock(page.cta.heading, page.cta.sub),
+    ctaBlock(page.cta.heading, page.cta.sub, page.cta),
     `${related.length ? relatedNav(related, page.relatedHeading || 'Keep exploring') : ''}
     </article>
   </main>`,
@@ -871,6 +886,12 @@ export function renderMarkdown(page) {
     page.faq.forEach(([q, a]) => { out.push(`### ${q}`); out.push(''); out.push(stripmd(a)); out.push(''); });
   }
 
+  // A silo CTA with its own destination (aeoGeo: the free scan) reaches the twin too, since the
+  // .md is what answer engines read. Pages without cta.href render exactly as before.
+  if (page.cta?.href) {
+    out.push(`**${page.cta.button}:** ${page.cta.href}`); out.push('');
+  }
+
   const related = page.related || (page.key ? relatedFor(page.key) : []);
   if (related.length) {
     out.push('## Related'); out.push('');
@@ -879,7 +900,9 @@ export function renderMarkdown(page) {
   }
 
   out.push('---');
-  out.push(`AutoLander — Facebook Marketplace software for car dealers. ${SITE.origin}/`);
+  out.push(page.cta?.href
+    ? `AutoLander: AEO and GEO for car dealers. ${SITE.origin}${NAV.aiVisibility.path}`
+    : `AutoLander — Facebook Marketplace software for car dealers. ${SITE.origin}/`);
   out.push('');
   return out.join('\n');
 }
