@@ -116,7 +116,8 @@ export const ARTICLES = [
         q: 'Why does review recency matter?',
         a: [
           'Review recency matters because shoppers and AI answers both lean on what is current. '
-          + 'BrightLocal found 74% of consumers look for reviews from the last three months, and '
+          + '[BrightLocal found](https://www.brightlocal.com/research/local-consumer-review-survey/) 74% '
+          + 'of consumers look for reviews from the last three months, and '
           + '[Microsoft researchers writing on the Bing search '
           + 'blog](https://blogs.bing.com/search/May-2026/Evolving-role-of-the-index-From-ranking-pages-to-supporting-answers) '
           + 'said freshness is critical for AI answers, because an out-of-date fact leads to a misleading '
@@ -310,14 +311,14 @@ export const ARTICLES = [
     silo: 'aeoGeo',
     cluster: 'reputation',
     publishOrder: 12,
-    anchor: 'Google Business Profile for AI answers: the fields that matter for a dealership',
+    anchor: 'Google Business Profile in AI answers: what AI reads about your dealership',
     crumb: 'Business Profile for AI',
     primaryKeyword: 'google business profile ai search',
     secondaryKeywords: [
       'business profile for ai overviews',
-      'dealership departments on google',
-      'business profile hours for car dealers',
-      'business profile categories for dealers',
+      'does google business profile affect ai answers',
+      'business profile attributes for dealerships',
+      'consistent business listings for ai',
     ],
     alsoRelated: [
       'google-business-profile-for-car-dealers',
@@ -330,17 +331,17 @@ export const ARTICLES = [
     augmentKeys: [],
     title: 'Google Business Profile for AI Answers: What AI Reads',
     description:
-      'The Google Business Profile fields that feed AI answers for car dealers: categories, hours, '
-      + 'departments, Q&A and reviews, and Google’s rules.',
+      'How a dealership’s Google Business Profile feeds AI answers: the facts AI Overviews and Maps '
+      + 'draw on, listing consistency, reviews as evidence, Q&A and attributes.',
     eyebrow: 'AEO and GEO for car dealers',
-    h1: 'Google Business Profile for AI answers: the fields that matter for a dealership',
+    h1: 'How your Google Business Profile feeds AI answers about your dealership',
     tldr:
-      'Google Business Profile matters for AI search because Google says Business Profiles can help '
-      + 'businesses show up in AI responses as well as regular results, and Google Maps now answers '
-      + 'shopper questions from a business’s own answers and reviews. For a dealership, the fields that '
-      + 'matter most are an exact name, the most specific categories, car sales hours, separate profiles '
-      + 'only for departments that truly operate apart, current photos and answered reviews. There is no '
-      + 'way to pay Google for a better local position.',
+      'Google says Business Profiles can help businesses show up in AI responses, and Google Maps now '
+      + 'answers shopper questions from a business’s own answers and relevant reviews. What AI takes '
+      + 'from a dealership’s profile is plain facts: the name, categories, hours, departments, '
+      + 'attributes, your answers to customer questions and the words in your reviews. Those facts help '
+      + 'most when your website and every other listing say the same thing, and there is no way to pay '
+      + 'Google for a better local position.',
     sections: [
       {
         type: 'qa',
@@ -351,7 +352,7 @@ export const ARTICLES = [
           + 'guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) says '
           + 'Business Profiles can help businesses show up in AI responses as well as other Google Search '
           + 'results, and that AI responses can include local business information. Google Maps now '
-          + 'answers shopper questions from business answers and reviews.',
+          + 'answers shopper questions from business answers and relevant reviews.',
           'On Maps, a Google employee’s [announcement in the Business Profile '
           + 'community](https://support.google.com/business/thread/392024106) says shoppers ask a question '
           + 'and get “an updated, instant answer based on your answers and relevant reviews.” That puts '
@@ -364,155 +365,122 @@ export const ARTICLES = [
           + 'Business Profile into their answers. They read the pages and listings their searches turn '
           + 'up, which is why keeping the profile, your website and every listing in agreement is a core '
           + 'part of [AEO and GEO for car dealers](/aeo-geo-for-car-dealers/).',
+          'This article covers what AI answers take from a profile that already exists. For building one '
+          + 'from scratch, from verification and categories to hours and photos, start with [our Google '
+          + 'Business Profile setup guide for car dealerships](@google-business-profile-for-car-dealers).',
         ],
       },
       {
         type: 'table',
         id: 'business-profile-fields-for-ai',
-        h2: 'Which Business Profile fields matter most for AI answers?',
+        h2: 'Which Business Profile facts do AI answers draw on?',
         intro:
-          'The fields that matter most for AI answers are the ones that state plain facts about the store: '
-          + 'the name, the categories, the hours, which departments exist, customer questions and reviews, '
-          + 'and photos. Google has specific rules for car dealers on several of them, summarized here and '
-          + 'explained in the sections that follow.',
-        head: ['Field', 'Google’s rule for dealers', 'Why it matters in AI answers'],
+          'AI answers draw on the parts of a profile that state plain facts: the name and address, the '
+          + 'categories, the hours, which departments exist, the attributes, your answers to customer '
+          + 'questions and the text of your reviews. The table shows where each one can surface and what '
+          + 'to check.',
+        head: ['Profile fact', 'Where it can surface in AI answers', 'What to check'],
         rows: [
-          ['Business name', 'Match the real-world name, with no added service, product or location keywords', 'A clean, consistent name lets every source agree it is the same store'],
-          ['Categories', 'As specific as possible; Google’s example main category is Toyota Dealer', 'Categories state what the store is in a form software can repeat'],
-          ['Hours', 'List car sales hours; if new and pre-owned differ, use new sales hours', 'Wrong hours send a shopper to a locked gate, and stale facts produce misleading answers'],
-          ['Departments', 'Departments that operate as distinct entities may have their own profiles', 'Service questions can match a profile with service hours and category'],
-          ['Brands', 'Do not combine brand names into one profile', 'Merged brands blur which store sells what'],
-          ['Customer questions', 'Maps gives instant answers from your answers and relevant reviews', 'Your answers and your reviews become answer text'],
-          ['Photos', 'JPG or PNG, 10 KB to 5 MB, 720 x 720 recommended, no significant alterations', 'Real photos confirm the store a shopper is about to visit'],
+          ['Name, address and phone', 'Any answer that has to decide whether two listings describe the same store', 'The same name, address and phone on your website and every listing'],
+          ['Categories', 'Answers that match a store to what the shopper asked for, such as a used car dealer or a Toyota dealer', 'The most specific categories that honestly fit'],
+          ['Hours', 'Questions about who is open now, on Saturday or on a holiday', 'Holiday hours set in advance and matching your website'],
+          ['Departments', 'Service and parts questions, when service has its own profile', 'Each profile’s hours and phone match its page on your site'],
+          ['Attributes', 'Google says attributes show on Search, Maps and other Google platforms and may match searches for places with those attributes', 'Only attributes that are true today'],
+          ['Your answers to customer questions', 'Instant answers in Google Maps, built from your answers and relevant reviews', 'Old answers about hours, financing or departments that have changed'],
+          ['Review text', 'Instant answers in Maps and the AI review summaries shoppers read', 'Replies that correct wrong facts politely'],
         ],
-        note: 'Rules summarized from Google Business Profile Help; links are in the sources list below.',
+        note: 'Sources are listed at the end of this article.',
       },
       {
         type: 'qa',
-        id: 'business-profile-categories-for-dealers',
-        q: 'Which categories should a dealership use?',
+        id: 'consistency-across-listings',
+        q: 'Why does consistency across listings matter for AI answers?',
         a: [
-          'A dealership should use the most specific categories that honestly describe it. [Google’s '
-          + 'guidelines](https://support.google.com/business/answer/3038177) say categories should be as '
-          + 'specific as possible, and Google’s own auto dealer example uses Toyota Dealer as the main '
-          + 'category for a Toyota store. A used-only store follows the same rule and picks the most '
-          + 'specific category that fits what it sells.',
-          'Secondary categories should cover only what the store really does under that profile. If the '
-          + 'service drive runs as its own department with its own entrance, it may deserve its own profile '
-          + 'instead, covered below. Categories are structured facts, and Bing puts the general principle '
-          + 'plainly in its [webmaster '
-          + 'guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a): “Clear entity '
-          + 'definition improves grounding visibility and citation accuracy.”',
-          'The business name follows the same logic. Google says the name must match the real-world name '
-          + 'without added service, product or location keywords. If the sign on the building shows the '
-          + 'store’s name and nothing else, the profile shows the same name; adding “used cars” or the '
-          + 'city to it breaks the rule and blurs the entity every other source is trying to match.',
-        ],
-      },
-      {
-        type: 'qa',
-        id: 'business-profile-hours-for-car-dealers',
-        q: 'What hours should a dealership list?',
-        a: [
-          'A dealership should list car sales hours on its main profile. Google’s guidelines say that if '
-          + 'new and pre-owned sales hours differ, use the new sales hours. Service and parts hours belong '
-          + 'on their own profile when that department operates as a distinct entity, so the main profile '
-          + 'never presents service hours as sales hours.',
-          'Hours are also one of the store facts most likely to drift. Holidays, weather closures, '
-          + 'inventory events and staffing changes all move them, and a profile that still shows last '
-          + 'season’s Saturday hours sends a shopper, or an answer, the wrong way. Microsoft researchers '
-          + 'writing on the [Bing search '
+          'An AI answer is assembled from several sources, and a store that looks different from one '
+          + 'source to the next is harder to describe with confidence. [Bing’s '
+          + 'guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) say “Clear '
+          + 'entity definition improves grounding visibility and citation accuracy.” Matching name, '
+          + 'address, phone and hours everywhere lets each source confirm the others.',
+          'That reaches past Google. OpenAI says ChatGPT search sometimes partners with other search '
+          + 'providers and rewrites a question into targeted searches, so what ChatGPT reads about your store comes from '
+          + 'whatever pages and listings those searches return. The same facts need to live on your '
+          + 'website, Bing Places, Apple Business Connect and the listing sites, as well as on your '
+          + 'Business Profile.',
+          'Hours are the fact most likely to drift. Holidays, weather closures and staffing changes all '
+          + 'move them, and Microsoft researchers writing on the [Bing search '
           + 'blog](https://blogs.bing.com/search/May-2026/Evolving-role-of-the-index-From-ranking-pages-to-supporting-answers) '
-          + 'put the risk plainly: freshness is critical for AI answers, because out-of-date facts lead '
-          + 'to misleading responses.',
-          'Set special hours before every holiday rather than after the first confused call, and change '
-          + 'the hours on your website in the same sitting. When the profile and the website disagree, '
-          + 'nobody, human or software, knows which to believe.',
+          + 'said freshness is critical for AI answers, because out-of-date facts lead to misleading '
+          + 'responses. Change the profile and the website in the same sitting, every time.',
         ],
       },
       {
         type: 'qa',
-        id: 'service-and-parts-profiles',
-        q: 'Should service and parts have their own profiles?',
+        id: 'reviews-as-evidence',
+        q: 'How do reviews work as evidence in AI answers?',
         a: [
-          'Service and parts can have their own Business Profiles when they operate as distinct entities, '
-          + 'for example with a separate entrance and categories of their own. Google’s example is a '
-          + 'profile named South Bay Toyota Service & Parts, categorized as Auto Repair Shop, next to a '
-          + 'main dealership profile categorized as Toyota Dealer.',
-          'A separate profile lets each department carry its own hours, phone number, category and '
-          + 'reviews. That helps with the questions service customers ask, such as who is open on Saturday '
-          + 'morning for an oil change, because the answer can come from a profile whose hours and '
-          + 'category describe the service drive rather than the showroom. The rule and the example come '
-          + 'from [Google’s guidelines for representing your '
-          + 'business](https://support.google.com/business/answer/3038177).',
-          'Only split what is really separate. A service desk inside the showroom with the same entrance '
-          + 'and phone line usually stays on the main profile. If you are unsure, read the auto dealer '
-          + 'section of Google’s guidelines before creating anything, since a second profile that does '
-          + 'not meet the rule creates the conflicting facts you are trying to remove.',
+          'Reviews give an AI answer something concrete to repeat about your store. Google says Maps '
+          + 'builds instant answers from a business’s answers and relevant reviews, and [Ask '
+          + 'Maps](https://blog.google/products-and-platforms/products/maps/ask-maps-immersive-navigation/) '
+          + 'draws on reviews from more than 500 million contributors. A review saying the finance office '
+          + 'walked through every fee hands an answer a specific fact.',
+          'Shoppers read the software’s version as well as the original. [BrightLocal’s 2026 Local '
+          + 'Consumer Review Survey](https://www.brightlocal.com/research/local-consumer-review-survey/) '
+          + 'found 82% of consumers read AI-generated review summaries, and [Google '
+          + 'says](https://support.google.com/business/answer/7091) more reviews and positive ratings can '
+          + 'help a business’s local ranking.',
+          'Reviews only work as evidence when they are real. Google [strictly '
+          + 'prohibits](https://support.google.com/business/answer/3474122) offering incentives for '
+          + 'reviews, and the [Google Maps content '
+          + 'policy](https://support.google.com/contributionpolicy/answer/7400114) bars review gating and '
+          + 'asking staff to collect a set number. A reply is also the fastest public place to correct a '
+          + 'wrong fact a reviewer wrote, such as old hours.',
         ],
       },
       {
         type: 'qa',
-        id: 'several-brands-one-profile',
-        q: 'Can a dealer put several brands on one profile?',
+        id: 'business-profile-qa-and-attributes',
+        q: 'How do customer questions and attributes feed Maps answers?',
         a: [
-          'No. Google’s guidelines for auto dealers say not to combine brand names into a single Business '
-          + 'Profile. A store that sells more than one franchise should read that section of the '
-          + 'guidelines before creating or renaming any profile, because a merged listing breaks the rule '
-          + 'and gives every source a muddled picture of what the store sells.',
-          'The same thinking applies to dealer groups with several rooftops. Each rooftop is its own place '
-          + 'with its own address, and each profile name should match that rooftop’s sign exactly. '
-          + 'Consistent naming across the group helps shoppers, and it helps any system that has to decide '
-          + 'whether two listings describe the same store.',
-          'When you do add or rename a profile, update the matching location page on your website the '
-          + 'same day, so the two sources never disagree about which store is which.',
-        ],
-      },
-      {
-        type: 'qa',
-        id: 'business-profile-chat-and-qa',
-        q: 'What happened to Business Profile chat and Q&A?',
-        a: [
-          'Google [removed Business Profile chat and call '
-          + 'history](https://support.google.com/business/answer/14919056) on July 31, 2024, and changed '
-          + 'Q&A in late 2025. Shoppers now ask their question in Google Maps and get an instant answer '
-          + 'built from the business’s answers and relevant reviews. Google also [discontinued the My '
-          + 'Business Q&A API](https://developers.google.com/my-business/content/qanda/change-log) on '
-          + 'November 3, 2025, closing it to third-party tools.',
-          'Under the new setup, businesses answer customer questions that Google groups together, and '
-          + 'those answers are reused for similar questions. Google’s announcement also says existing Q&A '
-          + 'answers keep powering its understanding of the business and may still show in Maps. So read '
-          + 'your old Q&A: an answer written years ago about hours, financing or a department you closed '
-          + 'can still inform what a shopper is told.',
-          'On chat, the current [Business Profile help '
-          + 'page](https://support.google.com/business/answer/15013580) lets verified profiles in select '
-          + 'regions add WhatsApp or text messaging as chat options. And with the Q&A API closed, any tool '
-          + 'that says it posts Q&A to your profile through that API cannot do it that way anymore.',
+          'Customer questions and attributes are two places where facts you supply reach an answer '
+          + 'directly. Shoppers ask questions in Google Maps and get an instant answer built from the '
+          + 'business’s answers and relevant reviews, and Google says attributes show on Search, Maps and '
+          + 'other Google platforms and may match searches for places with those attributes.',
+          'Google changed Business Profile Q&A in late 2025: businesses now answer customer questions that '
+          + 'Google groups together, and those answers are reused for similar questions. The same '
+          + 'announcement says existing Q&A answers keep powering Google’s understanding of the business '
+          + 'and may still show in Maps, so an old answer about hours, financing or a department you '
+          + 'closed can still shape what a shopper is told. Google also [discontinued the My Business Q&A '
+          + 'API](https://developers.google.com/my-business/content/qanda/change-log) on November 3, 2025, '
+          + 'so a tool that says it posts Q&A answers through that API cannot do it that way anymore.',
+          'Attributes are small yes-or-no facts with the same reach. [Google’s help page on '
+          + 'attributes](https://support.google.com/business/answer/9049526) says some can be edited '
+          + 'directly while others may be filled in from what visiting customers report, and that a '
+          + 'review of edits usually takes about 10 minutes but can take up to 30 days. Check them after '
+          + 'any change at the store, and never mark one that is no longer true.',
         ],
       },
       {
         type: 'bullets',
-        id: 'business-profile-photos-for-dealers',
-        h2: 'What photos should a dealer add?',
+        id: 'business-profile-ai-check',
+        h2: 'What should a dealership check before AI reads its profile?',
         intro:
-          'A dealer should add current photos of the building, signage, showroom, service drive and team. '
-          + 'Google asks for JPG or PNG files between 10 KB and 5 MB, recommends 720 by 720 pixels, wants '
-          + 'photos in focus, well lit and without significant alterations, and says new photos can take '
-          + '24 to 48 hours to appear.',
+          'Check the profile the way an assistant meets it: next to your website and your other '
+          + 'listings. The goal is one set of facts everywhere, current answers to customer questions, '
+          + 'attributes that are still true and reviews with replies that fix wrong details. Each check '
+          + 'below takes minutes and needs no special tool.',
         items: [
-          'Format and size: JPG or PNG, 10 KB to 5 MB, recommended 720 x 720 pixels and at least 250 x '
-          + '250, per [Google’s photo guidelines](https://support.google.com/business/answer/6103862).',
-          'Keep them real: in focus, well lit and without significant alterations. Heavy filters, '
-          + 'composites and stock images work against the one job these photos have, which is showing a '
-          + 'shopper the place they are about to visit.',
-          'The arrival shots: the building from the road, the sign, the entrance and where to park.',
-          'The inside: the showroom, the customer lounge, the service lane and the parts counter.',
-          'The people: the team, named where they are comfortable with it.',
-          'The lot in context: a few wide shots of the inventory rows. Keep individual vehicles for your '
-          + 'vehicle pages, where price, mileage and VIN belong; our plans never add vehicles to a '
-          + 'Business Profile as Google products.',
-          'Patience: new photos can take 24 to 48 hours to appear, so check back after two days before '
-          + 'uploading again.',
+          'Name, address and phone: open your profile, your website footer, Bing Places and Apple '
+          + 'Business Connect side by side, and fix any difference, however small.',
+          'Hours: compare regular and holiday hours on the profile with your website’s hours page, and '
+          + 'set special hours before the next holiday instead of after the first confused call.',
+          'Departments: if service has its own profile, its hours and phone should match the service page '
+          + 'on your site.',
+          'Old answers: read every answer your store has given to customer questions, and update any that '
+          + 'describe hours, financing or departments that have changed.',
+          'Attributes: remove or change any attribute that is no longer true.',
+          'Reviews: reply to recent reviews, and correct a wrong fact politely in the reply.',
+          'Setup gaps: if the profile is unverified or a basic field is empty, fix that first with the '
+          + 'setup guide linked above, since AI answers can only repeat facts the profile holds.',
         ],
       },
       {
@@ -543,15 +511,18 @@ export const ARTICLES = [
           + 'announcement](https://support.google.com/business/thread/392024106)',
           '[Google for Developers: My Business Q&A API change '
           + 'log](https://developers.google.com/my-business/content/qanda/change-log)',
-          '[Google Business Profile Help: guidelines for representing your business on '
-          + 'Google](https://support.google.com/business/answer/3038177)',
-          '[Google Business Profile Help: photo '
-          + 'guidelines](https://support.google.com/business/answer/6103862)',
+          '[Google Business Profile Help: manage your business '
+          + 'attributes](https://support.google.com/business/answer/9049526)',
+          '[Google: Ask Maps announcement, March '
+          + '2026](https://blog.google/products-and-platforms/products/maps/ask-maps-immersive-navigation/)',
           '[Google Business Profile Help: how Google determines local '
           + 'ranking](https://support.google.com/business/answer/7091)',
-          '[Google Business Profile Help: chat and call history '
-          + 'removal](https://support.google.com/business/answer/14919056) and [messaging '
-          + 'options](https://support.google.com/business/answer/15013580)',
+          '[Google Business Profile Help: tips to get more '
+          + 'reviews](https://support.google.com/business/answer/3474122)',
+          '[Google Maps User Contributed Content '
+          + 'Policy](https://support.google.com/contributionpolicy/answer/7400114)',
+          '[BrightLocal: Local Consumer Review Survey '
+          + '2026](https://www.brightlocal.com/research/local-consumer-review-survey/)',
           '[OpenAI Help Center: searching the web with '
           + 'ChatGPT](https://help.openai.com/en/articles/9237897-searching-the-web-with-chatgpt)',
           '[Microsoft Bing Webmaster '
@@ -562,24 +533,25 @@ export const ARTICLES = [
       },
     ],
     faq: [
-      ['Should my dealership name include used cars or the city?',
-        'No. Google says the business name must match the real-world name, without added service, '
-        + 'product or location keywords. If the sign shows only the store’s name, the profile shows the '
-        + 'same. Put what you sell in your categories, services and description instead.'],
-      ['Can Google let me pay to rank higher on Maps?',
-        'No. Google says there is no way to request or pay for a better local ranking. Local results rest '
-        + 'mainly on relevance, distance and prominence, and prominence includes signals such as reviews '
-        + 'and links to the business. Anyone selling a paid shortcut to a better local ranking is selling '
-        + 'something Google says does not exist.'],
-      ['How long do new Business Profile photos take to appear?',
-        'Google says new photos can take 24 to 48 hours to appear. Upload JPG or PNG files between 10 KB '
-        + 'and 5 MB, ideally 720 x 720 pixels, in focus and without significant alterations, then check '
-        + 'back after two days before uploading again.'],
-      ['Should my service department have a separate Business Profile?',
-        'It can, if service operates as a distinct entity, for example with its own entrance and '
-        + 'category. Google’s example is a service and parts profile categorized as Auto Repair Shop next '
-        + 'to the main Toyota Dealer profile. A service desk that shares the showroom’s entrance and phone '
-        + 'line usually stays on the main profile.'],
+      ['Does ChatGPT read my Google Business Profile?',
+        'No documented path runs from your Business Profile into ChatGPT’s answers. OpenAI says ChatGPT '
+        + 'search sometimes partners with other search providers, so it reads whatever pages and listings '
+        + 'those searches return. That is why the facts on your profile need to match your website and '
+        + 'every other listing.'],
+      ['How long do Business Profile edits take to show?',
+        'Google’s help page on attributes says a review of edits usually takes about 10 minutes but can '
+        + 'take up to 30 days, and Google says new photos can take 24 to 48 hours to appear. AI answers '
+        + 'catch up on their own schedule after that, so check the profile and a few AI answers again a '
+        + 'week or two later.'],
+      ['Is Business Profile work the same as AEO?',
+        'It is one part of it. AEO and GEO also cover whether AI crawlers can read your website, whether '
+        + 'vehicle pages show price, mileage and VIN as text, and what review and listing sites say about '
+        + 'the store. The profile is where Google’s own answers start, so it is usually the first fix.'],
+      ['Should I update my website or my Business Profile first?',
+        'Do both in the same sitting. When the profile and the website disagree, neither a shopper nor an '
+        + 'assistant can tell which is right, and out-of-date facts are how misleading answers start. '
+        + 'Change the profile, the website’s hours and contact pages and Bing Places together, then check '
+        + 'each one the next day.'],
     ],
     cta: {
       heading: 'See what ChatGPT and Claude say about your store',
