@@ -145,3 +145,27 @@ export function deferEntryToPaint(html, { preloadHrefs = [], routeEntryHref = ''
   out = out.replace(/<\/body>/i, () => `  ${bootLoaderHtml({ entryHref, preloadHrefs, routeEntryHref })}\n  </body>`);
   return out;
 }
+
+// Cloudflare Web Analytics for the pages the Worker serves with Cache-Control: no-transform (worker/src/agent/
+// no-transform.js), where the edge no longer injects it: the documented manual snippet, added once the page has
+// loaded and gone idle (first interaction or 1.5 s after `load`), so it is never on the path to the first paint.
+// It stands down if the edge beacon is present (kill switch off) and never runs off the production host.
+export const CF_WEB_ANALYTICS_TOKEN = '901f8ba358dc4edaa9f834e9e9ce8b8b';
+const BEACON_SCRIPT = `(function(w,d){if(location.hostname!=='autolander.ai')return;var done=0,t,ev=['pointerdown','keydown','touchstart','scroll'];`
+  + `function add(){if(done)return;done=1;clearTimeout(t);for(var i=0;i<ev.length;i++)w.removeEventListener(ev[i],go,true);`
+  + `if(w.__cfBeacon||d.querySelector('script[data-cf-beacon]'))return;`
+  + `var s=d.createElement('script');s.defer=true;s.src='https://static.cloudflareinsights.com/beacon.min.js';`
+  + `s.setAttribute('data-cf-beacon','{"token":"${CF_WEB_ANALYTICS_TOKEN}","spa":2}');d.body.appendChild(s)}`
+  + `function go(){if(w.requestIdleCallback)w.requestIdleCallback(add,{timeout:2000});else setTimeout(add,1)}`
+  + `function arm(){t=setTimeout(go,1500);for(var i=0;i<ev.length;i++)w.addEventListener(ev[i],go,{capture:true,passive:true})}`
+  + `if(d.readyState==='complete')arm();else w.addEventListener('load',arm,{once:true})})(window,document);`;
+
+export function beaconLoaderHtml() {
+  return `<script data-al-cf-beacon-loader>${BEACON_SCRIPT}</script>`;
+}
+
+export function appendBeaconLoader(html) {
+  if (html.includes('data-al-cf-beacon-loader')) throw new Error('spa-shell: beacon loader already present');
+  if (!/<\/body>/i.test(html)) throw new Error('spa-shell: </body> is missing');
+  return html.replace(/<\/body>/i, () => `  ${beaconLoaderHtml()}\n  </body>`);
+}

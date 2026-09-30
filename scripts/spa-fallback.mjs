@@ -12,6 +12,7 @@ import { aiVisibilityHead } from './seo/data-ai-visibility.mjs';
 import { teamHead } from './seo/data-team.mjs';
 import { cleanSsr, loadPrerender } from './prerender.mjs';
 import {
+  appendBeaconLoader,
   buildPageShell,
   deferEntryToPaint,
   isPreviewShell,
@@ -163,10 +164,10 @@ function prerenderedRoute(moduleId, { dir, title, headHtml, hydrate, island, h1T
     title, headHtml, hydrate, rootHtml: root, disabledCssHrefs: assets.disabledCssHrefs,
   });
   mkdirSync(join(distDir, dir), { recursive: true });
-  writeFileSync(join(distDir, dir, 'index.html'), deferEntryToPaint(shell, {
+  writeFileSync(join(distDir, dir, 'index.html'), appendBeaconLoader(deferEntryToPaint(shell, {
     preloadHrefs: [assets.jsHref, ...assets.modulePreloadHrefs],
     routeEntryHref: assets.jsHref,
-  }), 'utf8');
+  })), 'utf8');
 }
 
 prerenderedRoute('src/team/TeamApp.jsx', {
@@ -191,7 +192,9 @@ prerenderedRoute('src/ai/AiVisibilityApp.jsx', {
 
 // The homepage's first screen is its static home block (index.html), so its app also loads after the first paint.
 // 404.html, /admin and /pay keep the head entry script: they are app pages with nothing static to show first.
-writeFileSync(indexPath, deferEntryToPaint(appShell), 'utf8');
+// These three pages are also the ones the Worker serves with Cache-Control: no-transform, so they load Cloudflare
+// Web Analytics themselves (appendBeaconLoader); worker-no-transform.test.js keeps the two lists identical.
+writeFileSync(indexPath, appendBeaconLoader(deferEntryToPaint(appShell)), 'utf8');
 
 // The bundler must never read local proof in production. This separate post-build
 // audit reads it only to ensure none of its unverified claims escaped into dist.
