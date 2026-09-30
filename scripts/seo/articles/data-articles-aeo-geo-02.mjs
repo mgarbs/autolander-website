@@ -387,7 +387,7 @@ export const ARTICLES = [
           + 'price on it.',
           'Crawler access comes first, though. If your robots.txt or your security service turns AI '
           + 'crawlers away, the page text never gets read. Here is how to '
-          + '[check whether ChatGPT and Claude can read your website](@can-chatgpt-see-my-dealer-website).',
+          + '[check whether AI search bots can open your site](@can-chatgpt-see-my-dealer-website).',
         ],
       },
       {
@@ -573,7 +573,7 @@ export const ARTICLES = [
           + 'specifically, add session source and look for chatgpt.com, which the tag makes easy to spot.',
           'A visit from ChatGPT means the assistant put a link to your site in front of a shopper and the '
           + 'shopper chose it. Why a store gets linked at all is a separate question, covered in '
-          + '[how ChatGPT recommends dealerships](@how-chatgpt-recommends-car-dealerships).',
+          + '[how ChatGPT picks which dealers to name](@how-chatgpt-recommends-car-dealerships).',
           'GA4 counts the click. It can’t tell you what ChatGPT said before the click, or whether it '
           + 'named a competitor first; an [AI visibility scan for car dealers](/aeo-geo-for-car-dealers/#scan-form) '
           + 'asks ChatGPT and Claude those questions directly.',
@@ -826,7 +826,7 @@ export const ARTICLES = [
           + 'with the page, you have found a template bug.',
           'Bing adds the condition that matters most: markup must accurately reflect the visible '
           + 'content. For how Google’s AI answers pick the pages they link, see '
-          + '[how Google AI Overviews cite dealer pages](@google-ai-overviews-for-car-dealers).',
+          + '[Google AI Overviews for car dealers](@google-ai-overviews-for-car-dealers).',
           'Structured data is one line on the website fix list in '
           + '[AEO and GEO for car dealers](/aeo-geo-for-car-dealers/), next to AI crawler access and the '
           + 'vehicle-page text it has to match.',
@@ -1127,8 +1127,8 @@ export const ARTICLES = [
           'A linked Google Business Profile, with each vehicle tied to its rooftop through the store_code '
           + 'attribute. That matters most for groups: a car at the north store should never carry the '
           + 'south store’s code.',
-          'Keep the profile itself accurate as well; here are '
-          + '[the Business Profile fields AI answers use](@google-business-profile-ai-answers).',
+          'Keep the profile itself accurate as well; see '
+          + '[how your Business Profile feeds AI answers](@google-business-profile-ai-answers).',
         ],
       },
       {

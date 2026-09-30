@@ -378,7 +378,7 @@ export const ARTICLES = [
           + 'your server at all. [OpenAI’s help center](https://help.openai.com/en/articles/9237897-searching-the-web-with-chatgpt) '
           + 'says ChatGPT search eligibility needs both: OAI-SearchBot allowed in robots.txt, and your host or CDN '
           + 'letting through traffic from OpenAI’s published search bot IP addresses. Understanding '
-          + '[how ChatGPT recommends dealerships](@how-chatgpt-recommends-car-dealerships) starts with that door '
+          + '[what ChatGPT looks at before it recommends a store](@how-chatgpt-recommends-car-dealerships) starts with that door '
           + 'being open.',
           'For a dealer, being readable is the starting line for '
           + '[AEO for car dealerships](/aeo-geo-for-car-dealers/): an assistant cannot quote your hours, name your '
@@ -531,7 +531,7 @@ export const ARTICLES = [
             title: 'Get proof back, then test it yourself',
             body:
               'Ask for dated screenshots of the AI Crawl Control settings and the live robots.txt. Then '
-              + '[check whether ChatGPT and Claude can read your website](@can-chatgpt-see-my-dealer-website) with '
+              + '[test whether AI crawlers can read your site](@can-chatgpt-see-my-dealer-website) with '
               + 'the 15-minute routine, and repeat it after any redesign or security change.',
           },
         ],
@@ -691,7 +691,7 @@ export const ARTICLES = [
           + 'controls listing. For a dealer that wants to be found, the takeaway stays the same: allow '
           + 'OAI-SearchBot and give it pages worth quoting.',
           'Being readable is the entry ticket, and what ChatGPT does with your pages depends on much more. For '
-          + 'the rest of the picture, read [how ChatGPT recommends dealerships](@how-chatgpt-recommends-car-dealerships) '
+          + 'the rest of the picture, read [how ChatGPT chooses a dealership](@how-chatgpt-recommends-car-dealerships) '
           + 'when local buyers ask for one.',
         ],
       },
@@ -716,7 +716,7 @@ export const ARTICLES = [
           + 'the combination in one place: Google-Extended is a training and Gemini grounding decision, and the '
           + 'AI Overviews decision lives in Search. For a dealer that wants to be cited, leave the Search Console '
           + 'setting on and avoid nosnippet on pages you want quoted. More on '
-          + '[how Google AI Overviews cite dealer pages](@google-ai-overviews-for-car-dealers).',
+          + '[Google AI Overviews for car dealers](@google-ai-overviews-for-car-dealers).',
         ],
       },
       {
@@ -965,7 +965,7 @@ export const ARTICLES = [
           'The order matters because each earlier item decides whether anything gets read at all. A perfect '
           + 'llms.txt behind a robots.txt that blocks OAI-SearchBot, or in front of vehicle pages that load their '
           + 'prices by script, does little for a buyer asking ChatGPT about your store. Start with the 15-minute '
-          + 'routine to [check whether ChatGPT and Claude can read your website](@can-chatgpt-see-my-dealer-website).',
+          + 'routine to [test whether AI crawlers can read your site](@can-chatgpt-see-my-dealer-website).',
           'Then decide on llms.txt with your website vendor. Some dealer website platforms may already generate '
           + 'a file, and a second hand-made one could conflict with it. Ask before anyone uploads anything.',
         ],

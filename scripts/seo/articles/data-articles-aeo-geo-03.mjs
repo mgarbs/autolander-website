@@ -153,8 +153,7 @@ export const ARTICLES = [
             + 'the answer, and Anthropic says Claude’s web search gives direct citations so '
             + 'people can check its sources ([Anthropic](https://claude.com/blog/web-search)). '
             + 'A buyer can see whether the answer came from your website, a review site or a '
-            + 'competitor’s page. For one engine in detail, read [how ChatGPT recommends '
-            + 'dealerships](@how-chatgpt-recommends-car-dealerships).',
+            + 'competitor’s page. For one engine in detail, read [how ChatGPT chooses a dealership](@how-chatgpt-recommends-car-dealerships).',
         ],
       },
       {
@@ -194,8 +193,7 @@ export const ARTICLES = [
             + 'Anthropic says blocking Claude-SearchBot prevents indexing for Claude’s search '
             + 'and reduces visibility there '
             + '([Anthropic](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler)). '
-            + 'You can [check whether ChatGPT and Claude can read your '
-            + 'website](@can-chatgpt-see-my-dealer-website) in a few minutes.',
+            + 'You can [check whether AI search bots can open your site](@can-chatgpt-see-my-dealer-website) in a few minutes.',
           'Vehicle facts as text. Price, mileage and the full VIN need to be on each '
             + 'vehicle detail page as plain text an assistant can read, instead of inside a '
             + 'photo or a script that loads later.',
@@ -209,12 +207,10 @@ export const ARTICLES = [
             + 'arXiv as a preprint, found AI search services lean heavily toward third-party, '
             + 'authoritative sources over a brand’s own pages and social posts '
             + '([arXiv](https://arxiv.org/abs/2509.08919)). Reviews and mentions on sites '
-            + 'assistants cite carry weight; see [how reviews shape AI '
-            + 'recommendations](@dealership-reviews-ai-recommendations).',
+            + 'assistants cite carry weight; see [how dealership reviews affect AI answers](@dealership-reviews-ai-recommendations).',
           'Pages written as answers. A page that answers one buyer question in its first '
             + 'sentence, using only your store’s facts, gives an assistant something clean to '
-            + 'quote. The format is covered in [answer pages for car '
-            + 'dealerships](@answer-pages-for-car-dealerships).',
+            + 'quote. The format is covered in [how to write a dealership answer page](@answer-pages-for-car-dealerships).',
           'Honest expectations. Bing’s guidelines put it bluntly: “GEO does not guarantee '
             + 'grounding or citations in AI experiences” ([Bing Webmaster '
             + 'Guidelines](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a)). '
@@ -731,8 +727,7 @@ export const ARTICLES = [
             + 'Both are Google’s claims about its own product.',
           'For a dealer, both can be true at once: fewer clicks on searches that show an AI summary, '
             + 'steady totals across the web, and a real shift in which sites win the clicks '
-            + 'that remain. How those summaries choose the pages they link is covered in [how '
-            + 'Google AI Overviews cite dealer pages](@google-ai-overviews-for-car-dealers).',
+            + 'that remain. How those summaries choose the pages they link is covered in [what AI Overviews look for in a dealer page](@google-ai-overviews-for-car-dealers).',
         ],
       },
       {
@@ -1032,8 +1027,7 @@ export const ARTICLES = [
         items: [
           'Business Profile completion. On AutoLander’s plans, your profile is complete '
             + 'within 30 days of us getting manager access: categories, services, description, '
-            + 'hours, attributes and photos. For the fields that matter most, see [the Business '
-            + 'Profile fields AI answers use](@google-business-profile-ai-answers).',
+            + 'hours, attributes and photos. For the fields that matter most, see [which Business Profile facts AI answers draw on](@google-business-profile-ai-answers).',
           'Core listings. Claims and completions for Bing Places, Apple Business Connect, '
             + 'Yelp, your Facebook Page, DealerRater and your Cars.com, CarGurus and Autotrader '
             + 'dealer profiles are submitted within 45 days of kickoff. Each one goes live when '

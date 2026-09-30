@@ -542,8 +542,7 @@ export const ARTICLES = [
           '“Is [dealership] legit?” The same name, address and phone number across the web, '
           + 'plus a steady review history, give an assistant a consistent picture to describe.',
           'Reviews carry a lot of this weight. The details, including what the platforms '
-          + 'allow, are in [how reviews shape AI '
-          + 'recommendations](@dealership-reviews-ai-recommendations).',
+          + 'allow, are in [how dealership reviews affect AI answers](@dealership-reviews-ai-recommendations).',
         ],
       },
       {
@@ -864,8 +863,7 @@ export const ARTICLES = [
           + 'that chasing inauthentic mentions across the web is less helpful than it looks, '
           + 'because its spam systems filter them. Planted forum posts and self-written “best '
           + 'dealer” lists fall into that bucket.',
-          'For the ChatGPT side in detail, see [how ChatGPT recommends '
-          + 'dealerships](@how-chatgpt-recommends-car-dealerships).',
+          'For the ChatGPT side in detail, see [what ChatGPT looks at before it recommends a store](@how-chatgpt-recommends-car-dealerships).',
         ],
       },
       {
@@ -952,8 +950,7 @@ export const ARTICLES = [
           + 'for reviews, and its [Maps content '
           + 'policy](https://support.google.com/contributionpolicy/answer/7400114) bars review '
           + 'gating, meaning soliciting only happy customers. AI changes none of those rules.',
-          'Reviews deserve their own plan; [how reviews shape AI '
-          + 'recommendations](@dealership-reviews-ai-recommendations) covers what matters and '
+          'Reviews deserve their own plan; [how dealership reviews affect AI answers](@dealership-reviews-ai-recommendations) covers what matters and '
           + 'what the platforms allow.',
         ],
       },
@@ -1241,8 +1238,7 @@ export const ARTICLES = [
           + 'statistics and quotations raised visibility on Perplexity.',
           'Facts stated plainly. Hours, address, brands sold, services, and each vehicle’s '
           + 'price, mileage and VIN belong on the page as text, never locked inside images.',
-          'One question per page. Short [answer pages for car '
-          + 'dealerships](@answer-pages-for-car-dealerships) give Perplexity a clean, '
+          'One question per page. Short [answer-first dealer pages](@answer-pages-for-car-dealerships) give Perplexity a clean, '
           + 'single-topic source for each buyer question.',
         ],
       },
@@ -1425,8 +1421,7 @@ export const ARTICLES = [
           + 'Bing advised that clear headings, tables and FAQ sections help AI systems reference '
           + 'content accurately, that regular updates keep AI referencing current content, and '
           + 'that claims should be backed with examples, data and cited sources.',
-          'For the Google side of the same question, see [how Google AI Overviews cite dealer '
-          + 'pages](@google-ai-overviews-for-car-dealers).',
+          'For the Google side of the same question, see [how AI Overviews choose the pages they cite](@google-ai-overviews-for-car-dealers).',
         ],
       },
       {

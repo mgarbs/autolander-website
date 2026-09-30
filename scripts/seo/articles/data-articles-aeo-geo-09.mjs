@@ -104,8 +104,9 @@ export const ARTICLES = [
           + 'so service hours need a clear home too: the service profile when service runs separately, '
           + 'and always your website’s service page. And a profile name must match the real-world '
           + 'name, with no added service or location keywords. Whichever setup fits, complete '
-          + '[the Business Profile fields AI answers use](@google-business-profile-ai-answers): '
-          + 'categories, services, hours, phone, website link and a plain description.',
+          + 'the categories, services, hours, phone, website link and a plain description; '
+          + '[how your Business Profile feeds AI answers](@google-business-profile-ai-answers) explains '
+          + 'why each one counts.',
         ],
       },
       {
@@ -163,8 +164,7 @@ export const ARTICLES = [
           + 'safely names the job and the scope in one sentence: a synthetic oil change for most '
           + 'four-cylinder models, up to five quarts, filter included, price checked on the first of '
           + 'the month.',
-          'Give each common job its own short answer, the way [answer pages for car '
-          + 'dealerships](@answer-pages-for-car-dealerships) work: the question as the heading, the '
+          'Give each common job its own short answer, the way [dealer answer pages](@answer-pages-for-car-dealerships) work: the question as the heading, the '
           + 'direct answer first, then what is included and what is left out. Put specials and '
           + 'coupons on the same page with their expiration dates in the text, and take them down the '
           + 'day they end. An expired special left online is exactly the kind of stale fact an '
@@ -242,8 +242,7 @@ export const ARTICLES = [
           + 'summarize reviews of dealerships.',
           'A calm, specific reply to a bad service review, one that names the fix or gives the service '
           + 'manager’s direct line, reads better to the next owner than a wall of five-star '
-          + 'thank-yous. For the bigger picture, see [how reviews shape AI '
-          + 'recommendations](@dealership-reviews-ai-recommendations).',
+          + 'thank-yous. For the bigger picture, see [how dealership reviews affect AI answers](@dealership-reviews-ai-recommendations).',
           'On AutoLander’s AEO and GEO plans, our team answers every Google review within the plan’s '
           + 'window, service reviews included: 2 business days on AI Foundation, 1 business day on AI '
           + 'Authority and Market Leader. A person approves every reply to a 1-star or 2-star review. Review requests follow the rules: no incentives, and no filtering out '
@@ -448,7 +447,7 @@ export const ARTICLES = [
           'Instant cash offer tools. If you use one, say what it gives: an estimate that the in-person '
           + 'appraisal confirms or changes.',
           'The format. Put each answer under its own question heading with the direct answer first, '
-          + 'the pattern that makes [answer pages for car dealerships](@answer-pages-for-car-dealerships) '
+          + 'the pattern that makes [dealer answer pages](@answer-pages-for-car-dealerships) '
           + 'easy for buyers and assistants to quote.',
         ],
       },
@@ -935,8 +934,7 @@ export const ARTICLES = [
           + 'when the cargo area is full, how the hybrid felt on the highway near your store, what '
           + 'owners mention when they come back for their first service, and which trims actually '
           + 'arrive on your lot. Write it down in your team’s own words and put a name on it.',
-          'Structure each comparison the way [answer pages for car '
-          + 'dealerships](@answer-pages-for-car-dealerships) are structured: the matchup as a question '
+          'Structure each comparison the way [dealer answer pages](@answer-pages-for-car-dealerships) are structured: the matchup as a question '
           + 'in the heading, a two- or three-sentence verdict first, then the detail.',
         ],
       },
@@ -1282,8 +1280,7 @@ export const ARTICLES = [
           + 'reinforce the text, so the '
           + 'page carries the answer in words and the video adds the proof, and buyers who find either '
           + 'one reach the other.',
-          'The natural home is one of your [answer pages for car '
-          + 'dealerships](@answer-pages-for-car-dealerships): the question as the heading, the direct '
+          'The natural home is one of your [answer pages](@answer-pages-for-car-dealerships): the question as the heading, the direct '
           + 'answer in text, the video below it, and the full transcript or a written summary after '
           + 'that. A buyer who finds the page gets the answer in words; a buyer who finds the video on '
           + 'YouTube gets a link back to the page with the details.',

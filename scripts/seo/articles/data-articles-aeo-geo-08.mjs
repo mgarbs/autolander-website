@@ -90,8 +90,7 @@ export const ARTICLES = [
           + 'accurately, and that claims should be supported with examples, data and cited sources.',
           '[Google’s ranking systems guide](https://developers.google.com/search/docs/appearance/ranking-systems-guide) '
           + 'describes passage ranking, which judges individual sections of a page, so one '
-          + 'well-written section can answer a question on a page that covers more. Our guide to [how '
-          + 'ChatGPT recommends dealerships](@how-chatgpt-recommends-car-dealerships) covers what '
+          + 'well-written section can answer a question on a page that covers more. Our guide to [how ChatGPT picks which dealers to name](@how-chatgpt-recommends-car-dealerships) covers what '
           + 'ChatGPT reads when it searches the web.',
         ],
       },
@@ -192,8 +191,7 @@ export const ARTICLES = [
           {
             title: 'Date it, then make sure AI can read it',
             body:
-              'Show a last-updated date that changes only when you check the facts. Then [check '
-              + 'whether ChatGPT and Claude can read your website](@can-chatgpt-see-my-dealer-website): '
+              'Show a last-updated date that changes only when you check the facts. Then [run the AI crawler access check](@can-chatgpt-see-my-dealer-website): '
               + 'a page behind a blocked crawler or a bot challenge cannot be read by the assistants it '
               + 'blocks.',
           },
@@ -413,8 +411,7 @@ export const ARTICLES = [
           + 'announcement](https://support.google.com/business/thread/392024106) in December 2025, a '
           + 'Google employee explained that customers now ask their question in Google Maps and get an '
           + 'instant answer based on the business’s own answers and relevant reviews.',
-          'Google’s AI features in Search read web pages too; our guide to [how Google AI Overviews '
-          + 'cite dealer pages](@google-ai-overviews-for-car-dealers) covers what Google says it looks '
+          'Google’s AI features in Search read web pages too; our guide to [how AI Overviews choose the pages they cite](@google-ai-overviews-for-car-dealers) covers what Google says it looks '
           + 'for. An FAQ page gives every common question one clear home on your site.',
         ],
       },
@@ -711,8 +708,7 @@ export const ARTICLES = [
           + 'service visit, can be one of the pages an assistant reads when a buyer asks about you by '
           + 'name. How often depends on the assistant, the question and your market, and no one can '
           + 'predict it thread by thread.',
-          'Forum threads sit beside your reviews, and our guide to [how reviews shape AI '
-          + 'recommendations](@dealership-reviews-ai-recommendations) covers the review side of the '
+          'Forum threads sit beside your reviews, and our guide to [why reviews matter to AI assistants](@dealership-reviews-ai-recommendations) covers the review side of the '
           + 'same picture. [AutoLander’s AEO and GEO service](/aeo-geo-for-car-dealers/) works on the '
           + 'parts a store controls: its website, its profiles and listings, its reviews and replies, '
           + 'and the store facts that should match everywhere.',
@@ -980,7 +976,7 @@ export const ARTICLES = [
           + 'reviews was down from 83%. Each site has its own audience and its own rules for '
           + 'businesses, so treat each one as a separate profile to claim, complete and keep current.',
           'Reviews on these sites are part of what an assistant can find about your store, and our '
-          + 'guide to [how reviews shape AI recommendations](@dealership-reviews-ai-recommendations) '
+          + 'guide to [the review signals AI answers pick up](@dealership-reviews-ai-recommendations) '
           + 'covers why. [AutoLander’s AEO and GEO service](/aeo-geo-for-car-dealers/) claims, '
           + 'completes and keeps consistent the core profiles every store needs; the rest of this page '
           + 'shows how to do the same work yourself.',

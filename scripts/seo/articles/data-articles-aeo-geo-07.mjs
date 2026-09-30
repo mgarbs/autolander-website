@@ -80,8 +80,7 @@ export const ARTICLES = [
           + 'study](https://www.cargurus.com/press/2025_consumer_insights.html) of 3,030 people who had '
           + 'bought or sold a vehicle in the past four months, summarizing reviews on dealerships (36%) '
           + 'and on cars (39%) were among the uses people most wanted from AI. For the mechanics on '
-          + 'OpenAI’s side, see [how ChatGPT recommends '
-          + 'dealerships](@how-chatgpt-recommends-car-dealerships).',
+          + 'OpenAI’s side, see [how ChatGPT picks which dealers to name](@how-chatgpt-recommends-car-dealerships).',
           'Reviews are one of the trust signals that [AEO and GEO for car '
           + 'dealers](/aeo-geo-for-car-dealers/) works on, alongside your Business Profile, your listings '
           + 'and the text on your own website. None of them is a switch, and no one can promise what an '
@@ -356,8 +355,7 @@ export const ARTICLES = [
           'On Maps, a Google employee’s [announcement in the Business Profile '
           + 'community](https://support.google.com/business/thread/392024106) says shoppers ask a question '
           + 'and get “an updated, instant answer based on your answers and relevant reviews.” That puts '
-          + 'review text inside the answer too; see [how reviews shape AI '
-          + 'recommendations](@dealership-reviews-ai-recommendations). For Google’s AI Overviews, the '
+          + 'review text inside the answer too; see [the review signals AI answers pick up](@dealership-reviews-ai-recommendations). For Google’s AI Overviews, the '
           + 'profile works alongside the web pages Google has indexed; see [how Google AI Overviews cite '
           + 'dealer pages](@google-ai-overviews-for-car-dealers).',
           'ChatGPT and Claude are a different case. They run their own web searches, and [OpenAI '
@@ -650,12 +648,10 @@ export const ARTICLES = [
           + 'next, an assistant has to pick one.',
           'Two kinds of source deserve special attention. Google Maps builds instant answers partly from '
           + '[relevant reviews](https://support.google.com/business/thread/392024106), so an old review '
-          + 'that mentions old hours is part of the picture; see [how reviews shape AI '
-          + 'recommendations](@dealership-reviews-ai-recommendations). And [Google '
+          + 'that mentions old hours is part of the picture; see [why reviews matter to AI assistants](@dealership-reviews-ai-recommendations). And [Google '
           + 'says](https://developers.google.com/search/docs/appearance/ai-features) a page must be '
           + 'indexed and eligible for a snippet to appear in its AI features, so an old hours page on your '
-          + 'own site that is still indexed stays in the pool; see [how Google AI Overviews cite dealer '
-          + 'pages](@google-ai-overviews-for-car-dealers).',
+          + 'own site that is still indexed stays in the pool; see [what AI Overviews look for in a dealer page](@google-ai-overviews-for-car-dealers).',
         ],
       },
       {
@@ -696,8 +692,7 @@ export const ARTICLES = [
               'Search your store’s name together with the wrong detail, such as the old phone number or '
               + 'the old street, and check every listing you know about. OpenAI says ChatGPT search '
               + 'sometimes partners with other search providers, so the sources behind a ChatGPT answer may '
-              + 'differ from what you see on Google; [how ChatGPT recommends '
-              + 'dealerships](@how-chatgpt-recommends-car-dealerships) covers that side.',
+              + 'differ from what you see on Google; [what ChatGPT looks at before it recommends a store](@how-chatgpt-recommends-car-dealerships) covers that side.',
           },
           {
             title: 'Write the fix list',
@@ -720,9 +715,8 @@ export const ARTICLES = [
         items: [
           'Google Business Profile first. For car dealerships, [Google '
           + 'says](https://support.google.com/business/answer/3038177) to list car sales hours, and to use '
-          + 'the new sales hours if new and pre-owned hours differ. Set special hours for holidays. The '
-          + 'field-by-field rules are in [the Business Profile fields AI answers '
-          + 'use](@google-business-profile-ai-answers).',
+          + 'the new sales hours if new and pre-owned hours differ. Set special hours for holidays. Why '
+          + 'hours carry so much weight is covered in [which Business Profile facts AI answers draw on](@google-business-profile-ai-answers).',
           'Your website next: the contact page, the footer, the hours page, every location page and any '
           + 'structured data your platform adds. The website has to say exactly what the profile says.',
           'Bing Places and Apple Business Connect: claim them if you have not, then correct the same '
@@ -944,9 +938,8 @@ export const ARTICLES = [
           'Speed comes from routing. Send new-review alerts to one named owner, route every 1-star and '
           + '2-star review to the general manager the same day, and decide in advance who covers weekends '
           + 'and days off.',
-          'Replies post publicly on your Business Profile next to the review, alongside the categories, '
-          + 'hours and photos covered in [the Business Profile fields AI answers '
-          + 'use](@google-business-profile-ai-answers). A reply is also the fastest public place to correct '
+          'Replies post publicly on your Business Profile next to the review, alongside the categories '
+          + 'and hours covered in [what AI answers take from your Business Profile](@google-business-profile-ai-answers). A reply is also the fastest public place to correct '
           + 'a fact, such as new hours, that a reviewer got wrong.',
         ],
       },

@@ -98,7 +98,7 @@ export const ARTICLES = [
           'Decide on GPTBot separately. GPTBot collects content that may be used to train OpenAI’s models, and disallowing it signals that your content should stay out of training. OpenAI treats it as separate from OAI-SearchBot, so a store can block training and still allow search.',
           'Know what ChatGPT-User does. It fetches pages for actions a ChatGPT user starts, and OpenAI says robots.txt rules may not apply to it because a person asked for the page. Search visibility is managed through OAI-SearchBot.',
           'Put facts where a crawler can see them. A [2024 analysis by Vercel](https://vercel.com/blog/the-rise-of-the-ai-crawler) of traffic on its network found that OpenAI’s crawlers, OAI-SearchBot included, did not render JavaScript at the time, so prices and VINs that only appear after scripts run may never be read.',
-          'Not sure where your site stands? Start with the walkthrough to [check whether ChatGPT and Claude can read your website](@can-chatgpt-see-my-dealer-website), which covers robots.txt, the firewall or CDN, JavaScript and what to send your website vendor.',
+          'Not sure where your site stands? Start with the walkthrough to [test whether AI crawlers can read your site](@can-chatgpt-see-my-dealer-website), which covers robots.txt, the firewall or CDN, JavaScript and what to send your website vendor.',
         ],
       },
       {
@@ -223,7 +223,7 @@ export const ARTICLES = [
         a: [
           'Google AI Overviews pick pages through Google’s core ranking systems, which retrieve relevant, up-to-date pages from the Search index; the model then reviews them and shows prominent, clickable links to supporting pages. [Google’s AI optimization guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) says these features are rooted in the same ranking and quality systems as regular results.',
           '[Google also says](https://developers.google.com/search/docs/appearance/ai-features) AI Overviews may use a technique it calls query fan-out, running several related searches across subtopics and data sources to build one answer, which lets them show a wider set of links than a classic results page. So a dealer page may not need to rank first for the buyer’s exact words to be cited; it needs to be a strong answer to one of the pieces.',
-          'Chat assistants take a different road. ChatGPT runs its own web search and cites what it finds, which we cover in [how ChatGPT recommends dealerships](@how-chatgpt-recommends-car-dealerships). The overlap is large, though: crawlable pages, facts in plain text and content only your store could write help on both, and getting a dealership read and trusted across Google and the chat assistants is the work of [AEO and GEO for car dealers](/aeo-geo-for-car-dealers/).',
+          'Chat assistants take a different road. ChatGPT runs its own web search and cites what it finds, which we cover in [what ChatGPT looks at before it recommends a store](@how-chatgpt-recommends-car-dealerships). The overlap is large, though: crawlable pages, facts in plain text and content only your store could write help on both, and getting a dealership read and trusted across Google and the chat assistants is the work of [AEO and GEO for car dealers](/aeo-geo-for-car-dealers/).',
         ],
       },
       {
@@ -397,7 +397,7 @@ export const ARTICLES = [
         a: [
           'If your site blocks Claude-SearchBot, [Anthropic says](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler) your pages cannot be indexed for Claude’s search, and if it blocks Claude-User, Claude cannot fetch them when a user asks. Either block reduces your visibility in Claude’s answers. Blocking ClaudeBot only signals that your content should stay out of future training.',
           'Blocks like these can arrive by accident. A robots.txt written years ago to allow only Googlebot, a security plugin with a single switch for every AI bot, or a CDN bot rule nobody revisited can shut Claude out without anyone at the store deciding to. In an illustrative case, a franchise store whose website vendor added a blanket AI-bot block during a redesign may still carry it long after the reason is forgotten.',
-          'A store that wants to stay out of training but stay findable can disallow ClaudeBot and leave Claude-SearchBot and Claude-User allowed. To test your own setup, follow the steps to [check whether ChatGPT and Claude can read your website](@can-chatgpt-see-my-dealer-website).',
+          'A store that wants to stay out of training but stay findable can disallow ClaudeBot and leave Claude-SearchBot and Claude-User allowed. To test your own setup, follow the steps to [check whether AI search bots can open your site](@can-chatgpt-see-my-dealer-website).',
         ],
       },
       {
@@ -510,7 +510,7 @@ export const ARTICLES = [
         a: [
           'Google AI Mode is a conversational search mode inside Google Search that [began rolling out](https://blog.google/products/search/google-search-ai-mode-update/) to everyone in the US on May 20, 2025. Google describes it as breaking a question into subtopics and issuing many searches at once, then answering in a back-and-forth conversation instead of a list of ten links.',
           'It has grown fast by Google’s own account. At Google I/O in May 2026, [Sundar Pichai said](https://blog.google/innovation-and-ai/sundar-pichai-io-2026/) AI Mode passed 1 billion monthly active users within a year of launch, a figure Google reports about its own product.',
-          'For a buyer it feels a lot like a chat assistant, and the dealer’s problem is the same: whether your store shows up depends on what the system can find and trust. Our guide to [how ChatGPT recommends dealerships](@how-chatgpt-recommends-car-dealerships) covers the chat side, and covering both kinds of surface is the work of [generative engine optimization for dealers](/aeo-geo-for-car-dealers/).',
+          'For a buyer it feels a lot like a chat assistant, and the dealer’s problem is the same: whether your store shows up depends on what the system can find and trust. Our guide to [how ChatGPT chooses a dealership](@how-chatgpt-recommends-car-dealerships) covers the chat side, and covering both kinds of surface is the work of [generative engine optimization for dealers](/aeo-geo-for-car-dealers/).',
         ],
       },
       {
@@ -519,7 +519,7 @@ export const ARTICLES = [
         q: 'How is AI Mode different from AI Overviews?',
         a: [
           'AI Overviews appear on the normal results page for some searches, while AI Mode is its own conversation where the buyer can keep asking follow-ups. [Google says](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) both are grounded in its Search index through its core ranking systems, and neither has additional requirements beyond being indexed and eligible for a snippet.',
-          'The page-level rules are the same, which is why this guide builds on [how Google AI Overviews cite dealer pages](@google-ai-overviews-for-car-dealers). [Google’s documentation](https://developers.google.com/search/docs/appearance/ai-features) covers both features on one page and says there are no special optimizations for either.',
+          'The page-level rules are the same, which is why this guide builds on [how AI Overviews choose the pages they cite](@google-ai-overviews-for-car-dealers). [Google’s documentation](https://developers.google.com/search/docs/appearance/ai-features) covers both features on one page and says there are no special optimizations for either.',
           'What changes in AI Mode is the length and depth of the questions, and that is where query fan-out starts to matter for a dealer’s pages.',
         ],
       },
@@ -554,7 +554,7 @@ export const ARTICLES = [
           'No chunking tricks. Google says there is no requirement to break content into tiny pieces and no ideal page length. Headings that ask the question with a direct answer underneath are enough.',
           'Lead with the answer, then the detail. A sub-question such as “does the base trim have a third row” deserves a yes or no in the first sentence.',
           'Use first-hand facts. Your techs’ notes, your real inventory, your service hours and your trade-in process are things no other site can copy.',
-          'Start with the pages buyers need most. Our guide to [answer pages for car dealerships](@answer-pages-for-car-dealerships) shows how to write one.',
+          'Start with the pages buyers need most. Our guide to [answer-first dealer pages](@answer-pages-for-car-dealerships) shows how to write one.',
           'Never spin up a page for every town or phrasing. Google’s guide says separate content for every variation of how people search, made mainly to manipulate rankings or AI responses, violates its scaled content abuse policy.',
         ],
       },
@@ -685,7 +685,7 @@ export const ARTICLES = [
           'Car sales hours. Google says to list car sales hours, and if new and pre-owned sales hours differ, to use the new sales hours.',
           'Service and parts on their own profile only when they are a distinct entity. [Google says](https://support.google.com/business/answer/3038177) departments that operate as distinct entities, with a separate entrance and distinct categories, may have their own profiles. Its example is a Toyota store’s service and parts department listed as an Auto Repair Shop, while the main profile stays a Toyota dealer.',
           'One brand per profile. Google says not to combine brand names into a single Business Profile, so a multi-franchise rooftop follows the brand rules rather than one profile for every make.',
-          'For the rest of the profile, [the Business Profile fields AI answers use](@google-business-profile-ai-answers) goes field by field, including categories, hours and photos.',
+          'For the rest of the profile, [what AI answers take from your Business Profile](@google-business-profile-ai-answers) covers how the name, categories, hours, reviews and attributes reach AI answers.',
         ],
       },
       {
@@ -705,7 +705,7 @@ export const ARTICLES = [
         a: [
           'Ask Maps lives inside Google Maps and answers questions about places. The Gemini app is Google’s separate general assistant, which [Google says](https://blog.google/innovation-and-ai/products/gemini-app/one-billion-monthly-users/) passed 1 billion monthly users in August 2026. The controls differ as well: the Google-Extended robots.txt token governs Gemini Apps grounding and model training, and Google says it does not affect Search.',
           '[Google’s crawler documentation](https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers) describes Google-Extended as a robots.txt token with no separate user agent, covering Gemini training and grounding in Gemini Apps and Vertex AI. Your Business Profile lives in Google’s own systems rather than on your website, so treat Google-Extended as a decision about Gemini training and Gemini Apps; nothing Google has published ties it to your Business Profile.',
-          'For how Google’s AI summaries in Search choose the pages they link, see [how Google AI Overviews cite dealer pages](@google-ai-overviews-for-car-dealers).',
+          'For how Google’s AI summaries in Search choose the pages they link, see [Google AI Overviews for car dealers](@google-ai-overviews-for-car-dealers).',
         ],
       },
       {

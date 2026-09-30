@@ -399,7 +399,7 @@ export const ARTICLES = [
           + 'model, each written by a tool and none checked by anyone at the store. That is the pattern '
           + 'these policies describe. The honest version is a small number of pages, each answering one '
           + 'real buyer question with facts only your store has, approved by someone who knows the answer. '
-          + 'Our guide to [answer pages for car dealerships](@answer-pages-for-car-dealerships) shows the '
+          + 'Our guide to [answer-first dealer pages](@answer-pages-for-car-dealerships) shows the '
           + 'difference.',
         ],
       },
@@ -626,7 +626,7 @@ export const ARTICLES = [
           + 'and that placement is not guaranteed, which means no one can buy or sell it.',
           'Dealers tend to blur this part. A store can run an ad and be missing from the answer, or '
           + 'be named in the answer with no ad at all. Our explainer on '
-          + '[how ChatGPT recommends dealerships](@how-chatgpt-recommends-car-dealerships) covers what the '
+          + '[how ChatGPT picks which dealers to name](@how-chatgpt-recommends-car-dealerships) covers what the '
           + 'answer depends on: crawler access, readable vehicle pages, consistent store facts and what '
           + 'other sites say about you. Improving those is the job of '
           + '[AutoLander’s AEO and GEO service](/aeo-geo-for-car-dealers/), which includes no paid ads of '
@@ -1228,7 +1228,7 @@ export const ARTICLES = [
           + 'guidelines allow separate profiles for departments with their own entrance and distinct '
           + 'categories; its example is a Service & Parts profile categorized as Auto Repair Shop next to a '
           + 'Toyota Dealer main profile. Brand names should not be combined into one profile. See '
-          + '[the Business Profile fields AI answers use](@google-business-profile-ai-answers) for the rest.',
+          + '[how your Business Profile feeds AI answers](@google-business-profile-ai-answers) for the rest.',
           'Check 15: name, address and phone match everywhere. Compare your website footer, Business '
           + 'Profile, Bing Places, Apple Business Connect, Facebook Page, DealerRater and marketplace dealer '
           + 'profiles. [Bing says](https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a) clear '

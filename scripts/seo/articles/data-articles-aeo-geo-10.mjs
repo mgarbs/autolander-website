@@ -137,7 +137,7 @@ export const ARTICLES = [
               + 'GPTBot, its training crawler. [Anthropic says](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler) '
               + 'blocking Claude-SearchBot prevents indexing for search and reduces visibility. You can '
               + 'block training crawlers without blocking search. Start here: '
-              + '[check whether ChatGPT and Claude can read your website](@can-chatgpt-see-my-dealer-website).',
+              + '[the 15-minute AI access check for dealer websites](@can-chatgpt-see-my-dealer-website).',
           },
           {
             title: 'Put price, mileage and VIN on every vehicle page as text',
@@ -193,7 +193,7 @@ export const ARTICLES = [
           + 'replies should not be promotional.',
           'Read the pattern, not the single review. If three reviews in a month mention the same fee or '
           + 'the same delay, fix the process, then say so in your replies. For the bigger picture, read '
-          + '[how reviews shape AI recommendations](@dealership-reviews-ai-recommendations).',
+          + '[why reviews matter to AI assistants](@dealership-reviews-ai-recommendations).',
         ],
       },
       {
@@ -216,7 +216,7 @@ export const ARTICLES = [
           + 'what our inspection covers and what it leaves out; which used SUVs our service manager sees '
           + 'come back for the same repair; and what winter on our county roads means for tire choice. '
           + 'Each page answers one real buyer question in its first sentence, using only the store’s own '
-          + 'facts. That is the idea behind [answer pages for car dealerships](@answer-pages-for-car-dealerships).',
+          + 'facts. That is the idea behind [the answer page format](@answer-pages-for-car-dealerships).',
           'AI search is one channel among several; the [car dealership marketing '
           + 'playbook](/guide/car-dealership-marketing/) covers the channels around it.',
         ],
@@ -713,8 +713,7 @@ export const ARTICLES = [
           + 'other site has.',
           'Pages tied to your stock: link each comparison to the live units it describes, and update the '
           + 'page when the model year turns over.',
-          'The format for every one of these is the answer page; see [answer pages for car '
-          + 'dealerships](@answer-pages-for-car-dealerships) for how to write one.',
+          'The format for every one of these is the answer page; see [our answer page guide](@answer-pages-for-car-dealerships) for how to write one.',
         ],
       },
       {
@@ -990,8 +989,7 @@ export const ARTICLES = [
           + 'guidelines](https://support.google.com/business/answer/3038177) with specific rules for auto '
           + 'dealers; those rules are written for car dealers, so read the general guidelines for how they '
           + 'apply to a powersports store rather than assuming the car-dealer rules carry over. The fields '
-          + 'worth getting right are covered in [the Business Profile fields AI answers '
-          + 'use](@google-business-profile-ai-answers).',
+          + 'worth getting right are covered in [which Business Profile facts AI answers draw on](@google-business-profile-ai-answers).',
         ],
       },
       {
