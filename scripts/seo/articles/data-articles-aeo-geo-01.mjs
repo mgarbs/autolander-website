@@ -875,7 +875,7 @@ export const ARTICLES = [
       'what is llms.txt',
       'llms.txt example',
       'does google use llms.txt',
-      'llms.txt generator',
+      'llms.txt for dealer websites',
     ],
     alsoRelated: [
       'dealer-website-provider-ai-search',

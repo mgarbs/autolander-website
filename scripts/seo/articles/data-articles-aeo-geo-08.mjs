@@ -355,7 +355,7 @@ export const ARTICLES = [
       'dealership faq examples',
       'car sales faq',
       'faq schema for dealerships',
-      'what to ask a car dealership',
+      'faq page for car dealers',
     ],
     alsoRelated: [
       'service-department-ai-answers',
@@ -940,11 +940,11 @@ export const ARTICLES = [
     crumb: 'Review sites',
     primaryKeyword: 'car dealer review sites',
     secondaryKeywords: [
-      'dealerrater reviews',
-      'cars.com dealer reviews',
-      'cargurus dealer rating',
-      'yelp car dealerships',
-      'bbb car dealer',
+      'dealerrater profile for dealers',
+      'cars.com dealer reviews for dealers',
+      'cargurus dealer rating for dealers',
+      'review sites ai cites for dealerships',
+      'dealer listings consistency',
     ],
     alsoRelated: [
       'local-pr-for-car-dealerships',

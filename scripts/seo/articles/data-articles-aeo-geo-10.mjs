@@ -23,12 +23,13 @@ export const ARTICLES = [
     publishOrder: 8,
     anchor: 'AI search for independent used car dealers: where a small lot should start',
     crumb: 'Independent dealers',
-    primaryKeyword: 'ai search for used car dealers',
+    primaryKeyword: 'ai search for independent dealers',
     secondaryKeywords: [
       'independent dealership and chatgpt',
       'small car lot marketing with ai',
       'used car dealer ai visibility',
       'franchise vs independent ai search',
+      'ai search for used car dealers',
     ],
     alsoRelated: [
       'sell-cars-online-small-dealership',
@@ -46,7 +47,7 @@ export const ARTICLES = [
     eyebrow: 'AEO and GEO for car dealers',
     h1: 'AI search for independent used car dealers: how a small lot gets into the answer',
     tldr:
-      'AI search for used car dealers works the same way for a 30-car lot as for a franchise store: '
+      'AI search for independent dealers works the same way for a 30-car lot as for a franchise store: '
       + 'an assistant names the dealerships it can find, place and trust. An independent can show '
       + 'up in those answers, though no one can promise that it will. The first fixes cost nothing: '
       + 'let AI search crawlers read your site, put price, mileage and VIN on every vehicle page as '
@@ -121,7 +122,7 @@ export const ARTICLES = [
       },
       {
         type: 'steps',
-        h2: 'What are the first free fixes in AI search for used car dealers?',
+        h2: 'What are the first free fixes in AI search for independent dealers?',
         intro:
           'The first free fixes decide whether an assistant can read and place your store at all: '
           + 'crawler access, vehicle-page text, a complete Google Business Profile, matching store '
@@ -318,8 +319,8 @@ export const ARTICLES = [
     crumb: 'BHPH in AI answers',
     primaryKeyword: 'buy here pay here ai search',
     secondaryKeywords: [
-      'best car dealerships near me for bad credit',
-      'no credit check car lots',
+      'bad credit car shoppers and ai',
+      'buy here pay here reputation online',
       'in-house financing page',
       'bhph reviews',
     ],
@@ -591,9 +592,9 @@ export const ARTICLES = [
     primaryKeyword: 'rv dealer ai search',
     secondaryKeywords: [
       'rv dealer seo',
-      'chatgpt rv buying',
-      'best rv dealer near me',
-      'rv floor plan comparisons',
+      'rv buyers using chatgpt',
+      'rv dealer near me in ai answers',
+      'rv floor plan comparison pages',
     ],
     alsoRelated: [
       'vehicle-detail-page-ai-readable',
@@ -857,7 +858,7 @@ export const ARTICLES = [
     secondaryKeywords: [
       'powersports seo',
       'motorcycle dealer and chatgpt',
-      'side by side dealer near me',
+      'powersports dealer near me in ai answers',
       'boat dealer ai',
     ],
     alsoRelated: [

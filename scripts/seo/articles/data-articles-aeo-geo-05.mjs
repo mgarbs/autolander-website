@@ -352,9 +352,9 @@ export const ARTICLES = [
     publishOrder: 20,
     anchor: 'How Claude finds and cites dealerships in its answers',
     crumb: 'How Claude cites sources',
-    primaryKeyword: 'how does claude cite sources',
+    primaryKeyword: 'how claude cites local businesses',
     secondaryKeywords: [
-      'claude web search',
+      'claude web search for local businesses',
       'how to get cited by claude',
       'claude-searchbot',
       'claudebot vs claude-user',
@@ -370,14 +370,14 @@ export const ARTICLES = [
     description: 'How Claude searches the web and cites sources, what ClaudeBot, Claude-User and Claude-SearchBot do, and how a dealership stays readable to Claude.',
     eyebrow: 'AEO and GEO for car dealers',
     h1: 'How Claude answers local car-buying questions and which sources it cites',
-    tldr: 'How does Claude cite sources? When Claude searches the web, [Anthropic says](https://claude.com/blog/web-search) it gives direct citations so users can check the sources behind an answer. For a dealership, becoming one of those sources starts with two of Anthropic’s three bots, Claude-SearchBot and Claude-User, being able to reach your site, and with your store’s facts sitting in plain page text. Anthropic does not document which search index Claude uses, so the parts you control are access and content.',
+    tldr: 'How does Claude pick and cite local businesses such as dealerships? When Claude searches the web, [Anthropic says](https://claude.com/blog/web-search) it gives direct citations so users can check the sources behind an answer. For a dealership, becoming one of those sources starts with two of Anthropic’s three bots, Claude-SearchBot and Claude-User, being able to reach your site, and with your store’s facts sitting in plain page text. Anthropic does not document which search index Claude uses, so the parts you control are access and content.',
     sections: [
       {
         type: 'qa',
         id: 'how-claude-cites',
-        q: 'How does Claude cite sources?',
+        q: 'How does Claude pick and cite sources for local businesses?',
         a: [
-          'Claude cites sources by searching the web and giving direct citations in its answer, so users can open the pages and check the facts. [Anthropic launched web search](https://claude.com/blog/web-search) in preview for paid US users on March 20, 2025, and made it available on all Claude plans worldwide with an update on May 27, 2025.',
+          'Claude picks sources for a local question by searching the web, and it gives direct citations in its answer so users can open the pages and check the facts. [Anthropic launched web search](https://claude.com/blog/web-search) in preview for paid US users on March 20, 2025, and made it available on all Claude plans worldwide with an update on May 27, 2025.',
           'For a car buyer, that means a question such as “Which dealers near me are good for a used truck?” can come back with store names and the pages behind them: dealer websites, review pages, listing sites, local news. Each citation is a page Claude’s search could reach and read, which is the part of the process a dealership can influence.',
           'In outline the mechanics resemble ChatGPT’s, with different bots and different documentation; our guide to [how ChatGPT recommends dealerships](@how-chatgpt-recommends-car-dealerships) covers OpenAI’s side. Getting a store read, trusted and cited by both is what [generative engine optimization for dealers](/aeo-geo-for-car-dealers/) is about.',
         ],
@@ -635,11 +635,11 @@ export const ARTICLES = [
     publishOrder: 38,
     anchor: 'Ask Maps and Gemini in Google Maps: what it reads about your dealership',
     crumb: 'Ask Maps',
-    primaryKeyword: 'google ask maps',
+    primaryKeyword: 'ask maps business profile',
     secondaryKeywords: [
       'gemini in google maps',
       'ask maps reviews',
-      'ask maps business profile',
+      'google ask maps for car dealers',
       'business profile q and a changes',
     ],
     alsoRelated: [
@@ -653,7 +653,7 @@ export const ARTICLES = [
     description: 'Ask Maps brings Gemini into Google Maps. What it reads about your dealership, how Business Profile answers and reviews feed it, and what to update.',
     eyebrow: 'AEO and GEO for car dealers',
     h1: 'Gemini in Google Maps (Ask Maps): what it reads about your dealership',
-    tldr: 'Google Ask Maps is a conversational feature in Google Maps, announced on March 12, 2026, that answers complex questions about places by combining Maps data with Google’s Gemini models. [Google says](https://blog.google/products-and-platforms/products/maps/ask-maps-immersive-navigation/) it draws on over 300 million places and reviews from more than 500 million contributors, and questions asked in Maps now get [instant answers](https://support.google.com/business/thread/392024106) built from a business’s own answers and relevant reviews. For a dealership, that makes a complete Business Profile, answered customer questions and answered reviews the parts of Ask Maps you can influence.',
+    tldr: 'Google Ask Maps is a conversational feature in Google Maps, announced on March 12, 2026, that answers complex questions about places by combining Maps data with Google’s Gemini models. [Google says](https://blog.google/products-and-platforms/products/maps/ask-maps-immersive-navigation/) it draws on over 300 million places and reviews from more than 500 million contributors, and questions asked in Maps now get [instant answers](https://support.google.com/business/thread/392024106) built from a business’s own answers and relevant reviews. For a dealership, the Business Profile is the part of Ask Maps you can influence: complete facts, answered customer questions and answered reviews.',
     sections: [
       {
         type: 'qa',

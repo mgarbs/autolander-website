@@ -28,8 +28,8 @@ export const ARTICLES = [
     crumb: 'How buyers use AI',
     primaryKeyword: 'how car buyers use chatgpt',
     secondaryKeywords: [
-      'chatgpt car buying',
-      'ai car buying',
+      'car buyers using chatgpt',
+      'ai in the car buying journey',
       'car buyers using ai statistics',
       'which ai do car shoppers use',
     ],
@@ -378,8 +378,8 @@ export const ARTICLES = [
     crumb: 'Questions buyers ask AI',
     primaryKeyword: 'questions car buyers ask ai',
     secondaryKeywords: [
-      'chatgpt car buying prompt',
-      'what to ask chatgpt when buying a car',
+      'car buyer prompts dealers should answer',
+      'ai questions about car dealerships',
       'ai car shopping questions',
       'local buyer questions for dealerships',
     ],
@@ -741,8 +741,8 @@ export const ARTICLES = [
     primaryKeyword: 'best car dealership near me ai',
     secondaryKeywords: [
       'who does chatgpt recommend for car dealers',
-      'best used car dealerships near me',
-      'honest car dealerships near me',
+      'near me searches in ai assistants',
+      'ai local recommendations for dealerships',
       'ai local recommendations',
     ],
     alsoRelated: [

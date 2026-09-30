@@ -31,7 +31,7 @@ export const ARTICLES = [
       'fixed ops seo',
       'service department seo',
       'service hours in ai answers',
-      'recall check at a dealership',
+      'recall questions in ai answers',
     ],
     alsoRelated: [
       'how-to-respond-to-car-dealership-reviews',
@@ -316,8 +316,8 @@ export const ARTICLES = [
     crumb: 'Trade-in questions',
     primaryKeyword: 'dealership trade-in page',
     secondaryKeywords: [
-      'chatgpt trade in value',
-      'how much is my car worth ai',
+      'trade-in questions buyers ask chatgpt',
+      'trade-in value questions for dealers',
       'instant cash offer page',
       'trade in questions ai',
     ],
@@ -569,11 +569,11 @@ export const ARTICLES = [
     publishOrder: 40,
     anchor: 'Car financing questions in AI answers: how dealers should answer them honestly',
     crumb: 'Financing questions',
-    primaryKeyword: 'dealer financing questions',
+    primaryKeyword: 'dealership financing page',
     secondaryKeywords: [
-      'how does dealer financing work',
-      'dealer vs bank financing',
-      'first time buyer car loan questions',
+      'finance questions car buyers ask ai',
+      'how to explain dealer financing on a website',
+      'first-time buyer financing page',
       'financing faq for dealership website',
     ],
     alsoRelated: [
@@ -592,7 +592,7 @@ export const ARTICLES = [
     tldr:
       'Buyers now put dealer financing questions to AI in plain words: how does dealer financing '
       + 'work, is a bank loan better, what does a first-time buyer need, can I get approved. Your '
-      + 'financing page and FAQ should answer them in simple steps, with no rates, no approval claims '
+      + 'dealership financing page and FAQ should answer them in simple steps, with no rates, no approval claims '
       + 'and nothing your compliance lead has not approved. Searches phrased as questions are the '
       + 'ones most likely to get an AI summary, so the page an assistant quotes may be the only '
       + 'version of your answer a buyer reads.',
