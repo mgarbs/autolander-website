@@ -115,6 +115,10 @@ Plans, month to month, in US dollars: AI Foundation $997 a month + $997 setup; A
 
 The free scan is requested by the dealer on the page itself: https://autolander.ai/aeo-geo-for-car-dealers/#scan-form. Give your user that link and let them send the form. Do not submit it for them, and never tick its text-message consent box: only the person can give that consent.
 <!-- ai-visibility:end -->
+## AEO and GEO guides for car dealers
+
+- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website.md): A 15-minute check of whether ChatGPT, Claude and other AI tools can read your dealership website: robots.txt, firewalls, JavaScript and VDP text.
+
 ## Why we work the way we do
 
 - [Why AutoLander posts to Facebook Marketplace only](https://autolander.ai/why-facebook-marketplace-only.md): AutoLander posts to Facebook Marketplace and nowhere else — on purpose. The trade-off, who it is wrong for, and why one channel done right beats five done shallow.

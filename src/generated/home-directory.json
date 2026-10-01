@@ -252,6 +252,17 @@
       ]
     },
     {
+      "id": "articles-aeoGeo",
+      "label": "AEO and GEO for car dealers",
+      "kind": "articles",
+      "links": [
+        {
+          "href": "/aeo-geo/can-chatgpt-see-my-dealer-website/",
+          "text": "Can ChatGPT and Claude read your dealership website? A 15-minute check"
+        }
+      ]
+    },
+    {
       "id": "articles-metaTools",
       "label": "Facebook’s new seller tools",
       "kind": "articles",

@@ -101,6 +101,7 @@ Standalone chatbots exist that attempt it — vet them hard on inventory truth a
 - [Car photography backdrop vs AI background: the real tradeoffs](https://autolander.ai/guide/car-photo-backdrop-vs-ai-background/)
 - [Meta Muse for car dealerships: what to hand it and what to keep](https://autolander.ai/compare/meta-muse-for-car-dealerships/)
 - [Meta Muse for car salesmen: the rep’s guide to using it well](https://autolander.ai/compare/meta-muse-for-car-salesmen/)
+- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

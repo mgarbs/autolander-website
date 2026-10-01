@@ -2,4 +2,16 @@
 // The PUBLISHED AEO and GEO articles, grouped by cluster (each cluster's pillar first), for the
 // "AEO and GEO guides for dealers" block on /aeo-geo-for-car-dealers/ (React, static mirror and
 // Markdown twin). Empty until an article is published, and the block is absent while it is empty.
-export const AEO_GEO_GUIDES = [];
+export const AEO_GEO_GUIDES = [
+  {
+    "key": "website",
+    "label": "Your website: crawlers, schema and vehicle pages",
+    "links": [
+      {
+        "href": "/aeo-geo/can-chatgpt-see-my-dealer-website/",
+        "text": "Can ChatGPT and Claude read your dealership website? A 15-minute check",
+        "pillar": true
+      }
+    ]
+  }
+];

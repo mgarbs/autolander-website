@@ -444,6 +444,14 @@ For national and category brands, such as auto brands, online car retailers, mar
 
 An assistant can bring you to this page and fill in your store’s details. You review the form and press the button yourself, and only you can tick the text-message box.
 
+## AEO and GEO guides for dealers
+
+Plain-language guides from our team on how AI assistants find, trust and name car dealerships, grouped by topic.
+
+### Your website: crawlers, schema and vehicle pages
+
+- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
+
 ## Related guides for dealers
 
 - [Google Business Profile for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)

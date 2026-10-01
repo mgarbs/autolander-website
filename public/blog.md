@@ -60,6 +60,10 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - Meta Muse for Car Salesmen: How Reps Should Use It (2026)
 - Facebook Marketplace Auto-Reply for Car Dealers (2026 Guide)
 
+## Guides and playbooks: AEO and GEO for car dealers
+
+- Can ChatGPT and Claude Read Your Dealership Website?
+
 ## Evergreen hubs
 
 - Facebook Marketplace for car dealers
