@@ -1129,3 +1129,56 @@ test('AI scan GHL allowlist accepts only the four route shapes and rejects prohi
   }
   assert.equal(calls.length, 4, 'forbidden routes never reach fetch');
 });
+
+// ---- Michael, 2026-10-01: salespeople looking for the Marketplace posting tool go to the product demo ----
+test('the scan accepts decision-maker roles only; a salesperson is not a scan role', async () => {
+  const { MARKETPLACE_ROUTE } = await import('../shared/ai-scan-form.js');
+  assert.ok(!ROLE_CHOICES.some((role) => /sales\s*(person|rep|man|woman)|salesperson/i.test(role)), ROLE_CHOICES.join(', '));
+  assert.ok(!ROLE_CHOICES.includes(MARKETPLACE_ROUTE.value));
+  assert.match(MARKETPLACE_ROUTE.label, /Marketplace posting tool/);
+});
+
+test('the Marketplace route sends a JSON caller a demo reason and stores nothing', async () => {
+  const { MARKETPLACE_ROUTE, MARKETPLACE_DEMO_URL } = await import('../shared/ai-scan-form.js');
+  const tracking = new MemoryKv();
+  const response = await handleBooking(jsonRequest(validBody({ role: MARKETPLACE_ROUTE.value })), baseEnv(tracking), {}, {});
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), { ok: false, reason: 'marketplace_demo', demoUrl: MARKETPLACE_DEMO_URL });
+  assert.equal(tracking.puts.length, 0, 'nothing stored');
+});
+
+test('the no-JS Marketplace route lands on the product demo in one hop and stores nothing', async () => {
+  const { MARKETPLACE_ROUTE, MARKETPLACE_DEMO_URL } = await import('../shared/ai-scan-form.js');
+  const tracking = new MemoryKv();
+  const response = await handleBooking(formRequest({ role: MARKETPLACE_ROUTE.value }), baseEnv(tracking), {}, {});
+  assert.equal(response.status, 303);
+  assert.equal(response.headers.get('Location'), MARKETPLACE_DEMO_URL);
+  assert.equal(MARKETPLACE_DEMO_URL, 'https://autolander.ai/?demo=1');
+  assert.equal(tracking.puts.length, 0, 'nothing stored');
+});
+
+test('a submitted "Salesperson" role is rejected like any other non-decision-maker role', async () => {
+  const tracking = new MemoryKv();
+  const response = await handleBooking(jsonRequest(validBody({ role: 'Salesperson' })), baseEnv(tracking), {}, {});
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).reason, 'missing_role');
+});
+
+test('both scan forms show the Marketplace off-ramp, offer the route, and leave the text box unchecked', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { MARKETPLACE_ROUTE, MARKETPLACE_DEMO_PATH } = await import('../shared/ai-scan-form.js');
+  const { renderAiVisibilityMirror } = await import('../src/ai/static-mirror.js');
+  const app = readFileSync('src/ai/AiVisibilityApp.jsx', 'utf8');
+  assert.match(app, /data-marketplace-note=""/);
+  assert.match(app, /<option value=\{MARKETPLACE_ROUTE\.value\}>\{MARKETPLACE_ROUTE\.label\}<\/option>/);
+  assert.match(app, /wantsMarketplace \? \(/);
+  assert.match(app, /if \(form\.role === MARKETPLACE_ROUTE\.value\) \{\s*window\.location\.assign\(MARKETPLACE_DEMO_PATH\);/);
+  assert.doesNotMatch(app, /id="scan-smsConsent"[^>]*defaultChecked/);
+  const mirror = renderAiVisibilityMirror();
+  assert.ok(mirror.includes('data-marketplace-note=""'));
+  assert.ok(mirror.includes(`href="${MARKETPLACE_DEMO_PATH}"`));
+  assert.ok(mirror.includes(`<option value="${MARKETPLACE_ROUTE.value}">`));
+  assert.doesNotMatch(mirror, /<input id="scan-sms-consent"[^>]*\bchecked\b/);
+  const home = readFileSync('src/App.jsx', 'utf8');
+  assert.match(home, /params\.get\('demo'\) === '1'/);
+});

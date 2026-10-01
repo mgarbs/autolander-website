@@ -207,14 +207,13 @@ Every field is required except the text-message box.
 - **Website:** Example: yourstore.com
 - **Store’s city or ZIP:** The town your buyers shop in.
 - **Your name:** First and last name
-- **Your role:** Their role at the dealership.
+- **Your role:** Their role at the dealership. The scan is for owners and managers; a salesperson who wants AutoLander’s Facebook Marketplace posting software should book a demo at https://autolander.ai/?demo=1 instead.
 - **E-mail:** Your report goes here
 - **Mobile:** Example: (212) 555-0123
 
 - Owner / dealer principal
 - General manager
 - Sales or used-car manager
-- Salesperson
 - Marketing
 - Other
 

@@ -324,6 +324,17 @@ export default function App() {
   // loader, scripts/spa-shell.mjs) opens the form now.
   useEffect(() => {
     window.__alHydrated = true;
+    // /?demo=1 opens the demo form on arrival (the AEO and GEO scan form sends salespeople here). The
+    // parameter is removed so a reload or a shared link does not reopen it.
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('demo') === '1') {
+        params.delete('demo');
+        const query = params.toString();
+        window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}${window.location.hash}`);
+        window.__alPendingDemo = true;
+      }
+    } catch { /* no URL API: the Book Demo buttons still work */ }
     if (!window.__alPendingDemo) return undefined;
     // Cleared when it fires, not before: a cancelled run (StrictMode, a re-render) leaves it for the next one.
     const id = window.setTimeout(() => {

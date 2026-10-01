@@ -4,14 +4,25 @@
 // A consent-text change ALWAYS bumps SMS_CONSENT.version; the retired version goes in
 // SMS_CONSENT_PREVIOUS as { version, text, retiredAt: 'YYYY-MM-DD' } and stays accepted for 30 days.
 
+// Decision-makers only (Michael, 2026-10-01): a salesperson cannot request the scan. The Worker rejects any
+// role outside this list.
 export const ROLE_CHOICES = [
   'Owner / dealer principal',
   'General manager',
   'Sales or used-car manager',
-  'Salesperson',
   'Marketing',
   'Other',
 ];
+
+// Salespeople who want AutoLander's Facebook Marketplace posting software pick this instead of a role.
+// It is NOT a valid scan role: the page swaps the submit button for a demo link, and the Worker sends a
+// no-JS submit with this value to the product demo (MARKETPLACE_DEMO_URL opens the demo form on the homepage).
+export const MARKETPLACE_ROUTE = {
+  value: 'marketplace-posting-tool',
+  label: 'I’m a salesperson looking for the Marketplace posting tool',
+};
+export const MARKETPLACE_DEMO_PATH = '/?demo=1';
+export const MARKETPLACE_DEMO_URL = `https://autolander.ai${MARKETPLACE_DEMO_PATH}`;
 
 export const BRAND_ROLE_CHOICES = ['Owner or executive', 'Marketing', 'Agency or consultant', 'Other'];
 
