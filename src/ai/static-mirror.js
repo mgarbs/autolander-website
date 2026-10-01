@@ -26,7 +26,6 @@ import {
   REPORT_MOCK,
   REVIEW,
   ROLE_CHOICES,
-  MARKETPLACE_ROUTE,
   MARKETPLACE_DEMO_PATH,
   SERVICE_SUMMARY,
   SHIFT,
@@ -165,8 +164,8 @@ function roleField() {
     <select id="scan-role" name="role" autocomplete="${esc(field.autocomplete)}" required aria-describedby="scan-role-hint scan-role-error" aria-invalid="false" toolparamdescription="${esc(field.agentHint)}" class="mt-2 w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30">
       <option value="">${copy(field.placeholder)}</option>
       ${ROLE_CHOICES.map((role) => `<option value="${esc(role)}">${copy(role)}</option>`).join('')}
-      <option value="${esc(MARKETPLACE_ROUTE.value)}">${copy(MARKETPLACE_ROUTE.label)}</option>
     </select>
+    <p class="mt-1 text-xs leading-relaxed text-slate-400" data-marketplace-role-hint="">${copy(FORM.marketplace.roleHint)} <a class="font-bold text-blue-300 underline" href="${esc(MARKETPLACE_DEMO_PATH)}">${copy(FORM.marketplace.noteCta)}</a></p>
     <p id="scan-role-error" class="mt-1 hidden text-xs text-red-300">${copy(fieldErrors.role)}</p>
   </div>`;
 }
@@ -202,10 +201,13 @@ function scanForm(action) {
         <input type="hidden" name="submissionId" value="" />
         <input type="hidden" name="smsConsentVersion" value="${esc(SMS_CONSENT.version)}" />
         <input type="hidden" name="submittedVia" value="form" />
-        <label class="mt-5 flex items-start gap-3 rounded-xl border border-blue-400/20 bg-blue-500/[0.05] p-3 text-sm leading-relaxed text-slate-300">
-          <input id="scan-sms-consent" name="smsConsent" type="checkbox" value="true" aria-describedby="scan-sms-consent-hint" class="mt-1 h-5 w-5 shrink-0" />
-          <span id="scan-sms-consent-hint"><span class="block font-bold text-white">${copy(FORM.smsLead)}</span>${copy(SMS_CONSENT.text)} ${SMS_CONSENT.links.map((link) => `<a class="text-blue-300 underline" href="${esc(link.href)}">${copy(link.label)}</a>`).join(' ')}</span>
-        </label>
+        <div class="mt-5 rounded-xl border border-blue-400/20 bg-blue-500/[0.05] p-3">
+          <p class="text-sm font-bold text-white" data-sms-lead="">${copy(FORM.smsLead)}</p>
+          <label class="mt-2 flex items-start gap-3 text-sm leading-relaxed text-slate-300">
+            <input id="scan-sms-consent" name="smsConsent" type="checkbox" value="true" aria-describedby="scan-sms-consent-hint" class="mt-1 h-5 w-5 shrink-0" />
+            <span id="scan-sms-consent-hint">${copy(SMS_CONSENT.text)} ${SMS_CONSENT.links.map((link) => `<a class="text-blue-300 underline" href="${esc(link.href)}">${copy(link.label)}</a>`).join(' ')}</span>
+          </label>
+        </div>
         <p id="scan-agent-banner" class="mt-4 hidden rounded-xl border border-blue-400/30 bg-blue-500/10 p-3 text-sm text-blue-100">${copy(FORM.agentBanner)}</p>
         <p id="scan-status" tabindex="-1" aria-live="polite" class="mt-4 text-sm text-slate-400"></p>
         <button type="submit" class="mt-4 flex w-full items-center justify-center rounded-2xl bg-blue-600 px-6 py-5 font-display text-base font-extrabold uppercase italic text-white shadow-lg shadow-blue-600/30">${copy(FORM.submit)}</button>

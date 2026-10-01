@@ -270,6 +270,7 @@ function ScanForm({ initialValues = null }) {
             {ROLE_CHOICES.map((role) => <option key={role} value={role}>{role}</option>)}
             <option value={MARKETPLACE_ROUTE.value}>{MARKETPLACE_ROUTE.label}</option>
           </select>
+          <span className="mt-1 block text-xs leading-relaxed text-slate-400" data-marketplace-role-hint="">{FORM.marketplace.roleHint} <a className="font-bold text-blue-300 underline" href={MARKETPLACE_DEMO_PATH}>{FORM.marketplace.noteCta}</a></span>
           <InlineError id="scan-role-error" reason={fieldErrors.role} />
         </label>
         <label htmlFor="scan-email" className="block">
@@ -302,14 +303,16 @@ function ScanForm({ initialValues = null }) {
         {/* Michael, 2026-10-01: wanted this pre-checked. It stays UNCHECKED: a pre-checked box is not the
             affirmative opt-in the TCPA and carrier 10DLC rules require. The bordered callout and lead line
             make the opt-in more visible instead. */}
-        <label htmlFor="scan-smsConsent" className="mt-5 flex items-start gap-3 rounded-xl border border-blue-400/20 bg-blue-500/[0.05] p-3 text-sm leading-relaxed text-slate-300">
-          <input id="scan-smsConsent" name="smsConsent" value="true" type="checkbox" aria-describedby="scan-sms-consent-hint" checked={form.smsConsent} onChange={(e) => update('smsConsent', e.target.checked)} className="mt-1 h-5 w-5 shrink-0" />
-          <span id="scan-sms-consent-hint">
-            <span className="block font-bold text-white">{FORM.smsLead}</span>
-            {SMS_CONSENT.text}{' '}
-            {SMS_CONSENT.links.map((link, index) => <span key={link.href}>{index ? ' · ' : ''}<a className="text-blue-300 underline underline-offset-2 hover:text-blue-200" href={link.href}>{link.label}</a></span>)}
-          </span>
-        </label>
+        <div className="mt-5 rounded-xl border border-blue-400/20 bg-blue-500/[0.05] p-3">
+          <p className="text-sm font-bold text-white" data-sms-lead="">{FORM.smsLead}</p>
+          <label htmlFor="scan-smsConsent" className="mt-2 flex items-start gap-3 text-sm leading-relaxed text-slate-300">
+            <input id="scan-smsConsent" name="smsConsent" value="true" type="checkbox" aria-describedby="scan-sms-consent-hint" checked={form.smsConsent} onChange={(e) => update('smsConsent', e.target.checked)} className="mt-1 h-5 w-5 shrink-0" />
+            <span id="scan-sms-consent-hint">
+              {SMS_CONSENT.text}{' '}
+              {SMS_CONSENT.links.map((link, index) => <span key={link.href}>{index ? ' · ' : ''}<a className="text-blue-300 underline underline-offset-2 hover:text-blue-200" href={link.href}>{link.label}</a></span>)}
+            </span>
+          </label>
+        </div>
         <button type="submit" data-scan-cta="" disabled={busy} className="mt-5 flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-6 py-5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 disabled:cursor-wait disabled:opacity-70 sm:text-lg">
           {busy ? FORM.submitting : FORM.submit}
         </button>
