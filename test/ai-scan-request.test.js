@@ -1174,11 +1174,36 @@ test('both scan forms show the Marketplace off-ramp, offer the route, and leave 
   assert.match(app, /wantsMarketplace \? \(/);
   assert.match(app, /if \(form\.role === MARKETPLACE_ROUTE\.value\) \{\s*window\.location\.assign\(MARKETPLACE_DEMO_PATH\);/);
   assert.doesNotMatch(app, /id="scan-smsConsent"[^>]*defaultChecked/);
+  assert.match(app, /data-marketplace-role-hint=""/);
   const mirror = renderAiVisibilityMirror();
   assert.ok(mirror.includes('data-marketplace-note=""'));
   assert.ok(mirror.includes(`href="${MARKETPLACE_DEMO_PATH}"`));
-  assert.ok(mirror.includes(`<option value="${MARKETPLACE_ROUTE.value}">`));
+  // The no-JS mirror never offers the route as a role: its required fields would block it behind native
+  // validation. A demo link sits right under the role select instead (one click, nothing to fill in).
+  assert.ok(!mirror.includes(`value="${MARKETPLACE_ROUTE.value}"`));
+  const roleBlock = mirror.slice(mirror.indexOf('id="scan-role"'), mirror.indexOf('id="scan-role-error"'));
+  assert.match(roleBlock, new RegExp(`data-marketplace-role-hint=""[^]*?<a [^>]*href="${MARKETPLACE_DEMO_PATH.replace(/[?]/g, '\\$&')}"`));
   assert.doesNotMatch(mirror, /<input id="scan-sms-consent"[^>]*\bchecked\b/);
   const home = readFileSync('src/App.jsx', 'utf8');
   assert.match(home, /params\.get\('demo'\) === '1'/);
+});
+
+test('the SMS lead line is page copy outside the consent label: the disclosure stays exactly SMS_CONSENT.text', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { SMS_CONSENT } = await import('../shared/ai-scan-form.js');
+  const { FORM } = await import('../shared/ai-visibility-content.js');
+  const { renderAiVisibilityMirror } = await import('../src/ai/static-mirror.js');
+  const mirror = renderAiVisibilityMirror();
+  const label = mirror.match(/<label class="[^"]*"><input id="scan-sms-consent"[\s\S]*?<\/label>|<label class="[^"]*">\s*<input id="scan-sms-consent"[\s\S]*?<\/label>/)[0];
+  assert.ok(!label.includes(FORM.smsLead), 'lead line is not part of the consent label');
+  const hint = mirror.match(/<span id="scan-sms-consent-hint">([\s\S]*?)<\/span>\s*<\/label>/)[1];
+  assert.ok(hint.startsWith(SMS_CONSENT.text.replaceAll('&', '&amp;').replaceAll('’', '’')) || hint.includes(SMS_CONSENT.text.slice(0, 40)), 'hint starts with the consent text');
+  assert.ok(!hint.includes(FORM.smsLead));
+  assert.ok(mirror.indexOf('data-sms-lead=""') < mirror.indexOf('id="scan-sms-consent"'));
+  const app = readFileSync('src/ai/AiVisibilityApp.jsx', 'utf8');
+  const appHint = app.slice(app.indexOf('<span id="scan-sms-consent-hint">'), app.indexOf('</label>', app.indexOf('<span id="scan-sms-consent-hint">')));
+  assert.ok(!appHint.includes('smsLead'), 'React keeps the lead line out of the consent hint too');
+  assert.ok(app.indexOf('data-sms-lead=""') < app.indexOf('id="scan-smsConsent"'));
+  // The lead line only promises what the disclosure covers (the scan and the walkthrough).
+  assert.match(FORM.smsLead, /scan and walkthrough/);
 });

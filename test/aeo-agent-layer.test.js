@@ -17,6 +17,7 @@ import { loadBlogPosts } from '../scripts/seo/articles/blog-loader.mjs';
 import { renderMarkdown, renderPage } from '../scripts/seo/shell.mjs';
 import { agentsMarkdown } from '../scripts/seo/agent-instructions.mjs';
 import { changedUrlsFor } from '../scripts/publish-article.mjs';
+import { humanDay } from '../src/ai/page-updated.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ALL = [...DRIP_ARTICLES, ...loadBlogPosts()];
@@ -122,5 +123,22 @@ test('agents.md lists the published guides with their Markdown twins, and nothin
   const committed = readFileSync(resolve(ROOT, 'public/agents.md'), 'utf8');
   for (const a of AEO) {
     assert.equal(committed.includes(articlePath(a)), loadPublishState()[a.slug]?.status === 'published', a.slug);
+  }
+});
+
+test('dates agree: /blog/ page date == its sitemap lastmod, and agents.md is dated on or after its newest guide', () => {
+  const read = (p) => readFileSync(resolve(ROOT, p), 'utf8');
+  const sitemap = read('public/sitemap.xml');
+  const blogLastmod = sitemap.match(/<loc>https:\/\/autolander\.ai\/blog\/<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/)[1];
+  const blogHtml = read('public/blog/index.html');
+  assert.ok(blogHtml.includes(`"dateModified":"${blogLastmod}"`), `/blog/ JSON-LD dateModified should be ${blogLastmod}`);
+  assert.ok(blogHtml.includes(`datetime="${blogLastmod}"`), '/blog/ visible Updated date');
+  assert.match(read('public/blog.md'), new RegExp(`\\nUpdated: ${humanDay(blogLastmod)}\\n`), '/blog/ twin date');
+  const newest = latestSiloUpdate('aeoGeo', ALL, loadPublishState());
+  if (newest) {
+    const agents = read('public/agents.md');
+    const stated = agents.match(/\nUpdated: ([^\n]+)\n/)[1];
+    const iso = new Date(`${stated} UTC`).toISOString().slice(0, 10);
+    assert.ok(iso >= newest, `agents.md Updated ${iso} predates the newest guide ${newest}`);
   }
 });

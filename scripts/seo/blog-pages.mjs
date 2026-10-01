@@ -1,5 +1,5 @@
 import {
-  SILOS, SUGGESTED_ORDER, articlePath, isBlog, isPublished,
+  SILOS, SUGGESTED_ORDER, articlePath, isBlog, isPublished, modifiedDate,
 } from './articles/article-system.mjs';
 import { NAV, SITE } from './registry.mjs';
 
@@ -59,8 +59,10 @@ export function blogIndexPage(articles, state) {
     name: article.h1 || article.title,
     url: SITE.origin + articlePath(article),
   }));
-  const newestDate = posts
-    .flatMap((post) => [state[post.slug]?.publishedAt, post.meta?.updatedAt])
+  // Every article the page lists (posts and guides), so the page's dateModified, byline and twin match
+  // the /blog/ sitemap lastmod (build-seo-pages BLOG_LASTMOD uses the same rule).
+  const newestDate = [...posts, ...guides]
+    .map((article) => modifiedDate(article, state, state[article.slug]?.publishedAt))
     .filter(Boolean)
     .sort()
     .at(-1) || SITE.updated;

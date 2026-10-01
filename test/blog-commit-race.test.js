@@ -23,6 +23,13 @@ const EXPECTED_PUBLISH_URLS = [
   'https://autolander.ai/guide/car-dealership-marketing/',
   'https://autolander.ai/guide/car-dealership-marketing-ideas/',
   'https://autolander.ai/',
+  // The agent layer is re-pinged with the HTML: each changed page's Markdown twin, then both llms files.
+  'https://autolander.ai/guide/aged-inventory-used-car-dealers.md',
+  'https://autolander.ai/guide/car-dealership-marketing.md',
+  'https://autolander.ai/guide/car-dealership-marketing-ideas.md',
+  'https://autolander.ai/index.md',
+  'https://autolander.ai/llms.txt',
+  'https://autolander.ai/llms-full.txt',
 ];
 
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;

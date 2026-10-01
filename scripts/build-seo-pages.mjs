@@ -16,7 +16,7 @@ import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'no
 import { dirname, isAbsolute, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { renderPage, renderMarkdown, SEO_STYLES, SITE, ogImageFor } from './seo/shell.mjs';
+import { renderPage, renderMarkdown, SEO_STYLES, SITE, ogImageFor, humanDate } from './seo/shell.mjs';
 import {
   NAV, INTEGRATIONS, SPA_PAGE_PATHS, integrationPath, integrationUrl, relatedFor,
 } from './seo/registry.mjs';
@@ -359,7 +359,9 @@ function buildHomeTwin() {
 // Dedicated agent-instructions file. llms.txt carries the same guidance inline; this is the
 // standalone document to link when something asks for "your agent instructions".
 function buildAgentsMd() {
-  write(resolve(PUBLIC_DIR, 'agents.md'), agentsMarkdown(SITE.updatedHuman || SITE.updated, { guides: AEO_GEO_GUIDES }));
+  // agents.md lists the published guides, so its date moves with the newest one.
+  const updated = AEO_GEO_UPDATED && AEO_GEO_UPDATED > SITE.updated ? humanDate(AEO_GEO_UPDATED) : (SITE.updatedHuman || SITE.updated);
+  write(resolve(PUBLIC_DIR, 'agents.md'), agentsMarkdown(updated, { guides: AEO_GEO_GUIDES }));
 }
 
 function buildLlmsTxt(twins) {

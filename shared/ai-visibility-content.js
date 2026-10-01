@@ -248,14 +248,19 @@ export const FORM = {
   intro: 'About a minute. A person on our team checks your report before we send it.',
   requiredNote: 'Every field is required except the text-message box.',
   // Michael, 2026-10-01: salespeople looking for AutoLander's posting software were filling in the scan.
-  // A short off-ramp at the top of the form, and a role choice that swaps the submit button for the demo.
+  // A short off-ramp at the top of the form, a demo link under the role select, and (React) a role choice
+  // that swaps the submit button for the demo. The no-JS mirror has the links only, never the role choice,
+  // because its required fields would block that choice behind native validation.
   marketplace: {
     note: 'For dealership owners and managers. Want AutoLander to post and update your cars on Facebook Marketplace? That is our posting software.',
     noteCta: 'Book a Marketplace demo',
     routeBody: 'This scan is for dealership owners and managers. AutoLander’s Facebook Marketplace software posts your cars and keeps prices, photos and sold units up to date. Book a short demo and we will set it up with you.',
     routeCta: 'Book a Marketplace demo',
+    // Under the role select (both forms): one click to the demo, no scan fields to fill first.
+    roleHint: 'Salesperson looking for the Marketplace posting tool?',
   },
-  smsLead: 'Get your report and walkthrough time by text (optional)',
+  // Page copy ABOVE the consent label, never inside it: the stored disclosure stays exactly SMS_CONSENT.text.
+  smsLead: 'Get updates about your scan and walkthrough by text (optional)',
   fields: {
     dealershipName: { label: 'Dealership', autocomplete: 'organization', agentHint: 'The dealership’s trading name.' },
     website: { label: 'Website', hint: 'Example: yourstore.com', autocomplete: 'url', agentHint: 'The dealership’s own website address.' },
