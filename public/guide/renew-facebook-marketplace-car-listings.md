@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/renew-facebook-marketplace-car-listings/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 7, 2026  
 Updated: September 7, 2026
 
 **Short answer:** To renew a Facebook Marketplace listing, open your listings from your selling view, find the vehicle, and choose Renew from its menu when Facebook offers it — roughly weekly per listing. Renewing bumps the listing back toward the fresh end of search and browse for free, without creating a duplicate. It beats delete-and-repost for healthy listings; delete-and-repost wins when a listing has gone cold and needs new photos or a new price.
@@ -41,14 +42,14 @@ Renewal only works as a system. This is the weekly rhythm that keeps a whole lot
 1. **Track posted dates in one place** — A simple sheet with unit, posting date, and last renewal. Without it, renewals happen to whichever cars someone remembers.
 2. **Run a fixed weekly renewal pass** — Same day every week: open your listings and renew every unit showing the option. Eligibility staggers as inventory turns, so the pass is weekly even though each listing renews on its own cycle.
 3. **Sort the non-renewals** — Units with buyer activity: leave them working. Units silent since posting: pull them out for rework instead of scheduling another identical week.
-4. **Rework the cold ones before relaunch** — New lead photo, tightened description, honest price check against the market. Re-staging the photos is the fastest lever — an AI car photo editor turns the same feed shots into a visibly different listing.
-5. **Delete sold units daily, not weekly** — Sold-unit removal cannot wait for the weekly pass — buyers who drive out for a ghost car do not come back. Automatic inventory sync makes the deletion happen the moment the feed says sold.
+4. **Rework the cold ones before relaunch** — New lead photo, tightened description, honest price check against the market. Re-staging the photos is the fastest lever — an [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) turns the same feed shots into a visibly different listing.
+5. **Delete sold units daily, not weekly** — Sold-unit removal cannot wait for the weekly pass — buyers who drive out for a ghost car do not come back. Automatic [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) makes the deletion happen the moment the feed says sold.
 
 ## How much work is renewal at dealer scale?
 
 Each renewal is only a few taps — and that is the trap. At 30 to 60 units, a weekly pass means walking every listing, deciding renew versus rework versus leave, actually renewing the eligible ones, plus the daily sold-unit deletions and price edits in between. Call it an hour or two of focused tapping every single week, forever — a chore that quietly stops happening the first busy Saturday.
 
-This maintenance loop, not the original posting, is where hand-run Marketplace programs die. It is also precisely the part software does without getting bored: a Facebook Marketplace auto poster keeps every listing fresh on schedule, and bulk posting plus automatic sold-unit removal keeps the whole lot live and truthful without a weekly ritual.
+This maintenance loop, not the original posting, is where hand-run Marketplace programs die. It is also precisely the part software does without getting bored: a [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) keeps every listing fresh on schedule, and [bulk posting](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/) plus automatic sold-unit removal keeps the whole lot live and truthful without a weekly ritual.
 
 _Make it worth renewing: led by the raw lot shot (left), this Renegade reruns the same silence every week; re-staged by AutoLander’s AI Photo Studio (right), the same car relaunches as a different listing._
 

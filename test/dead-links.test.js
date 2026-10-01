@@ -144,6 +144,14 @@ const withPublished = (base, slugs, date = '2026-10-01') => {
   return state;
 };
 
+// Simulations start from "every AEO article is a draft", whatever the live publish state is, so they keep
+// testing the same scenarios as articles go live (Michael published #1 on 2026-09-30).
+const aeoDraftBaseline = () => {
+  const state = structuredClone(loadPublishState());
+  for (const a of AEO) state[a.slug] = { status: 'draft', publishedAt: null };
+  return state;
+};
+
 // Deterministic shuffles so a failure reproduces.
 function seededSubset(seed, size) {
   let s = seed >>> 0;
@@ -270,7 +278,7 @@ test('the current publish state builds with no dead internal links and no unknow
 
 for (const n of [1, 5, 17, 50]) {
   test(`publishing the first ${n} AEO article(s) in order: no dead links, no link held back, drafts invisible`, (t) => {
-    const base = loadPublishState();
+    const base = aeoDraftBaseline();
     const published = AEO.slice(0, n);
     const build = buildWithState(t, `first-${n}`, withPublished(base, published.map((a) => a.slug)));
 
@@ -307,7 +315,7 @@ for (const n of [1, 5, 17, 50]) {
 
 for (const [seed, size] of [[20260930, 12], [7, 25], [314159, 38]]) {
   test(`publishing a random ${size} AEO articles out of order (seed ${seed}): no dead links, drafts invisible`, (t) => {
-    const base = loadPublishState();
+    const base = aeoDraftBaseline();
     const slugs = seededSubset(seed, size);
     const build = buildWithState(t, `random-${size}`, withPublished(base, slugs));
     const dead = crawlSandbox(build);
@@ -326,13 +334,13 @@ for (const [seed, size] of [[20260930, 12], [7, 25], [314159, 38]]) {
 test('publishing #1 (in a copy of the state) adds it with its silo links, hub, blog index, home directory, sitemap and llms.txt', (t) => {
   const first = AEO[0];
   const path = articlePath(first);
-  const build = buildWithState(t, 'publish-one', withPublished(loadPublishState(), [first.slug]));
+  const build = buildWithState(t, 'publish-one', withPublished(aeoDraftBaseline(), [first.slug]));
 
   const html = readFileSync(join(build.pub, 'aeo-geo', first.slug, 'index.html'), 'utf8');
   assert.match(html, /<nav class="crumbs"[\s\S]*?href="https:\/\/autolander\.ai\/aeo-geo-for-car-dealers\/">AEO and GEO for car dealers<\/a>/);
   assert.match(html, /"isPartOf":\{"@type":"WebPage","@id":"https:\/\/autolander\.ai\/aeo-geo-for-car-dealers\/#webpage"/);
   assert.match(html, /<a class="btn" href="https:\/\/autolander\.ai\/aeo-geo-for-car-dealers\/#scan-form">Get my free scan &rarr;<\/a>/);
-  assert.match(html, /<meta property="og:image" content="https:\/\/autolander\.ai\/og\/ai-visibility\.jpg" \/>/);
+  assert.ok(html.includes(`<meta property="og:image" content="https://autolander.ai/og/aeo-geo-${first.slug}.png" />`), 'its own OG card');
   assert.match(html, /<a href="\/aeo-geo-for-car-dealers\/">/, 'in-body up-link to the money page');
   // Keep exploring = the silo's static links only; nothing points at an unpublished sibling.
   const related = html.match(/<nav class="related"[\s\S]*?<\/nav>/)[0];
@@ -368,12 +376,15 @@ test('publishing #1 (in a copy of the state) adds it with its silo links, hub, b
   assert.ok(twin.includes(`(https://autolander.ai${path})`), 'twin guides entry');
   assert.ok(twin.indexOf('## AEO and GEO guides for dealers') < twin.indexOf('## Related guides for dealers'));
   // The committed files are untouched by a sandbox build.
-  assert.ok(!existsSync(resolve(PUBLIC, 'aeo-geo', first.slug)), 'sandbox wrote into the repo public/');
+  // (Only meaningful while #1 is still a draft in the real state; once it is live the folder is legitimate.)
+  if (loadPublishState()[first.slug]?.status !== 'published') {
+    assert.ok(!existsSync(resolve(PUBLIC, 'aeo-geo', first.slug)), 'sandbox wrote into the repo public/');
+  }
 });
 
 test('publishing #2 turns its in-body token into a live link to #1, and #1 gains a forward link to #2', (t) => {
   const [first, second] = AEO;
-  const build = buildWithState(t, 'publish-two', withPublished(loadPublishState(), [first.slug, second.slug]));
+  const build = buildWithState(t, 'publish-two', withPublished(aeoDraftBaseline(), [first.slug, second.slug]));
   const secondHtml = readFileSync(join(build.pub, 'aeo-geo', second.slug, 'index.html'), 'utf8');
   const body = secondHtml.slice(secondHtml.indexOf('<main'), secondHtml.indexOf('<section class="cta">'));
   assert.ok(body.includes(`<a href="${articlePath(first)}">`), '#2 links #1 in body copy');
@@ -382,7 +393,7 @@ test('publishing #2 turns its in-body token into a live link to #1, and #1 gains
   assert.ok(related.includes(`href="${articlePath(second)}"`), '#1 Keep exploring gains #2 once it is live');
 
   // With #2 published but #1 still a draft, the same token prints as plain text.
-  const outOfOrder = buildWithState(t, 'publish-two-only', withPublished(loadPublishState(), [second.slug]));
+  const outOfOrder = buildWithState(t, 'publish-two-only', withPublished(aeoDraftBaseline(), [second.slug]));
   const html = readFileSync(join(outOfOrder.pub, 'aeo-geo', second.slug, 'index.html'), 'utf8');
   assert.ok(!html.includes(`href="${articlePath(first)}"`), 'no link to the unpublished #1');
   assert.ok(outOfOrder.held >= 1, 'the token is held as plain text');

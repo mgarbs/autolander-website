@@ -28,9 +28,9 @@ AutoLander does not have a one-click native Dealer.com integration. Dealer.com s
 
 The official request form makes this workflow more structured than a generic CSV handoff.
 
-- Dealer.com’s inventory form supports new feeds and exports, replacements and filters. It asks whether the feed runs to or from Dealer.com and records a provider ID or filename when applicable. Open the official inventory request form.
+- Dealer.com’s inventory form supports new feeds and exports, replacements and filters. It asks whether the feed runs to or from Dealer.com and records a provider ID or filename when applicable. [Open the official inventory request form](https://www.dealer.com/support/inventory/).
 - The request identifies new versus used inventory and whether the payload supplies all data, prices, images or comments. Agree on that scope with AutoLander before Dealer.com builds the export.
-- Dealer.com says third-party vendors must participate in its Integrated Partner Program. A request may therefore require provider enrollment or approval; AutoLander is not presented here as an existing Dealer.com partner. See the partner requirement.
+- Dealer.com says third-party vendors must participate in its Integrated Partner Program. A request may therefore require provider enrollment or approval; AutoLander is not presented here as an existing Dealer.com partner. [See the partner requirement](https://forms.dealer.com/integrated-partner-program.htm).
 
 ## Dealer.com limitation to plan for
 
@@ -42,7 +42,7 @@ Dealer.com has a documented request path for feeds sent “From Dealer.com (to 3
 
 1. **Open an outbound inventory request** — Use Dealer.com’s official 3rd Party Inventory Request and identify the dealership, Dealer.com account, third-party contact and that the feed travels from Dealer.com.
 2. **Define the feed scope and examples** — Specify new and/or used inventory plus all data, prices, images and comments as needed. Include sample stock numbers when diagnosing missing or incorrect vehicles.
-3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the Facebook Marketplace inventory sync works.
+3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ## What AutoLander adds on top of your Dealer.com data
 
@@ -72,19 +72,19 @@ No. AutoLander does not offer a one-click native Dealer.com integration. The con
 
 ### How does the Dealer.com connection work?
 
-The dealer authorizes a Dealer.com inventory feed or export from Dealer.com or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how ongoing inventory sync works.
+The dealer authorizes a Dealer.com inventory feed or export from Dealer.com or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how [ongoing inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ### What information is needed for a Dealer.com export request?
 
-Dealer.com asks for the dealership and DDC account, dealership URL, third-party contact, feed direction, new/used condition, requested data scope and provider ID/filename when available. See the official request form.
+Dealer.com asks for the dealership and DDC account, dealership URL, third-party contact, feed direction, new/used condition, requested data scope and provider ID/filename when available. [See the official request form](https://www.dealer.com/support/inventory/).
 
 ### How much does it cost to post Dealer.com inventory to Facebook Marketplace?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the Facebook Marketplace integrations page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the [Facebook Marketplace integrations page](https://autolander.ai/integrations/).
 
 ### What if I use a different system than Dealer.com?
 
-AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the integrations hub.
+AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the [integrations hub](https://autolander.ai/integrations/).
 
 ## Related
 

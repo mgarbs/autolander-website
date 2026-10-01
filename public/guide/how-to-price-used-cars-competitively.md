@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/how-to-price-used-cars-competitively/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 3, 2026  
 Updated: September 3, 2026
 
 **Short answer:** Price used cars to the market, not to the money in them: position each unit against the live comparable listings a shopper actually sees, adjust for miles and condition, put one price on every channel, and review it on a calendar. Repricing is routine — 22.6% of dealer Marketplace listings changed price after going live in AutoLander’s 2026 report — so build the cadence in from day one instead of treating a drop as defeat.
@@ -12,7 +13,7 @@ Updated: September 3, 2026
 
 You price to market: find the comparable units a buyer in your radius actually sees today, position your car deliberately against them, and let cost inform the exit plan rather than the sticker. Online, price is a filter before it is a negotiation — shoppers cap their search and never see the listings above it, so a unit priced on hope is not "negotiable," it is invisible.
 
-The market you are pricing into is knowable. Across 10,823 priced dealer listings in AutoLander’s 2026 Marketplace report, the median asking price was $28,295 — real dealers posting real inventory to the channel where local buyers filter hardest on price. Discipline, not instinct, is what competes there.
+The market you are pricing into is knowable. Across 10,823 priced dealer listings in [AutoLander’s 2026 Marketplace report](https://autolander.ai/facebook-marketplace-used-car-report-2026/), the median asking price was $28,295 — real dealers posting real inventory to the channel where local buyers filter hardest on price. Discipline, not instinct, is what competes there.
 
 ## Price-to-market in six steps
 
@@ -22,7 +23,7 @@ Run the loop when the unit hits the lot, then on a schedule until it leaves.
 2. **Adjust for what buyers compare** — Miles, trim and options, and visible condition — in that order. A one-owner with records and better photos earns a premium over the same car with neither; a salvage-adjacent history has to lead the field on price to move at all.
 3. **Choose the position on purpose** — Front of the field for volume goals, aged risk, or common cars in deep supply; middle of the field for fresh, desirable units with a story. What is never a strategy is pricing above the field and waiting — the filter hides you.
 4. **Sanity-check the floor** — Acquisition plus recon plus a realistic holding cost is your floor. If the market clears below it, that is an acquisition lesson to feed back into buying — not a reason to price above the market and hope.
-5. **Put one price everywhere** — The Marketplace listing, the portal, the website, and the windshield must agree — a buyer who catches a mismatch assumes the worst about all four. This is the step most worth automating: automatic price updates push every reprice to the posted listings the moment the feed changes.
+5. **Put one price everywhere** — The Marketplace listing, the portal, the website, and the windshield must agree — a buyer who catches a mismatch assumes the worst about all four. This is the step most worth automating: [automatic price updates](https://autolander.ai/facebook-marketplace-inventory-sync/) push every reprice to the posted listings the moment the feed changes.
 6. **Schedule the review before emotions arrive** — A weekly pricing touch on every unit, with hard checkpoints at 30, 45, and 60 days. Calendar-driven repricing removes the sales-meeting argument — the calendar made the decision when the car was priced.
 
 ## Where dealer Marketplace listings actually price
@@ -44,9 +45,9 @@ Two practical reads from that table. Nearly half of posted dealer inventory sits
 
 On a schedule, in meaningful moves. The working cadence: touch every unit weekly; if views and leads are flat by day 30, take a real drop, not a nibble — a cut that crosses a common search threshold (from $20,500 to $19,900, say) puts the car in front of every buyer whose filter ends at $20,000, which a $100 trim never does. Repeat the hard look at 45 and 60 days with the exit plan on the table.
 
-Treat repricing as normal retailing, not surrender: 22.6% of dealer listings changed price after going live across the 10,823-listing sample in the 2026 report. Roughly one unit in five gets repriced — the stores that do it on a calendar just do it sooner, and cheaper.
+Treat repricing as normal retailing, not surrender: 22.6% of dealer listings changed price after going live across the 10,823-listing sample in [the 2026 report](https://autolander.ai/facebook-marketplace-used-car-report-2026/). Roughly one unit in five gets repriced — the stores that do it on a calendar just do it sooner, and cheaper.
 
-_Price and presentation set position together: the same Ram 1500, lot clutter versus a clean scene from AutoLander’s AI Photo Studio. At the same price, the better-presented truck gets the click._
+_Price and presentation set position together: the same Ram 1500, lot clutter versus a clean scene from [AutoLander’s AI Photo Studio](https://autolander.ai/ai-car-photo-editor/). At the same price, the better-presented truck gets the click._
 
 ## The honest part
 

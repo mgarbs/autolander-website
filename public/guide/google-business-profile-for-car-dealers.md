@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/google-business-profile-for-car-dealers/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 6, 2026  
 Updated: September 6, 2026
 
 **Short answer:** A car dealership’s Google Business Profile is the trust check nearly every buyer runs before visiting: claim and verify it, use your exact real-world name, pick honest categories, complete the hours, load real photos of the lot and the people, point the website link at your inventory, seed the Q&A, and build a steady review rhythm with a delivery-day ask. Local search visibility follows completeness and review velocity.
@@ -23,7 +24,7 @@ Work top to bottom. None of this requires an agency — just accuracy and an aft
 3. **Pick categories deliberately** — Primary category "Used car dealer" for a used lot (or your true primary business), then secondary categories only for what you genuinely do — car dealer, auto repair if you have a service drive. Categories decide which searches you can appear for.
 4. **Complete the hours — including the odd ones** — Regular hours, weekend hours, holiday closures. Wrong hours produce the angriest one-star reviews a store can earn: someone drove out to a locked gate.
 5. **Load real photos, then keep them coming** — The building and signage a visitor should look for, the showroom, lot rows, a few current vehicles, and the actual people. No stock photos — buyers can smell them. Add a fresh handful monthly so the profile never looks abandoned.
-6. **Point every link where buyers act** — Website link to your inventory page, not a generic homepage — the buyer checking you out wants the cars. Phone number that rings a human during posted hours; calls from the profile deserve the same speed you give any lead.
+6. **Point every link where buyers act** — Website link to your inventory page, not a generic homepage — the buyer checking you out wants the cars. Phone number that rings a human during posted hours; calls from the profile deserve the same [speed you give any lead](https://autolander.ai/guide/car-sales-leads/).
 7. **Seed and watch the Q&A** — Anyone can ask and answer questions on your profile, so get there first: post and answer the questions you hear daily — financing available? trades welcome? test drives walk-in? — and check back for new ones.
 8. **Turn on the review rhythm** — The delivery-day ask below, plus a reply to every review within a few days. This is the ongoing engine; everything above is setup.
 
@@ -70,11 +71,11 @@ If all of that is clean, remember that map results are local by design: you appe
 
 It can. Google’s advice for doing well in its AI search features includes keeping your Business Profile information up to date, and AI assistants that search the web draw on the same public sources a buyer checks: your website, your profiles, your reviews and the listing sites. When those sources agree, an assistant has less reason to doubt your store.
 
-Making your store easy for AI tools to find and trust is the job of AEO and GEO for car dealers. A free scan shows whether ChatGPT and Claude name your store when local buyers ask, and which sources they cite.
+Making your store easy for AI tools to find and trust is the job of [AEO and GEO for car dealers](https://autolander.ai/aeo-geo-for-car-dealers/). A free scan shows whether ChatGPT and Claude name your store when local buyers ask, and which sources they cite.
 
 ## The honest part
 
-A perfect profile does not list your cars — buyers find the unit on Facebook Marketplace or a portal, then run the Google check on your name minutes later. The profile wins or loses that second search, not the first one. Treat it as the trust layer of the broader marketing stack: essential, cheap, and useless in isolation.
+A perfect profile does not list your cars — buyers find the unit on [Facebook Marketplace](https://autolander.ai/facebook-marketplace-for-car-dealers/) or a portal, then run the Google check on your name minutes later. The profile wins or loses that second search, not the first one. Treat it as the trust layer of the [broader marketing stack](https://autolander.ai/guide/car-dealership-marketing/): essential, cheap, and useless in isolation.
 
 ## Frequently asked questions
 

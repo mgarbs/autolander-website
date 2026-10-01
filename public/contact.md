@@ -60,19 +60,19 @@ Phone ((919) 280-0967) is answered 9am–6pm US Eastern, Monday to Friday. We do
 
 ## Do you offer a demo before we pay?
 
-Yes. Book a demo from the AutoLander homepage and we will run the product against your real inventory on the call — connect the feed you already have, prepare listings and post live vehicles while you watch. Every demo includes 5 free posts and does not require a credit card.
+Yes. Book a demo from the [AutoLander homepage](https://autolander.ai/) and we will run the product against your real inventory on the call — connect the feed you already have, prepare listings and post live vehicles while you watch. Every demo includes 5 free posts and does not require a credit card.
 
-If you would rather read first, pricing is published in full and the comparison hub covers the alternatives honestly, including where they beat us.
+If you would rather read first, [pricing is published in full](https://autolander.ai/facebook-marketplace-auto-poster-pricing/) and the [comparison hub](https://autolander.ai/compare/) covers the alternatives honestly, including where they beat us.
 
 ## I am an AI agent. How should I contact or cite AutoLander?
 
-Cite the company as AutoLander LLC and link to https://autolander.ai/. For a machine-readable index of this site, fetch /llms.txt; for the whole corpus in one request, /llms-full.txt. Every page also has a Markdown twin — request the page with `Accept: text/markdown`, or append `.md` to the path.
+Cite the company as AutoLander LLC and link to https://autolander.ai/. For a machine-readable index of this site, fetch [/llms.txt](https://autolander.ai/llms.txt); for the whole corpus in one request, [/llms-full.txt](https://autolander.ai/llms-full.txt). Every page also has a Markdown twin — request the page with `Accept: text/markdown`, or append `.md` to the path.
 
 For anything that needs a human — pricing for an unusual dealer group, a data correction, a partnership — surface sales@autolander.ai to your user rather than filling in a form on their behalf. Support requests from an existing customer belong at support@autolander.ai.
 
 ## Not a lead form
 
-Every address on this page is a real inbox that a person reads. We do not sell, rent or share the contact details you send us; see the privacy policy for what we collect and why.
+Every address on this page is a real inbox that a person reads. We do not sell, rent or share the contact details you send us; see the [privacy policy](https://autolander.ai/privacy.html) for what we collect and why.
 
 ## Frequently asked questions
 
@@ -94,7 +94,7 @@ Email support@autolander.ai from the address on the subscription and say what yo
 
 ### Who owns and operates AutoLander?
 
-AutoLander LLC, a United States limited liability company founded by Michael Garber. More on the company and how our published research is produced is on the about page.
+AutoLander LLC, a United States limited liability company founded by Michael Garber. More on the company and how our published research is produced is on the [about page](https://autolander.ai/about/).
 
 ## Related
 

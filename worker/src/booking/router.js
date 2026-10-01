@@ -36,6 +36,8 @@ import {
 } from '../../../shared/meta-signal.js';
 import {
   ROLE_CHOICES as AI_SCAN_ROLE_CHOICES,
+  MARKETPLACE_DEMO_URL,
+  MARKETPLACE_ROUTE,
   SMS_CONSENT,
 } from '../../../shared/ai-scan-form.js';
 
@@ -256,6 +258,14 @@ async function handleAiScan(request, env, corsHeaders, ctx) {
     const committed = await commitAiScanRequest(env, record);
     if (!committed) return aiScanFailure('unavailable', 503, corsHeaders, formMode);
     return aiScanSuccess(response, false, corsHeaders, formMode);
+  }
+
+  // A salesperson after AutoLander's Facebook Marketplace posting software is not a scan lead (Michael,
+  // 2026-10-01): the no-JS form lands on the product demo; the JSON caller gets a reason it can show.
+  // Nothing is stored and nothing reaches the CRM.
+  if (clean(body.role, 120) === MARKETPLACE_ROUTE.value) {
+    if (formMode) return aiScanRedirect(MARKETPLACE_DEMO_URL, corsHeaders);
+    return json({ ok: false, reason: 'marketplace_demo', demoUrl: MARKETPLACE_DEMO_URL }, 400, corsHeaders);
   }
 
   if (!AI_SCAN_SUBMISSION_PATTERN.test(submissionId)) {

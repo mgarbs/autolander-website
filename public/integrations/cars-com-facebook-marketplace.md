@@ -28,9 +28,9 @@ Cars.com is a directly supported AutoLander source. Cars.com listing-policy comp
 
 Cars.com publishes concrete rules for price, availability and merchandising.
 
-- Cars.com requires a real total vehicle list price and prohibits $0, “contact for price” and conditional pricing in dealer listings. Use the compliant source price you actually want syndicated. Read the vehicle-listing policy.
-- Cars.com requires dealers to promptly remove sold, unavailable, reserved or pending vehicles from the listing feed. That status discipline is what lets AutoLander remove Marketplace posts reliably. Review the availability rule.
-- Cars.com supports up to 99 photos for used vehicles and 32 for new vehicles. Choose and order the source photos deliberately before AutoLander processes them. See Cars.com merchandising guidance.
+- Cars.com requires a real total vehicle list price and prohibits $0, “contact for price” and conditional pricing in dealer listings. Use the compliant source price you actually want syndicated. [Read the vehicle-listing policy](https://www.carscommerce.inc/marketplace/vehicle-listing-policy/).
+- Cars.com requires dealers to promptly remove sold, unavailable, reserved or pending vehicles from the listing feed. That status discipline is what lets AutoLander remove Marketplace posts reliably. [Review the availability rule](https://www.carscommerce.inc/marketplace/vehicle-listing-policy/).
+- Cars.com supports up to 99 photos for used vehicles and 32 for new vehicles. Choose and order the source photos deliberately before AutoLander processes them. [See Cars.com merchandising guidance](https://www.carscommerce.inc/marketplace/merchandising/).
 
 ## Cars.com limitation to plan for
 
@@ -42,7 +42,7 @@ Use the current Cars.com inventory source, but check it against Cars.com pricing
 
 1. **Clean the Cars.com inventory source** — Verify each vehicle has an actual all-in list price, current availability, accurate identifiers and the photo set you want buyers to see.
 2. **Connect and sample the supported feed** — Connect the Cars.com inventory feed in AutoLander, then compare several VINs, prices and photo orders against your Cars.com inventory before enabling posting.
-3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the Facebook Marketplace inventory sync works.
+3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ## What AutoLander adds on top of your Cars.com data
 
@@ -72,19 +72,19 @@ AutoLander does not need a separate plugin for Cars.com because Cars.com is a di
 
 ### How does the Cars.com connection work?
 
-AutoLander reads your Cars.com inventory feed directly. You point AutoLander at the feed, your vehicles load automatically, and AutoLander prepares eligible Marketplace listings and keeps them in sync as prices and inventory change. Meta’s account limits still apply. See the inventory-sync details.
+AutoLander reads your Cars.com inventory feed directly. You point AutoLander at the feed, your vehicles load automatically, and AutoLander prepares eligible Marketplace listings and keeps them in sync as prices and inventory change. Meta’s account limits still apply. See the [inventory-sync details](https://autolander.ai/facebook-marketplace-inventory-sync/).
 
 ### Which Cars.com status changes matter to AutoLander?
 
-Cars.com specifically calls out sold, unavailable, reserved and pending vehicles as statuses dealers must remove promptly from the listing feed. Keep those states accurate so AutoLander can remove matching Marketplace listings. See the official policy.
+Cars.com specifically calls out sold, unavailable, reserved and pending vehicles as statuses dealers must remove promptly from the listing feed. Keep those states accurate so AutoLander can remove matching Marketplace listings. [See the official policy](https://www.carscommerce.inc/marketplace/vehicle-listing-policy/).
 
 ### How much does it cost to post Cars.com inventory to Facebook Marketplace?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the Facebook Marketplace integrations page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the [Facebook Marketplace integrations page](https://autolander.ai/integrations/).
 
 ### What if I use a different system than Cars.com?
 
-AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the integrations hub.
+AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the [integrations hub](https://autolander.ai/integrations/).
 
 ## Related
 

@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/free-places-to-advertise-used-cars/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: August 29, 2026  
 Updated: August 29, 2026
 
 **Short answer:** The genuinely free list is short: Facebook Marketplace, your Google Business Profile, your own website, and organic social pages. Craigslist looks free but charges dealers for every vehicle listing, and the big portals are paid outright. Facebook Marketplace is the anchor — the largest pool of local, in-market buyers at zero listing cost — and the real price of every free channel is the labor of keeping listings live, current, and gone when sold.
@@ -35,9 +36,9 @@ No. Private sellers list by-owner for free, but dealer vehicle listings are paid
 
 ## Why Facebook Marketplace is the anchor free channel
 
-Intent plus scale. Marketplace shoppers are local, they search with a price filter and a distance radius, and messaging the seller is one tap. For a used-car lot that shows up consistently with clean photos and real prices, it functions like a classified section the whole town actually reads — the full case is in Facebook Marketplace for car dealers.
+Intent plus scale. Marketplace shoppers are local, they search with a price filter and a distance radius, and messaging the seller is one tap. For a used-car lot that shows up consistently with clean photos and real prices, it functions like a classified section the whole town actually reads — the full case is in [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/).
 
-The grind is coverage and freshness: every unit posted, prices matching the window sticker, sold cars pulled the day they deliver, listings renewed before they go stale. That workflow is exactly what a Facebook Marketplace auto poster automates — but automated or manual, the standard is the same: the whole lot, live and accurate, every day.
+The grind is coverage and freshness: every unit posted, prices matching the window sticker, sold cars pulled the day they deliver, listings renewed before they go stale. That workflow is exactly what a [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) automates — but automated or manual, the standard is the same: the whole lot, live and accurate, every day.
 
 _On a free channel every listing costs the same — presentation is the differentiator. The same Kia K5, as the feed delivered it and as AutoLander’s AI Photo Studio re-staged it._
 
@@ -48,7 +49,7 @@ The free channels reward volume and punish staleness. A repeatable routine beats
 1. **Start from one source of truth** — Your DMS export, website feed, or portal feed is the master list. Every listing everywhere should trace back to it, so a price change happens once instead of five times.
 2. **Shoot once, reuse everywhere** — One disciplined photo set per unit — same angles, clean background — feeds Marketplace, your site, and your social pages. Re-shooting per channel is where the hours go to die.
 3. **Post in a daily batch, not on impulse** — Block the time, work the list, and get every new arrival live within a day of recon. Coverage is the metric: units listed everywhere divided by units on the lot.
-4. **Keep price and status current on every channel** — A buyer who catches a stale price stops trusting all of your listings. This is the step most worth automating — automatic price updates and sold-unit removal exist because humans forget.
+4. **Keep price and status current on every channel** — A buyer who catches a stale price stops trusting all of your listings. This is the step most worth automating — [automatic price updates and sold-unit removal](https://autolander.ai/facebook-marketplace-inventory-sync/) exist because humans forget.
 5. **Pull sold units the day they deliver** — A ghost listing wastes a buyer’s drive and earns the review that follows. Marking a car sold everywhere it lives is part of delivering it.
 
 ## The honest part

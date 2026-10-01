@@ -34,7 +34,7 @@ A custom scene puts your own building behind every listing — rooftop branding 
 
 ### Listing-ready ordering
 
-Shots come back organized the way buyers browse: hero exterior first, interior, details — ready for Marketplace listings.
+Shots come back organized the way buyers browse: hero exterior first, interior, details — ready for [Marketplace listings](https://autolander.ai/facebook-marketplace-listing-software/).
 
 ### AI walkaround video
 
@@ -50,10 +50,10 @@ _The branded-backdrop option: the dealer’s actual storefront composited behind
 
 ## From feed photo to showroom listing
 
-1. **Your inventory syncs** — AutoLander already reads your inventory feed to post it — the studio uses those same photos. Nothing to upload. See inventory sync.
+1. **Your inventory syncs** — AutoLander already reads your inventory feed to post it — the studio uses those same photos. Nothing to upload. See [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/).
 2. **Pick the look once** — Showroom, outdoor scene, or a custom backdrop of your own storefront — set per store, applied consistently to every unit.
 3. **The studio does the set** — Each vehicle’s photos are cut out, composited, and returned as a consistent, listing-ready set — with a walkaround video if you want one.
-4. **Listings go live looking like money** — The processed set flows straight into your Facebook Marketplace listings, where the photo is the ad.
+4. **Listings go live looking like money** — The processed set flows straight into your [Facebook Marketplace listings](https://autolander.ai/facebook-marketplace-auto-poster/), where the photo is the ad.
 
 ## Why "never repaint" matters
 
@@ -63,7 +63,7 @@ Some tools regenerate the whole image — and quietly change the color, wheels o
 
 ### What is the best AI photo editor for car dealerships?
 
-For dealership use the bar is volume and honesty: it should process your entire feed automatically and never alter the vehicle itself. AutoLander’s AI Photo Studio does both and feeds the results straight into your Marketplace listings — see how it fits the full toolkit in Facebook AI tools for car dealers.
+For dealership use the bar is volume and honesty: it should process your entire feed automatically and never alter the vehicle itself. AutoLander’s AI Photo Studio does both and feeds the results straight into your Marketplace listings — see how it fits the full toolkit in [Facebook AI tools for car dealers](https://autolander.ai/facebook-ai-tools/).
 
 ### Does the AI change the color or hide damage on the car?
 
@@ -79,11 +79,11 @@ Yes — a custom branded backdrop composites your own storefront behind every un
 
 ### How much does the AI car photo editor cost?
 
-It is part of AutoLander (plans from $39/mo, 5 free posts to start). Media generation is charged per delivered output and automatically refunded if anything fails to deliver — details on the pricing page.
+It is part of AutoLander (plans from $39/mo, 5 free posts to start). Media generation is charged per delivered output and automatically refunded if anything fails to deliver — details on the [pricing page](https://autolander.ai/facebook-marketplace-auto-poster-pricing/).
 
 ### Does it work on RVs and trailers?
 
-Yes — travel trailers, fifth wheels and motorhomes get the same studio treatment, alongside the RV-specific listing support in RV dealer software.
+Yes — travel trailers, fifth wheels and motorhomes get the same studio treatment, alongside the RV-specific listing support in [RV dealer software](https://autolander.ai/rv-dealer-software/).
 
 ## Related
 

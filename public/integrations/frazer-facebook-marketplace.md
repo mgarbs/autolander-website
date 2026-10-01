@@ -28,9 +28,9 @@ AutoLander does not have a one-click native Frazer integration. Frazer documents
 
 Frazer’s own help manual documents two materially different ways to get data out.
 
-- Frazer’s Export Data tool can create CSV or tab-delimited TXT files with dealer-selected fields and saved presets. That can support a controlled file handoff when recurring vendor upload is unavailable. See Frazer Export Data.
-- Frazer Vehicle Uploads takes an inventory snapshot, converts it to CSV/TXT and sends data—often with photos—over FTP or SFTP to configured vendors. Read Frazer’s upload architecture.
-- Frazer says scheduled uploads require the main computer to remain on, and unlisted vendors must use its partner process. Confirm destination approval before promising a hands-off recurring feed. See Vehicle Upload setup.
+- Frazer’s Export Data tool can create CSV or tab-delimited TXT files with dealer-selected fields and saved presets. That can support a controlled file handoff when recurring vendor upload is unavailable. [See Frazer Export Data](https://www.frazerhelp.com/help-manual/exportdata.htm).
+- Frazer Vehicle Uploads takes an inventory snapshot, converts it to CSV/TXT and sends data—often with photos—over FTP or SFTP to configured vendors. [Read Frazer’s upload architecture](https://www.frazerhelp.com/help-manual/technical-details-and-custom-u.htm).
+- Frazer says scheduled uploads require the main computer to remain on, and unlisted vendors must use its partner process. Confirm destination approval before promising a hands-off recurring feed. [See Vehicle Upload setup](https://www.frazerhelp.com/help-manual/vehicle_uploads.htm).
 
 ## Frazer limitation to plan for
 
@@ -42,7 +42,7 @@ Choose between a manual/custom data export and Frazer’s recurring Vehicle Uplo
 
 1. **Choose a Frazer export route** — For a file handoff, create a CSV or tab-delimited TXT export with the required inventory fields. For recurring delivery, ask whether a Vehicle Upload destination can be configured.
 2. **Map fields, photos and delivery** — Confirm the vehicle-selection flag, field headers, price, status and photo delivery, then test the resulting file or FTP/SFTP upload with AutoLander.
-3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the Facebook Marketplace inventory sync works.
+3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ## What AutoLander adds on top of your Frazer data
 
@@ -72,19 +72,19 @@ No. AutoLander does not offer a one-click native Frazer integration. The connect
 
 ### How does the Frazer connection work?
 
-The dealer authorizes a Frazer inventory export or feed file from Frazer or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how ongoing inventory sync works.
+The dealer authorizes a Frazer inventory export or feed file from Frazer or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how [ongoing inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ### Can Frazer send a recurring inventory file?
 
-Yes, for configured upload vendors. Frazer documents scheduled CSV/TXT inventory snapshots delivered by FTP/SFTP, often with photos. Its desktop workflow requires the main computer to stay on, and an unlisted vendor may need partner setup. See Frazer’s official guide.
+Yes, for configured upload vendors. Frazer documents scheduled CSV/TXT inventory snapshots delivered by FTP/SFTP, often with photos. Its desktop workflow requires the main computer to stay on, and an unlisted vendor may need partner setup. [See Frazer’s official guide](https://www.frazerhelp.com/help-manual/vehicle_uploads.htm).
 
 ### How much does it cost to post Frazer inventory to Facebook Marketplace?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the Facebook Marketplace integrations page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the [Facebook Marketplace integrations page](https://autolander.ai/integrations/).
 
 ### What if I use a different system than Frazer?
 
-AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the integrations hub.
+AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the [integrations hub](https://autolander.ai/integrations/).
 
 ## Related
 

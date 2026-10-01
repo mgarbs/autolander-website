@@ -28,8 +28,8 @@ AutoLander does not have a one-click native DealerCenter integration. DealerCent
 
 DealerCenter has several advertising paths; use the one attached to your account.
 
-- DealerCenter’s official overview says its inventory tools can import/export listings and automatically export inventory to third-party advertising sites. Confirm which export is active for your store. See the DealerCenter solution overview.
-- DealerCenter’s support catalog lists its own Facebook Marketplace Auto-Uploader. That is a separate DealerCenter workflow and is not evidence of a native DealerCenter-to-AutoLander integration. See DealerCenter digital-marketing support.
+- DealerCenter’s official overview says its inventory tools can import/export listings and automatically export inventory to third-party advertising sites. Confirm which export is active for your store. [See the DealerCenter solution overview](https://support.dealercenter.net/hc/en-us/articles/209111226-Explore-the-DealerCenter-Solution-A-Complete-Overview-for-Your-Dealership).
+- DealerCenter’s support catalog lists its own Facebook Marketplace Auto-Uploader. That is a separate DealerCenter workflow and is not evidence of a native DealerCenter-to-AutoLander integration. [See DealerCenter digital-marketing support](https://support.dealercenter.net/hc/en-us/sections/200312179-Digital-Marketing-Custom-Websites).
 - Before onboarding, verify that the approved output includes active/sold status, VIN or stock number, year/make/model, price, mileage, comments and usable photo URLs.
 
 ## DealerCenter limitation to plan for
@@ -42,7 +42,7 @@ Confirm which DealerCenter digital-marketing or website export your store is ent
 
 1. **Confirm DealerCenter export access** — Check whether the account has Online Ad Posting, third-party listings or a dealer-website feed that already exports the active inventory and photos.
 2. **Request the approved inventory output** — Work with DealerCenter support or the existing website/feed vendor to provide the authorized file or endpoint, then test several VINs before connecting it to AutoLander.
-3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the Facebook Marketplace inventory sync works.
+3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ## What AutoLander adds on top of your DealerCenter data
 
@@ -72,19 +72,19 @@ No. AutoLander does not offer a one-click native DealerCenter integration. The c
 
 ### How does the DealerCenter connection work?
 
-The dealer authorizes a DealerCenter inventory export or syndication feed from DealerCenter or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how ongoing inventory sync works.
+The dealer authorizes a DealerCenter inventory export or syndication feed from DealerCenter or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how [ongoing inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ### Is DealerCenter’s Facebook uploader the same as AutoLander?
 
-No. DealerCenter lists its own Facebook Marketplace Auto-Uploader in its digital-marketing support catalog. AutoLander is separate and has no one-click DealerCenter plugin; it requires an approved inventory feed/export. See DealerCenter support.
+No. DealerCenter lists its own Facebook Marketplace Auto-Uploader in its digital-marketing support catalog. AutoLander is separate and has no one-click DealerCenter plugin; it requires an approved inventory feed/export. [See DealerCenter support](https://support.dealercenter.net/hc/en-us/sections/200312179-Digital-Marketing-Custom-Websites).
 
 ### How much does it cost to post DealerCenter inventory to Facebook Marketplace?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the Facebook Marketplace integrations page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the [Facebook Marketplace integrations page](https://autolander.ai/integrations/).
 
 ### What if I use a different system than DealerCenter?
 
-AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the integrations hub.
+AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the [integrations hub](https://autolander.ai/integrations/).
 
 ## Related
 

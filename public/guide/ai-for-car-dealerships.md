@@ -30,13 +30,13 @@ The useful evaluation question is never "should we use AI" — it is "which job 
 
 They already name dealers. Cox Automotive found that 19% of car buyers used AI websites or AI-generated overviews while they shopped, and those answers name a few stores and cite the pages they used. Whether yours is one of them depends on what those tools can read and trust about your store.
 
-That work has two names: AEO, which shapes your pages into short, direct answers, and GEO, which builds the trust that gets a store named and cited. See AEO and GEO for car dealers for a free scan of what ChatGPT and Claude say about your store. No one can promise what an AI will say.
+That work has two names: AEO, which shapes your pages into short, direct answers, and GEO, which builds the trust that gets a store named and cited. See [AEO and GEO for car dealers](https://autolander.ai/aeo-geo-for-car-dealers/) for a free scan of what ChatGPT and Claude say about your store. No one can promise what an AI will say.
 
 ## What does AI photo enhancement do for a dealership?
 
 It takes the photos your feed already has — phone shots on a crowded lot, watermarked frames from a portal — cuts out the actual vehicle, and composites it onto a clean scene: a showroom, an outdoor backdrop, even your own storefront. The car’s pixels stay real; the environment gets replaced. Buyers see a professional store before they read a single word.
 
-Done right it is compositing, not repainting — the color, trim, wheels and flaws of the car stay exactly as shot, which keeps the listing honest. See it on the AI car photo editor page.
+Done right it is compositing, not repainting — the color, trim, wheels and flaws of the car stay exactly as shot, which keeps the listing honest. See it on the [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) page.
 
 _Compositing, not repainting: the Expedition’s paint, trim and wheels are untouched — only the scene changed._
 
@@ -44,7 +44,7 @@ _Compositing, not repainting: the Expedition’s paint, trim and wheels are unto
 
 In the standalone tools that offer it, buyer messages get an automated reply drawn — ideally — from the store’s actual inventory data, with qualifying questions and a handoff to a human when the conversation gets serious. The category’s failure modes are just as established: improvised prices, missed escalations, and bots that keep chatting when a buyer needs a person.
 
-AutoLander takes the other route: it stays out of the inbox entirely — no automated replies, and no message handling of any kind. It keeps every listing’s data accurate so the human who answers has the right facts — the trade-offs are laid out in the honest guide to AI chat for car dealers.
+AutoLander takes the other route: it stays out of the inbox entirely — no automated replies, and no message handling of any kind. It keeps every listing’s data accurate so the human who answers has the right facts — the trade-offs are laid out in the [honest guide to AI chat for car dealers](https://autolander.ai/ai-chat-for-car-dealers/).
 
 ## How to evaluate any dealership AI vendor
 
@@ -53,7 +53,7 @@ AutoLander takes the other route: it stays out of the inbox entirely — no auto
 - Check the escalation: how fast does a hot or angry buyer reach a human, and how is your team notified?
 - Ask where it runs: your own machine and accounts, or a shared cloud fleet you cannot see?
 - Verify the charge model: are you billed for work that failed to deliver? (AutoLander refunds undelivered media automatically.)
-- Keep policy honest: no AI vendor can exempt you from Meta’s terms, eligibility or listing limits — read the automation policy guide.
+- Keep policy honest: no AI vendor can exempt you from Meta’s terms, eligibility or listing limits — read the [automation policy guide](https://autolander.ai/guide/facebook-marketplace-automation/).
 
 ## What AI cannot do
 
@@ -63,7 +63,7 @@ AI cannot make a bad price good, cannot conjure Marketplace eligibility your acc
 
 ### What is the best AI tool for a car dealership?
 
-The one that completes a job you are currently losing money on. For most independents that is AI photo enhancement and AI-written listings — both ship inside AutoLander, alongside automated posting and sold-unit removal. See the Facebook AI tools guide for the full breakdown.
+The one that completes a job you are currently losing money on. For most independents that is AI photo enhancement and AI-written listings — both ship inside AutoLander, alongside automated posting and sold-unit removal. See the [Facebook AI tools guide](https://autolander.ai/facebook-ai-tools/) for the full breakdown.
 
 ### Will AI replace car salespeople?
 
@@ -71,7 +71,7 @@ No — it replaces the parts of the job salespeople already hate: retyping listi
 
 ### How much does AI for a car dealership cost?
 
-AutoLander plans start at $39/mo with 5 free posts to trial, and AI media work is charged per delivered output — with automatic refunds if a photo or video fails to deliver. See pricing.
+AutoLander plans start at $39/mo with 5 free posts to trial, and AI media work is charged per delivered output — with automatic refunds if a photo or video fails to deliver. See [pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/).
 
 ### Is AI-generated car photography misleading to buyers?
 
@@ -79,7 +79,7 @@ Not when it composites instead of repaints. The vehicle itself — paint, wheels
 
 ### Can AI respond to Facebook Marketplace messages for my dealership?
 
-Standalone chatbots exist that attempt it — vet them hard on inventory truth and human handoff. AutoLander deliberately does not: it has no autoresponder and no message-handling feature at all. Your team answers in Messenger, working from listing data AutoLander keeps accurate. See the honest guide to AI chat for car dealers.
+Standalone chatbots exist that attempt it — vet them hard on inventory truth and human handoff. AutoLander deliberately does not: it has no autoresponder and no message-handling feature at all. Your team answers in Messenger, working from listing data AutoLander keeps accurate. See the [honest guide to AI chat for car dealers](https://autolander.ai/ai-chat-for-car-dealers/).
 
 ## Related
 

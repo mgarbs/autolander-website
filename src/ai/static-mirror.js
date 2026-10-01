@@ -1,7 +1,5 @@
 import {
   AEO_GEO,
-  AI_VISIBILITY_UPDATED,
-  AI_VISIBILITY_UPDATED_HUMAN,
   BRAND_SCAN,
   EVERY_PLAN_INCLUDES,
   FAQ,
@@ -28,6 +26,8 @@ import {
   REPORT_MOCK,
   REVIEW,
   ROLE_CHOICES,
+  MARKETPLACE_ROUTE,
+  MARKETPLACE_DEMO_PATH,
   SERVICE_SUMMARY,
   SHIFT,
   WHERE_BUYERS_ASK,
@@ -37,6 +37,7 @@ import {
   comparisonRows,
   fmtUsd,
 } from '../../shared/ai-visibility-content.js';
+import { PAGE_UPDATED, PAGE_UPDATED_HUMAN } from './page-updated.js';
 import { aiImage } from '../../shared/ai-images.js';
 import { responsiveImageHtml, IMAGE_SIZES } from '../../shared/responsive-images.js';
 import { AEO_GEO_GUIDES } from '../generated/aeo-geo-guides.js';
@@ -74,7 +75,7 @@ function aeoGeoSection() {
     : '';
   return `<section id="${esc(AEO_GEO.anchor)}" class="scroll-mt-24 border-y border-white/5 bg-[#080808] py-20 lg:py-28"><div class="mx-auto max-w-7xl px-6">
     ${eyebrow(AEO_GEO.eyebrow)}${heading(AEO_GEO.h2Lead, AEO_GEO.h2Grad)}
-    <p class="mt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">${copy(AEO_GEO.updatedLabel)} <time datetime="${esc(AI_VISIBILITY_UPDATED)}">${copy(AI_VISIBILITY_UPDATED_HUMAN)}</time>${review}</p>
+    <p class="mt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">${copy(AEO_GEO.updatedLabel)} <time datetime="${esc(PAGE_UPDATED)}">${copy(PAGE_UPDATED_HUMAN)}</time>${review}</p>
     <p class="al-aeo-lead mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">${copy(AEO_GEO.lead)}</p>
     <div class="mt-12 grid items-start gap-6 lg:grid-cols-2">${[byId.aeo, byId.geo].map(card).join('')}</div>
     <div id="term-seo" class="mt-12 scroll-mt-24"><h3 class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(byId.seo.question)}</h3><div class="max-w-3xl">${termText(byId.seo)}</div>
@@ -164,6 +165,7 @@ function roleField() {
     <select id="scan-role" name="role" autocomplete="${esc(field.autocomplete)}" required aria-describedby="scan-role-hint scan-role-error" aria-invalid="false" toolparamdescription="${esc(field.agentHint)}" class="mt-2 w-full rounded-xl border border-white/10 bg-black/40 px-4 py-3 text-white outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/30">
       <option value="">${copy(field.placeholder)}</option>
       ${ROLE_CHOICES.map((role) => `<option value="${esc(role)}">${copy(role)}</option>`).join('')}
+      <option value="${esc(MARKETPLACE_ROUTE.value)}">${copy(MARKETPLACE_ROUTE.label)}</option>
     </select>
     <p id="scan-role-error" class="mt-1 hidden text-xs text-red-300">${copy(fieldErrors.role)}</p>
   </div>`;
@@ -181,6 +183,7 @@ function scanForm(action) {
       <form id="scan-form" method="post" action="${esc(action)}" aria-labelledby="scan-form-title" toolname="${esc(FORM.webmcp.toolname)}" tooldescription="${esc(FORM.webmcp.tooldescription)}" class="rounded-[2rem] border border-white/10 bg-[#0b0d12] p-6 shadow-2xl shadow-blue-950/30 sm:p-8">
         <h2 id="scan-form-title" class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(FORM.title)}</h2>
         <p class="mt-2 text-sm leading-relaxed text-slate-400">${copy(FORM.intro)}</p>
+        <p class="mt-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-xs leading-relaxed text-slate-300" data-marketplace-note="">${copy(FORM.marketplace.note)} <a class="font-bold text-blue-300 underline" href="${esc(MARKETPLACE_DEMO_PATH)}">${copy(FORM.marketplace.noteCta)}</a></p>
         <p class="mt-2 text-xs leading-relaxed text-slate-400">${copy(FORM.requiredNote)}</p>
         <div id="scan-errors" tabindex="-1" class="mt-4 hidden rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200"><p class="font-bold">${copy(FORM.errorSummaryTitle)}</p></div>
         <div class="mt-5 grid gap-4 sm:grid-cols-2">
@@ -199,9 +202,9 @@ function scanForm(action) {
         <input type="hidden" name="submissionId" value="" />
         <input type="hidden" name="smsConsentVersion" value="${esc(SMS_CONSENT.version)}" />
         <input type="hidden" name="submittedVia" value="form" />
-        <label class="mt-5 flex items-start gap-3 text-sm leading-relaxed text-slate-300">
-          <input id="scan-sms-consent" name="smsConsent" type="checkbox" value="true" aria-describedby="scan-sms-consent-hint" class="mt-1 h-4 w-4 shrink-0" />
-          <span id="scan-sms-consent-hint">${copy(SMS_CONSENT.text)} ${SMS_CONSENT.links.map((link) => `<a class="text-blue-300 underline" href="${esc(link.href)}">${copy(link.label)}</a>`).join(' ')}</span>
+        <label class="mt-5 flex items-start gap-3 rounded-xl border border-blue-400/20 bg-blue-500/[0.05] p-3 text-sm leading-relaxed text-slate-300">
+          <input id="scan-sms-consent" name="smsConsent" type="checkbox" value="true" aria-describedby="scan-sms-consent-hint" class="mt-1 h-5 w-5 shrink-0" />
+          <span id="scan-sms-consent-hint"><span class="block font-bold text-white">${copy(FORM.smsLead)}</span>${copy(SMS_CONSENT.text)} ${SMS_CONSENT.links.map((link) => `<a class="text-blue-300 underline" href="${esc(link.href)}">${copy(link.label)}</a>`).join(' ')}</span>
         </label>
         <p id="scan-agent-banner" class="mt-4 hidden rounded-xl border border-blue-400/30 bg-blue-500/10 p-3 text-sm text-blue-100">${copy(FORM.agentBanner)}</p>
         <p id="scan-status" tabindex="-1" aria-live="polite" class="mt-4 text-sm text-slate-400"></p>

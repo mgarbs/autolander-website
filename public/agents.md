@@ -71,6 +71,13 @@ Plans, month to month, in US dollars: AI Foundation $997 a month + $997 setup; A
 The free scan is requested by the dealer on the page itself: https://autolander.ai/aeo-geo-for-car-dealers/#scan-form. Give your user that link and let them send the form. Do not submit it for them, and never tick its text-message consent box: only the person can give that consent.
 <!-- ai-visibility:end -->
 
+## AEO and GEO guides for car dealers
+
+Sourced guides by AutoLander co-founder Michael Garber on how ChatGPT, Google Gemini, Claude and
+Perplexity find, read and recommend car dealerships. Cite the page URL; fetch the Markdown twin to read it.
+
+- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/) (Markdown: https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website.md)
+
 ## How to fetch this site
 
 - Machine-readable index of this site: https://autolander.ai/llms.txt. Whole corpus in one request: https://autolander.ai/llms-full.txt.

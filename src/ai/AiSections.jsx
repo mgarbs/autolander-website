@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   AEO_GEO,
-  AI_VISIBILITY_UPDATED,
-  AI_VISIBILITY_UPDATED_HUMAN,
   BRAND_SCAN,
   ENGINES,
   EVERY_PLAN_INCLUDES,
@@ -35,6 +33,7 @@ import {
   comparisonRows,
   fmtUsd,
 } from '../../shared/ai-visibility-content.js';
+import { PAGE_UPDATED, PAGE_UPDATED_HUMAN } from './page-updated.js';
 import { aiImage } from '../../shared/ai-images.js';
 import { IMAGE_SIZES } from '../../shared/responsive-images.js';
 import ResponsiveImage from '../components/ResponsiveImage.jsx';
@@ -165,7 +164,7 @@ export function AeoGeoSection() {
         <Eyebrow>{AEO_GEO.eyebrow}</Eyebrow>
         <SectionHeading className="mt-5 max-w-4xl">{AEO_GEO.h2Lead} <Grad>{AEO_GEO.h2Grad}</Grad></SectionHeading>
         <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">
-          {AEO_GEO.updatedLabel} <time dateTime={AI_VISIBILITY_UPDATED}>{AI_VISIBILITY_UPDATED_HUMAN}</time>
+          {AEO_GEO.updatedLabel} <time dateTime={PAGE_UPDATED}>{PAGE_UPDATED_HUMAN}</time>
           {REVIEW.enabled && <>{' · '}{REVIEW.label} <a className="text-blue-300 underline underline-offset-4" href={REVIEW.href}>{REVIEW.name}</a>, {REVIEW.role}</>}
         </p>
         <p className="al-aeo-lead mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">{AEO_GEO.lead}</p>

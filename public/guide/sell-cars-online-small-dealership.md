@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/sell-cars-online-small-dealership/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 22, 2026  
 Updated: September 22, 2026
 
 **Short answer:** Selling cars online as a small dealership takes four pieces, not a tech stack: inventory listed everywhere local buyers actually search (Facebook Marketplace first), photos that compete with the franchise store’s, one named person owning every reply, and a simple path from chat to appointment to paperwork. The internet sells the appointment; the lot still sells the car. Consistency beats sophistication every month.
@@ -16,17 +17,17 @@ What it does require is showing up every single day. The small stores that win o
 
 Start by letting go of the idea that selling online means building a dealership website with checkout buttons. Buyers do not browse small-store websites cold; they find the car on a listing channel, then visit your site for maybe ninety seconds to verify the store is real. Your site’s job is verification — real photos, a price that matches the listing, an address, and a phone number that gets answered. The listing is the storefront.
 
-That inversion is good news for a small dealership: the channels where the actual shopping happens cost little or nothing to enter, and the wider car dealership marketing playbook stacks them in order of return.
+That inversion is good news for a small dealership: the channels where the actual shopping happens cost little or nothing to enter, and the wider [car dealership marketing playbook](https://autolander.ai/guide/car-dealership-marketing/) stacks them in order of return.
 
 ## The online car sales process, end to end
 
 From unit in recon to keys handed over — the loop a two-person store can actually run.
 
 1. **Keep one source of truth for inventory** — Your DMS export or website feed is the master record — year, trim, miles, price, photos. Every listing everywhere derives from it, so updates happen once. Tools connect to it directly; AutoLander, for example, syncs from CarGurus, Cars.com, or a custom feed export.
-2. **List every unit where buyers search** — Facebook Marketplace is the free anchor; portals extend reach when budget allows. Posting the whole lot daily is the chore that breaks most stores, which is what a Facebook Marketplace auto poster is for — coverage without the afternoon of clicking.
-3. **Make the photos compete** — Buyers compare your listing against a franchise store’s in the same scroll. Consistent angles and clean backgrounds close most of the gap; an AI car photo editor closes the rest by re-staging your existing lot shots into showroom-grade scenes.
+2. **List every unit where buyers search** — Facebook Marketplace is the free anchor; portals extend reach when budget allows. Posting the whole lot daily is the chore that breaks most stores, which is what a [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) is for — coverage without the afternoon of clicking.
+3. **Make the photos compete** — Buyers compare your listing against a franchise store’s in the same scroll. Consistent angles and clean backgrounds close most of the gap; an [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) closes the rest by re-staging your existing lot shots into showroom-grade scenes.
 4. **Price to the market you are listed in** — Online, the price is the filter — a unit priced against live local comps gets the click; a unit priced on hope gets scrolled past. Check comps when the car lists and on a schedule after.
-5. **Put one name on every reply, per shift** — Split ownership means missed messages. One person owns the inbox each shift, phone in pocket, and answers in minutes — buyers message several stores at once and buy from the one that answers first. The speed-to-lead playbook is the standard.
+5. **Put one name on every reply, per shift** — Split ownership means missed messages. One person owns the inbox each shift, phone in pocket, and answers in minutes — buyers message several stores at once and buy from the one that answers first. The [speed-to-lead playbook](https://autolander.ai/guide/car-sales-leads/) is the standard.
 6. **Advance every conversation toward a visit** — Answer the question, then ask one: their name, their timing, whether they have a trade. Offer two concrete appointment windows instead of "come by anytime." The goal of online chat is a firm visit, not a pen-pal.
 7. **Prepare the paperwork path before they arrive** — Know your out-the-door number, have financing options and required documents listed plainly, and settle your deposit-and-hold policy in advance. Online buyers arrive further down the funnel — fumbling the desk work un-sells a sold car.
 8. **Deliver, mark sold, and remove the listings** — The last step of every online sale is taking the listing down everywhere it lives. A sold car still advertised wastes the next buyer’s drive and earns the review you do not want.

@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/dealer-inventory-management/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 3, 2026  
 Updated: September 3, 2026
 
 **Short answer:** Dealer inventory management has two halves. The system of record — a DMS or inventory platform like vAuto, DealerCenter, CDK, Tekion, Frazer or HomeNet — holds the truth about every unit: cost, price, mileage, photos, status. Distribution is the second half: getting that truth in front of buyers on the website, the portals and Facebook Marketplace, and keeping it true as prices move and cars sell. The DMS half is a solved problem. The distribution half breaks quietly, one stale listing at a time, and Marketplace is where it breaks most because nothing built into the DMS keeps it current. AutoLander is that missing leg: it reads the inventory you already manage and keeps Marketplace matched to it.
@@ -26,7 +27,7 @@ It helps to name which job a tool does. AutoLander does the second one, for one 
 | Fails when | Data is entered wrong | Data is right in the DMS and wrong on the channel |
 | Who notices | Accounting, the desk | The buyer — usually by messaging about a sold car |
 
-_Vendors listed as examples are named for orientation only; AutoLander connects to several of them via a feed or export and has no other relationship with any of them. See integrations._
+_Vendors listed as examples are named for orientation only; AutoLander connects to several of them via a feed or export and has no other relationship with any of them. See [integrations](https://autolander.ai/integrations/)._
 
 ## Where distribution breaks
 
@@ -42,10 +43,10 @@ Every one of these is a case where the DMS was right and the buyer saw something
 
 The fix is the same one the website provider already applies to the website: treat the DMS as the source, and have software reconcile the channel against it on a schedule. This is what AutoLander does for Facebook Marketplace.
 
-1. **Point it at the source you already run** — A CarGurus or Cars.com feed, a DMS export from vAuto, DealerCenter, CDK, Tekion, Frazer or HomeNet, an SFTP or CSV drop, or the dealer website itself. No re-keying, no second system of record.
-2. **Let it build the queue** — Eligible units become Marketplace listings with year, make, model, mileage, price, photos and description filled from the feed. The auto poster works the queue at a pace you set, inside the account’s limits.
-3. **Reconcile on a schedule** — The feed is re-read; price changes push to the live listing, sold units come down, new arrivals queue. The inventory sync page covers the cadence and what "sold" means to the feed.
-4. **Present it properly** — Studio-grade photos from the AI photo editor, the right category for the unit, and no invented facts: unknown mileage stays blank rather than guessed.
+1. **Point it at the source you already run** — A [CarGurus or Cars.com feed](https://autolander.ai/integrations/), a DMS export from vAuto, DealerCenter, CDK, Tekion, Frazer or HomeNet, an SFTP or CSV drop, or the dealer website itself. No re-keying, no second system of record.
+2. **Let it build the queue** — Eligible units become Marketplace listings with year, make, model, mileage, price, photos and description filled from the feed. The [auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) works the queue at a pace you set, inside the account’s limits.
+3. **Reconcile on a schedule** — The feed is re-read; price changes push to the live listing, sold units come down, new arrivals queue. The [inventory sync page](https://autolander.ai/facebook-marketplace-inventory-sync/) covers the cadence and what "sold" means to the feed.
+4. **Present it properly** — Studio-grade photos from the [AI photo editor](https://autolander.ai/ai-car-photo-editor/), the right category for the unit, and no invented facts: unknown mileage stays blank rather than guessed.
 
 ## Does a dealer need Marketplace-specific inventory software?
 
@@ -55,7 +56,7 @@ The test is simple: pick five listings on your Marketplace right now and check t
 
 ## What AutoLander is not
 
-It is not a DMS, an IMS, a pricing tool or a CRM, and it does not replace any of them. It reads the inventory you already manage and keeps one channel — Facebook Marketplace — matched to it. It also does not message buyers or touch your inbox; here is why.
+It is not a DMS, an IMS, a pricing tool or a CRM, and it does not replace any of them. It reads the inventory you already manage and keeps one channel — Facebook Marketplace — matched to it. It also does not message buyers or touch your inbox; [here is why](https://autolander.ai/why-we-dont-answer-your-buyers/).
 
 ## Frequently asked questions
 

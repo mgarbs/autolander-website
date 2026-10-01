@@ -4,6 +4,8 @@ import {
   FOOTER,
   FOOTER_NAV,
   FORM,
+  MARKETPLACE_DEMO_PATH,
+  MARKETPLACE_ROUTE,
   META,
   ROLE_CHOICES,
   SMS_CONSENT,
@@ -156,6 +158,11 @@ function ScanForm({ initialValues = null }) {
 
   const submit = async (event) => {
     event.preventDefault();
+    // A salesperson after the Marketplace posting tool goes to the product demo, never to the scan.
+    if (form.role === MARKETPLACE_ROUTE.value) {
+      window.location.assign(MARKETPLACE_DEMO_PATH);
+      return;
+    }
     if (event.nativeEvent?.agentInvoked) {
       markAgentAssisted();
       return;
@@ -206,6 +213,7 @@ function ScanForm({ initialValues = null }) {
   }
 
   const busy = phase === 'submitting';
+  const wantsMarketplace = form.role === MARKETPLACE_ROUTE.value;
   const describedBy = (key, hasHint = false) => [hasHint ? `scan-${key}-hint` : '', fieldErrors[key] ? `scan-${key}-error` : ''].filter(Boolean).join(' ') || undefined;
   return (
     <form
@@ -222,6 +230,10 @@ function ScanForm({ initialValues = null }) {
     >
       <p id="scan-form-title" className="font-display text-2xl font-extrabold uppercase italic text-white">{FORM.title}</p>
       <p className="mt-2 text-sm leading-relaxed text-slate-400">{FORM.intro}</p>
+      <p className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-xs leading-relaxed text-slate-300" data-marketplace-note="">
+        {FORM.marketplace.note}{' '}
+        <a href={MARKETPLACE_DEMO_PATH} className="font-bold text-blue-300 underline underline-offset-2 hover:text-blue-200">{FORM.marketplace.noteCta}</a>
+      </p>
       <p className="mt-2 text-xs leading-relaxed text-slate-400">{FORM.requiredNote}</p>
       {agentAssisted && <p className="mt-4 rounded-xl border border-blue-400/25 bg-blue-500/[0.07] p-3 text-sm leading-relaxed text-blue-100">{FORM.agentBanner}</p>}
       <input id="scan-submissionId" type="hidden" name="submissionId" value={submissionId} />
@@ -256,6 +268,7 @@ function ScanForm({ initialValues = null }) {
           <select id="scan-role" name="role" required toolparamdescription={FORM.fields.role.agentHint} aria-describedby={describedBy('role')} autoComplete={FORM.fields.role.autocomplete} value={form.role} onChange={(e) => update('role', e.target.value)} aria-invalid={Boolean(fieldErrors.role)} className={fieldClass(fieldErrors.role)}>
             <option value="">{FORM.fields.role.placeholder}</option>
             {ROLE_CHOICES.map((role) => <option key={role} value={role}>{role}</option>)}
+            <option value={MARKETPLACE_ROUTE.value}>{MARKETPLACE_ROUTE.label}</option>
           </select>
           <InlineError id="scan-role-error" reason={fieldErrors.role} />
         </label>
@@ -278,16 +291,29 @@ function ScanForm({ initialValues = null }) {
           <input id="scan-company" name="company" tabIndex={-1} autoComplete="off" value={form.company} onChange={(e) => update('company', e.target.value)} />
         </label>
       </div>
-      <label htmlFor="scan-smsConsent" className="mt-5 flex items-start gap-3 text-sm leading-relaxed text-slate-300">
-        <input id="scan-smsConsent" name="smsConsent" value="true" type="checkbox" aria-describedby="scan-sms-consent-hint" checked={form.smsConsent} onChange={(e) => update('smsConsent', e.target.checked)} className="mt-1 h-4 w-4 shrink-0" />
-        <span id="scan-sms-consent-hint">
-          {SMS_CONSENT.text}{' '}
-          {SMS_CONSENT.links.map((link, index) => <span key={link.href}>{index ? ' · ' : ''}<a className="text-blue-300 underline underline-offset-2 hover:text-blue-200" href={link.href}>{link.label}</a></span>)}
-        </span>
-      </label>
-      <button type="submit" data-scan-cta="" disabled={busy} className="mt-5 flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-6 py-5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 disabled:cursor-wait disabled:opacity-70 sm:text-lg">
-        {busy ? FORM.submitting : FORM.submit}
-      </button>
+      {wantsMarketplace ? (
+        <div className="mt-5 rounded-2xl border border-blue-400/30 bg-blue-500/[0.08] p-4" role="status" data-marketplace-route="">
+          <p className="text-sm leading-relaxed text-slate-200">{FORM.marketplace.routeBody}</p>
+          <a href={MARKETPLACE_DEMO_PATH} className="mt-4 flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-6 py-5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 sm:text-lg">
+            {FORM.marketplace.routeCta}
+          </a>
+        </div>
+      ) : (<>
+        {/* Michael, 2026-10-01: wanted this pre-checked. It stays UNCHECKED: a pre-checked box is not the
+            affirmative opt-in the TCPA and carrier 10DLC rules require. The bordered callout and lead line
+            make the opt-in more visible instead. */}
+        <label htmlFor="scan-smsConsent" className="mt-5 flex items-start gap-3 rounded-xl border border-blue-400/20 bg-blue-500/[0.05] p-3 text-sm leading-relaxed text-slate-300">
+          <input id="scan-smsConsent" name="smsConsent" value="true" type="checkbox" aria-describedby="scan-sms-consent-hint" checked={form.smsConsent} onChange={(e) => update('smsConsent', e.target.checked)} className="mt-1 h-5 w-5 shrink-0" />
+          <span id="scan-sms-consent-hint">
+            <span className="block font-bold text-white">{FORM.smsLead}</span>
+            {SMS_CONSENT.text}{' '}
+            {SMS_CONSENT.links.map((link, index) => <span key={link.href}>{index ? ' · ' : ''}<a className="text-blue-300 underline underline-offset-2 hover:text-blue-200" href={link.href}>{link.label}</a></span>)}
+          </span>
+        </label>
+        <button type="submit" data-scan-cta="" disabled={busy} className="mt-5 flex w-full items-center justify-center gap-3 whitespace-nowrap rounded-2xl bg-blue-600 px-6 py-5 font-display text-base font-extrabold uppercase italic tracking-tight text-white shadow-lg shadow-blue-600/30 transition-colors hover:bg-blue-500 disabled:cursor-wait disabled:opacity-70 sm:text-lg">
+          {busy ? FORM.submitting : FORM.submit}
+        </button>
+      </>)}
       <p id="scan-status" ref={statusRef} tabIndex={-1} className={`mt-3 text-sm outline-none ${error ? 'text-red-300' : 'text-slate-400'}`} aria-live="polite">{error}</p>
       <p className="mt-2 text-xs leading-relaxed text-slate-400">{FORM.useNote}</p>
     </form>

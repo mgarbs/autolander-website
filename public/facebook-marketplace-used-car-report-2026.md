@@ -4,11 +4,12 @@
 
 Source: https://autolander.ai/facebook-marketplace-used-car-report-2026/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: August 20, 2026  
 Updated: September 3, 2026
 
 **Short answer:** AutoLander analyzed anonymized data from 196 U.S. dealerships using its platform — 74,000+ synced vehicles and 10,823 priced dealer listings posted to Facebook Marketplace, including 17,700+ posts in the last 90 days. Headline findings: the median asking price of a dealer unit posted to Marketplace is $28,295; 45% of posted units are priced above $30,000; the five most-listed vehicles are all pickups and 4x4s, led by the Ford F-150; 22.6% of listings change price after going live; and Thursday is the biggest day for new dealer listings — 3.3× busier than Sunday.
 
-Facebook Marketplace has become a primary destination for local used-car shopping, but almost all public commentary about it is anecdote. This report replaces anecdote with numbers: anonymized, aggregate data from the dealerships that post their inventory to Marketplace through AutoLander, covering what dealers actually list, at what prices and mileage, which models dominate, and when listings go live.
+Facebook Marketplace has become a primary destination for local used-car shopping, but almost all public commentary about it is anecdote. This report replaces anecdote with numbers: anonymized, aggregate data from the dealerships that post their inventory to Marketplace through [AutoLander](https://autolander.ai/), covering what dealers actually list, at what prices and mileage, which models dominate, and when listings go live.
 
 Every figure on this page was computed directly from platform data on August 21, 2026. Methodology and sample sizes are at the bottom; media and researchers are welcome to cite this report with attribution.
 
@@ -65,7 +66,7 @@ _Among 10,850 dealer units posted to Marketplace through AutoLander._
 
 ## How often do dealers change the price after a listing goes live?
 
-Constantly: 22.6% of posted listings — 2,443 of 10,798 with comparable data — carried a different price later than the price they were posted at. That churn is why stale listings are endemic on Marketplace: a price cut made in the DMS does not update a listing by itself. It is also the argument for automatic inventory sync: the ad has to follow the price, or the showroom conversation starts with an apology.
+Constantly: 22.6% of posted listings — 2,443 of 10,798 with comparable data — carried a different price later than the price they were posted at. That churn is why stale listings are endemic on Marketplace: a price cut made in the DMS does not update a listing by itself. It is also the argument for [automatic inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/): the ad has to follow the price, or the showroom conversation starts with an apology.
 
 ## When do dealers post to Facebook Marketplace?
 
@@ -87,11 +88,11 @@ _n = 17,778 dealer listings posted in the 90 days ending August 21, 2026._
 
 ## How much AI is in dealer listings now?
 
-A meaningful and growing amount on the photo side: dealerships on the platform have run 94,000+ listing photos through AI background replacement across 3,237 processing jobs, turning lot shots and watermarked feed photos into showroom-style images. AI-generated walkaround video is earlier on the curve, with the first deliveries now in production use.
+A meaningful and growing amount on the photo side: dealerships on the platform have run 94,000+ listing photos through [AI background replacement](https://autolander.ai/ai-car-photo-editor/) across 3,237 processing jobs, turning lot shots and watermarked feed photos into showroom-style images. AI-generated walkaround video is earlier on the curve, with the first deliveries now in production use.
 
 ## Download the data
 
-Every figure on this page is published in machine-readable form under a CC BY 4.0 licence — free to reuse, including commercially, with attribution.
+Every figure on this page is published in machine-readable form under a [CC BY 4.0 licence](https://creativecommons.org/licenses/by/4.0/) — free to reuse, including commercially, with attribution.
 
 - [CSV](https://autolander.ai/data/marketplace-report-2026.csv) — All four tables, one row per metric — opens in Excel, Sheets or pandas.
 - [JSON](https://autolander.ai/data/marketplace-report-2026.json) — The same figures with methodology, sample sizes and units attached.
@@ -126,7 +127,7 @@ Yes — cite "AutoLander, Facebook Marketplace Used-Car Report 2026" and link th
 
 ### Where does the data come from?
 
-Anonymized aggregates from 196 U.S. dealerships that post inventory to Facebook Marketplace through the AutoLander platform — real listings, real prices, no surveys and no estimates. Full details are in the Methodology section.
+Anonymized aggregates from 196 U.S. dealerships that post inventory to Facebook Marketplace through the [AutoLander](https://autolander.ai/) platform — real listings, real prices, no surveys and no estimates. Full details are in the Methodology section.
 
 ## Related
 

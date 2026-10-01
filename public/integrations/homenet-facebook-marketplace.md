@@ -28,13 +28,13 @@ AutoLander does not have a one-click native HomeNet integration. HomeNet has a d
 
 HomeNet publicly documents the transport and formatting decisions for an outbound feed.
 
-- HomeNet’s export request supports CSV, TSV and pipe-delimited files, optional headers, new/used vehicle selection and zipped or unzipped delivery. Review the official export request.
+- HomeNet’s export request supports CSV, TSV and pipe-delimited files, optional headers, new/used vehicle selection and zipped or unzipped delivery. [Review the official export request](https://www.homenetauto.com/vfsr/).
 - Photo URLs can be appended to the inventory file at original resolution or resized. Preserve the source resolution AutoLander needs before HomeNet builds the recurring export.
 - The form supports FTP delivery and either combined or separate dealer files/accounts. It also warns that custom template work may carry added fees, so settle the specification first.
 
 ## HomeNet limitation to plan for
 
-HomeNet package scope varies. Its EULA distinguishes single- versus multi-destination products and says near-real-time updates are an Overdrive feature; do not assume every subscription has the same cadence. See HomeNet’s IOL terms.
+HomeNet package scope varies. Its EULA distinguishes single- versus multi-destination products and says near-real-time updates are an Overdrive feature; do not assume every subscription has the same cadence. [See HomeNet’s IOL terms](https://www.homenetauto.com/eula/).
 
 ## How HomeNet connects to AutoLander
 
@@ -42,7 +42,7 @@ HomeNet exports are configured for a named destination. Agree on AutoLander’s 
 
 1. **Agree on the HomeNet export specification** — Confirm new/used scope, CSV/TSV/pipe-delimited format, headers, photo URL handling and whether the receiver expects one dealer file or a multi-dealer layout.
 2. **Authorize FTP delivery and test it** — Coordinate the dealer, HomeNet and AutoLander details for the destination FTP location, then validate a sample file and photo URLs before enabling recurring delivery.
-3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the Facebook Marketplace inventory sync works.
+3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ## What AutoLander adds on top of your HomeNet data
 
@@ -72,19 +72,19 @@ No. AutoLander does not offer a one-click native HomeNet integration. The connec
 
 ### How does the HomeNet connection work?
 
-The dealer authorizes a HomeNet syndication feed or export from HomeNet or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how ongoing inventory sync works.
+The dealer authorizes a HomeNet syndication feed or export from HomeNet or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how [ongoing inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ### Which file formats can HomeNet send?
 
-HomeNet’s export request lists CSV, TSV and pipe-delimited inventory files, with optional field headers, photo URLs, ZIP packaging and FTP delivery. Customization may add cost. See HomeNet’s export specification form.
+HomeNet’s export request lists CSV, TSV and pipe-delimited inventory files, with optional field headers, photo URLs, ZIP packaging and FTP delivery. Customization may add cost. [See HomeNet’s export specification form](https://www.homenetauto.com/vfsr/).
 
 ### How much does it cost to post HomeNet inventory to Facebook Marketplace?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the Facebook Marketplace integrations page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the [Facebook Marketplace integrations page](https://autolander.ai/integrations/).
 
 ### What if I use a different system than HomeNet?
 
-AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the integrations hub.
+AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the [integrations hub](https://autolander.ai/integrations/).
 
 ## Related
 

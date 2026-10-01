@@ -12,7 +12,7 @@ Updated: September 3, 2026
 
 Facebook listing software is a tool that automatically lists a car dealership’s vehicles on Facebook instead of a person creating each listing by hand. It reads your inventory — year, make, model, price, mileage, photos and a description — lists each car, and keeps those listings accurate as your lot changes. It is also called a Facebook listing tool, a Marketplace poster, or an auto-lister.
 
-Marketplace features, listing categories and dealer eligibility vary by account and market, so a dealer should first confirm that its account can create the vehicle listings it needs. AutoLander is a native desktop workflow for preparing and maintaining eligible Marketplace listings. If you specifically mean Marketplace, see our Facebook Marketplace listing software page.
+Marketplace features, listing categories and dealer eligibility vary by account and market, so a dealer should first confirm that its account can create the vehicle listings it needs. AutoLander is a native desktop workflow for preparing and maintaining eligible Marketplace listings. If you specifically mean Marketplace, see our [Facebook Marketplace listing software](https://autolander.ai/facebook-marketplace-listing-software/) page.
 
 _From lot photo to Facebook-ready: AutoLander turns a raw 2021 Ram 1500 lot shot (left) into a showroom-grade listing photo (right), automatically._
 
@@ -20,7 +20,7 @@ _From lot photo to Facebook-ready: AutoLander turns a raw 2021 Ram 1500 lot shot
 
 No. Marketplace availability, vehicle categories and selling limits can vary by account, location and Meta product changes. Meta’s Help Center currently states a monthly limit of five new Vehicles listings and a total monthly limit of 20 Marketplace listings, but dealers should verify the current rules inside their own accounts before building a workflow around them.
 
-AutoLander helps an eligible dealer prepare listings from inventory data, enhance the creative, manage a configurable queue and reconcile sold units. It cannot unlock Marketplace access, change an account’s limits or create Meta approval. Our dealer Marketplace guide covers eligibility, limits and a practical workflow before you start.
+AutoLander helps an eligible dealer prepare listings from inventory data, enhance the creative, manage a configurable queue and reconcile sold units. It cannot unlock Marketplace access, change an account’s limits or create Meta approval. Our [dealer Marketplace guide](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) covers eligibility, limits and a practical workflow before you start.
 
 ## What AutoLander’s Facebook listing tool does
 
@@ -54,10 +54,10 @@ Shows which Facebook listings led to actual vehicle sales — not just views, cl
 
 AutoLander is a native desktop app, so the listing workflow runs on your computer while the app is open. A configurable queue helps the team manage eligible listings within the account’s current limits.
 
-1. **Connect your inventory feed** — Point AutoLander at your CarGurus or Cars.com feed, or a custom export from your DMS or website. Your whole inventory loads automatically — see the integrations page for supported sources.
+1. **Connect your inventory feed** — Point AutoLander at your CarGurus or Cars.com feed, or a custom export from your DMS or website. Your whole inventory loads automatically — see the [integrations](https://autolander.ai/integrations/) page for supported sources.
 2. **Enhance every listing** — The AI Photo Studio cleans up each photo, smart photo-ordering leads with the shot buyers respond to, and an AI description is written for each VIN.
 3. **Manage eligible Marketplace listings** — AutoLander works through a configurable queue from your own computer, using an accurate title, price and description. Meta account eligibility and current listing limits still apply.
-4. **Stay in sync** — New VINs get listed automatically and sold units come down on their own via inventory sync, so Facebook keeps matching your real inventory.
+4. **Stay in sync** — New VINs get listed automatically and sold units come down on their own via [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/), so Facebook keeps matching your real inventory.
 
 ## Why dealers choose AutoLander as their Facebook listing software
 
@@ -68,25 +68,25 @@ AutoLander is a native desktop app, so the listing workflow runs on your compute
 
 ## The honest version of Facebook automation
 
-Meta’s Terms prohibit accessing its products by automated means without prior permission, and Marketplace eligibility, categories and listing limits can change. AutoLander’s local desktop architecture does not override those rules or guarantee uninterrupted access. Read the Marketplace policy and safety guide and compare your options before you start.
+Meta’s Terms prohibit accessing its products by automated means without prior permission, and Marketplace eligibility, categories and listing limits can change. AutoLander’s local desktop architecture does not override those rules or guarantee uninterrupted access. Read the [Marketplace policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) and [compare your options](https://autolander.ai/compare/) before you start.
 
 ## Frequently asked questions
 
 ### What is the best Facebook listing software for car dealers?
 
-It depends on feed compatibility, record review, photo and video tools, sold-unit reconciliation, attribution, session architecture and price. AutoLander bundles those workflows with published plans from $39/mo — see how it differs in our 2026 comparison.
+It depends on feed compatibility, record review, photo and video tools, sold-unit reconciliation, attribution, session architecture and price. AutoLander bundles those workflows with published plans from $39/mo — see how it differs in our [2026 comparison](https://autolander.ai/compare/).
 
 ### Is Facebook listing software the same as a Facebook Marketplace tool?
 
-For a car dealer, mostly yes — the place buyers browse for cars on Facebook is Marketplace, so "Facebook listing software" almost always means a Marketplace listing tool. If you specifically want the Marketplace details, see our Facebook Marketplace listing software page.
+For a car dealer, mostly yes — the place buyers browse for cars on Facebook is Marketplace, so "Facebook listing software" almost always means a Marketplace listing tool. If you specifically want the Marketplace details, see our [Facebook Marketplace listing software](https://autolander.ai/facebook-marketplace-listing-software/) page.
 
 ### Does Facebook listing software override Marketplace limits?
 
-No. Meta controls Marketplace access, categories and account-specific limits. AutoLander can prepare inventory, enhance listing assets, manage a queue and reconcile sold units, but it cannot unlock access or raise a Meta-imposed limit. Check the current rules in your account and use our dealer Marketplace guide to plan the workflow.
+No. Meta controls Marketplace access, categories and account-specific limits. AutoLander can prepare inventory, enhance listing assets, manage a queue and reconcile sold units, but it cannot unlock access or raise a Meta-imposed limit. Check the current rules in your account and use our [dealer Marketplace guide](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) to plan the workflow.
 
 ### How much does a Facebook listing tool cost?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card. Competing tools run roughly $99–$249/mo, with some on custom quotes. See the pricing page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card. Competing tools run roughly $99–$249/mo, with some on custom quotes. See the [pricing page](https://autolander.ai/facebook-marketplace-auto-poster-pricing/).
 
 ### Does the Facebook listing software work for a single sales rep?
 

@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/marketplace-response-time-for-car-dealers/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 3, 2026  
 Updated: September 3, 2026
 
 **Short answer:** A Marketplace buyer messages several listings at once and goes to see the one that answers first with a straight answer. Response time is therefore a sales metric, not a courtesy — but speed only works if the reply is right. The fastest way to a fast, correct reply is not a bot; it is a listing whose price and availability are already true, so the human answer is one sentence. Set a reply standard your team can actually meet, put the listings on a schedule that keeps them accurate, and automate the listing — not the conversation.
@@ -27,7 +28,7 @@ A fast wrong answer is worse than a slow right one, because it ends the conversa
 
 Speed is a process, not a personality. These are the pieces of one that works at a store with three to fifteen people on the floor.
 
-1. **Make the listing the source of truth** — If the price and availability on Marketplace are always the lot’s price and availability, the first reply is "Yes — come by before six." That requires the listings to be reconciled against the inventory feed on a schedule, which is the part software should do.
+1. **Make the listing the source of truth** — If the price and availability on Marketplace are always the lot’s price and availability, the first reply is "Yes — come by before six." That requires the listings to be reconciled against the [inventory feed](https://autolander.ai/facebook-marketplace-inventory-sync/) on a schedule, which is the part software should do.
 2. **Decide who owns the inbox, by hour** — One named person per shift, including evenings and weekends, with Messenger notifications on. Rotate it; do not leave it to "whoever posted it".
 3. **Set a reply target you can meet** — Minutes during floor hours, a stated window outside them. Publish it in the listing description. A buyer who knows to expect a reply by 9am does not go elsewhere at 9pm.
 4. **Keep a three-line reply for the common first message** — Availability, a next step, a name. "Yes, it is here. Want to see it today or tomorrow? — Marcus." Eight seconds from a phone.
@@ -37,7 +38,7 @@ Speed is a process, not a personality. These are the pieces of one that works at
 
 Automate the listing, not the conversation. A bot is fast, but every failure mode above — confirming a sold car, quoting a stale price, guessing a mileage — is a failure of listing accuracy that a bot delivers faster and with more confidence. Fix the data and the human reply becomes fast on its own.
 
-That is the division AutoLander is built around. It keeps the listing right — price from the feed, sold units down, real photos — and never touches the inbox; here is why. If a store does want inbox AI, the vendor questions guide is how to buy it without getting hurt.
+That is the division AutoLander is built around. It keeps the listing right — [price from the feed, sold units down, real photos](https://autolander.ai/facebook-marketplace-auto-poster/) — and never touches the inbox; [here is why](https://autolander.ai/why-we-dont-answer-your-buyers/). If a store does want inbox AI, the [vendor questions guide](https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/) is how to buy it without getting hurt.
 
 ## A measurement that is honest
 

@@ -12,7 +12,7 @@ Updated: September 3, 2026
 
 Facebook Marketplace listing software builds the buyer-facing vehicle record. It takes dealership data such as year, make, model, trim, mileage, price and condition, pairs it with ordered photos and a useful description, and keeps those elements together as one reviewable listing. The quality test is whether a buyer sees a complete, internally consistent vehicle—not whether software can merely click Publish.
 
-AutoLander is built for car dealers and sales reps who need that construction process repeated without copy-and-paste drift. It reads inventory data, prepares the listing assets and keeps the record aligned when price or sold status changes. Its auto-poster also executes publishing, but queue management and pacing are covered separately on the Facebook Marketplace auto poster page.
+AutoLander is built for car dealers and sales reps who need that construction process repeated without copy-and-paste drift. It reads inventory data, prepares the listing assets and keeps the record aligned when price or sold status changes. Its auto-poster also executes publishing, but queue management and pacing are covered separately on the [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) page.
 
 _Listing quality starts with the record buyers inspect: accurate fields, a clear description and photos that present the real vehicle consistently._
 
@@ -26,7 +26,7 @@ AutoLander starts with a connected CarGurus or Cars.com feed, or a custom feed/e
 
 No. A vehicle catalog is a structured data source used in eligible Meta business, feed or advertising workflows. A Marketplace vehicle listing is the buyer-facing post a shopper opens and messages about. Fields, availability and account rules can differ, and access to one workflow does not guarantee access to the other.
 
-AutoLander focuses on constructing and publishing Marketplace listings; it does not turn personal-profile automation into an official Meta catalog integration. A dealer using both should keep the catalog and Marketplace listing grounded in the same inventory source so price, availability and vehicle facts do not conflict. See Facebook Marketplace for car dealers for the channel-level trade-offs.
+AutoLander focuses on constructing and publishing Marketplace listings; it does not turn personal-profile automation into an official Meta catalog integration. A dealer using both should keep the catalog and Marketplace listing grounded in the same inventory source so price, availability and vehicle facts do not conflict. See [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/) for the channel-level trade-offs.
 
 ## Listing-quality tools inside AutoLander
 
@@ -66,16 +66,16 @@ Shows which completed Marketplace listings connect to vehicle-sale outcomes, not
 
 ## From inventory record to reviewed Marketplace listing
 
-1. **Import the authoritative record** — Connect a supported feed or custom export so each listing starts from the dealership’s current vehicle data; see the integrations page.
+1. **Import the authoritative record** — Connect a supported feed or custom export so each listing starts from the dealership’s current vehicle data; see the [integrations](https://autolander.ai/integrations/) page.
 2. **Select and review the unit** — Choose vehicles that are eligible for the channel, check core fields and required disclosures, and resolve missing or contradictory data.
 3. **Build the shopper-facing presentation** — Order the photos, prepare a clean background, create a walkaround video and draft a VIN-specific description from the reviewed record.
-4. **Publish and maintain the approved record** — The auto-poster executes the Marketplace work, while inventory sync keeps price and sold status aligned.
+4. **Publish and maintain the approved record** — The auto-poster executes the Marketplace work, while [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) keeps price and sold status aligned.
 
 ## How should a dealer select and review vehicles before publishing?
 
 Start with a channel checklist: the account and vehicle category must be eligible, the price must match the actual offer, required dealer disclosures must be present, and the photos, mileage, title-status language and availability must agree with the source record. Exclude any unit whose facts are not ready rather than publishing it and hoping to repair the listing later.
 
-AutoLander reduces the repetitive assembly work, but it does not replace dealer review or legal responsibility. Once a record is approved for the channel, the separate auto-poster execution workflow handles queueing and pacing.
+AutoLander reduces the repetitive assembly work, but it does not replace dealer review or legal responsibility. Once a record is approved for the channel, the separate [auto-poster execution workflow](https://autolander.ai/facebook-marketplace-auto-poster/) handles queueing and pacing.
 
 ## Why dealers use AutoLander for listing quality and consistency
 
@@ -87,17 +87,17 @@ AutoLander reduces the repetitive assembly work, but it does not replace dealer 
 
 ## Catalog data and Marketplace access are separate questions
 
-A clean vehicle record does not itself make a Marketplace posting method eligible. Marketplace access, commercial-seller rules, vehicle categories and listing limits vary by account and market; Meta’s Help Center currently documents monthly new-listing limits that include five vehicles and 20 listings total. Meta’s Terms prohibit automated access without prior permission. AutoLander’s native-app architecture keeps session data on your own machine, but it is not an official Meta integration and cannot guarantee approval or uninterrupted access. Review the rules shown in your account and the policy and safety guide before publishing.
+A clean vehicle record does not itself make a Marketplace posting method eligible. Marketplace access, commercial-seller rules, vehicle categories and listing limits vary by account and market; [Meta’s Help Center](https://www.facebook.com/help/811082570742714) currently documents monthly new-listing limits that include five vehicles and 20 listings total. Meta’s Terms prohibit automated access without prior permission. AutoLander’s native-app architecture keeps session data on your own machine, but it is not an official Meta integration and cannot guarantee approval or uninterrupted access. Review the rules shown in your account and the [policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) before publishing.
 
 ## Facebook Marketplace listing-software questions
 
 ### What is the best Facebook Marketplace listing software for car dealers?
 
-Judge listing software on record quality: which inventory fields it carries over, how it handles missing or contradictory data, whether a dealer can select and review eligible units, how it prepares photos and descriptions, and how source changes remain aligned. Our 2026 comparison shows how AutoLander and the main alternatives differ.
+Judge listing software on record quality: which inventory fields it carries over, how it handles missing or contradictory data, whether a dealer can select and review eligible units, how it prepares photos and descriptions, and how source changes remain aligned. Our [2026 comparison](https://autolander.ai/compare/) shows how AutoLander and the main alternatives differ.
 
 ### How much does Facebook Marketplace listing software cost?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. Competing tools range from about $99/mo (Sell With Drift, AutoLister Pro) to $249/mo (CARVID), with some (Shiftly, RelayAuto) using custom quotes. See our pricing page for the full breakdown.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. Competing tools range from about $99/mo (Sell With Drift, AutoLister Pro) to $249/mo (CARVID), with some (Shiftly, RelayAuto) using custom quotes. See our [pricing page](https://autolander.ai/facebook-marketplace-auto-poster-pricing/) for the full breakdown.
 
 ### Is there free Facebook Marketplace listing software?
 
@@ -105,11 +105,11 @@ Truly free options mean listing every car by hand. Most real listing software is
 
 ### What is the difference between a Facebook Marketplace listing tool and posting software?
 
-Vendors often use the terms interchangeably, but the jobs are useful to separate. A listing tool creates and checks what each vehicle record contains; posting software executes the queue and publishing work. AutoLander includes both layers. See the auto-poster page for queue controls and whole-lot execution.
+Vendors often use the terms interchangeably, but the jobs are useful to separate. A listing tool creates and checks what each vehicle record contains; posting software executes the queue and publishing work. AutoLander includes both layers. See the [auto-poster page](https://autolander.ai/facebook-marketplace-auto-poster/) for queue controls and whole-lot execution.
 
 ### Can the listing software post my whole inventory at once?
 
-AutoLander can load a whole dealership inventory so records can be selected, prepared and kept aligned from one source. Publishing is a separate execution step and remains subject to Marketplace availability, account eligibility and Meta’s listing limits. See bulk posting for how the queue works.
+AutoLander can load a whole dealership inventory so records can be selected, prepared and kept aligned from one source. Publishing is a separate execution step and remains subject to Marketplace availability, account eligibility and Meta’s listing limits. See [bulk posting](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/) for how the queue works.
 
 ### Does AutoLander work as a listing tool for a single sales rep?
 

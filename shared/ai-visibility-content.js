@@ -241,18 +241,27 @@ export const HOW = {
 
 // ---------- the form (dealer mode default; brand mode relabels two fields) ----------
 // Form constants shared with the Worker live in ./ai-scan-form.js and are re-exported here.
-export { ROLE_CHOICES, BRAND_ROLE_CHOICES, SMS_CONSENT, SMS_CONSENT_PREVIOUS } from './ai-scan-form.js';
+export { ROLE_CHOICES, BRAND_ROLE_CHOICES, SMS_CONSENT, SMS_CONSENT_PREVIOUS, MARKETPLACE_ROUTE, MARKETPLACE_DEMO_PATH } from './ai-scan-form.js';
 
 export const FORM = {
   title: 'Get your free AI Visibility Scan',
   intro: 'About a minute. A person on our team checks your report before we send it.',
   requiredNote: 'Every field is required except the text-message box.',
+  // Michael, 2026-10-01: salespeople looking for AutoLander's posting software were filling in the scan.
+  // A short off-ramp at the top of the form, and a role choice that swaps the submit button for the demo.
+  marketplace: {
+    note: 'For dealership owners and managers. Want AutoLander to post and update your cars on Facebook Marketplace? That is our posting software.',
+    noteCta: 'Book a Marketplace demo',
+    routeBody: 'This scan is for dealership owners and managers. AutoLander’s Facebook Marketplace software posts your cars and keeps prices, photos and sold units up to date. Book a short demo and we will set it up with you.',
+    routeCta: 'Book a Marketplace demo',
+  },
+  smsLead: 'Get your report and walkthrough time by text (optional)',
   fields: {
     dealershipName: { label: 'Dealership', autocomplete: 'organization', agentHint: 'The dealership’s trading name.' },
     website: { label: 'Website', hint: 'Example: yourstore.com', autocomplete: 'url', agentHint: 'The dealership’s own website address.' },
     location: { label: 'Store’s city or ZIP', hint: 'The town your buyers shop in.', autocomplete: 'off', agentHint: 'City or ZIP of the store, not of the person filling in the form.' },
     fullName: { label: 'Your name', hint: 'First and last name', autocomplete: 'name', agentHint: 'First and last name of the person requesting the scan.' },
-    role: { label: 'Your role', placeholder: 'Choose…', autocomplete: 'organization-title', agentHint: 'Their role at the dealership.' },
+    role: { label: 'Your role', placeholder: 'Choose…', autocomplete: 'organization-title', agentHint: 'Their role at the dealership. The scan is for owners and managers; a salesperson who wants AutoLander’s Facebook Marketplace posting software should book a demo at https://autolander.ai/?demo=1 instead.' },
     email: { label: 'E-mail', note: 'Your report goes here', autocomplete: 'email', agentHint: 'Where the report is sent.' },
     phone: { label: 'Mobile', note: 'For your 20-minute walkthrough', hint: 'Example: (212) 555-0123', autocomplete: 'tel', agentHint: 'Mobile number for booking the walkthrough.' },
   },
@@ -271,7 +280,7 @@ export const FORM = {
     invalid_website: 'That website does not look right, for example yourstore.com.',
     missing_location: 'Enter your store’s city or ZIP code.',
     missing_full_name: 'Enter your first and last name.',
-    missing_role: 'Choose your role at the dealership.',
+    missing_role: 'Choose your role at the dealership. Looking for AutoLander’s Facebook Marketplace posting software? Book a demo at autolander.ai/?demo=1.',
     invalid_email: 'That e-mail does not look right. Check it and try again.',
     invalid_phone: 'That mobile number does not look right. Check it and try again.',
     blocked: 'We couldn’t send that from this browser. E-mail sales@autolander.ai with your store’s name and we’ll run your scan.',

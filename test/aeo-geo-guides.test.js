@@ -14,7 +14,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 import {
   AEO_GEO_GUIDES_MODULE, SILOS, articlePath, clusterPillars, loadPublishState, publishedClusterGuides,
-  aeoGeoGuidesModule,
+  aeoGeoGuidesModule, latestSiloUpdate,
 } from '../scripts/seo/articles/article-system.mjs';
 import { DRIP_ARTICLES } from '../scripts/seo/articles/drip-articles.mjs';
 import { loadBlogPosts } from '../scripts/seo/articles/blog-loader.mjs';
@@ -74,7 +74,7 @@ test('publishedClusterGuides: published only, grouped by cluster in cluster orde
 });
 
 test('the committed src/generated/aeo-geo-guides.js matches a fresh render from the committed publish state', () => {
-  const fresh = aeoGeoGuidesModule(publishedClusterGuides('aeoGeo', ALL, loadPublishState()));
+  const fresh = aeoGeoGuidesModule(publishedClusterGuides('aeoGeo', ALL, loadPublishState()), latestSiloUpdate('aeoGeo', ALL, loadPublishState()));
   assert.equal(read(AEO_GEO_GUIDES_MODULE), fresh, 'run node scripts/build-seo-pages.mjs');
   assert.deepEqual(AEO_GEO_GUIDES, publishedClusterGuides('aeoGeo', ALL, loadPublishState()));
   // Deterministic: the same state always produces the same bytes.
@@ -182,5 +182,5 @@ test('the publish workflow commits the generated module (it lives under src/gene
   assert.match(commit, /'src\/generated'/);
   const builder = read('scripts/build-seo-pages.mjs');
   assert.match(builder, /publishedClusterGuides\('aeoGeo', ARTICLE_CONTENT, PUBLISH_STATE\)/);
-  assert.match(builder, /renderAiVisibilityMarkdown\(\{ guides: AEO_GEO_GUIDES \}\)/);
+  assert.match(builder, /renderAiVisibilityMarkdown\(\{ guides: AEO_GEO_GUIDES, updated: AI_VISIBILITY_LASTMOD \}\)/);
 });

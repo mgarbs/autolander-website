@@ -12,7 +12,7 @@ Updated: September 3, 2026
 
 Facebook Marketplace automation is software that handles your Marketplace listings automatically instead of a person doing each step by hand. It posts your inventory, keeps prices and details current, removes sold units, and can improve the photos and descriptions — so your lot stays fully and accurately represented on Marketplace without constant manual work.
 
-AutoLander automates Facebook Marketplace for car dealers from a native desktop app on your own computer, posting through your normal Facebook session. The underlying posting is the same engine as the Facebook Marketplace auto poster; this page is about automating the whole workflow end to end.
+AutoLander automates Facebook Marketplace for car dealers from a native desktop app on your own computer, posting through your normal Facebook session. The underlying posting is the same engine as the [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/); this page is about automating the whole workflow end to end.
 
 _Automation includes the photos: AutoLander turns a raw 2026 Ford Maverick lot photo (left) into a showroom-grade Marketplace listing (right), automatically._
 
@@ -20,9 +20,9 @@ _Automation includes the photos: AutoLander turns a raw 2026 Ford Maverick lot p
 
 Connect your feed once; while the desktop app is running, it handles the repetitive inventory workflow.
 
-1. **Auto-post your inventory** — AutoLander reads your CarGurus or Cars.com feed (or a custom feed/export) and works through eligible vehicles with a configurable posting queue — see bulk posting.
+1. **Auto-post your inventory** — AutoLander reads your CarGurus or Cars.com feed (or a custom feed/export) and works through eligible vehicles with a configurable posting queue — see [bulk posting](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/).
 2. **Auto-enhance every listing** — The AI Photo Studio swaps lot backgrounds for showroom backdrops, AI writes each description, and a walkaround video is generated per vehicle.
-3. **Refresh and reconcile** — Prices update as your feed changes and sold units are removed during inventory sync, reducing stale-listing inquiries.
+3. **Refresh and reconcile** — Prices update as your feed changes and sold units are removed during [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/), reducing stale-listing inquiries.
 4. **Measure it** — Post-to-sale attribution shows which automated listings actually sold cars, not just views.
 
 ## Why dealers automate Facebook Marketplace with AutoLander
@@ -34,29 +34,29 @@ Connect your feed once; while the desktop app is running, it handles the repetit
 
 ## Automation requires a policy check
 
-Meta’s Terms prohibit unauthorized automated access, and Marketplace eligibility, listing limits and business products can change. Keeping a session local is an architectural choice, not Meta approval. Read the full automation policy and safety guide and confirm the rules shown for the account before you start.
+Meta’s Terms prohibit unauthorized automated access, and Marketplace eligibility, listing limits and business products can change. Keeping a session local is an architectural choice, not Meta approval. Read the full [automation policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) and confirm the rules shown for the account before you start.
 
 ## Frequently asked questions
 
 ### Can you automate Facebook Marketplace posting for a whole dealership?
 
-AutoLander can load an entire inventory feed, build a configurable queue of eligible vehicles and keep published listings in sync as prices and availability change. Meta controls Marketplace access and listing limits, so software cannot promise that a 150-car lot can be live at once. See bulk posting.
+AutoLander can load an entire inventory feed, build a configurable queue of eligible vehicles and keep published listings in sync as prices and availability change. Meta controls Marketplace access and listing limits, so software cannot promise that a 150-car lot can be live at once. See [bulk posting](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/).
 
 ### How much does Facebook Marketplace automation software cost?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts and no credit card. Competing tools run roughly $99–$249/mo, some on custom quotes. See the pricing page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts and no credit card. Competing tools run roughly $99–$249/mo, some on custom quotes. See the [pricing page](https://autolander.ai/facebook-marketplace-auto-poster-pricing/).
 
 ### Is automating Facebook Marketplace against the rules?
 
-Meta’s Terms prohibit unauthorized automated access, while eligibility and business products vary by account and market. AutoLander’s local desktop architecture is not Meta approval and cannot guarantee access. See the automation policy and safety guide.
+Meta’s Terms prohibit unauthorized automated access, while eligibility and business products vary by account and market. AutoLander’s local desktop architecture is not Meta approval and cannot guarantee access. See the [automation policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/).
 
 ### What is the difference between this and the automation guide?
 
-This page is about the automation software itself — what AutoLander automates and what it costs. The automation guide is the honest deep-dive on whether and how to automate Marketplace safely. Read both.
+This page is about the automation software itself — what AutoLander automates and what it costs. The [automation guide](https://autolander.ai/guide/facebook-marketplace-automation/) is the honest deep-dive on whether and how to automate Marketplace safely. Read both.
 
 ### Does the automation also improve my photos and descriptions?
 
-Yes — automation is not just posting. AutoLander’s AI Photo Studio replaces lot backgrounds with showroom backdrops and AI writes each VIN-specific description, so every automated listing looks professional. More on the listing software page.
+Yes — automation is not just posting. AutoLander’s AI Photo Studio replaces lot backgrounds with showroom backdrops and AI writes each VIN-specific description, so every automated listing looks professional. More on the [listing software](https://autolander.ai/facebook-marketplace-listing-software/) page.
 
 ## Related
 

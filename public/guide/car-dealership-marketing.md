@@ -34,9 +34,9 @@ _Intent ranking reflects how each channel is used: Marketplace and portals are w
 
 Run these in order. Each step compounds the one before it.
 
-1. **Get every unit on Facebook Marketplace, every day** — It is the largest pool of local used-car buyers and listing is free. Posting a full inventory by hand takes hours, which is why most stores list a fraction of their units — a Facebook Marketplace auto poster keeps the whole lot live without hiring for it.
-2. **Fix the photos before you spend a dollar on ads** — Buyers scroll past dark, cluttered lot shots. Clean, consistent, showroom-grade photos raise clicks on the same car at the same price — an AI car photo editor does it automatically from your existing feed photos.
-3. **Answer in seconds, not hours** — Marketplace buyers message five dealers at once and buy from the one who answers. Name an owner per shift and keep Messenger on their phone — AutoLander’s part is making sure the listing they are answering about carries the right price and specs. The speed-to-lead playbook keeps the reply under a minute.
+1. **Get every unit on Facebook Marketplace, every day** — It is the largest pool of local used-car buyers and listing is free. Posting a full inventory by hand takes hours, which is why most stores list a fraction of their units — a [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) keeps the whole lot live without hiring for it.
+2. **Fix the photos before you spend a dollar on ads** — Buyers scroll past dark, cluttered lot shots. Clean, consistent, showroom-grade photos raise clicks on the same car at the same price — an [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) does it automatically from your existing feed photos.
+3. **Answer in seconds, not hours** — Marketplace buyers message five dealers at once and buy from the one who answers. Name an owner per shift and keep Messenger on their phone — AutoLander’s part is making sure the listing they are answering about carries the right price and specs. The [speed-to-lead playbook](https://autolander.ai/guide/car-sales-leads/) keeps the reply under a minute.
 4. **Own your Google Business Profile** — Claim it, fill every field, add lot photos, and ask every happy buyer for a review the day they take delivery. Reviews are the single cheapest trust signal in car retail.
 5. **Make your website prove the car** — Fast pages, real photos, a price, a payment estimator and a one-tap way to text the store. Every extra form field costs you leads.
 6. **Spend paid dollars only on aged units and retargeting** — Ads work when they have a specific job: move the 60-day-old truck, re-catch the shopper who viewed a VDP. Broad "brand awareness" spend is where dealership ad budgets go to die.
@@ -47,15 +47,15 @@ _Merchandising is marketing: the same Wagoneer, freed from a cluttered promo fra
 ## Rules independent dealers can win with
 
 - Fish where the fish are: a free Marketplace listing seen by 500 local shoppers beats a paid impression seen by nobody in-market.
-- Every car, every channel, every day — coverage beats cleverness. See bulk posting to keep the whole lot live.
+- Every car, every channel, every day — coverage beats cleverness. See [bulk posting](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/) to keep the whole lot live.
 - Photos are the ad. The listing photo does more selling than the headline, the description and the ad budget combined.
-- Speed is a feature: the store that answers first gets the test drive. See how to get more car sales leads.
-- Sold cars still advertised burn trust — automatic inventory sync removes them before a buyer drives out for a ghost.
+- Speed is a feature: the store that answers first gets the test drive. See [how to get more car sales leads](https://autolander.ai/guide/car-sales-leads/).
+- Sold cars still advertised burn trust — automatic [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) removes them before a buyer drives out for a ghost.
 - Your past customers are your cheapest future customers. Text them at trade-in equity moments, not just birthdays.
 
 ## The honest part
 
-No channel fixes overpriced inventory or bad photos. Marketing multiplies what the merchandising already says — get the photos, price and response speed right, then scale the channels. And keep automation inside the rules: see the Marketplace policy and safety guide.
+No channel fixes overpriced inventory or bad photos. Marketing multiplies what the merchandising already says — get the [photos](https://autolander.ai/ai-car-photo-editor/), price and response speed right, then scale the channels. And keep automation inside the rules: see the [Marketplace policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/).
 
 ## Frequently asked questions
 
@@ -69,11 +69,11 @@ Spend follows leaks, not formulas. Before adding paid budget, max out the free c
 
 ### Is Facebook Marketplace still worth it for car dealers in 2026?
 
-Yes — it remains the largest free source of local, in-market used-car shoppers, and dealers who post inventory consistently with good photos and fast replies get a steady flow of messages. The work is volume and consistency, which is what Facebook Marketplace software for dealers automates.
+Yes — it remains the largest free source of local, in-market used-car shoppers, and dealers who post inventory consistently with good photos and fast replies get a steady flow of messages. The work is volume and consistency, which is what [Facebook Marketplace software for dealers](https://autolander.ai/facebook-marketplace-auto-poster/) automates.
 
 ### How do car dealers show up in AI answers?
 
-Make the store easy for AI tools to read and trust: let AI search crawlers in, put price, mileage and VIN on vehicle pages as text, keep your name, address and hours the same everywhere, and answer your reviews. That work is called AEO and GEO; see AEO and GEO for car dealers for a free scan. No one can promise what an AI will say.
+Make the store easy for AI tools to read and trust: let AI search crawlers in, put price, mileage and VIN on vehicle pages as text, keep your name, address and hours the same everywhere, and answer your reviews. That work is called AEO and GEO; see [AEO and GEO for car dealers](https://autolander.ai/aeo-geo-for-car-dealers/) for a free scan. No one can promise what an AI will say.
 
 ### Do I need a marketing agency for my dealership?
 
@@ -81,7 +81,7 @@ Not to start. The plays that move metal first — Marketplace coverage, photos, 
 
 ### What are the best car dealership marketing ideas?
 
-We keep a working list of 27 dealership marketing ideas ranked by cost and effort — from free Marketplace plays to local partnerships and retention campaigns.
+We keep a working list of [27 dealership marketing ideas](https://autolander.ai/guide/car-dealership-marketing-ideas/) ranked by cost and effort — from free Marketplace plays to local partnerships and retention campaigns.
 
 ## Related
 

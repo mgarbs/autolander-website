@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/remove-background-from-car-photo/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: August 31, 2026  
 Updated: August 31, 2026
 
 **Short answer:** Any background remover can cut a car out of a photo. The hard part is what makes the result believable: wheel spokes, glass the old background still shows through, the old scene reflected in the paint, and the ground shadow that keeps the car from floating. Generic tools fail on those four; vehicle-specific background replacement rebuilds them. Free tools are fine for one car, once — a dealer lot every week is a different problem.
@@ -22,13 +23,13 @@ And shadow: cut the car out and it loses contact with the ground, producing the 
 
 ## Is a free background remover good enough for car photos?
 
-For one car, one time — genuinely yes. Selling your own vehicle, you can run the hero shot through a free tool, clean up the edges by hand, set it on a plain backdrop, and come out ahead of most private listings. The math breaks at dealer scale: minutes of cleanup per photo, times a twenty-photo set, times a forty-unit lot, times weekly inventory turn — hand-editing becomes a hire. And the free tier’s output — a floating car on white — reads as clip art next to competitors whose re-staged listings look shot in a studio. Free is the right answer exactly as long as volume is one.
+For one car, one time — genuinely yes. Selling your own vehicle, you can run the hero shot through a free tool, clean up the edges by hand, set it on a plain backdrop, and come out ahead of most private listings. The math breaks at dealer scale: minutes of cleanup per photo, times a twenty-photo set, times a forty-unit lot, times weekly inventory turn — hand-editing becomes a hire. And the free tier’s output — a floating car on white — reads as clip art next to competitors whose [re-staged listings](https://autolander.ai/ai-car-photo-editor/) look shot in a studio. Free is the right answer exactly as long as volume is one.
 
 ## What is car background replacement — and how is it different from removal?
 
 Removal ends with a cutout. Replacement ends with a photograph: the vehicle re-staged in a new scene with the ground shadow rebuilt, the paint reflections cleaned so the old lot is not still smeared on the doors, and the glass showing the new environment instead of the old one. Done right, it does not look edited — it looks like the car was driven somewhere better and shot again.
 
-That is what a vehicle-specific AI car photo editor does, and why it is a different product category from a general-purpose remover: it was built around the four automotive failure points instead of tripping over them.
+That is what a vehicle-specific [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) does, and why it is a different product category from a general-purpose remover: it was built around the four automotive failure points instead of tripping over them.
 
 ## What a finished replacement should look like
 
@@ -70,7 +71,7 @@ Yes, and for a single private sale it is often the right call — free removers 
 
 ### How do dealers edit car photos at scale?
 
-They stop editing photo-by-photo. Dealer-grade car photo editing runs as a pipeline: the photos already in the inventory feed go through AI background replacement automatically, and the finished images flow onto the listings — AutoLander does exactly this and then posts each unit to Facebook Marketplace with its re-staged set. Nobody at the store opens an editor.
+They stop editing photo-by-photo. Dealer-grade car photo editing runs as a pipeline: the photos already in the inventory feed go through AI background replacement automatically, and the finished images flow onto the listings — AutoLander does exactly this and then [posts each unit to Facebook Marketplace](https://autolander.ai/facebook-marketplace-auto-poster/) with its re-staged set. Nobody at the store opens an editor.
 
 ### Should the new background be a studio or an outdoor scene?
 

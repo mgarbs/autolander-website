@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/why-facebook-marketplace-only/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 3, 2026  
 Updated: September 3, 2026
 
 **Short answer:** AutoLander does not post to Craigslist, OfferUp, eBay Motors or any channel other than Facebook Marketplace. That is a decision, not a gap. Marketplace is the one free channel where a dealer’s local buyers already are, where the listing format is vehicle-native, and where keeping a whole lot accurate — prices, sold units, photos — is a daily job worth doing perfectly. Doing that one job well is harder than doing five channels shallowly, and the dealers who get the most from Marketplace are the ones whose listings are never stale.
@@ -18,11 +19,11 @@ Several tools in this category advertise syndication to five or more channels. S
 
 A Marketplace listing is not a one-time post. It is a record that has to stay true for as long as the car is on the lot, and disappear the day it is not. Every one of these is a job AutoLander does for the whole inventory, every day:
 
-- Posts eligible vehicles into the correct Marketplace category — a car as a car, a travel trailer as an RV/Camper — with year, make, model, mileage, price and description filled from the feed. See the auto poster page for how the queue works.
+- Posts eligible vehicles into the correct Marketplace category — a car as a car, a travel trailer as an RV/Camper — with year, make, model, mileage, price and description filled from the feed. See the [auto poster page](https://autolander.ai/facebook-marketplace-auto-poster/) for how the queue works.
 - Pushes every price change from the feed to the live listing, so a Tuesday markdown is on Marketplace Tuesday, not whenever someone remembers.
-- Pulls sold units down automatically as the inventory feed marks them sold, so buyers stop messaging about cars that are gone.
-- Re-queues new arrivals without anyone opening Marketplace, and works the whole lot inside the account’s listing limits rather than around them — the safety page covers what those limits are.
-- Runs AI photo editing built around Marketplace’s thumbnail sizes and feed layout, because the first photo is what gets the tap.
+- Pulls sold units down automatically as the [inventory feed](https://autolander.ai/facebook-marketplace-inventory-sync/) marks them sold, so buyers stop messaging about cars that are gone.
+- Re-queues new arrivals without anyone opening Marketplace, and works the whole lot inside the account’s listing limits rather than around them — the [safety page](https://autolander.ai/safest-facebook-marketplace-auto-poster/) covers what those limits are.
+- Runs [AI photo editing](https://autolander.ai/ai-car-photo-editor/) built around Marketplace’s thumbnail sizes and feed layout, because the first photo is what gets the tap.
 
 ## Why not just add the other channels too?
 
@@ -39,10 +40,10 @@ A tool that syndicates to all of them tends to publish the same flat listing eve
 
 ## AutoLander is the wrong fit if
 
-- You need one tool to push inventory to Craigslist, OfferUp, eBay Motors and Marketplace from a single screen — some tools on our comparison page do that.
+- You need one tool to push inventory to Craigslist, OfferUp, eBay Motors and Marketplace from a single screen — some tools on our [comparison page](https://autolander.ai/compare/) do that.
 - Your Marketplace listings are a minor channel and you would rather not maintain them at all.
 - You are outside the United States, Canada and Spanish-speaking Latin America — the markets AutoLander serves, in English, Spanish and French.
-- You want software to answer buyers for you — we do not do that either, and here is why.
+- You want software to answer buyers for you — we do not do that either, and [here is why](https://autolander.ai/why-we-dont-answer-your-buyers/).
 
 ## The honest version
 

@@ -12,7 +12,7 @@ Updated: September 3, 2026
 
 A Facebook Marketplace assistant is software that takes the repetitive Marketplace work off a salesperson’s plate — preparing eligible listings, keeping prices and details current, enhancing the photos, writing the descriptions and removing sold units. Think of it as a tireless assistant dedicated to your Marketplace listings — the conversations stay entirely with your people.
 
-AutoLander is that assistant, built for car dealers. It runs as a native desktop app on your own computer and posts through your normal Facebook session, so the work happens on your machine rather than a shared cloud server. Under the hood it is the same engine as the Facebook Marketplace auto poster, packaged as an assistant that handles the whole listing lifecycle.
+AutoLander is that assistant, built for car dealers. It runs as a native desktop app on your own computer and posts through your normal Facebook session, so the work happens on your machine rather than a shared cloud server. Under the hood it is the same engine as the [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/), packaged as an assistant that handles the whole listing lifecycle.
 
 _Your assistant handles the photos too: AutoLander turns a raw 2024 Hyundai Sonata lot photo (left) into a showroom-grade Marketplace listing (right), automatically._
 
@@ -22,7 +22,7 @@ The jobs you would hand a dedicated Marketplace person — handled automatically
 
 ### Lists your inventory
 
-Works through vehicles from your feed with a configurable posting queue — the listing software at the core.
+Works through vehicles from your feed with a configurable posting queue — the [listing software](https://autolander.ai/facebook-marketplace-listing-software/) at the core.
 
 ### Enhances every photo
 
@@ -34,7 +34,7 @@ AI writes an accurate, VIN-specific description for every vehicle, so nothing is
 
 ### Keeps it current
 
-Refreshes prices and removes sold units automatically via inventory sync.
+Refreshes prices and removes sold units automatically via [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/).
 
 ### Keeps prices honest
 
@@ -59,13 +59,13 @@ That distinction matters when comparing Facebook Marketplace message automation 
 
 ## An honest note
 
-Meta’s Terms prohibit unauthorized automated access, and Marketplace eligibility, limits and business options can change. AutoLander keeps the session on the dealer’s own machine, but local architecture is not Meta approval and cannot guarantee access. See the automation policy and safety guide.
+Meta’s Terms prohibit unauthorized automated access, and Marketplace eligibility, limits and business options can change. AutoLander keeps the session on the dealer’s own machine, but local architecture is not Meta approval and cannot guarantee access. See the [automation policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/).
 
 ## Frequently asked questions
 
 ### Is the Facebook Marketplace assistant an AI tool?
 
-Yes — it uses AI for the photo enhancement and the written descriptions, and automation for the posting and sold-removal. It is one of the core Facebook AI tools AutoLander offers for car dealers.
+Yes — it uses AI for the photo enhancement and the written descriptions, and automation for the posting and sold-removal. It is one of the core [Facebook AI tools](https://autolander.ai/facebook-ai-tools/) AutoLander offers for car dealers.
 
 ### Does AutoLander automate Facebook Marketplace messages?
 
@@ -73,15 +73,15 @@ No. AutoLander does not send buyer replies and does not handle, forward or manag
 
 ### How much does a Facebook Marketplace assistant cost?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts and no credit card. See the pricing page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts and no credit card. See the [pricing page](https://autolander.ai/facebook-marketplace-auto-poster-pricing/).
 
 ### Can the assistant manage my whole lot?
 
-AutoLander can load the whole inventory feed, manage a queue of eligible listings and keep published units in sync. Meta controls Marketplace access and listing limits, so software cannot promise that every VIN can be live at once. See bulk posting and inventory sync.
+AutoLander can load the whole inventory feed, manage a queue of eligible listings and keep published units in sync. Meta controls Marketplace access and listing limits, so software cannot promise that every VIN can be live at once. See [bulk posting](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/) and [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/).
 
 ### Is using a Marketplace assistant against Facebook’s rules?
 
-Meta prohibits unauthorized automated access, and eligibility varies by account and market. AutoLander’s local desktop architecture is not Meta approval and cannot guarantee access. Read the automation policy and safety guide first.
+Meta prohibits unauthorized automated access, and eligibility varies by account and market. AutoLander’s local desktop architecture is not Meta approval and cannot guarantee access. Read the [automation policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) first.
 
 ## Related
 

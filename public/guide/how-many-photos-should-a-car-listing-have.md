@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/how-many-photos-should-a-car-listing-have/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 5, 2026  
 Updated: September 5, 2026
 
 **Short answer:** Enough to answer every question a serious buyer would ask in person — in practice, fifteen to twenty-five photos. Coverage beats count: eight exterior angles, a full interior set, odometer, tires, and honest flaw close-ups. Below roughly eight photos, buyers assume the listing is hiding something. And the first photo matters more than the rest combined, because it is the only one shown in the search results.
@@ -37,7 +38,7 @@ Every photo should retire a question. This is the map from the questions buyers 
 
 A three-quarter front shot in good light on a clean background — no promo frame, no banner text, no row of other inventory behind it. In the search grid, your first photo is a small thumbnail competing against dozens of others, and it decides whether anyone ever sees photos two through twenty.
 
-This is where merchandising earns its keep: the same car with a cluttered or branded first frame gets scrolled past, while a clean re-staged hero from an AI car photo editor reads as a professional listing at thumbnail size — which is the only size that matters until the click.
+This is where merchandising earns its keep: the same car with a cluttered or branded first frame gets scrolled past, while a clean re-staged hero from an [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) reads as a professional listing at thumbnail size — which is the only size that matters until the click.
 
 ## What order should car listing photos go in?
 
@@ -45,7 +46,7 @@ Hero first, then the exterior loop, then interior, then details, flaws last — 
 
 _Slot one decides the click: a real 2023 Infiniti QX60 feed photo boxed in a promo frame (left) versus the same car re-staged by AutoLander’s AI Photo Studio (right). Only one of these survives a thumbnail._
 
-The scale problem is the honest reason most dealer listings run thin. Twenty photos per unit times a forty-car lot is eight hundred uploads, repeated every time inventory turns — so hand-posted listings quietly shrink to five or six photos out of fatigue, not strategy. Software removes the fatigue: a tool that can bulk post cars to Facebook Marketplace carries the full photo set onto every listing, every time, and an auto poster keeps doing it as units come and go.
+The scale problem is the honest reason most dealer listings run thin. Twenty photos per unit times a forty-car lot is eight hundred uploads, repeated every time inventory turns — so hand-posted listings quietly shrink to five or six photos out of fatigue, not strategy. Software removes the fatigue: a tool that can [bulk post cars to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/) carries the full photo set onto every listing, every time, and an [auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) keeps doing it as units come and go.
 
 ## The honest part
 

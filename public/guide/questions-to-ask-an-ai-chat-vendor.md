@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/questions-to-ask-an-ai-chat-vendor/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 3, 2026  
 Updated: September 3, 2026
 
 **Short answer:** Before connecting any AI chat tool to a dealership inbox, get straight answers to a short list of questions: where it reads availability and price from and how often; whether it will ever quote a number the listing does not show; how many messages pass before a frustrated or finance-question buyer reaches a person; which Facebook account it operates through and under what Meta permission; and what it logs. A vendor who answers all of them plainly is selling a tool. One who answers with a demo video is selling a risk. AutoLander is not an AI chat product and does not touch the inbox; this guide exists because dealers ask us what to look for.
@@ -12,7 +13,7 @@ Updated: September 3, 2026
 
 Because every AI chat demo looks the same. The bot answers "is it available?" instantly, books a test drive, and the dealer principal nods. What the demo cannot show is the Sunday night when the unit sold Saturday and the feed has not caught up, or the buyer who asks about a trade-in with a lien and gets three cheerful non-answers before anyone at the store sees the thread.
 
-The questions below are the ones that surface those cases. They are not gotchas; a good vendor has answered every one of them before. AutoLander does not sell inbox AI — here is why — but dealers evaluating it ask us what to look for, so this is the list.
+The questions below are the ones that surface those cases. They are not gotchas; a good vendor has answered every one of them before. AutoLander does not sell inbox AI — [here is why](https://autolander.ai/why-we-dont-answer-your-buyers/) — but dealers evaluating it ask us what to look for, so this is the list.
 
 ## The twelve questions
 
@@ -49,7 +50,7 @@ Ask them in this order. The first four are the ones that decide whether the tool
 
 ## What does AutoLander do if it does not answer buyers?
 
-It makes the listing the buyer is asking about correct, which is what makes a fast human reply possible. Price from the feed, sold units removed automatically, real mileage or none, studio photos. When the facts are right, the reply is one sentence from a salesperson’s phone. The AI chat for car dealers guide covers the category honestly; the response time guide covers why that one sentence, sent quickly, wins.
+It makes the listing the buyer is asking about correct, which is what makes a fast human reply possible. Price from the feed, sold units removed automatically, real mileage or none, studio photos. When the facts are right, the reply is one sentence from a salesperson’s phone. The [AI chat for car dealers](https://autolander.ai/ai-chat-for-car-dealers/) guide covers the category honestly; the [response time guide](https://autolander.ai/guide/marketplace-response-time-for-car-dealers/) covers why that one sentence, sent quickly, wins.
 
 ## Frequently asked questions
 

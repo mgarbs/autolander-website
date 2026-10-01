@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/car-walkaround-video-for-dealers/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 20, 2026  
 Updated: September 20, 2026
 
 **Short answer:** A car walkaround video is a single continuous sixty-second lap: open on the three-quarter front, walk the exterior slowly, step into the interior with the dash powered on, show the odometer, and close on the feature that sells the unit. Shoot it on a phone with slow feet and a wiped lens. When nobody has time to shoot, AutoLander can generate a walkaround-style AI video from the listing photos instead.
@@ -41,13 +42,13 @@ One continuous take, slow feet, no editing required. Rough time marks keep the l
 
 ## Where does video actually show up on a car listing?
 
-Marketplace vehicle listings are photo-led — photos, price, mileage, and description are the fields doing the selling, so the walkaround’s highest-traffic home is usually the website vehicle page and the store’s social channels. The clip also earns its keep in conversation: when a buyer asks “any scratches on the hood?”, your salesperson replying with the walkaround answers ten questions at once — a speed-to-lead play that costs nothing extra because the video already exists.
+Marketplace vehicle listings are photo-led — photos, price, mileage, and description are the fields doing the selling, so the walkaround’s highest-traffic home is usually the website vehicle page and the store’s social channels. The clip also earns its keep in conversation: when a buyer asks “any scratches on the hood?”, your salesperson replying with the walkaround answers ten questions at once — a [speed-to-lead](https://autolander.ai/guide/car-sales-leads/) play that costs nothing extra because the video already exists.
 
 The practical rule: shoot once, use everywhere, and never let the video contradict the listing — a clip showing the old price or the since-repaired ding creates exactly the confusion it was meant to remove.
 
 ## What if nobody has time to shoot video?
 
-That is the honest constraint at most stores: the walkaround takes minutes, but minutes times forty units times weekly turnover is a part-time job nobody was hired for. AutoLander’s answer is generated coverage: it can produce a walkaround-style AI video from the listing photos it already has — motion built from the same frames the AI car photo editor staged — so every unit carries video-grade presentation even in weeks when nobody touched a camera. Units worth real footage still deserve real footage; the AI version exists so the other thirty-five units are not bare.
+That is the honest constraint at most stores: the walkaround takes minutes, but minutes times forty units times weekly turnover is a part-time job nobody was hired for. AutoLander’s answer is generated coverage: it can produce a walkaround-style AI video from the listing photos it already has — motion built from the same frames the [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) staged — so every unit carries video-grade presentation even in weeks when nobody touched a camera. Units worth real footage still deserve real footage; the AI version exists so the other thirty-five units are not bare.
 
 _Video starts with the photos: this 2025 Toyota Tacoma, re-staged by AutoLander’s AI Photo Studio, is the raw material its walkaround-style AI video is generated from — clean frames in, clean motion out._
 
@@ -75,7 +76,7 @@ A phone with a wiped lens, a quiet corner of the lot, and slow feet. That covers
 
 ### Can AI really make a walkaround video from photos?
 
-Yes — AutoLander generates walkaround-style video from a listing’s existing photos, producing motion coverage of the real vehicle without anyone shooting footage. It presents the car; it cannot demonstrate sound or driving behavior, so it complements rather than replaces real video on showcase units. Its job is making sure no unit posts to Marketplace bare.
+Yes — AutoLander generates walkaround-style video from a listing’s existing photos, producing motion coverage of the real vehicle without anyone shooting footage. It presents the car; it cannot demonstrate sound or driving behavior, so it complements rather than replaces real video on showcase units. Its job is making sure no unit [posts to Marketplace](https://autolander.ai/facebook-marketplace-auto-poster/) bare.
 
 ## Related
 

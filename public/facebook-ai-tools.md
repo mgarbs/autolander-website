@@ -22,19 +22,19 @@ Four AI capabilities, one app — each maps to a job a dealer used to do by hand
 
 ### AI Photo Studio
 
-AI replaces messy lot backgrounds with clean showroom backdrops and orders the shots buyers respond to — the photo half of Facebook Marketplace listing software.
+AI replaces messy lot backgrounds with clean showroom backdrops and orders the shots buyers respond to — the photo half of [Facebook Marketplace listing software](https://autolander.ai/facebook-marketplace-listing-software/).
 
 ### AI-written listings
 
-AI writes a clear, accurate, VIN-specific description for every vehicle, so each Facebook listing reads professionally without copy-paste.
+AI writes a clear, accurate, VIN-specific description for every vehicle, so each [Facebook listing](https://autolander.ai/facebook-listing-software/) reads professionally without copy-paste.
 
 ### AI-assisted posting
 
-AutoLander builds listings from your inventory and moves eligible vehicles through a configurable queue — the workflow behind the Facebook Marketplace auto poster and Facebook autoposter.
+AutoLander builds listings from your inventory and moves eligible vehicles through a configurable queue — the workflow behind the [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) and [Facebook autoposter](https://autolander.ai/facebook-autoposter/).
 
 ### AI Marketplace assistant
 
-While the desktop app is running, it helps keep listings current, hold prices in step with the feed and remove sold units — your Facebook Marketplace assistant.
+While the desktop app is running, it helps keep listings current, hold prices in step with the feed and remove sold units — your [Facebook Marketplace assistant](https://autolander.ai/facebook-marketplace-assistant/).
 
 ### AI walkaround video
 
@@ -42,7 +42,7 @@ AI generates a short walkaround video per vehicle, which Marketplace and buyers 
 
 ### Full Marketplace automation
 
-Put it together and it is end-to-end Facebook Marketplace automation: sync, post, refresh, remove — hands-off.
+Put it together and it is end-to-end [Facebook Marketplace automation](https://autolander.ai/facebook-marketplace-automation/): sync, post, refresh, remove — hands-off.
 
 ## Does Facebook have its own AI tools for selling cars?
 
@@ -52,37 +52,37 @@ AutoLander runs as a native desktop app on your own computer, so the AI posts th
 
 ## How car dealers use Facebook AI tools to sell more
 
-- Load the whole inventory feed, then manage eligible vehicles within the account’s current limits — see bulk posting to Facebook Marketplace.
-- Keep it accurate automatically: AI syncs prices and removes sold cars via Facebook Marketplace inventory sync.
+- Load the whole inventory feed, then manage eligible vehicles within the account’s current limits — see [bulk posting to Facebook Marketplace](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/).
+- Keep it accurate automatically: AI syncs prices and removes sold cars via [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/).
 - Look professional on every listing: AI photos + AI descriptions make a phone snap look like a studio shoot.
 - Measure what works: post-to-sale attribution shows which AI-posted listings actually sold cars.
-- Check permission first: Meta’s Terms prohibit automated access without prior permission — see the policy and safety guide.
+- Check permission first: Meta’s Terms prohibit automated access without prior permission — see the [policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/).
 
 ## AI helps — but be clear-eyed
 
-AI tools can make listing preparation much faster, but they do not change Meta’s terms, account eligibility or current listing limits. Meta prohibits accessing its products by automated means without prior permission, and AutoLander cannot promise approval or uninterrupted access. Review the Marketplace policy and safety guide and compare the tools honestly on our comparison hub.
+AI tools can make listing preparation much faster, but they do not change Meta’s terms, account eligibility or current listing limits. Meta prohibits accessing its products by automated means without prior permission, and AutoLander cannot promise approval or uninterrupted access. Review the [Marketplace policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) and compare the tools honestly on our [comparison hub](https://autolander.ai/compare/).
 
 ## Frequently asked questions
 
 ### What is the best AI tool for Facebook Marketplace?
 
-It depends on whether you need photo preparation, descriptions, a listing queue, inventory reconciliation, automatic sold-unit removal, or all of them. AutoLander bundles those dealer workflows in one desktop app. Compare its fit with single-purpose and competing tools in our 2026 comparison.
+It depends on whether you need photo preparation, descriptions, a listing queue, inventory reconciliation, automatic sold-unit removal, or all of them. AutoLander bundles those dealer workflows in one desktop app. Compare its fit with single-purpose and competing tools in our [2026 comparison](https://autolander.ai/compare/).
 
 ### Are there free Facebook AI tools for car dealers?
 
-Most capable AI tools are paid because they do ongoing work — generating photos, writing copy, posting and syncing. AutoLander gives you 5 free posts with no credit card to try the AI before paying, then plans start at $39/mo. See pricing.
+Most capable AI tools are paid because they do ongoing work — generating photos, writing copy, posting and syncing. AutoLander gives you 5 free posts with no credit card to try the AI before paying, then plans start at $39/mo. See [pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/).
 
 ### Can AI post my car listings to Facebook Marketplace automatically?
 
-AutoLander can read your inventory feed, prepare listings and work through a configurable posting queue for eligible Marketplace listings while the desktop app is running. Your Meta account, category and current listing limits still apply. See the Facebook Marketplace auto poster and Facebook autoposter pages for how it works.
+AutoLander can read your inventory feed, prepare listings and work through a configurable posting queue for eligible Marketplace listings while the desktop app is running. Your Meta account, category and current listing limits still apply. See the [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) and [Facebook autoposter](https://autolander.ai/facebook-autoposter/) pages for how it works.
 
 ### Does AI write the car descriptions too?
 
-Yes. AutoLander’s AI writes a VIN-specific description for each vehicle — accurate and readable — so your Facebook Marketplace listings do not all sound the same or take hours to write.
+Yes. AutoLander’s AI writes a VIN-specific description for each vehicle — accurate and readable — so your [Facebook Marketplace listings](https://autolander.ai/facebook-marketplace-listing-software/) do not all sound the same or take hours to write.
 
 ### Is using AI tools on Facebook Marketplace against the rules?
 
-Meta’s Terms prohibit accessing its products by automated means without prior permission. Account eligibility, categories and listing limits also apply, and AutoLander cannot make a workflow Meta-approved or guarantee against restriction. Read the Marketplace policy and safety guide before using any automation.
+Meta’s Terms prohibit accessing its products by automated means without prior permission. Account eligibility, categories and listing limits also apply, and AutoLander cannot make a workflow Meta-approved or guarantee against restriction. Read the [Marketplace policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) before using any automation.
 
 ## Related
 

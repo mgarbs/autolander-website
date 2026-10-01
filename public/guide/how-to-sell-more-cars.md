@@ -18,11 +18,11 @@ The trap is spending on reach while conversion leaks: great ad, dark photos, hid
 
 ### 1. Coverage — every unit, everywhere buyers look
 
-A car nobody sees is a car nobody buys. Full daily Facebook Marketplace coverage is the cheapest at-bats in used-car retail.
+A car nobody sees is a car nobody buys. Full daily [Facebook Marketplace coverage](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/) is the cheapest at-bats in used-car retail.
 
 ### 2. Merchandising — photos do the selling
 
-Showroom-grade photos lift clicks and messages on identical cars at identical prices. The AI car photo editor upgrades the whole lot automatically.
+Showroom-grade photos lift clicks and messages on identical cars at identical prices. The [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) upgrades the whole lot automatically.
 
 ### 3. Price into the filters
 
@@ -30,11 +30,11 @@ Buyers search with price caps. A visible, defensible price puts you in the resul
 
 ### 4. Speed — first real answer wins
 
-The store that responds in seconds gets the test drive. AutoLander makes sure that answer is right — synced price, real specs, sold units already gone — and the speed-to-lead playbook does the rest.
+The store that responds in seconds gets the test drive. AutoLander makes sure that answer is right — synced price, real specs, sold units already gone — and the [speed-to-lead playbook](https://autolander.ai/guide/car-sales-leads/) does the rest.
 
 ### 5. Plug the leaks
 
-Sold cars still listed, stale prices, dead links — every one burns a real buyer. Inventory sync keeps channels truthful automatically.
+Sold cars still listed, stale prices, dead links — every one burns a real buyer. [Inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) keeps channels truthful automatically.
 
 ### 6. Attribution — feed what works
 
@@ -51,7 +51,7 @@ _Lever #2: identical Sonata, identical price — the right-hand photo is the one
 
 ## The math is boring on purpose
 
-More listings seen × better first impression × faster answers = more appointments, and appointments sell cars. Every lever here is measurable within a month — no brand-lift hand-waving required. Start with the full marketing playbook if you want the channel-by-channel version.
+More listings seen × better first impression × faster answers = more appointments, and appointments sell cars. Every lever here is measurable within a month — no brand-lift hand-waving required. Start with the [full marketing playbook](https://autolander.ai/guide/car-dealership-marketing/) if you want the channel-by-channel version.
 
 ## Frequently asked questions
 
@@ -61,7 +61,7 @@ Pull the free levers first: complete daily Marketplace coverage, showroom-grade 
 
 ### How do I sell more cars on Facebook Marketplace specifically?
 
-Coverage, photos, price, speed — the full workflow is in our step-by-step guide to selling cars on Facebook Marketplace, and the software that runs it is the Facebook Marketplace auto poster.
+Coverage, photos, price, speed — the full workflow is in our step-by-step guide to [selling cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/), and the software that runs it is the [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/).
 
 ### What is a good closing ratio on internet leads?
 
@@ -69,7 +69,7 @@ Ratios vary too much by market and pricing to quote a universal number honestly 
 
 ### Does AI really help sell more cars?
 
-AI moves two of the six levers directly: photos (the AI studio) and coverage (automated posting) — and accurate, always-synced listings help your team win the speed lever. What actually works and what is hype is covered in AI for car dealerships.
+AI moves two of the six levers directly: photos (the AI studio) and coverage (automated posting) — and accurate, always-synced listings help your team win the speed lever. What actually works and what is hype is covered in [AI for car dealerships](https://autolander.ai/guide/ai-for-car-dealerships/).
 
 ## Related
 

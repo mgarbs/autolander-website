@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/why-we-dont-answer-your-buyers/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 3, 2026  
 Updated: September 3, 2026
 
 **Short answer:** AutoLander does not reply to buyers, does not read your Marketplace messages, and does not route, forward or summarize them. Your team answers every conversation in Messenger, exactly as it does now. We made that choice because an automated reply that quotes a wrong price, misses a trade-in, or keeps chatting when a buyer needs a person does more damage than the after-hours coverage is worth — and because the thing that actually makes a fast reply useful is the listing being right. That part we do.
@@ -12,7 +13,7 @@ Updated: September 3, 2026
 
 No. AutoLander has no autoresponder, no AI chat, and no inbox feature of any kind. It does not read incoming messages, does not send replies, does not forward or route conversations to a CRM, and does not surface them in its own interface. When a buyer messages you about a listing, that message arrives in Messenger and a person on your team answers it — the same as it works today.
 
-If a feature comparison shows "AI auto-reply" with a dash next to AutoLander, that is correct. Several competitors on our comparison page do offer it. This page is about why we do not.
+If a feature comparison shows "AI auto-reply" with a dash next to AutoLander, that is correct. Several competitors on our [comparison page](https://autolander.ai/compare/) do offer it. This page is about why we do not.
 
 ## What an automated reply gets wrong, and what it costs
 
@@ -22,17 +23,17 @@ The pitch for inbox automation is coverage: buyers message at 9pm and on Sunday,
 - It quotes a price. If the number came from a listing that was not updated when the lot repriced, the store now has to honor it or explain it. Neither is a good first impression.
 - It keeps chatting. A buyer who is angry, confused, or asking about financing, a trade-in or a title issue needs a person within one message. Most bots need three.
 - It speaks in the store’s name with no one watching. Every reply is a promise the dealership made, whether or not anyone at the dealership saw it.
-- It runs on the same personal account the listings run on. If Meta decides the reply pattern looks automated, the restriction does not stop at the inbox — it can reach the listings and any ad assets the profile administers. See the account safety page.
+- It runs on the same personal account the listings run on. If Meta decides the reply pattern looks automated, the restriction does not stop at the inbox — it can reach the listings and any ad assets the profile administers. See the [account safety page](https://autolander.ai/safest-facebook-marketplace-auto-poster/).
 
 ## What does AutoLander do instead?
 
-It makes the human reply fast and right by making the listing right. Every question a buyer asks in the first message — is it available, what is the price, what is the mileage, can I see more photos — is a question about the listing. AutoLander keeps the answer to each one true: the inventory feed drives the price, sold units come down the day they sell, mileage is the odometer or blank rather than a guess, and the photos are the studio-processed shots rather than the lot snapshot.
+It makes the human reply fast and right by making the listing right. Every question a buyer asks in the first message — is it available, what is the price, what is the mileage, can I see more photos — is a question about the listing. AutoLander keeps the answer to each one true: the [inventory feed](https://autolander.ai/facebook-marketplace-inventory-sync/) drives the price, sold units come down the day they sell, mileage is the odometer or blank rather than a guess, and the photos are the [studio-processed](https://autolander.ai/ai-car-photo-editor/) shots rather than the lot snapshot.
 
 When the listing is right, the reply is short. "Yes, it is here — come by any time before six." That is a message a salesperson sends in eight seconds from a phone, and it converts better than any paragraph a bot writes, because the buyer can tell there is a person on the other end.
 
 ## If you do want inbox AI, how to buy it without getting hurt
 
-We are not against the category. Some dealers run it well. If you evaluate one, these are the questions that separate a useful product from a liability — we keep the full list on the AI chat for car dealers guide.
+We are not against the category. Some dealers run it well. If you evaluate one, these are the questions that separate a useful product from a liability — we keep the full list on the [AI chat for car dealers](https://autolander.ai/ai-chat-for-car-dealers/) guide.
 
 1. **Ask where the availability answer comes from** — If it is not reading your live inventory feed — the same one your website reads — it will eventually confirm a sold car. Ask for the sync interval in minutes.
 2. **Ask what it does with a price question** — The safe answer is "it never quotes a price the listing does not show, and it never negotiates." Anything else is a promise your F&I office did not make.

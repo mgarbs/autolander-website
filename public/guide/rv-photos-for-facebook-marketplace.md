@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/rv-photos-for-facebook-marketplace/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 3, 2026  
 Updated: September 3, 2026
 
 **Short answer:** An RV photo has to do something a car photo does not: make a thirty-foot subject read clearly in a thumbnail the size of a thumb. That means a lead shot from a three-quarter angle with the whole unit in frame and nothing behind it, followed by a fixed shot list — awning side, interior from the door, kitchen, bedroom, bath, hitch or cab, and the data plate. A clean background is worth more on an RV than on any car, which is why AI background replacement earns its keep here; it cannot fix a crooked horizon, a slide-out left closed, or an interior shot with the lights off.
@@ -27,7 +28,7 @@ Shoot every unit the same way. Consistency across the lot reads as a dealership;
 
 ## What an AI photo studio fixes on an RV, and what it does not
 
-AutoLander’s AI photo editor classifies every frame and replaces the background on full-exterior shots only, leaving interiors and closeups alone. On RVs that is exactly the right division of labour:
+AutoLander’s [AI photo editor](https://autolander.ai/ai-car-photo-editor/) classifies every frame and replaces the background on full-exterior shots only, leaving interiors and closeups alone. On RVs that is exactly the right division of labour:
 
 - Fixes: the busy lot behind the lead shot. A thirty-foot unit on a clean studio background is the difference between a thumbnail that reads and one that does not.
 - Fixes: inconsistency across the lot. Fifty units shot on fifty days in fifty kinds of weather come out looking like one dealership.
@@ -38,7 +39,7 @@ AutoLander’s AI photo editor classifies every frame and replaces the backgroun
 
 Enough to answer the floorplan question without a message: the six-to-eight frames above is the floor, and a full walk-through of twelve to fifteen is common for a higher-value unit. The order matters more than the count. Lead with the exterior that reads in a thumbnail, put the interior-from-the-door second, and keep the data plate and odometer at the end for the buyer who is already serious.
 
-On a whole lot, the question is not how many photos per unit but whether every unit has the same set. That is a process problem, and it is why RV dealers using RV dealer software tend to shoot to a checklist and let the software handle presentation and posting.
+On a whole lot, the question is not how many photos per unit but whether every unit has the same set. That is a process problem, and it is why RV dealers using [RV dealer software](https://autolander.ai/rv-dealer-software/) tend to shoot to a checklist and let the software handle presentation and posting.
 
 ## Frequently asked questions
 

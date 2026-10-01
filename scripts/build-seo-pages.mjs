@@ -24,7 +24,7 @@ import { COMPETITORS, GUIDE } from './compare-data.mjs';
 import {
   buildArticlePage, hubAugmentLinks, contentStatusJson, articleSitemapEntries,
   loadPublishState, isPublished, articlePath, gatePageLinks, siloNumberingProblems, SUGGESTED_ORDER,
-  publishedClusterGuides, aeoGeoGuidesModule, AEO_GEO_GUIDES_MODULE,
+  publishedClusterGuides, aeoGeoGuidesModule, AEO_GEO_GUIDES_MODULE, latestSiloUpdate, modifiedDate,
 } from './seo/articles/article-system.mjs';
 import { loadBlogPosts } from './seo/articles/blog-loader.mjs';
 import { STUDIO_IMAGES } from './seo/articles/image-usage.mjs';
@@ -108,8 +108,9 @@ const PUBLISH_STATE = process.env.AL_SEO_STATE_FILE
 }
 const PUBLISHED_ARTICLES = ARTICLE_CONTENT.filter((c) => isPublished(PUBLISH_STATE, c.slug));
 const PUBLISHED_BLOG_POSTS = publishedBlogPosts(ARTICLE_CONTENT, PUBLISH_STATE);
-const BLOG_LASTMOD = PUBLISHED_BLOG_POSTS
-  .flatMap((post) => [PUBLISH_STATE[post.slug]?.publishedAt, post.meta?.updatedAt])
+// /blog/ lists every published article (blog posts and silo articles), so its lastmod moves with any of them.
+const BLOG_LASTMOD = PUBLISHED_ARTICLES
+  .map((post) => modifiedDate(post, PUBLISH_STATE, PUBLISH_STATE[post.slug]?.publishedAt))
   .filter(Boolean)
   .sort()
   .at(-1) || SITE.updated;
@@ -125,6 +126,9 @@ const BLOG_PAGE = blogIndexPage(ARTICLE_CONTENT, PUBLISH_STATE);
 // may be about to rewrite), and src/generated/aeo-geo-guides.js carries them to React and the
 // static mirror for the next `npm run build`.
 const AEO_GEO_GUIDES = publishedClusterGuides('aeoGeo', ARTICLE_CONTENT, PUBLISH_STATE);
+// The money page changes whenever one of them is published, so its dates follow the newest one.
+const AEO_GEO_UPDATED = latestSiloUpdate('aeoGeo', ARTICLE_CONTENT, PUBLISH_STATE);
+const AI_VISIBILITY_LASTMOD = [AI_VISIBILITY_UPDATED, AEO_GEO_UPDATED].filter(Boolean).sort().at(-1);
 
 const ALL = [...CATEGORY, ...PRICING, ...INVENTORY, ...BULK, ...SAFETY, ...INTEG, ...LISTINGSW, ...FBLISTING, ...DEALERS, ...AITOOLS, ...AUTOMATION, ...ASSISTANT, ...AUTOPOSTER, ...GROWTH, ...GROWTHMONEY, ...REPORT, ...ABOUT, ...CONTACT, ...POSITIONING, ...INVDIST, ...RVCLUSTER, ...AICHATCLUSTER, AI_VISIBILITY, BLOG_PAGE, ...ARTICLE_PAGES];
 
@@ -299,7 +303,7 @@ write(
 {
   const genPath = resolve(OUT_ROOT, AEO_GEO_GUIDES_MODULE);
   mkdirSync(dirname(genPath), { recursive: true });
-  const source = aeoGeoGuidesModule(AEO_GEO_GUIDES);
+  const source = aeoGeoGuidesModule(AEO_GEO_GUIDES, AEO_GEO_UPDATED);
   let prev = null;
   try { prev = readFileSync(genPath, 'utf8'); } catch { /* first build */ }
   if (prev !== source) { writeFileSync(genPath, source, 'utf8'); console.log(`wrote ${AEO_GEO_GUIDES_MODULE}`); }
@@ -336,7 +340,7 @@ function buildMarkdownTwins() {
     const urlPath = page.path || (nav && nav.path);
     if (!urlPath) continue;
     const rel = mdPathFor(urlPath);
-    const markdown = page.key === 'aiVisibility' ? renderAiVisibilityMarkdown({ guides: AEO_GEO_GUIDES }) : renderMarkdown(page);
+    const markdown = page.key === 'aiVisibility' ? renderAiVisibilityMarkdown({ guides: AEO_GEO_GUIDES, updated: AI_VISIBILITY_LASTMOD }) : renderMarkdown(page);
     write(resolve(PUBLIC_DIR, rel.replace(/^\//, '')), markdown);
     twins.push({ urlPath, md: rel, title: page.h1 || page.title, description: page.description });
   }
@@ -355,7 +359,7 @@ function buildHomeTwin() {
 // Dedicated agent-instructions file. llms.txt carries the same guidance inline; this is the
 // standalone document to link when something asks for "your agent instructions".
 function buildAgentsMd() {
-  write(resolve(PUBLIC_DIR, 'agents.md'), agentsMarkdown(SITE.updatedHuman || SITE.updated));
+  write(resolve(PUBLIC_DIR, 'agents.md'), agentsMarkdown(SITE.updatedHuman || SITE.updated, { guides: AEO_GEO_GUIDES }));
 }
 
 function buildLlmsTxt(twins) {
@@ -451,7 +455,7 @@ ${Object.values(COMPETITORS).map((c) => `- [AutoLander vs ${c.name}](${SITE.orig
   // in one fetch rather than crawling 45 URLs.
   const full = ALL.map((page) => {
     if (page.key !== 'aiVisibility') return renderMarkdown(page);
-    return `${AI_VISIBILITY_START}\n${aiVisibilitySection(2, { markers: false })}\n\n${renderAiVisibilityMarkdown({ guides: AEO_GEO_GUIDES })}\n${AI_VISIBILITY_END}`;
+    return `${AI_VISIBILITY_START}\n${aiVisibilitySection(2, { markers: false })}\n\n${renderAiVisibilityMarkdown({ guides: AEO_GEO_GUIDES, updated: AI_VISIBILITY_LASTMOD })}\n${AI_VISIBILITY_END}`;
   }).join('\n\n---\n\n');
   write(resolve(PUBLIC_DIR, 'llms-full.txt'), `${header}\n\n---\n\n${full}`);
 }
@@ -547,7 +551,7 @@ function sitemapXml() {
   const competitorSlugs = Object.values(COMPETITORS).map((c) => c.slug);
   const urls = [
     { loc: SITE.origin + '/', pri: '1.0', freq: 'weekly' },
-    { loc: SITE.origin + NAV.aiVisibility.path, pri: '0.8', freq: 'monthly', lastmod: AI_VISIBILITY_UPDATED },
+    { loc: SITE.origin + NAV.aiVisibility.path, pri: '0.8', freq: 'monthly', lastmod: AI_VISIBILITY_LASTMOD },
     { loc: SITE.origin + '/terms.html', pri: '0.3', freq: 'yearly' },
     { loc: SITE.origin + '/privacy.html', pri: '0.3', freq: 'yearly' },
     { loc: SITE.origin + NAV.category.path, pri: '0.9', freq: 'weekly' },

@@ -36,13 +36,13 @@ The figures in our research are drawn from this footprint.
 
 ## Can I quote your data?
 
-Yes. Our published datasets are released under a CC BY 4.0 licence — free to reuse, including commercially, with attribution. Machine-readable CSV and JSON copies sit on the report page itself, so you do not have to retype anything out of a table.
+Yes. Our published datasets are released under a [CC BY 4.0 licence](https://creativecommons.org/licenses/by/4.0/) — free to reuse, including commercially, with attribution. Machine-readable CSV and JSON copies sit on the report page itself, so you do not have to retype anything out of a table.
 
-Cite as: AutoLander, "The Facebook Marketplace Used-Car Report 2026," autolander.ai, August 2026, with a link to the report. If you need a figure we have not published, ask — we would rather compute it properly than have it guessed at.
+Cite as: AutoLander, "The Facebook Marketplace Used-Car Report 2026," autolander.ai, August 2026, with a link to [the report](https://autolander.ai/facebook-marketplace-used-car-report-2026/). If you need a figure we have not published, ask — we would rather compute it properly than have it guessed at.
 
 ## What is AutoLander’s relationship to Meta?
 
-None. AutoLander is an independent product and is not affiliated with, endorsed by or sponsored by Meta Platforms, Inc. Facebook and Facebook Marketplace are trademarks of Meta Platforms, Inc. AutoLander does not override Meta eligibility rules, listing limits or terms — see our policy and safety guide for what that means in practice.
+None. AutoLander is an independent product and is not affiliated with, endorsed by or sponsored by Meta Platforms, Inc. Facebook and Facebook Marketplace are trademarks of Meta Platforms, Inc. AutoLander does not override Meta eligibility rules, listing limits or terms — see our [policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) for what that means in practice.
 
 ## Frequently asked questions
 

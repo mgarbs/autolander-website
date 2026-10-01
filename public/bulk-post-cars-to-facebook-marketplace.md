@@ -14,26 +14,26 @@ _Posted at scale, still polished — a raw 2025 Toyota Tacoma lot photo (left) b
 
 To bulk post cars to Facebook Marketplace, you load your whole dealership inventory from a feed once, then use posting software to prepare and manage eligible vehicles instead of entering each one by hand. AutoLander reads your inventory — year, make, model, price, mileage, photos and a description — and builds a configurable posting queue, then keeps the source data current as your lot changes.
 
-Bulk feed loading is not permission to publish every VIN. Meta currently documents monthly limits of 5 new Vehicles listings and 20 new listings total, and eligibility or features can vary by account and market. AutoLander cannot bypass those limits or guarantee approval. See the Facebook Marketplace auto poster page for the workflow and the dealer posting guide for current-limit checks.
+Bulk feed loading is not permission to publish every VIN. Meta currently documents monthly limits of 5 new Vehicles listings and 20 new listings total, and eligibility or features can vary by account and market. AutoLander cannot bypass those limits or guarantee approval. See the [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) page for the workflow and the [dealer posting guide](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) for current-limit checks.
 
 ## How AutoLander bulk-posts your dealership inventory
 
 AutoLander is a native desktop app, so it processes your selected vehicle queue through your normal Facebook session rather than operating the session from AutoLander’s cloud. Dealers control the vehicle queue.
 
-1. **Connect your inventory feed** — Point AutoLander at your CarGurus or Cars.com feed, or a custom feed/export from your DMS or website. Your entire inventory loads automatically — no spreadsheets, no copy-paste. See the supported sources on the integrations page.
+1. **Connect your inventory feed** — Point AutoLander at your CarGurus or Cars.com feed, or a custom feed/export from your DMS or website. Your entire inventory loads automatically — no spreadsheets, no copy-paste. See the supported sources on the [integrations](https://autolander.ai/integrations/) page.
 2. **It queues every vehicle** — AutoLander builds a posting queue from your whole lot, enhancing each listing with clean photos, an accurate title, the right price and a VIN-specific description before it goes up.
 3. **Choose eligible vehicles for the queue** — Select which feed vehicles should enter the configurable posting queue, then review the queue against the eligibility and listing limits shown in your Marketplace account. Queue capacity does not override Meta’s publication limits.
-4. **It keeps the lot fresh and removes sold cars** — As your feed changes, listings refresh, newly added VINs get queued and posted, and sold units come down automatically — so Marketplace keeps matching your real inventory without you touching it. More on this on the inventory sync page.
+4. **It keeps the lot fresh and removes sold cars** — As your feed changes, listings refresh, newly added VINs get queued and posted, and sold units come down automatically — so Marketplace keeps matching your real inventory without you touching it. More on this on the [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) page.
 
 ## Bulk feed loading is not unlimited Marketplace publishing
 
-“Bulk” means AutoLander can import and organize a full dealership feed; it does not mean Facebook will allow every vehicle to be published. Meta’s Help Center currently states a limit of 5 new Vehicles listings per calendar month and 20 new listings total per calendar month. Limits, features and eligibility can change, so always follow what your account displays. AutoLander cannot bypass those controls. Review the current dealer guide before building your queue.
+“Bulk” means AutoLander can import and organize a full dealership feed; it does not mean Facebook will allow every vehicle to be published. Meta’s Help Center currently states a limit of 5 new Vehicles listings per calendar month and 20 new listings total per calendar month. Limits, features and eligibility can change, so always follow what your account displays. AutoLander cannot bypass those controls. Review the [current dealer guide](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) before building your queue.
 
 ## Can I post my entire dealership inventory to Facebook Marketplace?
 
 You can load an entire dealership feed into AutoLander, but the number of vehicles you may publish to Marketplace is controlled by Meta and your account. Meta’s Help Center currently lists 5 new Vehicles listings per calendar month and 20 new listings total per calendar month. AutoLander cannot increase those limits or restore eligibility.
 
-Within the limits available to your account, AutoLander can keep the source feed organized, queue eligible vehicles, detect new VINs and remove sold units. The feed-to-queue behavior is explained on the inventory sync page.
+Within the limits available to your account, AutoLander can keep the source feed organized, queue eligible vehicles, detect new VINs and remove sold units. The feed-to-queue behavior is explained on the [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) page.
 
 ## What AutoLander’s Facebook Marketplace bulk posting software includes
 
@@ -73,7 +73,7 @@ Each queued listing gets a clean photo, accurate title and price, and a VIN-spec
 
 ## Meta’s terms and account limits control
 
-Meta’s Terms prohibit unauthorized automated access. Account eligibility, Marketplace features and listing limits can vary or change, and a desktop architecture does not create permission. AutoLander cannot override Meta limits or guarantee account safety or listing approval. Read the current dealer posting guide before you start, and compare your options at the comparison hub.
+Meta’s Terms prohibit unauthorized automated access. Account eligibility, Marketplace features and listing limits can vary or change, and a desktop architecture does not create permission. AutoLander cannot override Meta limits or guarantee account safety or listing approval. Read the [current dealer posting guide](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) before you start, and [compare your options](https://autolander.ai/compare/) at the comparison hub.
 
 ## Frequently asked questions
 
@@ -83,7 +83,7 @@ AutoLander can load a full inventory feed, but Meta controls how many listings m
 
 ### Is bulk posting to Facebook Marketplace against Facebook’s rules — will it get me banned?
 
-Meta’s Terms prohibit automated access without prior permission, and no tool can guarantee that an account will remain eligible or that listings will be approved. AutoLander’s local desktop architecture and queue controls do not override Meta’s rules or account limits. See the account-safety page and current dealer posting guide before you start.
+Meta’s Terms prohibit automated access without prior permission, and no tool can guarantee that an account will remain eligible or that listings will be approved. AutoLander’s local desktop architecture and queue controls do not override Meta’s rules or account limits. See the [account-safety page](https://autolander.ai/safest-facebook-marketplace-auto-poster/) and [current dealer posting guide](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) before you start.
 
 ### Does AutoLander post the cars automatically, or do I still click each one?
 
