@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/facebook-marketplace-car-listing-limits/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: August 30, 2026  
 Updated: August 30, 2026
 
 **Short answer:** Facebook does not publish exact Marketplace car listing limits. Limits exist, they vary by account, and they change without notice. What dealers consistently observe: newer accounts get far less headroom than established ones, sudden volume spikes draw friction — failed publishes, pending review, temporary blocks — and a steady daily posting pace runs clean where burst posting gets flagged. Pace the account; do not race it.
@@ -24,7 +25,7 @@ The other consistent observation is that the change in volume matters as much as
 
 A daily ceiling is the one dealers bump into most, and again Facebook does not say what it is. The useful mental model is not “find the number and post up to it” — it is that Marketplace scores behavior, and posting velocity is one of the loudest signals. Bursts invite review; rhythm does not.
 
-This is why steady daily posting beats burst posting on every axis: it stays under the friction threshold, it keeps fresh listings in front of buyers every day instead of one weekly splash that goes stale together, and it spreads the message load on whoever answers buyers. A bulk posting tool worth using paces posts for exactly this reason instead of firing the whole lot at once.
+This is why steady daily posting beats burst posting on every axis: it stays under the friction threshold, it keeps fresh listings in front of buyers every day instead of one weekly splash that goes stale together, and it spreads the message load on whoever answers buyers. A [bulk posting tool](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/) worth using paces posts for exactly this reason instead of firing the whole lot at once.
 
 ## Burst posting vs. steady pacing
 
@@ -49,14 +50,14 @@ The goal is full inventory coverage at a rhythm the platform reads as normal bus
 2. **Post daily, not weekly** — A fixed daily batch — new arrivals first, then the backlog — beats any burst. Consistency is the whole trick, and it is also the first thing hand-posting fails at.
 3. **Spread posts across the day** — A dozen listings published in ninety seconds is a bot signature. Space them out the way a person naturally would.
 4. **Keep the listings clean** — Real price, right category, one listing per unit, no recycled photos across cars. Removals compound the velocity signals, so listing hygiene is pacing too.
-5. **Remove sold units the day they sell** — A wall of stale, sold inventory is its own quality signal — and burned buyers report listings. Automatic inventory sync handles the removal without anyone remembering to.
+5. **Remove sold units the day they sell** — A wall of stale, sold inventory is its own quality signal — and burned buyers report listings. Automatic [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) handles the removal without anyone remembering to.
 6. **Scale gradually and watch for friction** — If publishes start hanging in review, back off for a few days before resuming. The ceiling moves; respect the feedback.
 
 _Pacing gets listings published; merchandising gets them clicked. The same Toyota Tundra as the raw feed photo (left) and after AutoLander’s AI Photo Studio re-staged it (right)._
 
 ## The honest part
 
-Nobody outside Meta knows the real limits — including us, and including every tool that promises you a safe number. What a dealer controls is the shape of the behavior: an established account, clean listings, a steady pace. AutoLander’s approach is to post through a native desktop app from your own computer and IP on a paced schedule — a deliberate account-health design, not a guarantee. The safest auto poster page explains the reasoning, and the policy guide covers the rules.
+Nobody outside Meta knows the real limits — including us, and including every tool that promises you a safe number. What a dealer controls is the shape of the behavior: an established account, clean listings, a steady pace. AutoLander’s approach is to post through a native desktop app from your own computer and IP on a paced schedule — a deliberate account-health design, not a guarantee. The [safest auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/) page explains the reasoning, and the [policy guide](https://autolander.ai/guide/facebook-marketplace-automation/) covers the rules.
 
 ## Frequently asked questions
 

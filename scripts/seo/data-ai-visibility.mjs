@@ -3,8 +3,6 @@ import {
   AI_VISIBILITY_PATH,
   AI_VISIBILITY_PUBLISHED,
   AI_VISIBILITY_PUBLISHED_HUMAN,
-  AI_VISIBILITY_UPDATED,
-  AI_VISIBILITY_UPDATED_HUMAN,
   BRAND_SCAN,
   EVERY_PLAN_INCLUDES,
   FAQ,
@@ -43,6 +41,7 @@ import { AI_VISIBILITY_MD_PATH } from '../../shared/ai-visibility-route.js';
 // The committed, generated list of published AEO and GEO articles (build-seo-pages.mjs). The build
 // passes its own fresh list to renderAiVisibilityMarkdown; this is the default for everyone else.
 import { AEO_GEO_GUIDES } from '../../src/generated/aeo-geo-guides.js';
+import { PAGE_UPDATED, humanDay } from '../../src/ai/page-updated.js';
 import { ORG_ID, PERSON_ID, orgLd, personLd } from './shell.mjs';
 import { legacyRedirectHtml } from '../spa-shell.mjs';
 
@@ -130,8 +129,11 @@ function offerFor(plan) {
   };
 }
 
-export function aiVisibilityGraph() {
+export function aiVisibilityGraph({ guides = AEO_GEO_GUIDES } = {}) {
   const webpageId = `${AI_VISIBILITY_CANONICAL}#webpage`;
+  // The published AEO and GEO articles: each one's Article node declares isPartOf this page, and this
+  // page lists them back as hasPart, so an agent can walk the topic both ways.
+  const guideLinks = guides.flatMap((group) => group.links);
   const serviceId = `${AI_VISIBILITY_CANONICAL}#service`;
   const breadcrumbId = `${AI_VISIBILITY_CANONICAL}#breadcrumb`;
   const termSetId = `${AI_VISIBILITY_CANONICAL}#aeo-geo-terms`;
@@ -146,11 +148,19 @@ export function aiVisibilityGraph() {
         name: META.title,
         description: META.description,
         datePublished: AI_VISIBILITY_PUBLISHED,
-        dateModified: AI_VISIBILITY_UPDATED,
+        dateModified: PAGE_UPDATED,
         inLanguage: 'en-US',
         isPartOf: { '@id': `${AI_VISIBILITY_ORIGIN}/#website` },
         about: [{ '@id': serviceId }, ...AEO_GEO.terms.map(({ id }) => ({ '@id': termId(id) }))],
         mainEntity: { '@id': serviceId },
+        ...(guideLinks.length ? {
+          hasPart: guideLinks.map((link) => ({
+            '@type': 'Article',
+            '@id': `${AI_VISIBILITY_ORIGIN}${link.href}#article`,
+            url: `${AI_VISIBILITY_ORIGIN}${link.href}`,
+            name: link.text,
+          })),
+        } : {}),
         author: { '@id': ORG_ID },
         publisher: { '@id': ORG_ID },
         ...(REVIEW.enabled ? { reviewedBy: { '@id': PERSON_ID }, lastReviewed: REVIEW.date } : {}),
@@ -290,7 +300,7 @@ export const AI_VISIBILITY = {
   description: META.description,
   h1: `${HERO.h1Lead} ${HERO.h1Grad}`,
   tldr: HERO.summary,
-  updated: AI_VISIBILITY_UPDATED,
+  updated: PAGE_UPDATED,
   faq: FAQ.map(({ q, a }) => [q, a]),
   sections: imageSections,
   images: AI_VISIBILITY_IMAGES,
@@ -303,7 +313,8 @@ const heading = (out, level, value) => { line(out, `${'#'.repeat(level)} ${value
 
 // `guides`: the published AEO and GEO articles by cluster (publishedClusterGuides). build-seo-pages passes
 // the list for the state it is building; the default is the committed generated module.
-export function renderAiVisibilityMarkdown({ guides = AEO_GEO_GUIDES } = {}) {
+// `updated`: the page date for that state (the later of the copy date and the newest article).
+export function renderAiVisibilityMarkdown({ guides = AEO_GEO_GUIDES, updated = PAGE_UPDATED } = {}) {
   const out = [];
   heading(out, 1, `${HERO.h1Lead} ${HERO.h1Grad}`);
   paragraph(out, `> ${META.description}`);
@@ -311,7 +322,7 @@ export function renderAiVisibilityMarkdown({ guides = AEO_GEO_GUIDES } = {}) {
   line(out, 'Author: The AutoLander team');
   if (REVIEW.enabled) line(out, `${REVIEW.label}: ${REVIEW.name}, co-founder, AutoLander`);
   line(out, `Published: ${AI_VISIBILITY_PUBLISHED_HUMAN}`);
-  line(out, `Updated: ${AI_VISIBILITY_UPDATED_HUMAN}`);
+  line(out, `Updated: ${humanDay(updated)}`);
   line(out);
   paragraph(out, `**Short answer:** ${HERO.summary}`);
   bullets(out, HERO.chips);

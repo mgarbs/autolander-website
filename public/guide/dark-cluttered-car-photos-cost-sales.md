@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 11, 2026  
 Updated: September 11, 2026
 
 **Short answer:** A buyer gives each listing less than a second in the scroll, and the first photo does all the talking. Bad car listing photos fail in five repeatable ways — too dark, cluttered background, promo frames, the car too small or cropped in the frame, and missing angles. Each failure has a specific fix, and none of them requires a photographer: a light window, a staging spot, and background replacement cover all five.
@@ -16,7 +17,7 @@ That silence is the expensive part. The unit gets no message, the store reads it
 
 ## Why isn’t my car listing getting clicks?
 
-Run the scroll test before blaming the price: pull up the search results a buyer would see, find your listing among the competitors, and give it the same half second you give the others. Nine times out of ten the answer is sitting in slot one — a dusk shot, a promo frame, a car parked in a crowded row — next to a competitor’s clean three-quarter front. Stores that consistently sell cars on Facebook Marketplace win that half second first and negotiate price second. If your thumbnail survives the test and clicks still are not coming, then look at price, mileage, and listing age.
+Run the scroll test before blaming the price: pull up the search results a buyer would see, find your listing among the competitors, and give it the same half second you give the others. Nine times out of ten the answer is sitting in slot one — a dusk shot, a promo frame, a car parked in a crowded row — next to a competitor’s clean three-quarter front. Stores that consistently [sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) win that half second first and negotiate price second. If your thumbnail survives the test and clicks still are not coming, then look at price, mileage, and listing age.
 
 ## The five photo failures — and what buyers read into each
 
@@ -40,9 +41,9 @@ Dark photos usually come from process, not carelessness: units photographed at i
 
 ## What do cluttered background car photos signal?
 
-That nobody is in charge of presentation. A car shot in a packed row makes the buyer’s eye do the work of separating the subject from the scenery — and worse, it borrows defects: the neighboring car’s ding, the dumpster, the sagging banner all attach themselves to your unit at thumbnail size. The traditional fix is a staging spot in the emptiest corner of the lot. The software fix is re-staging the photo you already took: an AI car photo editor lifts the vehicle out of the clutter and sets it in a clean scene, with the car itself — paint, wheels, condition — exactly as shot.
+That nobody is in charge of presentation. A car shot in a packed row makes the buyer’s eye do the work of separating the subject from the scenery — and worse, it borrows defects: the neighboring car’s ding, the dumpster, the sagging banner all attach themselves to your unit at thumbnail size. The traditional fix is a staging spot in the emptiest corner of the lot. The software fix is re-staging the photo you already took: an [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) lifts the vehicle out of the clutter and sets it in a clean scene, with the car itself — paint, wheels, condition — exactly as shot.
 
-The stakes are not cosmetic. The median dealer unit posted to Marketplace asks $28,295, across 10,823 priced dealer listings in AutoLander’s 2026 Marketplace report — and a buyer weighing a purchase that size cross-shops hard. At those prices, the first photo is fronting a five-figure decision, and it is competing against stores that treat presentation as a system: fixed shot list going forward, and the existing feed re-staged in software so the whole lot passes the scroll test at once.
+The stakes are not cosmetic. The median dealer unit posted to Marketplace asks $28,295, across 10,823 priced dealer listings in [AutoLander’s 2026 Marketplace report](https://autolander.ai/facebook-marketplace-used-car-report-2026/) — and a buyer weighing a purchase that size cross-shops hard. At those prices, the first photo is fronting a five-figure decision, and it is competing against stores that treat presentation as a system: fixed shot list going forward, and the existing feed re-staged in software so the whole lot passes the scroll test at once.
 
 ## The honest part
 

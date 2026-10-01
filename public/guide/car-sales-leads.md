@@ -27,8 +27,8 @@ Rank every lead source by one question: did this person choose a specific car of
 
 Marketplace is where local used-car demand already is. The system:
 
-1. **Coverage: every unit live, every day** — Leads scale with listings shoppers can find. A Facebook Marketplace auto poster keeps the full lot posted within your account’s limits — no Sunday-night posting marathons.
-2. **Merchandising: photos that stop the scroll** — Same car, same price, better photo = more messages. An AI car photo editor makes every listing look showroom-grade automatically.
+1. **Coverage: every unit live, every day** — Leads scale with listings shoppers can find. A [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) keeps the full lot posted within your account’s limits — no Sunday-night posting marathons.
+2. **Merchandising: photos that stop the scroll** — Same car, same price, better photo = more messages. An [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) makes every listing look showroom-grade automatically.
 3. **Price honestly and visibly** — Price-filtered search is how buyers browse. A fair, visible price generates messages; "$1" games and hidden prices generate silence.
 4. **Answer in seconds — at 9pm, at Sunday lunch** — Marketplace buyers message several stores at once and buy where the conversation starts. Put Messenger on your closers’ phones, name an owner per shift and measure minutes-to-first-reply — and let AutoLander guarantee the unit’s price and specs are already right when they answer.
 5. **Capture and book in the same thread** — Get a name and phone number early, offer two appointment windows, confirm by text. A lead that leaves the thread without a next step is a lead you donated to the next dealer.
@@ -37,7 +37,7 @@ Marketplace is where local used-car demand already is. The system:
 
 - Measure speed-to-first-reply in seconds, per hour of the week
 - Put after-hours messages on a named owner’s phone instead of leaving a morning pile-up
-- Keep sold units off the channels with inventory sync
+- Keep sold units off the channels with [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/)
 - Work your owned list monthly — equity alerts, lease endings, service-to-sales
 - Track every lead to sold/lost with a reason
 
@@ -61,7 +61,7 @@ List the entire inventory where local buyers already search (Facebook Marketplac
 
 ### What is a good response time for car sales leads?
 
-Under one minute. Marketplace and web shoppers message multiple dealers in one sitting, and the first real answer usually wins the appointment. Hitting that window is process, not heroics: Messenger notifications on a phone, a named inbox owner per shift, and listings accurate enough that anyone can answer — see the honest guide to AI chat for car dealers.
+Under one minute. Marketplace and web shoppers message multiple dealers in one sitting, and the first real answer usually wins the appointment. Hitting that window is process, not heroics: Messenger notifications on a phone, a named inbox owner per shift, and listings accurate enough that anyone can answer — see the [honest guide to AI chat for car dealers](https://autolander.ai/ai-chat-for-car-dealers/).
 
 ### Is there an app for managing car sales leads?
 

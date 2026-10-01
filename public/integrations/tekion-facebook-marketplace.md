@@ -28,7 +28,7 @@ AutoLander does not have a one-click native Tekion integration. Tekion’s publi
 
 Tekion emphasizes partner APIs, webhooks and dealer-controlled access rather than a generic feed.
 
-- Tekion says Automotive Partner Cloud gives registered partners secure access to dealership data through familiar APIs and self-service tooling. Partner registration is part of the workflow. See Tekion APC.
+- Tekion says Automotive Partner Cloud gives registered partners secure access to dealership data through familiar APIs and self-service tooling. Partner registration is part of the workflow. [See Tekion APC](https://tekion.com/products/apc).
 - APC advertises real-time synchronization through APIs and webhooks, but that capability applies to an approved implementation; it does not establish a native AutoLander integration.
 - Before build-out, document dealer authorization, accessible inventory endpoints/fields, update cadence, revocation and who owns support when a vehicle or photo stops syncing.
 
@@ -42,7 +42,7 @@ Ask the dealership which Tekion-authorized export, website feed or syndication p
 
 1. **Identify an authorized Tekion data path** — Confirm whether the dealer already sends inventory to a website or syndication provider. If not, the receiving provider needs to evaluate Tekion APC enrollment and dealer authorization.
 2. **Define scope and update behavior** — Request only the vehicle fields, statuses and media AutoLander needs, then verify whether changes arrive by file, API or webhook and how failures are surfaced.
-3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the Facebook Marketplace inventory sync works.
+3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ## What AutoLander adds on top of your Tekion data
 
@@ -72,19 +72,19 @@ No. AutoLander does not offer a one-click native Tekion integration. The connect
 
 ### How does the Tekion connection work?
 
-The dealer authorizes a Tekion inventory export or syndication feed from Tekion or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how ongoing inventory sync works.
+The dealer authorizes a Tekion inventory export or syndication feed from Tekion or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how [ongoing inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ### Can any dealership vendor call Tekion inventory APIs?
 
-Not by default. Tekion presents API and webhook access through Automotive Partner Cloud, which includes partner registration and dealer-controlled access. AutoLander is not claimed here as an existing Tekion partner. See Tekion’s partner platform.
+Not by default. Tekion presents API and webhook access through Automotive Partner Cloud, which includes partner registration and dealer-controlled access. AutoLander is not claimed here as an existing Tekion partner. [See Tekion’s partner platform](https://tekion.com/products/apc).
 
 ### How much does it cost to post Tekion inventory to Facebook Marketplace?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the Facebook Marketplace integrations page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the [Facebook Marketplace integrations page](https://autolander.ai/integrations/).
 
 ### What if I use a different system than Tekion?
 
-AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the integrations hub.
+AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the [integrations hub](https://autolander.ai/integrations/).
 
 ## Related
 

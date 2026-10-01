@@ -340,7 +340,7 @@ test('publishing #1 (in a copy of the state) adds it with its silo links, hub, b
   assert.match(html, /<nav class="crumbs"[\s\S]*?href="https:\/\/autolander\.ai\/aeo-geo-for-car-dealers\/">AEO and GEO for car dealers<\/a>/);
   assert.match(html, /"isPartOf":\{"@type":"WebPage","@id":"https:\/\/autolander\.ai\/aeo-geo-for-car-dealers\/#webpage"/);
   assert.match(html, /<a class="btn" href="https:\/\/autolander\.ai\/aeo-geo-for-car-dealers\/#scan-form">Get my free scan &rarr;<\/a>/);
-  assert.match(html, /<meta property="og:image" content="https:\/\/autolander\.ai\/og\/ai-visibility\.jpg" \/>/);
+  assert.ok(html.includes(`<meta property="og:image" content="https://autolander.ai/og/aeo-geo-${first.slug}.png" />`), 'its own OG card');
   assert.match(html, /<a href="\/aeo-geo-for-car-dealers\/">/, 'in-body up-link to the money page');
   // Keep exploring = the silo's static links only; nothing points at an unpublished sibling.
   const related = html.match(/<nav class="related"[\s\S]*?<\/nav>/)[0];

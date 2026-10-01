@@ -21,7 +21,7 @@ if (urlsFlag !== -1) {
   const p = join(process.cwd(), '.last-publish.json');
   if (!existsSync(p)) throw new Error('--changed given but .last-publish.json not found — run scripts/publish-article.mjs first.');
   const last = JSON.parse(readFileSync(p, 'utf8'));
-  urlList = [...new Set([...(last.urls || []), `https://${host}/sitemap.xml`])];
+  urlList = [...new Set([...(last.urls || []), `https://${host}/sitemap.xml`, `https://${host}/image-sitemap.xml`])];
 } else {
   const sitemap = readFileSync(join(process.cwd(), 'public', 'sitemap.xml'), 'utf8');
   urlList = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1].trim());

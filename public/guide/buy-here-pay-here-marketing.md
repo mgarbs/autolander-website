@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/buy-here-pay-here-marketing/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 24, 2026  
 Updated: September 24, 2026
 
 **Short answer:** Buy here pay here marketing works when it matches how BHPH buyers shop: payment-first, locally, and urgently. The plays that fill the payment book are full Facebook Marketplace coverage with honest prices, a Google profile with real reviews, a deliberate referral engine, and retention through the payment desk. The line you never cross is deceptive credit promises — plain, honest claims are both the law’s demand and the better ad.
@@ -16,13 +17,13 @@ Gimmicks underperform here more than anywhere else in car retail, because the BH
 
 ## How do BHPH customers actually shop?
 
-Payment-first and trust-second. The question in their head is "can I get approved, and what is it per month," not "what is the best Camry within 50 miles." They search close to home, often in the evening, often from a phone, and they move fast because the need is urgent — a job to get to, a family to move. That is why local visibility and reply speed beat clever creative: the store that answers tonight, plainly, usually gets the customer. The speed-to-lead discipline matters double in this segment.
+Payment-first and trust-second. The question in their head is "can I get approved, and what is it per month," not "what is the best Camry within 50 miles." They search close to home, often in the evening, often from a phone, and they move fast because the need is urgent — a job to get to, a family to move. That is why local visibility and reply speed beat clever creative: the store that answers tonight, plainly, usually gets the customer. The [speed-to-lead discipline](https://autolander.ai/guide/car-sales-leads/) matters double in this segment.
 
 ## BHPH marketing ideas, ranked by payoff
 
 Run them in this order. Each play feeds the one after it.
 
-1. **Full Marketplace coverage with honest listings** — BHPH inventory is exactly what Marketplace’s budget-minded local shoppers filter for. List every unit with a real cash price and honest photos, and note plainly that in-house financing is available with terms depending on income and down payment — no more, no less. The case for the channel is laid out in Facebook Marketplace for car dealers.
+1. **Full Marketplace coverage with honest listings** — BHPH inventory is exactly what Marketplace’s budget-minded local shoppers filter for. List every unit with a real cash price and honest photos, and note plainly that in-house financing is available with terms depending on income and down payment — no more, no less. The case for the channel is laid out in [Facebook Marketplace for car dealers](https://autolander.ai/facebook-marketplace-for-car-dealers/).
 2. **A Google Business Profile that survives the trust check** — Your next customer will read the reviews before they call. Complete the profile, load real photos, and ask every delivery for a review — in this segment, "they were straight with me" is the single most valuable sentence on the internet.
 3. **A deliberate referral engine** — BHPH is a referral business — your customers know exactly who else needs a car and a chance. Ask at delivery and again when an account pays off; a modest, clearly stated thank-you for referrals, where your state allows it, formalizes what already happens.
 4. **The payment desk as a retention channel** — Every on-time payer is a future repeat buyer and a walking testimonial. Treat the payment interaction as marketing: congratulate payoff milestones, offer trade-up conversations to customers in good standing, and make the collections tone one you would be comfortable reading in a review.
@@ -54,11 +55,11 @@ The safe pattern is also the persuasive one: keep the ad plain ("in-house financ
 
 ## How do you get buy here pay here customers without big ad spend?
 
-Be findable and be fast. Full Marketplace coverage puts your units in front of the exact budget-and-payment shoppers you serve, at no listing cost; a strong review profile converts them; referrals from treated-well customers compound them; and answering inquiries within minutes wins the tie every time. Big ad spend in BHPH mostly amplifies whatever reputation already exists — build the reputation machine first.
+Be findable and be fast. Full [Marketplace coverage](https://autolander.ai/facebook-marketplace-for-car-dealers/) puts your units in front of the exact budget-and-payment shoppers you serve, at no listing cost; a strong review profile converts them; referrals from treated-well customers compound them; and answering inquiries within minutes wins the tie every time. Big ad spend in BHPH mostly amplifies whatever reputation already exists — build the reputation machine first.
 
 ## The honest part
 
-In BHPH, the collections experience is the brand. Reviews get written about how the fourteenth payment call went, not the delivery-day balloons — and no marketing outruns a reputation for hair-trigger repossession or moving-target fees. Marketing multiplies what the operation already is. If the broader playbook is the engine, how you treat people mid-loan is the fuel.
+In BHPH, the collections experience is the brand. Reviews get written about how the fourteenth payment call went, not the delivery-day balloons — and no marketing outruns a reputation for hair-trigger repossession or moving-target fees. Marketing multiplies what the operation already is. If the [broader playbook](https://autolander.ai/guide/car-dealership-marketing/) is the engine, how you treat people mid-loan is the fuel.
 
 ## Frequently asked questions
 

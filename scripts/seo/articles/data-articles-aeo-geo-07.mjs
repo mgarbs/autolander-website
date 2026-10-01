@@ -336,7 +336,7 @@ export const ARTICLES = [
     title: 'Google Business Profile for AI Answers: What AI Reads',
     description:
       'How a dealership’s Google Business Profile feeds AI answers: the facts AI Overviews and Maps '
-      + 'draw on, listing consistency, reviews as evidence, Q&A and attributes.',
+      + 'use, listing consistency, reviews and attributes.',
     eyebrow: 'AEO and GEO for car dealers',
     h1: 'How your Google Business Profile feeds AI answers about your dealership',
     tldr:

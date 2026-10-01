@@ -277,7 +277,7 @@ export const ARTICLES = [
       },
       {
         type: 'bullets',
-        h2: 'Where do these facts come from?',
+        h2: 'Sources',
         intro:
           'Every claim above about OpenAI, Anthropic, Google, Microsoft Bing, Cloudflare and Vercel comes from '
           + 'that company’s own published pages, listed here. Crawler rules and security defaults change, so '
@@ -538,7 +538,7 @@ export const ARTICLES = [
       },
       {
         type: 'bullets',
-        h2: 'Where do these facts come from?',
+        h2: 'Sources',
         intro:
           'Every Cloudflare, OpenAI, Anthropic, Perplexity and Google claim in this article comes from that company’s '
           + 'own pages or from the robots.txt standard, listed below. Cloudflare updates its bot settings over '
@@ -810,7 +810,7 @@ export const ARTICLES = [
       },
       {
         type: 'bullets',
-        h2: 'Where do these facts come from?',
+        h2: 'Sources',
         intro:
           'Every bot description in this article comes from the company that runs the bot: OpenAI, Anthropic, '
           + 'Perplexity, Google and Apple, plus the robots.txt standard and Cloudflare’s documentation. Crawler '
@@ -1070,7 +1070,7 @@ export const ARTICLES = [
       },
       {
         type: 'bullets',
-        h2: 'Where do these facts come from?',
+        h2: 'Sources',
         intro:
           'The claims about llms.txt come from the proposal’s own site and from Google’s published guidance, and '
           + 'the crawler details come from OpenAI, Anthropic, Perplexity and Microsoft Bing. The note about '
@@ -1348,7 +1348,7 @@ export const ARTICLES = [
       },
       {
         type: 'bullets',
-        h2: 'Where do these facts come from?',
+        h2: 'Sources',
         intro:
           'Every claim here about OpenAI, Anthropic, Perplexity, Google, Microsoft Bing, Cloudflare and Vercel '
           + 'comes from that organization’s own published pages, listed below. Provider settings and crawler rules '

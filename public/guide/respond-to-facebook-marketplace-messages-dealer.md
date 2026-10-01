@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/respond-to-facebook-marketplace-messages-dealer/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 9, 2026  
 Updated: September 9, 2026
 
 **Short answer:** Respond to Facebook Marketplace messages within minutes, like a person: confirm the car is available, give your name, and ask one question that advances the deal — their timing, their name, or their trade. Never send a bare "yes." From there the ladder is chat to phone to a booked appointment with two offered time windows. Every reply here is one a human salesperson sends — the inbox is yours, not software’s.
@@ -39,7 +40,7 @@ _The condition question deserves the flaw included in the answer. Honesty in cha
 
 Chat is where deals start, not where they close. Climb the ladder deliberately.
 
-1. **Answer inside minutes during posted hours** — Assign the inbox to one named person per shift. Overnight messages get answered first thing in the morning — never batched into the afternoon. Speed is the discipline the whole speed-to-lead playbook is built on.
+1. **Answer inside minutes during posted hours** — Assign the inbox to one named person per shift. Overnight messages get answered first thing in the morning — never batched into the afternoon. Speed is the discipline the whole [speed-to-lead playbook](https://autolander.ai/guide/car-sales-leads/) is built on.
 2. **Trade names early** — Give yours in the first reply and use theirs once you have it. Named conversations survive; anonymous ones evaporate. It also sets up the appointment: "I’ll put it under {first name}."
 3. **Offer two concrete windows, never "come by whenever"** — "Would tomorrow morning or Thursday after work suit you better?" A choice between two real options books; an open invitation drifts. Confirm which car, which day, which time, out loud.
 4. **Move to phone or text for logistics** — Once a visit is real, ask for a number to text directions and a confirmation. The thread got the appointment; the phone keeps it — and a buyer who shares a number is measurably further down the funnel.
@@ -53,7 +54,7 @@ The durable fix is upstream: threads mostly die when the reply was slow or the l
 
 ## The honest part
 
-None of this is automated, and none of it should be: AutoLander does not read, route, or answer Marketplace messages — the inbox is entirely yours. Its contribution happens before the conversation starts: the listing the buyer is asking about is live, the price is current, and sold units are removed the day they deliver — because the worst reply in car retail is "sorry, that one actually sold last week."
+None of this is automated, and none of it should be: AutoLander does not read, route, or answer Marketplace messages — the inbox is entirely yours. Its contribution happens before the conversation starts: the listing the buyer is asking about is live, the price is current, and sold units are [removed the day they deliver](https://autolander.ai/facebook-marketplace-inventory-sync/) — because the worst reply in car retail is "sorry, that one actually sold last week."
 
 ## Frequently asked questions
 
@@ -71,7 +72,7 @@ The classics: someone asking you to read back a verification code sent to your p
 
 ### Can you use auto-replies on Facebook Marketplace?
 
-Keeping canned openers saved on your phone to paste and personalize is fine — a human is still reading and sending. Full automation of a personal inbox is different territory for both policy and trust, covered honestly in the Marketplace automation guide. AutoLander itself stays out of the inbox entirely: it automates listings, never conversations.
+Keeping canned openers saved on your phone to paste and personalize is fine — a human is still reading and sending. Full automation of a personal inbox is different territory for both policy and trust, covered honestly in the [Marketplace automation guide](https://autolander.ai/guide/facebook-marketplace-automation/). AutoLander itself stays out of the inbox entirely: it automates listings, never conversations.
 
 ### What if the car sold but messages keep coming in?
 

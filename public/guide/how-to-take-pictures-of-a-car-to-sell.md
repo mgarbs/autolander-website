@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: August 28, 2026  
 Updated: August 28, 2026
 
 **Short answer:** Clean the car completely, shoot in the first or last hours of daylight with the sun behind you, and find open space with nothing distracting behind the car. Hold the phone at mid-door height, fill the frame, and work a full list: eight exterior angles, the interior with the dash on, the odometer, tires, and every flaw. Around twenty honest, well-lit photos sell a car better than any description.
@@ -36,7 +37,7 @@ The complete set, in the order buyers expect to see it:
 
 ## Are car photos with a phone good enough — or do you need a real camera?
 
-A phone is enough, and it has been for years. The best way to photograph a car has almost nothing to do with the device: it is light, background, height, and coverage. Dealerships that sell cars on Facebook Marketplace move tens of thousands of dollars of metal with phone photos every day.
+A phone is enough, and it has been for years. The best way to photograph a car has almost nothing to do with the device: it is light, background, height, and coverage. Dealerships that [sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) move tens of thousands of dollars of metal with phone photos every day.
 
 What a phone cannot do is override physics. Dusk shots come out grainy, noon shots come out harsh, and a cluttered lot stays cluttered. If the conditions are wrong, the fix is never a better camera — it is a better hour, a better spot, or software.
 
@@ -44,7 +45,7 @@ _Same 2026 Ford Maverick, same phone photo — AutoLander’s AI Photo Studio re
 
 ## What if the light and background won’t cooperate?
 
-That is the honest limit of technique. If you are selling one car, wait a day for better weather — it costs nothing. A dealership photographing every unit that lands, in whatever weather the week brings, cannot wait, which is why stores run background replacement through an AI car photo editor: the real photo of the real car, re-staged in a clean scene, with the paint, wheels, and condition untouched.
+That is the honest limit of technique. If you are selling one car, wait a day for better weather — it costs nothing. A dealership photographing every unit that lands, in whatever weather the week brings, cannot wait, which is why stores run background replacement through an [AI car photo editor](https://autolander.ai/ai-car-photo-editor/): the real photo of the real car, re-staged in a clean scene, with the paint, wheels, and condition untouched.
 
 The distinction that keeps it honest: changing the scene behind the car is merchandising; changing the car is misrepresentation. The first sells the appointment, the second blows it up on arrival.
 
@@ -72,7 +73,7 @@ The two hours after sunrise or before sunset, with the sun at your back — pain
 
 ### How do dealerships take pictures of so many cars?
 
-Volume stores run a fixed routine — one photo spot, one shot list, one porter — and let software handle the rest. Tools like AutoLander re-stage the backgrounds for consistency and then post the full photo set to Facebook Marketplace with each unit, so a forty-car lot stays fully photographed and fully listed without a photographer on payroll.
+Volume stores run a fixed routine — one photo spot, one shot list, one porter — and let software handle the rest. Tools like AutoLander re-stage the backgrounds for consistency and then [post the full photo set to Facebook Marketplace](https://autolander.ai/facebook-marketplace-auto-poster/) with each unit, so a forty-car lot stays fully photographed and fully listed without a photographer on payroll.
 
 ## Related
 

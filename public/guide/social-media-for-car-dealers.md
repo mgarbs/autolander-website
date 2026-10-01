@@ -20,7 +20,7 @@ Each surface has one job. Content that ignores the job gets ignored.
 
 ### Facebook Marketplace — the store shelf
 
-Every unit, real photos, real price, refreshed and answered fast. This is the surface that transacts; keep it complete with an auto poster.
+Every unit, real photos, real price, refreshed and answered fast. This is the surface that transacts; keep it complete with an [auto poster](https://autolander.ai/facebook-marketplace-auto-poster/).
 
 ### Facebook page — the trust check
 
@@ -40,7 +40,7 @@ Social attention converts in chat, and that inbox stays yours. AutoLander’s jo
 
 ### Photos everywhere — the constant
 
-Consistent, showroom-grade vehicle photos raise performance on every surface at once — the job of the AI car photo editor.
+Consistent, showroom-grade vehicle photos raise performance on every surface at once — the job of the [AI car photo editor](https://autolander.ai/ai-car-photo-editor/).
 
 ## A weekly cadence a small store can actually keep
 
@@ -54,7 +54,7 @@ _The same Malibu, before and after the AI studio — the version on the right ea
 
 ## Play it straight
 
-Marketplace listings belong on accounts that are eligible to sell vehicles, inside Meta’s rules and current listing limits — no engagement-bait games, no personal-profile tricks. The policy and safety guide covers what automation can and cannot do honestly.
+Marketplace listings belong on accounts that are eligible to sell vehicles, inside Meta’s rules and current listing limits — no engagement-bait games, no personal-profile tricks. The [policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) covers what automation can and cannot do honestly.
 
 ## Frequently asked questions
 
@@ -64,7 +64,7 @@ Split it by job: full inventory with prices on Facebook Marketplace daily (that 
 
 ### How often should a dealership post on Facebook Marketplace?
 
-Inventory should be complete and current every day — new arrivals listed, sold units removed, prices synced. That is a software cadence, not a staffing cadence; see Facebook Marketplace automation.
+Inventory should be complete and current every day — new arrivals listed, sold units removed, prices synced. That is a software cadence, not a staffing cadence; see [Facebook Marketplace automation](https://autolander.ai/facebook-marketplace-automation/).
 
 ### Do Reels and TikTok sell cars for dealerships?
 
@@ -72,7 +72,7 @@ They build reach and make the store familiar, which lowers the barrier to the me
 
 ### Should salespeople post inventory on their personal Facebook profiles?
 
-Follow Meta’s rules: vehicles should be listed by accounts eligible to sell them, and personal-profile automation is a gray area we do not recommend gaming. The durable play is full coverage on eligible accounts with honest listings — the approach in our safety guide.
+Follow Meta’s rules: vehicles should be listed by accounts eligible to sell them, and personal-profile automation is a gray area we do not recommend gaming. The durable play is full coverage on eligible accounts with honest listings — the approach in our [safety guide](https://autolander.ai/safest-facebook-marketplace-auto-poster/).
 
 ## Related
 

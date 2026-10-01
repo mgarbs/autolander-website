@@ -84,6 +84,13 @@ export const fmt = (s) => linkify(esc(s));
 // stripmd = plain-text form of our markdown-link subset (keeps anchor text, drops the URL).
 // Used for JSON-LD text (FAQ answers etc.) so structured data stays clean prose, never markdown.
 export const stripmd = (s) => String(s).replace(/\[([^\]]+)\]\((?:\/[^)]*|https:\/\/[^)\s]+)\)/g, '$1');
+// mdfmt = the Markdown-twin form of the same subset: KEEPS every link (internal paths made absolute), so an
+// answer engine reading the .md twin can follow the internal links and verify the cited sources. Links are
+// publish-gated before the twin is built, so nothing here can point at a draft.
+export const mdfmt = (s) => String(s).replace(
+  /\[([^\]]+)\]\((\/[^)\s]*|https:\/\/[^)\s]+)\)/g,
+  (_, text, href) => `[${text}](${href.startsWith('/') ? SITE.origin + href : href})`,
+);
 
 const updatedHuman = () => SITE.updatedHuman || SITE.updated;
 
@@ -250,7 +257,7 @@ export const personLd = {
 // declaring itself part of itself is noise.
 export const articleLd = ({
   title, canonical, description, datePublished, dateModified, image, pillar,
-  type = 'Article', isPartOf, about,
+  type = 'Article', isPartOf, about, keywords, citation,
 }) => ({
   '@context': 'https://schema.org', '@type': type,
   '@id': canonical + '#article',
@@ -281,6 +288,12 @@ export const articleLd = ({
   isAccessibleForFree: true,
   // What the article is about, by @id (aeoGeo: the money page's AEO and GEO DefinedTerm nodes).
   ...(about && about.length ? { about } : {}),
+  // What it covers and what it cites (aeoGeo: the target keywords and the Sources list), so an answer
+  // engine can match the topic and check every claim against its primary source without parsing HTML.
+  ...(keywords && keywords.length ? { keywords: keywords.join(', ') } : {}),
+  ...(citation && citation.length ? {
+    citation: citation.map((c) => ({ '@type': 'CreativeWork', name: c.name, url: c.url })),
+  } : {}),
 });
 
 // Dataset node — the strongest available signal that a page carries original measured data.
@@ -722,6 +735,8 @@ export function renderPage(page) {
       type: page.article.type,
       isPartOf: page.article.isPartOf,
       about: page.article.about,
+      keywords: page.article.tags,
+      citation: page.article.citation,
     })));
     // Mirrored onto the OpenGraph layer (article:*). Same source values as the JSON-LD above so
     // the two can never disagree about when a page was published or who wrote it.
@@ -826,76 +841,77 @@ export function renderMarkdown(page) {
   const by = page.author ? `${AUTHOR.name}, ${AUTHOR.jobTitle}, AutoLander` : 'The AutoLander team';
   out.push(`Source: ${canonical}  `);
   out.push(`Author: ${by}  `);
+  if (page.article?.datePublished) out.push(`Published: ${humanDate(page.article.datePublished)}  `);
   out.push(`Updated: ${page.updated ? humanDate(page.updated) : updatedHuman()}`);
   out.push('');
   if (page.tldr) {
-    out.push('**Short answer:** ' + stripmd(page.tldr));
+    out.push('**Short answer:** ' + mdfmt(page.tldr));
     out.push('');
   }
 
   for (const s of page.sections || []) {
     switch (s.type) {
       case 'prose':
-        (Array.isArray(s.paras) ? s.paras : [s.paras]).forEach((p) => { out.push(stripmd(p)); out.push(''); });
+        (Array.isArray(s.paras) ? s.paras : [s.paras]).forEach((p) => { out.push(mdfmt(p)); out.push(''); });
         break;
       case 'qa':
         out.push(`## ${s.q}`); out.push('');
-        (Array.isArray(s.a) ? s.a : [s.a]).forEach((p) => { out.push(stripmd(p)); out.push(''); });
+        (Array.isArray(s.a) ? s.a : [s.a]).forEach((p) => { out.push(mdfmt(p)); out.push(''); });
         break;
       case 'bullets':
         out.push(`## ${s.h2}`); out.push('');
-        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
-        s.items.forEach((i) => out.push(`- ${stripmd(i)}`));
+        if (s.intro) { out.push(mdfmt(s.intro)); out.push(''); }
+        s.items.forEach((i) => out.push(`- ${mdfmt(i)}`));
         out.push('');
         break;
       case 'features':
         out.push(`## ${s.h2}`); out.push('');
-        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
-        s.cards.forEach((c) => { out.push(`### ${c.title}`); out.push(''); out.push(stripmd(c.body)); out.push(''); });
+        if (s.intro) { out.push(mdfmt(s.intro)); out.push(''); }
+        s.cards.forEach((c) => { out.push(`### ${c.title}`); out.push(''); out.push(mdfmt(c.body)); out.push(''); });
         break;
       case 'steps':
         out.push(`## ${s.h2}`); out.push('');
-        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
-        s.steps.forEach((st, i) => { out.push(`${i + 1}. **${st.title}** — ${stripmd(st.body)}`); });
+        if (s.intro) { out.push(mdfmt(s.intro)); out.push(''); }
+        s.steps.forEach((st, i) => { out.push(`${i + 1}. **${st.title}** — ${mdfmt(st.body)}`); });
         out.push('');
         break;
       case 'table':
         out.push(`## ${s.h2}`); out.push('');
-        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
+        if (s.intro) { out.push(mdfmt(s.intro)); out.push(''); }
         out.push(`| ${s.head.join(' | ')} |`);
         out.push(`| ${s.head.map(() => '---').join(' | ')} |`);
-        s.rows.forEach((r) => out.push(`| ${r.map((c) => String(c).replaceAll('|', '\\|')).join(' | ')} |`));
+        s.rows.forEach((r) => out.push(`| ${r.map((c) => mdfmt(c).replaceAll('|', '\\|')).join(' | ')} |`));
         out.push('');
-        if (s.note) { out.push(`_${stripmd(s.note)}_`); out.push(''); }
+        if (s.note) { out.push(`_${mdfmt(s.note)}_`); out.push(''); }
         break;
       case 'downloads':
         out.push(`## ${s.h2}`); out.push('');
-        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
+        if (s.intro) { out.push(mdfmt(s.intro)); out.push(''); }
         s.files.forEach((f) => out.push(`- [${f.label}](${SITE.origin}${f.url}) — ${f.desc}`));
         out.push('');
-        if (s.note) { out.push(stripmd(s.note)); out.push(''); }
+        if (s.note) { out.push(mdfmt(s.note)); out.push(''); }
         break;
       case 'callout':
         if (s.title) { out.push(`## ${s.title}`); out.push(''); }
-        out.push(stripmd(s.body)); out.push('');
+        out.push(mdfmt(s.body)); out.push('');
         break;
       case 'quotes':
         out.push(`## ${s.h2}`); out.push('');
-        if (s.intro) { out.push(stripmd(s.intro)); out.push(''); }
-        s.quotes.forEach((q) => { out.push(`> "${stripmd(q.text)}"`); out.push(`> — ${q.who}${q.role ? `, ${q.role}` : ''}`); out.push(''); });
-        if (s.note) { out.push(`_${stripmd(s.note)}_`); out.push(''); }
+        if (s.intro) { out.push(mdfmt(s.intro)); out.push(''); }
+        s.quotes.forEach((q) => { out.push(`> "${mdfmt(q.text)}"`); out.push(`> — ${q.who}${q.role ? `, ${q.role}` : ''}`); out.push(''); });
+        if (s.note) { out.push(`_${mdfmt(s.note)}_`); out.push(''); }
         break;
       case 'twocol':
         out.push(`## ${s.left.h2}`); out.push('');
-        s.left.items.forEach((i) => out.push(`- ${stripmd(i)}`)); out.push('');
+        s.left.items.forEach((i) => out.push(`- ${mdfmt(i)}`)); out.push('');
         out.push(`## ${s.right.h2}`); out.push('');
-        s.right.items.forEach((i) => out.push(`- ${stripmd(i)}`)); out.push('');
+        s.right.items.forEach((i) => out.push(`- ${mdfmt(i)}`)); out.push('');
         break;
       case 'figure':
-        out.push(`_${stripmd(s.caption)}_`); out.push('');
+        out.push(`_${mdfmt(s.caption)}_`); out.push('');
         break;
       case 'image':
-        out.push(`_${stripmd(s.caption)}_`); out.push('');
+        out.push(`_${mdfmt(s.caption)}_`); out.push('');
         break;
       default:
         break;
@@ -904,7 +920,7 @@ export function renderMarkdown(page) {
 
   if (page.faq && page.faq.length) {
     out.push(`## ${page.faqHeading || 'Frequently asked questions'}`); out.push('');
-    page.faq.forEach(([q, a]) => { out.push(`### ${q}`); out.push(''); out.push(stripmd(a)); out.push(''); });
+    page.faq.forEach(([q, a]) => { out.push(`### ${q}`); out.push(''); out.push(mdfmt(a)); out.push(''); });
   }
 
   // A silo CTA with its own destination (aeoGeo: the free scan) reaches the twin too, since the

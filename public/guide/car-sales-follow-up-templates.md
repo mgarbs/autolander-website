@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/car-sales-follow-up-templates/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 18, 2026  
 Updated: September 18, 2026
 
 **Short answer:** Five follow-up templates cover almost every used-car lead: the first touch within minutes, a day-2 nudge, a day-5 value add, a same-day price-drop alert, and a delivery-anniversary check-in. The rules that make them work: short enough to read on a lock screen, one question per message, personalized fill-ins, and sent by a real salesperson — a template is a starting point for a human, never a canned blast.
@@ -20,10 +21,10 @@ Ground rules for all five: text beats email for speed and read rates, so default
 
 Written for texting; trim the greeting and they work as email openers too.
 
-1. **First touch — within minutes of the lead** — "Hi {first name}, this is {your name} at {store}. You asked about the {year} {make} {model} — it’s here and available. Would this afternoon or tomorrow morning work to come see it? I’ll have it pulled up front either way." Speed is the whole play — the buyer messaged other stores in the same sitting, and the first real answer usually gets the appointment. The speed-to-lead playbook covers the discipline behind the template.
+1. **First touch — within minutes of the lead** — "Hi {first name}, this is {your name} at {store}. You asked about the {year} {make} {model} — it’s here and available. Would this afternoon or tomorrow morning work to come see it? I’ll have it pulled up front either way." Speed is the whole play — the buyer messaged other stores in the same sitting, and the first real answer usually gets the appointment. The [speed-to-lead playbook](https://autolander.ai/guide/car-sales-leads/) covers the discipline behind the template.
 2. **Day 2 — the nudge** — "Hi {first name}, {your name} at {store} again. The {model} you asked about is still here. Anything I can answer — payments, trade, more photos? Happy to send a quick walkaround video too." Low pressure, one open question, and an offer that costs the buyer nothing to accept.
 3. **Day 5 — value, not pressure** — "Hi {first name} — no rush from me. Two things on the {model}: the history report came back clean and I can send it over, and if you’re weighing numbers I can put a real value on your current vehicle in about ten minutes. Want either?" The rule: day 5 earns attention with new information. "Just checking in" is not new information.
-4. **Price drop — the same day it happens** — "Hi {first name}, {your name} at {store}. Heads up — the {year} {model} you looked at dropped to {new price} today. Wanted you to hear it from me first. Still interested?" This is the highest-reply template in the set, and it only works if the listing the buyer re-opens shows the same new number — automatic price updates keep the posted listing matching the message.
+4. **Price drop — the same day it happens** — "Hi {first name}, {your name} at {store}. Heads up — the {year} {model} you looked at dropped to {new price} today. Wanted you to hear it from me first. Still interested?" This is the highest-reply template in the set, and it only works if the listing the buyer re-opens shows the same new number — [automatic price updates](https://autolander.ai/facebook-marketplace-inventory-sync/) keep the posted listing matching the message.
 5. **Delivery anniversary — the long game** — "Happy one year with the {model}, {first name}! Hope it’s been treating you well. If you ever want a quick trade-in number — or know someone who’s looking — I’m easy to find. {your name} at {store}." Cheap, kind, and where next year’s trades and referrals come from.
 
 ## The follow-up cadence at a glance
@@ -48,7 +49,7 @@ And know when to stop pushing: after a buyer says no or goes quiet for a month, 
 
 ## The honest part
 
-Templates cannot rescue a broken upstream. If the listing still shows last week’s price, the photos hide the dent, or the car quietly sold on Tuesday, the best-written follow-up in the world opens with an apology. To be clear about our own lane: AutoLander never sends messages for you and has no access to your inbox — every template here is sent by your salesperson. What AutoLander does is keep the listing behind the lead live, priced right, and gone when sold, so the follow-up never contradicts what the buyer is looking at.
+Templates cannot rescue a broken upstream. If the listing still shows last week’s price, the photos hide the dent, or the car quietly sold on Tuesday, the best-written follow-up in the world opens with an apology. To be clear about our own lane: AutoLander never sends messages for you and has no access to your inbox — every template here is sent by your salesperson. What AutoLander does is [keep the listing behind the lead](https://autolander.ai/facebook-marketplace-auto-poster/) live, priced right, and gone when sold, so the follow-up never contradicts what the buyer is looking at.
 
 ## Frequently asked questions
 

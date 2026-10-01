@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 1, 2026  
 Updated: September 1, 2026
 
 **Short answer:** Used car dealership advertising on a budget follows a strict ladder: exhaust the free, high-intent channels before the first paid dollar. That means every unit on Facebook Marketplace daily, a fully built Google Business Profile with fresh reviews, and photos that compete — all of which cost time, not money. When real budget exists, paid spend gets a narrow job: moving aged units and retargeting shoppers who already looked.
@@ -30,20 +31,20 @@ _The ladder is a sequence, not a menu. A store that cannot keep 40 listings live
 
 Run these before any paid dollar leaves the store. Each one compounds the others.
 
-1. **List every unit on Facebook Marketplace, every day** — It is the largest pool of free, local, in-market used-car buyers, and a listing costs nothing. The hidden price is labor — posting 40 units by hand is an afternoon, every day, which is why most stores list a fraction of the lot. A Facebook Marketplace auto poster exists for exactly that gap, but however you do it, full coverage is rung one.
+1. **List every unit on Facebook Marketplace, every day** — It is the largest pool of free, local, in-market used-car buyers, and a listing costs nothing. The hidden price is labor — posting 40 units by hand is an afternoon, every day, which is why most stores list a fraction of the lot. A [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) exists for exactly that gap, but however you do it, full coverage is rung one.
 2. **Build the Google Business Profile all the way out** — Claim it, pick honest categories, complete the hours, load real photos of the lot and the people, and answer the questions buyers ask. Nearly every shopper who finds your car runs a trust check on your name minutes later — this is where they land.
 3. **Ask for a review at every delivery** — Reviews are the cheapest trust signal in car retail, and delivery day is the one moment a buyer is glad to help. Ask in person, text the link on the spot, and reply to what comes in — including the rough ones.
 4. **Fix the photos with what you have** — Pick one clean spot on the lot, shoot every car from the same angles in open shade, and keep promo frames and clutter out of the shot. Presentation is the ad — the photo does more selling than any headline you will ever pay for.
-5. **Answer every inquiry like it cost you $50** — A lead ignored for three hours is ad spend burned, whatever the channel. Put one named person on replies per shift and hold the response to minutes — the speed-to-lead playbook is the discipline that makes every other rung pay.
+5. **Answer every inquiry like it cost you $50** — A lead ignored for three hours is ad spend burned, whatever the channel. Put one named person on replies per shift and hold the response to minutes — the [speed-to-lead playbook](https://autolander.ai/guide/car-sales-leads/) is the discipline that makes every other rung pay.
 6. **Track what actually sold cars before spending** — Before allocating a single paid dollar, know which channel produced last month’s sold units. AutoLander’s post-to-sale attribution ties Marketplace listings to sales; whatever tool you use, spend follows evidence, not habit.
 
-_The cheapest upgrade on the ladder: the same Nissan Kicks, from cluttered lot shot to a clean scene with AutoLander’s AI Photo Studio. The click happens before a buyer reads a single word._
+_The cheapest upgrade on the ladder: the same Nissan Kicks, from cluttered lot shot to a clean scene with [AutoLander’s AI Photo Studio](https://autolander.ai/ai-car-photo-editor/). The click happens before a buyer reads a single word._
 
 ## Where should the first paid advertising dollars go?
 
 Two places, in this order: aged units and retargeting. A 60-day-old truck with fixed photos and a market-correct price is a legitimate target for a paid push, because the free channels have already had their shot and the money has a measurable job. Retargeting people who viewed your inventory is the second-best dollar — they already raised a hand.
 
-What the first dollars should never buy is broad awareness. A boosted post shown to thousands of people who are not shopping for a car this month loses to a free Marketplace listing seen by fifty people who are. The full car dealership marketing playbook covers how the paid tier fits once the free tier runs itself.
+What the first dollars should never buy is broad awareness. A boosted post shown to thousands of people who are not shopping for a car this month loses to a free Marketplace listing seen by fifty people who are. The full [car dealership marketing playbook](https://autolander.ai/guide/car-dealership-marketing/) covers how the paid tier fits once the free tier runs itself.
 
 ## How much do dealerships spend on advertising?
 
@@ -55,7 +56,7 @@ Franchise stores typically treat advertising as a per-vehicle cost baked into ev
 - Put a QR code to your inventory on the service counter; your service customers are your warmest buyers.
 - Ask every delivery for a referral as well as a review — a thank-you gesture where your state allows it.
 - Partner with one local business you actually use — cross-promotion costs a handshake.
-- Keep a working list of plays ranked by cost in the dealership marketing ideas library and run one new one per month.
+- Keep a working list of plays ranked by cost in the [dealership marketing ideas](https://autolander.ai/guide/car-dealership-marketing-ideas/) library and run one new one per month.
 
 ## The honest part
 

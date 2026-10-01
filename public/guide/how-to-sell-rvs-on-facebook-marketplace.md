@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/how-to-sell-rvs-on-facebook-marketplace/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 3, 2026  
 Updated: September 3, 2026
 
 **Short answer:** To sell RVs on Facebook Marketplace as a dealer, list every unit in the RV/Camper category — not as a car — with the RV type, length, sleeping capacity, year, make, model and a real price, led by a clean exterior photo. Buyers filter by type and price and message directly, so the listing that is accurate and answered first usually gets the visit. The hard part is not the first listing; it is keeping thirty to two hundred units current through seasonal repricing and sales, which is the job RV-aware software like AutoLander automates.
@@ -22,7 +23,7 @@ The RV/Camper flow asks for different fields than the car flow. Fill every one o
 2. **Pick the RV type** — Buyers filter on it. A fifth wheel listed as a travel trailer is a unit the fifth-wheel shopper never finds.
 3. **Enter year, make, model and length** — Length is the first thing a buyer with a tow vehicle or a storage spot checks. Sleeping capacity and slide-outs belong in the description if the fields do not ask.
 4. **Set the real price** — Post the advertised price, and change it the day the lot changes it. Placeholder prices fall outside the filters buyers actually use and read as low quality.
-5. **Lead with the right photo** — A clean three-quarter exterior on a plain background, then the awning side, the interior from the door, the kitchen, the bedroom, the bath and the hitch or cab. The RV photos guide covers what makes a thirty-foot subject read in a thumbnail.
+5. **Lead with the right photo** — A clean three-quarter exterior on a plain background, then the awning side, the interior from the door, the kitchen, the bedroom, the bath and the hitch or cab. The [RV photos guide](https://autolander.ai/guide/rv-photos-for-facebook-marketplace/) covers what makes a thirty-foot subject read in a thumbnail.
 6. **Write a description that names the store** — Floorplan, length, dry weight, slides, generator, awning, any recent service, and the dealership name, city and hours. Buyers message the profile that posted; make sure it is one somebody checks.
 
 ## Why RV lots go stale faster than car lots
@@ -34,13 +35,13 @@ The RV/Camper flow asks for different fields than the car flow. Fill every one o
 
 ## How does an RV dealer keep a whole lot current on Marketplace?
 
-The same way the website is kept current: treat the inventory feed as the source and let software reconcile Marketplace against it. AutoLander was built with RV feeds as first-class citizens. It reads your inventory source, posts each unit into the RV/Camper category with RV-appropriate details, pushes price changes from the feed, removes sold units automatically, and queues new arrivals — all from your own logged-in session, within the account’s listing limits. The RV dealer software page covers the workflow; the inventory sync page covers the feed cadence.
+The same way the website is kept current: treat the inventory feed as the source and let software reconcile Marketplace against it. AutoLander was built with RV feeds as first-class citizens. It reads your inventory source, posts each unit into the RV/Camper category with RV-appropriate details, pushes price changes from the feed, removes sold units automatically, and queues new arrivals — all from your own logged-in session, within the account’s listing limits. The [RV dealer software page](https://autolander.ai/rv-dealer-software/) covers the workflow; the [inventory sync page](https://autolander.ai/facebook-marketplace-inventory-sync/) covers the feed cadence.
 
 What it does not do is talk to buyers. Messages arrive in Messenger and your team answers them, as now. AutoLander’s contribution is that the length, price and availability the buyer is asking about are already right.
 
 ## Meta’s rules still apply
 
-Marketplace eligibility, category rules and listing limits are Meta’s, and they change. No tool — including AutoLander — can guarantee an account will never be actioned. The policy and safety guide is the honest version of what that means for a dealer.
+Marketplace eligibility, category rules and listing limits are Meta’s, and they change. No tool — including AutoLander — can guarantee an account will never be actioned. The [policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) is the honest version of what that means for a dealer.
 
 ## Frequently asked questions
 

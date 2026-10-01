@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/mark-car-sold-on-facebook-marketplace/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 19, 2026  
 Updated: September 19, 2026
 
 **Short answer:** Open the listing from your selling view and use its status control: Mark as pending while paperwork finishes, Mark as sold when the car delivers — sold ends the listing’s visibility to buyers. Marking sold preserves your conversation history; deleting erases the listing entirely, so reserve deletion for mistakes and duplicates. Do one of them the day the car leaves — a listing for a sold car only generates messages you answer with bad news.
@@ -36,7 +37,7 @@ Either choice beats the third option, which is doing nothing. The unmanaged list
 
 A ghost listing — a live ad for a car that sold last week — is the most expensive kind of free advertising. The visible cost is the buyer who messages, hears “that one sold,” and moves on with a slightly worse opinion of the store. The invisible cost is the buyer who drives twenty minutes to see the truck in the photo, learns it sold on Tuesday, and tells that story to everyone who asks how car shopping is going.
 
-Ghosts also bleed the team: every message on a dead unit is time spent delivering bad news instead of selling a live one. And shoppers who keep seeing the same sold cars lingering learn to skip your listings entirely — the lot starts reading as unmanaged, the opposite of what a dealer presence on Marketplace is supposed to build.
+Ghosts also bleed the team: every message on a dead unit is time spent delivering bad news instead of selling a live one. And shoppers who keep seeing the same sold cars lingering learn to skip your listings entirely — the lot starts reading as unmanaged, the opposite of what [a dealer presence on Marketplace](https://autolander.ai/facebook-marketplace-for-car-dealers/) is supposed to build.
 
 ## A sold-unit removal routine that survives a busy Saturday
 
@@ -44,7 +45,7 @@ Ghosts also bleed the team: every message on a dead unit is time spent deliverin
 2. **Name one owner per day** — Whoever runs the desk owns listing statuses that day. “Everyone posts, someone marks sold” is exactly how ghosts happen — the person who listed the car is off on Tuesday.
 3. **Use pending while paperwork finishes** — A deposit or financing in progress is pending, not sold. Pending keeps the listing warm if the deal collapses and tells the next caller the truth.
 4. **Sweep listings against the lot weekly** — Once a week, walk your active listings against the inventory list; anything sold, wholesaled, or traded comes down. Ten minutes, and it catches everything the busy days missed.
-5. **Or remove the routine entirely: sync it** — AutoLander watches your inventory feed and pulls the listing when the unit leaves your inventory — automatic sold-unit removal means a Saturday rush cannot create Monday ghosts.
+5. **Or remove the routine entirely: sync it** — AutoLander watches your inventory feed and pulls the listing when the unit leaves your inventory — [automatic sold-unit removal](https://autolander.ai/facebook-marketplace-inventory-sync/) means a Saturday rush cannot create Monday ghosts.
 
 _Trust is the product: the same Chevrolet Malibu as a raw lot photo (left) and staged by AutoLander’s AI Photo Studio (right). A store whose listings look this managed cannot afford ghosts — sold units should come down the day they deliver._
 
@@ -52,7 +53,7 @@ _Trust is the product: the same Chevrolet Malibu as a raw lot photo (left) and s
 
 Automation removes sold units on your feed’s cadence, not the second the pen hits paper. A car sold at 10 a.m. comes down at the next sync — so for a same-morning cash deal, marking it sold by hand is still the fastest correct move. What the automation gives you is the floor: no unit outlives your inventory by days because a human forgot.
 
-Sold-unit removal is one half of listing hygiene; the other half is keeping the price honest while the car is live. Inventory sync does both from the same feed — prices update when your feed changes, and sold units come down without anyone remembering to do it. If you are still posting by hand, start with the full guide to selling cars on Facebook Marketplace — hygiene is easier to build in than to bolt on.
+Sold-unit removal is one half of listing hygiene; the other half is keeping the price honest while the car is live. [Inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) does both from the same feed — prices update when your feed changes, and sold units come down without anyone remembering to do it. If you are still posting by hand, start with the full [guide to selling cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) — hygiene is easier to build in than to bolt on.
 
 ## Frequently asked questions
 
@@ -74,7 +75,7 @@ The day it delivers — treat the status change like pulling the window sticker,
 
 ### Why do dealers leave sold cars on Marketplace?
 
-Almost never on purpose. Ghosts come from volume and handoffs — the person who posted the car is off the day it sells, the Saturday rush buries the checklist, a wholesale exit skips the delivery routine. That is why the fix is structural: one named owner per day, a weekly sweep, or automatic removal tied to the feed.
+Almost never on purpose. Ghosts come from volume and handoffs — the person who posted the car is off the day it sells, the Saturday rush buries the checklist, a wholesale exit skips the delivery routine. That is why the fix is structural: one named owner per day, a weekly sweep, or [automatic removal](https://autolander.ai/facebook-marketplace-inventory-sync/) tied to the feed.
 
 ## Related
 

@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/compare/meta-muse-for-car-dealerships/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 29, 2026  
 Updated: September 29, 2026
 
 **Short answer:** Meta Muse is one AI agent per person, which makes it an excellent assistant for each salesperson, BDC rep and used-car manager and a poor system for the store itself. Hand it acquisition hunting, first replies to Marketplace buyers, follow-ups, scheduling and research. Keep inventory posting, price and sold-status sync, photos, team oversight and multi-rooftop work on a tool built for the lot. Muse can post from a feed, but the daily upkeep of a whole lot draws on one person’s weekly usage, nobody checks its field choices but you, no DMS delivers to it, and it has no seats or manager view. AutoLander does that side from your feed, from $39 a month.
@@ -41,7 +42,7 @@ Each of these follows from Meta building a personal agent for one person, and ea
 - Nothing delivers the source of truth to it. A dealership’s facts live in the DMS, the website feed and the price desk. DMS vendors deliver by scheduled drop, often over SFTP, to a destination the dealer authorizes, and AutoLander can be that destination. Muse reads the file or link someone hands it, so a listing is only as current as its last read.
 - Nobody checks its choices. When a trim is spelled differently, a body style has no exact match or a value is missing, an agent decides and fills in the form. AutoLander verifies every dropdown it selects against the label before it continues, and leaves unknown mileage blank rather than guessing.
 - It belongs to one employee. The agent, its memory and every script live on a salesperson’s personal account. When that person leaves, the store’s Marketplace process leaves with them.
-- Managers cannot see it. There is no dashboard of who posted which units, which posts turned into conversations or which conversations turned into sales. AutoLander’s Dealer Plan exists for exactly that view.
+- Managers cannot see it. There is no dashboard of who posted which units, which posts turned into conversations or which conversations turned into sales. AutoLander’s [Dealer Plan](https://autolander.ai/facebook-marketplace-auto-poster-pricing/) exists for exactly that view.
 - Upkeep costs usage. Posting is screen-by-screen browser work, and keeping 80 listings true means doing some of it every day. Meta meters Muse by weekly usage, and that upkeep is the heaviest job you could give it and the least valuable one. When the week runs out, the sold cars wait.
 - It cannot split work across stores. One agent works one person’s list. A group with five rooftops has no way to give Muse a store-level queue, a posting pace per rooftop or a separate profile per store.
 - Coverage stops at two countries. Muse is available in the United States and Canada, so stores in Latin America cannot use it yet.
@@ -54,7 +55,7 @@ It can, and for a very small store it may be the right call. A lot with 10 to 20
 
 Go in knowing the trade. If Muse posts, posting becomes Muse’s main job. The weekly allowance that could have gone to answering buyers at 9pm, following up with Saturday’s test drives and finding the next trade-in goes to typing year, make, model and mileage into Marketplace forms and re-checking them every night. A small store gets the least out of Muse this way, because the owner is the one person who most needs an assistant for everything else.
 
-The numbers make the choice concrete. AutoLander’s Starter plan is $39 a month and posts five units a day, so a 20-car lot is fully listed in four working days and then kept in step with the inventory feed automatically. From then on, Muse spends its week on customers.
+The numbers make the choice concrete. AutoLander’s Starter plan is $39 a month and posts five units a day, so a 20-car lot is fully listed in four working days and then kept in step with the [inventory feed](https://autolander.ai/facebook-marketplace-inventory-sync/) automatically. From then on, Muse spends its week on customers.
 
 ## A Muse routine for each seat on the floor
 
@@ -65,7 +66,7 @@ Muse works best when each person gives it their own job. These are the recurring
 3. **Salesperson: the evening follow-up list** — Each evening Muse drafts the next message for every open conversation, based on what the buyer asked and when they last heard from the store, and queues it for the salesperson to approve.
 4. **Sales manager: the weekly listing audit** — Once a week Muse shops the store’s Marketplace listings the way a buyer’s agent would and reports placeholder prices, blank mileage, duplicate units and cars that look sold. When it finds one, the fix goes into the feed.
 5. **General manager: the competitive price watch** — Muse checks how the ten oldest units compare with similar cars listed nearby and sends a short note before the Monday pricing meeting.
-6. **Everyone: keep listing work off Muse** — Posting, price changes and sold removal stay on a feed-driven poster, so every person’s allowance goes to customers.
+6. **Everyone: keep listing work off Muse** — Posting, price changes and sold removal stay on a [feed-driven poster](https://autolander.ai/facebook-marketplace-auto-poster/), so every person’s allowance goes to customers.
 
 _Same truck, different first impression. A RAM 1500 Laramie in the selling store’s showroom shot (left) and after AutoLander’s AI Photo Studio (right)._
 
@@ -75,17 +76,17 @@ Dealer tools have charged for two things Muse now covers. CARVID Acquire, the ac
 
 Those products still have buyers. ADF delivery into your CRM, a voice agent, multi-rep routing and posting to nine platforms are real features, and some stores need them. The question to ask any vendor is sharper now: what does this do that a Muse on each salesperson’s phone does not?
 
-For our own product the answer is short. AutoLander never sold an inbox or an acquisition tool. It posts the lot from the feed and keeps it true, the part Muse itself calls outside its lane. Our head-to-head with CARVID covers the rest.
+For our own product the answer is short. AutoLander never sold an inbox or an acquisition tool. It posts the lot from the feed and keeps it true, the part Muse itself calls outside its lane. Our [head-to-head with CARVID](https://autolander.ai/compare/carvid/) covers the rest.
 
 ## How AutoLander and Muse split the work at a dealership
 
 The split is clean. AutoLander takes the inventory you already publish, whether that is a DMS export, a CSV or SFTP drop or your website, and turns every unit into a Facebook Marketplace listing with the real price, real mileage and studio-processed photos, posted through your own Facebook session. It keeps each listing current and pulls sold units down, writes the description for every unit from the feed data, adds AI walkaround video, and shows managers the whole team’s posting and post-to-sale attribution on one dashboard.
 
-Muse works the people those listings bring in. Because the listing is right, Muse’s answer is right: the car is there, the price is the price, and the mileage is the odometer. That accuracy is what makes it safe to let any AI take the first message, which is also why we keep AutoLander out of the inbox entirely. The full reasoning is in why we do not answer your buyers, and the broader picture is in our guide to AI for car dealerships.
+Muse works the people those listings bring in. Because the listing is right, Muse’s answer is right: the car is there, the price is the price, and the mileage is the odometer. That accuracy is what makes it safe to let any AI take the first message, which is also why we keep AutoLander out of the inbox entirely. The full reasoning is in [why we do not answer your buyers](https://autolander.ai/why-we-dont-answer-your-buyers/), and the broader picture is in our guide to [AI for car dealerships](https://autolander.ai/guide/ai-for-car-dealerships/).
 
 ## The honest part
 
-Muse is new, Meta changes it without notice, and Meta has published no dealer or seller guide for it. Treat every capability here as something to test on one account before a whole floor relies on it. AutoLander has no inbox feature and cannot guarantee how Meta treats any profile or any automation. The automation policy guide covers what Meta’s terms say.
+Muse is new, Meta changes it without notice, and Meta has published no dealer or seller guide for it. Treat every capability here as something to test on one account before a whole floor relies on it. AutoLander has no inbox feature and cannot guarantee how Meta treats any profile or any automation. The [automation policy guide](https://autolander.ai/guide/facebook-marketplace-automation/) covers what Meta’s terms say.
 
 ## Frequently asked questions
 

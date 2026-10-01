@@ -1,7 +1,5 @@
 import {
   AEO_GEO,
-  AI_VISIBILITY_UPDATED,
-  AI_VISIBILITY_UPDATED_HUMAN,
   BRAND_SCAN,
   EVERY_PLAN_INCLUDES,
   FAQ,
@@ -39,6 +37,7 @@ import {
   comparisonRows,
   fmtUsd,
 } from '../../shared/ai-visibility-content.js';
+import { PAGE_UPDATED, PAGE_UPDATED_HUMAN } from './page-updated.js';
 import { aiImage } from '../../shared/ai-images.js';
 import { responsiveImageHtml, IMAGE_SIZES } from '../../shared/responsive-images.js';
 import { AEO_GEO_GUIDES } from '../generated/aeo-geo-guides.js';
@@ -76,7 +75,7 @@ function aeoGeoSection() {
     : '';
   return `<section id="${esc(AEO_GEO.anchor)}" class="scroll-mt-24 border-y border-white/5 bg-[#080808] py-20 lg:py-28"><div class="mx-auto max-w-7xl px-6">
     ${eyebrow(AEO_GEO.eyebrow)}${heading(AEO_GEO.h2Lead, AEO_GEO.h2Grad)}
-    <p class="mt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">${copy(AEO_GEO.updatedLabel)} <time datetime="${esc(AI_VISIBILITY_UPDATED)}">${copy(AI_VISIBILITY_UPDATED_HUMAN)}</time>${review}</p>
+    <p class="mt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-slate-400">${copy(AEO_GEO.updatedLabel)} <time datetime="${esc(PAGE_UPDATED)}">${copy(PAGE_UPDATED_HUMAN)}</time>${review}</p>
     <p class="al-aeo-lead mt-6 max-w-3xl text-lg leading-relaxed text-slate-300">${copy(AEO_GEO.lead)}</p>
     <div class="mt-12 grid items-start gap-6 lg:grid-cols-2">${[byId.aeo, byId.geo].map(card).join('')}</div>
     <div id="term-seo" class="mt-12 scroll-mt-24"><h3 class="font-display text-2xl font-extrabold uppercase italic text-white">${copy(byId.seo.question)}</h3><div class="max-w-3xl">${termText(byId.seo)}</div>

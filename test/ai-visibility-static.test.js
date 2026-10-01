@@ -34,6 +34,7 @@ import {
 import { teamHead } from '../scripts/seo/data-team.mjs';
 import { buildPageShell } from '../scripts/spa-shell.mjs';
 import { renderAiVisibilityMirror, renderAiVisibilityMirrorRest } from '../src/ai/static-mirror.js';
+import { PAGE_UPDATED } from '../src/ai/page-updated.js';
 import { renderTeamMirror, renderTeamMirrorRest } from '../src/team/static-mirror.js';
 import { HTMLParser } from './helpers/html-text.js';
 
@@ -227,7 +228,9 @@ test('AI Visibility dedicated shell is indexable and carries only its route grap
   const webpage = graph.find((node) => node['@type'] === 'WebPage');
   assert.equal(webpage['@id'], `${CANONICAL}#webpage`);
   assert.equal(webpage.url, CANONICAL);
-  assert.equal(webpage.dateModified, AI_VISIBILITY_UPDATED);
+  // The page date moves forward with each published AEO article (src/ai/page-updated.js).
+  assert.equal(webpage.dateModified, PAGE_UPDATED);
+  assert.ok(PAGE_UPDATED >= AI_VISIBILITY_UPDATED);
   assert.equal(webpage.datePublished, AI_VISIBILITY_PUBLISHED);
   assert.ok(webpage.speakable.cssSelector.includes('.al-aeo-def'));
   assert.ok(webpage.speakable.cssSelector.includes('.al-aeo-lead'));
@@ -289,9 +292,9 @@ test('SEO, AEO and GEO are defined once, verbatim, in the visible section, the t
 
 test('dates: the page shows when it was updated, and the prices line keeps its own date', () => {
   const mirror = renderAiVisibilityMirror();
-  assert.ok(sectionById(mirror, AEO_GEO.anchor).includes(`datetime="${AI_VISIBILITY_UPDATED}"`));
+  assert.ok(sectionById(mirror, AEO_GEO.anchor).includes(`datetime="${PAGE_UPDATED}"`));
   assert.ok(sectionById(mirror, 'plans').includes(`datetime="${PLANS_UPDATED}"`));
-  assert.ok(!sectionById(mirror, 'plans').includes(`datetime="${AI_VISIBILITY_UPDATED}"`) || PLANS_UPDATED === AI_VISIBILITY_UPDATED);
+  assert.ok(!sectionById(mirror, 'plans').includes(`datetime="${PAGE_UPDATED}"`) || PLANS_UPDATED === PAGE_UPDATED);
   assert.ok(AI_VISIBILITY_PUBLISHED <= PLANS_UPDATED && PLANS_UPDATED <= AI_VISIBILITY_UPDATED);
   const twin = read(TWIN_FILE);
   assert.match(twin, /\nPublished: September 28, 2026\nUpdated: /);
@@ -415,7 +418,7 @@ test('agent files exclude the form endpoint and index only AI Visibility', () =>
   const sitemap = read('public/sitemap.xml');
   assert.ok(sitemap.includes(`<loc>${CANONICAL}</loc>`));
   assert.ok(!sitemap.includes('<loc>https://autolander.ai/ai-visibility/</loc>'));
-  assert.match(sitemap, new RegExp(`<loc>${CANONICAL}</loc>\\s*<lastmod>${AI_VISIBILITY_UPDATED}</lastmod>`));
+  assert.match(sitemap, new RegExp(`<loc>${CANONICAL}</loc>\\s*<lastmod>${PAGE_UPDATED}</lastmod>`));
   assert.ok(!sitemap.includes('<loc>https://autolander.ai/team/</loc>'));
   for (const file of ['public/llms.txt', 'public/llms-full.txt', 'public/agents.md']) {
     assert.ok(!read(file).includes('https://autolander.ai/team/'), `${file} must omit /team/`);

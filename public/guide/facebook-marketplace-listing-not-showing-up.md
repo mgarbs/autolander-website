@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/facebook-marketplace-listing-not-showing-up/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 21, 2026  
 Updated: September 21, 2026
 
 **Short answer:** When a Facebook Marketplace listing is not showing up, check four things in order: is it pending review (wait it out), was it removed (check your Support Inbox, then appeal), has it gone stale and been quietly deranked (renew or repost), or is it live but filtered out of the buyer’s view by distance, category, or price settings. Most “invisible” dealer listings turn out to be stale or price-filtered, not removed.
@@ -24,7 +25,7 @@ Each step rules out one cause. Stop at the first one that explains what you see.
 4. **Search like a buyer** — Have someone else search the year, make, and model from their own account, set to your area. Your own view of your own listing proves nothing about ranking.
 5. **Audit the fields buyers filter on** — Distance: the listing location must be the car’s real location. Category: it must be a vehicle listing of the right type. Price: a real number — a $1 placeholder falls outside every realistic price-range filter a car buyer sets.
 6. **Check the listing’s age** — If it has been live for weeks, staleness is your answer: Marketplace strongly favors fresh listings. Renew it when the option is offered, or delete it and repost with improved photos and price.
-7. **Still invisible? Fix quality, not metaphysics** — Thin photos, sparse description, missing specs, and an off-market price all suppress reach. Make it the best listing for that car in your zip code — showroom-grade photos are the fastest upgrade — and re-check in a few days.
+7. **Still invisible? Fix quality, not metaphysics** — Thin photos, sparse description, missing specs, and an off-market price all suppress reach. Make it the best listing for that car in your zip code — showroom-grade [photos](https://autolander.ai/ai-car-photo-editor/) are the fastest upgrade — and re-check in a few days.
 
 ## Why is my listing not showing in Marketplace search?
 
@@ -48,11 +49,11 @@ _Reach follows quality: the same Nissan Kicks as the original dark lot photo (le
 
 Marketplace is a freshness machine, and a dealer lot is a freshness problem: a unit that takes weeks to sell spends most of that time as an old listing. Renewing — when Facebook offers it on a listing — bumps it back toward the fresh end of browse and search without creating a duplicate. On a lot of any size, that becomes a standing weekly chore: walk the listings, renew what is eligible, repost what has gone truly cold.
 
-It is exactly the kind of repetitive maintenance that slips when the store gets busy, which is why a Facebook Marketplace auto poster treats renewals as part of the job — along with price updates and pulling sold units — rather than something a person remembers on Tuesdays.
+It is exactly the kind of repetitive maintenance that slips when the store gets busy, which is why a [Facebook Marketplace auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) treats renewals as part of the job — along with price updates and pulling sold units — rather than something a person remembers on Tuesdays.
 
 ## The honest part
 
-Marketplace ranking is a black box, and nobody selling you a visibility trick can see inside it either. There is no seller analytics view that explains a quiet listing. What is provable: fresh, complete, correctly priced, well-photographed listings from healthy accounts get seen, and stale or sloppy ones fade. Control those inputs and pace the account — the safest auto poster page explains that design philosophy — and let the box do what it does.
+Marketplace ranking is a black box, and nobody selling you a visibility trick can see inside it either. There is no seller analytics view that explains a quiet listing. What is provable: fresh, complete, correctly priced, well-photographed listings from healthy accounts get seen, and stale or sloppy ones fade. Control those inputs and pace the account — the [safest auto poster](https://autolander.ai/safest-facebook-marketplace-auto-poster/) page explains that design philosophy — and let the box do what it does.
 
 ## Frequently asked questions
 

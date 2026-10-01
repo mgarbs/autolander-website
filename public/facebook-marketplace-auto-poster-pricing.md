@@ -85,7 +85,7 @@ If you want a guided walkthrough on your own inventory first, book a demo using 
 
 Honestly: longer than the hero on our homepage makes it look, and we would rather you know before you buy. Each seat has a daily posting allowance — Starter 5, Growth 10, Pro 15 — and a Dealer Plan stacks seats, so the time to first-cover a lot is simply units divided by the daily total. A single Starter seat clears a 60-unit lot in about 12 working days; a three-seat Dealer Plan on Pro clears 300 units in about a week.
 
-Two things soften that. First, the allowance is a per-day pace, not a one-time cap: once the lot is covered, the daily budget goes to new arrivals, price changes and re-posts, which is the steady state that matters. Second, Meta’s own listing limits apply to every seller on Marketplace regardless of tool — our listing limits guide explains them — so a slower, steadier pace is also the one that keeps an account healthy. AutoLander’s daily allowances describe workflow capacity, never permission to exceed what your account shows.
+Two things soften that. First, the allowance is a per-day pace, not a one-time cap: once the lot is covered, the daily budget goes to new arrivals, price changes and re-posts, which is the steady state that matters. Second, Meta’s own listing limits apply to every seller on Marketplace regardless of tool — our [listing limits guide](https://autolander.ai/guide/facebook-marketplace-car-listing-limits/) explains them — so a slower, steadier pace is also the one that keeps an account healthy. AutoLander’s daily allowances describe workflow capacity, never permission to exceed what your account shows.
 
 ## Days to cover your lot, by plan
 

@@ -28,8 +28,8 @@ AutoLander does not have a one-click native vAuto integration. vAuto publicly do
 
 vAuto syndication is product- and account-specific, so confirm the actual source of truth.
 
-- vAuto says Provision supports automated listing syndication and photo management. Confirm that the price and photo version in that workflow is the version you intend to send. See Provision details.
-- vAuto Merchandising can organize photos, update listings and syndicate inventory to third-party sites. Use an approved content-export or syndication function rather than a screen scrape. See vAuto Merchandising.
+- vAuto says Provision supports automated listing syndication and photo management. Confirm that the price and photo version in that workflow is the version you intend to send. [See Provision details](https://www.vauto.com/products/provision/).
+- vAuto Merchandising can organize photos, update listings and syndicate inventory to third-party sites. Use an approved content-export or syndication function rather than a screen scrape. [See vAuto Merchandising](https://www.vauto.com/products/merchandising/).
 - Test the outbound data with a small VIN sample: active status, retail price, mileage, trim, comments and photo URLs/order should agree with the dealership’s intended listing.
 
 ## vAuto limitation to plan for
@@ -42,7 +42,7 @@ Identify the dealer-authorized syndication route in your vAuto setup first. The 
 
 1. **Identify the vAuto merchandising source** — Confirm whether Provision/vAuto Merchandising or an existing website syndication feed owns the final price, photos and listing content for your store.
 2. **Request an authorized outbound handoff** — Ask your vAuto/Cox account contact or current feed provider for a dealer-approved outbound feed that AutoLander can ingest; do not scrape the vAuto interface.
-3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the Facebook Marketplace inventory sync works.
+3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ## What AutoLander adds on top of your vAuto data
 
@@ -72,19 +72,19 @@ No. AutoLander does not offer a one-click native vAuto integration. The connecti
 
 ### How does the vAuto connection work?
 
-The dealer authorizes a vAuto inventory export or feed file from vAuto or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how ongoing inventory sync works.
+The dealer authorizes a vAuto inventory export or feed file from vAuto or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how [ongoing inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ### Can I download a generic vAuto CSV for AutoLander?
 
-Do not assume so. vAuto advertises third-party listing syndication and product-specific content export, but its public product pages do not document a universal CSV, SFTP or public API workflow. Ask the dealership’s vAuto/Cox contact for an approved outbound feed. Review vAuto’s merchandising documentation.
+Do not assume so. vAuto advertises third-party listing syndication and product-specific content export, but its public product pages do not document a universal CSV, SFTP or public API workflow. Ask the dealership’s vAuto/Cox contact for an approved outbound feed. [Review vAuto’s merchandising documentation](https://www.vauto.com/products/merchandising/).
 
 ### How much does it cost to post vAuto inventory to Facebook Marketplace?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the Facebook Marketplace integrations page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the [Facebook Marketplace integrations page](https://autolander.ai/integrations/).
 
 ### What if I use a different system than vAuto?
 
-AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the integrations hub.
+AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the [integrations hub](https://autolander.ai/integrations/).
 
 ## Related
 

@@ -28,7 +28,7 @@ AutoLander does not have a one-click native CDK integration. CDK offers secure d
 
 CDK’s official data tools are powerful, but they are intended for technical implementations.
 
-- CDK’s Data Export Tool schedules predefined datasets to SFTP, uses PGP encryption and MFA, and can share dealership data with chosen partners. See CDK Data Export tools.
+- CDK’s Data Export Tool schedules predefined datasets to SFTP, uses PGP encryption and MFA, and can share dealership data with chosen partners. [See CDK Data Export tools](https://www2.cdkglobal.com/data-your-way).
 - CDK says the export path requires knowledge of its file structure and dealership operations plus an in-house data warehouse. Confirm AutoLander accepts the mapped vehicle-only output before provisioning a broad DMS dataset.
 - CDK’s Export/Import option uses legacy API packages, including Vehicle data, and requires SOAP API expertise. That is a developer integration—not a one-click dealer setting.
 
@@ -42,7 +42,7 @@ First determine whether the dealership already has a vehicle-only website/syndic
 
 1. **Choose an existing feed or CDK export** — Prefer an approved vehicle-inventory feed already used by the dealer website when available. Otherwise scope the CDK Data Export Tool to the smallest required vehicle dataset.
 2. **Secure and map the CDK delivery** — Arrange the authorized SFTP/PGP delivery and map CDK fields into AutoLander’s inventory format. Test a single rooftop and a small VIN sample before expanding.
-3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the Facebook Marketplace inventory sync works.
+3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ## What AutoLander adds on top of your CDK Global data
 
@@ -72,19 +72,19 @@ No. AutoLander does not offer a one-click native CDK Global integration. The con
 
 ### How does the CDK Global connection work?
 
-The dealer authorizes a CDK inventory export or syndication feed from CDK Global or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how ongoing inventory sync works.
+The dealer authorizes a CDK inventory export or syndication feed from CDK Global or an existing syndication provider. You point AutoLander at that approved output, your vehicles load, and AutoLander prepares eligible Marketplace listings and keeps them in sync. Meta’s account limits still apply. See how [ongoing inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ### Is a CDK Data Export ready to load directly into AutoLander?
 
-Not automatically. CDK describes secure, broad DMS datasets delivered to SFTP and says implementers need file-structure knowledge and a data warehouse. A vehicle-only subset must be authorized, mapped and tested for AutoLander. Read CDK’s technical overview.
+Not automatically. CDK describes secure, broad DMS datasets delivered to SFTP and says implementers need file-structure knowledge and a data warehouse. A vehicle-only subset must be authorized, mapped and tested for AutoLander. [Read CDK’s technical overview](https://www2.cdkglobal.com/data-your-way).
 
 ### How much does it cost to post CDK Global inventory to Facebook Marketplace?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the Facebook Marketplace integrations page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the [Facebook Marketplace integrations page](https://autolander.ai/integrations/).
 
 ### What if I use a different system than CDK Global?
 
-AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the integrations hub.
+AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the [integrations hub](https://autolander.ai/integrations/).
 
 ## Related
 

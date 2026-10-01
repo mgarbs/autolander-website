@@ -28,39 +28,39 @@ Pick your system to see exactly how it connects. CarGurus and Cars.com are direc
 
 ### CarGurus to Facebook Marketplace
 
-CarGurus is a directly supported feed source — AutoLander reads your feed and posts your lot. See the CarGurus integration setup.
+CarGurus is a directly supported feed source — AutoLander reads your feed and posts your lot. See the [CarGurus integration setup](https://autolander.ai/integrations/cargurus-facebook-marketplace/).
 
 ### Cars.com to Facebook Marketplace
 
-Cars.com is a directly supported feed source — AutoLander reads your feed and posts your lot. See the Cars.com integration setup.
+Cars.com is a directly supported feed source — AutoLander reads your feed and posts your lot. See the [Cars.com integration setup](https://autolander.ai/integrations/cars-com-facebook-marketplace/).
 
 ### vAuto to Facebook Marketplace
 
-vAuto connects via custom feed/export (no one-click native integration). See the vAuto integration setup.
+vAuto connects via custom feed/export (no one-click native integration). See the [vAuto integration setup](https://autolander.ai/integrations/vauto-facebook-marketplace/).
 
 ### DealerCenter to Facebook Marketplace
 
-DealerCenter connects via custom feed/export (no one-click native integration). See the DealerCenter integration setup.
+DealerCenter connects via custom feed/export (no one-click native integration). See the [DealerCenter integration setup](https://autolander.ai/integrations/dealercenter-facebook-marketplace/).
 
 ### Dealer.com to Facebook Marketplace
 
-Dealer.com connects via custom feed/export (no one-click native integration). See the Dealer.com integration setup.
+Dealer.com connects via custom feed/export (no one-click native integration). See the [Dealer.com integration setup](https://autolander.ai/integrations/dealer-com-facebook-marketplace/).
 
 ### HomeNet to Facebook Marketplace
 
-HomeNet connects via custom feed/export (no one-click native integration). See the HomeNet integration setup.
+HomeNet connects via custom feed/export (no one-click native integration). See the [HomeNet integration setup](https://autolander.ai/integrations/homenet-facebook-marketplace/).
 
 ### Frazer to Facebook Marketplace
 
-Frazer connects via custom feed/export (no one-click native integration). See the Frazer integration setup.
+Frazer connects via custom feed/export (no one-click native integration). See the [Frazer integration setup](https://autolander.ai/integrations/frazer-facebook-marketplace/).
 
 ### CDK to Facebook Marketplace
 
-CDK Global connects via custom feed/export (no one-click native integration). See the CDK Global integration setup.
+CDK Global connects via custom feed/export (no one-click native integration). See the [CDK Global integration setup](https://autolander.ai/integrations/cdk-facebook-marketplace/).
 
 ### Tekion to Facebook Marketplace
 
-Tekion connects via custom feed/export (no one-click native integration). See the Tekion integration setup.
+Tekion connects via custom feed/export (no one-click native integration). See the [Tekion integration setup](https://autolander.ai/integrations/tekion-facebook-marketplace/).
 
 ## Directly supported feed sources
 
@@ -81,7 +81,7 @@ Tekion connects via custom feed/export (no one-click native integration). See th
 1. **Connect your feed** — Point AutoLander at a supported feed (CarGurus, Cars.com) or a custom feed/export from your DMS or website. Your vehicles load automatically.
 2. **Enhance every listing** — The AI Photo Studio swaps lot backgrounds for showroom backdrops and generates a walkaround video for each vehicle.
 3. **Manage the posting queue from your own computer** — While the desktop app is running, AutoLander works through eligible Marketplace listings with a configurable queue and accurate title, price and description fields. Meta’s account limits still apply.
-4. **Stay accurate and measure it** — Listings refresh as prices change, sold units are removed during reconciliation, and post-to-sale attribution shows which posts moved metal. See the inventory-sync details.
+4. **Stay accurate and measure it** — Listings refresh as prices change, sold units are removed during reconciliation, and post-to-sale attribution shows which posts moved metal. See the [inventory-sync details](https://autolander.ai/facebook-marketplace-inventory-sync/).
 
 ## An honest note on "integrations"
 

@@ -28,8 +28,8 @@ CarGurus is a directly supported AutoLander source. CarGurus account configurati
 
 CarGurus has dealer-side requirements that are separate from AutoLander.
 
-- CarGurus tells dealers to keep photos, trim and options current in the Dealer Dashboard and their IMS. Review those fields before handing the feed to AutoLander. See CarGurus dealer onboarding.
-- CarGurus says an all-in price in the inventory feed does not replace its Dealer Fee Setup step. Dealers must still confirm their fee configuration in the Dashboard. Read the official fee-transparency guidance.
+- CarGurus tells dealers to keep photos, trim and options current in the Dealer Dashboard and their IMS. Review those fields before handing the feed to AutoLander. [See CarGurus dealer onboarding](https://products.cargurus.com/welcome-to-cargurus).
+- CarGurus says an all-in price in the inventory feed does not replace its Dealer Fee Setup step. Dealers must still confirm their fee configuration in the Dashboard. [Read the official fee-transparency guidance](https://dealers.cargurus.com/blog/fee-transparency-update).
 - After connection, spot-check at least one new arrival, one price change and one sold unit. The feed must reflect each change before AutoLander can mirror it to Marketplace.
 
 ## CarGurus limitation to plan for
@@ -42,7 +42,7 @@ Start with the same CarGurus inventory source your dealership already maintains,
 
 1. **Audit the CarGurus source inventory** — Confirm each active VIN has the intended price, mileage, trim, options and at least one usable photo in your IMS or CarGurus Dealer Dashboard.
 2. **Connect the supported feed to AutoLander** — Provide the existing CarGurus inventory-feed source through the AutoLander onboarding flow, then compare several loaded VINs against the Dealer Dashboard before posting.
-3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the Facebook Marketplace inventory sync works.
+3. **It manages eligible listings and keeps them in sync** — AutoLander works through eligible vehicles with a configurable queue, refreshes listings as prices change, and removes sold units during reconciliation after your feed marks them gone. Meta account eligibility and listing limits still apply. See how the [Facebook Marketplace inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/) works.
 
 ## What AutoLander adds on top of your CarGurus data
 
@@ -72,19 +72,19 @@ AutoLander does not need a separate plugin for CarGurus because CarGurus is a di
 
 ### How does the CarGurus connection work?
 
-AutoLander reads your CarGurus inventory feed directly. You point AutoLander at the feed, your vehicles load automatically, and AutoLander prepares eligible Marketplace listings and keeps them in sync as prices and inventory change. Meta’s account limits still apply. See the inventory-sync details.
+AutoLander reads your CarGurus inventory feed directly. You point AutoLander at the feed, your vehicles load automatically, and AutoLander prepares eligible Marketplace listings and keeps them in sync as prices and inventory change. Meta’s account limits still apply. See the [inventory-sync details](https://autolander.ai/facebook-marketplace-inventory-sync/).
 
 ### Does an all-in price in my CarGurus feed finish the dealer-fee setup?
 
-No. CarGurus says dealers sending all-in prices must still use Dealer Fee Setup and confirm that fees are included in the inventory feed. AutoLander cannot make that dealer-account selection for you. CarGurus explains the requirement here.
+No. CarGurus says dealers sending all-in prices must still use Dealer Fee Setup and confirm that fees are included in the inventory feed. AutoLander cannot make that dealer-account selection for you. [CarGurus explains the requirement here](https://dealers.cargurus.com/blog/fee-transparency-update).
 
 ### How much does it cost to post CarGurus inventory to Facebook Marketplace?
 
-AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the Facebook Marketplace integrations page.
+AutoLander publishes self-serve plans from $39/mo with 5 free posts to start and no credit card required. The same pricing applies however you connect — see all integration options on the [Facebook Marketplace integrations page](https://autolander.ai/integrations/).
 
 ### What if I use a different system than CarGurus?
 
-AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the integrations hub.
+AutoLander's verified feed support is CarGurus, Cars.com and custom feeds/exports. Another system may connect if its provider can produce a dealer-authorized export in a supported format. Confirm the format and delivery method before buying; see the [integrations hub](https://autolander.ai/integrations/).
 
 ## Related
 

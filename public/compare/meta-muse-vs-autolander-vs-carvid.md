@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/compare/meta-muse-vs-autolander-vs-carvid/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 28, 2026  
 Updated: September 28, 2026
 
 **Short answer:** They do different jobs, and for a dealership the job that decides it is the inventory. Meta Muse is a personal AI agent, one per person, and it now covers two things dealer tools charge extra for: hunting Marketplace for cars to buy and answering buyers in Messenger. CARVID sells those as Acquire at $599 a month and as an AI Inbox add-on of $299 to $499 a month on its team plans. Muse can post cars, even from a feed you hand it. What it cannot be is the system that keeps a lot true: the daily upkeep of prices, arrivals and sold units draws on its weekly usage, nobody checks its field choices but you, no DMS delivers to it, and it has no team seats or manager view. AutoLander posts every unit from your feed with the real price, mileage and studio-grade photos, keeps each listing true, pulls sold cars and gives managers a team dashboard, from $39 a month. The lot belongs on AutoLander; the conversations can go to whichever assistant you trust.
@@ -104,7 +105,7 @@ Yes. A 15-car independent lot where the owner does everything can hand Muse its 
 
 The bigger cost shows up somewhere else. An agent that spends its week filling Marketplace forms is an agent that is not answering the buyer who messaged at 9pm, following up with the couple who test drove on Saturday, finding the trade-in you should buy, or remembering which customer wanted a third row. Posting and nightly re-checks can use most of a week’s usage by themselves. You end up with a makeshift poster and lose the most helpful assistant you have.
 
-Then there is the day the lot grows. A setup built from prompts and scripts does not turn into a team tool when you hire a second salesperson. AutoLander’s Starter plan is $39 a month for five posts a day, which lists a 20-unit lot in four working days, keeps every price in step with your feed, pulls sold cars and runs each photo through the AI Photo Studio. You can post five cars free before you pay anything; every plan is on the pricing page.
+Then there is the day the lot grows. A setup built from prompts and scripts does not turn into a team tool when you hire a second salesperson. AutoLander’s Starter plan is $39 a month for five posts a day, which lists a 20-unit lot in four working days, keeps every price in step with your feed, pulls sold cars and runs each photo through the AI Photo Studio. You can post five cars free before you pay anything; every plan is on the [pricing page](https://autolander.ai/facebook-marketplace-auto-poster-pricing/).
 
 _Muse posts the photo it is handed. The same Jeep Gladiator as the dealer’s watermarked shot (left) and after AutoLander’s AI Photo Studio (right): same truck and paint, new room._
 
@@ -112,12 +113,12 @@ _Muse posts the photo it is handed. The same Jeep Gladiator as the dealer’s wa
 
 Everything here is built into AutoLander from $39 a month. With Muse, each item is a task you set up, pay for out of its weekly usage and check yourself. CARVID prices most of it well above $39.
 
-- Every unit from the feed you already have: CarGurus, Cars.com, vAuto, Dealer.com, HomeNet, Frazer, CDK, Tekion, DealerCenter, website feeds and scheduled CSV or SFTP drops that your DMS delivers straight to AutoLander. See the full list of integrations.
+- Every unit from the feed you already have: CarGurus, Cars.com, vAuto, Dealer.com, HomeNet, Frazer, CDK, Tekion, DealerCenter, website feeds and scheduled CSV or SFTP drops that your DMS delivers straight to AutoLander. See the full list of [integrations](https://autolander.ai/integrations/).
 - Prices and mileage that follow the desk. When the feed changes, the Marketplace listing changes, and sold units come down without anyone remembering to do it, every day, on a flat monthly plan.
 - Checked work. Every dropdown AutoLander selects is read back and verified against its label before the post continues, mileage is the odometer or blank and never a guess, and the price comes only from the feed.
 - Paced posting. Humanized typing, a cooldown after each publish and a daily allowance per seat, so a lot goes up at a pace a person could keep.
 - Fixes ship from us. When Facebook changes the listing form, every store gets the fix, usually within hours, with nothing for you to rewrite.
-- Photos that stop the scroll. The AI Photo Studio replaces the lot behind the real car and never repaints it, and AI walkaround video adds motion to the listing.
+- Photos that stop the scroll. The [AI Photo Studio](https://autolander.ai/ai-car-photo-editor/) replaces the lot behind the real car and never repaints it, and AI walkaround video adds motion to the listing.
 - Descriptions written from the feed data for every unit, so year, trim, mileage and features are stated the way a buyer, or a buyer’s AI agent, reads them.
 - A team account. Dealer Plan seats, a live manager dashboard and post-to-sale attribution show who posted what and which posts sold cars.
 - Your own computer and your own Facebook session. AutoLander is a native desktop app, with no browser extension and no vendor server logging in as you.
@@ -154,9 +155,9 @@ _Raw lot photo, listing photo. The same Ford F-150 in front of the store (left) 
 
 ## Does Muse make AutoLander or CARVID obsolete?
 
-For CARVID it changes the math on two line items. When the personal agent every salesperson can carry on their phone can hunt private-party cars and answer Marketplace buyers, a $599 acquisition plan and a $299 inbox add-on have to justify themselves with what Muse lacks: CRM integration, voice, multi-rep routing and nine channels. Some stores will still pay for that. Fewer will pay for the answering alone. Our head-to-head with CARVID covers the rest of that comparison.
+For CARVID it changes the math on two line items. When the personal agent every salesperson can carry on their phone can hunt private-party cars and answer Marketplace buyers, a $599 acquisition plan and a $299 inbox add-on have to justify themselves with what Muse lacks: CRM integration, voice, multi-rep routing and nine channels. Some stores will still pay for that. Fewer will pay for the answering alone. Our [head-to-head with CARVID](https://autolander.ai/compare/carvid/) covers the rest of that comparison.
 
-For AutoLander the effect runs the other way. We never sold an inbox, and our reasoning is public. The job we do is the one Muse names as outside its lane: take the feed a dealer already has, turn every unit into a Marketplace listing with the real price, the real mileage and full photos, keep each one current, and pull it when the car sells. The better Muse gets at answering buyers, the more that upstream accuracy matters, because an agent answering from a stale listing confirms a car that is gone.
+For AutoLander the effect runs the other way. We never sold an inbox, and [our reasoning is public](https://autolander.ai/why-we-dont-answer-your-buyers/). The job we do is the one Muse names as outside its lane: take the feed a dealer already has, turn every unit into a Marketplace listing with the real price, the real mileage and full photos, keep each one current, and pull it when the car sells. The better Muse gets at answering buyers, the more that upstream accuracy matters, because an agent answering from a stale listing confirms a car that is gone.
 
 Meta builds tools for everyone on Marketplace at once. Dealer plumbing, such as DMS ingestion, per-rooftop posting schedules, sales-team seats and sold-unit removal, is work Meta has shown no interest in doing. That could change, and if Meta ships feed-based vehicle posting, this page will say so.
 
@@ -164,7 +165,7 @@ Meta builds tools for everyone on Marketplace at once. Dealer plumbing, such as 
 
 The two never touch the same job, so the setup takes an afternoon.
 
-1. **Connect the feed and post the lot** — Connect the inventory you already publish, whether that is a DMS export, a CSV or SFTP drop, or your website, and let AutoLander post every unit through your own Facebook session. The inventory sync page lists the sources.
+1. **Connect the feed and post the lot** — Connect the inventory you already publish, whether that is a DMS export, a CSV or SFTP drop, or your website, and let AutoLander post every unit through your own Facebook session. The [inventory sync page](https://autolander.ai/facebook-marketplace-inventory-sync/) lists the sources.
 2. **Give Muse a buy box** — Tell Muse what the store buys: makes, years, a mileage ceiling, a price ceiling and a radius. Make it a daily recurring task and have it send the shortlist to the used-car manager.
 3. **Write the inbox rules** — Decide what Muse may answer on its own (availability, hours, directions, whether a car is on the lot) and what always goes to a person: price negotiation, trade values, financing, title questions and any buyer who sounds upset.
 4. **Let Muse audit the listings weekly** — Once a week, ask Muse to shop your own Marketplace listings the way a buyer’s agent would and report anything a filter would drop.
@@ -172,7 +173,7 @@ The two never touch the same job, so the setup takes an afternoon.
 
 ## The honest part
 
-Muse is weeks old and Meta changes it constantly. Meta has not published a seller guide for it, testers report uneven behavior when it messages people, and the prices and limits above were checked on September 26, 2026. CARVID’s plans come from its own website on the same date. AutoLander has no inbox feature, never messages buyers, and like every tool cannot guarantee how Meta treats a profile. Read the automation policy guide before you automate anything.
+Muse is weeks old and Meta changes it constantly. Meta has not published a seller guide for it, testers report uneven behavior when it messages people, and the prices and limits above were checked on September 26, 2026. CARVID’s plans come from its own website on the same date. AutoLander has no inbox feature, never messages buyers, and like every tool cannot guarantee how Meta treats a profile. Read the [automation policy guide](https://autolander.ai/guide/facebook-marketplace-automation/) before you automate anything.
 
 ## Sources
 
@@ -181,7 +182,7 @@ Checked September 26, 2026.
 - Meta’s Muse announcement on about.fb.com, September 8, 2026, and Meta’s help center pages on Muse connectors and recurring tasks.
 - TechCrunch coverage of Muse’s availability in the United States and Canada, September 25, 2026.
 - CARVID’s pricing and CARVID Acquire pages on carvidapp.com, both updated August 24, 2026.
-- AutoLander pricing and the full Marketplace posting tool comparison.
+- [AutoLander pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/) and the full [Marketplace posting tool comparison](https://autolander.ai/compare/).
 
 ## Frequently asked questions
 

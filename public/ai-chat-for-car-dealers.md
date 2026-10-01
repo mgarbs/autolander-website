@@ -21,7 +21,7 @@ The category is real, but the execution bar is high. A chatbot that improvises a
 - Your own accounts: conversations should run through the dealership’s own channels, not a shared cloud account you cannot see or control.
 - Notification you actually feel: if a hot lead is waiting, it should hit your team’s phones, not a dashboard nobody opens.
 - A paper trail: every AI-touched conversation logged and reviewable, so you can audit what was said in your store’s name.
-- Honest limits: no vendor can exempt you from Meta’s terms or make automated access "approved" — see the policy and safety guide.
+- Honest limits: no vendor can exempt you from Meta’s terms or make automated access "approved" — see the [policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/).
 
 ## AI replies vs. fast human replies
 
@@ -39,13 +39,13 @@ _AutoLander does not send automated replies. It makes the human answer fast and 
 
 ## Where AutoLander stands
 
-AutoLander is not an autoresponder, does not reply to buyers for you, and does not touch your Marketplace inbox at all. What it does: keeps every listing’s price, mileage, photos and availability accurate through inventory sync, and removes sold units before dead-end conversations start — so when your team answers, the facts are already right. The Facebook Marketplace assistant covers that upkeep.
+AutoLander is not an autoresponder, does not reply to buyers for you, and does not touch your Marketplace inbox at all. What it does: keeps every listing’s price, mileage, photos and availability accurate through [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/), and removes sold units before dead-end conversations start — so when your team answers, the facts are already right. The [Facebook Marketplace assistant](https://autolander.ai/facebook-marketplace-assistant/) covers that upkeep.
 
 ## How AutoLander makes your team the fastest answer in town
 
 ### Synced listing truth
 
-Price and details stay current automatically, so whoever answers has the right numbers — no tab-hopping, no guessing. See inventory sync.
+Price and details stay current automatically, so whoever answers has the right numbers — no tab-hopping, no guessing. See [inventory sync](https://autolander.ai/facebook-marketplace-inventory-sync/).
 
 ### Your inbox stays yours
 
@@ -57,11 +57,11 @@ Sold units come off Marketplace automatically, so buyers never message about a c
 
 ### Whole-lot coverage
 
-More listings, more conversations: the auto poster keeps the full inventory live within your account’s limits.
+More listings, more conversations: the [auto poster](https://autolander.ai/facebook-marketplace-auto-poster/) keeps the full inventory live within your account’s limits.
 
 ### Photos that start the chat
 
-Showroom-grade images from the AI car photo editor earn more clicks, which is where every conversation begins.
+Showroom-grade images from the [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) earn more clicks, which is where every conversation begins.
 
 ### Proof of what sold
 
@@ -69,7 +69,7 @@ Post-to-sale attribution shows which listings became deliveries, so you double d
 
 ## How fast should the first reply be?
 
-Under a minute during working hours, and as fast as your process allows outside them. Marketplace shoppers message several stores in one sitting and book with the one that answers first — response speed is the cheapest ratio-mover in the store. The full playbook is in how to get more car sales leads.
+Under a minute during working hours, and as fast as your process allows outside them. Marketplace shoppers message several stores in one sitting and book with the one that answers first — response speed is the cheapest ratio-mover in the store. The full playbook is in [how to get more car sales leads](https://autolander.ai/guide/car-sales-leads/).
 
 ## Frequently asked questions
 
@@ -79,7 +79,7 @@ No — and it does not handle your messages at all. AutoLander has no autorespon
 
 ### What is the best AI chatbot for car dealerships?
 
-Judge any candidate on three questions: does it answer from your live inventory data (not a script), does it hand off to a human the moment a conversation needs judgment, and does it run through your own accounts? Many tools fail at least one. The broader landscape is covered in AI for car dealerships.
+Judge any candidate on three questions: does it answer from your live inventory data (not a script), does it hand off to a human the moment a conversation needs judgment, and does it run through your own accounts? Many tools fail at least one. The broader landscape is covered in [AI for car dealerships](https://autolander.ai/guide/ai-for-car-dealerships/).
 
 ### Do AI chatbots make up prices?
 
@@ -87,7 +87,7 @@ Poorly built ones do — improvised numbers are the category’s classic failure
 
 ### How do dealers cover the Marketplace inbox at night and on weekends?
 
-With process: Messenger notifications on a phone, a named owner per shift, and listings whose data is accurate enough that anyone can answer confidently. AutoLander’s part is that last piece — accurate listings and sold units already removed; see how to get more car sales leads for the speed-to-lead playbook.
+With process: Messenger notifications on a phone, a named owner per shift, and listings whose data is accurate enough that anyone can answer confidently. AutoLander’s part is that last piece — accurate listings and sold units already removed; see [how to get more car sales leads](https://autolander.ai/guide/car-sales-leads/) for the speed-to-lead playbook.
 
 ## Related
 

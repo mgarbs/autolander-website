@@ -4,6 +4,7 @@
 
 Source: https://autolander.ai/guide/car-photography-tips-for-dealerships/  
 Author: Michael Garber, Co-founder, AutoLander  
+Published: September 2, 2026  
 Updated: September 2, 2026
 
 **Short answer:** Good dealership photography is a process, not a talent. Pick one photo spot on the lot, shoot in the first or last hours of daylight, walk the same shot list on every unit, and lock the phone settings once. A porter can produce consistent, dealer-grade photos in about fifteen minutes per car. AI background replacement then handles the one variable the process cannot: what is behind the car.
@@ -25,7 +26,7 @@ Run this loop on every unit that hits the lot. Same order, every time — the or
 5. **Walk the same exterior loop** — Three-quarter front from the driver side, full profile, three-quarter rear, straight-on rear, straight-on front, then repeat the angled shots from the passenger side. Fill the frame with the car every time.
 6. **Shoot the interior with the doors open** — Open both doors a minute to let light in. Wide shot from the driver door, dash and screen powered on, odometer readable, front seats, rear seats, cargo area. Buyers live inside the car — do not shortchange this set.
 7. **Close with details and honest flaws** — Wheel and tread close-up, key fobs, engine bay, and every notable ding or scratch. Flaws photographed on your terms build trust and end the phone haggling before it starts.
-8. **Get the photos onto the listing the same day** — A photographed car that is not posted is still invisible inventory. Stores that sell cars on Facebook Marketplace at volume push the photo set straight into the listing flow the day the unit is front-line ready.
+8. **Get the photos onto the listing the same day** — A photographed car that is not posted is still invisible inventory. Stores that [sell cars on Facebook Marketplace](https://autolander.ai/guide/how-to-sell-cars-on-facebook-marketplace/) at volume push the photo set straight into the listing flow the day the unit is front-line ready.
 
 ## How do you photograph cars for a dealership with just a phone?
 
@@ -47,13 +48,13 @@ _The process gets you the left image — a real 2021 Ram 1500 lot photo. AutoLan
 
 ## Where does AI background replacement fit in the dealership photo process?
 
-It solves the one variable the process cannot control: the background. The staging spot gets rained on, the lot fills up, the fence line gets a dumpster, winter kills the light window by 5pm. An AI car photo editor takes the porter’s real photos and re-stages the car in a clean, consistent scene — every unit on the site and on Marketplace ends up looking like it was shot in the same studio.
+It solves the one variable the process cannot control: the background. The staging spot gets rained on, the lot fills up, the fence line gets a dumpster, winter kills the light window by 5pm. An [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) takes the porter’s real photos and re-stages the car in a clean, consistent scene — every unit on the site and on Marketplace ends up looking like it was shot in the same studio.
 
 The order of operations matters: process first, AI second. Background replacement makes a well-shot car look showroom-grade. It cannot invent angles the porter never took.
 
 ## The honest part
 
-Software cannot rescue a blurry frame, a missing angle, or a dirty interior — the porter process still decides most of the quality. And no reputable tool should alter the car itself: paint color, wheels, and damage must stay exactly as shot, or the listing is writing a check the test drive cannot cash. An AI car photo editor earns its keep on the scene, not the car.
+Software cannot rescue a blurry frame, a missing angle, or a dirty interior — the porter process still decides most of the quality. And no reputable tool should alter the car itself: paint color, wheels, and damage must stay exactly as shot, or the listing is writing a check the test drive cannot cash. An [AI car photo editor](https://autolander.ai/ai-car-photo-editor/) earns its keep on the scene, not the car.
 
 ## Frequently asked questions
 

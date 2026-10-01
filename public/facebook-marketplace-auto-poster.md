@@ -14,13 +14,13 @@ _Before a vehicle enters the queue, AutoLander can prepare its photo assets; the
 
 A Facebook Marketplace auto poster is software built to carry out the publishing workload after vehicle data and creative are ready. It accepts eligible inventory, creates a posting queue, moves units through that queue and keeps the work organized as the lot changes. The defining question is not merely whether the software can construct one listing; it is whether the software can execute a backlog of vehicle posts without a rep reopening Marketplace and repeating the same clicks for every VIN.
 
-AutoLander imports inventory from a CarGurus or Cars.com feed, or a custom feed/export, and runs the posting queue as a native desktop app on your own computer. Pacing controls govern how the queue is worked through your normal Facebook session. For the separate job of improving fields, photos and descriptions before a vehicle enters that queue, see our Facebook Marketplace listing software page.
+AutoLander imports inventory from a CarGurus or Cars.com feed, or a custom feed/export, and runs the posting queue as a native desktop app on your own computer. Pacing controls govern how the queue is worked through your normal Facebook session. For the separate job of improving fields, photos and descriptions before a vehicle enters that queue, see our [Facebook Marketplace listing software](https://autolander.ai/facebook-marketplace-listing-software/) page.
 
 ## How does the posting queue handle a whole dealership lot?
 
 A feed changes every day: new VINs arrive, prices move and sold vehicles disappear. A whole-lot auto poster turns those changes into posting work. New eligible inventory can enter the queue, current listings can reflect feed changes, and sold units can be removed when the feed marks them sold. That replaces the spreadsheet-and-memory process in which one employee must notice and handle every change.
 
-Whole-lot execution does not mean dumping every vehicle online in one uncontrolled burst. AutoLander uses pacing controls and works locally while the dealer’s computer is running. The queue reduces repeated labor; it does not promise unlimited listings, override Meta’s rules or guarantee that every vehicle will be eligible to publish. The bulk-posting guide explains that distinction in more detail.
+Whole-lot execution does not mean dumping every vehicle online in one uncontrolled burst. AutoLander uses pacing controls and works locally while the dealer’s computer is running. The queue reduces repeated labor; it does not promise unlimited listings, override Meta’s rules or guarantee that every vehicle will be eligible to publish. The [bulk-posting guide](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/) explains that distinction in more detail.
 
 ## Posting controls for running AutoLander across your inventory
 
@@ -79,7 +79,7 @@ Yes. AutoLander can support one salesperson posting an eligible set of vehicles 
 
 ## A posting queue does not override Meta’s limits
 
-Marketplace eligibility, commercial-seller rules, vehicle-category availability and listing limits can vary by account and market. Meta’s Help Center currently documents monthly new-listing limits that include five vehicle listings and 20 listings total. Meta’s Terms also prohibit automated access without prior permission, and no vendor can promise approval or uninterrupted access. AutoLander’s local session and queue controls do not create Meta permission or endorsement. Check the rules shown in your account and read the policy and safety guide before posting.
+Marketplace eligibility, commercial-seller rules, vehicle-category availability and listing limits can vary by account and market. [Meta’s Help Center](https://www.facebook.com/help/811082570742714) currently documents monthly new-listing limits that include five vehicle listings and 20 listings total. Meta’s Terms also prohibit automated access without prior permission, and no vendor can promise approval or uninterrupted access. AutoLander’s local session and queue controls do not create Meta permission or endorsement. Check the rules shown in your account and read the [policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) before posting.
 
 ## What dealers say
 
@@ -101,7 +101,7 @@ _Quotes are from customer messages to the AutoLander team, September 2026, repro
 
 ### What is the best Facebook Marketplace auto poster for car dealers?
 
-Judge an auto poster on execution: how it builds and advances the posting queue, what pacing controls it provides, where the Facebook session runs, how it processes price and sold-status changes, and whether it reports outcomes. Our 2026 comparison shows how AutoLander and the main alternatives handle those trade-offs.
+Judge an auto poster on execution: how it builds and advances the posting queue, what pacing controls it provides, where the Facebook session runs, how it processes price and sold-status changes, and whether it reports outcomes. Our [2026 comparison](https://autolander.ai/compare/) shows how AutoLander and the main alternatives handle those trade-offs.
 
 ### How much does a Facebook Marketplace auto poster cost?
 
@@ -113,11 +113,11 @@ AutoLander can load and manage a whole dealership inventory from a CarGurus or C
 
 ### Can I bulk post my whole inventory to Facebook Marketplace at once?
 
-AutoLander can load your whole inventory into a managed workflow, but "whole-lot" does not mean an instant unlimited upload. It works through eligible vehicles with pacing controls, while Meta determines category availability and listing limits. See the bulk-posting page for the execution model.
+AutoLander can load your whole inventory into a managed workflow, but "whole-lot" does not mean an instant unlimited upload. It works through eligible vehicles with pacing controls, while Meta determines category availability and listing limits. See the [bulk-posting page](https://autolander.ai/bulk-post-cars-to-facebook-marketplace/) for the execution model.
 
 ### Is using a Facebook Marketplace auto poster against the rules?
 
-Meta’s Terms prohibit automated access without prior permission, while Marketplace eligibility, commercial-seller rules and listing limits can change. AutoLander keeps session data on your own machine and provides queue controls, but those measures do not create Meta approval or guarantee against restrictions. Read the policy and safety guide and the rules shown in your account before posting.
+Meta’s Terms prohibit automated access without prior permission, while Marketplace eligibility, commercial-seller rules and listing limits can change. AutoLander keeps session data on your own machine and provides queue controls, but those measures do not create Meta approval or guarantee against restrictions. Read the [policy and safety guide](https://autolander.ai/guide/facebook-marketplace-automation/) and the rules shown in your account before posting.
 
 ## Related
 
