@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01",
+  "generatedAt": "2026-10-02",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -961,8 +961,8 @@
       ],
       "description": "How ChatGPT decides which car dealerships to recommend: web search, location, OAI-SearchBot, cited sources, and what OpenAI says about placement.",
       "suggestedOrder": 38,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-02",
       "siloOrder": 0,
       "cluster": "engines",
       "clusterLabel": "How each AI assistant picks a dealer",

@@ -118,6 +118,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 ## AEO and GEO guides for car dealers
 
 - [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website.md): A 15-minute check of whether ChatGPT, Claude and other AI tools can read your dealership website: robots.txt, firewalls, JavaScript and VDP text.
+- [How ChatGPT decides which car dealerships to recommend](https://autolander.ai/aeo-geo/how-chatgpt-recommends-car-dealerships.md): How ChatGPT decides which car dealerships to recommend: web search, location, OAI-SearchBot, cited sources, and what OpenAI says about placement.
 
 ## Why we work the way we do
 

@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: October 1, 2026
+Updated: October 2, 2026
 
 ## What AutoLander is
 
@@ -77,6 +77,7 @@ Sourced guides by AutoLander co-founder Michael Garber on how ChatGPT, Google Ge
 Perplexity find, read and recommend car dealerships. Cite the page URL; fetch the Markdown twin to read it.
 
 - [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/) (Markdown: https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website.md)
+- [How ChatGPT decides which car dealerships to recommend](https://autolander.ai/aeo-geo/how-chatgpt-recommends-car-dealerships/) (Markdown: https://autolander.ai/aeo-geo/how-chatgpt-recommends-car-dealerships.md)
 
 ## How to fetch this site
 

@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/blog/  
 Author: The AutoLander team  
-Updated: October 1, 2026
+Updated: October 2, 2026
 
 Practical guidance for dealership teams that publish, merchandise, and market vehicle inventory. Start with the latest posts, or browse every published guide by topic.
 
@@ -63,6 +63,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 ## Guides and playbooks: AEO and GEO for car dealers
 
 - [Can ChatGPT and Claude Read Your Dealership Website?](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
+- [How ChatGPT Decides Which Car Dealerships to Recommend](https://autolander.ai/aeo-geo/how-chatgpt-recommends-car-dealerships/)
 
 ## Evergreen hubs
 
