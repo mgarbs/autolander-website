@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-02",
+  "generatedAt": "2026-10-03",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -987,8 +987,8 @@
       ],
       "description": "How car buyers use ChatGPT and other AI tools to shop, per Cox Automotive, Cars.com, CarGurus and Pew research, and what it means for your store.",
       "suggestedOrder": 39,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-03",
       "siloOrder": 0,
       "cluster": "buyers",
       "clusterLabel": "How car buyers use AI",

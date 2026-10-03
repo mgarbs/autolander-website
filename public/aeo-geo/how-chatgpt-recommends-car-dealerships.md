@@ -120,6 +120,7 @@ There is no published answer, because OpenAI does not list its ranking factors. 
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
+- [How car buyers use ChatGPT and other AI tools to shop, and what it means for dealers](https://autolander.ai/aeo-geo/how-car-buyers-use-chatgpt/)
 - [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
 
 ---
