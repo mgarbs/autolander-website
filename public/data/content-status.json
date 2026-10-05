@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03",
+  "generatedAt": "2026-10-05",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1013,8 +1013,8 @@
       ],
       "description": "How dealership reviews shape AI recommendations: volume, recency, replies and what reviews say, plus the review rules Google and the FTC enforce.",
       "suggestedOrder": 40,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-05",
       "siloOrder": 0,
       "cluster": "reputation",
       "clusterLabel": "Business Profile, reviews and reputation",

@@ -168,8 +168,8 @@
     "publishedAt": "2026-10-03"
   },
   "dealership-reviews-ai-recommendations": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-10-05"
   },
   "answer-pages-for-car-dealerships": {
     "status": "draft",

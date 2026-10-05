@@ -35,8 +35,19 @@ export const AEO_GEO_GUIDES = [
         "pillar": true
       }
     ]
+  },
+  {
+    "key": "reputation",
+    "label": "Business Profile, reviews and reputation",
+    "links": [
+      {
+        "href": "/aeo-geo/dealership-reviews-ai-recommendations/",
+        "text": "Dealership reviews and AI recommendations: volume, recency and what the words say",
+        "pillar": true
+      }
+    ]
   }
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-03";
+export const AEO_GEO_GUIDES_UPDATED = "2026-10-05";

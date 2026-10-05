@@ -104,6 +104,7 @@ We keep a working list of [27 dealership marketing ideas](https://autolander.ai/
 - [Car sales follow-up templates your salespeople can send today](https://autolander.ai/guide/car-sales-follow-up-templates/)
 - [How to sell cars online as a small dealership](https://autolander.ai/guide/sell-cars-online-small-dealership/)
 - [Buy here pay here marketing plays that actually work](https://autolander.ai/guide/buy-here-pay-here-marketing/)
+- [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/)
 - [What high gas prices mean for car dealers, new and used](https://autolander.ai/blog/high-gas-prices-car-dealers/)
 - [What a Fed rate hike means for car dealers, new and used](https://autolander.ai/blog/fed-rate-hike-car-dealers/)
 - [Q4 used car sales playbook for Facebook Marketplace](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/)
