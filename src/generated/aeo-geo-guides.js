@@ -46,8 +46,19 @@ export const AEO_GEO_GUIDES = [
         "pillar": true
       }
     ]
+  },
+  {
+    "key": "content",
+    "label": "Answer pages and content AI can quote",
+    "links": [
+      {
+        "href": "/aeo-geo/answer-pages-for-car-dealerships/",
+        "text": "Answer pages for car dealerships: what they are and how to write one",
+        "pillar": true
+      }
+    ]
   }
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-05";
+export const AEO_GEO_GUIDES_UPDATED = "2026-10-06";

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05",
+  "generatedAt": "2026-10-06",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1039,8 +1039,8 @@
       ],
       "description": "What an answer page is, why AI tools and search engines quote pages written this way, and a step-by-step template for your buyer questions.",
       "suggestedOrder": 41,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-06",
       "siloOrder": 0,
       "cluster": "content",
       "clusterLabel": "Answer pages and content AI can quote",

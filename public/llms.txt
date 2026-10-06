@@ -121,6 +121,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [How ChatGPT decides which car dealerships to recommend](https://autolander.ai/aeo-geo/how-chatgpt-recommends-car-dealerships.md): How ChatGPT decides which car dealerships to recommend: web search, location, OAI-SearchBot, cited sources, and what OpenAI says about placement.
 - [How car buyers use ChatGPT and other AI tools to shop, and what it means for your store](https://autolander.ai/aeo-geo/how-car-buyers-use-chatgpt.md): How car buyers use ChatGPT and other AI tools to shop, per Cox Automotive, Cars.com, CarGurus and Pew research, and what it means for your store.
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations.md): How dealership reviews shape AI recommendations: volume, recency, replies and what reviews say, plus the review rules Google and the FTC enforce.
+- [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships.md): What an answer page is, why AI tools and search engines quote pages written this way, and a step-by-step template for your buyer questions.
 
 ## Why we work the way we do
 
