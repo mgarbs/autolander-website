@@ -140,8 +140,8 @@
     "publishedAt": "2026-09-09"
   },
   "aged-inventory-used-car-dealers": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-10-07"
   },
   "q4-used-car-sales-facebook-marketplace": {
     "status": "published",

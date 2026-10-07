@@ -47,6 +47,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - [Car Sales Follow Up Templates That Get Replies](https://autolander.ai/guide/car-sales-follow-up-templates/)
 - [How to Sell Cars Online as a Small Dealership (2026)](https://autolander.ai/guide/sell-cars-online-small-dealership/)
 - [Buy Here Pay Here Marketing: What Actually Works](https://autolander.ai/guide/buy-here-pay-here-marketing/)
+- [Aged Inventory at a Car Dealership: The 30/45/60 Playbook](https://autolander.ai/guide/aged-inventory-used-car-dealers/)
 
 ## Guides and playbooks: Facebook’s new seller tools
 
