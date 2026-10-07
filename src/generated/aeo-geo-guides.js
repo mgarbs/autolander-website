@@ -57,8 +57,19 @@ export const AEO_GEO_GUIDES = [
         "pillar": true
       }
     ]
+  },
+  {
+    "key": "basics",
+    "label": "AEO and GEO basics and budget",
+    "links": [
+      {
+        "href": "/aeo-geo/aeo-vs-seo-for-car-dealers/",
+        "text": "AEO vs SEO for car dealers: what changes and what stays the same",
+        "pillar": true
+      }
+    ]
   }
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-06";
+export const AEO_GEO_GUIDES_UPDATED = "2026-10-07";

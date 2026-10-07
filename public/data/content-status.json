@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06",
+  "generatedAt": "2026-10-07",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1066,8 +1066,8 @@
       ],
       "description": "AEO vs SEO for car dealers in practice: what changes in the work, how to split the budget, what stays the same and where a dealership should start.",
       "suggestedOrder": 42,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-07",
       "siloOrder": 0,
       "cluster": "basics",
       "clusterLabel": "AEO and GEO basics and budget",
