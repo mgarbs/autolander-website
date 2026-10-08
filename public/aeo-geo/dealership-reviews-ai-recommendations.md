@@ -128,8 +128,8 @@ You can show real reviews, but do not mark up your own star rating. [Google’s 
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
 - [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/)
 - [AEO vs SEO for car dealers: what changes and what stays the same](https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers/)
+- [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/)
 - [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
-- [How ChatGPT decides which car dealerships to recommend](https://autolander.ai/aeo-geo/how-chatgpt-recommends-car-dealerships/)
 - [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
 
 ---

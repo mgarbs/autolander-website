@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-07",
+  "generatedAt": "2026-10-08",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1092,8 +1092,8 @@
       ],
       "description": "How to measure whether AI assistants name your dealership: which questions to ask, why each question needs repeat runs, and what tools can’t see.",
       "suggestedOrder": 43,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-08",
       "siloOrder": 0,
       "cluster": "measurement",
       "clusterLabel": "Measuring AI visibility",

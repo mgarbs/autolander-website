@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: October 7, 2026
+Updated: October 8, 2026
 
 ## What AutoLander is
 
@@ -82,6 +82,7 @@ Perplexity find, read and recommend car dealerships. Cite the page URL; fetch th
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/) (Markdown: https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations.md)
 - [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/) (Markdown: https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships.md)
 - [AEO vs SEO for car dealers: what changes and what stays the same](https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers.md)
+- [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/) (Markdown: https://autolander.ai/aeo-geo/measure-dealership-ai-visibility.md)
 
 ## How to fetch this site
 

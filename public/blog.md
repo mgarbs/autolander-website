@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/blog/  
 Author: The AutoLander team  
-Updated: October 7, 2026
+Updated: October 8, 2026
 
 Practical guidance for dealership teams that publish, merchandise, and market vehicle inventory. Start with the latest posts, or browse every published guide by topic.
 
@@ -69,6 +69,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - [Dealership Reviews and AI Recommendations: What Counts](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/)
 - [Answer Pages for Car Dealerships: How to Write One](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/)
 - [AEO vs SEO for Car Dealers: What Changes, What Stays](https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers/)
+- [How to Measure Your Dealership’s AI Visibility Honestly](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/)
 
 ## Evergreen hubs
 
