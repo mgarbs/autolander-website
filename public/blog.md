@@ -36,6 +36,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - [Bad Car Listing Photos: 5 Failures That Cost You Clicks](https://autolander.ai/guide/dark-cluttered-car-photos-cost-sales/)
 - [Car Walkaround Video: A 60-Second Script for Dealers](https://autolander.ai/guide/car-walkaround-video-for-dealers/)
 - [Car Photography Backdrop vs AI Background: Real Tradeoffs](https://autolander.ai/guide/car-photo-backdrop-vs-ai-background/)
+- [Used Car Merchandising: The One Checklist That Converts](https://autolander.ai/guide/used-car-merchandising-checklist/)
 
 ## Guides and playbooks: Dealer growth
 

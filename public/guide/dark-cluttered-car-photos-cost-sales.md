@@ -79,8 +79,8 @@ Yes — price only gets evaluated after the click. A well-priced car behind a da
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [Car walkaround video for dealers: script, technique, AI option](https://autolander.ai/guide/car-walkaround-video-for-dealers/)
 - [Car photography backdrop vs AI background: the real tradeoffs](https://autolander.ai/guide/car-photo-backdrop-vs-ai-background/)
+- [The used car merchandising checklist: five levers that convert](https://autolander.ai/guide/used-car-merchandising-checklist/)
 - [How to take pictures of a car to sell: a dealer-grade shot list](https://autolander.ai/guide/how-to-take-pictures-of-a-car-to-sell/)
-- [Remove the background from a car photo without it looking fake](https://autolander.ai/guide/remove-background-from-car-photo/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
