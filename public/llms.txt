@@ -124,6 +124,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships.md): What an answer page is, why AI tools and search engines quote pages written this way, and a step-by-step template for your buyer questions.
 - [AEO vs SEO for car dealers: what changes and what stays the same](https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers.md): AEO vs SEO for car dealers in practice: what changes in the work, how to split the budget, what stays the same and where a dealership should start.
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility.md): How to measure whether AI assistants name your dealership: which questions to ask, why each question needs repeat runs, and what tools can’t see.
+- [AI search for independent used car dealers: how a small lot gets into the answer](https://autolander.ai/aeo-geo/ai-search-for-independent-dealers.md): How AI search works for independent used car dealers: what used-car shoppers ask, what a small lot controls, and the first fixes that cost nothing.
 
 ## Why we work the way we do
 

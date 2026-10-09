@@ -79,8 +79,19 @@ export const AEO_GEO_GUIDES = [
         "pillar": true
       }
     ]
+  },
+  {
+    "key": "dealer-types",
+    "label": "AI search by dealership type",
+    "links": [
+      {
+        "href": "/aeo-geo/ai-search-for-independent-dealers/",
+        "text": "AI search for independent used car dealers: where a small lot should start",
+        "pillar": true
+      }
+    ]
   }
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-08";
+export const AEO_GEO_GUIDES_UPDATED = "2026-10-09";
