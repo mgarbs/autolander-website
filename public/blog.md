@@ -25,6 +25,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - [How to Mark a Car as Sold on Facebook Marketplace](https://autolander.ai/guide/mark-car-sold-on-facebook-marketplace/)
 - [Facebook Marketplace Listing Not Showing Up? Fix It Fast](https://autolander.ai/guide/facebook-marketplace-listing-not-showing-up/)
 - [Facebook Marketplace vs Craigslist for Selling Cars (2026)](https://autolander.ai/guide/facebook-marketplace-vs-craigslist-for-selling-cars/)
+- [Selling RVs on Facebook Marketplace: A Dealer Guide](https://autolander.ai/guide/sell-rvs-on-facebook-marketplace/)
 
 ## Guides and playbooks: Photos & merchandising
 
