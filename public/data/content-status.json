@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09",
+  "generatedAt": "2026-10-10",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -883,8 +883,8 @@
       ],
       "description": "How long does it take to sell a car on Facebook Marketplace? It depends on four variables you control. The signals, the real stats, a week-by-week plan.",
       "suggestedOrder": 35,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-10",
       "siloOrder": 3,
       "cluster": null,
       "clusterLabel": null,

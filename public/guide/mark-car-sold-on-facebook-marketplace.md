@@ -86,7 +86,7 @@ Almost never on purpose. Ghosts come from volume and handoffs — the person who
 - [Facebook Marketplace listing not showing up: the dealer fix](https://autolander.ai/guide/facebook-marketplace-listing-not-showing-up/)
 - [Facebook Marketplace vs Craigslist for selling cars](https://autolander.ai/guide/facebook-marketplace-vs-craigslist-for-selling-cars/)
 - [Selling RVs and campers on Facebook Marketplace](https://autolander.ai/guide/sell-rvs-on-facebook-marketplace/)
-- [How to post a car on Facebook Marketplace as a dealer](https://autolander.ai/guide/post-a-car-on-facebook-marketplace-dealer/)
+- [How long it takes to sell a car on Facebook Marketplace](https://autolander.ai/guide/how-long-to-sell-a-car-on-facebook-marketplace/)
 - [Q4 used car sales playbook for Facebook Marketplace](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/)
 
 ---
