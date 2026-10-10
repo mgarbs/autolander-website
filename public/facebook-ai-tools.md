@@ -1,18 +1,20 @@
 # Facebook AI tools for car dealers
 
-> Facebook AI tools for car dealers: enhance photos, write listings, auto-post inventory and remove sold buyer messages. From $39/mo with 5 free posts.
+> Facebook AI tools for car dealers: enhance photos, write listings, auto-post inventory and remove sold units. From $39/mo with 5 free posts.
 
 Source: https://autolander.ai/facebook-ai-tools/  
 Author: The AutoLander team  
 Updated: September 3, 2026
 
-**Short answer:** Facebook AI tools are software that uses AI to do the work of selling on Facebook Marketplace for you — enhancing photos, writing listings, managing eligible vehicles in a queue, and assisting with buyer messages. AutoLander bundles all four in one native desktop app built for car dealers, from $39/mo with 5 free posts and no credit card.
+**Short answer:** Facebook AI tools are software that uses AI to do the listing work of selling on Facebook Marketplace: enhancing photos, writing listings, managing eligible vehicles in a queue, and keeping prices and sold units in step with your inventory feed. AutoLander bundles all four in one native desktop app built for car dealers, from $39/mo with 5 free posts and no credit card. Your inbox stays yours: AutoLander never opens, answers or forwards a Marketplace message.
 
 ## What are Facebook AI tools for car dealers?
 
-Facebook AI tools are software that uses artificial intelligence to automate and improve how a car dealership sells on Facebook — mainly on Facebook Marketplace, where local buyers shop. Instead of a salesperson editing photos, writing descriptions and posting each VIN by hand, AI tools do that work: they clean up lot photos, write the listing copy, post your inventory automatically, and help handle incoming buyer messages.
+Facebook AI tools are software that uses artificial intelligence to automate and improve how a car dealership sells on Facebook — mainly on Facebook Marketplace, where local buyers shop. Instead of a salesperson editing photos, writing descriptions and posting each VIN by hand, AI tools do that work: they clean up lot photos, write the listing copy, post your inventory automatically, and keep each listing in step with the lot.
 
-They fall into four buckets: AI photo enhancement, AI-written listings, AI auto-posting, and an AI Marketplace assistant. AutoLander combines all four in one native desktop app, so you are not stitching together four separate tools.
+They fall into four buckets: AI photo enhancement, AI-written listings, AI auto-posting, and an AI Marketplace assistant that keeps listings current. AutoLander combines all four in one native desktop app, so you are not stitching together four separate tools.
+
+Some tools in the category also sell AI auto-replies for buyer messages. AutoLander has no inbox feature of any kind: buyers message you in Messenger and your own team answers them, the same as today. See [how Marketplace auto-reply options compare](https://autolander.ai/compare/facebook-marketplace-auto-reply-for-car-dealers/).
 
 _One of the AI tools in action: AutoLander turns a raw 2026 Jeep Wrangler lot photo (left) into a showroom-grade Facebook Marketplace listing (right), automatically._
 
