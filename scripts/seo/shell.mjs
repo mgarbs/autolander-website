@@ -110,8 +110,15 @@ export const humanDate = (iso) => new Date(`${iso}T00:00:00Z`)
 //   Facebook  — the company Page, 388 followers, "Software Company"
 //   G2        — claimed product listing in Car Dealer Software (0 reviews yet — drive them; see #28)
 //   Crunchbase — organization profile, links back to autolander.ai
+// Verified live + claimed 2026-10-10 (review profiles; ratings at that date):
+//   Trustpilot   — claimed July 2026, 4.6 from 20 reviews (fix its category: it says "Marketing Agency")
+//   Product Hunt — product page, 5.0 from 16 reviews, maker Clay Newsome
+//   PeerPush     — product page, 5.0 from 5 reviews (listed 2026-08-22)
+//   SaaSHub      — verified listing (Clay, 2026-07-14)
+//   AlternativeTo — live listing (Clay, 2026-07-14)
 // PENDING (add here the moment each is claimed and live):
-//   Capterra · GetApp · Software Advice · Trustpilot · YouTube channel · X · Product Hunt · Wikidata entity
+//   SourceForge/Slashdot (live but UNCLAIMED: claim first) · GetApp · Software Advice · YouTube channel · X
+// index.html carries a static copy of this list for the homepage; test/sameas-profiles.test.js keeps them equal.
 export const PROFILES = [
   'https://www.linkedin.com/company/autolander/',
   'https://www.facebook.com/autolander',
@@ -124,6 +131,11 @@ export const PROFILES = [
   // Wikidata entity created 2026-09-04 (Q141277412): the authoritative record that disambiguates
   // "AutoLander" from Autoland (aviation) and mozilla/autolander for every downstream knowledge graph.
   'https://www.wikidata.org/wiki/Q141277412',
+  'https://www.trustpilot.com/review/autolander.ai',
+  'https://www.producthunt.com/products/autolander',
+  'https://peerpush.com/p/autolander',
+  'https://www.saashub.com/autolander-ai',
+  'https://alternativeto.net/software/autolander-ai/about/',
 ];
 
 // ---------- Cloudflare email-obfuscation opt-out ----------
