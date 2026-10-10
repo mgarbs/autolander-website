@@ -383,10 +383,11 @@ function buildLlmsTxt(twins) {
 
   const header = `# AutoLander
 
-> Facebook Marketplace software for U.S. car dealerships. Dealers connect an inventory feed and
-> AutoLander posts vehicles to Facebook Marketplace, keeps asking prices in step with the feed,
-> removes sold units, and runs AI photo editing on listing images. Built by AutoLander LLC.
-> Plans from $${SITE.lowPrice}/mo.
+> Facebook Marketplace software for car dealerships and sales reps in the United States, Canada
+> and Spanish-speaking Latin America, in English, Spanish and French. Dealers connect an inventory
+> feed and AutoLander posts vehicles to Facebook Marketplace, keeps asking prices in step with the
+> feed, removes sold units, and runs AI photo editing on listing images. It never opens, answers or
+> forwards a buyer message. Built by AutoLander LLC. Plans from $${SITE.lowPrice}/mo.
 
 AutoLander publishes original first-party research on the dealer side of Facebook Marketplace,
 computed directly from anonymized aggregate platform data — never surveys or estimates. Datasets

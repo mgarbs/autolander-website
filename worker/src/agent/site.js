@@ -142,9 +142,10 @@ export function notFoundMarkdown(pathname, origin = 'https://autolander.ai') {
 
 \`${safePath}\` does not exist on autolander.ai.
 
-AutoLander is Facebook Marketplace software for U.S. car dealerships: it posts dealer inventory to
-Facebook Marketplace, keeps asking prices in step with the feed, removes sold units and enhances
-listing photos. Built by AutoLander LLC.
+AutoLander is Facebook Marketplace software for car dealerships and sales reps in the United States,
+Canada and Spanish-speaking Latin America: it posts dealer inventory to Facebook Marketplace, keeps
+asking prices in step with the feed, removes sold units and enhances listing photos. Built by
+AutoLander LLC.
 
 ## Where to look next
 

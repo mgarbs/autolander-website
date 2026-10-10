@@ -2,7 +2,21 @@ export const EM_DASH_RE = /[—–]/;
 
 export const CONTRAST_TIC_RE = /\b(?:is|are|was|were|it’s|it's|that’s|that's)\s+not\s+(?:about\s+)?[^.!?]{1,60}[.!?]\s+(?:(?:It|That|This)\s+is|(?:It|That|This)(?:’s|'s))\b/i;
 
+// AutoLander never opens, answers, routes or forwards a Marketplace message. These are the exact
+// phrasings that have drifted onto live pages before (08-22 "routes buyer messages", 10-10 "remove sold
+// buyer messages" / "assisting with buyer messages"). Narrow on purpose: competitor descriptions of
+// their own auto-reply products stay legal. Also scanned over every generated page and llms file.
+export const INBOX_CLAIMS = [
+  /\bremov\w* sold buyer messages\b/i,
+  /\bassist\w* with (?:incoming |your )?buyer messages\b/i,
+  /\bhelps? (?:you )?handle (?:incoming |your )?buyer messages\b/i,
+  /\brout(?:es|ing) (?:incoming |your )?(?:buyer|customer|marketplace) (?:messages|leads|conversations)\b/i,
+  /\bmessenger leads back to your team\b/i,
+  /\bno buyer message (?:left )?unseen\b/i,
+];
+
 export const FORBIDDEN_CLAIMS = [
+  ...INBOX_CLAIMS,
   /auto[- ]?respond/i,
   /autoresponder/i,
   /replies? for you/i,
