@@ -49,6 +49,8 @@ import {
   UNITS_CHOICES,
 } from '../../../shared/paid-ads-form.js';
 import { PAID_ADS_API_PATH, PAID_ADS_FORM_ID, PAID_ADS_PATH } from '../../../shared/paid-ads-route.js';
+import { PROJECT_GOAL_CHOICES, WEBSITE_SMS_CONSENT } from '../../../shared/dealer-websites-form.js';
+import { WEBSITE_API_PATH, WEBSITE_ERROR_ID, WEBSITE_PATH, WEBSITE_SUCCESS_ID } from '../../../shared/dealer-websites-route.js';
 
 const ROLE_CHOICES = ['Owner', 'Manager', 'Sales Rep'];
 const VEHICLE_COUNT_CHOICES = ['1-50', '51-150', '151+'];
@@ -120,7 +122,33 @@ const PAID_ADS_PROFILE = {
   eventSource: 'paid_ads_application',
   customData: { content_name: 'paid_ads_application_requested', content_category: 'paid_ads' },
 };
-export const LEAD_FORM_PROFILES = { aiScan: AI_SCAN_PROFILE, paidAds: PAID_ADS_PROFILE };
+// Dealership websites (/dealership-websites/): the same pipeline as the scan and the paid-ads application, under its
+// own KV / rate / event / tag names. The website field is optional (a dealer may have none yet).
+const WEBSITE_PROFILE = {
+  id: 'dealer-websites',
+  log: '[api/website-request]',
+  kv: 'website_request',
+  rate: 'website_request',
+  eventIdPrefix: 'websiterequest',
+  eventIdSalt: 'website-request',
+  successUrl: `https://autolander.ai${WEBSITE_PATH}?sent=1#${WEBSITE_SUCCESS_ID}`,
+  errorUrl: `https://autolander.ai${WEBSITE_PATH}?error=`,
+  anchor: `#${WEBSITE_ERROR_ID}`,
+  killSwitch: 'WEBSITE_REQUEST_PUBLIC_ROUTE',
+  capiSwitch: 'SEND_WORKER_WEBSITE_REQUEST_CAPI',
+  roles: AI_SCAN_ROLE_CHOICES,
+  consent: WEBSITE_SMS_CONSENT,
+  websiteOptional: true,
+  extra: [{ key: 'projectGoal', label: 'Website project', choices: PROJECT_GOAL_CHOICES, reason: 'missing_project_goal' }],
+  crmSource: 'AutoLander website project request',
+  tag: 'website-request',
+  smsTag: 'website-sms-ok',
+  noteTitle: 'AutoLander dealership website project request',
+  eventName: 'WebsiteRequest',
+  eventSource: 'website_request',
+  customData: { content_name: 'dealership_website_requested', content_category: 'dealer_websites' },
+};
+export const LEAD_FORM_PROFILES = { aiScan: AI_SCAN_PROFILE, paidAds: PAID_ADS_PROFILE, websites: WEBSITE_PROFILE };
 const GHL_BASE_URL = 'https://services.leadconnectorhq.com';
 const GHL_VERSION = '2021-07-28';
 
@@ -243,6 +271,10 @@ export async function handleBooking(request, env, corsHeaders, ctx) {
 
   if (url.pathname === PAID_ADS_API_PATH && request.method === 'POST') {
     return handleAiScan(request, env, corsHeaders, ctx, PAID_ADS_PROFILE);
+  }
+
+  if (url.pathname === WEBSITE_API_PATH && request.method === 'POST') {
+    return handleAiScan(request, env, corsHeaders, ctx, WEBSITE_PROFILE);
   }
 
   if (url.pathname === '/api/availability' || url.pathname === '/api/book') {
@@ -509,6 +541,8 @@ async function collectAiScanFields(body, request, env, formMode, receivedAt, pro
   return {
     dealershipName: clean(body.dealershipName, 160),
     website: normalizeWebsite(body.website),
+    ...(profile.websiteOptional ? { websiteProvided: typeof body.website === 'string'
+      ? Boolean(clean(body.website, 240)) : body.website !== undefined && body.website !== null } : {}),
     location: clean(body.location, 80),
     fullName: parsedName.fullName,
     firstName: parsedName.firstName,
@@ -568,7 +602,11 @@ async function collectAiScanFields(body, request, env, formMode, receivedAt, pro
 
 function validateAiScanFields(fields, profile = AI_SCAN_PROFILE) {
   if (!fields.dealershipName) return 'missing_dealership';
-  if (!fields.website) return 'invalid_website';
+  if (!fields.website && (!profile.websiteOptional || fields.websiteProvided)) return 'invalid_website';
+  if (profile.websiteOptional && fields.website) {
+    const website = new URL(fields.website);
+    if (website.username || website.password || website.port) return 'invalid_website';
+  }
   if (!fields.location) return 'missing_location';
   for (const field of profile.extra) {
     if (!field.choices.includes(fields[field.key])) return field.reason;
@@ -583,6 +621,7 @@ function validateAiScanFields(fields, profile = AI_SCAN_PROFILE) {
 function buildAiScanRecord({ fields, submissionId, eventId, receivedAt, status, crm, response }) {
   const storedFields = { ...fields };
   delete storedFields.phoneValid;
+  delete storedFields.websiteProvided;
   return {
     ...storedFields,
     submissionId,
@@ -987,7 +1026,7 @@ async function syncAiScanRequestToCrm(env, record, profile = AI_SCAN_PROFILE) {
         lastName: record.lastName,
         email: record.email,
         phone: record.phone,
-        website: record.website,
+        ...(record.website ? { website: record.website } : {}),
         companyName: record.dealershipName,
         source: profile.crmSource,
       };

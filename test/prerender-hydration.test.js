@@ -6,6 +6,8 @@ import { renderAiVisibilityMirrorRest } from '../src/ai/static-mirror.js';
 import { renderTeamMirrorRest } from '../src/team/static-mirror.js';
 import { renderPaidAdsMirrorRest } from '../src/ads/static-mirror.js';
 import { HEADLINES as ADS_HEADLINES, FORM as ADS_FORM } from '../shared/paid-ads-content.js';
+import { HERO as WEBSITE_HERO, ILLUSTRATIONS as WEBSITE_ILLUSTRATIONS } from '../shared/dealer-websites-content.js';
+import { renderDealerWebsitesMirrorRest } from '../src/websites/static-mirror.js';
 import { teamVariantFromSearch } from '../src/team/variant.js';
 import { cleanSsr, loadPrerender } from '../scripts/prerender.mjs';
 import { HTMLParser } from './helpers/html-text.js';
@@ -19,12 +21,14 @@ const renders = {
   ai: (restHtml = renderAiVisibilityMirrorRest()) => P.renderAiVisibility({ restHtml }),
   team: (restHtml = renderTeamMirrorRest()) => P.renderTeam({ restHtml, variant: 'a' }),
   ads: (restHtml = renderPaidAdsMirrorRest()) => P.renderPaidAds({ restHtml, variant: 'a' }),
+  websites: (restHtml = renderDealerWebsitesMirrorRest()) => P.renderDealerWebsites({ restHtml }),
 };
-const mirrors = { ai: renderAiVisibilityMirrorRest, team: renderTeamMirrorRest, ads: renderPaidAdsMirrorRest };
+const mirrors = { ai: renderAiVisibilityMirrorRest, team: renderTeamMirrorRest, ads: renderPaidAdsMirrorRest, websites: renderDealerWebsitesMirrorRest };
 const shape = {
   ai: { island: 'ai-rest', h1Text: `${HERO.h1Lead} ${HERO.h1Grad}` },
   team: { island: 'team-rest', h1Text: HEADLINES.a },
   ads: { island: 'ads-rest', h1Text: ADS_HEADLINES.a },
+  websites: { island: 'websites-rest', h1Text: `${WEBSITE_HERO.h1Lead} ${WEBSITE_HERO.h1Grad}` },
 };
 
 function withBrowserGlobals(fn) {
@@ -45,7 +49,7 @@ function withBrowserGlobals(fn) {
   }
 }
 
-for (const route of ['ai', 'team', 'ads']) {
+for (const route of ['ai', 'team', 'ads', 'websites']) {
   test(`${route}: the prerender is deterministic and reads nothing from the browser`, () => {
     const first = renders[route]();
     assert.equal(renders[route](), first, 'two renders differ');
@@ -78,6 +82,32 @@ for (const route of ['ai', 'team', 'ads']) {
     assert.throws(() => cleanSsr(renders[route](), { ...shape[route], h1Text: 'Drifted', headHtml: LOGO_HEAD }), /h1 drifted/);
   });
 }
+
+test('websites hero: the service CTA and native form survive before hydration', () => {
+  const root = cleanSsr(renders.websites(), { ...shape.websites, headHtml: LOGO_HEAD });
+  const hero = root.slice(0, root.indexOf('data-al-island'));
+  assert.match(hero, /<nav aria-label="Main navigation"/);
+  assert.match(hero, /<a href="#website-request-form"/);
+  assert.doesNotMatch(hero, /data-demo-application-trigger|id="website-request-form"/);
+  const island = root.slice(root.indexOf('data-al-island'));
+  const forms = island.match(/<form\b[^>]*>/g) || [];
+  assert.equal(forms.length, 1);
+  assert.match(forms[0], /\bid="website-request-form"/);
+  assert.match(forms[0], /\bmethod="post"/);
+  assert.match(forms[0], /\baction="https:\/\/autolander\.ai\/api\/website-request"/);
+});
+
+test('websites hero: one eager illustration with its concept caption; island images are lazy', () => {
+  const root = cleanSsr(renders.websites(), { ...shape.websites, headHtml: LOGO_HEAD });
+  const hero = root.slice(0, root.indexOf('data-al-island'));
+  assert.equal((hero.match(/fetchpriority="high"/gi) || []).length, 1);
+  assert.ok(text(hero).includes(WEBSITE_ILLUSTRATIONS.hero.caption));
+  // The island's two illustrations, then the shared footer's logo: everything after the hero is lazy.
+  const island = root.slice(root.indexOf('data-al-island'), root.indexOf('</main>'));
+  assert.equal((island.match(/<img\b[^>]*>/g) || []).length, 2);
+  const imgs = root.slice(root.indexOf('data-al-island')).match(/<img\b[^>]*>/g) || [];
+  assert.ok(imgs.every((tag) => tag.includes('loading="lazy"') && !/fetchpriority/i.test(tag)));
+});
 
 test('ai hero: the first screen is React\'s hero with its no-JS anchor and one eager hero image', () => {
   const root = cleanSsr(renders.ai(), { ...shape.ai, headHtml: LOGO_HEAD });
