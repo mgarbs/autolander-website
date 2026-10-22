@@ -123,8 +123,8 @@ Sometimes, depending on the question, the town and the day, and no one can promi
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
 - [AI search for independent used car dealers: where a small lot should start](https://autolander.ai/aeo-geo/ai-search-for-independent-dealers/)
 - [Is SEO dead for car dealerships? What AI Overviews changed](https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers/)
+- [AEO red flags: guarantees no one can keep, secret dashboards and AI spam](https://autolander.ai/aeo-geo/aeo-agency-red-flags/)
 - [Vehicle detail pages AI can read: price, mileage and VIN as text](https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable/)
-- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
 - [Buy here pay here marketing plays that actually work](https://autolander.ai/guide/buy-here-pay-here-marketing/)
 
 ---

@@ -135,10 +135,14 @@ export const AEO_GEO_GUIDES = [
         "href": "/aeo-geo/how-to-choose-an-aeo-agency/",
         "text": "How to choose an AEO agency for your dealership: 15 questions to ask",
         "pillar": true
+      },
+      {
+        "href": "/aeo-geo/aeo-agency-red-flags/",
+        "text": "AEO red flags: guarantees no one can keep, secret dashboards and AI spam"
       }
     ]
   }
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-21";
+export const AEO_GEO_GUIDES_UPDATED = "2026-10-22";

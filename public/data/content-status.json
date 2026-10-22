@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21",
+  "generatedAt": "2026-10-22",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1379,8 +1379,8 @@
       ],
       "description": "AEO and GEO red flags for car dealers: placement promises no one can keep, tools claiming Google data, mass AI pages, bought reviews and paid links.",
       "suggestedOrder": 54,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-22",
       "siloOrder": 0,
       "cluster": "choosing-help",
       "clusterLabel": "Choosing help and doing it right",
