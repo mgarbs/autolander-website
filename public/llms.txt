@@ -137,6 +137,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [Is SEO dead for car dealerships? What AI Overviews changed and what they didn’t](https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers.md): Is SEO dead for car dealerships? What Pew, Google and Microsoft data show about AI Overviews, zero-click searches and where dealer traffic goes now.
 - [AEO red flags: guarantees no one can keep, secret dashboards and AI pages that hurt you](https://autolander.ai/aeo-geo/aeo-agency-red-flags.md): AEO and GEO red flags for car dealers: placement promises no one can keep, tools claiming Google data, mass AI pages, bought reviews and paid links.
 - [Vehicle detail pages AI can read: price, mileage, VIN and features as page text](https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable.md): How to make vehicle detail pages that AI tools and search engines can read: price, mileage, VIN and features as text, not locked in images or scripts.
+- [How Claude answers local car-buying questions and which sources it cites](https://autolander.ai/aeo-geo/how-claude-cites-sources.md): How Claude searches the web and cites sources, what ClaudeBot, Claude-User and Claude-SearchBot do, and how a dealership stays readable to Claude.
 
 ## Why we work the way we do
 
