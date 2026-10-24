@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: October 23, 2026
+Updated: October 24, 2026
 
 ## What AutoLander is
 
@@ -86,6 +86,7 @@ Perplexity find, read and recommend car dealerships. Cite the page URL; fetch th
 - [The questions car shoppers ask AI before they choose a dealer](https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai/) (Markdown: https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai.md)
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/) (Markdown: https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations.md)
 - [Google Business Profile in AI answers: what AI reads about your dealership](https://autolander.ai/aeo-geo/google-business-profile-ai-answers/) (Markdown: https://autolander.ai/aeo-geo/google-business-profile-ai-answers.md)
+- [When AI gets your dealership wrong: fixing wrong hours, addresses and closed labels](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong/) (Markdown: https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong.md)
 - [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/) (Markdown: https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships.md)
 - [The car dealership FAQ page: 40 buyer questions to answer](https://autolander.ai/aeo-geo/car-dealership-faq-page/) (Markdown: https://autolander.ai/aeo-geo/car-dealership-faq-page.md)
 - [AEO vs SEO for car dealers: what changes and what stays the same](https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers.md)

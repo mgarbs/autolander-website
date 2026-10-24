@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23",
+  "generatedAt": "2026-10-24",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1458,8 +1458,8 @@
       ],
       "description": "What to do when ChatGPT, Google AI Overviews or other assistants get your dealership’s hours, address or status wrong, and how to fix the source.",
       "suggestedOrder": 57,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-24",
       "siloOrder": 0,
       "cluster": "reputation",
       "clusterLabel": "Business Profile, reviews and reputation",

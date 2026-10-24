@@ -343,6 +343,10 @@
         {
           "href": "/aeo-geo/how-claude-cites-sources/",
           "text": "How Claude finds and cites dealerships in its answers"
+        },
+        {
+          "href": "/aeo-geo/when-ai-gets-your-dealership-wrong/",
+          "text": "When AI gets your dealership wrong: fixing wrong hours, addresses and closed labels"
         }
       ]
     },
