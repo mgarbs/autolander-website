@@ -89,6 +89,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - [How Claude Finds and Cites Dealerships in Its Answers](https://autolander.ai/aeo-geo/how-claude-cites-sources/)
 - [When AI Gets Your Dealership Wrong: How to Fix It](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong/)
 - [Best Car Dealership Near Me: How AI Picks Who Gets Named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/)
+- [Service Department Questions in AI Answers: Fixed Ops Guide](https://autolander.ai/aeo-geo/service-department-ai-answers/)
 
 ## Evergreen hubs
 

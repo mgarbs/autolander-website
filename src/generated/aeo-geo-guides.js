@@ -91,6 +91,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/car-dealership-faq-page/",
         "text": "The car dealership FAQ page: 40 buyer questions to answer"
+      },
+      {
+        "href": "/aeo-geo/service-department-ai-answers/",
+        "text": "Service department questions in AI answers: a fixed ops guide"
       }
     ]
   },
