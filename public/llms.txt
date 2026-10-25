@@ -139,6 +139,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [Vehicle detail pages AI can read: price, mileage, VIN and features as page text](https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable.md): How to make vehicle detail pages that AI tools and search engines can read: price, mileage, VIN and features as text, not locked in images or scripts.
 - [How Claude answers local car-buying questions and which sources it cites](https://autolander.ai/aeo-geo/how-claude-cites-sources.md): How Claude searches the web and cites sources, what ClaudeBot, Claude-User and Claude-SearchBot do, and how a dealership stays readable to Claude.
 - [When AI gets your dealership wrong: fixing wrong hours, addresses and closed labels](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong.md): What to do when ChatGPT, Google AI Overviews or other assistants get your dealership’s hours, address or status wrong, and how to fix the source.
+- [“Best car dealership near me”: how AI assistants answer it and who gets named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai.md): When a buyer asks AI for the best car dealership near me, how ChatGPT, Google and others build the answer, and what decides which stores get named.
 
 ## Why we work the way we do
 

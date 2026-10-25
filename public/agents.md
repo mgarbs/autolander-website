@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: October 24, 2026
+Updated: October 25, 2026
 
 ## What AutoLander is
 
@@ -84,6 +84,7 @@ Perplexity find, read and recommend car dealerships. Cite the page URL; fetch th
 - [How Claude finds and cites dealerships in its answers](https://autolander.ai/aeo-geo/how-claude-cites-sources/) (Markdown: https://autolander.ai/aeo-geo/how-claude-cites-sources.md)
 - [How car buyers use ChatGPT and other AI tools to shop, and what it means for dealers](https://autolander.ai/aeo-geo/how-car-buyers-use-chatgpt/) (Markdown: https://autolander.ai/aeo-geo/how-car-buyers-use-chatgpt.md)
 - [The questions car shoppers ask AI before they choose a dealer](https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai/) (Markdown: https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai.md)
+- [Best car dealership near me: how AI assistants decide who gets named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/) (Markdown: https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai.md)
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/) (Markdown: https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations.md)
 - [Google Business Profile in AI answers: what AI reads about your dealership](https://autolander.ai/aeo-geo/google-business-profile-ai-answers/) (Markdown: https://autolander.ai/aeo-geo/google-business-profile-ai-answers.md)
 - [When AI gets your dealership wrong: fixing wrong hours, addresses and closed labels](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong/) (Markdown: https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong.md)

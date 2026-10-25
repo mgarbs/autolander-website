@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24",
+  "generatedAt": "2026-10-25",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1484,8 +1484,8 @@
       ],
       "description": "When a buyer asks AI for the best car dealership near me, how ChatGPT, Google and others build the answer, and what decides which stores get named.",
       "suggestedOrder": 58,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-25",
       "siloOrder": 0,
       "cluster": "buyers",
       "clusterLabel": "How car buyers use AI",
