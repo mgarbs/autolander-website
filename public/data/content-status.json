@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25",
+  "generatedAt": "2026-10-26",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1536,8 +1536,8 @@
       ],
       "description": "How to track ChatGPT, Gemini, Claude and Copilot visits to your dealership website in GA4, what the AI Assistant channel counts and what it misses.",
       "suggestedOrder": 60,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-26",
       "siloOrder": 0,
       "cluster": "measurement",
       "clusterLabel": "Measuring AI visibility",

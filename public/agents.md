@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: October 25, 2026
+Updated: October 26, 2026
 
 ## What AutoLander is
 
@@ -95,6 +95,7 @@ Perplexity find, read and recommend car dealerships. Cite the page URL; fetch th
 - [Is SEO dead for car dealerships? What AI Overviews changed](https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers.md)
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/) (Markdown: https://autolander.ai/aeo-geo/measure-dealership-ai-visibility.md)
 - [Search Console’s generative AI report for dealers: AI Overviews and AI Mode impressions](https://autolander.ai/aeo-geo/search-console-ai-report-dealers/) (Markdown: https://autolander.ai/aeo-geo/search-console-ai-report-dealers.md)
+- [How to track ChatGPT and AI assistant traffic to your dealership website in GA4](https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership/) (Markdown: https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership.md)
 - [AI search for independent used car dealers: where a small lot should start](https://autolander.ai/aeo-geo/ai-search-for-independent-dealers/) (Markdown: https://autolander.ai/aeo-geo/ai-search-for-independent-dealers.md)
 - [Buy here pay here dealers in AI answers: bad-credit questions and honest pages](https://autolander.ai/aeo-geo/buy-here-pay-here-ai-answers/) (Markdown: https://autolander.ai/aeo-geo/buy-here-pay-here-ai-answers.md)
 - [How to choose an AEO agency for your dealership: 15 questions to ask](https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency/) (Markdown: https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency.md)

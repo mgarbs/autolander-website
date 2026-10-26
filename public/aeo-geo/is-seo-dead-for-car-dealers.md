@@ -113,6 +113,7 @@ Google says no: its head of Search wrote in August 2025 that total organic click
 - [AEO red flags: guarantees no one can keep, secret dashboards and AI spam](https://autolander.ai/aeo-geo/aeo-agency-red-flags/)
 - [Vehicle detail pages AI can read: price, mileage and VIN as text](https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable/)
 - [How Claude finds and cites dealerships in its answers](https://autolander.ai/aeo-geo/how-claude-cites-sources/)
+- [How to track ChatGPT and AI assistant traffic to your dealership website in GA4](https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership/)
 
 ---
 AutoLander: AEO and GEO for car dealers. https://autolander.ai/aeo-geo-for-car-dealers/

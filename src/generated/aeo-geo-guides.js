@@ -125,6 +125,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/search-console-ai-report-dealers/",
         "text": "Search Console’s generative AI report for dealers: AI Overviews and AI Mode impressions"
+      },
+      {
+        "href": "/aeo-geo/track-ai-traffic-ga4-dealership/",
+        "text": "How to track ChatGPT and AI assistant traffic to your dealership website in GA4"
       }
     ]
   },
@@ -161,4 +165,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-25";
+export const AEO_GEO_GUIDES_UPDATED = "2026-10-26";

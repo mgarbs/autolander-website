@@ -120,10 +120,10 @@ Monthly suits most stores: the same pages and the same date range, so each month
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
+- [How to track ChatGPT and AI assistant traffic to your dealership website in GA4](https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership/)
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/)
 - [Buy here pay here dealers in AI answers: bad-credit questions and honest pages](https://autolander.ai/aeo-geo/buy-here-pay-here-ai-answers/)
 - [Is SEO dead for car dealerships? What AI Overviews changed](https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers/)
-- [AEO red flags: guarantees no one can keep, secret dashboards and AI spam](https://autolander.ai/aeo-geo/aeo-agency-red-flags/)
 
 ---
 AutoLander: AEO and GEO for car dealers. https://autolander.ai/aeo-geo-for-car-dealers/

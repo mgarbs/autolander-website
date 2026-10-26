@@ -130,9 +130,9 @@ Two: ChatGPT and Claude, each with web search on, for up to 20 local buyer quest
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
 - [Search Console’s generative AI report for dealers: AI Overviews and AI Mode impressions](https://autolander.ai/aeo-geo/search-console-ai-report-dealers/)
+- [How to track ChatGPT and AI assistant traffic to your dealership website in GA4](https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership/)
 - [AI search for independent used car dealers: where a small lot should start](https://autolander.ai/aeo-geo/ai-search-for-independent-dealers/)
 - [How to choose an AEO agency for your dealership: 15 questions to ask](https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency/)
-- [Cloudflare AI bot blocking on dealer websites: what to allow](https://autolander.ai/aeo-geo/cloudflare-ai-bots-dealer-websites/)
 - [The questions car shoppers ask AI before they choose a dealer](https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai/)
 
 ---

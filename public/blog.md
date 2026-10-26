@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/blog/  
 Author: The AutoLander team  
-Updated: October 25, 2026
+Updated: October 26, 2026
 
 Practical guidance for dealership teams that publish, merchandise, and market vehicle inventory. Start with the latest posts, or browse every published guide by topic.
 
@@ -90,6 +90,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - [When AI Gets Your Dealership Wrong: How to Fix It](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong/)
 - [Best Car Dealership Near Me: How AI Picks Who Gets Named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/)
 - [Service Department Questions in AI Answers: Fixed Ops Guide](https://autolander.ai/aeo-geo/service-department-ai-answers/)
+- [Track ChatGPT and AI Traffic to Your Dealer Site in GA4](https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership/)
 
 ## Evergreen hubs
 

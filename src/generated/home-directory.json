@@ -355,6 +355,10 @@
         {
           "href": "/aeo-geo/service-department-ai-answers/",
           "text": "Service department questions in AI answers: a fixed ops guide"
+        },
+        {
+          "href": "/aeo-geo/track-ai-traffic-ga4-dealership/",
+          "text": "How to track ChatGPT and AI assistant traffic to your dealership website in GA4"
         }
       ]
     },
