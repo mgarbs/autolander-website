@@ -121,10 +121,10 @@ Sometimes, depending on the question, the town and the day, and no one can promi
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
+- [RV dealers and AI search: answering the questions RV buyers ask](https://autolander.ai/aeo-geo/rv-dealer-ai-search/)
 - [AI search for independent used car dealers: where a small lot should start](https://autolander.ai/aeo-geo/ai-search-for-independent-dealers/)
 - [Is SEO dead for car dealerships? What AI Overviews changed](https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers/)
 - [AEO red flags: guarantees no one can keep, secret dashboards and AI spam](https://autolander.ai/aeo-geo/aeo-agency-red-flags/)
-- [Vehicle detail pages AI can read: price, mileage and VIN as text](https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable/)
 - [Buy here pay here marketing plays that actually work](https://autolander.ai/guide/buy-here-pay-here-marketing/)
 - [Best car dealership near me: how AI assistants decide who gets named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/)
 

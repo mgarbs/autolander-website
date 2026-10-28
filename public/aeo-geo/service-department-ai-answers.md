@@ -122,7 +122,7 @@ Only the ones you honor at every visit, with the end date shown. A special that 
 - [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/)
 - [The car dealership FAQ page: 40 buyer questions to answer](https://autolander.ai/aeo-geo/car-dealership-faq-page/)
 - [How to track ChatGPT and AI assistant traffic to your dealership website in GA4](https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership/)
-- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
+- [RV dealers and AI search: answering the questions RV buyers ask](https://autolander.ai/aeo-geo/rv-dealer-ai-search/)
 - [When AI gets your dealership wrong: fixing wrong hours, addresses and closed labels](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong/)
 
 ---

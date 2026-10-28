@@ -144,6 +144,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/buy-here-pay-here-ai-answers/",
         "text": "Buy here pay here dealers in AI answers: bad-credit questions and honest pages"
+      },
+      {
+        "href": "/aeo-geo/rv-dealer-ai-search/",
+        "text": "RV dealers and AI search: answering the questions RV buyers ask"
       }
     ]
   },
@@ -165,4 +169,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-26";
+export const AEO_GEO_GUIDES_UPDATED = "2026-10-28";

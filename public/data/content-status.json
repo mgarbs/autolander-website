@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26",
+  "generatedAt": "2026-10-28",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1562,8 +1562,8 @@
       ],
       "description": "How RV dealers show up when buyers ask ChatGPT and other AI tools about campers and motorhomes, and the specs, pages and profiles that matter.",
       "suggestedOrder": 61,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-28",
       "siloOrder": 0,
       "cluster": "dealer-types",
       "clusterLabel": "AI search by dealership type",
