@@ -110,6 +110,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/is-seo-dead-for-car-dealers/",
         "text": "Is SEO dead for car dealerships? What AI Overviews changed"
+      },
+      {
+        "href": "/aeo-geo/how-long-does-aeo-take-to-work/",
+        "text": "How long does AEO take to work for a dealership? An honest 90-day timeline"
       }
     ]
   },
@@ -169,4 +173,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-28";
+export const AEO_GEO_GUIDES_UPDATED = "2026-10-29";

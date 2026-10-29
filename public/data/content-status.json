@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28",
+  "generatedAt": "2026-10-29",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1588,8 +1588,8 @@
       ],
       "description": "How long AEO takes for a dealership: what AI tools can pick up within days, what builds over months, and why no one can honestly promise a date.",
       "suggestedOrder": 62,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-29",
       "siloOrder": 0,
       "cluster": "basics",
       "clusterLabel": "AEO and GEO basics and budget",

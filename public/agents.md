@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: October 28, 2026
+Updated: October 29, 2026
 
 ## What AutoLander is
 
@@ -93,6 +93,7 @@ Perplexity find, read and recommend car dealerships. Cite the page URL; fetch th
 - [Service department questions in AI answers: a fixed ops guide](https://autolander.ai/aeo-geo/service-department-ai-answers/) (Markdown: https://autolander.ai/aeo-geo/service-department-ai-answers.md)
 - [AEO vs SEO for car dealers: what changes and what stays the same](https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers.md)
 - [Is SEO dead for car dealerships? What AI Overviews changed](https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers.md)
+- [How long does AEO take to work for a dealership? An honest 90-day timeline](https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work/) (Markdown: https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work.md)
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/) (Markdown: https://autolander.ai/aeo-geo/measure-dealership-ai-visibility.md)
 - [Search Console’s generative AI report for dealers: AI Overviews and AI Mode impressions](https://autolander.ai/aeo-geo/search-console-ai-report-dealers/) (Markdown: https://autolander.ai/aeo-geo/search-console-ai-report-dealers.md)
 - [How to track ChatGPT and AI assistant traffic to your dealership website in GA4](https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership/) (Markdown: https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership.md)
