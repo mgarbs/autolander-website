@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/blog/  
 Author: The AutoLander team  
-Updated: October 29, 2026
+Updated: October 30, 2026
 
 Practical guidance for dealership teams that publish, merchandise, and market vehicle inventory. Start with the latest posts, or browse every published guide by topic.
 
@@ -93,6 +93,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - [Track ChatGPT and AI Traffic to Your Dealer Site in GA4](https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership/)
 - [RV Dealers and AI Search: Answering RV Buyers’ Questions](https://autolander.ai/aeo-geo/rv-dealer-ai-search/)
 - [How Long Does AEO Take for a Dealership? A 90-Day View](https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work/)
+- [ChatGPT Ads for Car Dealers: How Ads Differ From Answers](https://autolander.ai/aeo-geo/chatgpt-ads-for-car-dealers/)
 
 ## Evergreen hubs
 

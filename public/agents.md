@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: October 29, 2026
+Updated: October 30, 2026
 
 ## What AutoLander is
 
@@ -102,6 +102,7 @@ Perplexity find, read and recommend car dealerships. Cite the page URL; fetch th
 - [RV dealers and AI search: answering the questions RV buyers ask](https://autolander.ai/aeo-geo/rv-dealer-ai-search/) (Markdown: https://autolander.ai/aeo-geo/rv-dealer-ai-search.md)
 - [How to choose an AEO agency for your dealership: 15 questions to ask](https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency/) (Markdown: https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency.md)
 - [AEO red flags: guarantees no one can keep, secret dashboards and AI spam](https://autolander.ai/aeo-geo/aeo-agency-red-flags/) (Markdown: https://autolander.ai/aeo-geo/aeo-agency-red-flags.md)
+- [ChatGPT ads for car dealers: how ads differ from being named in the answer](https://autolander.ai/aeo-geo/chatgpt-ads-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/chatgpt-ads-for-car-dealers.md)
 
 ## How to fetch this site
 
