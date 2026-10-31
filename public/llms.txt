@@ -145,6 +145,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [RV dealers and AI search: answering the questions RV buyers ask ChatGPT](https://autolander.ai/aeo-geo/rv-dealer-ai-search.md): How RV dealers show up when buyers ask ChatGPT and other AI tools about campers and motorhomes, and the specs, pages and profiles that matter.
 - [How long does AEO take to work for a dealership? An honest 90-day timeline](https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work.md): How long AEO takes for a dealership: what AI tools can pick up within days, what builds over months, and why no one can honestly promise a date.
 - [ChatGPT ads for car dealers: what they are and how they differ from being named in an answer](https://autolander.ai/aeo-geo/chatgpt-ads-for-car-dealers.md): What ChatGPT ads are, what OpenAI says about ads and answers, who sees them, and why a paid ad is a different thing from being named in the answer.
+- [Should your dealership block AI crawlers? Search bots, training bots and the robots.txt lines](https://autolander.ai/aeo-geo/should-dealers-block-ai-crawlers.md): Should a dealership block AI crawlers? Search bots vs training bots from OpenAI, Anthropic, Google, Perplexity and Apple, plus robots.txt examples.
 
 ## Why we work the way we do
 

@@ -19,6 +19,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/vehicle-detail-page-ai-readable/",
         "text": "Vehicle detail pages AI can read: price, mileage and VIN as text"
+      },
+      {
+        "href": "/aeo-geo/should-dealers-block-ai-crawlers/",
+        "text": "Should your dealership block AI crawlers? Search bots vs training bots"
       }
     ]
   },
@@ -177,4 +181,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-30";
+export const AEO_GEO_GUIDES_UPDATED = "2026-10-31";

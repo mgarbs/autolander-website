@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: October 30, 2026
+Updated: October 31, 2026
 
 ## What AutoLander is
 
@@ -79,6 +79,7 @@ Perplexity find, read and recommend car dealerships. Cite the page URL; fetch th
 - [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/) (Markdown: https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website.md)
 - [Cloudflare AI bot blocking on dealer websites: what to allow](https://autolander.ai/aeo-geo/cloudflare-ai-bots-dealer-websites/) (Markdown: https://autolander.ai/aeo-geo/cloudflare-ai-bots-dealer-websites.md)
 - [Vehicle detail pages AI can read: price, mileage and VIN as text](https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable/) (Markdown: https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable.md)
+- [Should your dealership block AI crawlers? Search bots vs training bots](https://autolander.ai/aeo-geo/should-dealers-block-ai-crawlers/) (Markdown: https://autolander.ai/aeo-geo/should-dealers-block-ai-crawlers.md)
 - [How ChatGPT decides which car dealerships to recommend](https://autolander.ai/aeo-geo/how-chatgpt-recommends-car-dealerships/) (Markdown: https://autolander.ai/aeo-geo/how-chatgpt-recommends-car-dealerships.md)
 - [Google AI Overviews for car dealers: when they show and who gets cited](https://autolander.ai/aeo-geo/google-ai-overviews-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/google-ai-overviews-for-car-dealers.md)
 - [How Claude finds and cites dealerships in its answers](https://autolander.ai/aeo-geo/how-claude-cites-sources/) (Markdown: https://autolander.ai/aeo-geo/how-claude-cites-sources.md)

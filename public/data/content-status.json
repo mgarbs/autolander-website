@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30",
+  "generatedAt": "2026-10-31",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1640,8 +1640,8 @@
       ],
       "description": "Should a dealership block AI crawlers? Search bots vs training bots from OpenAI, Anthropic, Google, Perplexity and Apple, plus robots.txt examples.",
       "suggestedOrder": 64,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-10-31",
       "siloOrder": 0,
       "cluster": "website",
       "clusterLabel": "Your website: crawlers, schema and vehicle pages",
