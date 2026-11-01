@@ -42,6 +42,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/how-claude-cites-sources/",
         "text": "How Claude finds and cites dealerships in its answers"
+      },
+      {
+        "href": "/aeo-geo/google-ai-mode-for-car-dealers/",
+        "text": "Google AI Mode for car dealers: query fan-out and your pages"
       }
     ]
   },
@@ -181,4 +185,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-10-31";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-01";

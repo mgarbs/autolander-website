@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31",
+  "generatedAt": "2026-11-01",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1666,8 +1666,8 @@
       ],
       "description": "Google AI Mode for car dealers: how query fan-out works, why AI Mode questions run longer, and how dealer pages should answer the sub-questions.",
       "suggestedOrder": 65,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-01",
       "siloOrder": 0,
       "cluster": "engines",
       "clusterLabel": "How each AI assistant picks a dealer",
