@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01",
+  "generatedAt": "2026-11-02",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1692,8 +1692,8 @@
       ],
       "description": "How to respond to car dealership reviews, with example replies for 5-star, 1-star and suspicious reviews, and the Google and FTC rules to follow.",
       "suggestedOrder": 66,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-02",
       "siloOrder": 0,
       "cluster": "reputation",
       "clusterLabel": "Business Profile, reviews and reputation",
