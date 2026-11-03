@@ -113,8 +113,8 @@ Nothing in the research says so. Cox found shoppers use AI to research and prepa
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
 - [The questions car shoppers ask AI before they choose a dealer](https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai/)
 - [Best car dealership near me: how AI assistants decide who gets named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/)
+- [Do car buyers trust AI recommendations? What the surveys say](https://autolander.ai/aeo-geo/do-car-buyers-trust-ai-recommendations/)
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/)
-- [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/)
 - [AI search for independent used car dealers: where a small lot should start](https://autolander.ai/aeo-geo/ai-search-for-independent-dealers/)
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/)
 

@@ -131,9 +131,9 @@ Up to 20 local buyer questions, each asked 3 times of ChatGPT and 3 times of Cla
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
 - [Best car dealership near me: how AI assistants decide who gets named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/)
+- [Do car buyers trust AI recommendations? What the surveys say](https://autolander.ai/aeo-geo/do-car-buyers-trust-ai-recommendations/)
 - [How car buyers use ChatGPT and other AI tools to shop, and what it means for dealers](https://autolander.ai/aeo-geo/how-car-buyers-use-chatgpt/)
 - [The car dealership FAQ page: 40 buyer questions to answer](https://autolander.ai/aeo-geo/car-dealership-faq-page/)
-- [Search Console’s generative AI report for dealers: AI Overviews and AI Mode impressions](https://autolander.ai/aeo-geo/search-console-ai-report-dealers/)
 - [Service department questions in AI answers: a fixed ops guide](https://autolander.ai/aeo-geo/service-department-ai-answers/)
 
 ---

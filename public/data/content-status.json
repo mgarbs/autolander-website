@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02",
+  "generatedAt": "2026-11-03",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1718,8 +1718,8 @@
       ],
       "description": "Do car buyers trust AI recommendations? What Cars.com, BrightLocal and Cox Automotive surveys found, and why buyers still check your reviews and site.",
       "suggestedOrder": 67,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-03",
       "siloOrder": 0,
       "cluster": "buyers",
       "clusterLabel": "How car buyers use AI",

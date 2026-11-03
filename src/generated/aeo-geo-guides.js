@@ -65,6 +65,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/best-car-dealership-near-me-ai/",
         "text": "Best car dealership near me: how AI assistants decide who gets named"
+      },
+      {
+        "href": "/aeo-geo/do-car-buyers-trust-ai-recommendations/",
+        "text": "Do car buyers trust AI recommendations? What the surveys say"
       }
     ]
   },
@@ -189,4 +193,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-02";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-03";
