@@ -134,6 +134,7 @@ Up to 20 local buyer questions, each asked 3 times of ChatGPT and 3 times of Cla
 - [Do car buyers trust AI recommendations? What the surveys say](https://autolander.ai/aeo-geo/do-car-buyers-trust-ai-recommendations/)
 - [How car buyers use ChatGPT and other AI tools to shop, and what it means for dealers](https://autolander.ai/aeo-geo/how-car-buyers-use-chatgpt/)
 - [The car dealership FAQ page: 40 buyer questions to answer](https://autolander.ai/aeo-geo/car-dealership-faq-page/)
+- [Trade-in questions in AI answers: what your trade-in page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers/)
 - [Service department questions in AI answers: a fixed ops guide](https://autolander.ai/aeo-geo/service-department-ai-answers/)
 
 ---

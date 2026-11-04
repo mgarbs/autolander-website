@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/blog/  
 Author: The AutoLander team  
-Updated: November 3, 2026
+Updated: November 4, 2026
 
 Practical guidance for dealership teams that publish, merchandise, and market vehicle inventory. Start with the latest posts, or browse every published guide by topic.
 
@@ -98,6 +98,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - [Google AI Mode for Car Dealers: Fan-Out and Your Pages](https://autolander.ai/aeo-geo/google-ai-mode-for-car-dealers/)
 - [How to Respond to Car Dealership Reviews (With Examples)](https://autolander.ai/aeo-geo/how-to-respond-to-car-dealership-reviews/)
 - [Do Car Buyers Trust AI Recommendations? What Surveys Say](https://autolander.ai/aeo-geo/do-car-buyers-trust-ai-recommendations/)
+- [Trade-In Questions in AI Answers: What Your Page Should Say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers/)
 
 ## Evergreen hubs
 

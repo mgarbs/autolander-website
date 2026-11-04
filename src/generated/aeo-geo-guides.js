@@ -111,6 +111,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/service-department-ai-answers/",
         "text": "Service department questions in AI answers: a fixed ops guide"
+      },
+      {
+        "href": "/aeo-geo/trade-in-questions-in-ai-answers/",
+        "text": "Trade-in questions in AI answers: what your trade-in page should say"
       }
     ]
   },
@@ -193,4 +197,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-03";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-04";

@@ -149,6 +149,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [Google AI Mode for car dealers: query fan-out and what it means for your pages](https://autolander.ai/aeo-geo/google-ai-mode-for-car-dealers.md): Google AI Mode for car dealers: how query fan-out works, why AI Mode questions run longer, and how dealer pages should answer the sub-questions.
 - [How to reply to car dealership reviews: examples for good, bad and fake ones](https://autolander.ai/aeo-geo/how-to-respond-to-car-dealership-reviews.md): How to respond to car dealership reviews, with example replies for 5-star, 1-star and suspicious reviews, and the Google and FTC rules to follow.
 - [Do car buyers trust AI recommendations? What the surveys say](https://autolander.ai/aeo-geo/do-car-buyers-trust-ai-recommendations.md): Do car buyers trust AI recommendations? What Cars.com, BrightLocal and Cox Automotive surveys found, and why buyers still check your reviews and site.
+- [Trade-in questions in AI answers: what buyers ask and what your trade page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers.md): What car buyers ask AI about trade-in value, where those answers come from, and what a dealership trade-in page should say so buyers get it right.
 
 ## Why we work the way we do
 

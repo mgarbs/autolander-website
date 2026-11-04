@@ -124,7 +124,7 @@ Worry less and check more. Google says AI Overviews can and will make mistakes, 
 - [How car buyers use ChatGPT and other AI tools to shop, and what it means for dealers](https://autolander.ai/aeo-geo/how-car-buyers-use-chatgpt/)
 - [The questions car shoppers ask AI before they choose a dealer](https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai/)
 - [Best car dealership near me: how AI assistants decide who gets named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/)
-- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
+- [Trade-in questions in AI answers: what your trade-in page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers/)
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/)
 - [How to respond to car dealership reviews, with examples](https://autolander.ai/aeo-geo/how-to-respond-to-car-dealership-reviews/)
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/)

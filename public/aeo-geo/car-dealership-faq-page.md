@@ -143,9 +143,9 @@ Whenever a fact changes, and on a set schedule such as every quarter. Hours, fee
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
 - [Service department questions in AI answers: a fixed ops guide](https://autolander.ai/aeo-geo/service-department-ai-answers/)
+- [Trade-in questions in AI answers: what your trade-in page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers/)
 - [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/)
 - [Search Console’s generative AI report for dealers: AI Overviews and AI Mode impressions](https://autolander.ai/aeo-geo/search-console-ai-report-dealers/)
-- [Buy here pay here dealers in AI answers: bad-credit questions and honest pages](https://autolander.ai/aeo-geo/buy-here-pay-here-ai-answers/)
 
 ---
 AutoLander: AEO and GEO for car dealers. https://autolander.ai/aeo-geo-for-car-dealers/
