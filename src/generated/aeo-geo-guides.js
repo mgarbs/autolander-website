@@ -153,6 +153,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/track-ai-traffic-ga4-dealership/",
         "text": "How to track ChatGPT and AI assistant traffic to your dealership website in GA4"
+      },
+      {
+        "href": "/aeo-geo/ai-visibility-score-explained/",
+        "text": "AI visibility score: what a dealership’s score out of 100 means"
       }
     ]
   },
@@ -197,4 +201,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-04";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-05";

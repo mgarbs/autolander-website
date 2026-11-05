@@ -150,6 +150,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [How to reply to car dealership reviews: examples for good, bad and fake ones](https://autolander.ai/aeo-geo/how-to-respond-to-car-dealership-reviews.md): How to respond to car dealership reviews, with example replies for 5-star, 1-star and suspicious reviews, and the Google and FTC rules to follow.
 - [Do car buyers trust AI recommendations? What the surveys say](https://autolander.ai/aeo-geo/do-car-buyers-trust-ai-recommendations.md): Do car buyers trust AI recommendations? What Cars.com, BrightLocal and Cox Automotive surveys found, and why buyers still check your reviews and site.
 - [Trade-in questions in AI answers: what buyers ask and what your trade page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers.md): What car buyers ask AI about trade-in value, where those answers come from, and what a dealership trade-in page should say so buyers get it right.
+- [AI visibility score: what a dealership’s score out of 100 can tell you, and what it can’t](https://autolander.ai/aeo-geo/ai-visibility-score-explained.md): What an AI visibility score out of 100 can and can’t tell a dealership, why a fair score has a margin, and how to read it next to the raw answers.
 
 ## Why we work the way we do
 

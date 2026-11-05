@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04",
+  "generatedAt": "2026-11-05",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1770,8 +1770,8 @@
       ],
       "description": "What an AI visibility score out of 100 can and can’t tell a dealership, why a fair score has a margin, and how to read it next to the raw answers.",
       "suggestedOrder": 69,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-05",
       "siloOrder": 0,
       "cluster": "measurement",
       "clusterLabel": "Measuring AI visibility",

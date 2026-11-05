@@ -106,10 +106,10 @@ A few months. AI visits are usually a small slice of traffic, so one week can sw
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
+- [AI visibility score: what a dealership’s score out of 100 means](https://autolander.ai/aeo-geo/ai-visibility-score-explained/)
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/)
 - [Search Console’s generative AI report for dealers: AI Overviews and AI Mode impressions](https://autolander.ai/aeo-geo/search-console-ai-report-dealers/)
 - [RV dealers and AI search: answering the questions RV buyers ask](https://autolander.ai/aeo-geo/rv-dealer-ai-search/)
-- [How long does AEO take to work for a dealership? An honest 90-day timeline](https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work/)
 - [How Claude finds and cites dealerships in its answers](https://autolander.ai/aeo-geo/how-claude-cites-sources/)
 
 ---
