@@ -176,6 +176,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/rv-dealer-ai-search/",
         "text": "RV dealers and AI search: answering the questions RV buyers ask"
+      },
+      {
+        "href": "/aeo-geo/powersports-dealer-ai-search/",
+        "text": "Powersports dealers and AI search: ATVs, UTVs, motorcycles and boats"
       }
     ]
   },
@@ -201,4 +205,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-05";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-08";

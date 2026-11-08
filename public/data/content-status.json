@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-05",
+  "generatedAt": "2026-11-08",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1796,8 +1796,8 @@
       ],
       "description": "How powersports dealers selling ATVs, UTVs, motorcycles and boats can show up in AI answers, with the pages, specs and profiles that matter most.",
       "suggestedOrder": 70,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-08",
       "siloOrder": 0,
       "cluster": "dealer-types",
       "clusterLabel": "AI search by dealership type",
