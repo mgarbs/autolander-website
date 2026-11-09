@@ -134,6 +134,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/how-long-does-aeo-take-to-work/",
         "text": "How long does AEO take to work for a dealership? An honest 90-day timeline"
+      },
+      {
+        "href": "/aeo-geo/aeo-cost-for-car-dealerships/",
+        "text": "How much does AEO cost for a car dealership?"
       }
     ]
   },
@@ -205,4 +209,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-08";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-09";
