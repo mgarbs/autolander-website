@@ -10,6 +10,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 
 ## Latest posts
 
+- [Pros and Cons of AI Agents for Car Dealers (2026)](https://autolander.ai/blog/ai-agents-for-car-dealers-pros-and-cons/) | November 9, 2026. Pros and cons of AI agents for car dealers: which jobs to hand Meta Muse or any agent, which to keep off it, and how to pair an agent with AutoLander.
 - [What High Gas Prices Mean for Car Dealers, New and Used](https://autolander.ai/blog/high-gas-prices-car-dealers/) | September 28, 2026. What high gas prices mean for new and used car dealers: trade appraisals, lot mix, truck-heavy Marketplace data and a 30-day plan for a fuel price spike.
 - [What a Fed Rate Hike Means for Car Dealers, New and Used](https://autolander.ai/blog/fed-rate-hike-car-dealers/) | September 27, 2026. What a Fed rate hike means for new and used car dealers: payment math, holding costs, price bands from 10,823 dealer listings and a 30-day action plan.
 - [Q4 Used Car Sales on Facebook Marketplace: 2026 Playbook](https://autolander.ai/blog/q4-used-car-sales-facebook-marketplace/) | September 27, 2026. A Q4 used car sales plan for Facebook Marketplace dealers: units to list first, aged inventory, winter photos, holiday coverage and a weekly checklist.

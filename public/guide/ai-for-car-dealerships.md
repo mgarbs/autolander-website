@@ -111,6 +111,7 @@ Standalone chatbots exist that attempt it — vet them hard on inventory truth a
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/)
 - [AI search for independent used car dealers: where a small lot should start](https://autolander.ai/aeo-geo/ai-search-for-independent-dealers/)
 - [How to choose an AEO agency for your dealership: 15 questions to ask](https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency/)
+- [Pros and cons of AI agents for car dealers, and where AutoLander fits](https://autolander.ai/blog/ai-agents-for-car-dealers-pros-and-cons/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

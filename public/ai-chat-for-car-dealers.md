@@ -103,6 +103,7 @@ With process: Messenger notifications on a phone, a named owner per shift, and l
 - [Facebook Marketplace auto poster pricing](https://autolander.ai/facebook-marketplace-auto-poster-pricing/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [Facebook Marketplace auto-reply for car dealers: every option compared](https://autolander.ai/compare/facebook-marketplace-auto-reply-for-car-dealers/)
+- [Pros and cons of AI agents for car dealers, and where AutoLander fits](https://autolander.ai/blog/ai-agents-for-car-dealers-pros-and-cons/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/

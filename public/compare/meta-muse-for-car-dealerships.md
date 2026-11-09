@@ -121,6 +121,7 @@ Post and maintain the lot from your inventory feed with a tool built for it, suc
 - [Facebook Marketplace auto-reply for car dealers: every option compared](https://autolander.ai/compare/facebook-marketplace-auto-reply-for-car-dealers/)
 - [Meta Muse vs AutoLander vs CARVID: which one a car dealer actually needs](https://autolander.ai/compare/meta-muse-vs-autolander-vs-carvid/)
 - [Meta Muse for car dealers: getting your listings ready for an AI that shops](https://autolander.ai/guide/meta-muse-ai-agent-for-car-dealers/)
+- [Pros and cons of AI agents for car dealers, and where AutoLander fits](https://autolander.ai/blog/ai-agents-for-car-dealers-pros-and-cons/)
 
 ---
 AutoLander — Facebook Marketplace software for car dealers. https://autolander.ai/
