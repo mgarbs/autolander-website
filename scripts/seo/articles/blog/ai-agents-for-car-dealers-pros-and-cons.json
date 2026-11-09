@@ -1,0 +1,450 @@
+{
+  "slug": "ai-agents-for-car-dealers-pros-and-cons",
+  "silo": "blog",
+  "anchor": "Pros and cons of AI agents for car dealers, and where AutoLander fits",
+  "crumb": "AI agents guide",
+  "primaryKeyword": "pros and cons of ai agents for car dealers",
+  "secondaryKeywords": [
+    "ai agents for car sales teams",
+    "meta muse pros and cons",
+    "grok for car dealers",
+    "how car dealers use ai agents",
+    "ai agent with a facebook marketplace auto poster",
+    "ai agent checklist for dealerships"
+  ],
+  "title": "Pros and Cons of AI Agents for Car Dealers (2026)",
+  "description": "Pros and cons of AI agents for car dealers: which jobs to hand Meta Muse or any agent, which to keep off it, and how to pair an agent with AutoLander.",
+  "eyebrow": "AutoLander blog",
+  "h1": "Pros and cons of AI agents for car dealers, and how to pair one with AutoLander",
+  "tldr": "AI agents help car dealers most with people work: hunting private-party cars to buy, first replies under written rules, follow-ups, scheduling and research. They fall short on the lot itself: an agent such as Meta Muse repeats whatever the listing says, works for one person and leaves daily price, arrival and sold upkeep to whoever checks it. Pair the two: AutoLander posts eligible units from your feed and keeps them true, and the agent works the buyers those listings bring in.",
+  "sections": [
+    {
+      "type": "prose",
+      "paras": [
+        "Grok, Meta Muse, Dots, Duet: dealers hear a new AI name every few weeks. The useful question sits under the name: which jobs can a store safely hand an AI agent, and what happens to its Facebook Marketplace listings when it does? This guide lays out the pros and cons of AI agents for car dealers job by job, because the names change faster than the work does.",
+        "An agent differs from a chatbot in one way that matters to a store: it acts. Meta describes Muse as a personal agent that runs on its own computer in Meta’s cloud, drives a browser, fills in forms, compares prices, negotiates and buys, with the person confirming a payment before it happens. Meta lists Facebook, Marketplace included, and Messenger among the accounts Muse can connect to, and by default it asks before an important action. Whatever an agent does in those accounts, it does in your name.",
+        "AutoLander does a different job. Our [Facebook Marketplace auto poster](/facebook-marketplace-auto-poster/) turns the inventory feed you already run into Marketplace listings and keeps them current: prices follow the feed, sold units come down and photos go through the AI Photo Studio. It has no inbox feature and never messages buyers, so the plan below gives the agent the people work and gives AutoLander the lot."
+      ]
+    },
+    {
+      "type": "table",
+      "h2": "What can a dealer verify about Grok, Muse, Dots and Duet?",
+      "intro": "Separate what is documented from what is marketing before you compare anything. Here is what we can stand behind today, and what to test yourself before an agent touches your Facebook account.",
+      "head": [
+        "Name",
+        "What we can verify for a dealer",
+        "What to test before relying on it"
+      ],
+      "rows": [
+        [
+          "Meta Muse",
+          "A personal AI agent Meta announced on September 8, 2026, one per person, available in the United States and Canada as of late September 2026. It connects to Facebook, Marketplace and Messenger, runs tasks once or on a daily or weekly schedule, and asks before important actions by default",
+          "How it behaves on your own account for a week, with every message read, before it handles buyers alone"
+        ],
+        [
+          "Grok",
+          "Google Analytics 4 lists Grok among the AI assistants whose referral visits land in its AI Assistant channel. We have not tested it on dealership tasks",
+          "Whether it can act inside your Facebook account at all, and under what Meta permission"
+        ],
+        [
+          "Dots",
+          "Not reviewed here. Nothing on this page describes its features, pricing or Facebook access",
+          "The vendor questions further down this page, answered in writing"
+        ],
+        [
+          "Duet",
+          "Not reviewed here. Nothing on this page describes its features, pricing or Facebook access",
+          "The same questions, plus who owns the setup when the person who built it leaves"
+        ],
+        [
+          "The next agent to launch",
+          "Whatever its maker publishes, checked against your own account",
+          "One supervised week on a single salesperson before the whole floor uses it"
+        ]
+      ],
+      "caption": "Muse details as Meta described them through late September 2026. Agents change often, so recheck any row before you rely on it; each row describes what could be verified and reviews nothing."
+    },
+    {
+      "type": "bullets",
+      "h2": "Where do AI agents help a car dealer most?",
+      "intro": "Point an agent at people work, the jobs a good assistant does between customers. The list comes from what Meta documents for Muse and from our own use of it; hold any other agent to the same list.",
+      "items": [
+        "Hunting private-party cars to buy: a daily Marketplace search against your buy box, a shortlist and the opening message lined up. Meta says Muse negotiates within limits the user sets; in at least one published test it drafted the message for the person to send, so supervise the first week.",
+        "The first answer to a Marketplace buyer, under rules you write: availability, hours, directions and booking a visit, with price, trade, credit and title questions handed to a person. Meta’s own availability reply, live since March 2026, already covers the first “is this still available?” message.",
+        "Follow-ups with memory, drafted from what the buyer actually said and approved by the salesperson before they go out. Our [car sales follow-up templates](/guide/car-sales-follow-up-templates/) give it a cadence to copy.",
+        "Booking the visit from your calendar, then sending the confirmation and a reminder the morning of.",
+        "Homework before the customer arrives: comparable listings for their trade, current manufacturer incentives and open recalls on a unit you are about to sell.",
+        "The writing nobody enjoys, such as review replies, walkaround video scripts and the text to a buyer who went quiet.",
+        "Auditing your own listings the way a shopping agent would, flagging placeholder prices, blank mileage, duplicates and cars that look sold."
+      ]
+    },
+    {
+      "type": "bullets",
+      "h2": "Where do AI agents fall short for a dealership?",
+      "intro": "The weak spots are predictable, and most of them hold even when the agent does each task well.",
+      "items": [
+        "It answers from the listing. If the listing still shows last week’s price, a guessed mileage or a car that sold Saturday, the agent repeats all three with confidence, and a fast wrong answer costs more than a slow right one.",
+        "It keeps talking when a person is needed. Trade-in, credit, title and an upset buyer all need a human within one message, and an agent without written hand-off rules keeps chatting.",
+        "It speaks for the store unwatched. Every message it sends is a promise the dealership made, whether or not anyone saw it go out.",
+        "It belongs to one person. Muse has no seats, no roles, no shared queue and no manager view, and its memory and setup live on one salesperson’s account, so they leave when that person does.",
+        "Lot upkeep eats its week. Posting is screen-by-screen browser work, and Meta meters Muse usage week by week, so keeping 80 listings true draws down the same pool as customer work; when the week runs out, the sold car waits.",
+        "No DMS delivers to it. vAuto, HomeNet, CDK and DealerCenter send scheduled file drops, often over SFTP, to a destination the dealer authorizes, while an agent works from whatever file or link someone hands it.",
+        "Nobody checks its choices but you. When a trim is spelled differently or a body style has no exact match, the agent picks one, and you learn what it chose by reading the listing.",
+        "Photos go out as they came in. Muse posts the photos it is handed, banners and clutter included.",
+        "Outside automation concentrates risk. Meta’s own agent on Meta’s own platform is one case; software from another company driving the personal profile that holds your listings is another, and a restriction there can reach the listings and any ad assets that profile manages.",
+        "It lacks dealer plumbing. Paid inbox tools still sell ADF lead delivery into a CRM, voice agents for phone calls and routing across several reps; if your store needs those, compare them in our [Marketplace auto-reply guide](/compare/facebook-marketplace-auto-reply-for-car-dealers/)."
+      ]
+    },
+    {
+      "type": "figure",
+      "before": "/studio/library/toyota-tundra-i-force-max-e265209c-before.webp",
+      "after": "/studio/library/toyota-tundra-i-force-max-e265209c-after.webp",
+      "beforeAlt": "Celestial silver metallic 2026 Toyota Tundra i-FORCE MAX Capstone crew cab pickup in a front three-quarter view on a checkered studio floor, with promotional banner text across the top and bottom of the original photo",
+      "afterAlt": "The same celestial silver metallic 2026 Toyota Tundra i-FORCE MAX Capstone crew cab pickup in a front three-quarter view, placed in a suburban driveway scene by AutoLander’s AI Photo Studio",
+      "caption": "Same celestial silver 2026 Toyota Tundra Capstone, same front three-quarter angle: the original photo with promotional banners across the top and bottom (left) and the AutoLander AI Photo Studio version in a suburban driveway (right). The banners and the indoor backdrop are gone; the truck’s paint and wheels are unchanged. An agent that posts the photo it is handed would put the left-hand version in front of buyers."
+    },
+    {
+      "type": "quotes",
+      "h2": "What did Muse say when we asked how it compares?",
+      "quotes": [
+        {
+          "text": "I’m strictly one-to-one. AutoLander is built for a sales floor with seats and oversight.",
+          "who": "Meta Muse",
+          "role": "asked by AutoLander’s co-founder, September 2026"
+        },
+        {
+          "text": "I can’t do DMS feed ingestion or multi-seat posting schedules; that’s not my lane.",
+          "who": "Meta Muse",
+          "role": "on what it leaves to dealer tools"
+        },
+        {
+          "text": "AutoLander lists the cars and keeps the facts true; the AI (whoever’s) takes the conversation. Complementary, not substitutes.",
+          "who": "Meta Muse",
+          "role": "on how the two fit together"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "h2": "Which jobs go to an agent, and which go to AutoLander?",
+      "intro": "Muse gave those answers in one conversation in late September 2026, and agents answer differently from run to run. The split below holds either way: if the job is one person helping one customer, an agent fits, and if the job is the whole lot staying accurate, it belongs to software built for inventory.",
+      "head": [
+        "Job",
+        "Give it to an agent?",
+        "Give it to AutoLander?",
+        "Why"
+      ],
+      "rows": [
+        [
+          "Post the lot from your DMS feed",
+          "No, even though Muse can post",
+          "Yes",
+          "DMS vendors deliver scheduled drops to a destination the dealer authorizes, and AutoLander can be that destination"
+        ],
+        [
+          "Keep price and mileage in step with the desk",
+          "No",
+          "Yes",
+          "A daily re-read of the feed and every live listing, with each field verified"
+        ],
+        [
+          "Pull sold units",
+          "No",
+          "Yes",
+          "Listings come down during reconciliation after the feed marks the car sold"
+        ],
+        [
+          "Clean up lot photos",
+          "No",
+          "Yes",
+          "The AI Photo Studio replaces the background and never repaints the car"
+        ],
+        [
+          "First reply to a Marketplace buyer",
+          "Yes, under written rules",
+          "No, it has no inbox feature",
+          "Availability, hours and directions can go to the agent; price, trade, credit and title go to a person"
+        ],
+        [
+          "Follow-ups and appointments",
+          "Yes",
+          "No",
+          "Memory of who asked what, plus calendar access"
+        ],
+        [
+          "Private-party acquisition hunt",
+          "Yes",
+          "No",
+          "A daily Marketplace search against your buy box"
+        ],
+        [
+          "Trade, incentive and recall homework",
+          "Yes",
+          "No",
+          "Research across the web before the customer arrives"
+        ],
+        [
+          "Weekly listing audit",
+          "Yes",
+          "Fixes go into the feed",
+          "The agent shops your listings the way a buyer’s agent would"
+        ],
+        [
+          "Show which posts sold cars",
+          "No",
+          "Yes, on Dealer plans",
+          "Post-to-sale attribution on the manager dashboard"
+        ]
+      ],
+      "caption": "A starting split for a typical used-car store. Test any agent on one account before a whole floor relies on it."
+    },
+    {
+      "type": "qa",
+      "q": "Which sales levers does each one move?",
+      "a": [
+        "Our guide to [how to sell more cars](/guide/how-to-sell-more-cars/) names six levers: coverage, photos, price, speed, plugging leaks and attribution. AutoLander handles four of them from the feed: coverage (every eligible unit posted), photos (the AI Photo Studio), leaks (sold units pulled and prices kept in step with the desk) and attribution (post-to-sale reporting on Dealer plans). Setting the price itself stays the desk’s call.",
+        "Speed is where an agent earns its place: a first answer within minutes at 9pm, a follow-up that goes out on schedule, a reminder the morning of the visit. The two compound, because a fast answer about a car that sold Saturday still loses the buyer. Neither one fixes a unit bought wrong or priced above the market."
+      ]
+    },
+    {
+      "type": "steps",
+      "h2": "How do you set up an AI agent and AutoLander together?",
+      "intro": "The two never touch the same job, so the setup fits in an afternoon. Start with one salesperson’s agent and widen it after a supervised week.",
+      "steps": [
+        {
+          "title": "Connect the feed and post the lot",
+          "body": "Connect the inventory you already publish, whether a DMS export, a CSV or SFTP drop, or your website, and let AutoLander post every eligible unit through your own Facebook session. The [inventory sync page](/facebook-marketplace-inventory-sync/) explains how listings stay current, and the [integrations page](/integrations/) covers each source."
+        },
+        {
+          "title": "Write the inbox rules and hand-off alerts",
+          "body": "Decide what the agent may answer on its own (availability, hours, directions, whether a car is on the lot) and what always goes to a person: any price below the listing, trade values, payments, credit, title and anyone who sounds upset. Have it message the salesperson the moment a buyer raises one of those, and stop replying on that thread until a person answers."
+        },
+        {
+          "title": "Keep the facts in the feed",
+          "body": "When the desk changes a price or a car sells, change it in the DMS. AutoLander carries it to Marketplace on the next check, and everything the agent says afterward rests on the updated listing."
+        },
+        {
+          "title": "Read the transcripts every week",
+          "body": "Read every message the agent sends in its first week, then have a sales manager spend twenty minutes a week reading what went out and tightening the rules wherever an answer said too much."
+        }
+      ]
+    },
+    {
+      "type": "features",
+      "h2": "What does each seat hand its agent?",
+      "intro": "An agent belongs to one person, so give each seat its own routine. These are the recurring tasks we would set up at a typical used-car store.",
+      "cards": [
+        {
+          "title": "Used-car manager: the morning hunt",
+          "body": "Every day at 7am the agent searches Marketplace within 60 miles for private-party cars that fit the buy box (makes, model years, a mileage ceiling, a price ceiling), compares each with similar listings and sends a shortlist with the three it would call first. The manager decides who gets a message."
+        },
+        {
+          "title": "BDC or internet rep: first replies",
+          "body": "The agent answers availability, hours, directions and “can I see it tomorrow?” on the rep’s own threads, books the visit and flags any message about price, trade, credit or a complaint for a person within minutes."
+        },
+        {
+          "title": "Salesperson: the evening follow-up list",
+          "body": "Each evening the agent drafts the next message for every open conversation, based on what the buyer asked and when they last heard from the store, and queues it for the salesperson to approve. Our guide to [responding to Marketplace messages](/guide/respond-to-facebook-marketplace-messages-dealer/) shows what a good first reply looks like."
+        },
+        {
+          "title": "Sales manager: the weekly audit",
+          "body": "Once a week the agent shops the store’s listings the way a buyer’s agent would and reports placeholder prices, blank mileage, duplicates and cars that look sold. Each fix goes into the feed so the next sync carries it."
+        },
+        {
+          "title": "General manager: the price watch",
+          "body": "Before the Monday pricing meeting, the agent checks how the ten oldest units compare with similar cars listed nearby. The desk makes the call, and the feed carries the new number to Marketplace."
+        },
+        {
+          "title": "Everyone: listing work stays off the agent",
+          "body": "Posting, price changes and sold removal run through AutoLander from the feed, so each person’s agent spends its week on customers. More routines by role are in [Meta Muse for car dealerships](/compare/meta-muse-for-car-dealerships/) and [Meta Muse for car salesmen](/compare/meta-muse-for-car-salesmen/)."
+        }
+      ]
+    },
+    {
+      "type": "qa",
+      "q": "Why does listing accuracy matter more once agents are involved?",
+      "a": [
+        "Both sides now read the listing literally. On the buyer side, Meta has published nothing about how Muse ranks Marketplace vehicles, but a shopping agent working from a buyer’s filters skips a placeholder price, drops a listing with blank mileage when the buyer set a mileage limit and treats a sold car still live as a sign the seller is unreliable. Our guide to [getting listings ready for Meta Muse](/guide/meta-muse-ai-agent-for-car-dealers/) covers that side field by field.",
+        "On the seller side, an agent answering your buyers repeats whatever the listing says, and prices move often: 22.6% of comparable dealer listings in AutoLander’s 2026 report changed price after going live ([Facebook Marketplace Used-Car Report 2026](/facebook-marketplace-used-car-report-2026/)). A price cut in the DMS does not update a Marketplace listing by itself, so every unsynced move is a chance for the agent to quote the old number.",
+        "Closing that gap is the job of [Facebook Marketplace inventory sync](/facebook-marketplace-inventory-sync/): a price change in your feed reaches the live listing on the next sync, and sold units come down during reconciliation. When the facts are right, any agent’s answer is short and true."
+      ]
+    },
+    {
+      "type": "figure",
+      "before": "/studio/library/chevrolet-silverado-2500hd-4f5b4c16-before.webp",
+      "after": "/studio/library/chevrolet-silverado-2500hd-4f5b4c16-after.webp",
+      "beforeAlt": "Black 2021 Chevrolet Silverado 2500HD Custom pickup in a front three-quarter view, parked in front of a storefront with signage and trees, original photo before AutoLander photo editing",
+      "afterAlt": "The same black 2021 Chevrolet Silverado 2500HD Custom pickup in a front three-quarter view, placed on an open lot at sunset by AutoLander’s AI Photo Studio",
+      "caption": "Same black 2021 Chevrolet Silverado 2500HD Custom, same front three-quarter angle: the original photo with a storefront, signs and trees behind the truck (left) and the AutoLander AI Photo Studio version on an open lot at sunset (right). The truck’s paint, wheels and trim are as shot; only the scene changed, so a buyer, or a buyer’s shopping agent, sizes up the truck instead of the backdrop."
+    },
+    {
+      "type": "bullets",
+      "h2": "What should you ask before an agent touches your Facebook account?",
+      "intro": "Ask these of any agent, from Meta or anyone else, and get the answers in writing. They adapt the questions we suggest for any AI chat tool to agents.",
+      "items": [
+        "Where does its answer about availability and price come from, and how often is that source refreshed? The only safe source is a listing that follows your live feed.",
+        "Will it ever state a price the listing does not show, round a number or offer a discount the desk did not set? The right answer is a flat no.",
+        "How fast does a person take over? Frustration and any trade, credit, title or finance question should hand off within one message, with the thread attached.",
+        "Which Facebook account does it act through, and under what Meta permission? Get the vendor to name the exact Meta product.",
+        "Can you read every message it sent, in full, and does it tell buyers they are talking to an automated assistant?",
+        "Who owns the setup, the memory and the rules when the person who built them leaves? The longer list, with the answers that mean walk away, is in our [questions to ask any AI chat vendor](/guide/questions-to-ask-an-ai-chat-vendor/)."
+      ]
+    },
+    {
+      "type": "qa",
+      "q": "How do you know the setup is working?",
+      "a": [
+        "Track two numbers every week: median minutes to first reply during floor hours, and the count of messages about units that had already sold. The first shows whether your people and the agent are fast; the second shows whether the listings are true, and the target is zero. Our [Marketplace response time guide](/guide/marketplace-response-time-for-car-dealers/) explains why the first accurate reply usually wins the appointment.",
+        "Then watch where buyers come from. Google Analytics 4 groups visits from recognized AI assistants into an AI Assistant channel, and Google’s definitions list ChatGPT, Gemini, Deepseek, Copilot and Grok among the sources, so a buyer who clicks through from one of them is countable; the setup is in our guide to [tracking AI assistant traffic in GA4](/aeo-geo/track-ai-traffic-ga4-dealership/). Whether an assistant names your store in the first place is a separate job, covered by [AEO and GEO for car dealers](/aeo-geo-for-car-dealers/).",
+        "Finally, tie listings to sales. On Dealer plans, AutoLander’s post-to-sale attribution shows which Marketplace listings connect to sold units. Credit sales to deals, never to an agent’s activity counter: a conversation becomes a sale only when the deal closes."
+      ]
+    },
+    {
+      "type": "features",
+      "h2": "Where does AutoLander fit next to an agent?",
+      "intro": "AutoLander does the lot work an agent should not spend its week on, at a published monthly price.",
+      "cards": [
+        {
+          "title": "Every unit from your feed",
+          "body": "AutoLander posts eligible units from a CarGurus or Cars.com feed, or a custom export from vAuto, DealerCenter, Dealer.com, HomeNet, Frazer, CDK or Tekion ([supported inventory feeds](/integrations/)), so nobody hands an agent a spreadsheet."
+        },
+        {
+          "title": "Prices and sold status that follow the desk",
+          "body": "When the feed changes a price, the matching listing changes on the next sync, and sold units come down during reconciliation, so the listing an agent answers about matches the lot."
+        },
+        {
+          "title": "Checked work",
+          "body": "Every dropdown AutoLander selects is read back and verified against its label before the post continues, mileage is the odometer or blank and never a guess, and the price comes only from the feed."
+        },
+        {
+          "title": "Photos that survive a close look",
+          "body": "The [AI car photo editor](/ai-car-photo-editor/) replaces the lot behind the real car and never repaints it, and AI walkaround video adds motion to the listing."
+        },
+        {
+          "title": "A team account",
+          "body": "Dealer Plan seats, a live manager dashboard and post-to-sale attribution show who posted what and which posts sold cars, the store-level view a one-person agent cannot give."
+        },
+        {
+          "title": "Published pricing",
+          "body": "Starter is $39 a month for up to 5 posts a day, Growth $59 for 10 and Pro $79 for 15, and Dealer plans start at $117 for three seats. Every plan is month-to-month and starts with 5 free posts and no credit card; see the [pricing page](/facebook-marketplace-auto-poster-pricing/)."
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "title": "What AutoLander does not do",
+      "body": "AutoLander has no inbox feature and never messages buyers; your team, or the agent you choose, handles every conversation in Messenger ([why we stay out of the inbox](/why-we-dont-answer-your-buyers/)). It does not connect to, control or supervise any AI agent. It cannot override Meta’s eligibility rules or listing limits, no tool can promise an account will never be actioned, and it works only while the operating computer is on and the app is running. Read the [automation policy guide](/guide/facebook-marketplace-automation/) before you automate anything."
+    }
+  ],
+  "faq": [
+    [
+      "What is the difference between an AI agent and a chatbot?",
+      "A chatbot answers questions, while an agent carries out tasks. Meta describes Muse as running on its own computer in Meta’s cloud, driving a browser, filling in forms, comparing prices, negotiating and buying, with the person confirming a payment first. For a dealer the practical difference is accountability: whatever an agent does in your Facebook, Messenger or email accounts, it does in your name, so it needs written rules before it runs alone."
+    ],
+    [
+      "Can an AI agent post my inventory to Facebook Marketplace?",
+      "Muse can: hand it a feed file or link and it can create the listings from the account of the person who owns the agent, and we tested it. The harder part is every day after that, when price drops, new arrivals and sold units all have to reach Marketplace. For an agent that upkeep is a recurring browser task that draws on the same weekly usage as its customer work, with nobody checking its field choices but you. A feed-driven [Facebook Marketplace auto poster](/facebook-marketplace-auto-poster/) does that upkeep as its whole job."
+    ],
+    [
+      "Is Grok useful for a car dealership?",
+      "We have not tested Grok on dealership tasks, so this page makes no claims about what it can do inside your accounts. What we can say: Google Analytics 4 counts referral visits from Grok in its AI Assistant channel, so if buyers use it to research stores, those clicks show up in your reports. Before you let Grok, Muse or any other agent act for the store, put it through the questions above and supervise it for a week."
+    ],
+    [
+      "What about other AI agents, such as Dots and Duet?",
+      "We have not reviewed either, and nothing on this page describes their features, pricing or Facebook access. Ask each vendor the same questions: where its answers come from, whether it will ever state a price the listing does not show, how fast a person takes over, which account and Meta permission it acts under, and who owns the setup when an employee leaves. Get the answers in writing before it touches a live account."
+    ],
+    [
+      "Will AI agents replace car salespeople?",
+      "No. Agents take the parts of the job salespeople already dislike: chasing follow-ups, booking reminders, research and answering “is it available?” at midnight. The test drive, the trade walk and the close stay human, and buyers can tell when a person is on the other end. Our guide to [AI for car dealerships](/guide/ai-for-car-dealerships/) ranks the AI jobs that pay off today."
+    ],
+    [
+      "Does AutoLander work with Meta Muse or other AI agents?",
+      "Yes, by staying on its own side of the line, and there is nothing to connect. AutoLander posts and maintains your vehicle listings from your inventory feed through your own Facebook session, and it has no inbox feature. An agent working in the same Facebook account handles the people side, and every answer it gives rests on listings AutoLander keeps accurate. Our [Meta Muse vs AutoLander vs CARVID comparison](/compare/meta-muse-vs-autolander-vs-carvid/) covers the split in detail."
+    ],
+    [
+      "Is it against Facebook’s rules to let an AI agent message buyers?",
+      "Meta’s own availability reply and Meta’s own agent are Meta products acting on Meta’s platform. Outside software that automates a personal profile raises a different question, so ask any vendor to name the exact Meta product and permission it relies on. Either way, the agent acts in the account owner’s name, so write rules for what it may say and keep price and finance conversations with people. Our [automation policy guide](/guide/facebook-marketplace-automation/) covers what Meta’s terms say."
+    ]
+  ],
+  "cta": {
+    "heading": "Keep the lot true, and let the agent work the people",
+    "sub": "AutoLander posts eligible units from the feed you already run, keeps prices in step and pulls sold cars, so whoever answers your buyers is answering about a real car at a real price. Plans from $39/mo with 5 free posts and no credit card."
+  },
+  "alsoRelated": [
+    "meta-muse-for-car-dealerships",
+    "meta-muse-vs-autolander-vs-carvid",
+    "meta-muse-for-car-salesmen",
+    "facebook-marketplace-auto-reply-for-car-dealers",
+    "track-ai-traffic-ga4-dealership",
+    "car-sales-follow-up-templates"
+  ],
+  "augmentKeys": [
+    "aiDealers",
+    "aiTools",
+    "aiChat"
+  ],
+  "alsoOnCompetitors": [
+    "carvid",
+    "relayauto"
+  ],
+  "inboundFrom": [
+    "meta-muse-for-car-dealerships",
+    "meta-muse-vs-autolander-vs-carvid",
+    "meta-muse-for-car-salesmen",
+    "meta-muse-ai-agent-for-car-dealers",
+    "facebook-marketplace-auto-reply-for-car-dealers"
+  ],
+  "meta": {
+    "requestId": "bfce0129-2e83-40cb-9fb1-63217562ba42",
+    "mode": "new",
+    "model": "claude-opus-5-5[1m]",
+    "effort": "max",
+    "contextWindow": "1m",
+    "createdAt": "2026-11-09",
+    "updatedAt": "2026-11-09",
+    "revisionCount": 0,
+    "validation": {
+      "ok": true,
+      "errors": [],
+      "checkedAt": "2026-11-09T17:23:15.114Z"
+    },
+    "usage": {
+      "num_turns": 69,
+      "duration_ms": 933501,
+      "total_cost_usd": 13.218263200000003,
+      "usage": {
+        "input_tokens": 78,
+        "cache_creation_input_tokens": 906881,
+        "cache_read_input_tokens": 18842516,
+        "output_tokens": 109720,
+        "output_tokens_details": {
+          "thinking_tokens": 90902
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 906881,
+          "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 499,
+            "cache_read_input_tokens": 854432,
+            "cache_creation_input_tokens": 64258,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 0,
+              "ephemeral_1h_input_tokens": 64258
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard"
+      }
+    }
+  }
+}

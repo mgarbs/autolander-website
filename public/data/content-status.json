@@ -2224,6 +2224,47 @@
       "publishNumber": 50
     },
     {
+      "slug": "ai-agents-for-car-dealers-pros-and-cons",
+      "kind": "blog",
+      "path": "/blog/ai-agents-for-car-dealers-pros-and-cons/",
+      "url": "https://autolander.ai/blog/ai-agents-for-car-dealers-pros-and-cons/",
+      "title": "Pros and Cons of AI Agents for Car Dealers (2026)",
+      "h1": "Pros and cons of AI agents for car dealers, and how to pair one with AutoLander",
+      "silo": "blog",
+      "siloLabel": "Blog",
+      "primaryKeyword": "pros and cons of ai agents for car dealers",
+      "secondaryKeywords": [
+        "ai agents for car sales teams",
+        "meta muse pros and cons",
+        "grok for car dealers",
+        "how car dealers use ai agents",
+        "ai agent with a facebook marketplace auto poster",
+        "ai agent checklist for dealerships"
+      ],
+      "description": "Pros and cons of AI agents for car dealers: which jobs to hand Meta Muse or any agent, which to keep off it, and how to pair an agent with AutoLander.",
+      "suggestedOrder": null,
+      "status": "draft",
+      "publishedAt": null,
+      "requestId": "bfce0129-2e83-40cb-9fb1-63217562ba42",
+      "updatedAt": "2026-11-09",
+      "validationOk": true,
+      "validationErrors": [],
+      "wordCount": 3820,
+      "outboundLinks": 21,
+      "inboundFrom": [
+        "meta-muse-for-car-dealerships",
+        "meta-muse-vs-autolander-vs-carvid",
+        "meta-muse-for-car-salesmen",
+        "meta-muse-ai-agent-for-car-dealers",
+        "facebook-marketplace-auto-reply-for-car-dealers"
+      ],
+      "augmentKeys": [
+        "aiDealers",
+        "aiTools",
+        "aiChat"
+      ]
+    },
+    {
       "slug": "high-gas-prices-car-dealers",
       "kind": "blog",
       "path": "/blog/high-gas-prices-car-dealers/",
