@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09",
+  "generatedAt": "2026-11-10",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1849,8 +1849,8 @@
       ],
       "description": "AEO checklist for car dealerships: 25 checks your internet manager can run this week on crawlers, vehicle pages, profiles, reviews and content.",
       "suggestedOrder": 72,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-10",
       "siloOrder": 0,
       "cluster": "choosing-help",
       "clusterLabel": "Choosing help and doing it right",

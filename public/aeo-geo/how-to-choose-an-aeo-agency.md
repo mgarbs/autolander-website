@@ -136,8 +136,8 @@ Your passwords, your customer list, or the right to publish pages and review rep
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
 - [AEO red flags: guarantees no one can keep, secret dashboards and AI spam](https://autolander.ai/aeo-geo/aeo-agency-red-flags/)
 - [ChatGPT ads for car dealers: how ads differ from being named in the answer](https://autolander.ai/aeo-geo/chatgpt-ads-for-car-dealers/)
+- [AEO checklist for car dealerships: 25 checks for this week](https://autolander.ai/aeo-geo/aeo-checklist-for-dealerships/)
 - [Cloudflare AI bot blocking on dealer websites: what to allow](https://autolander.ai/aeo-geo/cloudflare-ai-bots-dealer-websites/)
-- [Google AI Overviews for car dealers: when they show and who gets cited](https://autolander.ai/aeo-geo/google-ai-overviews-for-car-dealers/)
 - [How much does AEO cost for a car dealership?](https://autolander.ai/aeo-geo/aeo-cost-for-car-dealerships/)
 
 ---

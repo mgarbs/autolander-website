@@ -115,10 +115,10 @@ Only if you run ChatGPT ads. OpenAI uses OAI-AdsBot to check the safety of pages
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
+- [AEO checklist for car dealerships: 25 checks for this week](https://autolander.ai/aeo-geo/aeo-checklist-for-dealerships/)
 - [How to choose an AEO agency for your dealership: 15 questions to ask](https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency/)
 - [AEO red flags: guarantees no one can keep, secret dashboards and AI spam](https://autolander.ai/aeo-geo/aeo-agency-red-flags/)
 - [Should your dealership block AI crawlers? Search bots vs training bots](https://autolander.ai/aeo-geo/should-dealers-block-ai-crawlers/)
-- [Google AI Mode for car dealers: query fan-out and your pages](https://autolander.ai/aeo-geo/google-ai-mode-for-car-dealers/)
 - [How much does AEO cost for a car dealership?](https://autolander.ai/aeo-geo/aeo-cost-for-car-dealerships/)
 - [Best car dealership near me: how AI assistants decide who gets named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/)
 

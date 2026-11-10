@@ -141,7 +141,7 @@ It depends on scope, and the two overlap. Google says there are no additional re
 - [AEO vs SEO for car dealers: what changes and what stays the same](https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers/)
 - [Is SEO dead for car dealerships? What AI Overviews changed](https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers/)
 - [How long does AEO take to work for a dealership? An honest 90-day timeline](https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work/)
-- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
+- [AEO checklist for car dealerships: 25 checks for this week](https://autolander.ai/aeo-geo/aeo-checklist-for-dealerships/)
 - [How to choose an AEO agency for your dealership: 15 questions to ask](https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency/)
 
 ---

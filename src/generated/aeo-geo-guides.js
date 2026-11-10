@@ -203,10 +203,14 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/chatgpt-ads-for-car-dealers/",
         "text": "ChatGPT ads for car dealers: how ads differ from being named in the answer"
+      },
+      {
+        "href": "/aeo-geo/aeo-checklist-for-dealerships/",
+        "text": "AEO checklist for car dealerships: 25 checks for this week"
       }
     ]
   }
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-09";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-10";

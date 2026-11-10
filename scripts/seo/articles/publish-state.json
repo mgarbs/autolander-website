@@ -296,8 +296,8 @@
     "publishedAt": "2026-11-09"
   },
   "aeo-checklist-for-dealerships": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-11-10"
   },
   "car-dealership-schema-markup": {
     "status": "draft",
