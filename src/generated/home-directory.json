@@ -411,6 +411,10 @@
         {
           "href": "/aeo-geo/aeo-checklist-for-dealerships/",
           "text": "AEO checklist for car dealerships: 25 checks for this week"
+        },
+        {
+          "href": "/aeo-geo/car-dealership-schema-markup/",
+          "text": "Schema markup for car dealerships: AutoDealer, Vehicle and Offer"
         }
       ]
     },

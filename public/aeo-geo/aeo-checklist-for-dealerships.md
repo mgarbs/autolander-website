@@ -118,7 +118,7 @@ Then your job is the request. Send one written list of the failing checks, ask f
 - [How to choose an AEO agency for your dealership: 15 questions to ask](https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency/)
 - [AEO red flags: guarantees no one can keep, secret dashboards and AI spam](https://autolander.ai/aeo-geo/aeo-agency-red-flags/)
 - [ChatGPT ads for car dealers: how ads differ from being named in the answer](https://autolander.ai/aeo-geo/chatgpt-ads-for-car-dealers/)
-- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
+- [Schema markup for car dealerships: AutoDealer, Vehicle and Offer](https://autolander.ai/aeo-geo/car-dealership-schema-markup/)
 - [Should your dealership block AI crawlers? Search bots vs training bots](https://autolander.ai/aeo-geo/should-dealers-block-ai-crawlers/)
 - [How to respond to car dealership reviews, with examples](https://autolander.ai/aeo-geo/how-to-respond-to-car-dealership-reviews/)
 - [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/)

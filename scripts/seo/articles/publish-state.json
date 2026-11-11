@@ -300,8 +300,8 @@
     "publishedAt": "2026-11-10"
   },
   "car-dealership-schema-markup": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-11-11"
   },
   "ask-maps-for-car-dealers": {
     "status": "draft",

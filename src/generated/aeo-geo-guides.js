@@ -23,6 +23,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/should-dealers-block-ai-crawlers/",
         "text": "Should your dealership block AI crawlers? Search bots vs training bots"
+      },
+      {
+        "href": "/aeo-geo/car-dealership-schema-markup/",
+        "text": "Schema markup for car dealerships: AutoDealer, Vehicle and Offer"
       }
     ]
   },
@@ -213,4 +217,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-10";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-11";

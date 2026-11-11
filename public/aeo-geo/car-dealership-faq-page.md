@@ -146,6 +146,7 @@ Whenever a fact changes, and on a set schedule such as every quarter. Hours, fee
 - [Trade-in questions in AI answers: what your trade-in page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers/)
 - [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/)
 - [Search Console’s generative AI report for dealers: AI Overviews and AI Mode impressions](https://autolander.ai/aeo-geo/search-console-ai-report-dealers/)
+- [Schema markup for car dealerships: AutoDealer, Vehicle and Offer](https://autolander.ai/aeo-geo/car-dealership-schema-markup/)
 
 ---
 AutoLander: AEO and GEO for car dealers. https://autolander.ai/aeo-geo-for-car-dealers/

@@ -154,6 +154,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [Powersports dealers and AI search: ATVs, UTVs, motorcycles and boats](https://autolander.ai/aeo-geo/powersports-dealer-ai-search.md): How powersports dealers selling ATVs, UTVs, motorcycles and boats can show up in AI answers, with the pages, specs and profiles that matter most.
 - [How much should a car dealership spend on AEO?](https://autolander.ai/aeo-geo/aeo-cost-for-car-dealerships.md): What AEO and GEO cost a car dealership: what drives the price, what you can do free, what never belongs on an invoice, and AutoLander’s plan prices.
 - [AEO checklist for car dealerships: 25 things your internet manager can check this week](https://autolander.ai/aeo-geo/aeo-checklist-for-dealerships.md): AEO checklist for car dealerships: 25 checks your internet manager can run this week on crawlers, vehicle pages, profiles, reviews and content.
+- [Schema markup for car dealerships: AutoDealer, Car, Vehicle and Offer](https://autolander.ai/aeo-geo/car-dealership-schema-markup.md): Schema markup for car dealerships: AutoDealer, Vehicle and Offer properties, what Google retired, and what structured data can and can’t do for AI.
 
 ## Why we work the way we do
 
