@@ -50,6 +50,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/google-ai-mode-for-car-dealers/",
         "text": "Google AI Mode for car dealers: query fan-out and your pages"
+      },
+      {
+        "href": "/aeo-geo/ask-maps-for-car-dealers/",
+        "text": "Ask Maps and Gemini in Google Maps: what it reads about your dealership"
       }
     ]
   },
@@ -217,4 +221,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-11";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-12";

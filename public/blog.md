@@ -4,7 +4,7 @@
 
 Source: https://autolander.ai/blog/  
 Author: The AutoLander team  
-Updated: November 11, 2026
+Updated: November 12, 2026
 
 Practical guidance for dealership teams that publish, merchandise, and market vehicle inventory. Start with the latest posts, or browse every published guide by topic.
 
@@ -105,6 +105,7 @@ Practical guidance for dealership teams that publish, merchandise, and market ve
 - [How Much Does AEO Cost for a Car Dealership?](https://autolander.ai/aeo-geo/aeo-cost-for-car-dealerships/)
 - [AEO Checklist for Car Dealerships: 25 Checks This Week](https://autolander.ai/aeo-geo/aeo-checklist-for-dealerships/)
 - [Car Dealership Schema Markup: AutoDealer, Vehicle, Offer](https://autolander.ai/aeo-geo/car-dealership-schema-markup/)
+- [Ask Maps and Gemini: What Google Maps Reads About Dealers](https://autolander.ai/aeo-geo/ask-maps-for-car-dealers/)
 
 ## Evergreen hubs
 

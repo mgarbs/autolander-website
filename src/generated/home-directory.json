@@ -415,6 +415,10 @@
         {
           "href": "/aeo-geo/car-dealership-schema-markup/",
           "text": "Schema markup for car dealerships: AutoDealer, Vehicle and Offer"
+        },
+        {
+          "href": "/aeo-geo/ask-maps-for-car-dealers/",
+          "text": "Ask Maps and Gemini in Google Maps: what it reads about your dealership"
         }
       ]
     },

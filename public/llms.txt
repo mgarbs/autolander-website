@@ -155,6 +155,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [How much should a car dealership spend on AEO?](https://autolander.ai/aeo-geo/aeo-cost-for-car-dealerships.md): What AEO and GEO cost a car dealership: what drives the price, what you can do free, what never belongs on an invoice, and AutoLander’s plan prices.
 - [AEO checklist for car dealerships: 25 things your internet manager can check this week](https://autolander.ai/aeo-geo/aeo-checklist-for-dealerships.md): AEO checklist for car dealerships: 25 checks your internet manager can run this week on crawlers, vehicle pages, profiles, reviews and content.
 - [Schema markup for car dealerships: AutoDealer, Car, Vehicle and Offer](https://autolander.ai/aeo-geo/car-dealership-schema-markup.md): Schema markup for car dealerships: AutoDealer, Vehicle and Offer properties, what Google retired, and what structured data can and can’t do for AI.
+- [Gemini in Google Maps (Ask Maps): what it reads about your dealership](https://autolander.ai/aeo-geo/ask-maps-for-car-dealers.md): Ask Maps brings Gemini into Google Maps. What it reads about your dealership, how Business Profile answers and reviews feed it, and what to update.
 
 ## Why we work the way we do
 
