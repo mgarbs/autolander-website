@@ -100,6 +100,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/how-to-respond-to-car-dealership-reviews/",
         "text": "How to respond to car dealership reviews, with examples"
+      },
+      {
+        "href": "/aeo-geo/reddit-and-dealership-reputation/",
+        "text": "Reddit and your dealership’s reputation in AI answers"
       }
     ]
   },
@@ -221,4 +225,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-12";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-13";

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-12",
+  "generatedAt": "2026-11-13",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1928,8 +1928,8 @@
       ],
       "description": "Why Reddit threads about your dealership can surface in AI answers, what Google and Pew say about forums, and how to respond without spamming.",
       "suggestedOrder": 75,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-13",
       "siloOrder": 0,
       "cluster": "reputation",
       "clusterLabel": "Business Profile, reviews and reputation",
