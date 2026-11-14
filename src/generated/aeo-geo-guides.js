@@ -127,6 +127,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/trade-in-questions-in-ai-answers/",
         "text": "Trade-in questions in AI answers: what your trade-in page should say"
+      },
+      {
+        "href": "/aeo-geo/financing-questions-in-ai-answers/",
+        "text": "Car financing questions in AI answers: how dealers should answer them honestly"
       }
     ]
   },
@@ -225,4 +229,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-13";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-14";

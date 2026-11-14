@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-13",
+  "generatedAt": "2026-11-14",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1954,8 +1954,8 @@
       ],
       "description": "What car buyers ask AI about dealer financing, and how a dealership’s financing page and FAQ should answer honestly, with no rate or approval claims.",
       "suggestedOrder": 76,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-14",
       "siloOrder": 0,
       "cluster": "content",
       "clusterLabel": "Answer pages and content AI can quote",
