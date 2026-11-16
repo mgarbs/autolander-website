@@ -200,6 +200,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/powersports-dealer-ai-search/",
         "text": "Powersports dealers and AI search: ATVs, UTVs, motorcycles and boats"
+      },
+      {
+        "href": "/aeo-geo/dealer-group-ai-visibility/",
+        "text": "Dealer groups and AI visibility: one clear entity per rooftop"
       }
     ]
   },
@@ -229,4 +233,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-14";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-16";

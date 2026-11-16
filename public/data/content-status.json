@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-14",
+  "generatedAt": "2026-11-16",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -1980,8 +1980,8 @@
       ],
       "description": "How dealer groups keep each rooftop clear to AI tools: separate Business Profiles, consistent names, group and store sites, schema and reviews.",
       "suggestedOrder": 77,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-16",
       "siloOrder": 0,
       "cluster": "dealer-types",
       "clusterLabel": "AI search by dealership type",

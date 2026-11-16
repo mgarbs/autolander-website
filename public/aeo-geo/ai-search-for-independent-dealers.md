@@ -128,7 +128,7 @@ The first fixes cost time, and the free scan costs nothing. If you want the work
 - [Buy here pay here dealers in AI answers: bad-credit questions and honest pages](https://autolander.ai/aeo-geo/buy-here-pay-here-ai-answers/)
 - [RV dealers and AI search: answering the questions RV buyers ask](https://autolander.ai/aeo-geo/rv-dealer-ai-search/)
 - [Powersports dealers and AI search: ATVs, UTVs, motorcycles and boats](https://autolander.ai/aeo-geo/powersports-dealer-ai-search/)
-- [How to choose an AEO agency for your dealership: 15 questions to ask](https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency/)
+- [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility/)
 - [How to sell cars online as a small dealership](https://autolander.ai/guide/sell-cars-online-small-dealership/)
 - [Used car dealership advertising on a budget: the $0-first ladder](https://autolander.ai/guide/used-car-dealer-advertising-on-a-budget/)
 - [Google Business Profile in AI answers: what AI reads about your dealership](https://autolander.ai/aeo-geo/google-business-profile-ai-answers/)

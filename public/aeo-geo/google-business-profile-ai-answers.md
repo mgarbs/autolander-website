@@ -128,6 +128,7 @@ Do both in the same sitting. When the profile and the website disagree, neither 
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/)
 - [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
 - [Ask Maps and Gemini in Google Maps: what it reads about your dealership](https://autolander.ai/aeo-geo/ask-maps-for-car-dealers/)
+- [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility/)
 - [Service department questions in AI answers: a fixed ops guide](https://autolander.ai/aeo-geo/service-department-ai-answers/)
 
 ---

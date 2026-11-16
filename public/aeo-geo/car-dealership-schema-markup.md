@@ -138,6 +138,7 @@ No one can promise that: Google says structured data isn’t required for its AI
 - [Cloudflare AI bot blocking on dealer websites: what to allow](https://autolander.ai/aeo-geo/cloudflare-ai-bots-dealer-websites/)
 - [Vehicle detail pages AI can read: price, mileage and VIN as text](https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable/)
 - [Should your dealership block AI crawlers? Search bots vs training bots](https://autolander.ai/aeo-geo/should-dealers-block-ai-crawlers/)
+- [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility/)
 - [Powersports dealers and AI search: ATVs, UTVs, motorcycles and boats](https://autolander.ai/aeo-geo/powersports-dealer-ai-search/)
 
 ---

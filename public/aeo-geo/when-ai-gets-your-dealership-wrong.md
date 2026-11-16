@@ -119,6 +119,7 @@ Ask that site to correct it through its business listing tools or support contac
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/)
 - [Google Business Profile in AI answers: what AI reads about your dealership](https://autolander.ai/aeo-geo/google-business-profile-ai-answers/)
 - [Ask Maps and Gemini in Google Maps: what it reads about your dealership](https://autolander.ai/aeo-geo/ask-maps-for-car-dealers/)
+- [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility/)
 
 ---
 AutoLander: AEO and GEO for car dealers. https://autolander.ai/aeo-geo-for-car-dealers/

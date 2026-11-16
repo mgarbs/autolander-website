@@ -143,6 +143,7 @@ It depends on scope, and the two overlap. Google says there are no additional re
 - [How long does AEO take to work for a dealership? An honest 90-day timeline](https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work/)
 - [AEO checklist for car dealerships: 25 checks for this week](https://autolander.ai/aeo-geo/aeo-checklist-for-dealerships/)
 - [How to choose an AEO agency for your dealership: 15 questions to ask](https://autolander.ai/aeo-geo/how-to-choose-an-aeo-agency/)
+- [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility/)
 
 ---
 AutoLander: AEO and GEO for car dealers. https://autolander.ai/aeo-geo-for-car-dealers/

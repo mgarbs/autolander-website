@@ -117,10 +117,10 @@ Every time they change, on the same day, everywhere: the website, the Business P
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
+- [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility/)
 - [AI search for independent used car dealers: where a small lot should start](https://autolander.ai/aeo-geo/ai-search-for-independent-dealers/)
 - [Buy here pay here dealers in AI answers: bad-credit questions and honest pages](https://autolander.ai/aeo-geo/buy-here-pay-here-ai-answers/)
 - [RV dealers and AI search: answering the questions RV buyers ask](https://autolander.ai/aeo-geo/rv-dealer-ai-search/)
-- [How much does AEO cost for a car dealership?](https://autolander.ai/aeo-geo/aeo-cost-for-car-dealerships/)
 - [Schema markup for car dealerships: AutoDealer, Vehicle and Offer](https://autolander.ai/aeo-geo/car-dealership-schema-markup/)
 - [Service department questions in AI answers: a fixed ops guide](https://autolander.ai/aeo-geo/service-department-ai-answers/)
 

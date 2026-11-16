@@ -119,9 +119,9 @@ Be careful. Publish each unit’s weights from the manufacturer, such as dry wei
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
 - [Powersports dealers and AI search: ATVs, UTVs, motorcycles and boats](https://autolander.ai/aeo-geo/powersports-dealer-ai-search/)
+- [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility/)
 - [AI search for independent used car dealers: where a small lot should start](https://autolander.ai/aeo-geo/ai-search-for-independent-dealers/)
 - [Buy here pay here dealers in AI answers: bad-credit questions and honest pages](https://autolander.ai/aeo-geo/buy-here-pay-here-ai-answers/)
-- [How long does AEO take to work for a dealership? An honest 90-day timeline](https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work/)
 - [Vehicle detail pages AI can read: price, mileage and VIN as text](https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable/)
 
 ---

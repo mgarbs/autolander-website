@@ -158,6 +158,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [Gemini in Google Maps (Ask Maps): what it reads about your dealership](https://autolander.ai/aeo-geo/ask-maps-for-car-dealers.md): Ask Maps brings Gemini into Google Maps. What it reads about your dealership, how Business Profile answers and reviews feed it, and what to update.
 - [Reddit and your dealership’s reputation in AI answers](https://autolander.ai/aeo-geo/reddit-and-dealership-reputation.md): Why Reddit threads about your dealership can surface in AI answers, what Google and Pew say about forums, and how to respond without spamming.
 - [Car financing questions in AI answers: how dealers should answer them honestly](https://autolander.ai/aeo-geo/financing-questions-in-ai-answers.md): What car buyers ask AI about dealer financing, and how a dealership’s financing page and FAQ should answer honestly, with no rate or approval claims.
+- [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility.md): How dealer groups keep each rooftop clear to AI tools: separate Business Profiles, consistent names, group and store sites, schema and reviews.
 
 ## Why we work the way we do
 

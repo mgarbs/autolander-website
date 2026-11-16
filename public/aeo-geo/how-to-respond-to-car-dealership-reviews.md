@@ -135,6 +135,7 @@ Yes, wherever you have claimed your profile and shoppers can see the review. The
 - [Google Business Profile in AI answers: what AI reads about your dealership](https://autolander.ai/aeo-geo/google-business-profile-ai-answers/)
 - [When AI gets your dealership wrong: fixing wrong hours, addresses and closed labels](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong/)
 - [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility/)
 - [Service department questions in AI answers: a fixed ops guide](https://autolander.ai/aeo-geo/service-department-ai-answers/)
 
 ---
