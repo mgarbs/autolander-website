@@ -12,10 +12,12 @@ import {
   proxySupportAdjustments,
 } from './support-adjustments.js';
 import {
+  adminWriteOriginAllowed,
   handleLoginEmailStatus,
   handleLoginEmailStart,
   handleLoginEmailCancel,
   handleLoginEmailSendReset,
+  originRefused,
 } from './login-email.js';
 import {
   handleBillingDateSchedule,
@@ -135,17 +137,17 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
   }
 
   if (path === '/admin/login-email/start' && request.method === 'POST') {
-    const result = await handleLoginEmailStart(request, env, auth);
+    const result = adminWriteOriginAllowed(request, env) ? await handleLoginEmailStart(request, env, auth) : originRefused();
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
   if (path === '/admin/login-email/cancel' && request.method === 'POST') {
-    const result = await handleLoginEmailCancel(request, env, auth);
+    const result = adminWriteOriginAllowed(request, env) ? await handleLoginEmailCancel(request, env, auth) : originRefused();
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
   if (path === '/admin/login-email/send-reset' && request.method === 'POST') {
-    const result = await handleLoginEmailSendReset(request, env, auth);
+    const result = adminWriteOriginAllowed(request, env) ? await handleLoginEmailSendReset(request, env, auth) : originRefused();
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 

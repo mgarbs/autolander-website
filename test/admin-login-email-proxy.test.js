@@ -169,7 +169,7 @@ test('all login email routes proxy a valid signed session and preserve CORS head
     for (const path of ['status', 'start', 'cancel', 'send-reset']) {
       const request = new Request(`https://admin.example.test${prefix}/login-email/${path}?orgId=org&userId=user`, {
         method: path === 'status' ? 'GET' : 'POST',
-        headers: { Cookie: `al_admin=${token}`, 'CF-Connecting-IP': ACTOR.ip },
+        headers: { Cookie: `al_admin=${token}`, 'CF-Connecting-IP': ACTOR.ip, Origin: 'https://autolander.ai' },
         ...(path === 'status' ? {} : { body: JSON.stringify(INPUT) }),
       });
       const response = await handleAdmin(request, ENV, { 'Access-Control-Allow-Origin': 'https://admin.example.test' });

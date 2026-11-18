@@ -66,6 +66,27 @@ export async function proxyLoginEmail(
   return { status: response.status, body: json };
 }
 
+// Login email writes change who controls a dealer account, so on top of the session and the
+// site-wide origin gate they also require the browser Origin to be one exact admin host.
+// A missing or foreign Origin is refused (browsers always send Origin on a POST fetch).
+// ADMIN_ORIGINS (comma list) overrides the default; localhost only with ALLOW_LOCALHOST.
+const DEFAULT_ADMIN_ORIGINS = ['https://autolander.ai', 'https://www.autolander.ai'];
+
+export function adminWriteOriginAllowed(request, env = {}) {
+  const origin = request.headers.get('Origin');
+  if (!origin) return false;
+  const configured = typeof env.ADMIN_ORIGINS === 'string'
+    ? env.ADMIN_ORIGINS.split(',').map((item) => item.trim()).filter(Boolean)
+    : [];
+  const allowed = configured.length ? configured : DEFAULT_ADMIN_ORIGINS;
+  if (allowed.includes(origin)) return true;
+  return env.ALLOW_LOCALHOST === 'true' && /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
+}
+
+export function originRefused() {
+  return { status: 403, body: { ok: false, reason: 'origin_not_allowed' } };
+}
+
 export function buildActor(request, auth) {
   const actor = {};
   const { uid, exp } = auth?.session || {};

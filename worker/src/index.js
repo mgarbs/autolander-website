@@ -14,6 +14,8 @@ const DEFAULT_ALLOWED_ORIGINS = [
   'https://autolander.ai',
   'https://www.autolander.ai',
   'https://mgarbs.github.io',
+  // The one documented Cloudflare Pages project (docs/superpowers/preview-deploy.md); exact host.
+  'https://autolander-preview.pages.dev',
   'http://localhost:5173',
   'http://localhost:5176',
   'http://127.0.0.1:5173',
@@ -640,8 +642,8 @@ function isAllowedOrigin(request, env) {
   if (env.ALLOW_LOCALHOST === 'true' && /^https?:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
     return { ok: true };
   }
-  // Cloudflare Pages previews for this project (e.g. autolander-book.pages.dev, branch previews).
-  if (/^https:\/\/([a-z0-9-]+\.)?autolander-[a-z0-9-]+\.pages\.dev$/.test(origin)) return { ok: true };
+  // No *.pages.dev wildcard (card #193 security review): Pages project names are first-come and
+  // attacker-registrable, and allowed origins get credentialed CORS. Exact hosts only, above.
 
   return { ok: false };
 }
