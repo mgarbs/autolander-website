@@ -1,4 +1,6 @@
 // The ops token and audit actor are supplied only by the authenticated Worker.
+// Writes never forward the browser abort signal: the cloud finishes a write the
+// browser stopped waiting for (same rule as analytics.js).
 const DEFAULT_CLOUD_URL = 'https://autolander-cloud.onrender.com';
 
 function cloudBase(env) {
@@ -91,7 +93,6 @@ export async function handleLoginEmailStart(request, env, auth) {
   const raw = await safeJson(request);
   return proxyLoginEmail(env, '/start', {
     method: 'POST',
-    signal: request.signal,
     body: {
       orgId: raw.orgId,
       userId: raw.userId,
@@ -114,7 +115,6 @@ export async function handleLoginEmailCancel(request, env, auth) {
   const raw = await safeJson(request);
   return proxyLoginEmail(env, '/cancel', {
     method: 'POST',
-    signal: request.signal,
     body: {
       orgId: raw.orgId,
       userId: raw.userId,
@@ -130,7 +130,6 @@ export async function handleLoginEmailSendReset(request, env, auth) {
   const raw = await safeJson(request);
   return proxyLoginEmail(env, '/send-reset', {
     method: 'POST',
-    signal: request.signal,
     body: {
       orgId: raw.orgId,
       userId: raw.userId,

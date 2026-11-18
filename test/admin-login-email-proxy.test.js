@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { Buffer } from 'node:buffer';
 import { createHash, createHmac } from 'node:crypto';
 import test from 'node:test';
 import { requireAdmin } from '../worker/src/admin/auth.js';
@@ -96,7 +97,7 @@ for (const [path, handler, keys] of POST_HANDLERS) {
     assert.equal(calls[0].method, 'POST');
     assert.equal(calls[0].headers.Authorization, `Bearer ${ENV.OPS_ADMIN_TOKEN}`);
     assert.equal(calls[0].headers['Content-Type'], 'application/json');
-    assert.equal(calls[0].signal, request.signal);
+    assert.equal(calls[0].signal, undefined);
     const expected = Object.fromEntries(keys.map((key) => [key, INPUT[key]]));
     if (path === 'start') expected.verification = { method: 'card_last4', cardLast4: '1234', phoneAttested: false };
     assert.deepEqual(JSON.parse(calls[0].body), { ...expected, actor: ACTOR });

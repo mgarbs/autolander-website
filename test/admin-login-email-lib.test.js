@@ -82,6 +82,7 @@ test('UI copy is frozen and copy and new implementation files contain no long da
   ]) {
     const source = await readFile(new URL(path, import.meta.url), 'utf8');
     assert.doesNotMatch(source, /[\u2013\u2014]/, path);
+    // eslint-disable-next-line no-control-regex
     assert.doesNotMatch(source, /[^\x00-\x7f]/, path);
     assert.doesNotMatch(source, /\r/, path);
   }
