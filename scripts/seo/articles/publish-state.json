@@ -320,8 +320,8 @@
     "publishedAt": "2026-11-16"
   },
   "llms-txt-for-car-dealerships": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-11-18"
   },
   "perplexity-for-car-dealerships": {
     "status": "draft",

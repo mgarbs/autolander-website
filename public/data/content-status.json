@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16",
+  "generatedAt": "2026-11-18",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -2006,8 +2006,8 @@
       ],
       "description": "What llms.txt is, what Google says about it, whether a car dealership needs one, and what to put in it if you decide to publish one anyway.",
       "suggestedOrder": 78,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-18",
       "siloOrder": 0,
       "cluster": "website",
       "clusterLabel": "Your website: crawlers, schema and vehicle pages",

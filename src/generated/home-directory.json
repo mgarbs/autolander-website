@@ -431,6 +431,10 @@
         {
           "href": "/aeo-geo/dealer-group-ai-visibility/",
           "text": "Dealer groups and AI visibility: one clear entity per rooftop"
+        },
+        {
+          "href": "/aeo-geo/llms-txt-for-car-dealerships/",
+          "text": "llms.txt for car dealerships: what it does and what it doesn’t"
         }
       ]
     },

@@ -27,6 +27,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/car-dealership-schema-markup/",
         "text": "Schema markup for car dealerships: AutoDealer, Vehicle and Offer"
+      },
+      {
+        "href": "/aeo-geo/llms-txt-for-car-dealerships/",
+        "text": "llms.txt for car dealerships: what it does and what it doesn’t"
       }
     ]
   },
@@ -233,4 +237,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-16";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-18";
