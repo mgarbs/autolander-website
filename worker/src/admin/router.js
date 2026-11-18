@@ -12,6 +12,12 @@ import {
   proxySupportAdjustments,
 } from './support-adjustments.js';
 import {
+  handleLoginEmailStatus,
+  handleLoginEmailStart,
+  handleLoginEmailCancel,
+  handleLoginEmailSendReset,
+} from './login-email.js';
+import {
   handleBillingDateSchedule,
   handleBillingStatus,
   normalizeSubscriptionId,
@@ -120,6 +126,26 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
 
   if (path === '/admin/support-adjustments/discount' && request.method === 'POST') {
     const result = await handleSupportDiscount(request, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/login-email/status' && request.method === 'GET') {
+    const result = await handleLoginEmailStatus(request, url, env);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/login-email/start' && request.method === 'POST') {
+    const result = await handleLoginEmailStart(request, env, auth);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/login-email/cancel' && request.method === 'POST') {
+    const result = await handleLoginEmailCancel(request, env, auth);
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  if (path === '/admin/login-email/send-reset' && request.method === 'POST') {
+    const result = await handleLoginEmailSendReset(request, env, auth);
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 

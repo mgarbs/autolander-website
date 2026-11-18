@@ -125,7 +125,10 @@ export async function requireAdmin(request, env) {
 
   const session = await verifySession(token, env.ADMIN_SESSION_SECRET);
   if (!session) return { ok: false, status: 401, reason: 'invalid_session' };
-  return { ok: true, session };
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(token));
+  const sessionId = [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, '0')).join('').slice(0, 32);
+  return { ok: true, session, sessionId };
 }
 
 export function unauthorized(corsHeaders, reason = 'unauthorized') {
