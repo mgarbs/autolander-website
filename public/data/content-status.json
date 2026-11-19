@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18",
+  "generatedAt": "2026-11-19",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -2032,8 +2032,8 @@
       ],
       "description": "How Perplexity picks and cites sources for car questions, what PerplexityBot and Perplexity-User do, and what its source labels mean for dealers.",
       "suggestedOrder": 79,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-19",
       "siloOrder": 0,
       "cluster": "engines",
       "clusterLabel": "How each AI assistant picks a dealer",

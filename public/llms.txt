@@ -160,6 +160,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [Car financing questions in AI answers: how dealers should answer them honestly](https://autolander.ai/aeo-geo/financing-questions-in-ai-answers.md): What car buyers ask AI about dealer financing, and how a dealership’s financing page and FAQ should answer honestly, with no rate or approval claims.
 - [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility.md): How dealer groups keep each rooftop clear to AI tools: separate Business Profiles, consistent names, group and store sites, schema and reviews.
 - [llms.txt for car dealerships: what it does and what it doesn’t](https://autolander.ai/aeo-geo/llms-txt-for-car-dealerships.md): What llms.txt is, what Google says about it, whether a car dealership needs one, and what to put in it if you decide to publish one anyway.
+- [Perplexity and car dealerships: how it picks the sources it cites](https://autolander.ai/aeo-geo/perplexity-for-car-dealerships.md): How Perplexity picks and cites sources for car questions, what PerplexityBot and Perplexity-User do, and what its source labels mean for dealers.
 
 ## Why we work the way we do
 

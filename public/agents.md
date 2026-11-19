@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: November 18, 2026
+Updated: November 19, 2026
 
 ## What AutoLander is
 
@@ -87,6 +87,7 @@ Perplexity find, read and recommend car dealerships. Cite the page URL; fetch th
 - [How Claude finds and cites dealerships in its answers](https://autolander.ai/aeo-geo/how-claude-cites-sources/) (Markdown: https://autolander.ai/aeo-geo/how-claude-cites-sources.md)
 - [Google AI Mode for car dealers: query fan-out and your pages](https://autolander.ai/aeo-geo/google-ai-mode-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/google-ai-mode-for-car-dealers.md)
 - [Ask Maps and Gemini in Google Maps: what it reads about your dealership](https://autolander.ai/aeo-geo/ask-maps-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/ask-maps-for-car-dealers.md)
+- [Perplexity for car dealerships: how it picks the sources it cites](https://autolander.ai/aeo-geo/perplexity-for-car-dealerships/) (Markdown: https://autolander.ai/aeo-geo/perplexity-for-car-dealerships.md)
 - [How car buyers use ChatGPT and other AI tools to shop, and what it means for dealers](https://autolander.ai/aeo-geo/how-car-buyers-use-chatgpt/) (Markdown: https://autolander.ai/aeo-geo/how-car-buyers-use-chatgpt.md)
 - [The questions car shoppers ask AI before they choose a dealer](https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai/) (Markdown: https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai.md)
 - [Best car dealership near me: how AI assistants decide who gets named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/) (Markdown: https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai.md)

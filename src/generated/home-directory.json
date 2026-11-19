@@ -435,6 +435,10 @@
         {
           "href": "/aeo-geo/llms-txt-for-car-dealerships/",
           "text": "llms.txt for car dealerships: what it does and what it doesn’t"
+        },
+        {
+          "href": "/aeo-geo/perplexity-for-car-dealerships/",
+          "text": "Perplexity for car dealerships: how it picks the sources it cites"
         }
       ]
     },
