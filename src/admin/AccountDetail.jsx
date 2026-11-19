@@ -20,6 +20,8 @@ import {
   healthState,
 } from './lib/analytics-format.js';
 import BillingPanel from './BillingPanel.jsx';
+import LoginEmailChange from './LoginEmailChange.jsx';
+import { LOGIN_EMAIL_COPY } from './lib/login-email.js';
 import VersionBadge from './VersionBadge.jsx';
 
 export default function AccountDetail({
@@ -44,6 +46,7 @@ export default function AccountDetail({
   const [owner, setOwner] = useState(csMeta.owner || '');
   const [followUp, setFollowUp] = useState(Boolean(csMeta.followUp));
   const [csMessage, setCsMessage] = useState('');
+  const [loginEmailUser, setLoginEmailUser] = useState(null);
 
   async function submitCs(event) {
     event.preventDefault();
@@ -80,6 +83,15 @@ export default function AccountDetail({
 
   return (
     <div className="min-w-0 space-y-5 border-t border-blue-500/20 p-4 md:p-5">
+      {loginEmailUser && (
+        <LoginEmailChange
+          key={`${orgId}:${loginEmailUser.id}`}
+          orgId={orgId}
+          user={loginEmailUser}
+          onClose={() => setLoginEmailUser(null)}
+          onChanged={onRefresh}
+        />
+      )}
       <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
@@ -179,6 +191,15 @@ export default function AccountDetail({
                       {user.email}
                     </a>
                   ) : <span className="text-slate-600">No email</span>}
+                  {!user.deactivatedAt && (
+                    <button
+                      type="button"
+                      onClick={() => setLoginEmailUser(user)}
+                      className="mt-1.5 block text-[10px] font-bold text-blue-300 hover:text-blue-200"
+                    >
+                      {LOGIN_EMAIL_COPY.title}
+                    </button>
+                  )}
                   {firstText(user.phone, user.phoneNumber, user.mobile, accountPhone) && (
                     <div className="mt-1.5">
                       <PhoneActions

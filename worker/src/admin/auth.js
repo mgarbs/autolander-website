@@ -63,11 +63,11 @@ function parseCookie(header, name) {
 }
 
 function buildCookie(name, value, ttlSeconds) {
-  // SameSite=None (with Secure) so the cookie survives cross-site requests from
-  // the admin SPA on autolander.ai to the Worker on *.workers.dev — Lax would be
-  // dropped, forcing a re-login on every refresh. Origin-gated + HttpOnly keep
-  // CSRF risk low.
-  const flags = ['Path=/', 'HttpOnly', 'Secure', 'SameSite=None'];
+  // SameSite=Lax (card #193 security review). Production serves the admin SPA and the
+  // Worker on the same origin (autolander.ai/admin -> autolander.ai/admin-api, .env
+  // VITE_CAPI_URL), so the session cookie still rides every admin fetch. A page on any
+  // other site (e.g. *.pages.dev, which is on the Public Suffix List) can no longer send it.
+  const flags = ['Path=/', 'HttpOnly', 'Secure', 'SameSite=Lax'];
   if (ttlSeconds > 0) {
     flags.push(`Max-Age=${ttlSeconds}`);
     flags.push(`Expires=${new Date(Date.now() + ttlSeconds * 1000).toUTCString()}`);
@@ -125,7 +125,10 @@ export async function requireAdmin(request, env) {
 
   const session = await verifySession(token, env.ADMIN_SESSION_SECRET);
   if (!session) return { ok: false, status: 401, reason: 'invalid_session' };
-  return { ok: true, session };
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(token));
+  const sessionId = [...new Uint8Array(digest)]
+    .map((byte) => byte.toString(16).padStart(2, '0')).join('').slice(0, 32);
+  return { ok: true, session, sessionId };
 }
 
 export function unauthorized(corsHeaders, reason = 'unauthorized') {
