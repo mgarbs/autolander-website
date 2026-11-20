@@ -136,6 +136,7 @@ Yes. Each rooftop can be on a different plan, and each starts with its own free 
 - [Powersports dealers and AI search: ATVs, UTVs, motorcycles and boats](https://autolander.ai/aeo-geo/powersports-dealer-ai-search/)
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/)
 - [When AI gets your dealership wrong: fixing wrong hours, addresses and closed labels](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong/)
+- [Car dealer review sites and AI answers: where your store should show up](https://autolander.ai/aeo-geo/car-dealer-review-sites-ai-answers/)
 - [How much does AEO cost for a car dealership?](https://autolander.ai/aeo-geo/aeo-cost-for-car-dealerships/)
 
 ---

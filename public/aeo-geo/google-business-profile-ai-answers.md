@@ -125,7 +125,7 @@ Do both in the same sitting. When the profile and the website disagree, neither 
 - [When AI gets your dealership wrong: fixing wrong hours, addresses and closed labels](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong/)
 - [How to respond to car dealership reviews, with examples](https://autolander.ai/aeo-geo/how-to-respond-to-car-dealership-reviews/)
 - [Reddit and your dealership’s reputation in AI answers](https://autolander.ai/aeo-geo/reddit-and-dealership-reputation/)
-- [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/)
+- [Car dealer review sites and AI answers: where your store should show up](https://autolander.ai/aeo-geo/car-dealer-review-sites-ai-answers/)
 - [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
 - [Ask Maps and Gemini in Google Maps: what it reads about your dealership](https://autolander.ai/aeo-geo/ask-maps-for-car-dealers/)
 - [Dealer groups and AI visibility: one clear entity per rooftop](https://autolander.ai/aeo-geo/dealer-group-ai-visibility/)

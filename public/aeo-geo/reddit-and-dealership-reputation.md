@@ -108,10 +108,10 @@ Only if someone will use it well: follow each community’s posted rules, say pl
 - [AI for car dealerships: what actually works](https://autolander.ai/guide/ai-for-car-dealerships/)
 - [Car dealership marketing: the 2026 playbook](https://autolander.ai/guide/car-dealership-marketing/)
 - [About AutoLander — who we are and how our data is produced](https://autolander.ai/about/)
+- [Car dealer review sites and AI answers: where your store should show up](https://autolander.ai/aeo-geo/car-dealer-review-sites-ai-answers/)
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/)
 - [Google Business Profile in AI answers: what AI reads about your dealership](https://autolander.ai/aeo-geo/google-business-profile-ai-answers/)
 - [When AI gets your dealership wrong: fixing wrong hours, addresses and closed labels](https://autolander.ai/aeo-geo/when-ai-gets-your-dealership-wrong/)
-- [How to respond to car dealership reviews, with examples](https://autolander.ai/aeo-geo/how-to-respond-to-car-dealership-reviews/)
 - [Perplexity for car dealerships: how it picks the sources it cites](https://autolander.ai/aeo-geo/perplexity-for-car-dealerships/)
 
 ---

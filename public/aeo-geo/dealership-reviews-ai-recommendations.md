@@ -132,6 +132,7 @@ You can show real reviews, but do not mark up your own star rating. [Google’s 
 - [Reddit and your dealership’s reputation in AI answers](https://autolander.ai/aeo-geo/reddit-and-dealership-reputation/)
 - [Answer pages for car dealerships: what they are and how to write one](https://autolander.ai/aeo-geo/answer-pages-for-car-dealerships/)
 - [Google Business Profile setup for car dealerships, field by field](https://autolander.ai/guide/google-business-profile-for-car-dealers/)
+- [Car dealer review sites and AI answers: where your store should show up](https://autolander.ai/aeo-geo/car-dealer-review-sites-ai-answers/)
 - [Do car buyers trust AI recommendations? What the surveys say](https://autolander.ai/aeo-geo/do-car-buyers-trust-ai-recommendations/)
 
 ---

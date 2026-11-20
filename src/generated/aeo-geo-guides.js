@@ -112,6 +112,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/reddit-and-dealership-reputation/",
         "text": "Reddit and your dealership’s reputation in AI answers"
+      },
+      {
+        "href": "/aeo-geo/car-dealer-review-sites-ai-answers/",
+        "text": "Car dealer review sites and AI answers: where your store should show up"
       }
     ]
   },
@@ -241,4 +245,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-19";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-20";

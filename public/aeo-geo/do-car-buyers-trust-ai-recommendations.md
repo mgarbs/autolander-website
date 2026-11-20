@@ -126,6 +126,7 @@ Worry less and check more. Google says AI Overviews can and will make mistakes, 
 - [Best car dealership near me: how AI assistants decide who gets named](https://autolander.ai/aeo-geo/best-car-dealership-near-me-ai/)
 - [Trade-in questions in AI answers: what your trade-in page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers/)
 - [Dealership reviews and AI recommendations: volume, recency and what the words say](https://autolander.ai/aeo-geo/dealership-reviews-ai-recommendations/)
+- [Car dealer review sites and AI answers: where your store should show up](https://autolander.ai/aeo-geo/car-dealer-review-sites-ai-answers/)
 - [How to respond to car dealership reviews, with examples](https://autolander.ai/aeo-geo/how-to-respond-to-car-dealership-reviews/)
 - [How to measure your dealership’s AI visibility: questions, repeat runs and margins](https://autolander.ai/aeo-geo/measure-dealership-ai-visibility/)
 
