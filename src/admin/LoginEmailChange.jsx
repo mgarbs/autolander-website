@@ -9,6 +9,7 @@ import {
   normalizeEmail,
   operatorNameError,
   reasonText,
+  runStartWithEmailCheck,
   sendLoginEmailReset,
   startLoginEmailChange,
 } from './lib/login-email.js';
@@ -54,6 +55,8 @@ export default function LoginEmailChange({ orgId, user, onClose, onChanged }) {
   const [note, setNote] = useState('');
   const [feedback, setFeedback] = useState(null);
   const [nameError, setNameError] = useState(null);
+  // Notion #201: the last address the cloud checked, with its warnings ({ email, warnings }).
+  const [checked, setChecked] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -159,6 +162,8 @@ export default function LoginEmailChange({ orgId, user, onClose, onChanged }) {
     setBusy(true);
     setFeedback(null);
     const base = { orgId, userId: user.id, by: by.trim() };
+    // True when Send stopped on an address warning: nothing was sent, keep the form as is.
+    let stopped = false;
     try {
       let result;
       if (action === 'cancel') {
@@ -166,16 +171,29 @@ export default function LoginEmailChange({ orgId, user, onClose, onChanged }) {
       } else if (action === 'reset') {
         result = await sendLoginEmailReset({ ...base, expectCurrentEmail: currentEmail, apply: true });
       } else {
-        result = await startLoginEmailChange({
-          ...base,
-          expectCurrentEmail: currentEmail,
-          newEmail: normalizeEmail(newEmail),
-          verification: method === 'phone_callback'
-            ? { method, phoneAttested }
-            : { method, cardLast4 },
-          note: note.trim(),
-          ...(action === 'send' ? { apply: true } : {}),
+        // Notion #201: Send checks first (the cloud dry-run) whenever this exact address
+        // was not checked yet. A warning stops this Send; pressing Send again sends it.
+        const outcome = await runStartWithEmailCheck({
+          action,
+          checked,
+          start: startLoginEmailChange,
+          input: {
+            ...base,
+            expectCurrentEmail: currentEmail,
+            newEmail,
+            verification: method === 'phone_callback'
+              ? { method, phoneAttested }
+              : { method, cardLast4 },
+            note: note.trim(),
+          },
         });
+        setChecked(outcome.checked);
+        if (outcome.stopped) {
+          stopped = true;
+          setFeedback({ error: true, text: COPY.emailCheckStopped });
+          return;
+        }
+        result = outcome.result;
       }
       if (!result?.ok) throw result;
       if (action === 'check') {
@@ -194,13 +212,21 @@ export default function LoginEmailChange({ orgId, user, onClose, onChanged }) {
     } catch (error) {
       setFeedback({ error: true, text: failureText(error) });
     } finally {
-      if (action === 'send') setCardLast4('');
-      if (action !== 'check') {
+      if (action === 'send' && !stopped) setCardLast4('');
+      if (action !== 'check' && !stopped) {
         await refreshStatus();
         onChanged?.();
       }
       setBusy(false);
     }
+  }
+
+  const shownWarnings = checked && checked.email === normalizeEmail(newEmail) ? checked.warnings : [];
+  const suggestion = shownWarnings.find((warning) => warning.suggestion)?.suggestion || '';
+  function applySuggestion() {
+    setNewEmail(suggestion);
+    setRepeatEmail(suggestion);
+    setFeedback(null);
   }
 
   function submit(event) {
@@ -290,6 +316,15 @@ export default function LoginEmailChange({ orgId, user, onClose, onChanged }) {
               <button type="submit" value="check" className={BUTTON} disabled={!verificationReady || fences.length > 0}>{COPY.check}</button>
               <button type="submit" value="send" className={`${BUTTON} bg-blue-600 text-white hover:bg-blue-500`} disabled={!verificationReady || fences.length > 0}>{COPY.send}</button>
             </div>
+            {shownWarnings.length > 0 && (
+              <div role="alert" className="space-y-2 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3">
+                <p className="font-bold text-amber-200">{COPY.emailCheckHeading}</p>
+                {shownWarnings.map((warning) => <p key={warning.code || warning.message} className="break-words text-amber-100">{warning.message}</p>)}
+                {suggestion && (
+                  <button type="button" className={BUTTON} onClick={applySuggestion}>{copy('useSuggestion', { suggestion })}</button>
+                )}
+              </div>
+            )}
           </fieldset>
         </form>
         {feedback && <p role={feedback.error ? 'alert' : 'status'} className={`mt-4 break-words text-sm ${feedback.error ? 'text-red-300' : 'text-emerald-300'}`}>{feedback.text}</p>}

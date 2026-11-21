@@ -28,6 +28,49 @@ export function operatorNameError(value) {
   return null;
 }
 
+// Notion #201 (2026-11-21): the cloud dry-run answers emailCheck.warnings (a typo such as
+// gmial.com, a domain that does not take mail). Shown before anything is sent; never a
+// block. Only plain strings are kept, capped, so the UI renders text and nothing else.
+export function emailCheckWarnings(result) {
+  const list = Array.isArray(result?.emailCheck?.warnings) ? result.emailCheck.warnings : [];
+  return list
+    .filter((warning) => warning && typeof warning.message === 'string' && warning.message.trim())
+    .slice(0, 5)
+    .map((warning) => ({
+      code: typeof warning.code === 'string' ? warning.code.slice(0, 40) : '',
+      message: warning.message.slice(0, 300),
+      ...(typeof warning.suggestion === 'string' && warning.suggestion ? { suggestion: warning.suggestion.slice(0, 254) } : {}),
+    }));
+}
+
+// Send runs the dry-run first unless this exact address was already checked. If that
+// check warns, the warning is shown and a second Send for the same address goes through.
+export function sendNeedsCheck(checked, newEmail) {
+  return !checked || checked.email !== normalizeEmail(newEmail);
+}
+
+// Check (dry-run) or Send (apply) for a new login email. Send runs the dry-run first
+// whenever this exact address was not checked yet; if that answers warnings, this Send
+// stops (nothing is sent) and returns them. A second Send for the same address applies.
+// `start` is startLoginEmailChange (injectable for tests); a cloud refusal throws as usual.
+export async function runStartWithEmailCheck({ action, checked, input, start = startLoginEmailChange }) {
+  const email = normalizeEmail(input?.newEmail);
+  // The dry-run must never apply, whatever the caller put in `input`.
+  const { apply: _ignoredApply, ...rest } = input || {};
+  const base = { ...rest, newEmail: email };
+  let nextChecked = checked || null;
+  if (action === 'send' && sendNeedsCheck(checked, email)) {
+    const dryRun = await start(base);
+    if (!dryRun?.ok) return { stopped: false, checked: nextChecked, result: dryRun };
+    const warnings = emailCheckWarnings(dryRun);
+    nextChecked = { email, warnings };
+    if (warnings.length) return { stopped: true, checked: nextChecked, result: dryRun };
+  }
+  const result = await start(action === 'send' ? { ...base, apply: true } : base);
+  if (action === 'check' && result?.ok) nextChecked = { email, warnings: emailCheckWarnings(result) };
+  return { stopped: false, checked: nextChecked, result };
+}
+
 export const REASON_TEXT = Object.freeze({
   USER_NOT_IN_ORG: 'This user is not in this account.',
   USER_DEACTIVATED: 'This user was removed from the team. Reactivate them first.',
@@ -87,4 +130,7 @@ export const LOGIN_EMAIL_COPY = Object.freeze({
   close: 'Close',
   loading: 'Loading login email details.',
   refresh: 'Refresh',
+  emailCheckHeading: 'Check this address before you send:',
+  emailCheckStopped: 'Nothing was sent. Fix the address, or press Send again to use it as typed.',
+  useSuggestion: 'Use {suggestion}',
 });

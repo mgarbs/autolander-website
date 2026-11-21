@@ -19,6 +19,7 @@ import {
   handleLoginEmailSendReset,
   originRefused,
 } from './login-email.js';
+import { handleOrgRename } from './org-rename.js';
 import {
   handleBillingDateSchedule,
   handleBillingStatus,
@@ -148,6 +149,13 @@ export async function handleAdmin(request, env, corsHeaders, _ctx) {
 
   if (path === '/admin/login-email/send-reset' && request.method === 'POST') {
     const result = adminWriteOriginAllowed(request, env) ? await handleLoginEmailSendReset(request, env, auth) : originRefused();
+    return jsonResponse(result.body, result.status, corsHeaders);
+  }
+
+  // Notion #198: the dealership name buyers see in AI replies. Same exact-Origin gate as
+  // the login email writes (a rename changes what every buyer reads).
+  if (path === '/admin/orgs/rename' && request.method === 'POST') {
+    const result = adminWriteOriginAllowed(request, env) ? await handleOrgRename(request, env, auth) : originRefused();
     return jsonResponse(result.body, result.status, corsHeaders);
   }
 
