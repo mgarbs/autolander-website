@@ -55,7 +55,9 @@ export function sendNeedsCheck(checked, newEmail) {
 // `start` is startLoginEmailChange (injectable for tests); a cloud refusal throws as usual.
 export async function runStartWithEmailCheck({ action, checked, input, start = startLoginEmailChange }) {
   const email = normalizeEmail(input?.newEmail);
-  const base = { ...input, newEmail: email };
+  // The dry-run must never apply, whatever the caller put in `input`.
+  const { apply: _ignoredApply, ...rest } = input || {};
+  const base = { ...rest, newEmail: email };
   let nextChecked = checked || null;
   if (action === 'send' && sendNeedsCheck(checked, email)) {
     const dryRun = await start(base);

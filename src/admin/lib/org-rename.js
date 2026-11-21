@@ -34,6 +34,14 @@ export function orgRenameFailureText(error) {
     : 'Something went wrong. Nothing was changed.';
 }
 
+// The cloud reports what happened to the Stripe customer name after an applied rename
+// (stripe: { updated, skipped, disabled?, error? }). Only claim it changed when it did.
+export function orgRenamedText(result, to) {
+  const base = ORG_RENAME_COPY.renamed.replace('{to}', to);
+  const updated = Number(result?.stripe?.updated) || 0;
+  return `${base} ${updated > 0 ? ORG_RENAME_COPY.stripeUpdated : ORG_RENAME_COPY.stripeNotUpdated}`;
+}
+
 export const ORG_RENAME_COPY = Object.freeze({
   button: 'Rename',
   title: 'Rename dealership',
@@ -45,7 +53,9 @@ export const ORG_RENAME_COPY = Object.freeze({
   ready: 'Ready to rename {from} to {to}.',
   same: 'That is already the name.',
   rename: 'Rename',
-  renamed: 'Renamed to {to}. The next AI reply uses the new name. The Stripe customer name is updated too.',
+  renamed: 'Renamed to {to}. The next AI reply uses the new name.',
+  stripeUpdated: 'The Stripe customer name is updated too.',
+  stripeNotUpdated: 'The Stripe customer name was not changed. If invoices should show the new name, change it in Stripe.',
   alreadyApplied: 'This rename was already done.',
   close: 'Close',
 });

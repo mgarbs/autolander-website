@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { operatorNameError } from './lib/login-email.js';
-import { ORG_RENAME_COPY as COPY, orgRenameFailureText, renameOrg } from './lib/org-rename.js';
+import { ORG_RENAME_COPY as COPY, orgRenamedText, orgRenameFailureText, renameOrg } from './lib/org-rename.js';
 
 const INPUT = 'mt-1 block w-full rounded-xl border border-white/10 bg-black/50 px-3 py-2 text-sm text-white outline-none focus:border-blue-500/60 disabled:opacity-50';
 const BUTTON = 'rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-slate-300 hover:text-white disabled:opacity-50';
@@ -78,7 +78,7 @@ export default function OrgRename({ orgId, currentName, onClose, onChanged }) {
       } else if (result.wouldChange === false) {
         setFeedback({ text: COPY.same });
       } else if (apply) {
-        setFeedback({ text: copy('renamed', { to: result.intended?.name || to }) });
+        setFeedback({ text: orgRenamedText(result, result.intended?.name || to) });
         onChanged?.();
       } else {
         setFeedback({ text: copy('ready', { from: currentName, to: result.intended?.name || to }) });

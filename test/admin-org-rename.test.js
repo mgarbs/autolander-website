@@ -168,3 +168,30 @@ test('the account page offers Rename next to the name, only when canRenameOrg al
   assert.match(source, /\{typeof org\.name === 'string' && org\.name && canRenameOrg\(org\) && \(/);
   assert.match(source, /<OrgRename[\s\S]*?currentName=\{org\.name\}/);
 });
+
+test('an applied rename claims a Stripe name change only when the cloud reports one', async () => {
+  const { orgRenamedText } = await import('../src/admin/lib/org-rename.js');
+  // Shapes are the cloud's own: routes/ops-orgs.js returns stripe: { updated, skipped, disabled?, error? }.
+  const updated = orgRenamedText({ ok: true, changed: true, stripe: { updated: 1, skipped: [] } }, 'Tulsa Hyundai');
+  assert.match(updated, /^Renamed to Tulsa Hyundai\. /);
+  assert.match(updated, /Stripe customer name is updated too/);
+  for (const stripe of [
+    { updated: 0, skipped: ['custom_name'] },
+    { updated: 0, skipped: ['shared_customer'] },
+    { updated: 0, skipped: [], error: 'stripe_error' },
+    { updated: 0, skipped: [], disabled: true },
+    { updated: 0, skipped: [] },
+    undefined,
+  ]) {
+    const text = orgRenamedText({ ok: true, changed: true, ...(stripe ? { stripe } : {}) }, 'Tulsa Hyundai');
+    assert.match(text, /^Renamed to Tulsa Hyundai\. /);
+    assert.doesNotMatch(text, /updated too/);
+    assert.match(text, /Stripe customer name was not changed/);
+  }
+});
+
+test('the rename dialog reads the Stripe outcome instead of a fixed success line', async () => {
+  const source = await readFile(new URL('../src/admin/OrgRename.jsx', import.meta.url), 'utf8');
+  assert.match(source, /orgRenamedText\(result, /);
+  assert.doesNotMatch(source, /copy\('renamed'/);
+});

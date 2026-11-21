@@ -115,3 +115,10 @@ test('the dialog uses the shared flow, shows the warnings and a Use button, and 
     assert.doesNotMatch(LOGIN_EMAIL_COPY[key], /[–—]/);
   }
 });
+
+test('the check before Send is a dry-run even if the caller passed apply in its input', async () => {
+  const calls = [];
+  const start = async (input) => { calls.push(input); return input.apply === true ? SENT : { ok: true, mode: 'dry-run' }; };
+  await runStartWithEmailCheck({ action: 'send', checked: null, input: { userEmail: 'a@b.com', newEmail: 'x@gmial.com', apply: true }, start });
+  assert.equal(calls[0].apply, undefined);
+});
