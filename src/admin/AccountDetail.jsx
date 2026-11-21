@@ -22,6 +22,8 @@ import {
 import BillingPanel from './BillingPanel.jsx';
 import LoginEmailChange from './LoginEmailChange.jsx';
 import { LOGIN_EMAIL_COPY } from './lib/login-email.js';
+import OrgRename from './OrgRename.jsx';
+import { canRenameOrg, ORG_RENAME_COPY } from './lib/org-rename.js';
 import VersionBadge from './VersionBadge.jsx';
 
 export default function AccountDetail({
@@ -47,6 +49,7 @@ export default function AccountDetail({
   const [followUp, setFollowUp] = useState(Boolean(csMeta.followUp));
   const [csMessage, setCsMessage] = useState('');
   const [loginEmailUser, setLoginEmailUser] = useState(null);
+  const [renameOpen, setRenameOpen] = useState(false);
 
   async function submitCs(event) {
     event.preventDefault();
@@ -92,10 +95,29 @@ export default function AccountDetail({
           onChanged={onRefresh}
         />
       )}
+      {renameOpen && (
+        <OrgRename
+          key={`${orgId}:rename`}
+          orgId={orgId}
+          currentName={org.name}
+          onClose={() => setRenameOpen(false)}
+          onChanged={onRefresh}
+        />
+      )}
       <div className="flex min-w-0 flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
         <div className="min-w-0 flex-1">
           <div className="flex min-w-0 flex-wrap items-center gap-2">
             <h3 className="min-w-0 break-words text-lg font-black uppercase italic tracking-tight text-white">{accountName}</h3>
+            {/* Notion #198: standalone dealerships only (a dealer group manages its stores' names). */}
+            {typeof org.name === 'string' && org.name && canRenameOrg(org) && (
+              <button
+                type="button"
+                onClick={() => setRenameOpen(true)}
+                className="rounded-full border border-white/10 px-2 py-1 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-white"
+              >
+                {ORG_RENAME_COPY.button}
+              </button>
+            )}
             <span className="max-w-full truncate rounded-full border border-white/10 px-2 py-1 text-[9px] font-black uppercase tracking-widest text-slate-500" title={`${subscription.plan || org.plan || summary?.plan || 'No plan'} · ${subscription.status || org.subStatus || summary?.subStatus || 'No status'}`}>
               {subscription.plan || org.plan || summary?.plan || 'No plan'} · {subscription.status || org.subStatus || summary?.subStatus || 'No status'}
             </span>
