@@ -123,6 +123,7 @@ The free scan checks ChatGPT and Claude only, each with web search on, and it do
 - [Perplexity for car dealerships: how it picks the sources it cites](https://autolander.ai/aeo-geo/perplexity-for-car-dealerships/)
 - [Search Console’s generative AI report for dealers: AI Overviews and AI Mode impressions](https://autolander.ai/aeo-geo/search-console-ai-report-dealers/)
 - [Is SEO dead for car dealerships? What AI Overviews changed](https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers/)
+- [Model comparison pages for car dealers: how to write them](https://autolander.ai/aeo-geo/model-comparison-pages-for-dealers/)
 
 ---
 AutoLander: AEO and GEO for car dealers. https://autolander.ai/aeo-geo-for-car-dealers/

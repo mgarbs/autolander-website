@@ -5,7 +5,7 @@
 Source: https://autolander.ai/aeo-geo-for-car-dealers/
 Author: The AutoLander team
 Published: September 28, 2026
-Updated: November 20, 2026
+Updated: November 22, 2026
 
 **Short answer:** A buyer asks AI where to buy a car in your town. AEO and GEO help Google Gemini, ChatGPT, Claude and Perplexity find, trust and name your store. Our free scan asks ChatGPT and Claude, web search on, up to 20 local buyer questions, 3 times each, and shows who they name, what they cite and the 3 fixes to make first.
 
@@ -488,6 +488,7 @@ Plain-language guides from our team on how AI assistants find, trust and name ca
 - [Service department questions in AI answers: a fixed ops guide](https://autolander.ai/aeo-geo/service-department-ai-answers/)
 - [Trade-in questions in AI answers: what your trade-in page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers/)
 - [Car financing questions in AI answers: how dealers should answer them honestly](https://autolander.ai/aeo-geo/financing-questions-in-ai-answers/)
+- [Model comparison pages for car dealers: how to write them](https://autolander.ai/aeo-geo/model-comparison-pages-for-dealers/)
 
 ### AEO and GEO basics and budget
 

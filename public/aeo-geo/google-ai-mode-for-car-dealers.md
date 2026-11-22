@@ -115,6 +115,7 @@ No. AI Mode is a mode inside Google Search, grounded in the Search index. The Ge
 - [Perplexity for car dealerships: how it picks the sources it cites](https://autolander.ai/aeo-geo/perplexity-for-car-dealerships/)
 - [How ChatGPT decides which car dealerships to recommend](https://autolander.ai/aeo-geo/how-chatgpt-recommends-car-dealerships/)
 - [Google AI Overviews for car dealers: when they show and who gets cited](https://autolander.ai/aeo-geo/google-ai-overviews-for-car-dealers/)
+- [Model comparison pages for car dealers: how to write them](https://autolander.ai/aeo-geo/model-comparison-pages-for-dealers/)
 - [How to track ChatGPT and AI assistant traffic to your dealership website in GA4](https://autolander.ai/aeo-geo/track-ai-traffic-ga4-dealership/)
 - [The car dealership FAQ page: 40 buyer questions to answer](https://autolander.ai/aeo-geo/car-dealership-faq-page/)
 - [The questions car shoppers ask AI before they choose a dealer](https://autolander.ai/aeo-geo/questions-car-buyers-ask-ai/)

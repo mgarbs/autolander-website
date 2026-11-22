@@ -143,6 +143,10 @@ export const AEO_GEO_GUIDES = [
       {
         "href": "/aeo-geo/financing-questions-in-ai-answers/",
         "text": "Car financing questions in AI answers: how dealers should answer them honestly"
+      },
+      {
+        "href": "/aeo-geo/model-comparison-pages-for-dealers/",
+        "text": "Model comparison pages for car dealers: how to write them"
       }
     ]
   },
@@ -245,4 +249,4 @@ export const AEO_GEO_GUIDES = [
 ];
 // Newest publish or edit date among them (null while none is published): src/ai/page-updated.js
 // moves the money page's Updated date / dateModified forward with it.
-export const AEO_GEO_GUIDES_UPDATED = "2026-11-20";
+export const AEO_GEO_GUIDES_UPDATED = "2026-11-22";

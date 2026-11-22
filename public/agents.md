@@ -5,7 +5,7 @@
 
 Source: https://autolander.ai/agents.md
 Publisher: AutoLander LLC
-Updated: November 20, 2026
+Updated: November 22, 2026
 
 ## What AutoLander is
 
@@ -103,6 +103,7 @@ Perplexity find, read and recommend car dealerships. Cite the page URL; fetch th
 - [Service department questions in AI answers: a fixed ops guide](https://autolander.ai/aeo-geo/service-department-ai-answers/) (Markdown: https://autolander.ai/aeo-geo/service-department-ai-answers.md)
 - [Trade-in questions in AI answers: what your trade-in page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers/) (Markdown: https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers.md)
 - [Car financing questions in AI answers: how dealers should answer them honestly](https://autolander.ai/aeo-geo/financing-questions-in-ai-answers/) (Markdown: https://autolander.ai/aeo-geo/financing-questions-in-ai-answers.md)
+- [Model comparison pages for car dealers: how to write them](https://autolander.ai/aeo-geo/model-comparison-pages-for-dealers/) (Markdown: https://autolander.ai/aeo-geo/model-comparison-pages-for-dealers.md)
 - [AEO vs SEO for car dealers: what changes and what stays the same](https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/aeo-vs-seo-for-car-dealers.md)
 - [Is SEO dead for car dealerships? What AI Overviews changed](https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers/) (Markdown: https://autolander.ai/aeo-geo/is-seo-dead-for-car-dealers.md)
 - [How long does AEO take to work for a dealership? An honest 90-day timeline](https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work/) (Markdown: https://autolander.ai/aeo-geo/how-long-does-aeo-take-to-work.md)

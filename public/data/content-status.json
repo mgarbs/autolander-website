@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-20",
+  "generatedAt": "2026-11-22",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -2085,8 +2085,8 @@
       ],
       "description": "How car dealers can write model comparison pages that shoppers and AI tools trust: which matchups to pick, what to include and what to leave out.",
       "suggestedOrder": 81,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-22",
       "siloOrder": 0,
       "cluster": "content",
       "clusterLabel": "Answer pages and content AI can quote",
