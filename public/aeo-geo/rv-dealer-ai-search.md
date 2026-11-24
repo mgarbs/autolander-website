@@ -124,6 +124,7 @@ Be careful. Publish each unit’s weights from the manufacturer, such as dry wei
 - [Buy here pay here dealers in AI answers: bad-credit questions and honest pages](https://autolander.ai/aeo-geo/buy-here-pay-here-ai-answers/)
 - [Vehicle detail pages AI can read: price, mileage and VIN as text](https://autolander.ai/aeo-geo/vehicle-detail-page-ai-readable/)
 - [Model comparison pages for car dealers: how to write them](https://autolander.ai/aeo-geo/model-comparison-pages-for-dealers/)
+- [Vehicle inventory feeds and AI shopping: what dealers need](https://autolander.ai/aeo-geo/inventory-feeds-ai-shopping/)
 
 ---
 AutoLander: AEO and GEO for car dealers. https://autolander.ai/aeo-geo-for-car-dealers/

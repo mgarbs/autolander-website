@@ -132,6 +132,7 @@ As many as there are real matchups your buyers ask about, and no more. Start wit
 - [Trade-in questions in AI answers: what your trade-in page should say](https://autolander.ai/aeo-geo/trade-in-questions-in-ai-answers/)
 - [RV dealers and AI search: answering the questions RV buyers ask](https://autolander.ai/aeo-geo/rv-dealer-ai-search/)
 - [Powersports dealers and AI search: ATVs, UTVs, motorcycles and boats](https://autolander.ai/aeo-geo/powersports-dealer-ai-search/)
+- [Vehicle inventory feeds and AI shopping: what dealers need](https://autolander.ai/aeo-geo/inventory-feeds-ai-shopping/)
 - [Google AI Overviews for car dealers: when they show and who gets cited](https://autolander.ai/aeo-geo/google-ai-overviews-for-car-dealers/)
 
 ---

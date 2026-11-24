@@ -163,6 +163,7 @@ The free scan is requested by the dealer on the page itself: https://autolander.
 - [Perplexity and car dealerships: how it picks the sources it cites](https://autolander.ai/aeo-geo/perplexity-for-car-dealerships.md): How Perplexity picks and cites sources for car questions, what PerplexityBot and Perplexity-User do, and what its source labels mean for dealers.
 - [Car dealer review sites and AI answers: DealerRater, Cars.com, CarGurus, Yelp and BBB](https://autolander.ai/aeo-geo/car-dealer-review-sites-ai-answers.md): The car dealer review sites that matter as AI sources, from DealerRater, Cars.com and CarGurus to Yelp and BBB, and how to keep them consistent.
 - [Model comparison pages AI answers can use, and how dealers should write them](https://autolander.ai/aeo-geo/model-comparison-pages-for-dealers.md): How car dealers can write model comparison pages that shoppers and AI tools trust: which matchups to pick, what to include and what to leave out.
+- [Inventory feeds and AI shopping: getting your cars into the places AI reads](https://autolander.ai/aeo-geo/inventory-feeds-ai-shopping.md): How vehicle inventory feeds reach AI shopping answers and Google vehicle ads, why complete and matching data matters, and how to keep sold cars out.
 
 ## Why we work the way we do
 

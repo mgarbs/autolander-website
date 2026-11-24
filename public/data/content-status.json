@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22",
+  "generatedAt": "2026-11-24",
   "note": "Avalanche article drip. status flips via scripts/publish-article.mjs (admin Content Publisher → publish-article workflow).",
   "articles": [
     {
@@ -2111,8 +2111,8 @@
       ],
       "description": "How vehicle inventory feeds reach AI shopping answers and Google vehicle ads, why complete and matching data matters, and how to keep sold cars out.",
       "suggestedOrder": 82,
-      "status": "draft",
-      "publishedAt": null,
+      "status": "published",
+      "publishedAt": "2026-11-24",
       "siloOrder": 0,
       "cluster": "website",
       "clusterLabel": "Your website: crawlers, schema and vehicle pages",

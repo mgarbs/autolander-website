@@ -336,8 +336,8 @@
     "publishedAt": "2026-11-22"
   },
   "inventory-feeds-ai-shopping": {
-    "status": "draft",
-    "publishedAt": null
+    "status": "published",
+    "publishedAt": "2026-11-24"
   },
   "bing-places-for-car-dealers": {
     "status": "draft",

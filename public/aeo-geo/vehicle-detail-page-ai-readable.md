@@ -134,7 +134,7 @@ Up to five. Along with your robots.txt, your homepage and your sitemap when need
 - [Should your dealership block AI crawlers? Search bots vs training bots](https://autolander.ai/aeo-geo/should-dealers-block-ai-crawlers/)
 - [Schema markup for car dealerships: AutoDealer, Vehicle and Offer](https://autolander.ai/aeo-geo/car-dealership-schema-markup/)
 - [llms.txt for car dealerships: what it does and what it doesn’t](https://autolander.ai/aeo-geo/llms-txt-for-car-dealerships/)
-- [Can ChatGPT and Claude read your dealership website? A 15-minute check](https://autolander.ai/aeo-geo/can-chatgpt-see-my-dealer-website/)
+- [Vehicle inventory feeds and AI shopping: what dealers need](https://autolander.ai/aeo-geo/inventory-feeds-ai-shopping/)
 - [Model comparison pages for car dealers: how to write them](https://autolander.ai/aeo-geo/model-comparison-pages-for-dealers/)
 - [RV dealers and AI search: answering the questions RV buyers ask](https://autolander.ai/aeo-geo/rv-dealer-ai-search/)
 
